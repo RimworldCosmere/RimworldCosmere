@@ -25,8 +25,8 @@ public class SphereGlowerProperties : CompProperties_Glower {
 }
 
 public class SphereGlower : CompGlower {
+    private readonly List<Verse.Thing> cachedSpheres = [];
     private bool FlickedOn = true;
-    private List<Verse.Thing> cachedSpheres = [];
     private bool spheresCacheDirty = true;
 
     private List<Verse.Thing> spheres {
@@ -37,36 +37,6 @@ public class SphereGlower : CompGlower {
             spheresCacheDirty = false;
             return cachedSpheres;
         }
-    }
-
-    private void RebuildSphereCache() {
-        if (parent is ISlotGroupParent slotGroupParent) {
-            SlotGroup? slotGroup = slotGroupParent.GetSlotGroup();
-            if (slotGroup != null) {
-                foreach (Verse.Thing thing in slotGroup.HeldThings) {
-                    if (IsSphere(thing)) cachedSpheres.Add(thing);
-                }
-            }
-            return;
-        }
-
-        if (parent is IThingHolder thingHolder) {
-            ThingOwner things = thingHolder.GetDirectlyHeldThings();
-            for (int i = 0; i < things.Count; i++) {
-                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
-            }
-            return;
-        }
-
-        if (parent.TryGetComp(out InnerStorage innerStorage)) {
-            ThingOwner things = innerStorage.GetDirectlyHeldThings();
-            for (int i = 0; i < things.Count; i++) {
-                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
-            }
-            return;
-        }
-
-        if (IsSphere(parent)) cachedSpheres.Add(parent);
     }
 
     private new SphereGlowerProperties props => (SphereGlowerProperties)base.props;
@@ -125,8 +95,42 @@ public class SphereGlower : CompGlower {
                 InvestitureHolder? inv = currentSpheres[i].GetInvestiture();
                 if (inv != null && inv.currentInvestiture > 0) return true;
             }
+
             return false;
         }
+    }
+
+    private void RebuildSphereCache() {
+        if (parent is ISlotGroupParent slotGroupParent) {
+            SlotGroup? slotGroup = slotGroupParent.GetSlotGroup();
+            if (slotGroup != null) {
+                foreach (Verse.Thing thing in slotGroup.HeldThings) {
+                    if (IsSphere(thing)) cachedSpheres.Add(thing);
+                }
+            }
+
+            return;
+        }
+
+        if (parent is IThingHolder thingHolder) {
+            ThingOwner things = thingHolder.GetDirectlyHeldThings();
+            for (int i = 0; i < things.Count; i++) {
+                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
+            }
+
+            return;
+        }
+
+        if (parent.TryGetComp(out InnerStorage innerStorage)) {
+            ThingOwner things = innerStorage.GetDirectlyHeldThings();
+            for (int i = 0; i < things.Count; i++) {
+                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
+            }
+
+            return;
+        }
+
+        if (IsSphere(parent)) cachedSpheres.Add(parent);
     }
 
     private static bool IsSphere(Verse.Thing thing) {

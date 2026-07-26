@@ -1,4 +1,4 @@
-﻿![Introduction](../.github/assets/scadrial/intro.png)
+![Introduction](../.github/assets/scadrial/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -9,13 +9,14 @@
 
 ​
 
-***This is very much a beta, please be patient. File bug reports in GitHub or Discord***
+*The foundational systems and definitions for all Cosmere-based RimWorld mods.*
 
-*Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
-
+​
 ​
 
 ![About](../.github/assets/scadrial/about.png)
+
+*Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
 
 - **Allomancy**
     - Includes every base metal and >!Godmetal!<, each granting unique powers
@@ -68,7 +69,6 @@
 - Mistborn and Full Feruchemists are **extremely rare** by default
 - >!Use your Lerasium and Atium wisely. There are alloys...!<
 - >!Burning Lerasium or Leratium can change everything...!<
-
 ​
 
 ![Recommendations](../.github/assets/scadrial/recommendations.png)
@@ -79,6 +79,10 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
     * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
     * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+* [Gotta Go Fast](https://steamcommunity.com/sharedfiles/filedetails/?id=3712112476)
+    * Drastically improves the phatfinding speed of pawns that are faster than normal, and/or pawns that can fly.
+* [BetterWeight](https://steamcommunity.com/sharedfiles/filedetails/?id=2221387317)
+    * Gives buildings realistic weights based on their material costs. Makes Steel Pushing and Iron Pulling on Scadrial feel right - heavy steel walls resist a Coinshot's Push, light wooden furniture flies across the room.
 
 ​
 
@@ -97,7 +101,7 @@ Cosmere.
 
 Follow along with our development at: https://rimworldcosmere.com
 
-Contribute and donate so we can get more art and other commissions: 
+Contribute and donate so we can get more art and other commissions:
 
 * Recurring Donations: https://rimworldcosmere.com/#/portal/
 * One Time Donations: https://rimworldcosmere.com/#/portal/support
@@ -106,10 +110,10 @@ Contribute and donate so we can get more art and other commissions:
 
 ![Attributions](../.github/assets/scadrial/attributions.png)
 
-* Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
-* Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art
-* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially `aelanna`) for helping with
+* Big thanks to Sir Van ('sir_vann' On Discord) for in-game art
+* Another big thanks to Immortalus ('_immortalus' on Discord) for the Mod Previews and a bunch more art
+* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially 'aelanna') for helping with
   random questions
 
-**_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
-Entertainment, LLC or Ludeon Studios._**
+***This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
+Entertainment, LLC or Ludeon Studios.***

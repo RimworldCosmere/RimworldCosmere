@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 namespace Cosmere.Core;
 
 public static class Logger {
-    private static readonly Dictionary<LogLevel, Color> LOGColors = new Dictionary<LogLevel, Color> {
+    private static readonly Dictionary<LogLevel, Color> LogColors = new Dictionary<LogLevel, Color> {
         { LogLevel.None, Color.black },
         { LogLevel.Important, Color.green },
         { LogLevel.Error, Color.red },
@@ -21,13 +21,7 @@ public static class Logger {
 
     private static bool CurrentlyLoggingError;
 
-    private static LogLevel GetCurrentLogLevel() {
-        try {
-            return logLevel;
-        } catch {
-            return LogLevel.Verbose;
-        }
-    }
+    private static LogLevel GetCurrentLogLevel() => logLevel;
 
     public static void Message(string message, LogLevel level = LogLevel.Info) {
         try {
@@ -71,12 +65,14 @@ public static class Logger {
 
             if (level >= LogLevel.Error) CurrentlyLoggingError = true;
             Log.Message(
-                $"{ColoredMessage(LOGColors[level], $"[Cosmere]{stack}[{level.ToString()}]")} {message}"
+                $"{ColoredMessage(LogColors[level], $"[Cosmere]{stack}[{level.ToString()}]")} {message}"
             );
             Log.ResetMessageCount();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Debug.LogException(new Exception("An error occured while logging an error: ", e));
-        } finally {
+        }
+        finally {
             if (level >= LogLevel.Error) CurrentlyLoggingError = false;
         }
     }
@@ -140,9 +136,11 @@ public static class Logger {
         double milliseconds = nanoseconds / 1_000_000;
         if (milliseconds >= 1) {
             Message($"[Profile] {label} took {milliseconds}ms", LogLevel.Important);
-        } else if (microseconds >= 1) {
+        }
+        else if (microseconds >= 1) {
             Message($"[Profile] {label} took {microseconds}μs", LogLevel.Important);
-        } else {
+        }
+        else {
             Message($"[Profile] {label} took {nanoseconds}ns", LogLevel.Important);
         }
     }

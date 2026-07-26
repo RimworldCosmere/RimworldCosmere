@@ -9,26 +9,27 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transportation;
 
 public class Portal : SurgebindingAbility {
-    private SurgePortal? portal;
-    private Map? sourceMap;
-    private List<Pawn>? selectedPawns;
-
     internal static int pendingPortalTile = -1;
-    internal static Portal? activePortal;
+    internal static readonly Dictionary<int, Portal> activePortals = new Dictionary<int, Portal>();
+    private SurgePortal? portal;
+    private List<Pawn>? selectedPawns;
+    private Map? sourceMap;
+
+    private bool worldTargetingActive;
 
     public Portal(Pawn pawn) : base(pawn) { }
     public Portal(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
-    }
-
     private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
+
+    public override float GetStrength(Status? desiredStatus = null) {
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
+    }
 
     protected override void OnEnable() {
         base.OnEnable();
         sourceMap = pawn.Map;
-        activePortal = this;
+        activePortals[pawn.thingIDNumber] = this;
         pendingPortalTile = -1;
 
         Find.WorldRoutePlanner.Stop();
@@ -37,7 +38,7 @@ public class Portal : SurgebindingAbility {
     }
 
     private void OnDialogClosed() {
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
         if (selectedPawns != null && selectedPawns.Count > 0) return;
 
         UpdateStatus(Active.Off);
@@ -51,12 +52,13 @@ public class Portal : SurgebindingAbility {
         sourceMap = null;
         selectedPawns = null;
         pendingPortalTile = -1;
-        activePortal = null;
+        activePortals.Remove(pawn.thingIDNumber);
     }
 
     public override IEnumerable<Command> GetGizmos() {
-        foreach (Command gizmo in base.GetGizmos())
+        foreach (Command gizmo in base.GetGizmos()) {
             yield return gizmo;
+        }
     }
 
     private void SpawnPortal() {
@@ -67,14 +69,12 @@ public class Portal : SurgebindingAbility {
         FleckMaker.Static(pawn.Position, sourceMap, FleckDefOf.PsycastAreaEffect);
     }
 
-    private bool worldTargetingActive;
-
     private void BeginWorldTargeting() {
         CameraJumper.TryShowWorld();
         worldTargetingActive = true;
 
         Find.WorldTargeter.BeginTargeting(
-            (GlobalTargetInfo t) => {
+            t => {
                 worldTargetingActive = false;
                 return OnWorldTileSelected(t);
             },
@@ -82,7 +82,7 @@ public class Portal : SurgebindingAbility {
             null,
             true,
             null,
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
                 return "Select portal destination";
@@ -92,7 +92,7 @@ public class Portal : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         if (worldTargetingActive && !Find.WorldTargeter.IsTargeting) {
             worldTargetingActive = false;
@@ -104,13 +104,13 @@ public class Portal : SurgebindingAbility {
         PlanetTile tile = target.Tile;
         if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
 
-        float cost = 30f / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) {
+        float cost = 30f / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) {
             Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
             return false;
         }
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         if (selectedPawns != null && selectedPawns.Count > 0) {
             foreach (Pawn p in selectedPawns) {
@@ -131,31 +131,32 @@ public class Portal : SurgebindingAbility {
     }
 
     internal void OnCaravanConfirmed(List<Pawn> pawns, PlanetTile destinationTile) {
-        selectedPawns = [..pawns];
+        selectedPawns = [.. pawns];
         SpawnPortal();
 
         if (destinationTile.Valid) {
             OnWorldTileSelected(new GlobalTargetInfo(destinationTile));
-        } else {
+        }
+        else {
             BeginWorldTargeting();
         }
     }
 
     internal void ActivateFromCaravan(Caravan caravan) {
-        activePortal = this;
+        activePortals[pawn.thingIDNumber] = this;
 
         Find.WorldTargeter.BeginTargeting(
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
 
-                float cost = 30f / (1 << gene.currentIdeal);
-                if (!gene.CanLowerReserve(cost)) {
+                float cost = 30f / (1 << Gene.CurrentIdeal);
+                if (!Gene.CanLowerReserve(cost)) {
                     Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
                     return false;
                 }
 
-                gene.RemoveFromReserve(cost);
+                Gene.RemoveFromReserve(cost);
 
                 Map? destinationMap = null;
                 List<Map> maps = Find.Maps;
@@ -168,12 +169,12 @@ public class Portal : SurgebindingAbility {
 
                 if (destinationMap != null) {
                     CaravanEnterMapUtility.Enter(
-                        caravan, destinationMap,
-                        CaravanEnterMode.Center,
-                        CaravanDropInventoryMode.DoNotDrop,
-                        false
+                        caravan,
+                        destinationMap,
+                        CaravanEnterMode.Center
                     );
-                } else {
+                }
+                else {
                     caravan.pather.StopDead();
                     caravan.Tile = tile;
                     caravan.Notify_Teleported();
@@ -185,14 +186,14 @@ public class Portal : SurgebindingAbility {
                     MessageTypeDefOf.PositiveEvent
                 );
 
-                activePortal = null;
+                activePortals.Remove(pawn.thingIDNumber);
                 return true;
             },
             true,
             null,
             true,
             null,
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
                 return "Open portal to this location";
@@ -210,9 +211,10 @@ public class Portal : SurgebindingAbility {
 [HarmonyPatch(typeof(CaravanFormingUtility), nameof(CaravanFormingUtility.StartFormingCaravan))]
 public static class PortalCaravanInterceptPatch {
     private static bool Prefix(List<Pawn> pawns, PlanetTile destinationTile) {
-        if (Portal.activePortal == null) return true;
+        if (Portal.activePortals.Count == 0) return true;
 
-        Portal.activePortal.OnCaravanConfirmed(pawns, destinationTile);
+        Portal active = Portal.activePortals.Values.First();
+        active.OnCaravanConfirmed(pawns, destinationTile);
         return false;
     }
 }
@@ -220,7 +222,7 @@ public static class PortalCaravanInterceptPatch {
 [HarmonyPatch(typeof(WorldRoutePlanner), nameof(WorldRoutePlanner.GetTicksToWaypoint))]
 public static class PortalRouteTimePatch {
     private static void Postfix(ref int __result) {
-        if (Portal.activePortal != null) __result = 0;
+        if (Portal.activePortals.Count > 0) __result = 0;
     }
 }
 
@@ -242,17 +244,21 @@ public static class PortalCaravanGizmoPatch {
                 if (abilities[j] is not Portal portalAbility) continue;
 
                 Portal captured = portalAbility;
-                extra.Add(new Command_Action {
-                    defaultLabel = "Portal: " + p.LabelShort,
-                    defaultDesc = "Open a portal to teleport this caravan to another location instantly.",
-                    icon = PortalIcon,
-                    action = () => {
-                        if (Portal.activePortal != null && !Find.WorldTargeter.IsTargeting)
-                            Portal.activePortal = null;
-                        if (Portal.activePortal != null) return;
-                        captured.ActivateFromCaravan(__instance);
-                    },
-                });
+                extra.Add(
+                    new Command_Action {
+                        defaultLabel = "Portal: " + p.LabelShort,
+                        defaultDesc = "Open a portal to teleport this caravan to another location instantly.",
+                        icon = PortalIcon,
+                        action = () => {
+                            if (Portal.activePortals.Count > 0 && !Find.WorldTargeter.IsTargeting) {
+                                Portal.activePortals.Clear();
+                            }
+
+                            if (Portal.activePortals.Count > 0) return;
+                            captured.ActivateFromCaravan(__instance);
+                        },
+                    }
+                );
                 break;
             }
         }

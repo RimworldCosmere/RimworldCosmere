@@ -18,6 +18,6 @@ public class TimeSpentStoringWorker : RecordWorker {
 
         Feruchemist gene = pawn.genes.GetFeruchemicGeneForMetal(metal)!;
 
-        return gene.isStoring;
+        return gene.isStoringAny;
     }
 }

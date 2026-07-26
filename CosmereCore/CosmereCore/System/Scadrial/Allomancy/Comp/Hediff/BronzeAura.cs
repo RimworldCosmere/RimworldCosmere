@@ -1,15 +1,13 @@
 using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Util;
-using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
-#nullable disable
 public class BronzeAuraProperties : LineDrawingAuraProperties {
-    public ThingDef moteDef;
+    public ThingDef moteDef = null!;
 
     public BronzeAuraProperties() {
         compClass = typeof(BronzeAura);
@@ -17,7 +15,6 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
 
     public override Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
 }
-#nullable restore
 
 public class BronzeAura : LineDrawingAura {
     private Mote? mote;
@@ -26,7 +23,10 @@ public class BronzeAura : LineDrawingAura {
     private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
 
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
-        return cell.GetThingList(map).Where(t => t.GetInvestiture()?.currentInvestiture > 0);
+        List<Verse.Thing> things = cell.GetThingList(map);
+        for (int i = 0; i < things.Count; i++) {
+            if (things[i].GetInvestiture()?.currentInvestiture > 0) yield return things[i];
+        }
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {

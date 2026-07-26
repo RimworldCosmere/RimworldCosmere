@@ -347,4 +347,5 @@ jobs:
           STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
         run: |
           npm install @semantic-release/git semantic-release-replace-plugin @steamdown/cli@1.0.0-beta.2 -D
+          node --test tools/semantic-release-steam/tests/*.test.mjs
           npx semantic-release

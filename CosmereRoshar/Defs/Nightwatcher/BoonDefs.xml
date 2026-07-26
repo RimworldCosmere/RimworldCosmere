@@ -135,8 +135,8 @@
         <description>The Nightwatcher reaches into {PAWN_nameDef}'s Spiritweb and twists something fundamental. A new Connection forms - to Preservation, to a metal, to something that was never meant to be {PAWN_possessive}. {PAWN_pronoun} can feel it now: a single metal, calling to be burned.</description>
         <powerTier>2</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <metalSelectionType>allomancy</metalSelectionType>
-        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.MistingApplicator</applicatorClass>
+        <metalSelectionType>Allomancy</metalSelectionType>
+        <applicatorClass>Cosmere.System.Scadrial.Nightwatcher.MistingApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -145,8 +145,8 @@
         <description>The Nightwatcher reshaped {PAWN_nameDef}'s soul. Where there was nothing, now there is a reservoir - a place to store, a place to draw from. One metal answers {PAWN_possessive} call, and {PAWN_possessive} metalminds will remember what {PAWN_pronoun} gives them.</description>
         <powerTier>2</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <metalSelectionType>feruchemy</metalSelectionType>
-        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.FerringApplicator</applicatorClass>
+        <metalSelectionType>Feruchemy</metalSelectionType>
+        <applicatorClass>Cosmere.System.Scadrial.Nightwatcher.FerringApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <!-- Tier 3: Major Boons -->
@@ -157,7 +157,7 @@
         <description>This was no small thing to ask. The Nightwatcher hesitated - not from reluctance, but from the sheer weight of what {PAWN_nameDef} demanded. Then she reached into {PAWN_possessive} Spiritweb and cracked it wide open. Every metal sings now. Iron and steel, tin and pewter, all of them. {PAWN_nameDef} burns with Preservation's full gift. The mists will recognize {PAWN_nameDef}.</description>
         <powerTier>3</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.MistbornApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Scadrial.Nightwatcher.MistbornApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -166,7 +166,7 @@
         <description>Cultivation understands growth, and what she gave {PAWN_nameDef} is the ultimate expression of it. Every metal now holds a piece of {PAWN_nameDef} - speed, strength, memory, warmth, youth. {PAWN_pronoun} can pour {PAWN_possessive} attributes into metal and draw them back tenfold. The Terris would weep to see it given so freely.</description>
         <powerTier>3</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.FullFeruchemistApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Scadrial.Nightwatcher.FullFeruchemistApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>

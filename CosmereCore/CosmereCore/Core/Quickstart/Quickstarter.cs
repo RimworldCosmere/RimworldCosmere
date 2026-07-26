@@ -36,12 +36,12 @@ public class Quickstarter {
         statusBox = new StatusBox(this);
 
         LongEventHandler.ExecuteWhenFinished(() => {
-                if (Started) return;
-                Finished = false;
-                Started = true;
-                TryStartGame();
-                Finished = true;
-            }
+            if (Started) return;
+            Finished = false;
+            Started = true;
+            StartGame();
+            Finished = true;
+        }
         );
     }
 
@@ -52,7 +52,7 @@ public class Quickstarter {
         statusBox?.OnGUI();
     }
 
-    private void TryStartGame() {
+    private void StartGame() {
         LongEventHandler.QueueLongEvent(
             () => {
                 MemoryUtility.ClearAllMapsAndWorld();

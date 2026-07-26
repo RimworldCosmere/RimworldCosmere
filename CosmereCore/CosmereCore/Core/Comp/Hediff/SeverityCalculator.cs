@@ -19,8 +19,8 @@ public class SeverityCalculatorProperties : HediffCompProperties {
 }
 
 public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
-    private float desiredSeverity = -1;
     private float cachedSeverity = -1;
+    private float desiredSeverity = -1;
     private bool severityDirty = true;
 
     private new SeverityCalculatorProperties props => (SeverityCalculatorProperties)base.props;
@@ -30,8 +30,8 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
     public float severity {
         get {
             if (!severityDirty) return cachedSeverity;
-            float total = parent.extraSeverity;
-            foreach (IAbility<TGene, IHediff<TGene>> source in parent.sourceAbilities) {
+            float total = parent.ExtraSeverity;
+            foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
                 total += source.GetStrength();
             }
 
@@ -41,10 +41,6 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         }
     }
 
-    private void MarkSeverityDirty() {
-        severityDirty = true;
-    }
-
     public override string CompLabelInBracketsExtra =>
         ticksLeft >= 0 ? $"{Mathf.RoundToInt(ticksLeft).ToStringTicksToPeriod()} left" : "";
 
@@ -52,11 +48,17 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         ? -1
         : Mathf.Abs(parent.Severity - desiredSeverity) / props.decayAmount * props.decayInterval;
 
+    private void MarkSeverityDirty() {
+        severityDirty = true;
+    }
+
     public override void CompPostMake() {
         base.CompPostMake();
 
         if (parent == null) {
-            throw new Exception("SeverityCalculator can only be placed on an AllomanticHediff");
+            throw new InvalidOperationException(
+                $"SeverityCalculator<{typeof(TGene).Name}> can only be placed on a hediff that implements IHediff<{typeof(TGene).Name}>"
+            );
         }
 
         if (!props.onStatusChange) {
@@ -80,7 +82,7 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         IAbility<TGene, IHediff<TGene>> sourceAbility
     ) {
         MarkSeverityDirty();
-        if (parent.sourceAbilities.Count == 0) {
+        if (parent.SourceAbilities.Count == 0) {
             parent.OnSourceAdded -= OnSourceAdded;
             parent.OnSourceRemoved -= OnSourceRemoved;
         }

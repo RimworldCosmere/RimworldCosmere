@@ -1,6 +1,6 @@
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Hediff;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.Core.Util;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -10,10 +10,10 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
 
 public class WindsprenShield : SurgebindingAbility {
-    public static readonly HashSet<Pawn> ShieldedPawns = [];
-
     private const int BaseRadius = 3;
-    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
+    public static readonly HashSet<Pawn> ShieldedPawns = [];
+    private static ThingDef? _auraMoteDef;
+    private static ThingDef? AuraMoteDef => _auraMoteDef ??= ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
 
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
@@ -21,12 +21,12 @@ public class WindsprenShield : SurgebindingAbility {
     public WindsprenShield(Pawn pawn) : base(pawn) { }
     public WindsprenShield(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
     private HediffDef hediffToApply => def.hediff!;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -35,8 +35,10 @@ public class WindsprenShield : SurgebindingAbility {
         SurgebindingHediffUtility.GetOrAddHediff(pawn, this, hediffToApply);
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
-                AuraMoteDef, BaseRadius, GetStrength()
+            float moteScale = MoteUtility.GetMoteSize(
+                AuraMoteDef,
+                BaseRadius,
+                GetStrength()
             );
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
         }
@@ -64,12 +66,14 @@ public class WindsprenShield : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         auraMote?.Maintain();
-        if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
-                AuraMoteDef, BaseRadius, GetStrength()
+        if (auraMote != null) {
+            float moteScale = MoteUtility.GetMoteSize(
+                AuraMoteDef!,
+                BaseRadius,
+                GetStrength()
             );
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
@@ -77,7 +81,12 @@ public class WindsprenShield : SurgebindingAbility {
         if (pawn.IsHashIntervalTick(15)) {
             IntVec3 randomCell = pawn.Position + GenRadial.RadialPattern[Rand.Range(1, (int)(radius * radius))];
             if (randomCell.InBounds(pawn.Map)) {
-                FleckMaker.ThrowDustPuffThick(randomCell.ToVector3Shifted(), pawn.Map, 0.5f, new Color(0.7f, 0.85f, 1f, 0.4f));
+                FleckMaker.ThrowDustPuffThick(
+                    randomCell.ToVector3Shifted(),
+                    pawn.Map,
+                    0.5f,
+                    new Color(0.7f, 0.85f, 1f, 0.4f)
+                );
             }
         }
 
@@ -85,7 +94,8 @@ public class WindsprenShield : SurgebindingAbility {
 
         for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
             Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn == null || targetPawn.Dead ||
+            if (targetPawn == null ||
+                targetPawn.Dead ||
                 !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
                 if (targetPawn != null && !targetPawn.Dead) {
                     SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
@@ -98,7 +108,10 @@ public class WindsprenShield : SurgebindingAbility {
         if (!pawn.IsHashIntervalTick(30)) return;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;

@@ -86,9 +86,9 @@
                 <li>Metallic</li>
                 {{/if}}
             </categories>
+            <color>{{rgb metal.color}}</color>
             {{# with metal.buildable }}
             <commonality>{{#if commonality}}{{commonality}}{{else}}0.0{{/if}}</commonality>
-            <color>{{rgb ../metal.color}}</color>
             <constructEffect>ConstructMetal</constructEffect>
             {{#if (or stuffStatFactors (and offense offense.cooldown)) }}
             <statFactors>

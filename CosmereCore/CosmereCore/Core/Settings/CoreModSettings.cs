@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.Listing;
 using Cosmere.Core.Quickstart;
+using Cosmere.Core.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -15,15 +16,20 @@ public class CoreModSettings : CosmereModSettings {
         );
 
     public bool debugMode;
-    public LogLevel logLevel = LogLevel.Verbose;
-    public string? quickstartName;
-    public string? testScenarioDefName;
-
-    public bool showDormantConnection;
 
     // Faction filtering settings
     public bool disableEmpireInCosmereScenarios;
     public bool disableOdysseyFactionsInCosmereScenarios;
+    public bool highContrast;
+    public LogLevel logLevel = LogLevel.Verbose;
+    public string? quickstartName;
+
+    public bool radialAnchorMouse = true;
+    public bool radialPausesGame;
+    public bool reduceMotion;
+
+    public bool showDormantConnection;
+    public string? testScenarioDefName;
 
     public override string Name => "Core";
 
@@ -58,12 +64,29 @@ public class CoreModSettings : CosmereModSettings {
         );
 
         listing.Fieldset(
+            "CC_Settings_Category_Radial".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CC_Settings_RadialAnchorMouse_Label".Translate(),
+                    "CC_Settings_RadialAnchorMouse_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref radialAnchorMouse)
+                );
+                fieldset.Field(
+                    "CC_Settings_RadialPause_Label".Translate(),
+                    "CC_Settings_RadialPause_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref radialPausesGame)
+                );
+            },
+            SubListingOptions.WithoutTopPadding()
+        );
+
+        listing.Fieldset(
             "CC_Settings_Category_Debug".Translate(),
             fieldset => {
                 fieldset.Field(
                     "CC_Settings_LogLevel_Label".Translate(),
                     "CC_Settings_LogLevel_Tooltip".Translate(),
-                    sub => Util.UI.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
+                    sub => UIHelpers.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
                 );
 
                 if (!Prefs.DevMode) return;
@@ -77,7 +100,7 @@ public class CoreModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CC_Settings_Quickstarter_Label".Translate(),
                     "CC_Settings_Quickstarter_Tooltip".Translate(),
-                    sub => Util.UI.Dropdown(
+                    sub => UIHelpers.Dropdown(
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,
@@ -92,7 +115,7 @@ public class CoreModSettings : CosmereModSettings {
                     fieldset.Field(
                         "CC_Settings_TestScenario_Label".Translate(),
                         "CC_Settings_TestScenario_Tooltip".Translate(),
-                        sub => Util.UI.Dropdown(
+                        sub => UIHelpers.Dropdown(
                             sub,
                             GetTestScenarioLabel,
                             testScenarioDefName,
@@ -108,7 +131,8 @@ public class CoreModSettings : CosmereModSettings {
                     TaggedString? description = GetDescription();
                     if (description == null) {
                         fieldset.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
-                    } else {
+                    }
+                    else {
                         using (new TextBlock(TextAnchor.UpperLeft)) {
                             fieldset.Label(description.Value);
                         }
@@ -157,6 +181,7 @@ public class CoreModSettings : CosmereModSettings {
             string label = $"{def.LabelCap} ({def.defName})";
             items[label] = def.defName;
         }
+
         return items;
     }
 
@@ -166,7 +191,11 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref debugMode, "debugMode");
         Scribe_Values.Look(ref quickstartName, "quickstartName");
         Scribe_Values.Look(ref testScenarioDefName, "testScenarioDefName");
-        Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios", false);
-        Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios", false);
+        Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios");
+        Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios");
+        Scribe_Values.Look(ref reduceMotion, "reduceMotion");
+        Scribe_Values.Look(ref highContrast, "highContrast");
+        Scribe_Values.Look(ref radialAnchorMouse, "radialAnchorMouse", true);
+        Scribe_Values.Look(ref radialPausesGame, "radialPausesGame");
     }
 }

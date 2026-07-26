@@ -43,8 +43,7 @@ public class RadiantShardplate : Shardplate {
     public override List<LUTPaletteMaterial> GetMaterials() {
         if (gemstone == null) return [];
 
-        LUTPaletteMaterial colorOne = new LUTPaletteMaterial
-            { color = gemstone.color, metallic = .7f, smoothness = .7f };
+        LUTPaletteMaterial colorOne = new LUTPaletteMaterial { color = gemstone.color, metallic = .7f, smoothness = .7f };
         LUTPaletteMaterial colorTwo = !gemstone.colorTwo.HasValue
             ? colorOne
             : new LUTPaletteMaterial { color = gemstone.colorTwo.Value, metallic = .7f, smoothness = .7f };

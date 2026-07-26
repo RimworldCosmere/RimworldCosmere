@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -8,16 +7,16 @@ public class Stiffen : SurgebindingAbility {
     public Stiffen(Pawn pawn) : base(pawn) { }
     public Stiffen(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (15f + gene.currentIdeal * 5f));
+    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (15f + Gene.CurrentIdeal * 5f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         bool isFriendly = targetPawn.Faction == pawn.Faction;
         HediffDef? hediffDef = isFriendly ? def.hediffFriendly : def.hediffHostile;

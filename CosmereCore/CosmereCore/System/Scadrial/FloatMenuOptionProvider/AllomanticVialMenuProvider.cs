@@ -9,8 +9,10 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.FloatMenuOptionProvider;
 
 public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
-    private static readonly StatDef AllomanticPower = StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower;
-    private static readonly StatDef FeruchemicPower = StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower;
+    private static StatDef? _allomanticPower;
+    private static StatDef AllomanticPower => _allomanticPower ??= StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower;
+    private static StatDef? _feruchemicPower;
+    private static StatDef FeruchemicPower => _feruchemicPower ??= StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower;
     protected override bool Drafted => true;
     protected override bool Undrafted => true;
     protected override bool Multiselect => false;

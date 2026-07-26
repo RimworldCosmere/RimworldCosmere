@@ -7,12 +7,12 @@
       <li>
         <key>shallans_personas</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>5</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Veil</title>
             <text>Shallan slips into the city's underbelly wearing a face that is not her own. Veil walks where Shallan cannot - the darkeyed streets, the smoke-filled taverns, the places where information is bought with coin and silence. But Veil is more than a disguise. She speaks with her own voice, makes her own choices. The line between mask and self grows thinner by the day.</text>
             <letterDef>NegativeEvent</letterDef>
@@ -22,12 +22,12 @@
       <li>
         <key>cult_of_moments</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>15</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Cult of Moments</title>
             <text>They gather in the palace district, draped in white, their eyes wide with fervor. The Cult of Moments worships the coming destruction as divine revelation. They are not soldiers, but they are dangerous - the kind of danger that comes from people who have stopped fearing death.</text>
             <letterDef>ThreatBig</letterDef>
@@ -37,12 +37,12 @@
       <li>
         <key>elhokars_growth</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>25</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>A King's Resolve</title>
             <text>Elhokar has changed. The whining, paranoid king who saw assassins in every shadow has been replaced by something quieter. He watches Kaladin and Shallan with careful eyes. He practices with his blade when he thinks no one is looking. A cryptic spren flickers at the edge of his vision - barely there, but present.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -52,12 +52,12 @@
       <li>
         <key>adolins_choice</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>30</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Adolin's Burden</title>
             <text>Adolin does not speak of what he did. The blood has been washed from his hands, but it stains something deeper. Sadeas deserved to die - Adolin believes that still. But the act sits heavy on him, a weight that no Shardblade can cut away. He fights harder now. Whether from guilt or conviction, only Adolin knows.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -67,20 +67,20 @@
       <li>
         <key>elhokars_words</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>35</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.PawnAliveTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
             <pawnName>Elhokar</pawnName>
             <alive>true</alive>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Elhokar</pawnName>
             <targetIdeal>1</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The King's Words</title>
             <text>Elhokar speaks the words. They come haltingly, imperfectly, but they come. A cryptic appears beside him, barely visible, its pattern shifting like light through stained glass. The king is a Radiant. For the first time in his life, Elhokar Kholin has earned something that was not given to him by birth.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -90,15 +90,15 @@
       <li>
         <key>the_oathgate</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>50</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>3</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Oathgate</title>
             <text>The Oathgate. It stands at the heart of the palace, surrounded by enemies. This is the way out - the only way out. Everything comes down to this. Kaladin draws Stormlight. Shallan weaves her illusions. Adolin raises his blade. The path to the Oathgate runs through the Fused, and there is no turning back.</text>
             <letterDef>ThreatBig</letterDef>

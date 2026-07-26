@@ -10,7 +10,7 @@ public static class Pawn_GeneTrackerExtension {
         genes.RemoveGene(genes.GetGene(geneDef));
     }
 
-    public static Verse.Gene TryAddGene(this Pawn_GeneTracker genes, GeneDef gene, bool xenogene = false) {
+    public static Verse.Gene EnsureGene(this Pawn_GeneTracker genes, GeneDef gene, bool xenogene = false) {
         return genes.HasActiveGene(gene) ? genes.GetGene(gene) : genes.AddGene(gene, xenogene);
     }
 }

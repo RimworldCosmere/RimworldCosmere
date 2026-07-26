@@ -42,19 +42,23 @@ public class ModifyInvestiture : HediffComp {
         }
     }
 
+    private bool RemoveSelfIfNoInvestiture() {
+        if (investiture != null) return false;
+        Logger.Error("CS_Error_CannotModifyInvestiture".Translate());
+        parent.pawn.health.RemoveHediff(parent);
+        return true;
+    }
+
     public override void CompPostMake() {
         base.CompPostMake();
-        if (investiture == null) {
-            Logger.Error("CS_Error_CannotModifyInvestiture".Translate());
-            parent.pawn.health.RemoveHediff(parent);
-            return;
-        }
+        if (RemoveSelfIfNoInvestiture()) return;
 
         if (shouldResetNicrosil) nicrosil?.Reset();
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (investiture == null) {
+        Investiture? inv = investiture;
+        if (inv == null) {
             Logger.Error("CS_Error_CannotModifyInvestiture".Translate());
             parent.pawn.health.RemoveHediff(parent);
             return;
@@ -72,6 +76,6 @@ public class ModifyInvestiture : HediffComp {
             changePerTick *= parent.Severity;
         }
 
-        investiture.CurLevel = Mathf.Clamp(investiture.CurLevel - changePerTick, 0, investiture.MaxLevel);
+        inv.CurLevel = Mathf.Clamp(inv.CurLevel - changePerTick, 0, inv.MaxLevel);
     }
 }

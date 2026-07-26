@@ -1,8 +1,7 @@
-using System;
 using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Settings;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
 
@@ -10,18 +9,23 @@ namespace Cosmere.System.Scadrial.Comp.Map;
 
 public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     private const int BaseHour = 19; // 7 PM
+
+    private bool? cachedEnabled;
     private int lastMistsStartTick = -1;
     private bool mistsActive;
     private int mistsEndTick;
     private int mistsStartTick;
     private int nextMistsStartTick = -1;
 
-    private bool? cachedEnabled;
-
     private bool enabled {
         get {
             if (!Mod.enableMists) return false;
-            return ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony);
+            return ShardUtility.CachedAreAnyEnabled(
+                ref cachedEnabled,
+                ShardDefOf.Ruin,
+                ShardDefOf.Preservation,
+                ShardDefOf.Harmony
+            );
         }
     }
 
@@ -57,7 +61,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
                 if (!Rand.Chance(1f / 16f)) continue;
 
-                SnapUtility.TrySnap(pawn, "the mists");
+                SnapUtility.Snap(pawn, "the mists");
                 pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_MistComa).Severity = 1.0f;
             }
         }

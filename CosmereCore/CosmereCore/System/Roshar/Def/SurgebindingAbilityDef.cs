@@ -3,14 +3,15 @@ using Cosmere.Core.Def;
 namespace Cosmere.System.Roshar.Def;
 
 public class OrderMinIdeal {
-    public string order = null!;
     public int minIdeal;
+    public string order = null!;
 }
 
 public class SurgebindingAbilityDef : AbilityDef {
-    public RadiantOrderDef? radiantOrder;
     public int minIdeal;
     public List<OrderMinIdeal>? orderMinIdeal;
+    public RadiantOrderDef? radiantOrder;
+    public bool showInRadial = true;
 
     public int GetMinIdealForOrder(string orderDefName) {
         if (orderMinIdeal == null) return minIdeal;

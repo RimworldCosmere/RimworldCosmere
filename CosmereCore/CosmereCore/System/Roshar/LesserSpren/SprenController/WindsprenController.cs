@@ -4,6 +4,7 @@ using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using ShaderDatabase = Cosmere.System.Roshar.Shader.ShaderDatabase;
 
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
@@ -131,7 +132,6 @@ public class WindsprenController : StaticSprenController {
                 if (multiplier > maxMultiplier) {
                     maxMultiplier = multiplier;
                 }
-
             }
         }
 

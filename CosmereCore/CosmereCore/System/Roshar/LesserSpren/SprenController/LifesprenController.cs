@@ -32,7 +32,6 @@ public class LifesprenController : DynamicSprenController {
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         List<SprenSpawnInformation> spawnInfos = [];
 
-        // Find recently born pawns
         IReadOnlyList<Pawn> allPawns = map?.mapPawns.AllPawnsSpawned ?? [];
         spawnInfos.AddRange(
             from pawn in allPawns
@@ -45,7 +44,6 @@ public class LifesprenController : DynamicSprenController {
             )
         );
 
-        // Find growing plants
         List<Verse.Thing>? allPlants = map!.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
         foreach (Verse.Thing? plant in allPlants) {
             if (plant is Plant { Growth: > 0.8f, LifeStage: PlantLifeStage.Growing }) {

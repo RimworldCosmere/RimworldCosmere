@@ -30,12 +30,12 @@ public static class TypeExtension {
     private static bool HasAnyInterfaces(Type parent, Type child) {
         return child.GetInterfaces()
             .Any(childInterface => {
-                    Type? currentInterface = childInterface.IsGenericType
-                        ? childInterface.GetGenericTypeDefinition()
-                        : childInterface;
+                Type? currentInterface = childInterface.IsGenericType
+                    ? childInterface.GetGenericTypeDefinition()
+                    : childInterface;
 
-                    return currentInterface == parent;
-                }
+                return currentInterface == parent;
+            }
             );
     }
 

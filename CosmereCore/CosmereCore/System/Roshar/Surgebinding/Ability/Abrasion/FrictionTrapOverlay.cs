@@ -9,6 +9,8 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
 public static class FrictionTrapOverlay {
     private static readonly List<ZoneEntry> zones = [];
     private static readonly List<IntVec3> cellBuffer = [];
+    private static readonly Color BorderColor = new Color(0.4f, 0.75f, 0.95f, 0.6f);
+    private static readonly Color FillColor = new Color(0.4f, 0.75f, 0.95f, 0.12f);
 
     [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
     [HarmonyPostfix]
@@ -16,8 +18,6 @@ public static class FrictionTrapOverlay {
         zones.Clear();
         cellBuffer.Clear();
     }
-    private static readonly Color BorderColor = new(0.4f, 0.75f, 0.95f, 0.6f);
-    private static readonly Color FillColor = new(0.4f, 0.75f, 0.95f, 0.12f);
 
     public static void Register(int id, IntVec3 center, float radius, Map map) {
         for (int i = 0; i < zones.Count; i++) {
@@ -26,6 +26,7 @@ public static class FrictionTrapOverlay {
                 return;
             }
         }
+
         zones.Add(new ZoneEntry { id = id, center = center, radius = radius, map = map });
     }
 
@@ -54,7 +55,7 @@ public static class FrictionTrapOverlay {
             int radiusCeil = (int)zone.radius + 1;
             for (int dx = -radiusCeil; dx <= radiusCeil; dx++) {
                 for (int dz = -radiusCeil; dz <= radiusCeil; dz++) {
-                    IntVec3 cell = new(zone.center.x + dx, 0, zone.center.z + dz);
+                    IntVec3 cell = new IntVec3(zone.center.x + dx, 0, zone.center.z + dz);
                     if (!cell.InBounds(currentMap)) continue;
                     if (cell.DistanceTo(zone.center) <= zone.radius) {
                         cellBuffer.Add(cell);

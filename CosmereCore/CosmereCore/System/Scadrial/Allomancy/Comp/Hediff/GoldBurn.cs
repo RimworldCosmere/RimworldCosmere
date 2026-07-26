@@ -1,10 +1,10 @@
-using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
-using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using IAllomancerAbility = Cosmere.Core.Ability.IAbility<Cosmere.System.Scadrial.Gene.Allomancer, Cosmere.Core.Hediff.IHediff<Cosmere.System.Scadrial.Gene.Allomancer>>;
+using IAllomancerAbility =
+    Cosmere.Core.Ability.IAbility<Cosmere.System.Scadrial.Gene.Allomancer,
+        Cosmere.Core.Hediff.IHediff<Cosmere.System.Scadrial.Gene.Allomancer>>;
 
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
@@ -29,6 +29,7 @@ public class GoldBurn : HediffComp {
         ThoughtDefOf.Cosmere_Thought_Gold_Jealousy,
         ThoughtDefOf.Cosmere_Thought_Gold_Curiosity,
     ];
+
     private readonly List<ThoughtDef> memoriesAdded = [];
     private float lastSeverity;
     private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
@@ -42,10 +43,9 @@ public class GoldBurn : HediffComp {
             return;
         }
 
-        parent.extraSeverity += 0.01f; // Increase severity slowly over time
+        parent.ExtraSeverity += 0.01f;
         lastSeverity = parent.Severity;
 
-        // 2. Apply random thoughts (positive or negative)
         if (Rand.Chance(0.2f)) // ~1 every 5 ticks
         {
             ThoughtDef random = GoldThoughts.RandomElement();
@@ -53,17 +53,18 @@ public class GoldBurn : HediffComp {
             Thought_Memory? thought = memories.GetFirstMemoryOfDef(random);
             if (thought == null) {
                 memories.TryGainMemoryFast(random);
-            } else if (thought.CurStageIndex < random.stages.Count - 1) {
+            }
+            else if (thought.CurStageIndex < random.stages.Count - 1) {
                 thought.SetForcedStage(thought.CurStageIndex + 1);
             }
         }
 
-        // 3. Mental break chance
         if (Rand.Chance(0.0025f) && Pawn.mindState != null && !Pawn.InMentalState) {
-            IAllomancerAbility[] snapshot = [.. parent.sourceAbilities];
+            IAllomancerAbility[] snapshot = [.. parent.SourceAbilities];
             for (int i = 0; i < snapshot.Length; i++) {
                 snapshot[i].UpdateStatus(BurningStatus.Off);
             }
+
             Pawn.mindState.mentalStateHandler.TryStartMentalState(
                 MentalStateDefOf.Wander_OwnRoom,
                 "Gold vision triggered a break",

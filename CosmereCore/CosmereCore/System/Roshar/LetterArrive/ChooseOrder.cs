@@ -20,7 +20,7 @@ public class ChooseOrder : ChoiceLetter {
     private DiaOption OpenRadiantSelectionDialog() {
         DiaOption option = new DiaOption("CRO_Choose_Radiant_Order_Button".Translate()) {
             action = () => {
-                Find.WindowStack.Add(new ChooseRadiantOrder(lookTargets.PrimaryTarget.Pawn));
+                Find.WindowStack.Add(new Dialog_ChooseRadiantOrder(lookTargets.PrimaryTarget.Pawn));
                 Find.LetterStack.RemoveLetter(this);
             },
             resolveTree = true,

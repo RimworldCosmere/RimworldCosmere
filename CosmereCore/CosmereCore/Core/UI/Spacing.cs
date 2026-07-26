@@ -2,6 +2,7 @@
 
 public class Spacing {
     public const int BaseUnit = 16;
+    public const float FontBaseUnit = 16f;
 
     public static float Get() {
         return BaseUnit;

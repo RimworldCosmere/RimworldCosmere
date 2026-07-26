@@ -8,8 +8,8 @@ public class Dustbringer(RadiantOrderDef def) : AbstractIdealChecker(def) {
     public override bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
         if (HasIncompatibleTrait(pawn, nextLevel)) return false;
 
-        float kills = pawn.records.GetValue(RimWorld.RecordDefOf.KillsHumanlikes)
-                      + pawn.records.GetValue(RimWorld.RecordDefOf.KillsMechanoids);
+        float kills = pawn.records.GetValue(RimWorld.RecordDefOf.KillsHumanlikes) +
+                      pawn.records.GetValue(RimWorld.RecordDefOf.KillsMechanoids);
         float furyMastered = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_FuryMastered);
 
         if (nextLevel == 1) {
@@ -43,7 +43,7 @@ public class Dustbringer(RadiantOrderDef def) : AbstractIdealChecker(def) {
         };
     }
 
-    public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
-        return base.Satisfy(pawn, surgebinder, nextLevel);
+    public override bool ConsummateOath(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+        return base.ConsummateOath(pawn, surgebinder, nextLevel);
     }
 }

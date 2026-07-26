@@ -1,18 +1,18 @@
 using System;
-using System.Collections.Generic;
+using Cosmere.Core.ScenarioPart.Parts;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.ScenarioPart;
 
 public class GameComponent_ScenarioProgression : GameComponent {
+    private const int CheckInterval = 250;
     private ScenarioProgressionDef? activeDef;
     private HashSet<string> firedEvents = [];
-    private Dictionary<string, int> lastFireTicks = new();
     private int lastCheckTick = -1;
-    private const int CheckInterval = 250;
+    private Dictionary<string, int> lastFireTicks = new Dictionary<string, int>();
 
-    public GameComponent_ScenarioProgression(Verse.Game game) { }
+    public GameComponent_ScenarioProgression(Game game) { }
 
     public override void StartedNewGame() {
         base.StartedNewGame();
@@ -79,8 +79,9 @@ public class GameComponent_ScenarioProgression : GameComponent {
         for (int i = 0; i < evt.actions.Count; i++) {
             try {
                 evt.actions[i].Execute(this);
-            } catch (Exception ex) {
-                Logger.Warning($"ScenarioProgression: Failed to execute action for event '{evt.key}': {ex.Message}");
+            }
+            catch (Exception ex) {
+                Logger.Warning($"ScenarioProgression: Failed to execute action for event '${evt.key}': {ex}");
             }
         }
     }
@@ -95,6 +96,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
                 if (pawn.Name is NameSingle single && single.Name.StartsWith(firstName)) return pawn;
             }
         }
+
         return null;
     }
 

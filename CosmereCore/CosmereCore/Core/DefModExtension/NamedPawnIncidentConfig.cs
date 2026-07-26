@@ -1,8 +1,8 @@
-using Verse;
+using Cosmere.Core.ScenarioPart;
 
 namespace Cosmere.Core.DefModExtension;
 
 public class NamedPawnIncidentConfig : Verse.DefModExtension {
-    public ScenarioPart.NamedPawnDef? pawn;
     public string? departureMethod;
+    public NamedPawnDef? pawn;
 }

@@ -18,6 +18,7 @@ public class Atium : HediffWithComps {
     ];
 
     private static List<HediffDef>? cachedAgeConditions;
+
     private static List<HediffDef> AgeConditions {
         get {
             if (cachedAgeConditions != null) return cachedAgeConditions;
@@ -26,11 +27,12 @@ public class Atium : HediffWithComps {
                 HediffDef? def = DefDatabase<HediffDef>.GetNamedSilentFail(AgeConditionNames[i]);
                 if (def != null) cachedAgeConditions.Add(def);
             }
+
             return cachedAgeConditions;
         }
     }
 
-    private bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
+    private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
     private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
     private Feruchemist? atium => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
 
@@ -51,7 +53,7 @@ public class Atium : HediffWithComps {
         if (!isTapping && !isStoring) return;
 
         float direction = isStoring ? +1f : -1f;
-        float severityFactor = Severity / 5.0f;
+        float severityFactor = CompoundedTap.Scale(def, Severity) / 5.0f;
         long ageDeltaTicks = (long)(direction * delta * AgeTicksPerGameTick * severityFactor);
         long newBiologicalAge = pawn.ageTracker.AgeBiologicalTicks + ageDeltaTicks;
 

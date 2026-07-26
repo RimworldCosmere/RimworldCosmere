@@ -1,10 +1,6 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;
-using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
-using Cosmere.System.Roshar.Thing.Building;
-using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Fabrials;
@@ -36,20 +32,22 @@ public class BasicFabrialDiminisher : BasicFabrial {
         Scribe_Values.Look(ref tempWhenTurnedOn, "TempWhenTurnedOn");
     }
 
-    public override void CheckPower(bool flickeredOn) {
+    public override void UpdatePowerState(bool flickeredOn) {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
             bool power = investiture.currentInvestiture > 0 && flickeredOn;
             if (!powerOn && power) {
                 tempWhenTurnedOn = parent.GetRoom().Temperature;
             }
+
             powerOn = power;
             return;
         }
+
         powerOn = false;
     }
 
-    protected override void DoFlameSprenPower() {
+    protected override void ApplyFlameSprenHeat() {
         if (!powerOn || parent.IsOutside()) return;
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture == null) return;
@@ -60,7 +58,7 @@ public class BasicFabrialDiminisher : BasicFabrial {
         }
     }
 
-    protected override void DoColdSprenPower() {
+    protected override void ApplyColdSprenCooling() {
         if (!powerOn || parent.IsOutside()) return;
 
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();

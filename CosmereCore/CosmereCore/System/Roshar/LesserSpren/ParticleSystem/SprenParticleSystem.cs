@@ -21,17 +21,13 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     private void CreateParticleSystem(int mapID) {
-        SprenSpawnInformation representativeSpawnInfo = GetRepresentativeSpawnInfo()!;
         particleSystem =
-            Builder.CreateLesserSprenParticleSystem(mapID, controller, representativeSpawnInfo);
+            Builder.CreateLesserSprenParticleSystem(mapID, controller, controller.defaultSpawnInformation!);
 
-        // Ensure particle system is at world origin
         particleSystem.transform.position = Vector3.zero;
 
-        // Customize particle system based on spren type
         ConfigureForSprenType(particleSystem);
 
-        // Ensure it's in world space
         UnityEngine.ParticleSystem.MainModule main = particleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
 
@@ -44,22 +40,13 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         UpdateParticles();
     }
 
-    private SprenSpawnInformation? GetRepresentativeSpawnInfo() {
-        return controller.defaultSpawnInformation;
-    }
-
     private void ConfigureForSprenType(UnityEngine.ParticleSystem ps) {
         UnityEngine.ParticleSystem.MainModule main = ps.main;
 
-        // Set colors from controller
         main.startColor = controller.sprenColor;
-
-        // Configure size from controller
         main.startSize = main.startSize.constant * controller.sprenSizeMultiplier;
 
-        // Configure emission rate from controller
         UnityEngine.ParticleSystem.EmissionModule emission = ps.emission;
-        //emission.rateOverTime = emission.rateOverTime.constant * controller.emissionRateMultiplier;
         emission.rateOverTime = 0f;
     }
 
@@ -84,7 +71,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
         EmitParticlesForActiveCells();
 
-        // Ensure the particle system is playing
         if (!particleSystem.isPlaying) {
             particleSystem.Play();
         }
@@ -147,7 +133,8 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
             if (particleCache.ContainsKey(position)) {
                 particleCache[position] = (particleCache[position].Item1 + particlesForThisCell,
                     particleSystem!.main.duration + Time.time);
-            } else {
+            }
+            else {
                 particleCache[position] = (particlesForThisCell, particleSystem!.main.duration + Time.time);
             }
         }

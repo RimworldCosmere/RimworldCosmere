@@ -22,6 +22,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                     result.Add(p);
                 }
             }
+
             return result;
         }
     }
@@ -34,7 +35,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
 
 
         base.MapComponentTick();
-        TrySpawnSpren();
+        SpawnSpren();
     }
 
     private SpawnInfo GetSpawnInfo(Pawn pawn) {
@@ -48,11 +49,18 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         return info;
     }
 
-    private void TrySpawnSpren() {
+    private void SpawnSpren() {
         foreach (Pawn pawn in pawns) {
             SpawnInfo spawnInfoForPawn = GetSpawnInfo(pawn);
             if (spawnInfoForPawn.ticksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMinIntervalTicks) continue;
-            if (pawnSprens.Any(sp => sp.pawn.Equals(pawn) && sp.spren.Spawned)) continue;
+            bool hasSpawnedSpren = false;
+            for (int i = 0; i < pawnSprens.Count; i++) {
+                if (pawnSprens[i].pawn.Equals(pawn) && pawnSprens[i].spren.Spawned) {
+                    hasSpawnedSpren = true;
+                    break;
+                }
+            }
+            if (hasSpawnedSpren) continue;
             if (pawn.IsAsleep()) continue;
 
             if (!Rand.Chance(baseSpawnChance) &&
@@ -64,11 +72,11 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    public void TryDespawnSpren(Pawn pawn, TrueSpren spren) {
+    public void DespawnSpren(Pawn pawn, TrueSpren spren) {
         pawnSprens.RemoveWhere(d => d.pawn.Equals(pawn) && d.spren.Equals(spren));
     }
 
-    public void DestroySprenForPawn(Verse.Pawn pawn) {
+    public void DestroySprenForPawn(Pawn pawn) {
         for (int i = pawnSprens.Count - 1; i >= 0; i--) {
             if (!pawnSprens[i].pawn.Equals(pawn)) continue;
 
@@ -84,7 +92,13 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         PawnKindDef? kind = PawnKindDefOf.Cosmere_Roshar_Race_UnknownTrueSpren;
 
         TrueSpren spren;
-        SprenForPawn? sprenForPawn = pawnSprens.FirstOrDefault(sp => sp.pawn.Equals(pawn));
+        SprenForPawn? sprenForPawn = null;
+        for (int i = 0; i < pawnSprens.Count; i++) {
+            if (pawnSprens[i].pawn.Equals(pawn)) {
+                sprenForPawn = pawnSprens[i];
+                break;
+            }
+        }
         if (sprenForPawn == null) {
             spren = (TrueSpren)PawnGenerator.GeneratePawn(
                 kind,
@@ -96,7 +110,8 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                 spren = spren,
             };
             pawnSprens.Add(sprenForPawn);
-        } else {
+        }
+        else {
             spren = sprenForPawn.spren;
         }
 
@@ -110,8 +125,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
             );
             spren.SetFactionDirect(pawn.Faction);
             spren.training.Train(TrainableDefOf.Obedience, pawn, true);
-            spren.playerSettings = new Pawn_PlayerSettings(spren)
-                { Master = pawn, followDrafted = true, followFieldwork = true };
+            spren.playerSettings = new Pawn_PlayerSettings(spren) { Master = pawn, followDrafted = true, followFieldwork = true };
             spren.mindState.canFleeIndividual = false;
         }
 

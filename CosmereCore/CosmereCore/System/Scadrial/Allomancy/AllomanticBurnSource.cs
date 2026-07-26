@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using Cosmere.System.Scadrial.Def;
 using Verse;
@@ -6,7 +5,7 @@ using Verse;
 namespace Cosmere.System.Scadrial.Allomancy;
 
 public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource> {
-    public AllomanticAbilityDef Def;
+    public AllomanticAbilityDef? Def;
     public float Rate;
 
     public AllomanticBurnSource() { }
@@ -22,20 +21,22 @@ public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource
     }
 
     public bool Equals(AllomanticBurnSource other) {
-        return Def.Equals(other.Def);
+        return (Def?.Equals(other.Def)) ?? (other.Def == null);
     }
 
     public override bool Equals(object obj) {
         return obj is AllomanticBurnSource other && Equals(other);
     }
 
-    public override int GetHashCode() => Def?.GetHashCode() ?? 0;
+    public override int GetHashCode() {
+        return Def?.GetHashCode() ?? 0;
+    }
 
-    public static implicit operator (AllomanticAbilityDef def, float rate)(AllomanticBurnSource source) {
+    public static implicit operator (AllomanticAbilityDef? def, float rate)(AllomanticBurnSource source) {
         return (source.Def, source.Rate);
     }
 
-    public static implicit operator AllomanticBurnSource((AllomanticAbilityDef def, float rate) tuple) {
+    public static implicit operator AllomanticBurnSource((AllomanticAbilityDef? def, float rate) tuple) {
         return new AllomanticBurnSource { Def = tuple.def, Rate = tuple.rate };
     }
 }

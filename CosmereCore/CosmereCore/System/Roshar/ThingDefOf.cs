@@ -11,10 +11,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingDefOf {
-    static ThingDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Thing_Chip;
 
@@ -71,4 +67,11 @@ public static class ThingDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Thing_LifesurgePulse;
+
+    public static ThingDef SculptureLarge;
+    public static ThingDef SculptureSmall;
+
+    static ThingDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
+    }
 }

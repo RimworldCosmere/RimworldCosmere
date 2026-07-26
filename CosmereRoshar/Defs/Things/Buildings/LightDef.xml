@@ -19,7 +19,7 @@
             <li>Cosmere_Roshar_SphereLamps</li>
         </researchPrerequisites>
         <inspectorTabs>
-            <li>Cosmere.System.Roshar.Tab.SphereTab</li>
+            <li>Cosmere.System.Roshar.Tab.ITab_Sphere</li>
         </inspectorTabs>
         <placeWorkers>
             <li>PlaceWorker_MeditationOffsetBuildingsNear</li>

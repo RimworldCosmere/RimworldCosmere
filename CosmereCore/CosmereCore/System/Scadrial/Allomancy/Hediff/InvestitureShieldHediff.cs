@@ -13,7 +13,11 @@ public class InvestitureShieldHediff : AllomanticHediff {
     private bool messageSent;
     public InvestitureShieldHediff() { }
 
-    public InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
+    public InvestitureShieldHediff(
+        HediffDef hediffDef,
+        Pawn pawn,
+        IAbility<Allomancer, IHediff<Allomancer>> ability
+    ) : base(
         hediffDef,
         pawn,
         ability
@@ -23,19 +27,21 @@ public class InvestitureShieldHediff : AllomanticHediff {
         base.TickInterval(delta);
 
         MetallicArtsMetalDef? metal = null;
-        foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in sourceAbilities) {
+        foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in SourceAbilities) {
             if (sa is AllomancyAbility allomancyAbility) {
                 metal = allomancyAbility.metal;
                 break;
             }
         }
+
         if (metal == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         for (int i = genes.Count - 1; i >= 0; i--) {
             if (Mathf.Approximately(genes[i].Value, 0f)) {
                 genes.RemoveAt(i);
-            } else if (metal == MetallicArtsMetalDefOf.Aluminum && genes[i].metal == MetallicArtsMetalDefOf.Aluminum) {
+            }
+            else if (metal == MetallicArtsMetalDefOf.Aluminum && genes[i].metal == MetallicArtsMetalDefOf.Aluminum) {
                 genes.RemoveAt(i);
             }
         }
@@ -94,6 +100,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         for (int i = 0; i < defs.Count - 1; i++) {
             names.Add(defs[i].LabelCap);
         }
+
         return string.Join(", ", names) + " and " + defs[defs.Count - 1].LabelCap;
     }
 }

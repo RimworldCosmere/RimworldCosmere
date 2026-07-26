@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+using Cosmere.Core.Need;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
+using IIdealChecker = Cosmere.System.Roshar.Def.IIdealChecker;
 using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
@@ -9,7 +10,7 @@ using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Surgebinding.IdealChecker;
 
-public abstract class AbstractIdealChecker(RadiantOrderDef def) {
+public abstract class AbstractIdealChecker(RadiantOrderDef def) : IIdealChecker {
     protected readonly RadiantOrderDef def = def;
 
     public abstract bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int nextLevel);
@@ -19,17 +20,17 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) {
     }
 
     protected float ApplyDifficulty(float threshold) {
-        RosharModSettings settings = Cosmere.Core.Mod.GetModSettings<RosharModSettings>();
+        RosharModSettings settings = Core.Mod.GetModSettings<RosharModSettings>();
         return threshold * settings.progressionDifficulty;
     }
 
-    public virtual bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+    public virtual bool ConsummateOath(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
         Pawn_NeedsTracker needs = pawn.needs;
 
         Thought_Memory oathThought = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Roshar_Thought_OathSpoken, 0);
         needs?.mood?.thoughts?.memories?.TryGainMemory(oathThought);
 
-        Core.Need.Investiture? investiture = needs?.TryGetNeed(Core.NeedDefOf.Cosmere_Investiture) as Core.Need.Investiture;
+        Investiture? investiture = needs?.TryGetNeed(Core.NeedDefOf.Cosmere_Investiture) as Investiture;
         if (investiture != null) {
             investiture.CurLevel = investiture.MaxLevel;
         }
@@ -51,7 +52,8 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) {
     }
 
     private void RemoveBondStrain(Pawn pawn) {
-        Verse.Hediff? stainedBond = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
+        Verse.Hediff? stainedBond =
+            pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
         if (stainedBond != null) {
             pawn.health!.RemoveHediff(stainedBond);
         }
@@ -65,7 +67,8 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) {
 
         List<TraitRequirement> incompatible = def.incompatibleTraits;
         for (int i = 0; i < incompatible.Count; i++) {
-            if (incompatible[i].HasTrait(pawn)) return incompatible[i].def?.label ?? incompatible[i].def?.defName ?? "unknown";
+            if (incompatible[i].HasTrait(pawn))
+                return incompatible[i].def?.label ?? incompatible[i].def?.defName ?? "unknown";
         }
 
         return null;

@@ -5,7 +5,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Dev;
 
 public static class SprenDebugCommands {
-    [DebugAction("Cosmere/Roshar", "Toggle Spren Debug Overlay", allowedGameStates = AllowedGameStates.Playing)]
+    [DebugAction("Cosmere/Roshar", "Toggle Spren Debug Overlay", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void ToggleSprenDebugOverlay() {
         SprenDebugOverlay.showOverlay = !SprenDebugOverlay.showOverlay;
 

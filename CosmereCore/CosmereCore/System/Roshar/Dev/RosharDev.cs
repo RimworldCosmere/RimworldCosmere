@@ -1,5 +1,5 @@
 using Cosmere.Core.Need;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -18,7 +18,7 @@ public static class RosharDev {
 
         if (pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Roshar_Trait_RadiantWindrunner)) return;
 
-        pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
+        pawn.genes.EnsureGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
         Messages.Message($"Made {pawn.NameFullColored} a Windrunner", pawn, MessageTypeDefOf.PositiveEvent);
         pawn.needs.TryGetNeed<Investiture>().CurLevel += 20000;
     }
@@ -30,6 +30,6 @@ public static class RosharDev {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void BondWithSpren(Pawn pawn) {
-        RadiantOrder.BondWithSpren(pawn);
+        RadiantOrderUtility.BondWithSpren(pawn);
     }
 }

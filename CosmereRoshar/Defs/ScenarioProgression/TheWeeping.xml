@@ -7,12 +7,12 @@
       <li>
         <key>rain_continues</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>5</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Rain Continues</title>
             <text>Five days of gentle, ceaseless rain. No wind. No thunder. No Stormlight. The world is quiet in a way that feels wrong. The soldiers sharpen weapons they hope they won't need. The workers build shelters against rain that never stops but never threatens. This is the Weeping - nature holding its breath.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -22,12 +22,12 @@
       <li>
         <key>shelter_found</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>9</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Shelter Established</title>
             <text>The roof holds. The walls stand. For the first time since landing, there is somewhere dry to sleep and somewhere warm to eat. Small victories matter most when the storms are absent.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -37,12 +37,12 @@
       <li>
         <key>weeping_breaks</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>15</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Weeping Breaks</title>
             <text>Thunder. Distant, but unmistakable. The Weeping is over. The highstorms return - and with them, everything that comes in a storm. Stormlight. Power. Danger. The quiet days are finished.</text>
             <letterDef>ThreatBig</letterDef>

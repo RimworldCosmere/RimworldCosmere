@@ -29,17 +29,29 @@ public static class SoulcastMaterials {
     private static List<ThingDef>? cachedStoneBlocks;
     private static List<ThingDef>? cachedStoneChunks;
 
-    public static SoulcastCategory Categorize(LocalTargetInfo target, Verse.Map map) {
+    private static readonly Dictionary<string, float> MaterialCostTable = new() {
+        ["WoodLog"] = 1f,
+        ["Steel"] = 2f,
+        ["Silver"] = 2.5f,
+        ["Gold"] = 3f,
+        ["Plasteel"] = 4f,
+        ["Uranium"] = 4f,
+        ["Jade"] = 3f,
+        ["Cloth"] = 1f,
+    };
+
+    public static SoulcastCategory Categorize(LocalTargetInfo target, Map map) {
         if (target.HasThing && target.Thing != null && !target.Thing.Destroyed) {
             Verse.Thing thing = target.Thing;
 
             if (thing is Fire) return SoulcastCategory.Fire;
-            if (thing is Verse.Pawn) return SoulcastCategory.Pawn;
+            if (thing is Pawn) return SoulcastCategory.Pawn;
             if (thing is Corpse) return SoulcastCategory.Corpse;
             if (thing.def == RimWorld.ThingDefOf.SteamGeyser) return SoulcastCategory.SteamGeyser;
             if (thing.def.mineable) return SoulcastCategory.Mineable;
             if (thing.def.plant != null) return SoulcastCategory.Plant;
-            if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing)) return SoulcastCategory.StuffedThing;
+            if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing))
+                return SoulcastCategory.StuffedThing;
             return SoulcastCategory.DroppedItem;
         }
 
@@ -52,33 +64,32 @@ public static class SoulcastMaterials {
         return true;
     }
 
-    public static List<ThingDef> GetStoneBlocks() {
-        if (cachedStoneBlocks != null) return cachedStoneBlocks;
-        cachedStoneBlocks = [
-            DefDatabase<ThingDef>.GetNamed("BlocksGranite"),
-            DefDatabase<ThingDef>.GetNamed("BlocksMarble"),
-            DefDatabase<ThingDef>.GetNamed("BlocksLimestone"),
-            DefDatabase<ThingDef>.GetNamed("BlocksSandstone"),
-            DefDatabase<ThingDef>.GetNamed("BlocksSlate"),
-        ];
-        return cachedStoneBlocks;
-    }
+    public static List<ThingDef> StoneBlocks => cachedStoneBlocks ??= [
+        DefDatabase<ThingDef>.GetNamed("BlocksGranite"),
+        DefDatabase<ThingDef>.GetNamed("BlocksMarble"),
+        DefDatabase<ThingDef>.GetNamed("BlocksLimestone"),
+        DefDatabase<ThingDef>.GetNamed("BlocksSandstone"),
+        DefDatabase<ThingDef>.GetNamed("BlocksSlate"),
+    ];
 
-    public static List<ThingDef> GetStoneChunks() {
-        if (cachedStoneChunks != null) return cachedStoneChunks;
-        cachedStoneChunks = [];
-        foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading) {
-            if (def.IsWithinCategory(ThingCategoryDefOf.StoneChunks) || def.IsWithinCategory(ThingCategoryDefOf.Chunks)) {
-                cachedStoneChunks.Add(def);
+    public static List<ThingDef> StoneChunks {
+        get {
+            if (cachedStoneChunks != null) return cachedStoneChunks;
+            cachedStoneChunks = [];
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading) {
+                if (def.IsWithinCategory(ThingCategoryDefOf.StoneChunks) ||
+                    def.IsWithinCategory(ThingCategoryDefOf.Chunks)) {
+                    cachedStoneChunks.Add(def);
+                }
             }
+            return cachedStoneChunks;
         }
-        return cachedStoneChunks;
     }
 
     public static List<ThingDef> GetAvailableDropOutputs(int ideal) {
         List<ThingDef> materials = [
             RimWorld.ThingDefOf.WoodLog,
-            ..GetStoneBlocks(),
+            ..StoneBlocks,
         ];
 
         if (ideal >= 2) {
@@ -103,7 +114,7 @@ public static class SoulcastMaterials {
     }
 
     public static List<ThingDef> GetAvailableStuffs(int ideal) {
-        List<ThingDef> stuffs = [..GetStoneBlocks()];
+        List<ThingDef> stuffs = [.. StoneBlocks];
 
         if (ideal >= 2) {
             stuffs.Add(RimWorld.ThingDefOf.Steel);
@@ -128,6 +139,7 @@ public static class SoulcastMaterials {
             string stoneName = chunkName.Substring(5);
             return DefDatabase<ThingDef>.GetNamedSilentFail("Blocks" + stoneName);
         }
+
         return null;
     }
 
@@ -153,6 +165,7 @@ public static class SoulcastMaterials {
                 mineables.Add(def);
             }
         }
+
         return mineables;
     }
 
@@ -171,18 +184,10 @@ public static class SoulcastMaterials {
     }
 
     public static float GetMaterialCost(ThingDef mat) {
-        string defName = mat.defName;
-        if (defName == "WoodLog") return 1f;
-        if (defName.StartsWith("Blocks")) return 1f;
-        if (defName.StartsWith("Chunk")) return 0.5f;
-        if (defName == "Steel") return 2f;
-        if (defName == "Silver") return 2.5f;
-        if (defName == "Gold") return 3f;
-        if (defName == "Plasteel") return 4f;
-        if (defName == "Uranium") return 4f;
-        if (defName == "Jade") return 3f;
-        if (defName == "Cloth") return 1f;
-        if (defName.StartsWith("Raw")) return 1.5f;
+        if (MaterialCostTable.TryGetValue(mat.defName, out float cost)) return cost;
+        if (mat.defName.StartsWith("Blocks")) return 1f;
+        if (mat.defName.StartsWith("Chunk")) return 0.5f;
+        if (mat.defName.StartsWith("Raw")) return 1.5f;
         return 2f;
     }
 

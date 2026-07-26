@@ -16,7 +16,7 @@ public static class ThingExtension {
     }
 
     public static float GetMetalMass(this Verse.Thing thing) {
-        return MetalDetector.GetMetal(thing);
+        return MetalDetector.GetMetalMass(thing);
     }
 
     public static bool CanBeEquipped(this Verse.Thing thing) {
@@ -44,18 +44,13 @@ public static class ThingExtension {
     }
 
     public static int GetMaxAmountToPickupForPawn(this Verse.Thing thing, Pawn pawn, int desired) {
-        try {
-            int max = thing.def.orderedTakeGroup?.max ?? thing.stackCount;
-            int maxRemaining = max - pawn.inventory?.Count(thing.def) ?? 0;
-            int val1 = Math.Min(desired, maxRemaining);
+        int max = thing.def.orderedTakeGroup?.max ?? thing.stackCount;
+        int maxRemaining = max - (pawn.inventory?.Count(thing.def) ?? 0);
+        int val1 = Math.Min(desired, maxRemaining);
 
-            return thing is { Spawned: true, Map: not null }
-                ? Math.Min(val1, thing.Map.reservationManager.CanReserveStack(pawn, thing, 10))
-                : val1;
-        } catch (Exception ex) {
-            Logger.Verbose($"GetMaxAmountToPickupForPawn: {ex.Message}");
-            return desired;
-        }
+        return thing is { Spawned: true, Map: not null }
+            ? Math.Min(val1, thing.Map.reservationManager.CanReserveStack(pawn, thing, 10))
+            : val1;
     }
 
     public static bool IsBehindSolidThing(
@@ -68,7 +63,7 @@ public static class ThingExtension {
             IntVec3 nextPos = thing.Position + direction * i;
             if (!nextPos.InBounds(thing.Map)) continue;
             List<Verse.Thing>? things = nextPos.GetThingList(thing.Map);
-            if (things.Any(x => x.IsSolid() && (predicate == null || predicate.Invoke(thing)))) {
+            if (things.Any(x => x.IsSolid() && (predicate == null || predicate.Invoke(x)))) {
                 return true;
             }
         }

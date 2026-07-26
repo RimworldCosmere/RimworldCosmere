@@ -9,15 +9,15 @@ public class RosharModSettings : CosmereModSettings {
 
     // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
     private const float baseTime = hour * 8;
+    public bool enableHighstormPushing = true;
 
     public bool enableHighstorms = true;
-    public bool enableHighstormPushing = true;
-    public int highstormMinIntervalDays = 5;
-    public int highstormMaxIntervalDays = 7;
-    public bool enableWeeping = true;
-    public int highstormDurationTicks = 20000;
 
     public bool enablePawnGlow;
+    public bool enableWeeping = true;
+    public int highstormDurationTicks = 20000;
+    public int highstormMaxIntervalDays = 7;
+    public int highstormMinIntervalDays = 5;
     public float lesserSprenMaxZoomSpawn = 35f;
 
     public bool lesserSprenSpawn = true;
@@ -25,14 +25,14 @@ public class RosharModSettings : CosmereModSettings {
     // Defaulting to every 2 hours
     public float nahelSprenSpawnAverageIntervalTicks = baseTime;
 
-    public float progressionDifficulty = 1f;
-    public bool showIdealRequirements = true;
-
     // Should be at MOST every 8 hours
     public float nahelSprenSpawnMaxIntervalTicks = baseTime * 8;
 
     // Should at LEAST be every 30 minutes
     public float nahelSprenSpawnMinIntervalTicks = baseTime / 2;
+
+    public float progressionDifficulty = 1f;
+    public bool showIdealRequirements = true;
 
     public override string Name => "Roshar";
 

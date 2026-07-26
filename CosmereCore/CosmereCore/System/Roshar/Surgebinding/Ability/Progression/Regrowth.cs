@@ -1,4 +1,4 @@
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using Verse;
 
@@ -9,8 +9,8 @@ public class Regrowth : SurgebindingAbility {
     public Regrowth(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
@@ -18,7 +18,7 @@ public class Regrowth : SurgebindingAbility {
         HediffDef? hediffDef = def.hediff;
         if (hediffDef == null) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
         SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffDef);
 
         return true;

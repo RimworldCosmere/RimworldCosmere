@@ -36,38 +36,6 @@ public static class StatUtility {
         );
     }
 
-    public static bool TryGetPawnStat(
-        StatRequest req,
-        StatDef statDef,
-        Func<Pawn, float> pawnStatGetter,
-        Func<StatDef, ThingDef, float> pawnDefStatGetter,
-        out float stat
-    ) {
-        return TryGetPawnStatCore(
-            req,
-            (_, p) => pawnStatGetter(p),
-            (s, d) => pawnDefStatGetter(s!, d),
-            statDef,
-            out stat
-        );
-    }
-
-    public static bool TryGetPawnStat(
-        StatRequest req,
-        StatDef statDef,
-        Func<StatDef, Pawn, float> pawnStatGetter,
-        Func<ThingDef, float> pawnDefStatGetter,
-        out float stat
-    ) {
-        return TryGetPawnStatCore(
-            req,
-            (s, p) => pawnStatGetter(s!, p),
-            (_, d) => pawnDefStatGetter(d),
-            statDef,
-            out stat
-        );
-    }
-
     private static bool TryGetPawnStatCore(
         StatRequest req,
         Func<StatDef?, Pawn, float> pawnStatGetter,
@@ -85,7 +53,8 @@ public static class StatUtility {
                 stat = pawnStatGetter(statDef, corpse.InnerPawn);
                 return true;
             }
-        } else if (req.Def is ThingDef thingDef) {
+        }
+        else if (req.Def is ThingDef thingDef) {
             if (thingDef.category == ThingCategory.Pawn) {
                 stat = pawnDefStatGetter(statDef, thingDef);
                 return true;

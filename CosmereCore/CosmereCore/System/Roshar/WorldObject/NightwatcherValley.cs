@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using Cosmere.Core.Comp.Game;
-using RimWorld;
+using Cosmere.Core.Util;
+using Cosmere.System.Roshar.Nightwatcher;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
@@ -11,8 +9,7 @@ namespace Cosmere.System.Roshar.WorldObject;
 [StaticConstructorOnStartup]
 public class NightwatcherValley : RimWorld.Planet.WorldObject {
     private static readonly Texture2D Icon =
-        ContentFinder<Texture2D>.Get("UI/Icons/Abilities/CultivationsPerpendicularity", false)
-        ?? BaseContent.BadTex;
+        ContentFinder<Texture2D>.Get("UI/Icons/Abilities/CultivationsPerpendicularity", false) ?? BaseContent.BadTex;
 
     private HashSet<int> notifiedCaravans = [];
 
@@ -35,10 +32,9 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
     }
 
     private void TriggerEncounterForCaravan(Caravan caravan) {
-        Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards == null || !shards.IsEnabled("Cultivation")) return;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
 
-        List<Verse.Pawn> pawns = caravan.PawnsListForReading;
+        List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
             if (!NightwatcherSystem.IsEligible(pawns[i])) continue;
             NightwatcherSystem.InitiateSeek(pawns[i]);
@@ -50,18 +46,18 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
     }
 
     public override IEnumerable<Verse.Gizmo> GetCaravanGizmos(Caravan caravan) {
-        foreach (Verse.Gizmo g in base.GetCaravanGizmos(caravan))
+        foreach (Verse.Gizmo g in base.GetCaravanGizmos(caravan)) {
             yield return g;
+        }
 
-        Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards == null || !shards.IsEnabled("Cultivation")) yield break;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) yield break;
 
-        List<Verse.Pawn> pawns = caravan.PawnsListForReading;
+        List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
-            Verse.Pawn pawn = pawns[i];
+            Pawn pawn = pawns[i];
             if (!NightwatcherSystem.IsEligible(pawn)) continue;
 
-            Verse.Pawn captured = pawn;
+            Pawn captured = pawn;
             yield return new Command_Action {
                 defaultLabel = "Cosmere_Roshar_SeekNightwatcher_Label".Translate() + ": " + pawn.LabelShort,
                 defaultDesc = "Cosmere_Roshar_SeekNightwatcher_Desc".Translate(pawn.Named("PAWN")),

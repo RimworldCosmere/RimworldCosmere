@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
@@ -22,11 +21,17 @@ public class Elsecaller(RadiantOrderDef def) : AbstractIdealChecker(def) {
         }
 
         if (nextLevel == 3) {
-            return research >= ApplyDifficulty(6) && CountSkillsAbove(pawn, 10) >= 4 && challenges >= 2 && GetMaxSkillLevel(pawn) >= 15;
+            return research >= ApplyDifficulty(6) &&
+                   CountSkillsAbove(pawn, 10) >= 4 &&
+                   challenges >= 2 &&
+                   GetMaxSkillLevel(pawn) >= 15;
         }
 
         if (nextLevel == 4) {
-            return research >= ApplyDifficulty(10) && CountSkillsAbove(pawn, 12) >= 5 && challenges >= ApplyDifficulty(3) && GetMaxSkillLevel(pawn) >= 18;
+            return research >= ApplyDifficulty(10) &&
+                   CountSkillsAbove(pawn, 12) >= 5 &&
+                   challenges >= ApplyDifficulty(3) &&
+                   GetMaxSkillLevel(pawn) >= 18;
         }
 
         return false;
@@ -39,6 +44,7 @@ public class Elsecaller(RadiantOrderDef def) : AbstractIdealChecker(def) {
             if (skills[i].TotallyDisabled) continue;
             if (skills[i].Level >= minLevel) count++;
         }
+
         return count;
     }
 
@@ -49,6 +55,7 @@ public class Elsecaller(RadiantOrderDef def) : AbstractIdealChecker(def) {
             if (skills[i].TotallyDisabled) continue;
             if (skills[i].Level > max) max = skills[i].Level;
         }
+
         return max;
     }
 
@@ -58,12 +65,13 @@ public class Elsecaller(RadiantOrderDef def) : AbstractIdealChecker(def) {
             1 => "1+ research, 2+ skills at 5+ | Skill 4+",
             2 => $"{ApplyDifficulty(3):0}+ research, 3+ skills at 8+, 1+ challenge | Skill 8+",
             3 => $"{ApplyDifficulty(6):0}+ research, 4+ skills at 10+, 2+ challenges, max skill 15+ | Skill 14+",
-            4 => $"{ApplyDifficulty(10):0}+ research, 5+ skills at 12+, {ApplyDifficulty(3):0}+ challenges, max skill 18+ | Skill 18+",
+            4 =>
+                $"{ApplyDifficulty(10):0}+ research, 5+ skills at 12+, {ApplyDifficulty(3):0}+ challenges, max skill 18+ | Skill 18+",
             _ => null,
         };
     }
 
-    public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
-        return base.Satisfy(pawn, surgebinder, nextLevel);
+    public override bool ConsummateOath(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+        return base.ConsummateOath(pawn, surgebinder, nextLevel);
     }
 }

@@ -19,3 +19,4 @@
 
 # Generated files
 *.generated.* linguist-generated
+*.meta linguist-generated

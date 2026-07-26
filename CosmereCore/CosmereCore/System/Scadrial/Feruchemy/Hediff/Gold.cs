@@ -5,7 +5,7 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Gold : HediffWithComps {
-    private bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
+    private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
     private Feruchemist? gold => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
 
     public override void PostMake() {
@@ -28,7 +28,7 @@ public class Gold : HediffWithComps {
         for (int i = 0; i < hediffs.Count; i++) {
             Verse.Hediff h = hediffs[i];
             if (!h.CanBeHealedByInvestiture()) continue;
-            if (h.TryHealWithInvestiture(Severity)) return;
+            if (h.TryHealWithInvestiture(CompoundedTap.Scale(def, Severity))) return;
         }
     }
 }

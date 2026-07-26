@@ -6,6 +6,10 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
     * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
     * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+* [Gotta Go Fast](https://steamcommunity.com/sharedfiles/filedetails/?id=3712112476)
+    * Drastically improves the phatfinding speed of pawns that are faster than normal, and/or pawns that can fly.
+* [BetterWeight](https://steamcommunity.com/sharedfiles/filedetails/?id=2221387317)
+    * Gives buildings realistic weights based on their material costs. Makes Steel Pushing and Iron Pulling on Scadrial feel right - heavy steel walls resist a Coinshot's Push, light wooden furniture flies across the room.
 
 ​
 

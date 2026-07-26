@@ -10,13 +10,13 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class XenotypeDefOf {
-    static XenotypeDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(XenotypeDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static XenotypeDef Cosmere_Roshar_Xenotype_Lighteyes;
 
     [MayRequire("Cosmere.Roshar")]
     public static XenotypeDef Cosmere_Roshar_Xenotype_Darkeyes;
+
+    static XenotypeDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(XenotypeDefOf));
+    }
 }

@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Surgebinding;
 using HarmonyLib;
 using RimWorld;
@@ -11,7 +12,7 @@ public static class SurgeryViolationPatch {
         if (!__result) return;
         if (surgeon == null || patient == null) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(surgeon, "Truthwatcher")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(surgeon, RadiantOrderDefOf.Truthwatcher)) {
             ViolationUtility.ApplyViolation(surgeon, 0.3f, "botching a surgery");
         }
     }

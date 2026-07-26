@@ -12,10 +12,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class GeneDefOf {
-    static GeneDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(GeneDefOf));
-    }
-
     // Genes for custom races
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_NobleHeritage;
@@ -69,6 +65,10 @@ public static partial class GeneDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_ScadrianHeritage;
+
+    static GeneDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(GeneDefOf));
+    }
 
     public static GeneDef GetMistingGeneForMetal(MetalDef def) {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Misting" + def.defName, false);

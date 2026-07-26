@@ -1,5 +1,4 @@
 using Cosmere.System.Roshar.Gene;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.GameCondition;
@@ -40,6 +39,7 @@ public class SuppressionField : RimWorld.GameCondition {
         for (int i = 0; i < conditions.Count; i++) {
             if (conditions[i] is SuppressionField field) return field.costMultiplier;
         }
+
         return 1f;
     }
 
@@ -48,6 +48,7 @@ public class SuppressionField : RimWorld.GameCondition {
         for (int i = 0; i < conditions.Count; i++) {
             if (conditions[i] is SuppressionField) return true;
         }
+
         return false;
     }
 }

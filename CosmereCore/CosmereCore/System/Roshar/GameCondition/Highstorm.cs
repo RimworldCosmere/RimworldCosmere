@@ -2,7 +2,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Map;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -15,6 +15,8 @@ namespace Cosmere.System.Roshar.GameCondition;
 // TODO: Encourage pawns to go inside? Probably a workgiver?
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
+
+    private const float ShelterThreshold = 0.4f;
 
     private static readonly SimpleCurve stormIntensityCurve = [
         new CurvePoint(0f, 0f),
@@ -38,18 +40,19 @@ public class Highstorm : RimWorld.GameCondition {
 
     private static readonly float TotalOffsetWeight = 13f;
 
-    private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
-
-    private const float ShelterThreshold = 0.4f;
-
-    private readonly int tickInterval = 30;
-    private float scaledCurve;
+    private static ResearchProjectDef? shieldingResearchCache;
+    private static bool shieldingResearchLookedUp;
     private readonly List<Verse.Thing> exposedThings = [];
 
-    public float CurrentIntensity => scaledCurve;
-    public bool IsDangerousPhase => scaledCurve >= ShelterThreshold;
+    private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
 
-    private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * scaledCurve;
+    private readonly int tickInterval = 30;
+
+    public float CurrentIntensity { get; private set; }
+
+    public bool IsDangerousPhase => CurrentIntensity >= ShelterThreshold;
+
+    private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * CurrentIntensity;
 
     private static IntVec3 GetRandomStormOffset(bool timesTwo) {
         float choice = Rand.Range(0f, TotalOffsetWeight);
@@ -75,7 +78,7 @@ public class Highstorm : RimWorld.GameCondition {
     }
 
     public override float MinWindSpeed() {
-        return scaledCurve;
+        return CurrentIntensity;
     }
 
     public override void GameConditionTick() {
@@ -103,17 +106,17 @@ public class Highstorm : RimWorld.GameCondition {
             seasonalMultiplier = scheduler.SeasonalIntensity;
         }
 
-        scaledCurve = baseIntensity * seasonalMultiplier;
+        CurrentIntensity = baseIntensity * seasonalMultiplier;
 
         if (SingleMap == null) {
             Logger.Error("SingleMap is null, cannot process storm!");
             return;
         }
 
-        ProcessItemsInHighstorm();
+        ScatterAndDamageExposedItems();
     }
 
-    private void ProcessItemsInHighstorm() {
+    private void ScatterAndDamageExposedItems() {
         List<Verse.Thing> allThings = SingleMap.listerThings.AllThings;
         exposedThings.Clear();
 
@@ -126,7 +129,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         for (int i = 0; i < exposedThings.Count; i++) {
             Verse.Thing thing = exposedThings[i];
-            if (!Rand.Chance(scaledCurve)) continue;
+            if (!Rand.Chance(CurrentIntensity)) continue;
             if (thing?.Map == null) continue;
 
             MoveItem(thing);
@@ -206,7 +209,8 @@ public class Highstorm : RimWorld.GameCondition {
                     return false;
                 }
             }
-        } else {
+        }
+        else {
             Pawn pushed = (Pawn)thing;
             pushed.Position = newPos;
             pushed.Notify_Teleported(false);
@@ -230,15 +234,13 @@ public class Highstorm : RimWorld.GameCondition {
         return true;
     }
 
-    private static ResearchProjectDef? shieldingResearchCache;
-    private static bool shieldingResearchLookedUp;
-
     private static float GetShieldingMultiplier() {
         if (!shieldingResearchLookedUp) {
             shieldingResearchCache =
                 DefDatabase<ResearchProjectDef>.GetNamedSilentFail("Cosmere_Roshar_HighstormShielding");
             shieldingResearchLookedUp = true;
         }
+
         if (shieldingResearchCache != null && shieldingResearchCache.IsFinished) return 0.15f;
         return 1f;
     }
@@ -270,58 +272,55 @@ public class Highstorm : RimWorld.GameCondition {
             StuffCategoryDef cat = categories[i];
             if (cat == StuffCategoryDefOf.Woody) return 1f;
             if (cat == StuffCategoryDefOf.Stony) return 0.04f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_Gems") return 0.20f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_RawGems") return 0.20f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_CutGems") return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_Gems) return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_RawGems) return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_CutGems) return 0.20f;
         }
 
         return 0.3f;
     }
 
     private void DamageItem(Verse.Thing thing) {
-
         Map? map = thing.Map;
         if (map != null && thing.Position.Fogged(map)) return;
-        if (thing is RimWorld.Mineable) return;
+        if (thing is Mineable) return;
         DamageInfo damage = new DamageInfo(
             DamageDefOf.TornadoScratch,
-            Rand.Range(3f, 10f) * scaledCurve,
+            Rand.Range(3f, 10f) * CurrentIntensity,
             instigator: highstorm,
             spawnFilth: false
         );
         switch (thing) {
             case Building building: {
-                if (map == null) break;
-                if (IsHighstormImmuneBuilding(building)) break;
-                if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
-                if (building.Position.Roofed(map)) break;
+                    if (map == null) break;
+                    if (IsHighstormImmuneBuilding(building)) break;
+                    if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
+                    if (building.Position.Roofed(map)) break;
 
-                float materialMultiplier = GetBuildingDamageMultiplier(building);
-                if (materialMultiplier <= 0f) break;
+                    float materialMultiplier = GetBuildingDamageMultiplier(building);
+                    if (materialMultiplier <= 0f) break;
 
-                float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
-                damage.SetAmount(damage.Amount * totalMultiplier);
-                building.TakeDamage(damage);
-                if (building.Destroyed) {
-                    StormShelterManager.RebuildShelterCache(map);
+                    float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
+                    damage.SetAmount(damage.Amount * totalMultiplier);
+                    building.TakeDamage(damage);
+                    if (building.Destroyed) {
+                        StormShelterManager.RebuildShelterCache(map);
+                    }
+
+                    break;
                 }
-
-                break;
-            }
             case Pawn pawn: {
-                if (pawn.Dead) break;
-                if (StormlightUtilities.IsHighstormImmune(pawn)) break;
-                Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-                if (surgebinder != null) {
-                    damage.SetAmount(damage.Amount * 0.5f / (surgebinder.currentIdeal + 1));
+                    if (pawn.Dead) break;
+                    if (StormlightUtility.IsHighstormImmune(pawn)) break;
+                    Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+                    if (surgebinder != null) {
+                        damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
+                    }
+
+                    pawn.TakeDamage(damage);
+
+                    break;
                 }
-
-                pawn.TakeDamage(damage);
-
-                break;
-            }
-            default:
-                break;
         }
     }
 }

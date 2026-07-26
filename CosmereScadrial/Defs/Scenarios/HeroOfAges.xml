@@ -11,7 +11,7 @@
         <factionDef>Cosmere_Scadrial_Faction_NewEmpire</factionDef>
       </playerFaction>
       <parts>
-        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>
           <pawns>
             <li>
@@ -161,7 +161,7 @@
           <count>300</count>
         </li>
 
-        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
           <def>Cosmere_ScenPart_ScenarioProgression</def>
           <progression>Cosmere_Scadrial_Progression_HeroOfAges</progression>
         </li>

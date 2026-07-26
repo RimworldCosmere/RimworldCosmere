@@ -87,6 +87,8 @@ internal class Mask(MaskType type, string path) {
     /// </summary>
     public Texture2D? mask {
         get {
+            if (loaded) return maskInt;
+
             maskInt = ContentFinder<Texture2D>.Get($"{path}_m{type.ToString().ToLower()}", false);
             if (type == MaskType.Color && maskInt == null) {
                 maskInt = ContentFinder<Texture2D>.Get($"{path}_m", false);
@@ -167,8 +169,6 @@ public class CutoutAdvanced : ThingComp {
 
         SetShaderKeywords(material);
 
-        //block.SetFloat(CutoutAdvancedShaderProperties.BlendMode, (byte)props.blendMode);
-        //block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
         block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
 
         material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
@@ -203,7 +203,6 @@ public class CutoutAdvanced : ThingComp {
         }
 
 
-        // Set pre-computed values for performance optimization
         block.SetVector(
             CutoutAdvancedShaderProperties.HighlightParams,
             new Vector4(
@@ -249,19 +248,22 @@ public class CutoutAdvanced : ThingComp {
         // Set mask feature keywords
         if (props.useWear) {
             material.EnableKeyword("USE_WEAR_MASK");
-        } else {
+        }
+        else {
             material.DisableKeyword("USE_WEAR_MASK");
         }
 
         if (props.useGlow) {
             material.EnableKeyword("USE_GLOW_MASK");
-        } else {
+        }
+        else {
             material.DisableKeyword("USE_GLOW_MASK");
         }
 
         if (props.useSpecial) {
             material.EnableKeyword("USE_SPECIAL_MASK");
-        } else {
+        }
+        else {
             material.DisableKeyword("USE_SPECIAL_MASK");
         }
     }

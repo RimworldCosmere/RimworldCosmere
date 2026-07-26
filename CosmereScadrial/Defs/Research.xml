@@ -40,6 +40,20 @@
 		</prerequisites>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Compounding</defName>
+		<label>compounding</label>
+		<tab>Cosmere</tab>
+		<description>Burn a metalmind's own metal to draw out what was stored within it, magnified far beyond what was put in. Compounding demands both arts at once, and a metalmind carried inside the body where Allomancy can reach it.</description>
+		<baseCost>1400</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_Feruchemy</li>
+			<li>Cosmere_Scadrial_Allomancy</li>
+		</prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
 		<defName>Cosmere_Scadrial_Hemalurgy</defName>
 		<label>hemalurgy</label>
 		<tab>Cosmere</tab>

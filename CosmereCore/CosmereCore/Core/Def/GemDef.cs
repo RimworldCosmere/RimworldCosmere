@@ -4,8 +4,8 @@ using Verse;
 namespace Cosmere.Core.Def;
 
 public class GemDef : Verse.Def {
-    public ThingDef? cachedItem;
-    public ThingDef? cachedMineableItem;
+    private ThingDef? cachedItem;
+    private ThingDef? cachedMineableItem;
     public Color color;
     public Color? colorTwo;
     public Color? glowColor;

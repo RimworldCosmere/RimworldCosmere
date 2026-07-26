@@ -7,12 +7,12 @@
       <li>
         <key>everstorm_approaches</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>3</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Everstorm Approaches</title>
             <text>The sky darkens from the wrong direction. The Everstorm comes from the west - against nature, against everything Roshar understands. Red lightning splits the clouds. The second storm has arrived.</text>
             <letterDef>ThreatBig</letterDef>
@@ -22,12 +22,12 @@
       <li>
         <key>fused_scouts</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Fused Scouts</title>
             <text>Figures in the sky. Not windrunners - something older, something wrong. The Fused have found you. Their first scouts circle overhead, ancient eyes measuring your defenses.</text>
             <letterDef>NegativeEvent</letterDef>
@@ -37,12 +37,12 @@
       <li>
         <key>new_radiants</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>20</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>New Radiants</title>
             <text>A traveler arrives at the camp's edge, eyes wide, Stormlight leaking from their skin. They bonded a spren in the last highstorm. They don't understand what they are yet. But you do.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -52,15 +52,15 @@
       <li>
         <key>the_assault</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>40</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>2</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Assault</title>
             <text>They come in force now. The Fused descend from the Everstorm in numbers you haven't seen before. This is not a probe. This is war.</text>
             <letterDef>ThreatBig</letterDef>
@@ -70,15 +70,15 @@
       <li>
         <key>unity</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>60</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>4</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Unity</title>
             <text>Reinforcements. A column of soldiers and Radiants crests the horizon, banners snapping in the wind. You are not alone. The Knights Radiant remember what it means to stand together.</text>
             <letterDef>PositiveEvent</letterDef>

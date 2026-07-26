@@ -27,9 +27,7 @@ public class DisappearsScaled : HediffComp {
     public override void CompPostMake() {
         base.CompPostMake();
         initialSeverity = parent.Severity;
-        totalTicks = ticksLeft = (int)(props.baseTicks * initialSeverity); // Scale duration
-
-        // Set the start tick to the current tick
+        totalTicks = ticksLeft = (int)(props.baseTicks * initialSeverity);
         startTick = CurrentTick;
     }
 
@@ -47,7 +45,6 @@ public class DisappearsScaled : HediffComp {
 
         if (!props.scaleSeverity) return;
 
-        // Linear severity reduction based on initial severity and total duration
         float targetSeverity = props.minSeverity;
         float decayAmount = (initialSeverity - targetSeverity) / totalTicks;
         severityAdjustment -= decayAmount;

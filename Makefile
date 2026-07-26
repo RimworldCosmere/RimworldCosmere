@@ -8,6 +8,11 @@
 
 .PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status
 
+# Use bash with xpg_echo so `echo` interprets \033 escape sequences
+# (default /bin/sh on many distros is dash, which prints them literally)
+SHELL := /bin/bash
+.SHELLFLAGS := -O xpg_echo -c
+
 # Default target
 .DEFAULT_GOAL := help
 
@@ -163,16 +168,16 @@ test: ## Run all tests
 
 ##@ Project Management
 
-install-deps: ## Install Node.js dependencies (legacy .scripts)
+install-deps: ## Install Node.js dependencies
 	@echo "$(BLUE)Installing Node.js dependencies...$(NC)"
-	@cd .scripts && npm install
+	@npm install
 
 check-deps: ## Check for outdated dependencies
 	@echo "$(BLUE)Checking .NET dependencies...$(NC)"
 	@dotnet list Cosmere.sln package --outdated
 	@dotnet list Cosmere.Tools.sln package --outdated
 	@echo "$(BLUE)Checking Node.js dependencies...$(NC)"
-	@cd .scripts && npm outdated || true
+	@npm outdated || true
 
 status: ## Show git status and solution info
 	@echo "$(BLUE)Git Status:$(NC)"
@@ -231,17 +236,17 @@ rebuild: clean-all restore generate build-main build-tools ## Full rebuild from 
 update-deps: ## Update all dependencies
 	@echo "$(BLUE)Updating dependencies...$(NC)"
 	@dotnet add Cosmere.sln package --help >/dev/null 2>&1 || echo "$(YELLOW)Run manually: dotnet add package <PackageName>$(NC)"
-	@cd .scripts && npm update
+	@npm update
 
 ##@ Legacy Support
 
 legacy-generate: ## Use legacy Node.js generator
 	@echo "$(YELLOW)Using legacy Node.js generator...$(NC)"
-	@cd .scripts && npm start -- -f -v
+	@npm start -- -f -v
 
 legacy-clean: ## Clean using legacy method
 	@echo "$(YELLOW)Using legacy Node.js clean...$(NC)"
-	@cd .scripts && npm start -- -d -v
+	@npm start -- -d -v
 
 ##@ Information
 
@@ -256,7 +261,6 @@ info: ## Show project information
 	@echo ""
 	@echo "$(GREEN)Tools:$(NC)"
 	@echo "  Tools CLI            - Code generation and asset building"
-	@echo "  Legacy .scripts      - Node.js generators (deprecated)"
 	@echo ""
 	@echo "$(GREEN)Common Workflows:$(NC)"
 	@echo "  Development:         make dev"

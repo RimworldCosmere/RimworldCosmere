@@ -11,14 +11,16 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
     private const int MinCooldownTicks = 3 * GenDate.TicksPerDay;
     private const int MinExpeditionPawns = 3;
     private const int MaxExpeditionPawns = 6;
+    private bool expeditionActive;
 
     private List<Pawn> expeditionPawns = [];
     private int expeditionReturnTick = -1;
     private int lastHuntTick = -1;
-    private bool expeditionActive;
 
     public bool ExpeditionActive => expeditionActive;
-    public bool CanStartHunt => !expeditionActive && (lastHuntTick < 0 || Find.TickManager.TicksGame - lastHuntTick >= MinCooldownTicks);
+
+    public bool CanStartHunt => !expeditionActive &&
+                                (lastHuntTick < 0 || Find.TickManager.TicksGame - lastHuntTick >= MinCooldownTicks);
 
     public override void MapComponentTick() {
         if (!expeditionActive) return;
@@ -44,7 +46,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
         if (expeditionActive) return false;
         if (pawns.Count < MinExpeditionPawns || pawns.Count > MaxExpeditionPawns) return false;
 
-        expeditionPawns = [..pawns];
+        expeditionPawns = [.. pawns];
         expeditionActive = true;
         lastHuntTick = Find.TickManager.TicksGame;
         expeditionReturnTick = Find.TickManager.TicksGame + Rand.Range(1, 3) * GenDate.TicksPerDay;
@@ -54,7 +56,9 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             expeditionPawns[i].jobs?.StopAll();
         }
 
-        Logger.Verbose($"[GemheartHunt] Expedition started with {pawns.Count} pawns, returns tick {expeditionReturnTick}");
+        Logger.Verbose(
+            $"[GemheartHunt] Expedition started with {pawns.Count} pawns, returns tick {expeditionReturnTick}"
+        );
         return true;
     }
 
@@ -81,13 +85,17 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
 
         if (ratio >= 1.5f) {
             ResolveVictory(survivors);
-        } else if (ratio >= 1.0f) {
+        }
+        else if (ratio >= 1.0f) {
             ResolveHardWon(survivors);
-        } else if (ratio >= 0.6f) {
+        }
+        else if (ratio >= 0.6f) {
             ResolvePyrrhic(survivors);
-        } else if (ratio >= 0.3f) {
+        }
+        else if (ratio >= 0.3f) {
             ResolveFailure(survivors);
-        } else {
+        }
+        else {
             ResolveDisaster(survivors);
         }
 
@@ -105,12 +113,12 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             if (pawn.genes != null) {
                 Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder is { Active: true }) {
-                    power += surgebinder.currentIdealDisplay * 25f;
+                    power += surgebinder.CurrentIdealDisplay * 25f;
                 }
             }
 
             if (pawn.equipment?.Primary != null) {
-                power += pawn.equipment.Primary.GetStatValue(RimWorld.StatDefOf.MeleeWeapon_AverageDPS) * 2f;
+                power += pawn.equipment.Primary.GetStatValue(StatDefOf.MeleeWeapon_AverageDPS) * 2f;
             }
         }
 

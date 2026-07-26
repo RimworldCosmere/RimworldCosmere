@@ -1,15 +1,12 @@
-using Cosmere.System.Roshar.Comp.Map;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Thing;
 
 public class Graphic_LinkedStormlightOverlay : Graphic_Linked {
-    public Graphic_LinkedStormlightOverlay() {
-    }
+    public Graphic_LinkedStormlightOverlay() { }
 
-    public Graphic_LinkedStormlightOverlay(Graphic subGraphic) : base(subGraphic) {
-    }
+    public Graphic_LinkedStormlightOverlay(Graphic subGraphic) : base(subGraphic) { }
 
     public override bool ShouldLinkWith(IntVec3 c, Verse.Thing parent) {
         if (!c.InBounds(parent.Map)) {
@@ -29,7 +26,13 @@ public class Graphic_LinkedStormlightOverlay : Graphic_Linked {
     public override void Print(SectionLayer layer, Verse.Thing parent, float extraRotation) {
         foreach (IntVec3 item in parent.OccupiedRect()) {
             Vector3 center = item.ToVector3ShiftedWithAltitude(AltitudeLayer.MapDataOverlay);
-            Printer_Plane.PrintPlane(layer, center, new Vector2(1f, 1f), LinkedDrawMatFrom(parent, item), extraRotation);
+            Printer_Plane.PrintPlane(
+                layer,
+                center,
+                new Vector2(1f, 1f),
+                LinkedDrawMatFrom(parent, item),
+                extraRotation
+            );
         }
     }
 }

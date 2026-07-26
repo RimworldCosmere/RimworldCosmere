@@ -9,10 +9,8 @@ public static class TextureExtension {
         return MakeTexture(orig.width, orig.height, Draw);
 
         void Draw(RenderTexture render) {
-            // Copy original
             Graphics.Blit(orig, render);
 
-            // Add overlay texture
             Material mat = MaterialPool.MatFrom(
                 overlay,
                 Verse.ShaderDatabase.MetaOverlay,
@@ -46,16 +44,13 @@ public static class TextureExtension {
             RenderTextureReadWrite.Linear
         );
 
-        // Apply drawing function
         draw(render);
 
-        // Create texture
         RenderTexture.active = render;
         Texture2D res = new Texture2D(width, height);
         res.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         res.Apply();
 
-        // Cleanup
         RenderTexture.active = null;
         RenderTexture.ReleaseTemporary(render);
         return res;
@@ -63,14 +58,14 @@ public static class TextureExtension {
 
     public static Texture2D InvertColors(this Texture2D texture) {
         if (!texture.isReadable) {
-            Debug.LogError("Texture is not readable. Set it to readable in the import settings or clone it manually.");
+            Logger.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
             return texture;
         }
 
         Color[] pixels = texture.GetPixels();
         for (int i = 0; i < pixels.Length; i++) {
             Color c = pixels[i];
-            pixels[i] = new Color(1f - c.r, 1f - c.g, 1f - c.b, c.a); // invert RGB, keep alpha
+            pixels[i] = new Color(1f - c.r, 1f - c.g, 1f - c.b, c.a);
         }
 
         texture.SetPixels(pixels);

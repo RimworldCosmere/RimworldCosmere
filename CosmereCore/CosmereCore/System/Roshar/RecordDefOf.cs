@@ -10,10 +10,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class RecordDefOf {
-    static RecordDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static RecordDef Cosmere_Roshar_Record_PatientsSaved;
 
@@ -91,4 +87,8 @@ public static class RecordDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static RecordDef Cosmere_Roshar_Record_ColonyStabilityDays;
+
+    static RecordDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
+    }
 }

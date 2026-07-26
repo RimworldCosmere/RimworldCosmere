@@ -8,9 +8,6 @@
         <biostatMet>500</biostatMet>
         <biostatArc>500</biostatArc>
         <modExtensions>
-            <li Class="Cosmere.Core.DefModExtension.CollapsibleGizmo">
-                <defaultCollapsed>true</defaultCollapsed>
-            </li>
             <li Class="Cosmere.Core.DefModExtension.DormantConnection">
                 <callbackHandler>Cosmere.System.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
             </li>
@@ -21,7 +18,6 @@
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
         <geneClass>Cosmere.System.Scadrial.Gene.Allomancer</geneClass>
-        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>
@@ -33,7 +29,6 @@
     </GeneDef>
     <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
         <geneClass>Cosmere.System.Scadrial.Gene.Feruchemist</geneClass>
-        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Roshar.Gene;
 using HarmonyLib;
 using RimWorld;
@@ -7,8 +6,16 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(CaravanExitMapUtility), nameof(CaravanExitMapUtility.ExitMapAndCreateCaravan),
-    [typeof(IEnumerable<Pawn>), typeof(Faction), typeof(PlanetTile), typeof(PlanetTile), typeof(PlanetTile), typeof(bool)])]
+[HarmonyPatch(
+    typeof(CaravanExitMapUtility),
+    nameof(CaravanExitMapUtility.ExitMapAndCreateCaravan),
+    typeof(IEnumerable<Pawn>),
+    typeof(Faction),
+    typeof(PlanetTile),
+    typeof(PlanetTile),
+    typeof(PlanetTile),
+    typeof(bool)
+)]
 public static class CaravanTrackingPatch {
     private static void Postfix(IEnumerable<Pawn> pawns) {
         foreach (Pawn pawn in pawns) {

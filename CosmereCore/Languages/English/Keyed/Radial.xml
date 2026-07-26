@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <CC_Radial_Hover_Prompt>Hover a wedge</CC_Radial_Hover_Prompt>
+  <CC_Radial_Cooldown>cd {SECONDS}s</CC_Radial_Cooldown>
+  <CC_Radial_Back>Back</CC_Radial_Back>
+  <CC_Radial_Close>Close</CC_Radial_Close>
+  <CC_Radial_Info>View ability info</CC_Radial_Info>
+  <CC_Radial_Gizmo_Label>Abilities</CC_Radial_Gizmo_Label>
+  <CC_Radial_Gizmo_Desc>Open the ability wheel. Hold {KEY} over the map to open it without leaving the keyboard, releasing over an ability to cast it.</CC_Radial_Gizmo_Desc>
+  <CC_Radial_Verb_Click>Click</CC_Radial_Verb_Click>
+  <CC_Radial_Verb_Release>Release</CC_Radial_Verb_Release>
+  <CC_Radial_Hint_BurnFlare>{VERB}: Burn, Shift: Flare</CC_Radial_Hint_BurnFlare>
+  <CC_Radial_Hint_FlareOnly>{VERB}: Flare</CC_Radial_Hint_FlareOnly>
+  <CC_Radial_Action_Burn>Burn {METAL}</CC_Radial_Action_Burn>
+  <CC_Radial_Action_StopBurning>Stop burning {METAL}</CC_Radial_Action_StopBurning>
+  <CC_Radial_Action_Flare>Flare {METAL}</CC_Radial_Action_Flare>
+  <CC_Radial_Hint_Release>Release to cast</CC_Radial_Hint_Release>
+  <CC_Radial_Open_Prompt>Click or release to open</CC_Radial_Open_Prompt>
+  <CC_Radial_Reserve>Reserve {PERCENT}%</CC_Radial_Reserve>
+
+</LanguageData>

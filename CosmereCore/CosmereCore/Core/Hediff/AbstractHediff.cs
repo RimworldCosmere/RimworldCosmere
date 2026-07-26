@@ -9,16 +9,16 @@ using Verse;
 namespace Cosmere.Core.Hediff;
 
 public interface IHediff<TGene> where TGene : Invested {
-    public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities { get; }
-    public float extraSeverity { get; set; }
+    public HashSet<IAbility<TGene, IHediff<TGene>>> SourceAbilities { get; }
+    public float ExtraSeverity { get; set; }
     public float Severity { get; set; }
-    public TGene gene { get; }
+    public TGene Gene { get; }
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
 
     public void RemoveSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
     public void PostMake();
-    public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
-    public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
+    public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
+    public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
 }
 
 public abstract class AbstractHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
@@ -33,39 +33,39 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         def = hediffDef;
         this.pawn = pawn;
         this.ability = ability;
-        gene = ability.gene;
+        Gene = ability.Gene;
     }
 
     public override string LabelBase =>
-        base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
+        base.LabelBase + (SourceAbilities.Count > 1 ? $" ({SourceAbilities.Count} sources)" : "");
 
     public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
-    protected InvestitureHolder investiture => pawn.GetInvestiture();
+    protected InvestitureHolder? investiture => pawn.GetInvestiture();
 
-    public TGene gene {
+    public TGene Gene {
         get => geneInt;
         protected set => geneInt = value;
     }
 
-    public float extraSeverity { get; set; } = 0f;
-    public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities { get; } = [];
+    public float ExtraSeverity { get; set; } = 0f;
+    public HashSet<IAbility<TGene, IHediff<TGene>>> SourceAbilities { get; } = [];
 
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility) {
-        sourceAbilities.Add(sourceAbility);
+        SourceAbilities.Add(sourceAbility);
         OnSourceAdded?.Invoke(this, sourceAbility);
     }
 
     public void RemoveSource(IAbility<TGene, IHediff<TGene>> sourceAbility) {
-        sourceAbilities.Remove(sourceAbility);
+        SourceAbilities.Remove(sourceAbility);
         OnSourceRemoved?.Invoke(this, sourceAbility);
     }
 
-    public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
-    public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
+    public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
+    public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
 
     public override void TickInterval(int delta) {
         if (pawn.IsShieldedAgainstInvestiture() && !IsInvestitureShield()) {
-            IAbility<TGene, IHediff<TGene>>[] snapshot = [.. sourceAbilities];
+            IAbility<TGene, IHediff<TGene>>[] snapshot = [.. SourceAbilities];
             for (int i = 0; i < snapshot.Length; i++) {
                 if (snapshot[i] is AbstractAbility abilityToDisable) {
                     abilityToDisable.UpdateStatus(Active.Off);
@@ -94,7 +94,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         if (Scribe.mode == LoadSaveMode.Saving) {
             HashSet<Pawn> seen = [];
             sourcePawns = [];
-            foreach (IAbility<TGene, IHediff<TGene>> source in sourceAbilities) {
+            foreach (IAbility<TGene, IHediff<TGene>> source in SourceAbilities) {
                 if (source is RimWorld.Ability abilityRef && seen.Add(abilityRef.pawn)) {
                     sourcePawns.Add(abilityRef.pawn);
                 }
@@ -107,7 +107,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
             return;
         }
 
-        sourceAbilities.Clear();
+        SourceAbilities.Clear();
 
         if (sourcePawns == null) {
             return;
@@ -119,7 +119,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
                     continue;
                 }
 
-                sourceAbilities.Add(aa);
+                SourceAbilities.Add(aa);
                 break;
             }
         }
@@ -130,7 +130,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         stringBuilder.AppendLine(base.DebugString());
 
         stringBuilder.AppendLine("Severity Sources:");
-        foreach (IAbility<TGene, IHediff<TGene>> source in sourceAbilities) {
+        foreach (IAbility<TGene, IHediff<TGene>> source in SourceAbilities) {
             if (source is not AbstractAbility sourceAbility) continue;
             stringBuilder.AppendLine(
                 $"  {sourceAbility.pawn.NameShortColored} -> {sourceAbility.def.LabelCap}: {sourceAbility.GetStrength():0.0000}"

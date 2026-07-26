@@ -10,10 +10,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThoughtDefOf {
-    static ThoughtDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static ThoughtDef Cosmere_Roshar_Thought_OathSpoken;
 
@@ -25,4 +21,11 @@ public static class ThoughtDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static ThoughtDef Cosmere_Roshar_Thought_BrokenBond;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThoughtDef Cosmere_Roshar_Thought_SoulcastBurial;
+
+    static ThoughtDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
+    }
 }

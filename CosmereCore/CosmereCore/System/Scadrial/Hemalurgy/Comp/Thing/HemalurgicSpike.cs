@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Def;
@@ -47,6 +46,7 @@ public class HemalurgicSpike : ThingComp {
                     return true;
                 }
             }
+
             return false;
         }
     }
@@ -106,9 +106,11 @@ public class HemalurgicSpike : ThingComp {
                 sb.AppendLine();
                 sb.Append("CS_Hemalurgy_DecayPrevented".Translate());
             }
-        } else {
+        }
+        else {
             sb.Append("CS_Hemalurgy_SpikeUncharged".Translate());
         }
+
         return sb.ToString();
     }
 }

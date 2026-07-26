@@ -15,15 +15,11 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 public class MetalCost : CompAbilityEffect {
     private new AllomancyAbility parent => (AllomancyAbility)base.parent;
     private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
-    private Allomancer gene => parent.gene;
+    private Allomancer gene => parent.Gene;
 
     private float currentCost => parent.GetDesiredBurnRateForStatus(parent.nextStatus);
 
     private bool hasEnoughMetal => gene.CanBurn(currentCost);
-
-    /*public override string ExtraTooltipPart() {
-        return "CS_MetalCost".Translate() + $": {currentCost:0.000}";
-    }*/
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);

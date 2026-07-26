@@ -15,7 +15,10 @@ public class PhysicalExternalAuraProperties : LineDrawingAuraProperties {
 
 public class PhysicalExternalAura : LineDrawingAura {
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
-        return cell.GetThingList(map).Where(t => t.GetMetalMass() > 0.0);
+        List<Verse.Thing> things = cell.GetThingList(map);
+        for (int i = 0; i < things.Count; i++) {
+            if (things[i].GetMetalMass() > 0.0) yield return things[i];
+        }
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {

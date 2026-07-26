@@ -7,7 +7,7 @@
 		<thinkRoot Class="ThinkNode_Tagger">
           <tagToGive>Idle</tagToGive>
           <subNodes>
-            <li Class="Cosmere.Core.ThinkNode.JobGiver.BondToThing" />
+            <li Class="Cosmere.Core.JobGiver.BondToThing" />
           </subNodes>
         </thinkRoot>
     </ThinkTreeDef>

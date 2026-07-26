@@ -13,10 +13,15 @@ public class MentalBreakHandlerProperties : HediffCompProperties {
 }
 
 public class MentalBreakHandler : HediffComp {
+    private const string StatPrefix = "Cosmere_Mental_Break_";
     private static List<StatDef>? customStatDefsCache;
     private static bool cacheInitialized;
 
-    private const string StatPrefix = "Cosmere_Mental_Break_";
+    private static readonly Dictionary<string, Action<MentalBreakHandler, float>> Handlers =
+        new Dictionary<string, Action<MentalBreakHandler, float>> {
+            ["Add_Factor"] = (h, v) => h.HandleMentalBreakAddFactor(v),
+            ["Remove_Factor"] = (h, v) => h.HandleMentalBreakRemoveFactor(v),
+        };
 
     private static List<StatDef> customStatDefs {
         get {
@@ -28,16 +33,13 @@ public class MentalBreakHandler : HediffComp {
                         customStatDefsCache.Add(allStats[i]);
                     }
                 }
+
                 cacheInitialized = true;
             }
+
             return customStatDefsCache!;
         }
     }
-
-    private static readonly Dictionary<string, Action<MentalBreakHandler, float>> Handlers = new() {
-        ["Add_Factor"] = (h, v) => h.HandleMentalBreakAddFactor(v),
-        ["Remove_Factor"] = (h, v) => h.HandleMentalBreakRemoveFactor(v),
-    };
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);

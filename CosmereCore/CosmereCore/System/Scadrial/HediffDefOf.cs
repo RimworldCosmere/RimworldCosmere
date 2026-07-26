@@ -11,13 +11,13 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class HediffDefOf {
-    static HediffDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static HediffDef Cosmere_Scadrial_Hediff_MistComa;
 
     [MayRequire("Cosmere.Scadrial")]
     public static HediffDef Cosmere_Scadrial_Hediff_ImplantedMetalminds;
+
+    static HediffDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
+    }
 }

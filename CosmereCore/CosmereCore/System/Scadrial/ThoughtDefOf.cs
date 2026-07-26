@@ -10,10 +10,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThoughtDefOf {
-    static ThoughtDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static ThoughtDef Cosmere_Scadrial_Snapped;
 
@@ -59,4 +55,8 @@ public static class ThoughtDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static ThoughtDef Cosmere_Thought_PostGold_Afterglow;
+
+    static ThoughtDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
+    }
 }

@@ -7,12 +7,12 @@
       <li>
         <key>straffs_ultimatum</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Straff Venture's Ultimatum</title>
             <text>A rider bearing the Venture banner arrives under flag of truce. The message is brief. Straff Venture, Elend's father, commands the largest army outside the walls. He offers terms: surrender the city, hand over the atium cache, and he will permit the garrison to leave alive. Elend reads the letter twice, folds it carefully, and sets it aside. "My father," he says quietly, "has never permitted anything in his life. He takes." The walls must hold.</text>
             <letterDef>ThreatBig</letterDef>
@@ -22,12 +22,12 @@
       <li>
         <key>cetts_arrival</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>20</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Cett's Army Arrives</title>
             <text>Dust rises from the western road. Ashweather Cett has brought his forces to Luthadel - not to ally with Straff, but to claim the prize for himself. Two armies now camp outside the walls, each watching the other as much as they watch the city. Breeze notes, with characteristic understatement, that at least the two of them might keep each other busy. Ham wonders aloud whether three-way sieges have any historical precedent. Nobody answers him.</text>
             <letterDef>ThreatBig</letterDef>
@@ -37,12 +37,12 @@
       <li>
         <key>koloss_march</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>40</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Koloss March</title>
             <text>The reports come in fragments. Scouts, breathless and ash-covered, speak of a column stretching to the horizon. Koloss. Thousands of them, moving with terrible purpose toward Luthadel. They do not negotiate. They do not siege. They simply arrive, and then they kill. The walls that seemed thick enough to hold two noble armies now feel paper-thin. Sazed begins consulting his metalminds with renewed urgency. Time is running short.</text>
             <letterDef>ThreatBig</letterDef>
@@ -52,15 +52,15 @@
       <li>
         <key>elends_transformation</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>50</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>3</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Bead of Lerasium</title>
             <text>The bead is small - barely larger than a pearl, pale and luminous in the mist-light. Elend holds it between his fingers. He knows what it is. What it means. The last gift of Preservation, the seed of Allomancy itself. He swallows it without ceremony. The metals ignite inside him like sixteen suns. The bookish king who could not swing a sword now carries the power of a full Mistborn. Vin watches him with something between pride and worry. The scholar has become a warrior. She hopes he remembers which one he was first.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -70,15 +70,15 @@
       <li>
         <key>the_well</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>60</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
             <eventKey>elends_transformation</eventKey>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Well of Ascension</title>
             <text>Vin descends into the cavern beneath Luthadel. The Well pulses with liquid light - raw Preservation, pooled and waiting. A voice whispers: use it. Release the power. Save them all. She reaches into the light. For one breathless moment she holds the power of creation itself. And then she lets it go. The pool drains. Something shifts in the world's foundations - something ancient, patient, and terrible. Ruin is free. The ground trembles. Above, the mists thicken. Whatever comes next, there is no undoing what has been done.</text>
             <letterDef>NeutralEvent</letterDef>

@@ -3,7 +3,7 @@
     <WorkGiverDef>
         <defName>Cosmere_Roshar_WorkGiver_Soulcast</defName>
         <label>soulcast</label>
-        <giverClass>Cosmere.System.Roshar.Job.WorkGiver.SoulcastWorkGiver</giverClass>
+        <giverClass>Cosmere.System.Roshar.WorkGiver.SoulcastWorkGiver</giverClass>
         <workType>Cosmere_Roshar_WorkType_Soulcasting</workType>
         <verb>soulcast</verb>
         <gerund>soulcasting</gerund>

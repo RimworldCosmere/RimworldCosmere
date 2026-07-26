@@ -10,13 +10,13 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class StatDefOf {
-    static StatDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static StatDef Cosmere_Scadrial_Stat_AllomanticPower;
 
     [MayRequire("Cosmere.Scadrial")]
     public static StatDef Cosmere_Scadrial_Stat_FeruchemicPower;
+
+    static StatDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));
+    }
 }

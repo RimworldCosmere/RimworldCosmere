@@ -1,5 +1,5 @@
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using Verse;
 
@@ -10,7 +10,7 @@ public class Grip : SurgebindingAbility {
     public Grip(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -18,9 +18,9 @@ public class Grip : SurgebindingAbility {
         SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
 
         RimWorld.Ability slickAbility = pawn.abilities.GetAbility(
-            DefDatabase<RimWorld.AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Slick")
+            DefDatabase<AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Slick")
         );
-        if (slickAbility is SurgebindingAbility { status.isActive: true } slick) {
+        if (slickAbility is SurgebindingAbility { status.IsActive: true } slick) {
             slick.UpdateStatus(Active.Off);
         }
     }

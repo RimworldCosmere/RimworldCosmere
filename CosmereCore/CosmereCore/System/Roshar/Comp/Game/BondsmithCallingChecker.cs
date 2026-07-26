@@ -1,4 +1,5 @@
 using Cosmere.Core.Util;
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.LetterArrive;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
@@ -9,11 +10,11 @@ namespace Cosmere.System.Roshar.Comp.Game;
 
 public class BondsmithCallingChecker : GameComponent {
     private static readonly string[] GodsprenNames = ["Stormfather", "Nightwatcher", "Sibling"];
+    private HashSet<string> activeCallings = [];
+    private HashSet<string> bondedGodspren = [];
 
     private int lastCheckTick = -1;
     private Dictionary<int, int> refuseCooldowns = [];
-    private HashSet<string> activeCallings = [];
-    private HashSet<string> bondedGodspren = [];
 
     public BondsmithCallingChecker(Verse.Game game) { }
 
@@ -112,7 +113,7 @@ public class BondsmithCallingChecker : GameComponent {
         bool hasCaring = false;
         List<Trait> traits = pawn.story?.traits?.allTraits ?? [];
         for (int i = 0; i < traits.Count; i++) {
-            if (traits[i].def.defName == "Kind" || traits[i].def.defName == "Caring") {
+            if (traits[i].def == RimWorld.TraitDefOf.Kind || traits[i].def.defName == "Caring") {
                 hasCaring = true;
                 break;
             }
@@ -183,7 +184,7 @@ public class BondsmithCallingChecker : GameComponent {
                 List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
                 for (int g = 0; g < genes.Count; g++) {
                     if (genes[g] is Surgebinder surgebinder &&
-                        surgebinder.radiantOrderDef.defName == "Bondsmith" &&
+                        surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith &&
                         !string.IsNullOrEmpty(surgebinder.godsprenName)) {
                         bondedGodspren.Add(surgebinder.godsprenName);
                     }
@@ -201,16 +202,18 @@ public class BondsmithCallingChecker : GameComponent {
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i] is BondsmithCalling calling) return calling;
         }
+
         return null;
     }
 
     private static bool IsBondsmith(Pawn pawn) {
         List<Verse.Gene> genes = pawn.genes?.GenesListForReading ?? [];
         for (int g = 0; g < genes.Count; g++) {
-            if (genes[g] is Surgebinder surgebinder && surgebinder.radiantOrderDef.defName == "Bondsmith") {
+            if (genes[g] is Surgebinder surgebinder && surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -220,6 +223,7 @@ public class BondsmithCallingChecker : GameComponent {
             refuseCooldowns.Remove(pawn.thingIDNumber);
             return false;
         }
+
         return true;
     }
 
@@ -245,6 +249,7 @@ public class BondsmithCallingChecker : GameComponent {
             if (colonists[i] == pawn) continue;
             if ((colonists[i].relations?.OpinionOf(pawn) ?? 0) >= threshold) count++;
         }
+
         return count;
     }
 

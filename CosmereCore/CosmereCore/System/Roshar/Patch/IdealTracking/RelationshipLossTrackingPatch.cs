@@ -5,7 +5,12 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.RemoveDirectRelation), [typeof(PawnRelationDef), typeof(Pawn)])]
+[HarmonyPatch(
+    typeof(Pawn_RelationsTracker),
+    nameof(Pawn_RelationsTracker.RemoveDirectRelation),
+    typeof(PawnRelationDef),
+    typeof(Pawn)
+)]
 public static class RelationshipLossTrackingPatch {
     private static readonly AccessTools.FieldRef<Pawn_RelationsTracker, Pawn> PawnRef =
         AccessTools.FieldRefAccess<Pawn>(typeof(Pawn_RelationsTracker), "pawn");
@@ -23,11 +28,11 @@ public static class RelationshipLossTrackingPatch {
     }
 
     private static bool IsCloseRelation(PawnRelationDef def) {
-        return def == PawnRelationDefOf.Spouse
-               || def == PawnRelationDefOf.Fiance
-               || def == PawnRelationDefOf.Lover
-               || def == PawnRelationDefOf.Parent
-               || def == PawnRelationDefOf.Child
-               || def == PawnRelationDefOf.Bond;
+        return def == PawnRelationDefOf.Spouse ||
+               def == PawnRelationDefOf.Fiance ||
+               def == PawnRelationDefOf.Lover ||
+               def == PawnRelationDefOf.Parent ||
+               def == PawnRelationDefOf.Child ||
+               def == PawnRelationDefOf.Bond;
     }
 }

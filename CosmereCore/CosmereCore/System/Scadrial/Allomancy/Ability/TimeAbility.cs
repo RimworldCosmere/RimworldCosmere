@@ -1,6 +1,5 @@
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
-using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using Verse;
 using static Cosmere.Core.Mod;

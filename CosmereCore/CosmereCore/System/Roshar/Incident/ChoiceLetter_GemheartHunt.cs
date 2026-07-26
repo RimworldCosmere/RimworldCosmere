@@ -1,6 +1,5 @@
 using Cosmere.System.Roshar.Comp.Map;
 using Cosmere.System.Roshar.Dialog;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Incident;
@@ -37,9 +36,7 @@ public class ChoiceLetter_GemheartHunt : ChoiceLetter {
             yield return sendExpedition;
 
             yield return new DiaOption("Ignore") {
-                action = delegate {
-                    Find.LetterStack.RemoveLetter(this);
-                },
+                action = delegate { Find.LetterStack.RemoveLetter(this); },
                 resolveTree = true,
             };
         }

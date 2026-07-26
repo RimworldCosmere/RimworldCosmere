@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using RimWorld;
@@ -20,11 +19,18 @@ public class RemoveMetalmind : Recipe_Surgery {
         }
     }
 
-    public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+    public override void ApplyOnPawn(
+        Pawn pawn,
+        BodyPartRecord part,
+        Pawn billDoer,
+        List<Verse.Thing> ingredients,
+        Bill bill
+    ) {
         if (billDoer != null) {
             if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill)) {
                 return;
             }
+
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
         }
 
@@ -48,8 +54,9 @@ public class RemoveMetalmind : Recipe_Surgery {
 
         Verse.Thing metalmindItem = ThingMaker.MakeThing(metalmindDef, stuffDef);
         Metalmind? metalmindComp = metalmindItem.TryGetComp<Metalmind>();
-        if (metalmindComp != null && removed.storedAmount > 0f) {
-            metalmindComp.AddStored(removed.storedAmount);
+        if (metalmindComp != null) {
+            if (removed.StoredAmount > 0f) metalmindComp.AddStored(removed.StoredAmount);
+            if (removed.CompoundedAmount > 0f) metalmindComp.AddCompounded(removed.CompoundedAmount);
         }
 
         GenPlace.TryPlaceThing(metalmindItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);

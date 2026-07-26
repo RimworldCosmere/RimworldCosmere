@@ -25,10 +25,10 @@ public static class MetalDetector {
     }
 
     public static bool HasMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
-        return GetMetal(thing, depth, allowAluminum) > 0f;
+        return GetMetalMass(thing, depth, allowAluminum) > 0f;
     }
 
-    private static float CalculateMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+    private static float CalculateMetalMass(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (!IsCapableOfHavingMetal(thing?.def)) return 0f;
         if (thing?.def == null || depth > 25) return 0f;
 
@@ -71,14 +71,14 @@ public static class MetalDetector {
         if (thing.def.category == ThingCategory.Pawn && thing is Pawn pawn) {
             float combinedMass =
                 (pawn.inventory?.innerContainer ?? []).Sum(item =>
-                    GetMetal(item, depth + 1, allowAluminum) * item.stackCount
+                    GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
                 );
             combinedMass +=
-                (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetal(item, depth + 1, allowAluminum) * item.stackCount
+                (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
                 );
             combinedMass +=
                 (pawn.equipment?.AllEquipmentListForReading ?? []).Sum(item =>
-                    GetMetal(item, depth + 1) * item.stackCount
+                    GetMetalMass(item, depth + 1) * item.stackCount
                 );
 
             if (combinedMass > 0f) return combinedMass;
@@ -98,10 +98,10 @@ public static class MetalDetector {
     /// <summary>
     ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
     /// </summary>
-    public static float GetMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+    public static float GetMetalMass(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (thing?.def == null) return 0f;
         if (!MetalThingCache.TryGetValue(thing, out float value)) {
-            value = CalculateMetal(thing, depth, allowAluminum);
+            value = CalculateMetalMass(thing, depth, allowAluminum);
             MetalThingCache.Add(thing, value);
         }
 
@@ -110,7 +110,7 @@ public static class MetalDetector {
 
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
         Verse.Thing? item = ThingMaker.MakeThing(def.thingDef);
-        float metalMass = GetMetal(item, depth + 1, allowAluminum);
+        float metalMass = GetMetalMass(item, depth + 1, allowAluminum);
         return metalMass * def.count;
     }
 
@@ -134,7 +134,7 @@ public static class MetalDetector {
         if (!Enumerable.Any(
                 recipe.ingredients,
                 ingredient => ingredient.filter.AllowedThingDefs.Any(thingDef =>
-                    GetMetal(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f
+                    GetMetalMass(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f
                 )
             )) {
             MetalRecipeCache[recipe] = false;

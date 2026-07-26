@@ -78,17 +78,17 @@
         <description>A sealed chamber of polished gemstone, purpose-built to hold Stormlight against the slow erosion of time. Connected to a conduit network, it serves as a reservoir - filling when the storms are generous, sustaining the colony's fabrials when the sky is dark.</description>
         <thingClass>Building</thingClass>
         <graphicData>
-            <texPath>Things/Building/StormlightBattery</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>(1,1)</drawSize>
+            <texPath>Things/Building/StormlightBattery/StormlightBattery</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(4,2.75)</drawSize>
         </graphicData>
         <altitudeLayer>Building</altitudeLayer>
         <passability>PassThroughOnly</passability>
         <pathCost>30</pathCost>
         <blockWind>true</blockWind>
-        <rotatable>false</rotatable>
+        <rotatable>true</rotatable>
         <fillPercent>0.4</fillPercent>
-        <size>(1,1)</size>
+        <size>(2,1)</size>
         <tickerType>Normal</tickerType>
         <statBases>
             <WorkToBuild>1800</WorkToBuild>
@@ -137,15 +137,15 @@
         <description>A workstation fitted with channels of gemstone-laced metal that draw Stormlight from the connected network and press it into gems and spheres placed within. A quiet alternative to leaving one's wealth out in the storm.</description>
         <thingClass>Building</thingClass>
         <graphicData>
-            <texPath>Things/Building/StormlightCharger</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>(2,1)</drawSize>
+            <texPath>Things/Building/StormlightCharger/StormlightCharger</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(4,2.75)</drawSize>
         </graphicData>
         <altitudeLayer>Building</altitudeLayer>
         <passability>PassThroughOnly</passability>
         <pathCost>30</pathCost>
         <blockWind>true</blockWind>
-        <rotatable>false</rotatable>
+        <rotatable>true</rotatable>
         <fillPercent>0.4</fillPercent>
         <size>(2,1)</size>
         <tickerType>Normal</tickerType>
@@ -204,7 +204,7 @@
             </li>
         </comps>
         <inspectorTabs>
-            <li>Cosmere.System.Roshar.Tab.SphereTab</li>
+            <li>Cosmere.System.Roshar.Tab.ITab_Sphere</li>
         </inspectorTabs>
         <placeWorkers>
             <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightNode</li>

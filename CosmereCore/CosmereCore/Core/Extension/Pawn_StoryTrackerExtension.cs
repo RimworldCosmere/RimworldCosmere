@@ -3,7 +3,7 @@ using RimWorld;
 namespace Cosmere.Core.Extension;
 
 public static class Pawn_StoryTrackerExtension {
-    public static Trait TryAddTrait(
+    public static Trait EnsureTrait(
         this Pawn_StoryTracker story,
         TraitDef traitDef,
         int degree = 0,
@@ -22,7 +22,7 @@ public static class Pawn_StoryTrackerExtension {
         return trait;
     }
 
-    public static void TryRemoveTrait(this Pawn_StoryTracker story, TraitDef? def) {
+    public static void RemoveTrait(this Pawn_StoryTracker story, TraitDef? def) {
         if (def != null && story.traits.HasTrait(def)) {
             story.traits.RemoveTrait(story.traits.GetTrait(def));
         }

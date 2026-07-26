@@ -1,7 +1,8 @@
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Thing;
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Gene;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,22 +13,22 @@ public class OpenPerpendicularity : SurgebindingAbility {
     private const int BaseRadius = 8;
     private const int RefillIntervalTicks = 30;
     private const float HealAmount = 2f;
-
-    protected virtual string AuraMoteDefName => "Cosmere_Roshar_Thing_PerpendicularityAura";
-
-    private ThingDef? auraMoteDef;
-    private ThingDef? AuraMoteDef => auraMoteDef ??= DefDatabase<ThingDef>.GetNamedSilentFail(AuraMoteDefName);
+    private readonly List<Pawn> alliesInArea = [];
 
     private Mote? auraMote;
-    private readonly List<Pawn> alliesInArea = [];
+
+    private ThingDef? auraMoteDef;
 
     public OpenPerpendicularity(Pawn pawn) : base(pawn) { }
     public OpenPerpendicularity(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal * 2;
+    protected virtual string AuraMoteDefName => "Cosmere_Roshar_Thing_PerpendicularityAura";
+    private ThingDef? AuraMoteDef => auraMoteDef ??= DefDatabase<ThingDef>.GetNamedSilentFail(AuraMoteDefName);
+
+    private float radius => BaseRadius + Gene.CurrentIdeal * 2;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -37,8 +38,10 @@ public class OpenPerpendicularity : SurgebindingAbility {
         }
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
-                AuraMoteDef, BaseRadius, GetStrength()
+            float moteScale = MoteUtility.GetMoteSize(
+                AuraMoteDef,
+                BaseRadius,
+                GetStrength()
             );
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
         }
@@ -65,12 +68,14 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         auraMote?.Maintain();
-        if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
-                AuraMoteDef, BaseRadius, GetStrength()
+        if (auraMote != null) {
+            float moteScale = MoteUtility.GetMoteSize(
+                AuraMoteDef!,
+                BaseRadius,
+                GetStrength()
             );
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
@@ -80,7 +85,10 @@ public class OpenPerpendicularity : SurgebindingAbility {
         float currentRadius = radius;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is Pawn ally) {
                 if (ally.Dead) continue;
@@ -117,7 +125,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
         for (int i = hediffs.Count - 1; i >= 0; i--) {
             Verse.Hediff hediff = hediffs[i];
             if (hediff is Hediff_Injury injury) {
-                injury.Heal(HealAmount * (1 + gene.currentIdeal * 0.5f));
+                injury.Heal(HealAmount * (1 + Gene.CurrentIdeal * 0.5f));
                 return;
             }
         }
@@ -137,5 +145,4 @@ public class OpenPerpendicularity : SurgebindingAbility {
             }
         }
     }
-
 }

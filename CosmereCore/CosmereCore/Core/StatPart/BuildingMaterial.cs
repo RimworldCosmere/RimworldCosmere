@@ -26,7 +26,7 @@ public class BuildingMaterial : RimWorld.StatPart {
         mass = (buildingMass + baseMultiplier) *
                req.Thing.def.Size.x *
                req.Thing.def.Size.z *
-               MetalDetector.GetMetal(req.Thing, 0, true);
+               MetalDetector.GetMetalMass(req.Thing, 0, true);
 
         return true;
     }

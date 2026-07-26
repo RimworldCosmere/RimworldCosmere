@@ -18,30 +18,51 @@ public static class ShardUtility {
             bool result = AreAnyEnabled(shardDefs);
             cache = result;
             return result;
-        } catch (Exception ex) {
-            Logger.Verbose($"Shard check failed during init: {ex.Message}");
+        }
+        catch (Exception ex) {
+            Logger.Verbose($"Shard check failed during init: {ex}");
             return false;
         }
     }
 
     public static bool AreAnyEnabled(params string[] shardIds) {
         Shards? s = shards;
-        return s != null && shardIds.Any(shardId => s.IsEnabled(shardId));
+        if (s == null) return false;
+        for (int i = 0; i < shardIds.Length; i++) {
+            if (s.IsEnabled(shardIds[i])) return true;
+        }
+
+        return false;
     }
 
     public static bool AreAnyEnabled(params ShardDef[] shardDefs) {
         Shards? s = shards;
-        return s != null && shardDefs.Any(shard => s.IsEnabled(shard));
+        if (s == null) return false;
+        for (int i = 0; i < shardDefs.Length; i++) {
+            if (s.IsEnabled(shardDefs[i])) return true;
+        }
+
+        return false;
     }
 
     public static bool AreAllEnabled(params string[] shardIds) {
         Shards? s = shards;
-        return s != null && shardIds.All(shardId => s.IsEnabled(shardId));
+        if (s == null) return false;
+        for (int i = 0; i < shardIds.Length; i++) {
+            if (!s.IsEnabled(shardIds[i])) return false;
+        }
+
+        return true;
     }
 
     public static bool AreAllEnabled(params ShardDef[] shardDefs) {
         Shards? s = shards;
-        return s != null && shardDefs.All(shard => s.IsEnabled(shard));
+        if (s == null) return false;
+        for (int i = 0; i < shardDefs.Length; i++) {
+            if (!s.IsEnabled(shardDefs[i])) return false;
+        }
+
+        return true;
     }
 
     public static void Enable(string shard) {

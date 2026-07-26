@@ -1,0 +1,11 @@
+
+using RimWorld;
+namespace Cosmere.Core.ScenarioPart.Trigger;
+
+public class DaysPassedTrigger : ProgressionTrigger {
+    public int days;
+
+    public override bool IsMet(GameComponent_ScenarioProgression comp) {
+        return GenDate.DaysPassed >= days;
+    }
+}

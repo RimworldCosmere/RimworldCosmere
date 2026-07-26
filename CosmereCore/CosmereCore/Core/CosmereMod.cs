@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Cosmere.Core.Framework;
 using Cosmere.Core.Settings;
 using HarmonyLib;
 using Verse;

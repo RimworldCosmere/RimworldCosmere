@@ -1,5 +1,4 @@
-﻿using System;
-using Cosmere.Core.Def;
+﻿using Cosmere.Core.Def;
 using Verse;
 
 namespace Cosmere.Core.Entity;

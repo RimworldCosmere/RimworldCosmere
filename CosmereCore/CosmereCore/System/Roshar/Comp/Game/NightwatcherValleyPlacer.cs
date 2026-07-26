@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Cosmere.Core.Comp.Game;
+using Cosmere.Core.Util;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -10,16 +9,15 @@ public class NightwatcherValleyPlacer : GameComponent {
     public NightwatcherValleyPlacer(Verse.Game game) { }
 
     public override void StartedNewGame() {
-        TryPlaceValley();
+        PlaceValley();
     }
 
     public override void LoadedGame() {
-        TryPlaceValley();
+        PlaceValley();
     }
 
-    private void TryPlaceValley() {
-        Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards == null || !shards.IsEnabled("Cultivation")) return;
+    private void PlaceValley() {
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
 
         WorldObjectDef? def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Cosmere_Roshar_NightwatcherValley");
         if (def == null) return;

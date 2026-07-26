@@ -10,13 +10,11 @@ namespace Cosmere.System.Roshar.Dialog;
 public class Dialog_GemheartExpedition : Window {
     private const int MinPawns = 3;
     private const int MaxPawns = 6;
+    private readonly List<Pawn> available = [];
 
     private readonly Map map;
-    private readonly List<Pawn> available = [];
     private readonly HashSet<Pawn> selected = [];
     private Vector2 scrollPos;
-
-    public override Vector2 InitialSize => new Vector2(500f, 600f);
 
     public Dialog_GemheartExpedition(Map map) {
         this.map = map;
@@ -33,6 +31,8 @@ public class Dialog_GemheartExpedition : Window {
         }
     }
 
+    public override Vector2 InitialSize => new Vector2(500f, 600f);
+
     public override void DoWindowContents(Rect inRect) {
         Text.Font = GameFont.Medium;
         Rect titleRect = new Rect(inRect.x, inRect.y, inRect.width, 36f);
@@ -41,7 +41,10 @@ public class Dialog_GemheartExpedition : Window {
         Text.Font = GameFont.Small;
         float y = titleRect.yMax + 10f;
         Rect descRect = new Rect(inRect.x, y, inRect.width, 48f);
-        Widgets.Label(descRect, $"Select {MinPawns}-{MaxPawns} colonists for the plateau run. Stronger fighters and Radiants improve the odds.");
+        Widgets.Label(
+            descRect,
+            $"Select {MinPawns}-{MaxPawns} colonists for the plateau run. Stronger fighters and Radiants improve the odds."
+        );
 
         y = descRect.yMax + 10f;
         Rect countRect = new Rect(inRect.x, y, inRect.width, 24f);
@@ -74,7 +77,8 @@ public class Dialog_GemheartExpedition : Window {
             if (isSelected != wasSelected) {
                 if (isSelected) {
                     selected.Add(pawn);
-                } else {
+                }
+                else {
                     selected.Remove(pawn);
                 }
             }
@@ -82,7 +86,12 @@ public class Dialog_GemheartExpedition : Window {
             Rect nameRect = new Rect(checkRect.xMax + 8f, entryRect.y + 2f, 180f, entryHeight / 2f);
             Widgets.Label(nameRect, pawn.LabelShortCap);
 
-            Rect statsRect = new Rect(checkRect.xMax + 8f, entryRect.y + entryHeight / 2f, entryRect.width - 40f, entryHeight / 2f);
+            Rect statsRect = new Rect(
+                checkRect.xMax + 8f,
+                entryRect.y + entryHeight / 2f,
+                entryRect.width - 40f,
+                entryHeight / 2f
+            );
             Text.Font = GameFont.Tiny;
             int melee = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Melee)?.Level ?? 0;
             int shooting = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Shooting)?.Level ?? 0;
@@ -91,7 +100,7 @@ public class Dialog_GemheartExpedition : Window {
             if (pawn.genes != null) {
                 Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder is { Active: true }) {
-                    stats += $"  Radiant (Ideal {surgebinder.currentIdealDisplay})";
+                    stats += $"  Radiant (Ideal {surgebinder.CurrentIdealDisplay})";
                 }
             }
 
@@ -100,6 +109,7 @@ public class Dialog_GemheartExpedition : Window {
             GUI.color = Color.white;
             Text.Font = GameFont.Small;
         }
+
         Widgets.EndScrollView();
 
         float buttonY = inRect.yMax - 40f;
@@ -115,11 +125,16 @@ public class Dialog_GemheartExpedition : Window {
                 if (manager != null) {
                     manager.StartExpedition(selected.ToList());
                     SoundDefOf.Quest_Accepted.PlayOneShotOnCamera();
-                    Messages.Message($"{selected.Count} colonists march toward the Shattered Plains.", MessageTypeDefOf.PositiveEvent);
+                    Messages.Message(
+                        $"{selected.Count} colonists march toward the Shattered Plains.",
+                        MessageTypeDefOf.PositiveEvent
+                    );
                 }
+
                 Close();
             }
-        } else {
+        }
+        else {
             GUI.color = Color.gray;
             Widgets.ButtonText(sendRect, "March");
             GUI.color = Color.white;

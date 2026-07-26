@@ -13,7 +13,7 @@
 
     <JobDef>
         <defName>Cosmere_Roshar_Job_ShapeStone</defName>
-        <driverClass>Cosmere.System.Roshar.Job.Driver.ShapeStone</driverClass>
+        <driverClass>Cosmere.System.Roshar.JobDriver.ShapeStone</driverClass>
         <reportString>shaping stone at TargetA.</reportString>
         <playerInterruptible>true</playerInterruptible>
     </JobDef>

@@ -17,30 +17,30 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
 
     public bool hasGemstone => insertedGemstone != null;
 
-    public SprenType? currentSpren =>
-        hasGemstone
-            ? insertedGemstone.TryGetComp<SprenContainer>()?.CapturedSprenType
-            : null;
+    private SprenContainer? Spren => insertedGemstone?.TryGetComp<SprenContainer>();
+    private InvestitureHolder? Holder => insertedGemstone?.TryGetComp<InvestitureHolder>();
 
-    public List<ThingDef> filterList => filterListInt;
-
-    public List<ThingDef> allowedSpheres { get; } = [
-        Core.ThingDefOf.CutGem,
-    ];
+    public SprenType? currentSpren => Spren?.CapturedSprenType;
 
     protected abstract HediffDef PainHediffDef { get; }
 
+    public List<ThingDef> FilterList => filterListInt;
+
+    public List<ThingDef> AllowedSpheres { get; } = [
+        Core.ThingDefOf.CutGem,
+    ];
+
     public abstract void AddGemstone(ThingWithComps gemstone);
     public abstract void RemoveGemstone();
-    protected abstract void DoFlameSprenPower();
-    protected abstract void DoColdSprenPower();
+    protected abstract void ApplyFlameSprenHeat();
+    protected abstract void ApplyColdSprenCooling();
 
     protected void RegisterBuilding() {
-        CultivationSprenPatch.RegisterBuilding((Verse.Building)parent);
+        CultivationSprenPatch.RegisterBuilding((Building)parent);
     }
 
     protected void UnregisterBuilding() {
-        CultivationSprenPatch.UnregisterBuilding((Verse.Building)parent);
+        CultivationSprenPatch.UnregisterBuilding((Building)parent);
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
@@ -48,6 +48,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         if (filterListInt.Count == 0 && Core.ThingDefOf.CutGem != null) {
             filterListInt.Add(Core.ThingDefOf.CutGem);
         }
+
         if (insertedGemstone != null) {
             RegisterBuilding();
         }
@@ -63,28 +64,29 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
 
     protected virtual void SaveExtraData() { }
 
-    public virtual void CheckPower(bool flickeredOn) {
-        InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
+    public virtual void UpdatePowerState(bool flickeredOn) {
+        InvestitureHolder? investiture = Holder;
         if (investiture != null) {
             powerOn = investiture.currentInvestiture > 0 && flickeredOn;
             return;
         }
+
         powerOn = false;
     }
 
     public void UsePower() {
         if (!powerOn) return;
-        InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
+        InvestitureHolder? investiture = Holder;
         if (investiture == null) return;
 
         investiture.drainRate = 1.0f;
 
-        switch (insertedGemstone!.TryGetComp<SprenContainer>()?.CapturedSprenType) {
+        switch (Spren?.CapturedSprenType) {
             case SprenType.Flamespren:
-                DoFlameSprenPower();
+                ApplyFlameSprenHeat();
                 break;
             case SprenType.Rainspren:
-                DoColdSprenPower();
+                ApplyColdSprenCooling();
                 break;
             case SprenType.Fearspren:
                 DoPainSprenPower();
@@ -112,16 +114,19 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     public override string CompInspectStringExtra() {
         if (insertedGemstone == null) return "No gem in fabrial.";
 
-        SprenContainer? sprenContainer = insertedGemstone.TryGetComp<SprenContainer>();
-        InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
+        SprenContainer? sprenContainer = Spren;
+        InvestitureHolder? investiture = Holder;
 
-        return "Spren: " + (sprenContainer?.CapturedSprenType?.ToString() ?? "None") +
-               "\nStormlight: " + (investiture?.currentInvestiture.ToString("F0") ?? "0") +
-               "\ntime remaining: " + GetTimeRemaining();
+        return "Spren: " +
+               (sprenContainer?.CapturedSprenType?.ToString() ?? "None") +
+               "\nStormlight: " +
+               (investiture?.currentInvestiture.ToString("F0") ?? "0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {
-        InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
+        InvestitureHolder? investiture = Holder;
         if (investiture == null) return "\u221e";
 
         float tickRaresPerHour = (float)GenDate.TicksPerHour / GenTicks.TickRareInterval;
@@ -141,7 +146,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
                 thing.HasComp<SprenContainer>() &&
                 thing.TryGetComp<SprenContainer>().hasCapturedSpren &&
                 thing.TryGetComp<InvestitureHolder>()?.currentInvestiture > 0 &&
-                filterList.Contains(thing.def)
+                FilterList.Contains(thing.def)
             ),
             500f
         );

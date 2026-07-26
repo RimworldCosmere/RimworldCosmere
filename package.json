@@ -5,9 +5,7 @@
   },
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
-    "execa": "^9.0.0"
-  },
-  "dependencies": {
-    "steamcommunity": "^3.49.0"
+    "execa": "^9.0.0",
+    "semantic-release-replace-plugin": "^1.2.7"
   }
 }

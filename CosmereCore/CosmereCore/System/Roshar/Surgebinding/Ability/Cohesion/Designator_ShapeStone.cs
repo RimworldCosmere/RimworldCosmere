@@ -8,9 +8,6 @@ public class Designator_ShapeStone : Designator {
     private static DesignationDef? cachedDesignationDef;
     private readonly ShapeStone ability;
 
-    internal static DesignationDef DesignationDef =>
-        cachedDesignationDef ??= DefDatabase<DesignationDef>.GetNamed("Cosmere_Roshar_Designation_ShapeStone");
-
     public Designator_ShapeStone(ShapeStone ability) {
         this.ability = ability;
 
@@ -19,6 +16,9 @@ public class Designator_ShapeStone : Designator {
         useMouseIcon = true;
         soundSucceeded = SoundDefOf.Designate_Mine;
     }
+
+    internal static DesignationDef DesignationDef =>
+        cachedDesignationDef ??= DefDatabase<DesignationDef>.GetNamed("Cosmere_Roshar_Designation_ShapeStone");
 
     public override DrawStyleCategoryDef DrawStyleCategory => DrawStyleCategoryDefOf.Areas;
     public override bool DragDrawMeasurements => true;
@@ -58,7 +58,7 @@ public class Designator_ShapeStone : Designator {
             Map.designationManager.AddDesignation(new Designation(cell, DesignationDef));
         }
 
-        ability.pawn.jobs.TryTakeOrderedJob(job, Verse.AI.JobTag.Misc, true);
+        ability.pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc, true);
     }
 
     private static bool IsMineable(Building building) {

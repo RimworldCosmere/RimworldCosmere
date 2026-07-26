@@ -11,7 +11,8 @@ public class NightwatcherCurseHediff : NightwatcherPassiveHediff {
 
     public override string Description {
         get {
-            string intro = "The Nightwatcher has laid a curse upon {PAWN_nameDef}. It cannot be removed by any ordinary means.";
+            string intro =
+                "The Nightwatcher has laid a curse upon {PAWN_nameDef}. It cannot be removed by any ordinary means.";
             return (intro + "\n\n" + (curseDef?.description ?? "")).Formatted(pawn.Named("PAWN"));
         }
     }
@@ -21,7 +22,9 @@ public class NightwatcherCurseHediff : NightwatcherPassiveHediff {
         Severity = 1f;
     }
 
-    public override bool TryMergeWith(Verse.Hediff other) => false;
+    public override bool TryMergeWith(Verse.Hediff other) {
+        return false;
+    }
 
     public override void ExposeData() {
         base.ExposeData();

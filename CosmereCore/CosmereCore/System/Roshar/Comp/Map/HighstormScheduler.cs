@@ -1,7 +1,5 @@
-using System;
-using Cosmere.Core;
 using Cosmere.Core.Util;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.GameCondition;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,14 +11,14 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private const int WeepingStartDay = 46;
     private const int DaysPerYear = 60;
 
-    private int nextHighstormTick = -1;
+    private bool? cachedEnabled;
     private int lastHighstormTick = -1;
+
+    private int nextHighstormTick = -1;
+    private float seasonalIntensity = 1f;
     private bool stormActive;
     private bool warningShown;
-    private float seasonalIntensity = 1f;
     private bool weepingActive;
-
-    private bool? cachedEnabled;
 
     private bool enabled {
         get {
@@ -39,10 +37,10 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         base.FinalizeInit();
 
         if (stormActive) {
-            GameCondition.Highstorm? activeCondition = null;
+            Highstorm? activeCondition = null;
             List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
             for (int i = 0; i < conditions.Count; i++) {
-                if (conditions[i] is GameCondition.Highstorm hs) {
+                if (conditions[i] is Highstorm hs) {
                     activeCondition = hs;
                     break;
                 }
@@ -71,7 +69,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
             List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
             bool found = false;
             for (int i = 0; i < conditions.Count; i++) {
-                if (conditions[i] is GameCondition.Highstorm) {
+                if (conditions[i] is Highstorm) {
                     found = true;
                     break;
                 }
@@ -94,7 +92,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
                     RimWorld.LetterDefOf.NeutralEvent,
                     TargetInfo.Invalid
                 );
-            } else if (!currentlyWeeping && weepingActive) {
+            }
+            else if (!currentlyWeeping && weepingActive) {
                 weepingActive = false;
                 Find.LetterStack.ReceiveLetter(
                     "CR_Weeping_End_Title".Translate(),
@@ -139,7 +138,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (Mod.enableWeeping && IsTickDuringWeeping(nextHighstormTick)) {
             int dayOfYear = GenLocalDate.DayOfYear(map);
             int daysUntilNewYear = DaysPerYear - dayOfYear;
-            nextHighstormTick = ticksNow + daysUntilNewYear * GenDate.TicksPerDay +
+            nextHighstormTick = ticksNow +
+                                daysUntilNewYear * GenDate.TicksPerDay +
                                 Rand.Range(0, 2) * GenDate.TicksPerDay;
         }
 
@@ -162,7 +162,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         if (success) {
             stormActive = true;
-        } else {
+        }
+        else {
             Logger.Warning("Incident failed to execute, will retry next schedule.");
         }
 
@@ -209,8 +210,12 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
-        if (scheduler.stormActive) return "A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.";
-        if (Mod.enableWeeping && IsWeeping(map)) return "The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.";
+        if (scheduler.stormActive)
+            return
+                "A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.";
+        if (Mod.enableWeeping && IsWeeping(map))
+            return
+                "The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.";
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
         if (ticksLeft <= 0) return "The stormwall draws near. Those caught in the open will not survive.";
@@ -218,7 +223,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         float days = ticksLeft / (float)GenDate.TicksPerDay;
         float hours = ticksLeft / (float)GenDate.TicksPerHour;
         string timeStr = days >= 1f ? $"{days:F1} days" : $"{hours:F1} hours";
-        return $"The next highstorm will arrive in approximately {timeStr}.\nHighstorms sweep from east to west, carrying debris with enough force to shatter bone. Seek shelter behind solid eastern walls.\nSeasonal intensity: {scheduler.seasonalIntensity:P0}";
+        return
+            $"The next highstorm will arrive in approximately {timeStr}.\nHighstorms sweep from east to west, carrying debris with enough force to shatter bone. Seek shelter behind solid eastern walls.\nSeasonal intensity: {scheduler.seasonalIntensity:P0}";
     }
 
     public static bool IsWeeping(Verse.Map map) {
@@ -226,8 +232,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     }
 
     private bool IsTickDuringWeeping(int tick) {
-        long absTick = (long)tick;
-        int dayOfYear = (int)((absTick / GenDate.TicksPerDay) % DaysPerYear);
+        long absTick = tick;
+        int dayOfYear = (int)(absTick / GenDate.TicksPerDay % DaysPerYear);
         return dayOfYear >= WeepingStartDay;
     }
 

@@ -8,24 +8,24 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class Harden : SurgebindingAbility {
-    public static readonly Dictionary<Building, float> HardenedBuildings = new();
+    public static readonly Dictionary<Building, float> HardenedBuildings = new Dictionary<Building, float>();
 
     private List<Building> hardenedStructures = [];
 
     public Harden(Pawn pawn) : base(pawn) { }
     public Harden(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int maxStructures => gene.currentIdeal switch {
+    private int maxStructures => Gene.CurrentIdeal switch {
         >= 4 => 5,
         3 => 3,
         2 => 2,
         _ => 1,
     };
 
-    private float hpMultiplier => 1f + gene.currentIdeal * 0.5f;
+    private float hpMultiplier => 1f + Gene.CurrentIdeal * 0.5f;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
@@ -59,7 +59,7 @@ public class Harden : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         for (int i = hardenedStructures.Count - 1; i >= 0; i--) {
             Building? building = hardenedStructures[i];

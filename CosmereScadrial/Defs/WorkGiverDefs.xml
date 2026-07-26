@@ -3,7 +3,7 @@
     <WorkGiverDef>
         <defName>Cosmere_Scadrial_WorkGiver_DoctorGiveThugsVial</defName>
         <label>give thug patients pewter vials</label>
-        <giverClass>Cosmere.System.Scadrial.WorkGivers.GivePewterVialToDownedThugs</giverClass>
+        <giverClass>Cosmere.System.Scadrial.WorkGiver.GivePewterVialToDownedThugs</giverClass>
         <workType>Doctor</workType>
         <verb>give vial</verb>
         <gerund>giving vial of</gerund>

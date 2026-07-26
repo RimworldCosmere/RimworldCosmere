@@ -11,10 +11,6 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class HemalurgicDefOf {
-    static HemalurgicDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(HemalurgicDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static ThingDef Cosmere_Scadrial_Thing_HemalurgicSpike;
 
@@ -46,8 +42,15 @@ public static class HemalurgicDefOf {
     public static RecipeDef Cosmere_Scadrial_Recipe_RemoveHemalurgicSpike;
 
     [MayRequire("Cosmere.Scadrial")]
+    public static ResearchProjectDef Cosmere_Scadrial_Hemalurgy;
+
+    [MayRequire("Cosmere.Scadrial")]
     public static ResearchProjectDef Cosmere_Scadrial_HemalurgicPrecision;
 
     [MayRequire("Cosmere.Scadrial")]
     public static ResearchProjectDef Cosmere_Scadrial_HemalurgicMastery;
+
+    static HemalurgicDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(HemalurgicDefOf));
+    }
 }

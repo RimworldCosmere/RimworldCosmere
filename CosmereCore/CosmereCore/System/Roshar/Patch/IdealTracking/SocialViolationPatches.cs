@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Surgebinding;
 using HarmonyLib;
 using RimWorld;
@@ -14,11 +15,11 @@ public static class SocialFightViolationPatch {
         Pawn initiator = PawnRef(__instance);
         if (initiator == null) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(initiator, "Skybreaker")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(initiator, RadiantOrderDefOf.Skybreaker)) {
             ViolationUtility.ApplyViolation(initiator, 0.3f, "starting a social fight");
         }
 
-        if (ViolationUtility.IsSurgebinderOfOrder(initiator, "Bondsmith")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(initiator, RadiantOrderDefOf.Bondsmith)) {
             ViolationUtility.ApplyViolation(initiator, 0.1f, "starting a social fight");
         }
     }
@@ -45,7 +46,7 @@ public static class FactionGoodwillViolationPatch {
         List<Pawn> colonists = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn colonist = colonists[i];
-            if (ViolationUtility.IsSurgebinderOfOrder(colonist, "Bondsmith")) {
+            if (ViolationUtility.IsSurgebinderOfOrder(colonist, RadiantOrderDefOf.Bondsmith)) {
                 ViolationUtility.ApplyViolation(colonist, 0.3f, "faction turned hostile");
             }
         }

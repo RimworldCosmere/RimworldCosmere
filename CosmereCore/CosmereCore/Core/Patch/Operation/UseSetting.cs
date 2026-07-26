@@ -2,7 +2,6 @@
 using System;
 using System.Xml;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch.Operation;
 

@@ -29,3 +29,4 @@ bundle_name = "cosmere.core_shaders"
 filename = "resource_[bundle_name]_shaders_[target]"
 include_patterns = ["*.shader"]
 targetless = false
+

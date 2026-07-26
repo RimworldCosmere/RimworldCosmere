@@ -1,7 +1,7 @@
 using Cosmere.Core.Listing;
 using Cosmere.Core.Settings;
 using Verse;
-using UI = Cosmere.Core.Util.UI;
+using CoreUI = Cosmere.Core.UI.UIHelpers;
 
 namespace Cosmere.System.Scadrial.Settings;
 
@@ -12,11 +12,11 @@ public enum MistsFrequency {
 }
 
 public class ScadrialModSettings : CosmereModSettings {
+    public bool alwaysShowAllomanticAuras;
     public bool enableMists = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
     public bool pawnsKeepVialsWhenDowned;
-    public bool alwaysShowAllomanticAuras;
 
     public override string Name => "Scadrial";
 
@@ -41,7 +41,7 @@ public class ScadrialModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CS_Settings_MistsFrequency_Label".Translate(),
                     "CS_Settings_MistsFrequency_Tooltip".Translate(),
-                    sub => UI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
+                    sub => CoreUI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
                 );
             },
             SubListingOptions.WithoutTopPadding()
@@ -53,13 +53,13 @@ public class ScadrialModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CS_Settings_PawnsKeepVialOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepVialOnDown_Tooltip".Translate(),
-                    sub => UI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
+                    sub => CoreUI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
                 );
 
                 fieldset.Field(
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip".Translate(),
-                    sub => UI.BoolEnumDropdown(
+                    sub => CoreUI.BoolEnumDropdown(
                         sub,
                         pawnsKeepMetalmindsWhenDowned,
                         v => pawnsKeepMetalmindsWhenDowned = v

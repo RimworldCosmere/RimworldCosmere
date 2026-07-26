@@ -18,5 +18,4 @@ public class Mod(ModContentPack content) : CosmereMod<RosharModSettings>(content
     public static bool enableWeeping => Settings.enableWeeping;
 
     public static int highstormDurationTicks => Settings.highstormDurationTicks;
-
 }

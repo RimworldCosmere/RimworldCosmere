@@ -202,6 +202,49 @@ public abstract class BaseGenerator : IGenerator
             }
         });
 
+        // Compounded charge pays out ten times harder. Naively scaling the step
+        // drives "lower is better" stats negative - Gold's IncomingDamageFactor
+        // would reach -8.6, i.e. damage that heals - so amplify the benefit each
+        // factor represents rather than the step itself.
+        Handlebars.RegisterHelper("getCompoundedStatForStage", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 &&
+                int.TryParse(parameters[0]?.ToString(), out var stage) &&
+                double.TryParse(parameters[1]?.ToString(), out var step))
+            {
+                const double amplification = 10.0;
+                double result;
+
+                if (step >= 0)
+                {
+                    result = 1 + step * amplification * (stage + 1);
+                }
+                else
+                {
+                    // Benefit of a sub-1 factor is (1/v - 1); scale that, then invert
+                    // back. Stays positive and monotonic for every metal.
+                    var ordinary = Math.Max(1 + step * (stage + 1), 0.01);
+                    result = Math.Max(1.0 / (1.0 + amplification * (1.0 / ordinary - 1.0)), 0.001);
+                }
+
+                var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
+                writer.WriteSafeString(formatted);
+            }
+        });
+
+        // Offsets have no reciprocal reading, so they scale their step directly.
+        Handlebars.RegisterHelper("getCompoundedOffsetForStage", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 &&
+                int.TryParse(parameters[0]?.ToString(), out var stage) &&
+                double.TryParse(parameters[1]?.ToString(), out var step))
+            {
+                var result = 1 + step * 10.0 * (stage + 1);
+                var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
+                writer.WriteSafeString(formatted);
+            }
+        });
+
         // Color helpers
         Handlebars.RegisterHelper("rgb", (writer, context, parameters) =>
         {

@@ -11,13 +11,13 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingCategoryDefOf {
-    static ThingCategoryDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThingCategoryDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_Allomancy;
 
     [MayRequire("Cosmere.Scadrial")]
     public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_Feruchemy;
+
+    static ThingCategoryDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThingCategoryDefOf));
+    }
 }

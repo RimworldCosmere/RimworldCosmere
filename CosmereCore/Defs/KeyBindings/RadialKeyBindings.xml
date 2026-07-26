@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <KeyBindingCategoryDef>
+    <defName>Cosmere_KeyBindings</defName>
+    <label>Cosmere</label>
+    <description>Key bindings added by the Cosmere mod suite.</description>
+    <checkForConflicts>
+      <li>Game</li>
+    </checkForConflicts>
+  </KeyBindingCategoryDef>
+
+  <KeyBindingDef>
+    <defName>Cosmere_Keybind_RadialOpen</defName>
+    <label>Open ability radial</label>
+    <description>Tap to open the ability radial for browsing. Hold and release over an ability to quick-cast.</description>
+    <defaultKeyCodeA>Q</defaultKeyCodeA>
+    <category>Cosmere_KeyBindings</category>
+  </KeyBindingDef>
+</Defs>

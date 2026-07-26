@@ -3,7 +3,7 @@
   <ScenPartDef>
     <defName>Cosmere_ScenPart_NamedPawns</defName>
     <label>named pawns</label>
-    <scenPartClass>Cosmere.Core.ScenarioPart.ScenPart_NamedPawns</scenPartClass>
+    <scenPartClass>Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns</scenPartClass>
     <category>Fixed</category>
     <summaryPriority>100</summaryPriority>
     <canBeRandomlyAdded>false</canBeRandomlyAdded>
@@ -12,7 +12,7 @@
   <ScenPartDef>
     <defName>Cosmere_ScenPart_ScenarioProgression</defName>
     <label>scenario progression</label>
-    <scenPartClass>Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression</scenPartClass>
+    <scenPartClass>Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression</scenPartClass>
     <category>Fixed</category>
     <summaryPriority>99</summaryPriority>
     <canBeRandomlyAdded>false</canBeRandomlyAdded>
@@ -21,7 +21,7 @@
   <ScenPartDef>
     <defName>Cosmere_ScenPart_FactionRelations</defName>
     <label>starting faction relations</label>
-    <scenPartClass>Cosmere.Core.ScenarioPart.ScenPart_FactionRelations</scenPartClass>
+    <scenPartClass>Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations</scenPartClass>
     <category>Fixed</category>
     <summaryPriority>98</summaryPriority>
     <canBeRandomlyAdded>false</canBeRandomlyAdded>

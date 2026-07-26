@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Def;
 using RimWorld;
 using Verse;
@@ -14,8 +13,12 @@ public readonly struct SavantProfile {
     public readonly float Stage3Power;
 
     public SavantProfile(
-        int stage1Ticks, int stage2Ticks, int stage3Ticks,
-        float stage1Power, float stage2Power, float stage3Power
+        int stage1Ticks,
+        int stage2Ticks,
+        int stage3Ticks,
+        float stage1Power,
+        float stage2Power,
+        float stage3Power
     ) {
         Stage1Ticks = stage1Ticks;
         Stage2Ticks = stage2Ticks;
@@ -43,25 +46,6 @@ public readonly struct SavantProfile {
 }
 
 public static class SavantUtility {
-    public static readonly SavantProfile AllomancyProfile = new(
-        stage1Ticks: 180000, stage2Ticks: 600000, stage3Ticks: 1800000,
-        stage1Power: 1.20f, stage2Power: 1.40f, stage3Power: 1.75f
-    );
-
-    public static readonly SavantProfile FeruchemyProfile = new(
-        stage1Ticks: 300000, stage2Ticks: 900000, stage3Ticks: 2400000,
-        stage1Power: 1.15f, stage2Power: 1.35f, stage3Power: 1.60f
-    );
-
-    public static readonly SavantProfile SurgebindingProfile = new(
-        stage1Ticks: 420000, stage2Ticks: 1200000, stage3Ticks: 3000000,
-        stage1Power: 1.15f, stage2Power: 1.30f, stage3Power: 1.50f
-    );
-
-    public const float Stage1CostSurgebinding = 0.90f;
-    public const float Stage2CostSurgebinding = 0.80f;
-    public const float Stage3CostSurgebinding = 0.70f;
-
     public const float Stage2StorePenaltyFeruchemy = 1.5f;
     public const float Stage3StorePenaltyFeruchemy = 2.0f;
 
@@ -70,6 +54,24 @@ public static class SavantUtility {
     public const float WithdrawalSeverityLossPerDay = 1.0f;
 
     public const float Stage1DecayPerDayFraction = 0.10f;
+
+    public static readonly SavantProfile AllomancyProfile = new SavantProfile(
+        180000,
+        600000,
+        1800000,
+        1.20f,
+        1.40f,
+        1.75f
+    );
+
+    public static readonly SavantProfile FeruchemyProfile = new SavantProfile(
+        300000,
+        900000,
+        2400000,
+        1.15f,
+        1.35f,
+        1.60f
+    );
 
     private static readonly HashSet<string> DependencyMetals = [
         "Tin", "Pewter", "Brass", "Zinc", "Copper", "Bronze",
@@ -95,21 +97,20 @@ public static class SavantUtility {
         return CanBeSavant(metal) && !IsDependencyMetal(metal);
     }
 
-    public static int GetAllomanticStage(float ticks) => AllomancyProfile.GetStage(ticks);
-    public static int GetFeruchemicalStage(float ticks) => FeruchemyProfile.GetStage(ticks);
-    public static int GetSurgebindingStage(float ticks) => SurgebindingProfile.GetStage(ticks);
+    public static int GetAllomanticStage(float ticks) {
+        return AllomancyProfile.GetStage(ticks);
+    }
 
-    public static float GetAllomanticPowerMultiplier(int stage) => AllomancyProfile.GetPowerMultiplier(stage);
-    public static float GetFeruchemicalPowerMultiplier(int stage) => FeruchemyProfile.GetPowerMultiplier(stage);
-    public static float GetSurgebindingPowerMultiplier(int stage) => SurgebindingProfile.GetPowerMultiplier(stage);
+    public static int GetFeruchemicalStage(float ticks) {
+        return FeruchemyProfile.GetStage(ticks);
+    }
 
-    public static float GetSurgebindingCostMultiplier(int stage) {
-        return stage switch {
-            1 => Stage1CostSurgebinding,
-            2 => Stage2CostSurgebinding,
-            3 => Stage3CostSurgebinding,
-            _ => 1f,
-        };
+    public static float GetAllomanticPowerMultiplier(int stage) {
+        return AllomancyProfile.GetPowerMultiplier(stage);
+    }
+
+    public static float GetFeruchemicalPowerMultiplier(int stage) {
+        return FeruchemyProfile.GetPowerMultiplier(stage);
     }
 
     public static float GetFeruchemyStorePenaltyMultiplier(int stage) {
@@ -129,52 +130,47 @@ public static class SavantUtility {
         };
     }
 
-    public static HediffDef? GetAllomanticSavantHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AllomanticSavant_" + metal.defName);
+    public static void ApplySavantHediffs(Pawn pawn, HediffDef? savantDef, HediffDef? permanentDef) {
+        if (savantDef != null) {
+            Verse.Hediff savant = pawn.health.hediffSet.GetFirstHediffOfDef(savantDef) ??
+                                  HediffMaker.MakeHediff(savantDef, pawn);
+            savant.Severity = SeverityForStage(3);
+            if (!pawn.health.hediffSet.HasHediff(savantDef)) pawn.health.AddHediff(savant);
+        }
+
+        if (permanentDef != null && !pawn.health.hediffSet.HasHediff(permanentDef)) {
+            pawn.health.AddHediff(HediffMaker.MakeHediff(permanentDef, pawn));
+        }
     }
 
-    public static HediffDef? GetAllomanticWithdrawalHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AllomanticWithdrawal_" + metal.defName);
-    }
+    public static void UpdateSavantHediffState(
+        Pawn pawn,
+        int previousStage,
+        int newStage,
+        HediffDef? savantHediffDef,
+        HediffDef? permanentHediffDef
+    ) {
+        if (newStage > 0 && savantHediffDef != null) {
+            Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
+            if (existing is null) {
+                Verse.Hediff hediff = HediffMaker.MakeHediff(savantHediffDef, pawn);
+                hediff.Severity = SeverityForStage(newStage);
+                pawn.health.AddHediff(hediff);
+            }
+            else {
+                existing.Severity = SeverityForStage(newStage);
+            }
+        }
+        else if (newStage == 0 && savantHediffDef != null) {
+            Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
+            if (existing is not null) pawn.health.RemoveHediff(existing);
+        }
 
-    public static HediffDef? GetAllomanticPermanentHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_" + metal.defName);
-    }
-
-    public static HediffDef? GetFeruchemicalSavantHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_FeruchemicalSavant_" + metal.defName);
-    }
-
-    public static HediffDef? GetFeruchemicalPermanentHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_" + metal.defName);
-    }
-
-    public static HediffDef? GetSurgeSavantHediffDef(string surgeName) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_SurgeSavant_" + surgeName);
-    }
-
-    public static HediffDef? GetSurgePermanentHediffDef(string surgeName) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_SurgeSavantPermanent_" + surgeName);
-    }
-
-    public static int GetAllomanticSavantStage(Pawn pawn, MetalDef metal) {
-        RecordDef recordDef = System.Scadrial.RecordDefOf.GetTimeSpentBurningForMetal(metal);
-        float ticks = pawn.records.GetValue(recordDef);
-        return GetAllomanticStage(ticks);
-    }
-
-    public static int GetFeruchemicalSavantStage(Pawn pawn, MetalDef metal) {
-        RecordDef storingRecord = System.Scadrial.RecordDefOf.GetTimeSpentStoringForMetal(metal);
-        RecordDef tappingRecord = System.Scadrial.RecordDefOf.GetTimeSpentTappingForMetal(metal);
-        float ticks = pawn.records.GetValue(storingRecord) + pawn.records.GetValue(tappingRecord);
-        return GetFeruchemicalStage(ticks);
-    }
-
-    public static int GetSurgebindingSavantStage(Pawn pawn, System.Roshar.Def.SurgeDef surge) {
-        RecordDef? recordDef = DefDatabase<RecordDef>.GetNamedSilentFail("Cosmere_Roshar_Record_TimeSpentUsing_" + surge.defName);
-        if (recordDef == null) return 0;
-        float ticks = pawn.records.GetValue(recordDef);
-        return GetSurgebindingStage(ticks);
+        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null) {
+            if (!pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
+                pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
+            }
+        }
     }
 
     public static void SendSavantLetter(Pawn pawn, int stage, string systemKey, string powerName) {

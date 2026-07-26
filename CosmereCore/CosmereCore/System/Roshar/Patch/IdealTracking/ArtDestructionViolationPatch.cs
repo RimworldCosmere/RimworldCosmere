@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Surgebinding;
 using HarmonyLib;
 using RimWorld;
@@ -20,7 +21,7 @@ public static class ArtDestructionViolationPatch {
         List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn colonist = colonists[i];
-            if (ViolationUtility.IsSurgebinderOfOrder(colonist, "Lightweaver")) {
+            if (ViolationUtility.IsSurgebinderOfOrder(colonist, RadiantOrderDefOf.Lightweaver)) {
                 ViolationUtility.ApplyViolation(colonist, 0.1f, "deconstructing artwork");
             }
         }

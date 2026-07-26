@@ -9,10 +9,9 @@ namespace Cosmere.System.Roshar.Dev;
 public static class SprenDebugOverlay {
     public static bool showOverlay { get; set; }
 
-    // Get color from controller instead of hardcoded dictionary
     private static Color GetSprenColor(SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        return controller?.sprenColor ?? Color.yellow; // Default fallback color
+        return controller?.sprenColor ?? Color.yellow;
     }
 
 
@@ -21,14 +20,12 @@ public static class SprenDebugOverlay {
 
         float zoomLevel = Current.CameraDriver.ZoomRootSize;
         CellRect rect = Current.CameraDriver.CurrentViewRect.ClipInsideMap(Find.CurrentMap).ExpandedBy(1);
-        // Get all enabled controllers and draw their cells directly
         foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             SprenType sprenType = controller.sprenType;
 
             if (zoomLevel <= 25) {
-                // Draw valid spawn cells (semi-transparent)
                 Color validColor = GetSprenColor(sprenType);
-                validColor.a = 0.2f; // More transparent for valid cells
+                validColor.a = 0.2f;
                 foreach (SprenSpawnInformation? info in controller.validSpawnInfo) {
                     IntVec3 position = info.position!.Value;
                     if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
@@ -46,19 +43,18 @@ public static class SprenDebugOverlay {
                 }
             }
 
-            // Draw active spawn cells (brighter, smaller)
             Color activeColor = GetSprenColor(sprenType);
-            activeColor.a = 0.8f; // Bright for active spawn cells
+            activeColor.a = 0.8f;
 
             foreach (SprenSpawnInformation? info in controller.activeSpawnInfo) {
                 IntVec3 position = info.position!.Value;
                 if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
 
                 Vector3 drawPos = info.position!.Value.ToVector3Shifted();
-                drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor() + 0.1f; // Slightly higher
+                drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor() + 0.1f;
 
                 Graphics.DrawMesh(
-                    MeshPool.plane05, // Smaller mesh for active spawn cells
+                    MeshPool.plane05,
                     drawPos,
                     Quaternion.identity,
                     SolidColorMaterials.SimpleSolidColorMaterial(activeColor),

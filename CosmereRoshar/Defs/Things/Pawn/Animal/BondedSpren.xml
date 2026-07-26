@@ -86,11 +86,11 @@
                 <glowRadius>1</glowRadius>
                 <glowColor>(217, 217, 230)</glowColor>
             </li>
-            <li Class="Cosmere.System.Roshar.Comp.Thing.CompSprenGlowerProperties">
+            <li Class="Cosmere.System.Roshar.Comp.Thing.SprenGlowerProperties">
                 <baseGlowRadius>1</baseGlowRadius>
                 <glowColor>(217, 217, 230)</glowColor>
             </li>
-            <li Class="Cosmere.System.Roshar.Comp.Thing.CompSprenBondProperties" />
+            <li Class="Cosmere.System.Roshar.Comp.Thing.SprenBondProperties" />
         </comps>
     </ThingDef>
 

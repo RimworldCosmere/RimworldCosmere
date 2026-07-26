@@ -1,13 +1,12 @@
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Gene;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.LetterArrive;
 
 public class SpeakOath : ChoiceLetter {
-    private Pawn? targetPawn;
     private int idealLevel;
+    private Pawn? targetPawn;
 
     public override bool ShouldAutomaticallyOpenLetter => true;
 
@@ -26,9 +25,13 @@ public class SpeakOath : ChoiceLetter {
 
             DiaOption openDialog = new DiaOption("CRO_SpeakOath_ViewOath".Translate()) {
                 action = () => {
-                    Find.WindowStack.Add(new RadiantOrderInfoDialog(
-                        targetPawn, surgebinder, RadiantOrderInfoMode.SpeakOath
-                    ));
+                    Find.WindowStack.Add(
+                        new Dialog_RadiantOrderInfoDialog(
+                            targetPawn,
+                            surgebinder,
+                            RadiantOrderInfoMode.SpeakOath
+                        )
+                    );
                     Find.LetterStack.RemoveLetter(this);
                 },
                 resolveTree = true,

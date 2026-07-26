@@ -26,7 +26,11 @@ public class DelayedActionScheduler {
 
             try {
                 item.action?.Invoke();
-            } finally {
+            }
+            catch (Exception ex) {
+                Logger.Error($"DelayedActionScheduler: scheduled action threw: {ex}");
+            }
+            finally {
                 Scheduled.RemoveAt(i);
             }
         }

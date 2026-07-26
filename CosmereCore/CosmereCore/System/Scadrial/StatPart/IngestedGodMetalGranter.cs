@@ -19,17 +19,20 @@ public class IngestedGodMetalGranter : RimWorld.StatPart {
 
             if (pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium) > 0) {
                 val += 1;
-            } else {
+            }
+            else {
                 val += pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasiumAlloy) / 16f;
             }
-        } else if (feruchemy) {
+        }
+        else if (feruchemy) {
             if (!pawn.IsFeruchemist()) {
                 return;
             }
 
             if (pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium) > 0) {
                 val += 1;
-            } else {
+            }
+            else {
                 val += pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratiumAlloy) / 16f;
             }
         }

@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Handlebars.Net" Version="2.1.6" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Abstractions" Version="22.0.15" />
   </ItemGroup>

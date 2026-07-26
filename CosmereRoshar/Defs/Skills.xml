@@ -7,5 +7,10 @@
         <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
         <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
         <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresInvestitureSystem>Surgebinding</requiresInvestitureSystem>
+            </li>
+        </modExtensions>
     </SkillDef>
 </Defs>

@@ -8,5 +8,4 @@ public class StormlightBatteryProperties : CompProperties {
     }
 }
 
-public class StormlightBattery : StormlightNode {
-}
+public class StormlightBattery : StormlightNode { }

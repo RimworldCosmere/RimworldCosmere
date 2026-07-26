@@ -6,8 +6,10 @@ using SoundDefOf = Cosmere.Core.SoundDefOf;
 namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class Shardplate : SurgebindingAbility {
-    private static readonly ThingDef ShardplateDef = ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardplate;
-    private static readonly ThingDef ShardhelmDef = ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm;
+    private static ThingDef? _shardplateDef;
+    private static ThingDef ShardplateDef => _shardplateDef ??= ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardplate;
+    private static ThingDef? _shardhelmDef;
+    private static ThingDef ShardhelmDef => _shardhelmDef ??= ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm;
 
     public Shardplate(Pawn pawn) : base(pawn) { }
     public Shardplate(Pawn pawn, AbilityDef def) : base(pawn, def) { }

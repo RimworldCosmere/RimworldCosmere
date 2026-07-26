@@ -2,7 +2,7 @@
 <Defs>
     <IncidentDef>
         <defName>Cosmere_Scadrial_Incident_FindLerasium</defName>
-        <workerClass>Cosmere.System.Scadrial.IncidentWorker.FindLerasium</workerClass>
+        <workerClass>Cosmere.System.Scadrial.Incident.Worker.IncidentWorker_FindLerasium</workerClass>
         <category>Special</category>
         <baseChance>0.00001</baseChance>
         <targetTags>

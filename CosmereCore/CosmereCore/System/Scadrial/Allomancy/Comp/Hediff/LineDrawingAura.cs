@@ -3,8 +3,8 @@ using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Hediff;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
-using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Gene;
 using UnityEngine;
 using Verse;
 using static Cosmere.Core.Mod;
@@ -30,11 +30,13 @@ public abstract class LineDrawingAura : HediffComp {
     protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
     protected MetallicArtsMetalDef metal => parent.metal;
     protected float radius => props.radius * parent.Severity;
+
     protected bool atLeastBurning {
         get {
-            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.sourceAbilities) {
+            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.SourceAbilities) {
                 if (sa is AllomancyAbility a && a.atLeastBurning) return true;
             }
+
             return false;
         }
     }
@@ -44,23 +46,23 @@ public abstract class LineDrawingAura : HediffComp {
 
     public override void CompPostPostRemoved() {
         base.CompPostPostRemoved();
-        LineRenderer.TryRemove(this);
-        CircleRenderer.TryRemove(this);
+        LineRenderer.Remove(this);
+        CircleRenderer.Remove(this);
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
         if (!atLeastBurning) {
-            LineRenderer.TryClear(this);
+            LineRenderer.Clear(this);
             return;
         }
 
-        if (!Scadrial.Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
-            LineRenderer.TryClear(this);
+        if (!Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
+            LineRenderer.Clear(this);
             return;
         }
 
         if (debugMode) {
-            CircleRenderer.TryAdd(
+            CircleRenderer.Add(
                 this,
                 new CircleToRender(
                     parent.pawn,
@@ -74,11 +76,11 @@ public abstract class LineDrawingAura : HediffComp {
             return;
         }
 
-        LineRenderer.TryClear(this);
+        LineRenderer.Clear(this);
         foreach (IntVec3 cell in parent.pawn.GetCellsAround(radius)) {
             IEnumerable<Verse.Thing> thingsToDrawInCell = GetThingsToDrawInCell(cell, parent.pawn.Map);
             foreach (Verse.Thing thing in thingsToDrawInCell) {
-                LineRenderer.TryAdd(this, GetLineToRender(thing));
+                LineRenderer.Add(this, GetLineToRender(thing));
             }
         }
     }

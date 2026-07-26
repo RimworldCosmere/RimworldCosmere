@@ -12,7 +12,7 @@ This is a modular monorepo with a consolidated single-assembly architecture for 
 
 ### Core Assembly
 
-- **[Cosmere Core](./CosmereCore)** – Single C# assembly (`Cosmere.Core.dll`) containing all shared code:
+- **[Cosmere Core](./CosmereCore)** – Single C# assembly (`Cosmere.dll`) containing all shared code:
   - Base framework, utilities, and extension methods
   - Investiture system, stats, traits, needs
   - All metals, alloys, gems, and godmetals

@@ -5,8 +5,7 @@ namespace Cosmere.Core.Comp.Game;
 
 #pragma warning disable CS9113 // Parameter 'game' is unread - required by GameComponent base class
 public class SpiritWeb(Verse.Game game) : GameComponent {
-#pragma warning restore CS9113
-    public const string CHANGED_SIGNAL = "Cosmere_Connection_Changed";
+    public const string ChangedSignal = "Cosmere_Connection_Changed";
     private List<Connection> connectionList = [];
 
     private Dictionary<(string, string), Connection> connections =
@@ -22,14 +21,10 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
 
     public Connection GetOrCreateConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         (string, string) key = NormalizeKey(targetOne, targetTwo);
-        if (!connections.TryGetValue(key, out Connection? _)) {
-            connections[key] = InitializeConnection(targetOne, targetTwo);
+        if (connections.TryGetValue(key, out Connection? existing)) {
+            return existing;
         }
 
-        return connections[key];
-    }
-
-    public Connection InitializeConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         bool canBondObjectOne = true;
         bool canBondObjectTwo = true;
         if (targetOne is Verse.Thing thingOne && thingOne.def.HasModExtension<DefModExtension.Connection>()) {
@@ -42,47 +37,18 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
             canBondObjectTwo = modExtension.canBond;
         }
 
-        (string, string) key = NormalizeKey(targetOne, targetTwo);
         connections[key] = new Connection(targetOne, targetTwo, canBondObjectOne, canBondObjectTwo);
-
         return connections[key];
     }
 
+    public Connection? TryGetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
+        return connections.TryGetValue(NormalizeKey(targetOne, targetTwo), out Connection? c) ? c : null;
+    }
+
     public Connection SetConnectionValue(Connection connection, float value) {
-        float oldValue = connection.value;
-        connection.value = value;
-        if (connection.objectOneIsThing) {
-            if (connection.objectTwoIsThing) {
-                connection.thingOne!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.thingTwo, value, oldValue)
-                );
-            } else if (connection.objectTwoIsFaction) {
-                connection.thingOne!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.factionTwo, value, oldValue)
-                );
-            } else {
-                connection.thingOne!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.objectTwo.GetUniqueLoadID(), value, oldValue)
-                );
-            }
-        }
-
-        if (connection.objectTwoIsThing) {
-            if (connection.objectOneIsThing) {
-                connection.thingTwo!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.thingOne, value, oldValue)
-                );
-            } else if (connection.objectOneIsFaction) {
-                connection.thingTwo!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.factionOne, value, oldValue)
-                );
-            } else {
-                connection.thingTwo!.Notify_SignalReceived(
-                    new Signal(CHANGED_SIGNAL, connection.objectOne.GetUniqueLoadID(), value, oldValue)
-                );
-            }
-        }
-
+        float oldValue = connection.Value;
+        connection.Value = value;
+        connection.NotifyChange(value, oldValue);
         return connection;
     }
 
@@ -95,21 +61,21 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
     public Connection AdjustConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float delta) {
         Connection conn = GetOrCreateConnection(targetOne, targetTwo);
 
-        return SetConnectionValue(conn, conn.value + delta);
+        return SetConnectionValue(conn, conn.Value + delta);
     }
 
     public IEnumerable<Connection> GetConnections(ILoadReferenceable target) {
-        foreach (Connection? connection in connections.Values) {
+        foreach (Connection connection in connections.Values) {
             if (connection.OneObjectMatches(target)) yield return connection;
         }
     }
 
-    public float GetConnectionValue(ILoadReferenceable a, ILoadReferenceable b) {
-        return GetOrCreateConnection(a, b).value;
+    public float GetConnectionValue(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
+        return TryGetConnection(targetOne, targetTwo)?.Value ?? 0f;
     }
 
-    public bool HasConnection(ILoadReferenceable a, ILoadReferenceable b) {
-        return connections.ContainsKey(NormalizeKey(a, b));
+    public bool HasConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
+        return connections.ContainsKey(NormalizeKey(targetOne, targetTwo));
     }
 
     public override void ExposeData() {
@@ -123,10 +89,11 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             connections = new Dictionary<(string, string), Connection>();
-            foreach (Connection? conn in connectionList) {
-                (string, string) key = NormalizeKey(conn.objectOne, conn.objectTwo);
+            foreach (Connection conn in connectionList) {
+                (string, string) key = NormalizeKey(conn.ObjectOne, conn.ObjectTwo);
                 connections[key] = conn;
             }
         }
     }
+#pragma warning restore CS9113
 }

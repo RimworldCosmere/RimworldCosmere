@@ -1,26 +1,34 @@
+using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Def;
-using Cosmere.Core.Savant;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.GameCondition;
 using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Savant;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
-using RimWorld;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using Verse;
 using AbilityDef = RimWorld.AbilityDef;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHediff> {
+    private SurgeDef? cachedSurgeDef;
     public SurgebindingAbility(Pawn pawn) : base(pawn) { }
     public SurgebindingAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public RadiantOrderDef radiantOrder => def.radiantOrder ?? pawn.GetRadiantOrder()!;
+    public RadiantOrderDef radiantOrder {
+        get {
+            if (def.radiantOrder != null) return def.radiantOrder;
+            RadiantOrderDef? order = pawn.GetRadiantOrder();
+            if (order == null) throw new InvalidOperationException($"Pawn {pawn.Name} has no RadiantOrder assigned");
+            return order;
+        }
+    }
     public GemDef gem => radiantOrder.gemstone;
 
-    public override Surgebinder gene => cachedGene ??= pawn.genes.GetSurgebindingGeneForOrder(radiantOrder)!;
-
-    private SurgeDef? cachedSurgeDef;
+    public override Surgebinder Gene => cachedGene ??= pawn.genes.GetSurgebindingGeneForOrder(radiantOrder)!;
 
     private SurgeDef? surgeDef {
         get {
@@ -35,6 +43,7 @@ public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHedi
                     }
                 }
             }
+
             return null;
         }
     }
@@ -44,51 +53,55 @@ public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHedi
         set => base.def = value;
     }
 
-    public new bool GizmosVisible() {
-        return base.GizmosVisible()
-               && pawn.genes.HasSurgebindingGeneForOrder(radiantOrder)
-               && ShardUtility.AreAnyEnabled(ShardDefOf.Honor);
-    }
-
     public override AcceptanceReport CanCast {
         get {
             if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) {
-                return "Honor is not present.";
+                return "CRO_Surgebinding_HonorNotPresent".Translate();
             }
+
             return base.CanCast;
         }
+    }
+
+    public override bool GizmosVisible() {
+        return base.GizmosVisible() &&
+               pawn.genes.HasSurgebindingGeneForOrder(radiantOrder) &&
+               ShardUtility.AreAnyEnabled(ShardDefOf.Honor);
     }
 
     public override float GetStrength(Status? desiredStatus = null) {
         float baseStrength = base.GetStrength(desiredStatus);
         if (surgeDef == null) return baseStrength;
-        int stage = SavantUtility.GetSurgebindingSavantStage(pawn, surgeDef);
-        return baseStrength * SavantUtility.GetSurgebindingPowerMultiplier(stage);
+        int stage = SurgebindingSavantUtility.GetSavantStage(pawn, surgeDef);
+        return baseStrength * SurgebindingSavantUtility.GetPowerMultiplier(stage);
     }
 
     public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {
-        float rate = base.GetDesiredBurnRateForStatus(desiredStatus) / (1 << gene.currentIdeal);
+        float rate = base.GetDesiredBurnRateForStatus(desiredStatus) / (1 << Gene.CurrentIdeal);
         if (surgeDef != null) {
-            int stage = SavantUtility.GetSurgebindingSavantStage(pawn, surgeDef);
-            rate *= SavantUtility.GetSurgebindingCostMultiplier(stage);
+            int stage = SurgebindingSavantUtility.GetSavantStage(pawn, surgeDef);
+            rate *= SurgebindingSavantUtility.GetCostMultiplier(stage);
         }
+
         if (pawn.Map != null) {
-            rate *= GameCondition.SuppressionField.GetCostMultiplier(pawn.Map);
+            rate *= SuppressionField.GetCostMultiplier(pawn.Map);
         }
+
         return rate;
     }
 
     protected override void OnEnable() {
         base.OnEnable();
         if (def.hediff != null && !def.targetRequired) {
-            Utility.SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+            SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
         }
     }
 
     protected override void OnDisable() {
         if (def.hediff != null && !def.targetRequired) {
-            Utility.SurgebindingHediffUtility.RemoveHediff(pawn, this, def.hediff);
+            SurgebindingHediffUtility.RemoveHediff(pawn, this, def.hediff);
         }
+
         base.OnDisable();
     }
 }

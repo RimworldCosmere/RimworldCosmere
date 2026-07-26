@@ -26,8 +26,10 @@ public class ApparelFabrialDiminisher : ThingComp {
         }
     }
 
+    public bool IsActive => powerOn;
+
     public override void CompTick() {
-        CheckPower();
+        UpdatePowerState();
     }
 
     public void InfuseStormlight(float amount) {
@@ -40,15 +42,15 @@ public class ApparelFabrialDiminisher : ThingComp {
         }
     }
 
-    public bool CheckPower() {
+    private void UpdatePowerState() {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
-        if (investiture == null) return powerOn = false;
+        if (investiture == null) {
+            powerOn = false;
+            return;
+        }
 
         powerOn = investiture.currentInvestiture > 0;
-        if (!powerOn) return powerOn;
-
-        investiture.drainRate = 0.25f;
-        return powerOn;
+        if (powerOn) investiture.drainRate = 0.25f;
     }
 
     public override string CompInspectStringExtra() {

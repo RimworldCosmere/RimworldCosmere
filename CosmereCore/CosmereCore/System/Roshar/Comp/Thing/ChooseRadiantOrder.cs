@@ -13,7 +13,7 @@ public class ChooseRadiantOrder : ThingComp {
             defaultLabel = "CRO_Choose_Radiant_Order_Button".Translate(),
             defaultDesc = "CRO_Choose_Radiant_Order_Desc".Translate(pawn.NameFullColored.Named("PAWN")).Resolve(),
             icon = Icon,
-            action = () => { Find.WindowStack.Add(new Dialog.ChooseRadiantOrder(pawn)); },
+            action = () => { Find.WindowStack.Add(new Dialog.Dialog_ChooseRadiantOrder(pawn)); },
         };
     }
 }

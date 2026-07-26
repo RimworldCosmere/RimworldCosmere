@@ -1,35 +1,38 @@
 using System;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using HediffUtility = Cosmere.System.Scadrial.Utility.HediffUtility;
+using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
 public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
-    private const int DURALUMIN_BURN_POWER = 10;
+    private const int DuraluminBurnPower = 10;
 
     protected int flareStartTick = -1;
     public AllomancyAbility(Pawn pawn) : base(pawn) { }
     public AllomancyAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public override Allomancer gene {
+    public override Allomancer Gene {
         get {
             if (cachedGene != null) return cachedGene;
             Allomancer? found = pawn.genes?.GetAllomanticGeneForMetal(metal);
             if (found == null) {
                 throw new InvalidOperationException(
-                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}");
+                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}"
+                );
             }
 
             cachedGene = found;
             return cachedGene;
         }
     }
+
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
     public new AllomanticAbilityDef def {
@@ -41,11 +44,11 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     public MetallicArtsMetalDef metal => def.metal;
 
     public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {
-        return status.power == DURALUMIN_BURN_POWER ? 0.00000000001f : base.GetDesiredBurnRateForStatus(desiredStatus);
+        return status.power == DuraluminBurnPower ? 0.00000000001f : base.GetDesiredBurnRateForStatus(desiredStatus);
     }
 
     public override float GetStrength(Status? desiredStatus = null) {
-        float statusValue = status.power == DURALUMIN_BURN_POWER
+        float statusValue = status.power == DuraluminBurnPower
             ? pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f
             : base.GetStrength(desiredStatus);
 
@@ -63,6 +66,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         if (def.hediff != null && !def.targetRequired) {
             RemoveHediff(pawn);
         }
+
         base.OnDisable();
     }
 
@@ -86,8 +90,19 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         flareStartTick = -1;
     }
 
-    public new bool GizmosVisible() {
+    public override AcceptanceReport CanCast {
+        get {
+            if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation, ShardDefOf.Ruin, ShardDefOf.Harmony)) {
+                return "CS_Allomancy_NoShardPresent".Translate();
+            }
+
+            return base.CanCast;
+        }
+    }
+
+    public override bool GizmosVisible() {
         if (!base.GizmosVisible()) return false;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation, ShardDefOf.Ruin, ShardDefOf.Harmony)) return false;
 
         if (!def.isCompound) return true;
 

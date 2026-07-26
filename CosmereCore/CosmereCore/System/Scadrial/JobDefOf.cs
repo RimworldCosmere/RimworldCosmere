@@ -11,10 +11,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class JobDefOf {
-    static JobDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_MaintainAllomanticTarget;
 
@@ -38,4 +34,8 @@ public static class JobDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_ImplantSpike;
+
+    static JobDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
+    }
 }

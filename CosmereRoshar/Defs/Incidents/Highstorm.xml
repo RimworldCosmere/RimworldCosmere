@@ -1,0 +1,96 @@
+<Defs>
+    <IncidentDef>
+        <defName>Cosmere_Roshar_HighstormIncident</defName>
+        <workerClass>Cosmere.System.Roshar.Incident.Worker.IncidentWorker_Highstorm</workerClass>
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
+        <category>ThreatBig</category>
+        <letterText>The stormwall has been sighted on the horizon. The highstorm approaches from the east, and all who remain unsheltered will be at its mercy.</letterText>
+        <letterLabel>Highstorm</letterLabel>
+        <letterDef>ThreatBig</letterDef>
+        <minRefireDays>1</minRefireDays>
+    </IncidentDef>
+
+    <GameConditionDef>
+        <defName>Cosmere_Roshar_HighstormCondition</defName>
+        <conditionClass>Cosmere.System.Roshar.GameCondition.Highstorm</conditionClass>
+        <label>Highstorm</label>
+        <description>A highstorm sweeps across the land from east to west. Walls of rain and wind-driven stone batter everything in their path.</description>
+
+        <modExtensions>
+            <li Class="Cosmere.System.Roshar.DefModExtension.Highstorm">
+                <windStrength>2.5</windStrength>
+                <windDirection>West</windDirection>
+                <stormDuration>10000</stormDuration>
+            </li>
+        </modExtensions>
+    </GameConditionDef>
+
+    <WeatherDef>
+        <defName>Cosmere_Roshar_HighstormWeather</defName>
+        <label>Highstorm</label>
+        <isBad>true</isBad>
+        <description>The full fury of the highstorm rages overhead. Winds strong enough to hurl boulders sweep from east to west, scouring the land of anything unsheltered.</description>
+        <temperatureRange>0~999</temperatureRange>
+        <windSpeedFactor>6.5</windSpeedFactor>
+        <windSpeedOffset>6.25</windSpeedOffset>
+        <favorability>Bad</favorability>
+        <perceivePriority>2</perceivePriority>
+        <weatherThought>SoakingWet</weatherThought>
+        <accuracyMultiplier>0.8</accuracyMultiplier>
+        <rainRate>5</rainRate>
+        <moveSpeedMultiplier>0.2</moveSpeedMultiplier>
+        <ambientSounds>
+            <li>Ambient_Wind_Storm</li>
+            <li>Ambient_Rain</li>
+        </ambientSounds>
+        <durationRange>8000~12000</durationRange>
+        <eventMakers>
+            <li>
+                <averageInterval>100</averageInterval>
+                <eventClass>WeatherEvent_LightningFlash</eventClass>
+            </li>
+            <li>
+                <averageInterval>100</averageInterval>
+                <eventClass>WeatherEvent_LightningStrike</eventClass>
+            </li>
+        </eventMakers>
+        <overlayClasses>
+            <li>WeatherOverlay_Rain</li>
+        </overlayClasses>
+        <commonalityRainfallFactor>
+            <points>
+                <li>(0, 0)</li>
+                <li>(1300, 1)</li>
+                <li>(4000, 2.0)</li>
+            </points>
+        </commonalityRainfallFactor>
+        <!-- Colors are Overcast -->
+        <skyColorsDay>
+            <sky>(0.8,0.8,0.8)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.7,0.7,0.7)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsDay>
+        <skyColorsDusk>
+            <sky>(1,1,1)</sky>
+            <shadow>(0.3,0.3,0.3)</shadow>
+            <overlay>(0.6,0.6,0.6)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsDusk>
+        <skyColorsNightEdge>
+            <sky>(0.35,0.40,0.45)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.5,0.5,0.5)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsNightEdge>
+        <skyColorsNightMid>
+            <sky>(0.35,0.40,0.45)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.5,0.5,0.5)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsNightMid>
+    </WeatherDef>
+
+</Defs>

@@ -40,4 +40,6 @@
     <CRO_IdealRegressed_Text>{PAWN}'s bond with the {ORDER} has weakened. Their Ideal has regressed from the {OLDIDEAL}th to the {NEWIDEAL}th Ideal. Violations of their Order's tenets have eroded the Nahel Bond.</CRO_IdealRegressed_Text>
     <CRO_SprenBond_StrengthTooltip>Bond strength reflects the health of the Nahel Bond.\n\nFactors reducing bond strength:</CRO_SprenBond_StrengthTooltip>
     <CRO_SprenBond_StrengthFull>The bond is at full strength. No negative factors.</CRO_SprenBond_StrengthFull>
+    <CRO_SprenBond_StrainedBondFactor>Strained bond (recovering)</CRO_SprenBond_StrainedBondFactor>
+    <CRO_SprenBond_UnknownFactors>Unknown factors</CRO_SprenBond_UnknownFactors>
 </LanguageData>

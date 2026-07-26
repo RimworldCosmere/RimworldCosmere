@@ -7,6 +7,11 @@
         <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
         <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
         <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresInvestitureSystem>Allomancy</requiresInvestitureSystem>
+            </li>
+        </modExtensions>
     </SkillDef>
     <SkillDef>
         <defName>Cosmere_Scadrial_Skill_FeruchemicPower</defName>
@@ -15,5 +20,10 @@
         <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
         <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
         <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresInvestitureSystem>Feruchemy</requiresInvestitureSystem>
+            </li>
+        </modExtensions>
     </SkillDef>
 </Defs>

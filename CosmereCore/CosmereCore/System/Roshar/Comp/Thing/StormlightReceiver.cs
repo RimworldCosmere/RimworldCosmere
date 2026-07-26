@@ -1,8 +1,7 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.GameCondition;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Comp.Map;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Thing;
@@ -61,7 +60,8 @@ public class StormlightReceiver : StormlightNode {
             string defName = conditions[i].def.defName;
             if (defName == "Cosmere_Roshar_GameCondition_SiblingBlessing") {
                 holder.currentInvestitureSelf += 0.5f;
-            } else if (defName == "Cosmere_Roshar_GameCondition_HonorPerpendicularity") {
+            }
+            else if (defName == "Cosmere_Roshar_GameCondition_HonorPerpendicularity") {
                 holder.currentInvestitureSelf += 2.0f;
             }
         }

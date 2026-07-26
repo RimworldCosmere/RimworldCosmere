@@ -1,5 +1,7 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
+using Cosmere.System.Roshar.Comp.Map;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Extension;
@@ -12,8 +14,8 @@ public static class ThingExtension {
     public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
         if (!thing.Spawned || thing.Map == null) return false;
         if (thing.Position.Fogged(thing.Map)) return false;
-        if (thing is RimWorld.Mineable) return false;
-        if (thing is Verse.Pawn pawn && StormlightUtilities.IsHighstormImmune(pawn)) return false;
+        if (thing is Mineable) return false;
+        if (thing is Pawn pawn && StormlightUtility.IsHighstormImmune(pawn)) return false;
 
         Room room = thing.GetRoom();
 

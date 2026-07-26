@@ -1,5 +1,5 @@
 using System.Text;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -8,8 +8,8 @@ namespace Cosmere.System.Scadrial.Comp.Map;
 
 public class BronzeDetectionWatcher(Verse.Map map) : MapComponent(map) {
     private const int ScanIntervalTicks = 2500;
-    private HashSet<int> reportedTiles = [];
     private bool hasReportedCurrentTile;
+    private HashSet<int> reportedTiles = [];
     private int tickCounter;
 
     public override void MapComponentTick() {
@@ -42,7 +42,7 @@ public class BronzeDetectionWatcher(Verse.Map map) : MapComponent(map) {
     private void ReportAdjacentTiles(float strength) {
         int scanDepth = strength >= 1.5f ? 3 : strength >= 0.75f ? 2 : 1;
         List<int> tilesToScan = BronzeDetectionUtility.GetTilesInRange(map.Tile, scanDepth);
-        StringBuilder newFinds = new();
+        StringBuilder newFinds = new StringBuilder();
         int newTileCount = 0;
 
         for (int i = 0; i < tilesToScan.Count; i++) {

@@ -5,7 +5,7 @@ using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Comp.Game;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -61,7 +61,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     ///     and start pushing the opposite way for the remainder of the distance
     /// </summary>
     private void MoveThing(Verse.Thing thing, bool movePawn) {
-        SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
+        SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);
         surge?.Burn();
 
         if (thing == pawn) {

@@ -70,6 +70,12 @@
         <Reference Include="D:\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\RimWorld\RimWorldWin64_Data\Managed')">
             <Private>False</Private>
         </Reference>
+        <Reference Include="/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="/mnt/games/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/RimWorld/RimWorldLinux_Data/Managed')">
+            <Private>False</Private>
+        </Reference>
     </ItemGroup>
     <!-- The below condition will check if you've defined a reference called "Assembly-CSharp" and if that reference exists on disk.
         If that reference does not exist, it will add Krafs Rimworld Ref to the project. If it does exist, Krafs won't be added

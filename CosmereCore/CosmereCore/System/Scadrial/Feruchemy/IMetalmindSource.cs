@@ -1,12 +1,35 @@
+using Cosmere.Core.Def;
+
 namespace Cosmere.System.Scadrial.Feruchemy;
 
 public interface IMetalmindSource {
-    float storedAmount { get; }
-    float maxAmount { get; }
-    bool canStore { get; }
-    bool canTap { get; }
-    bool equipped { get; }
-    Cosmere.Core.Def.MetalDef? metal { get; }
+    float StoredAmount { get; }
+
+    /// Charge put here by Compounding. Shares MaxAmount with StoredAmount, and
+    /// pays out far harder when tapped.
+    float CompoundedAmount { get; }
+
+    float MaxAmount { get; }
+    bool CanStore { get; }
+    bool CanTap { get; }
+    bool CanTapCompounded { get; }
+
+    /// Only a metalmind inside the body can be compounded into. Worn bands and
+    /// earrings still hold compounded charge once it is there.
+    bool IsImplanted { get; }
+
+    bool Equipped { get; }
+    MetalDef? Metal { get; }
+    /// Whether this metalmind may be compounded INTO. Distinct from AddCompounded,
+    /// which is the mechanism and stays open so an explanted implant can hand its
+    /// compounded charge back to the item.
+    bool CanStoreCompounded { get; }
+
+    float TotalStored { get; }
+    float FreeSpace { get; }
+
     void AddStored(float amount);
     void ConsumeStored(float amount);
+    void AddCompounded(float amount);
+    void ConsumeCompounded(float amount);
 }

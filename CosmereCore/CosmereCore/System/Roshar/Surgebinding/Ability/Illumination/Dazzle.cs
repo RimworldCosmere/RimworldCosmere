@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -10,15 +9,15 @@ public class Dazzle : SurgebindingAbility {
     public Dazzle(Pawn pawn) : base(pawn) { }
     public Dazzle(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (8f + gene.currentIdeal * 4f));
+    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (8f + Gene.CurrentIdeal * 4f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         float currentRadius = radius;
         HediffDef? hediffDef = def.hediff;
@@ -27,7 +26,10 @@ public class Dazzle : SurgebindingAbility {
         FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn == pawn) continue;

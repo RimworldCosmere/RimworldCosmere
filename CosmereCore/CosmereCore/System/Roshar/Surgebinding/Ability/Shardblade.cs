@@ -6,7 +6,8 @@ using SoundDefOf = Cosmere.Core.SoundDefOf;
 namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class Shardblade : SurgebindingAbility {
-    private static readonly ThingDef ShardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
+    private static ThingDef? _shardbladeDef;
+    private static ThingDef ShardbladeDef => _shardbladeDef ??= ThingDefOf.Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
 
     private readonly List<ThingWithComps> previousEquipment = [];
 
@@ -16,7 +17,7 @@ public class Shardblade : SurgebindingAbility {
     public override AcceptanceReport CanCast => base.CanCast && PawnHasShardblade();
 
     private bool PawnHasShardblade() {
-        if (gene.currentIdeal >= 1) return true;
+        if (Gene.CurrentIdeal >= 1) return true;
         if (pawn.equipment?.Primary?.def == ShardbladeDef) return true;
 
         return pawn.inventory?.innerContainer.InnerListForReading.Exists(t => t.def == ShardbladeDef) ?? false;
@@ -28,13 +29,14 @@ public class Shardblade : SurgebindingAbility {
                 if (pawn.inventory.innerContainer.TryAdd(equipment)) {
                     previousEquipment.Add(equipment);
                     equipment.DeSpawn();
-                } else {
+                }
+                else {
                     pawn.equipment.TryDropEquipment(equipment, out _, pawn.Position);
                 }
             }
         }
 
-        if (gene.currentIdeal >= 1) {
+        if (Gene.CurrentIdeal >= 1) {
             SummonBladeInstantly();
             return;
         }

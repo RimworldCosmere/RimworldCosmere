@@ -40,13 +40,14 @@ public class AllomanticAbilityDef : AbilityDef {
         if (string.IsNullOrEmpty(iconPath)) {
             string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
             LongEventHandler.ExecuteWhenFinished(() => {
-                    uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
-                             metal.invertedIcon!;
-                    disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
-                    pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
-                }
+                uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
+                         metal.invertedIcon!;
+                disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
+            }
             );
-        } else {
+        }
+        else {
             base.PostLoad();
         }
     }

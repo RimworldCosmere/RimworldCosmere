@@ -10,11 +10,7 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static partial class HediffDefOf {
-    static HediffDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
-    }
-
+public static class HediffDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static HediffDef Cosmere_Roshar_Hediff_ShardbladeSummoning;
 
@@ -59,4 +55,8 @@ public static partial class HediffDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static HediffDef Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse;
+
+    static HediffDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
+    }
 }

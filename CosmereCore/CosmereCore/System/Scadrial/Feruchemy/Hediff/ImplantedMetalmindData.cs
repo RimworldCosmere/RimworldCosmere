@@ -5,29 +5,50 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class ImplantedMetalmindData : IExposable, IMetalmindSource {
-    private float storedAmountInt;
+    private MetalDef? cachedMetal;
     private float maxAmountInt;
     public string metalDefName = "";
     public string metalmindType = "";
     public string ownerName = "";
+    private float compoundedAmountInt;
+    private float storedAmountInt;
 
-    private MetalDef? cachedMetal;
+    public void ExposeData() {
+        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
+        Scribe_Values.Look(ref metalmindType, "metalmindType", "");
+        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
+        Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
+        Scribe_Values.Look(ref maxAmountInt, "maxAmount");
+        Scribe_Values.Look(ref ownerName, "ownerName", "");
+    }
 
-    public float storedAmount {
+    public float StoredAmount {
         get => storedAmountInt;
         set => storedAmountInt = value;
     }
 
-    public float maxAmount {
+    public float MaxAmount {
         get => maxAmountInt;
         set => maxAmountInt = value;
     }
 
-    public bool canStore => equipped && storedAmount < maxAmount;
-    public bool canTap => equipped && storedAmount > 0;
-    public bool equipped => true;
+    public float CompoundedAmount {
+        get => compoundedAmountInt;
+        set => compoundedAmountInt = value;
+    }
 
-    public MetalDef metal {
+    public float TotalStored => storedAmountInt + compoundedAmountInt;
+    public float FreeSpace => Mathf.Max(0f, maxAmountInt - TotalStored);
+
+    // Both pools draw on the same space, so filling either is bounded by the total.
+    public bool CanStore => Equipped && FreeSpace > 0f;
+    public bool CanTap => Equipped && StoredAmount > 0f;
+    public bool CanTapCompounded => Equipped && CompoundedAmount > 0f;
+    public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
+    public bool IsImplanted => true;
+    public bool Equipped => true;
+
+    public MetalDef Metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(metalDefName);
@@ -36,20 +57,29 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     }
 
     public void AddStored(float amount) {
-        if (!canStore) return;
-        storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt);
+        if (!CanStore) return;
+        storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt - compoundedAmountInt);
     }
 
     public void ConsumeStored(float amount) {
-        if (!canTap) return;
+        if (!CanTap) return;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
     }
 
-    public void ExposeData() {
-        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
-        Scribe_Values.Look(ref metalmindType, "metalmindType", "");
-        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
-        Scribe_Values.Look(ref maxAmountInt, "maxAmount");
-        Scribe_Values.Look(ref ownerName, "ownerName", "");
+    /// Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
+    /// after load to keep the two pools inside a capacity that may have changed.
+    public void ReconcileCapacity() {
+        if (storedAmountInt + compoundedAmountInt <= maxAmountInt) return;
+        compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
+    }
+
+    public void AddCompounded(float amount) {
+        if (!CanStore) return;
+        compoundedAmountInt = Mathf.Clamp(compoundedAmountInt + amount, 0, maxAmountInt - storedAmountInt);
+    }
+
+    public void ConsumeCompounded(float amount) {
+        if (!CanTapCompounded) return;
+        compoundedAmountInt = Mathf.Clamp(compoundedAmountInt - amount, 0, maxAmountInt);
     }
 }

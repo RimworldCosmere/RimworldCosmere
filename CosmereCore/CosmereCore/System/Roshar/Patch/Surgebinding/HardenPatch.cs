@@ -9,7 +9,7 @@ namespace Cosmere.System.Roshar.Patch.Surgebinding;
 public static class HardenMaxHpPatch {
     private static void Postfix(Verse.Thing __instance, ref int __result) {
         if (__instance is not Building building) return;
-        if (!Harden.HardenedBuildings.TryGetValue(building, out float multiplier)) return;
+        if (!Harden.TryGetHardenMultiplier(building, out float multiplier)) return;
 
         __result = Mathf.RoundToInt(__result * (1f + multiplier));
     }

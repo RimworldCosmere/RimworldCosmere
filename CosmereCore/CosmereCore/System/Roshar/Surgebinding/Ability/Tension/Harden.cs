@@ -8,7 +8,13 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class Harden : SurgebindingAbility {
-    public static readonly Dictionary<Building, float> HardenedBuildings = new Dictionary<Building, float>();
+    private static readonly Dictionary<Building, float> hardenedBuildings = new Dictionary<Building, float>();
+
+    /// The hit point multiplier a building is currently hardened by, if any.
+    /// The map itself stays private so only this class can write to it.
+    public static bool TryGetHardenMultiplier(Building building, out float multiplier) {
+        return hardenedBuildings.TryGetValue(building, out multiplier);
+    }
 
     private List<Building> hardenedStructures = [];
 
@@ -64,7 +70,7 @@ public class Harden : SurgebindingAbility {
         for (int i = hardenedStructures.Count - 1; i >= 0; i--) {
             Building? building = hardenedStructures[i];
             if (building == null || building.Destroyed) {
-                if (building != null) HardenedBuildings.Remove(building);
+                if (building != null) hardenedBuildings.Remove(building);
                 hardenedStructures.RemoveAt(i);
             }
         }
@@ -76,7 +82,7 @@ public class Harden : SurgebindingAbility {
 
     private void ApplyHardening(Building building) {
         int oldMax = building.MaxHitPoints;
-        HardenedBuildings[building] = hpMultiplier;
+        hardenedBuildings[building] = hpMultiplier;
         hardenedStructures.Add(building);
         int newMax = building.MaxHitPoints;
         int hpBonus = newMax - oldMax;
@@ -85,7 +91,7 @@ public class Harden : SurgebindingAbility {
 
     private void RemoveHardening(Building building) {
         int oldMax = building.MaxHitPoints;
-        HardenedBuildings.Remove(building);
+        hardenedBuildings.Remove(building);
         hardenedStructures.Remove(building);
         int newMax = building.MaxHitPoints;
         building.HitPoints = Math.Min(building.HitPoints, newMax);
@@ -100,7 +106,7 @@ public class Harden : SurgebindingAbility {
     public static class HardenStateClearer {
         [HarmonyPostfix]
         public static void Postfix() {
-            HardenedBuildings.Clear();
+            hardenedBuildings.Clear();
         }
     }
 }

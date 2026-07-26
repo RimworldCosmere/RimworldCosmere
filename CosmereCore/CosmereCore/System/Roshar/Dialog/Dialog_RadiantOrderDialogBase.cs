@@ -258,13 +258,12 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     protected virtual void DrawIdealsTab(FoundationListing listing) {
         RosharModSettings settings = Core.Mod.GetModSettings<RosharModSettings>();
         int CurrentIdealLevel = surgebinder?.CurrentIdeal ?? -1;
-        bool hasPendingOath = surgebinder?.PendingOath ?? false;
 
         listing.Gap(Spacing.Get());
 
         for (int i = 0; i < order.ideals.Count; i++) {
             Ideal ideal = order.ideals[i];
-            IdealStatus status = GetIdealStatus(i, CurrentIdealLevel, hasPendingOath);
+            IdealStatus status = GetIdealStatus(i, CurrentIdealLevel);
 
             float rowStartY = listing.CurHeight;
             DrawIdealRow(listing, ideal, i, status, settings.showIdealRequirements);
@@ -321,7 +320,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         };
     }
 
-    private IdealStatus GetIdealStatus(int idealIndex, int CurrentIdeal, bool hasPendingOath) {
+    private IdealStatus GetIdealStatus(int idealIndex, int CurrentIdeal) {
         if (surgebinder == null) return IdealStatus.Future;
         if (idealIndex <= CurrentIdeal) return IdealStatus.Achieved;
 
@@ -333,7 +332,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
                 return IdealStatus.Blocked;
             }
 
-            return hasPendingOath ? IdealStatus.Current : IdealStatus.Current;
+            return IdealStatus.Current;
         }
 
         return IdealStatus.Future;

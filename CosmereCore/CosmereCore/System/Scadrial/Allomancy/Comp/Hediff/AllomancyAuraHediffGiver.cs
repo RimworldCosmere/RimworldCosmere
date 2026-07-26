@@ -49,12 +49,15 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
+    /// The first source ability, or none. Written as an explicit first read
+    /// rather than a foreach that returns on entry, which read as a loop but
+    /// could never take a second pass.
     private IAbility<Allomancer, AllomanticHediff>? ability {
         get {
-            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.SourceAbilities) {
-                return (IAbility<Allomancer, AllomanticHediff>?)sa;
-            }
-            return null;
+            using HashSet<IAbility<Allomancer, IHediff<Allomancer>>>.Enumerator e =
+                parent.SourceAbilities.GetEnumerator();
+
+            return e.MoveNext() ? (IAbility<Allomancer, AllomanticHediff>?)e.Current : null;
         }
     }
 

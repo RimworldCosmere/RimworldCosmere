@@ -77,8 +77,7 @@ public class Dialog_GemheartExpedition : Window {
             if (isSelected != wasSelected) {
                 if (isSelected) {
                     selected.Add(pawn);
-                }
-                else {
+                } else {
                     selected.Remove(pawn);
                 }
             }
@@ -133,8 +132,7 @@ public class Dialog_GemheartExpedition : Window {
 
                 Close();
             }
-        }
-        else {
+        } else {
             GUI.color = Color.gray;
             Widgets.ButtonText(sendRect, "March");
             GUI.color = Color.white;

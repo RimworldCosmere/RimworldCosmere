@@ -13,7 +13,9 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
     public bool powerOn;
 
     public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
+
     public bool hasGemstone => insertedGemstone != null;
+
     public List<ThingDef> FilterList => filterListInt;
 
     public List<ThingDef> AllowedSpheres { get; } = [

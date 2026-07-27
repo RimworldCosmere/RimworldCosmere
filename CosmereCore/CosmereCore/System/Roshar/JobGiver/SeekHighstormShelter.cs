@@ -1,5 +1,5 @@
-using Cosmere.System.Roshar.Util;
 using Cosmere.System.Roshar.Comp.Map;
+using Cosmere.System.Roshar.Util;
 using Verse;
 using Verse.AI;
 

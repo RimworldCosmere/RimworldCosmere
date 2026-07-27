@@ -99,19 +99,19 @@ gen-roshar: ## Generate only SurgesAndOrders
 
 build-main: ## Build main Cosmere solution
 	@echo "$(BLUE)Building main solution...$(NC)"
-	@dotnet build Cosmere.sln --configuration Release --verbosity minimal
+	@dotnet build Cosmere.slnx --configuration Release --verbosity minimal
 
 build-main-debug: ## Build main solution in debug mode
 	@echo "$(BLUE)Building main solution (Debug)...$(NC)"
-	@dotnet build Cosmere.sln --configuration Debug --verbosity minimal
+	@dotnet build Cosmere.slnx --configuration Debug --verbosity minimal
 
 build-tools: ## Build Tools CLI solution
 	@echo "$(BLUE)Building Tools solution...$(NC)"
-	@dotnet build Cosmere.Tools.sln --configuration Release --verbosity minimal
+	@dotnet build Cosmere.Tools.slnx --configuration Release --verbosity minimal
 
 build-tools-debug: ## Build Tools CLI in debug mode
 	@echo "$(BLUE)Building Tools solution (Debug)...$(NC)"
-	@dotnet build Cosmere.Tools.sln --configuration Debug --verbosity minimal
+	@dotnet build Cosmere.Tools.slnx --configuration Debug --verbosity minimal
 
 build-assets: ## Build Unity AssetBundles for current platform
 	@echo "$(BLUE)Building Unity AssetBundles...$(NC)"
@@ -149,22 +149,22 @@ build-assets-force: ## Force rebuild all AssetBundles for current platform
 
 clean: ## Clean all build outputs
 	@echo "$(BLUE)Cleaning build outputs...$(NC)"
-	@dotnet clean Cosmere.sln --verbosity minimal
-	@dotnet clean Cosmere.Tools.sln --verbosity minimal
+	@dotnet clean Cosmere.slnx --verbosity minimal
+	@dotnet clean Cosmere.Tools.slnx --verbosity minimal
 
 restore: ## Restore NuGet packages
 	@echo "$(BLUE)Restoring packages...$(NC)"
-	@dotnet restore Cosmere.sln --verbosity minimal
-	@dotnet restore Cosmere.Tools.sln --verbosity minimal
+	@dotnet restore Cosmere.slnx --verbosity minimal
+	@dotnet restore Cosmere.Tools.slnx --verbosity minimal
 
 format: ## Format all C# code
 	@echo "$(BLUE)Formatting code...$(NC)"
-	@dotnet format Cosmere.sln --include "**/*.cs" --verbosity minimal
-	@dotnet format Cosmere.Tools.sln --include "**/*.cs" --verbosity minimal
+	@dotnet format Cosmere.slnx --include "**/*.cs" --verbosity minimal
+	@dotnet format Cosmere.Tools.slnx --include "**/*.cs" --verbosity minimal
 
 test: ## Run all tests
 	@echo "$(BLUE)Running tests...$(NC)"
-	@dotnet test Cosmere.sln --configuration Release --logger "console;verbosity=minimal"
+	@dotnet test Cosmere.slnx --configuration Release --logger "console;verbosity=minimal"
 
 ##@ Project Management
 
@@ -174,8 +174,8 @@ install-deps: ## Install Node.js dependencies
 
 check-deps: ## Check for outdated dependencies
 	@echo "$(BLUE)Checking .NET dependencies...$(NC)"
-	@dotnet list Cosmere.sln package --outdated
-	@dotnet list Cosmere.Tools.sln package --outdated
+	@dotnet list Cosmere.slnx package --outdated
+	@dotnet list Cosmere.Tools.slnx package --outdated
 	@echo "$(BLUE)Checking Node.js dependencies...$(NC)"
 	@npm outdated || true
 
@@ -184,8 +184,8 @@ status: ## Show git status and solution info
 	@git status --short --branch
 	@echo ""
 	@echo "$(BLUE)Solutions:$(NC)"
-	@echo "Main: Cosmere.sln"
-	@echo "Tools: Cosmere.Tools.sln"
+	@echo "Main: Cosmere.slnx"
+	@echo "Tools: Cosmere.Tools.slnx"
 	@echo ""
 	@echo "$(BLUE)Recent commits:$(NC)"
 	@git log --oneline -5
@@ -198,8 +198,8 @@ watch: ## Watch for changes and auto-rebuild main solution
 
 lint: ## Run linting checks
 	@echo "$(BLUE)Running linting...$(NC)"
-	@dotnet format Cosmere.sln --verify-no-changes --verbosity minimal
-	@dotnet format Cosmere.Tools.sln --verify-no-changes --verbosity minimal
+	@dotnet format Cosmere.slnx --verify-no-changes --verbosity minimal
+	@dotnet format Cosmere.Tools.slnx --verify-no-changes --verbosity minimal
 
 precommit: generate format lint test ## Pre-commit checks (generate, format, lint, test)
 	@echo "$(GREEN)✓ Pre-commit checks passed!$(NC)"
@@ -245,7 +245,7 @@ sonar: ## Analyse the solution and upload to SonarQube (needs SONAR_TOKEN)
 		/d:sonar.host.url="$(SONAR_HOST)" \
 		/d:sonar.token="$$SONAR_TOKEN" \
 		/d:sonar.exclusions="$(SONAR_EXCLUSIONS)"
-	@dotnet build Cosmere.sln
+	@dotnet build Cosmere.slnx
 	@dotnet sonarscanner end /d:sonar.token="$$SONAR_TOKEN"
 	@echo "$(GREEN)✓ $(SONAR_HOST)/dashboard?id=$(SONAR_KEY)$(NC)"
 
@@ -262,7 +262,7 @@ debug-tools: ## Build tools in debug mode
 
 profile: ## Build with profiling enabled
 	@echo "$(BLUE)Building with profiling...$(NC)"
-	@dotnet build Cosmere.sln --configuration Release -p:DefineConstants="PROFILING" --verbosity minimal
+	@dotnet build Cosmere.slnx --configuration Release -p:DefineConstants="PROFILING" --verbosity minimal
 
 ##@ Maintenance
 
@@ -277,7 +277,7 @@ rebuild: clean-all restore generate build-main build-tools ## Full rebuild from 
 
 update-deps: ## Update all dependencies
 	@echo "$(BLUE)Updating dependencies...$(NC)"
-	@dotnet add Cosmere.sln package --help >/dev/null 2>&1 || echo "$(YELLOW)Run manually: dotnet add package <PackageName>$(NC)"
+	@dotnet add Cosmere.slnx package --help >/dev/null 2>&1 || echo "$(YELLOW)Run manually: dotnet add package <PackageName>$(NC)"
 	@npm update
 
 ##@ Legacy Support

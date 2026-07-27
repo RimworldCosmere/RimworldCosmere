@@ -69,7 +69,7 @@ public class GemStuff : Verse.Graphic {
     public Verse.Graphic SubGraphicFor(ThingDef? stuff) {
         GemDef gem = GemDefOf.Diamond;
         if (stuff != null) {
-            GemDef? found = DefDatabase<GemDef>.GetNamedSilentFail(stuff.defName.Replace("Raw", ""));
+            GemDef? found = DefDatabase<GemDef>.GetNamedSilentFail(stuff.defName.Replace("Raw", string.Empty));
             if (found != null) gem = found;
         }
 

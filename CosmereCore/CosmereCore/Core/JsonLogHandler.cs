@@ -49,8 +49,7 @@ public class JsonLogHandler : ILogHandler {
         string raw;
         try {
             raw = args is { Length: > 0 } ? string.Format(format, args) : format;
-        }
-        catch {
+        } catch {
             raw = format;
         }
 
@@ -73,8 +72,7 @@ public class JsonLogHandler : ILogHandler {
                 writer.WriteLine(json);
                 writer.Flush();
             }
-        }
-        catch {
+        } catch {
         }
     }
 
@@ -100,8 +98,7 @@ public class JsonLogHandler : ILogHandler {
                 AutoFlush = false,
             };
             return jsonWriter;
-        }
-        catch {
+        } catch {
             return null;
         }
     }
@@ -112,7 +109,7 @@ public class JsonLogHandler : ILogHandler {
         Exception? exception,
         UnityEngine.Object? context
     ) {
-        string clean = StripRichTextRegex.Replace(message, "");
+        string clean = StripRichTextRegex.Replace(message, string.Empty);
 
         StackTrace stackTrace = exception != null
             ? new StackTrace(exception, true)
@@ -170,6 +167,7 @@ public class JsonLogHandler : ILogHandler {
             AppendField(sb, "method", f.Method, true);
             sb.Append('}');
         }
+
         sb.Append(']');
         sb.Append('}');
         return sb.ToString();
@@ -200,21 +198,22 @@ public class JsonLogHandler : ILogHandler {
                 Method = methodName,
             });
         }
+
         return frames;
     }
 
     private static string NormalizeFile(string? raw) {
-        if (raw == null) return "";
+        if (raw == null) return string.Empty;
         string file = Regex.Replace(
             raw,
             @"^.*?(RimworldCosmere[\\/]RimworldCosmere[\\/]|RimWorld[\\/]Mods[\\/])+[\\/]*",
-            ""
+            string.Empty
         );
         file = Regex.Replace(file, @"^(\w+)[\\/]\1[\\/]", "$1\\");
         return file
             .TrimStart('\\')
             .TrimStart('/')
-            .Replace(".cs", "");
+            .Replace(".cs", string.Empty);
     }
 
     private static string MapLogType(LogType type) {
@@ -250,18 +249,18 @@ public class JsonLogHandler : ILogHandler {
                 default:
                     if (c < 0x20) {
                         sb.Append("\\u").Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
-                    }
-                    else {
+                    } else {
                         sb.Append(c);
                     }
+
                     break;
             }
         }
     }
 
     private class FrameInfo {
-        public string File = "";
+        public string File = string.Empty;
         public int Line;
-        public string Method = "";
+        public string Method = string.Empty;
     }
 }

@@ -51,7 +51,6 @@ public class RadiantShardplate : Shardplate {
             ? gemstone.colorTwo.HasValue ? colorTwo : colorOne
             : new LUTPaletteMaterial { color = gemstone.glowColor.Value, metallic = 0, smoothness = 1f };
 
-
         if (def == ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm) {
             /*
              * First: Visor

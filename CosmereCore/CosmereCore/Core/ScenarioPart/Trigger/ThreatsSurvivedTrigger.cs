@@ -1,5 +1,5 @@
-
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
 public class ThreatsSurvivedTrigger : ProgressionTrigger {

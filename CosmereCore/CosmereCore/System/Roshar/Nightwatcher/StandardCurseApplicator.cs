@@ -29,6 +29,7 @@ public class StandardCurseApplicator : ICurseApplicator {
                 HediffEvolution? evoComp = cursePassive.TryGetComp<HediffEvolution>();
                 evoComp?.Initialize(curse);
             }
+
             return;
         }
 

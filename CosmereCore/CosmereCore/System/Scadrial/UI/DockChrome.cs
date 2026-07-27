@@ -4,8 +4,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-/// Buttons for the dock strips. Vanilla's tan gradient fights both shardworld
-/// palettes, so these take the section's own accent instead.
+// Buttons for the dock strips. Vanilla's tan gradient fights both shardworld
+// palettes, so these take the section's own accent instead.
 public static class DockChrome {
     public static bool Button(Rect rect, string label, bool enabled, Color accent) {
         bool over = enabled && Mouse.IsOver(rect);

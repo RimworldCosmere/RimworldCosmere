@@ -52,7 +52,6 @@ public static class ThoughtDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static ThoughtDef Cosmere_Thought_Gold_Curiosity;
 
-
     [MayRequire("Cosmere.Scadrial")]
     public static ThoughtDef Cosmere_Thought_PostGold_Afterglow;
 

@@ -15,7 +15,9 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     private const int DuraluminBurnPower = 10;
 
     protected int flareStartTick = -1;
+
     public AllomancyAbility(Pawn pawn) : base(pawn) { }
+
     public AllomancyAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override Allomancer Gene {
@@ -41,6 +43,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     }
 
     public bool atLeastBurning => status.power >= 1;
+
     public MetallicArtsMetalDef metal => def.metal;
 
     public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {

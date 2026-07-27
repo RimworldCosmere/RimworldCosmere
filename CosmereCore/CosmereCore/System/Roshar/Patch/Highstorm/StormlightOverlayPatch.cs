@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.Comp.Map;
 using HarmonyLib;
 using RimWorld;
-using Cosmere.System.Roshar.Comp.Map;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 

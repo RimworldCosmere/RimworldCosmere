@@ -49,7 +49,7 @@ public class MentalBreakHandler : HediffComp {
 
         for (int i = 0; i < customStatDefs.Count; i++) {
             StatDef stat = customStatDefs[i];
-            string handlerName = stat.defName.Replace(StatPrefix, "");
+            string handlerName = stat.defName.Replace(StatPrefix, string.Empty);
             if (Handlers.TryGetValue(handlerName, out Action<MentalBreakHandler, float>? handler)) {
                 float value = Pawn.GetStatValue(stat);
                 handler(this, value);

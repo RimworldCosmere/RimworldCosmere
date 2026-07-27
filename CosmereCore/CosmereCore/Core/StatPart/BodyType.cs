@@ -32,17 +32,13 @@ public class BodyType : RimWorld.StatPart {
 
         if (bodyType == BodyTypeDefOf.Thin) {
             estimatedWeightKg = 55f;
-        }
-        else if (bodyType == BodyTypeDefOf.Fat) {
+        } else if (bodyType == BodyTypeDefOf.Fat) {
             estimatedWeightKg = 110f;
-        }
-        else if (bodyType == BodyTypeDefOf.Hulk) {
+        } else if (bodyType == BodyTypeDefOf.Hulk) {
             estimatedWeightKg = 100f;
-        }
-        else if (bodyType == BodyTypeDefOf.Male) {
+        } else if (bodyType == BodyTypeDefOf.Male) {
             estimatedWeightKg = 80f;
-        }
-        else if (bodyType == BodyTypeDefOf.Female) {
+        } else if (bodyType == BodyTypeDefOf.Female) {
             estimatedWeightKg = 65f;
         }
 

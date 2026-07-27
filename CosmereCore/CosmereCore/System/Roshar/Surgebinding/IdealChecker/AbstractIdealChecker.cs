@@ -1,11 +1,11 @@
 using Cosmere.Core.Need;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
-using IIdealChecker = Cosmere.System.Roshar.Def.IIdealChecker;
 using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using IIdealChecker = Cosmere.System.Roshar.Def.IIdealChecker;
 using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Surgebinding.IdealChecker;

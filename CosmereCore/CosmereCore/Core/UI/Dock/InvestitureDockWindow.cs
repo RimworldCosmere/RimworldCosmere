@@ -24,7 +24,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private static readonly Color RibbonEdge = new Color(0.361f, 0.294f, 0.196f);
     private static readonly Color RibbonTrack = new Color(0.094f, 0.078f, 0.059f);
 
-    /// Icon and name on one line, reserve and reading on the next.
+    // Icon and name on one line, reserve and reading on the next.
     private static float RibbonHeight => 13f + RibbonIcon + Text.LineHeightOf(GameFont.Tiny);
 
     private readonly DockAccordion accordion = new DockAccordion();
@@ -137,8 +137,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             if (anyFlaring) {
                 Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.20f));
-            }
-            else if (anyActive) {
+            } else if (anyActive) {
                 Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.16f));
             }
 
@@ -153,8 +152,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 GUI.color = RibbonInk;
                 GUI.DrawTexture(icon, sigil);
                 GUI.color = prevIcon;
-            }
-            else {
+            } else {
                 UIText.EllipsisLabel(
                     icon,
                     section.Skin.HeaderLabel.Substring(0, 1),

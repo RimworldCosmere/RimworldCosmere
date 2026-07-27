@@ -6,7 +6,7 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 public class HemalurgicChargeData : IExposable {
     public int chargedTick;
     public HemalurgicStealType stealType;
-    public string stolenDefName = "";
+    public string stolenDefName = string.Empty;
     public List<string> stolenDefNames = [];
     public float storedInvestiture;
     public float strength = 1f;
@@ -21,7 +21,7 @@ public class HemalurgicChargeData : IExposable {
 
     public void ExposeData() {
         Scribe_Values.Look(ref stealType, "stealType");
-        Scribe_Values.Look(ref stolenDefName, "stolenDefName", "");
+        Scribe_Values.Look(ref stolenDefName, "stolenDefName", string.Empty);
         Scribe_Collections.Look(ref stolenDefNames, "stolenDefNames", LookMode.Value);
         Scribe_Values.Look(ref strength, "strength", 1f);
         Scribe_Values.Look(ref storedInvestiture, "storedInvestiture");

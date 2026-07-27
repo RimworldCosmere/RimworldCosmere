@@ -1,6 +1,6 @@
 ﻿using Cosmere.System.Scadrial.Def;
-using RimWorld;
 using Cosmere.System.Scadrial.Gene;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Util;
@@ -18,7 +18,8 @@ public static class MetalbornUtility {
         return HasAnyActiveGene<Feruchemist>(pawn);
     }
 
-    private static bool HasAnyActiveGene<TGene>(Pawn? pawn) where TGene : Verse.Gene {
+    private static bool HasAnyActiveGene<TGene>(Pawn? pawn)
+        where TGene : Verse.Gene {
         if (pawn?.genes == null) return false;
         List<Verse.Gene> genes = pawn.genes.GenesListForReading;
         for (int i = 0; i < genes.Count; i++) {
@@ -64,8 +65,7 @@ public static class MetalbornUtility {
         if (!hasAllGenes) {
             Trait? existing = pawn.story.traits.GetTrait(traitDef);
             if (existing != null) pawn.story.traits.RemoveTrait(existing);
-        }
-        else if (!pawn.story.traits.HasTrait(traitDef)) {
+        } else if (!pawn.story.traits.HasTrait(traitDef)) {
             pawn.story.EnsureTrait(traitDef);
         }
     }

@@ -41,9 +41,9 @@ public static class RadialController {
         window = null;
     }
 
-    /// Opens the wheel, or closes it when it is already up. A mouse click has no
-    /// release to cast on so it lands straight in browse mode, while a keypress
-    /// starts in quick mode and the release decides whether it stays open.
+    // Opens the wheel, or closes it when it is already up. A mouse click has no
+    // release to cast on so it lands straight in browse mode, while a keypress
+    // starts in quick mode and the release decides whether it stays open.
     public static void ToggleForPawn(Pawn pawn) {
         if (window != null) {
             window.Close(false);
@@ -59,8 +59,8 @@ public static class RadialController {
         Find.WindowStack.Add(window);
     }
 
-    /// Building a snapshot walks every provider and allocates, and GetGizmos
-    /// runs each frame, so the answer is cached briefly per pawn.
+    // Building a snapshot walks every provider and allocates, and GetGizmos
+    // runs each frame, so the answer is cached briefly per pawn.
     private const int RadialCheckIntervalTicks = 60;
     private static int cachedRadialPawnId = -1;
     private static int cachedRadialTick = -1;

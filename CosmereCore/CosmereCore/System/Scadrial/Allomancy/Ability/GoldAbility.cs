@@ -8,7 +8,9 @@ namespace Cosmere.System.Scadrial.Allomancy.Ability;
 public class GoldAbility : AllomancyAbility {
     private Pawn? hallucination;
     private AllomanticHediff? hediff;
+
     public GoldAbility(Pawn pawn) : base(pawn) { }
+
     public GoldAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override void AbilityTick() {

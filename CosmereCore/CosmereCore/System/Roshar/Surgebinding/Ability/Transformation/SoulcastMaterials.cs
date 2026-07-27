@@ -82,6 +82,7 @@ public static class SoulcastMaterials {
                     cachedStoneChunks.Add(def);
                 }
             }
+
             return cachedStoneChunks;
         }
     }

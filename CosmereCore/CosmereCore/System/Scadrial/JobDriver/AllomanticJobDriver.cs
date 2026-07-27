@@ -7,11 +7,14 @@ namespace Cosmere.System.Scadrial.JobDriver;
 
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     private ILoadReferenceable? cachedSource;
-    protected virtual Pawn? targetPawn => TargetA.Pawn;
-    protected virtual AllomancyAbility ability => (AllomancyAbility)(job?.source ?? cachedSource)!;
-    protected virtual Allomancer gene => ability.Gene;
-    protected virtual bool targetIsPawn => targetPawn != null;
 
+    protected virtual Pawn? targetPawn => TargetA.Pawn;
+
+    protected virtual AllomancyAbility ability => (AllomancyAbility)(job?.source ?? cachedSource)!;
+
+    protected virtual Allomancer gene => ability.Gene;
+
+    protected virtual bool targetIsPawn => targetPawn != null;
 
     protected override IEnumerable<Toil> MakeNewToils() {
         AddFinishAction(UpdateStatusToOff);

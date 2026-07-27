@@ -1,9 +1,10 @@
-
 using Verse;
+
 namespace Cosmere.Core.Comp.Game;
 
 public static class SpiritWebExtension {
-    public static Connection? GetConnection<T>(this T self, ILoadReferenceable target) where T : ILoadReferenceable {
+    public static Connection? GetConnection<T>(this T self, ILoadReferenceable target)
+        where T : ILoadReferenceable {
         return SpiritWeb.Instance?.TryGetConnection(target, self);
     }
 

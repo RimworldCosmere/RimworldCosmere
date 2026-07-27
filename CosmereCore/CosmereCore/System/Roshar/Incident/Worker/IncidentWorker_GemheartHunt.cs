@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.Comp.Map;
 using RimWorld;
 using Verse;
-using Cosmere.System.Roshar.Comp.Map;
 
 namespace Cosmere.System.Roshar.Incident.Worker;
 

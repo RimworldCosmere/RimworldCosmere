@@ -106,8 +106,7 @@ public class HemalurgicSpike : ThingComp {
                 sb.AppendLine();
                 sb.Append("CS_Hemalurgy_DecayPrevented".Translate());
             }
-        }
-        else {
+        } else {
             sb.Append("CS_Hemalurgy_SpikeUncharged".Translate());
         }
 

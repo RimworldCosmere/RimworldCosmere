@@ -43,12 +43,10 @@ public static class KillViolationPatch {
         if (orderDef == RadiantOrderDefOf.Windrunner) {
             if (__state.colonist || __state.friendly) {
                 ViolationUtility.ApplyViolation(killer, 0.6f, "killing a friendly");
-            }
-            else if (__state.downed || __state.fleeing) {
+            } else if (__state.downed || __state.fleeing) {
                 ViolationUtility.ApplyViolation(killer, 0.3f, "killing a defenseless enemy");
             }
-        }
-        else if (orderDef == RadiantOrderDefOf.Dustbringer) {
+        } else if (orderDef == RadiantOrderDefOf.Dustbringer) {
             if (__state.colonist && killerInBerserk) {
                 ViolationUtility.ApplyViolation(killer, 0.6f, "killing a colonist in berserk rage");
             }

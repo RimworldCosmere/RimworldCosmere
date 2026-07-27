@@ -1,12 +1,12 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class SendLetterAction : ProgressionAction {
     public string? letterDef;
-    public string text = "";
-    public string title = "";
+    public string text = string.Empty;
+    public string title = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         LetterDef def = LetterDefOf.NeutralEvent;

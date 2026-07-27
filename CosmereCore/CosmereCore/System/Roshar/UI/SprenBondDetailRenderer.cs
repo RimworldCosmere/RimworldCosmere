@@ -1,11 +1,11 @@
-using RimWorld;
-using UnityEngine;
 using System.Text;
 using Cosmere.Core.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Hediff;
 using Cosmere.System.Roshar.Surgebinding;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.UI;
@@ -131,8 +131,7 @@ public static class SprenBondDetailRenderer {
                     new Rect(rect.x + TraitIndent, y, rect.width - TraitIndent, RowHeight),
                     "CRO_SprenBond_NoTraits".Translate()
                 );
-            }
-            else {
+            } else {
                 for (int i = 0; i < bond.PersonalityTraits.Count; i++) {
                     Rect traitRect = new Rect(rect.x + TraitIndent, y, rect.width - TraitIndent, RowHeight);
                     TraitDef traitDef = bond.PersonalityTraits[i];
@@ -145,5 +144,4 @@ public static class SprenBondDetailRenderer {
             }
         }
     }
-
 }

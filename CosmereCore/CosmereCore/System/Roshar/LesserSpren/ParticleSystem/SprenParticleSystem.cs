@@ -112,7 +112,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
             if (particlesForThisCell < 0) continue;
 
             for (int i = 0; i < particlesForThisCell; i++) {
-                UnityEngine.ParticleSystem.EmitParams emitParams = new UnityEngine.ParticleSystem.EmitParams();
+                UnityEngine.ParticleSystem.EmitParams emitParams = default(UnityEngine.ParticleSystem.EmitParams);
 
                 Vector3 randomOffset = new Vector3(
                     Random.Range(-0.5f, 0.5f),
@@ -133,8 +133,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
             if (particleCache.ContainsKey(position)) {
                 particleCache[position] = (particleCache[position].Item1 + particlesForThisCell,
                     particleSystem!.main.duration + Time.time);
-            }
-            else {
+            } else {
                 particleCache[position] = (particlesForThisCell, particleSystem!.main.duration + Time.time);
             }
         }

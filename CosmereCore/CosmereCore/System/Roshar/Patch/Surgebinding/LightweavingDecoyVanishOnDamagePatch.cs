@@ -1,7 +1,7 @@
+using Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.LightweavingDecoy;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;

@@ -12,5 +12,6 @@ public class PreventDropOnDownedProperties : CompProperties {
 
 public class PreventDropOnDowned : ThingComp {
     private new PreventDropOnDownedProperties props => (PreventDropOnDownedProperties)base.props;
+
     public bool preventDrop => props.preventDrop;
 }

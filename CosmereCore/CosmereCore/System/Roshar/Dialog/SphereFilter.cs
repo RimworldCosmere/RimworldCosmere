@@ -4,7 +4,8 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Dialog;
 
-public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
+public class SphereFilter<T> : Window
+    where T : ThingComp, IFilterableComp {
     private readonly T thing;
     private Vector2 scrollPosition;
 
@@ -27,8 +28,7 @@ public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
         if (flag != currentlyAllowed) {
             if (flag) {
                 thing.FilterList.Add(sphereDef);
-            }
-            else {
+            } else {
                 thing.FilterList.Remove(sphereDef);
             }
         }

@@ -22,7 +22,7 @@ public enum CutoutAdvancedBlendMode : byte {
 ///     - Special mask: [GraphicPath]_mspecial.png
 ///     LEVEL SYSTEM:
 ///     Artist paints grayscale masks divided into level ranges.
-///     Example for 4 levels: 0-63, 64-127, 128-191, 192-255
+///     Example for 4 levels: 0-63, 64-127, 128-191, 192-255.
 /// </summary>
 public class CutoutAdvancedProperties : CompProperties {
     public CutoutAdvancedBlendMode blendMode = CutoutAdvancedBlendMode.Smooth;
@@ -74,7 +74,7 @@ public enum MaskType {
 
 /// <summary>
 ///     Lazy-loading wrapper for mask textures.
-///     Automatically loads textures using naming convention: [path]_m[type].png
+///     Automatically loads textures using naming convention: [path]_m[type].png.
 /// </summary>
 internal class Mask(MaskType type, string path) {
     public bool loaded;
@@ -82,8 +82,8 @@ internal class Mask(MaskType type, string path) {
     private Texture2D? maskInt;
 
     /// <summary>
-    ///     The loaded mask texture. Loads automatically on first access.
-    ///     Naming convention: [path]_m[type].png (e.g., "sword_mwear.png")
+    ///     Gets the loaded mask texture. Loads automatically on first access.
+    ///     Naming convention: [path]_m[type].png (e.g., "sword_mwear.png").
     /// </summary>
     public Texture2D? mask {
         get {
@@ -202,7 +202,6 @@ public class CutoutAdvanced : ThingComp {
             block.SetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex, specialMask.mask);
         }
 
-
         block.SetVector(
             CutoutAdvancedShaderProperties.HighlightParams,
             new Vector4(
@@ -248,22 +247,19 @@ public class CutoutAdvanced : ThingComp {
         // Set mask feature keywords
         if (props.useWear) {
             material.EnableKeyword("USE_WEAR_MASK");
-        }
-        else {
+        } else {
             material.DisableKeyword("USE_WEAR_MASK");
         }
 
         if (props.useGlow) {
             material.EnableKeyword("USE_GLOW_MASK");
-        }
-        else {
+        } else {
             material.DisableKeyword("USE_GLOW_MASK");
         }
 
         if (props.useSpecial) {
             material.EnableKeyword("USE_SPECIAL_MASK");
-        }
-        else {
+        } else {
             material.DisableKeyword("USE_SPECIAL_MASK");
         }
     }

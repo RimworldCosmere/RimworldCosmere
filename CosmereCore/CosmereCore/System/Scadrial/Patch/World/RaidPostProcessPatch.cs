@@ -1,8 +1,8 @@
+using Cosmere.System.Scadrial.Util;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Cosmere.System.Scadrial.Util;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 

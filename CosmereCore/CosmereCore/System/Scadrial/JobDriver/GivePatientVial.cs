@@ -8,8 +8,11 @@ public class GivePatientVial : Verse.AI.JobDriver {
     private const float FeedDurationMultiplier = 1.5f;
 
     private Verse.Thing vial => job.targetA.Thing;
+
     private Pawn deliveree => job.targetB.Pawn;
+
     private Pawn_InventoryTracker? vialHolderInventory => vial?.ParentHolder as Pawn_InventoryTracker;
+
     private Pawn vialHolder => job.targetC.Pawn;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
@@ -36,6 +39,7 @@ public class GivePatientVial : Verse.AI.JobDriver {
         Toil goToVialHolder = Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch)
             .FailOn(() => vialHolder != vialHolderInventory?.pawn || vialHolder.IsForbidden(pawn));
         Toil carryVialToPatient = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
+
         // ISSUE: reference to a compiler-generated method
         yield return Toils_Jump.JumpIf(
             carryVialFromInventory,

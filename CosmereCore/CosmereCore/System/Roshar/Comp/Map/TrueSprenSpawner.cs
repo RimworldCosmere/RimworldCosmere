@@ -33,7 +33,6 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     public override void MapComponentTick() {
         if (baseSpawnChance == 0) return;
 
-
         base.MapComponentTick();
         SpawnSpren();
     }
@@ -60,6 +59,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                     break;
                 }
             }
+
             if (hasSpawnedSpren) continue;
             if (pawn.IsAsleep()) continue;
 
@@ -99,6 +99,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                 break;
             }
         }
+
         if (sprenForPawn == null) {
             spren = (TrueSpren)PawnGenerator.GeneratePawn(
                 kind,
@@ -110,8 +111,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                 spren = spren,
             };
             pawnSprens.Add(sprenForPawn);
-        }
-        else {
+        } else {
             spren = sprenForPawn.spren;
         }
 
@@ -158,6 +158,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     private class SpawnInfo : IExposable {
         public int lastSpawn;
         public Pawn pawn = null!;
+
         public int ticksSinceLastSpawn => GenTicks.TicksGame - lastSpawn;
 
         public void ExposeData() {

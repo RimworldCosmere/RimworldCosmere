@@ -9,7 +9,10 @@ public abstract class CodexInvestitureProviderBase<TCodex> : IInvestitureProvide
     public ICodexContentProvider Codex { get; } = new TCodex();
 
     public abstract string SystemId { get; }
+
     public abstract bool IsInvested(Pawn pawn);
+
     public abstract InvestitureSnapshot? Snapshot(Pawn pawn);
+
     public abstract RadialSystem? SnapshotRadial(Pawn pawn);
 }

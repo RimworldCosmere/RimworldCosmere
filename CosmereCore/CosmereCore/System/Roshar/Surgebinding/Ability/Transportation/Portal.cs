@@ -18,6 +18,7 @@ public class Portal : SurgebindingAbility {
     private bool worldTargetingActive;
 
     public Portal(Pawn pawn) : base(pawn) { }
+
     public Portal(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
@@ -136,8 +137,7 @@ public class Portal : SurgebindingAbility {
 
         if (destinationTile.Valid) {
             OnWorldTileSelected(new GlobalTargetInfo(destinationTile));
-        }
-        else {
+        } else {
             BeginWorldTargeting();
         }
     }
@@ -173,8 +173,7 @@ public class Portal : SurgebindingAbility {
                         destinationMap,
                         CaravanEnterMode.Center
                     );
-                }
-                else {
+                } else {
                     caravan.pather.StopDead();
                     caravan.Tile = tile;
                     caravan.Notify_Teleported();

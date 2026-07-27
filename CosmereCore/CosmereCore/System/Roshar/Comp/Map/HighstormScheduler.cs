@@ -28,7 +28,9 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     }
 
     public int TicksUntilNextStorm => nextHighstormTick - Find.TickManager.TicksGame;
+
     public bool IsStormActive => stormActive;
+
     public float SeasonalIntensity => seasonalIntensity;
 
     public override void FinalizeInit() {
@@ -92,8 +94,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
                     RimWorld.LetterDefOf.NeutralEvent,
                     TargetInfo.Invalid
                 );
-            }
-            else if (!currentlyWeeping && weepingActive) {
+            } else if (!currentlyWeeping && weepingActive) {
                 weepingActive = false;
                 Find.LetterStack.ReceiveLetter(
                     "CR_Weeping_End_Title".Translate(),
@@ -162,8 +163,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         if (success) {
             stormActive = true;
-        }
-        else {
+        } else {
             Logger.Warning("Incident failed to execute, will retry next schedule.");
         }
 
@@ -210,12 +210,15 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
-        if (scheduler.stormActive)
+        if (scheduler.stormActive) {
             return
                 "A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.";
-        if (Mod.enableWeeping && IsWeeping(map))
+        }
+
+        if (Mod.enableWeeping && IsWeeping(map)) {
             return
                 "The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.";
+        }
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
         if (ticksLeft <= 0) return "The stormwall draws near. Those caught in the open will not survive.";

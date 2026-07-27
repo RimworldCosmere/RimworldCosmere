@@ -27,7 +27,7 @@ public class SettingsWindow {
             .ThenBy(s => s.Name)
             .Select(modSettings => new TabRecord(
                     modSettings.Name,
-                    delegate { selectedTab = modSettings; },
+                    () => { selectedTab = modSettings; },
                     () => selectedTab == modSettings
                 )
             )

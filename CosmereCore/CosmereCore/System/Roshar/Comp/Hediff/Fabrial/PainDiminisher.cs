@@ -17,7 +17,7 @@ public class PainDiminisher : HediffComp {
                 return $"Stormlight: {investiture.currentInvestiture:F0}";
             }
 
-            return "";
+            return string.Empty;
         }
     }
 

@@ -1,5 +1,5 @@
-using HarmonyLib;
 using Cosmere.System.Scadrial.Util;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -247,8 +247,7 @@ public static class SnapEventsPatch {
         if (ColonyDestructionTracker.TryGetValue(mapId, out (int startTick, int count, bool triggered) data)) {
             if (currentTick - data.startTick > 2500) {
                 ColonyDestructionTracker[mapId] = (currentTick, 1, false);
-            }
-            else {
+            } else {
                 int newCount = data.count + 1;
                 if (newCount >= 3 && !data.triggered) {
                     ColonyDestructionTracker[mapId] = (data.startTick, newCount, true);
@@ -256,13 +255,11 @@ public static class SnapEventsPatch {
                     for (int i = 0; i < colonists.Count; i++) {
                         Snap(colonists[i], 10, "CS_PawnSnapped_ColonyDestruction");
                     }
-                }
-                else {
+                } else {
                     ColonyDestructionTracker[mapId] = (data.startTick, newCount, data.triggered);
                 }
             }
-        }
-        else {
+        } else {
             ColonyDestructionTracker[mapId] = (currentTick, 1, false);
         }
     }

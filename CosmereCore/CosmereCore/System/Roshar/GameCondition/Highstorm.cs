@@ -163,7 +163,6 @@ public class Highstorm : RimWorld.GameCondition {
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
         Map map = thing.Map;
 
-
         if (!CanMoveToNewPosition(thing, newPos)) {
             if (!newPos.InBounds(map)) return false;
 
@@ -209,8 +208,7 @@ public class Highstorm : RimWorld.GameCondition {
                     return false;
                 }
             }
-        }
-        else {
+        } else {
             Pawn pushed = (Pawn)thing;
             pushed.Position = newPos;
             pushed.Notify_Teleported(false);
@@ -309,6 +307,7 @@ public class Highstorm : RimWorld.GameCondition {
 
                     break;
                 }
+
             case Pawn pawn: {
                     if (pawn.Dead) break;
                     if (StormlightUtility.IsHighstormImmune(pawn)) break;

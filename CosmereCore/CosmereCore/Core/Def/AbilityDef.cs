@@ -59,8 +59,7 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
                 pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
             }
             );
-        }
-        else {
+        } else {
             base.PostLoad();
         }
     }

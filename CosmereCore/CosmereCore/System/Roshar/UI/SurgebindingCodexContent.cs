@@ -1,4 +1,5 @@
 using System.Text;
+using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Roshar.Comp.Thing;
@@ -9,7 +10,6 @@ using Cosmere.System.Roshar.Hediff;
 using Cosmere.System.Roshar.Surgebinding;
 using Cosmere.System.Roshar.Surgebinding.Ability;
 using RimWorld;
-using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -36,6 +36,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         for (int i = 0; i < genes.Count; i++) {
             if (genes[i] is Surgebinder s && !s.Overridden && s.bondedSpren != null) return true;
         }
+
         return false;
     }
 
@@ -197,8 +198,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
                 );
                 Rect accent = new Rect(entryRect.x, entryRect.y, 3f, entryRect.height);
                 Widgets.DrawBoxSolid(accent, orderColor);
-            }
-            else if (Mouse.IsOver(entryRect)) {
+            } else if (Mouse.IsOver(entryRect)) {
                 Widgets.DrawHighlight(entryRect);
             }
 

@@ -4,10 +4,10 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding;
 
 public class BondViolationLogEntry : LogEntry {
-    internal string orderLabel = "";
+    internal string orderLabel = string.Empty;
     internal Pawn pawn = null!;
-    internal string reason = "";
-    internal string severityLabel = "";
+    internal string reason = string.Empty;
+    internal string severityLabel = string.Empty;
 
     public BondViolationLogEntry() { }
 
@@ -45,8 +45,8 @@ public class BondViolationLogEntry : LogEntry {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_References.Look(ref pawn, "pawn");
-        Scribe_Values.Look(ref orderLabel, "orderLabel", "");
-        Scribe_Values.Look(ref reason, "reason", "");
-        Scribe_Values.Look(ref severityLabel, "severityLabel", "");
+        Scribe_Values.Look(ref orderLabel, "orderLabel", string.Empty);
+        Scribe_Values.Look(ref reason, "reason", string.Empty);
+        Scribe_Values.Look(ref severityLabel, "severityLabel", string.Empty);
     }
 }

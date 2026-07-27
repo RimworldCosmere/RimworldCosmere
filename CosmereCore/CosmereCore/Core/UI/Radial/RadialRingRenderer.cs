@@ -33,6 +33,7 @@ public static class RadialRingRenderer {
             hoveredIndex,
             i => {
                 RadialSubsection subsection = system.Subsections[i];
+
                 // A collapsed metal never reaches the ability ring, so its lit
                 // state has to come from the leaves it stands in for.
                 bool anyActive = false;
@@ -115,6 +116,7 @@ public static class RadialRingRenderer {
                 ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
                 : new Color(0.16f, 0.175f, 0.205f);
             bg.a = 0.97f;
+
             // A lit metal keeps a warm fill of its own so it reads as burning
             // even when the cursor is elsewhere; hovering still wins over it.
             if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
@@ -128,8 +130,7 @@ public static class RadialRingRenderer {
             if (isFlaring) {
                 GUI.color = new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f);
                 GUI.DrawTexture(texRect.ExpandedBy(5f), wedgeTex);
-            }
-            else if (isActive) {
+            } else if (isActive) {
                 GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.3f);
                 GUI.DrawTexture(texRect.ExpandedBy(4f), wedgeTex);
             }

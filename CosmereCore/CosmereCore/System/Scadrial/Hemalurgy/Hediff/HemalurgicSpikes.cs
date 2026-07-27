@@ -146,7 +146,7 @@ public class HemalurgicSpikes : HediffWithComps {
                 >= 0.2f => "CS_Hemalurgy_StrengthWeak".Translate(),
                 _ => "CS_Hemalurgy_StrengthFading".Translate(),
             };
-            string needle = spike.isThinNeedle ? " (needle)" : "";
+            string needle = spike.isThinNeedle ? " (needle)" : string.Empty;
             sb.AppendLine($"  - {spike.metalDefName}{needle}: {typeLabel} ({strengthLabel})");
         }
 

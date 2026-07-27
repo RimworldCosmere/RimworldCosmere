@@ -1,5 +1,5 @@
-
 using Verse;
+
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 
 public static class LightweavingDecoyRegistry {

@@ -90,7 +90,7 @@ public static class AutocastSubtabRenderer {
         return y + GroupGap;
     }
 
-    /// Returns true when the player asked for this rule to go.
+    // Returns true when the player asked for this rule to go.
     private static bool DrawRule(Rect row, AutocastRule rule, AutocastTarget target, bool striped) {
         if (striped) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
         Widgets.DrawHighlightIfMouseover(row);

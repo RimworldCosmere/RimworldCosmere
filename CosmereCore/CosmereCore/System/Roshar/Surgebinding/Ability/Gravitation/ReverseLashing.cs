@@ -7,6 +7,7 @@ public class ReverseLashing : SurgebindingAbility {
     private const float BaseDamage = 15f;
 
     public ReverseLashing(Pawn pawn) : base(pawn) { }
+
     public ReverseLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float damage => BaseDamage + Gene.CurrentIdeal * 10f;

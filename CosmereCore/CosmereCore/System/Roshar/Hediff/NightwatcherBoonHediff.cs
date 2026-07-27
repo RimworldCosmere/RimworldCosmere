@@ -7,13 +7,14 @@ public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
     private NightwatcherBoonDef boonDef = null!;
 
     public NightwatcherBoonDef Boon => boonDef;
+
     public override string LabelBase => $"Nightwatcher: {boonDef?.LabelCap ?? "unknown"}";
 
     public override string Description {
         get {
             string intro =
                 "The Nightwatcher has granted {PAWN_nameDef} a boon. The gift is permanent, woven into {PAWN_possessive} very Spiritweb.";
-            return (intro + "\n\n" + (boonDef?.description ?? "")).Formatted(pawn.Named("PAWN"));
+            return (intro + "\n\n" + (boonDef?.description ?? string.Empty)).Formatted(pawn.Named("PAWN"));
         }
     }
 

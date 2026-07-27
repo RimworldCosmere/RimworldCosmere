@@ -1,7 +1,7 @@
-
 using HarmonyLib;
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.Patch;
 
 [HarmonyPatch]

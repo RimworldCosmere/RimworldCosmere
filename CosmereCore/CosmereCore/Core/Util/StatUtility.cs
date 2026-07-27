@@ -53,8 +53,7 @@ public static class StatUtility {
                 stat = pawnStatGetter(statDef, corpse.InnerPawn);
                 return true;
             }
-        }
-        else if (req.Def is ThingDef thingDef) {
+        } else if (req.Def is ThingDef thingDef) {
             if (thingDef.category == ThingCategory.Pawn) {
                 stat = pawnDefStatGetter(statDef, thingDef);
                 return true;
@@ -70,7 +69,8 @@ public static class StatUtility {
         return false;
     }
 
-    public static float NeedLevel<TN>(Pawn pawn) where TN : RimWorld.Need {
+    public static float NeedLevel<TN>(Pawn pawn)
+        where TN : RimWorld.Need {
         return pawn.needs?.TryGetNeed<TN>()?.CurLevel ?? 0;
     }
 

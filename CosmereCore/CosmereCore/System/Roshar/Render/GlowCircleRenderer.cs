@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Verse;
+
 namespace Cosmere.System.Roshar.Render;
 
 public static class GlowCircleRenderer {
@@ -27,11 +28,11 @@ public static class GlowCircleRenderer {
         Vector3 center = caster.DrawPos;
         center.y = AltitudeLayer.MetaOverlays.AltitudeFor();
 
-
         float alpha = 0.15f;
         while (alpha > 0) {
             color.a = alpha;
             Material mat = SolidColorMaterials.SimpleSolidColorMaterial(color);
+
             // Build a matrix for position/rotation/scale
             Matrix4x4 matrix = default;
             matrix.SetTRS(
@@ -48,11 +49,9 @@ public static class GlowCircleRenderer {
         }
     }
 
-
     public static void DrawCustomCircle(IntVec3 center, float radius, Color color) {
         DrawCustomCircle(new Vector3(center.x, center.y, center.z), radius, color, 0.15f);
     }
-
 
     public static void DrawCustomCircle(Vector3 center, float radius, Color color) {
         DrawCustomCircle(center, radius, color, 0.15f);

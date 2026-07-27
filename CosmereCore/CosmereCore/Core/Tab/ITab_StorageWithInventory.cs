@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
 using Cosmere.Core.Comp.Thing;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -100,8 +100,7 @@ public class ITab_StorageWithInventory : ITab_Storage {
             if (Mouse.IsOver(rect2)) {
                 if (dropLocked) {
                     TooltipHandler.TipRegion(rect2, "DropThingLocked".Translate());
-                }
-                else {
+                } else {
                     TooltipHandler.TipRegion(rect2, "DropThing".Translate());
                 }
             }
@@ -109,7 +108,7 @@ public class ITab_StorageWithInventory : ITab_Storage {
             Color color = disabled ? Color.grey : Color.white;
             Color mouseoverColor = disabled ? color : GenUI.MouseoverColor;
             if (Widgets.ButtonImage(rect2, TexButton.Drop, color, mouseoverColor, !disabled) && !disabled) {
-                Action action = delegate {
+                Action action = () => {
                     RimWorld.SoundDefOf.Tick_High.PlayOneShotOnCamera();
                     InterfaceDrop(thing);
                 };

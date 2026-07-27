@@ -1,8 +1,8 @@
+using Cosmere.Core.Def;
+using Cosmere.Core.DefModExtension;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Cosmere.Core.Def;
-using Cosmere.Core.DefModExtension;
 
 namespace Cosmere.Core.Patch;
 

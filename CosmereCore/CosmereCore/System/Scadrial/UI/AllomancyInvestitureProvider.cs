@@ -12,6 +12,7 @@ namespace Cosmere.System.Scadrial.UI;
 
 public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<AllomancyCodexContent> {
     public const string Id = "Allomancy";
+
     public override string SystemId => Id;
 
     public override bool IsInvested(Pawn pawn) {

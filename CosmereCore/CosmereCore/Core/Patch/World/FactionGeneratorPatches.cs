@@ -30,7 +30,7 @@ public static class FactionGeneratorPatch {
             return true;
         }
 
-        string scenarioName = scenario.name ?? "";
+        string scenarioName = scenario.name ?? string.Empty;
         bool isScadrialScenario = scenarioName.StartsWith("Mistborn:") ||
                                   scenarioName.Contains("Scadrial");
         bool isRosharScenario = scenarioName.StartsWith("Stormlight:") ||
@@ -41,7 +41,7 @@ public static class FactionGeneratorPatch {
             return true;
         }
 
-        string defName = faction.defName ?? "";
+        string defName = faction.defName ?? string.Empty;
         bool isScadrialFaction = defName.Contains("Scadrial");
         bool isRosharFaction = defName.Contains("Roshar");
         bool isCosmereFaction = isScadrialFaction || isRosharFaction;

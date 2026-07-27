@@ -6,7 +6,9 @@ namespace Cosmere.Core.Listing;
 
 public class FoundationListing : Listing_Standard {
     public float CurrentY => curY;
+
     public float CurrentX => curX;
+
     public Rect ListingRect => listingRect;
 
     public void Gap(float? gapHeight = null) {

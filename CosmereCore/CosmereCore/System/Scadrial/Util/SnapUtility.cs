@@ -1,6 +1,6 @@
+using Cosmere.System.Scadrial.Hemalurgy;
 using RimWorld;
 using Verse;
-using Cosmere.System.Scadrial.Hemalurgy;
 using DormantConnectionComp = Cosmere.Core.Comp.Thing.DormantConnection;
 
 namespace Cosmere.System.Scadrial.Util;

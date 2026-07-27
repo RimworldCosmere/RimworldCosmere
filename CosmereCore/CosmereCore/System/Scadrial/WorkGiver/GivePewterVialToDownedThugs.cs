@@ -9,6 +9,7 @@ namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private MetalDef pewter => MetalDefOf.Pewter;
+
     private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
@@ -69,7 +70,6 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
 
         return vialSource != null;
     }
-
 
     private bool VialValidator(Pawn pawn, Verse.Thing vial) {
         if (!vial.Spawned) return false;

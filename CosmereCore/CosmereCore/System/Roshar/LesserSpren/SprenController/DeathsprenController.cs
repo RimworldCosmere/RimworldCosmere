@@ -9,9 +9,13 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class DeathsprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Deathspren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 1f;
+
     public override int minParticlesPerCell => 1;
+
     public override int maxParticlesPerCell => 4;
 
     public override List<GemDef> compatibleGemTypes => [

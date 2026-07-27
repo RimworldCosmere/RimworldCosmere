@@ -8,16 +8,14 @@ public class AddGemToFabrial : Verse.AI.JobDriver {
     private const TargetIndex GemIndex = TargetIndex.B;
     public const int ReGemmingDuration = 240;
 
-
     protected Verse.Thing? fabrial => job.GetTarget(FabrialIndex).Thing;
-    protected Verse.Thing? gemstone => job.GetTarget(GemIndex).Thing;
 
+    protected Verse.Thing? gemstone => job.GetTarget(GemIndex).Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(fabrial, job, 1, -1, null, errorOnFailed) &&
                pawn.Reserve(gemstone, job, 1, -1, null, errorOnFailed);
     }
-
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(FabrialIndex);
@@ -25,7 +23,7 @@ public class AddGemToFabrial : Verse.AI.JobDriver {
         AddFailCondition(() => fabrial == null);
         AddFailCondition(() => gemstone == null);
 
-        yield return Toils_General.DoAtomic(delegate { job.count = 1; });
+        yield return Toils_General.DoAtomic(() => { job.count = 1; });
 
         yield return Toils_Goto.GotoThing(GemIndex, PathEndMode.ClosestTouch)
             .FailOnDespawnedNullOrForbidden(GemIndex)
@@ -38,6 +36,6 @@ public class AddGemToFabrial : Verse.AI.JobDriver {
             .FailOnDestroyedNullOrForbidden(FabrialIndex)
             .FailOnCannotTouch(FabrialIndex, PathEndMode.Touch)
             .WithProgressBarToilDelay(FabrialIndex);
-        yield return RefuelFabrial.SwapInNewGemstone(GemIndex, FabrialIndex); //custom toil
+        yield return RefuelFabrial.SwapInNewGemstone(GemIndex, FabrialIndex); // custom toil
     }
 }

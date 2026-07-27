@@ -15,7 +15,9 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         Enum.GetValues(typeof(SprenType)).Cast<SprenType>().ToList();
 
     protected override bool Drafted => true;
+
     protected override bool Undrafted => true;
+
     protected override bool Multiselect => false;
 
     public override IEnumerable<FloatMenuOption> GetOptions(FloatMenuContext context) {

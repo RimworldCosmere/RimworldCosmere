@@ -1,7 +1,7 @@
-using RimWorld;
-using Verse;
 using System;
 using System.Xml;
+using RimWorld;
+using Verse;
 
 namespace Cosmere.Core.ScenarioPart.Parts;
 
@@ -30,8 +30,7 @@ public class ScenPart_FactionRelations : ScenPart {
             if (other == null) {
                 try {
                     FactionGenerator.CreateFactionAndAddToManager(def);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     Logger.Warning(
                         $"ScenPart_FactionRelations: Failed to create faction '{entry.faction}': {ex}"
                     );
@@ -57,7 +56,7 @@ public class ScenPart_FactionRelations : ScenPart {
     }
 
     public override string Summary(Scenario scen) {
-        if (relations.Count == 0) return "";
+        if (relations.Count == 0) return string.Empty;
         List<string> parts = [];
         for (int i = 0; i < relations.Count; i++) {
             FactionRelationEntry entry = relations[i];
@@ -74,11 +73,11 @@ public class ScenPart_FactionRelations : ScenPart {
 }
 
 public class FactionRelationEntry : IExposable {
-    public string faction = "";
+    public string faction = string.Empty;
     public int goodwill;
 
     public void ExposeData() {
-        Scribe_Values.Look(ref faction, "faction", "");
+        Scribe_Values.Look(ref faction, "faction", string.Empty);
         Scribe_Values.Look(ref goodwill, "goodwill");
     }
 

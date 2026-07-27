@@ -1,7 +1,7 @@
-
 using RimWorld;
 using UnityEngine;
 using Verse;
+
 namespace Cosmere.System.Scadrial.UI;
 
 public static class SavantUI {

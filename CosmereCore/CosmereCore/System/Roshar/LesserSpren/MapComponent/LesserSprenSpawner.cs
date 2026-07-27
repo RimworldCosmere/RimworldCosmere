@@ -91,8 +91,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
                 sprenSystem.UpdateParticles();
                 sprenSystem.particleSystem.gameObject.SetActive(true);
                 sprenSystem.particleSystem.Play();
-            }
-            else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
+            } else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
                 if (sprenSystem.particleSystem == null) continue;
                 sprenSystem.particleSystem.gameObject.SetActive(false);
                 sprenSystem.particleSystem.Stop();
@@ -177,8 +176,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             if (controller is StaticSprenController) {
                 // For nature spren, also check if it would be valid even if not currently active
                 shouldShow = isValidAtPosition || isInValidCells;
-            }
-            else {
+            } else {
                 // For dynamic spren, check dynamic cells
                 List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
                 bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
@@ -211,7 +209,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             if (!string.IsNullOrEmpty(controllerDebug)) info.Append(controllerDebug);
         }
 
-        return !foundValidSpren ? "" : info.ToString();
+        return !foundValidSpren ? string.Empty : info.ToString();
     }
 
     private void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {

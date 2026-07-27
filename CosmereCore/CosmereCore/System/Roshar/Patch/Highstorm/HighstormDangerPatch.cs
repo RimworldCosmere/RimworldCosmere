@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.Util;
 using HarmonyLib;
 using Verse;
-using Cosmere.System.Roshar.Util;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 

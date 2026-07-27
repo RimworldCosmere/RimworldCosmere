@@ -14,11 +14,11 @@ using Cosmere.System.Roshar.Surgebinding.Ability;
 using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 using Cosmere.System.Roshar.Util;
 using RimWorld;
-using static Cosmere.System.Roshar.RadiantOrderDefOf;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using static Cosmere.System.Roshar.RadiantOrderDefOf;
 using Logger = Cosmere.Core.Logger;
 using RadiantOrder = Cosmere.System.Roshar.DefModExtension.RadiantOrder;
 
@@ -39,7 +39,7 @@ public class Surgebinder : Invested {
     private Dictionary<string, int> cachedSavantStages = new Dictionary<string, int>();
 
     private int CurrentIdealInt;
-    public string godsprenName = "";
+    public string godsprenName = string.Empty;
 
     private int griefRecoveryCount;
 
@@ -71,11 +71,17 @@ public class Surgebinder : Invested {
     public RadiantOrder radiantOrder =>
         def.GetModExtension<RadiantOrder>() ??
         throw new InvalidOperationException($"Surgebinder def '{def.defName}' is missing RadiantOrder mod extension");
+
     public RadiantOrderDef radiantOrderDef => radiantOrder.order;
+
     protected override Color BarColor => radiantOrderDef.color.SaturationChanged(1f);
+
     protected override Color BarHighlightColor => radiantOrderDef.color.SaturationChanged(2f);
+
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
+
     private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();
+
     public override List<AbilityDef> Abilities => radiantOrderDef.GetAbilities(CurrentIdeal).ToList();
 
     public override string ResourceLabel {
@@ -124,16 +130,25 @@ public class Surgebinder : Invested {
     }
 
     public int ArtPiecesCreated => artPiecesCreated;
+
     public int ArtPiecesGood => artPiecesGood;
+
     public int ArtPiecesExcellent => artPiecesExcellent;
+
     public int ArtPiecesLegendary => artPiecesLegendary;
+
     public int MentalBreaksSurvived => mentalBreaksSurvived;
+
     public bool LostCloseRelationship => lostCloseRelationship;
+
     public bool RecoveredFromMajorHediff => recoveredFromMajorHediff;
+
     public bool WasImprisoned => wasImprisoned;
+
     public int TraumaEventCount => traumaEventCount;
 
     internal bool PendingOath => pendingOath;
+
     internal int LastIdealChangeTick => lastIdealChangeTick;
 
     public ILoadReferenceable? GetBondTarget() {
@@ -189,7 +204,7 @@ public class Surgebinder : Invested {
         ApplyBondDeathEffects();
         bool droppedBlade = DropDeadBladeAndKillSpren(isBondsmith, idealBeforeDeath);
         SendBondDeathLetter(isBondsmith, droppedBlade);
-        godsprenName = "";
+        godsprenName = string.Empty;
         pawn.genes?.RemoveGene(this);
     }
 
@@ -210,6 +225,7 @@ public class Surgebinder : Invested {
         if (strainedBond != null) {
             pawn.health!.RemoveHediff(strainedBond);
         }
+
         Thought_Memory brokenBondThought = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Roshar_Thought_BrokenBond, 0);
         brokenBondThought.permanent = true;
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(brokenBondThought);
@@ -227,9 +243,11 @@ public class Surgebinder : Invested {
                     deadBlade.TryGetComp<CompQuality>()
                         ?.SetQuality(QualityCategory.Normal, ArtGenerationContext.Colony);
                 }
+
                 droppedBlade = GenPlace.TryPlaceThing(deadBlade, pawn.Position, pawn.Map, ThingPlaceMode.Near);
             }
         }
+
         if (!bondedSpren.Dead && !bondedSpren.Destroyed) {
             IntVec3 deathPos = bondedSpren.PositionHeld;
             Map? deathMap = bondedSpren.MapHeld;
@@ -243,8 +261,10 @@ public class Surgebinder : Invested {
                     }
                 }
             }
+
             if (!bondedSpren.Destroyed) bondedSpren.Destroy();
         }
+
         bondedSpren = null;
         return droppedBlade;
     }
@@ -263,6 +283,7 @@ public class Surgebinder : Invested {
                             radiantOrderDef.LabelCap.Named("ORDER")
                         );
         }
+
         Find.LetterStack.ReceiveLetter(
             "CRO_BondDeath_Title".Translate(pawn.NameShortColored.Named("PAWN")),
             bodyText,
@@ -400,8 +421,7 @@ public class Surgebinder : Invested {
             Verse.Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond, pawn);
             hediff.Severity = 1f - connection;
             pawn.health?.AddHediff(hediff);
-        }
-        else if (connection >= 1.0f && existing != null) {
+        } else if (connection >= 1.0f && existing != null) {
             pawn.health?.RemoveHediff(existing);
         }
     }
@@ -433,7 +453,7 @@ public class Surgebinder : Invested {
     /// <summary>
     ///     The pawn slowly just levels up their Surgebinding skill from talking with their
     ///     spren. 5 xp every 2000 ticks is pretty slow, but will eventually get pawns
-    ///     leveled up, and on their way to higher ideals
+    ///     leveled up, and on their way to higher ideals.
     /// </summary>
     private void TrySkillUp(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
@@ -476,7 +496,7 @@ public class Surgebinder : Invested {
 
     private void SendOathNotification(int nextIdeal) {
         Ideal ideal = radiantOrderDef.ideals[nextIdeal];
-        string oathText = ideal.quotes.Count > 0 ? ideal.quotes[0] : "";
+        string oathText = ideal.quotes.Count > 0 ? ideal.quotes[0] : string.Empty;
         bool isTruth = radiantOrderDef == RadiantOrderDefOf.Lightweaver;
         string idealLabel = isTruth ? "Truth" : "Ideal";
 
@@ -520,8 +540,7 @@ public class Surgebinder : Invested {
 
         if (!zoneViolatedToday) {
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ZoneComplianceDays, 1);
-        }
-        else {
+        } else {
             ViolationUtility.ApplyViolation(pawn, 0.1f, "leaving assigned zone");
         }
 
@@ -625,6 +644,7 @@ public class Surgebinder : Invested {
             lastTick = currentTick;
             return;
         }
+
         if (currentTick - lastTick >= stagnationThresholdTicks) {
             ViolationUtility.ApplyViolation(pawn, violationWeight, reason);
             lastTick = currentTick;
@@ -831,7 +851,7 @@ public class Surgebinder : Invested {
         Scribe_Values.Look(ref lastIdealChangeTick, "lastIdealChangeTick", -1);
         Scribe_Values.Look(ref pendingOath, "pendingOath");
         Scribe_References.Look(ref bondedSpren, "bondedSpren");
-        Scribe_Values.Look(ref godsprenName, "godsprenName", "");
+        Scribe_Values.Look(ref godsprenName, "godsprenName", string.Empty);
         Scribe_Values.Look(ref griefRecoveryCount, "griefRecoveryCount");
         Scribe_Values.Look(ref wasDownedInCombat, "wasDownedInCombat");
         Scribe_Values.Look(ref artPiecesCreated, "artPiecesCreated");

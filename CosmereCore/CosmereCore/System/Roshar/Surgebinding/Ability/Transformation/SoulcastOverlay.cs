@@ -26,14 +26,11 @@ public static class SoulcastOverlay {
 
         if (mode == SoulcastMode.Wall) {
             icon = RimWorld.ThingDefOf.Wall.uiIcon;
-        }
-        else if (mode == SoulcastMode.Sculpture) {
+        } else if (mode == SoulcastMode.Sculpture) {
             icon = ThingDefOf.SculptureLarge?.uiIcon;
-        }
-        else if (terrainDef != null) {
+        } else if (terrainDef != null) {
             icon = ContentFinder<Texture2D>.Get(terrainDef.texturePath, false);
-        }
-        else if (materialDef != null) {
+        } else if (materialDef != null) {
             icon = materialDef.uiIcon;
         }
 
@@ -108,6 +105,7 @@ public static class SoulcastOverlay {
             list = [];
             _byMap[map.uniqueID] = list;
         }
+
         return list;
     }
 

@@ -32,10 +32,15 @@ public class SprenBond : ThingComp {
     private bool sleepDismissed;
 
     public Pawn? BondedRadiant => bondedRadiant;
+
     public bool Dismissed => dismissed;
+
     public bool Autonomous => autonomous;
+
     public bool CooldownActive => GenTicks.TicksGame - lastDismissSummonTick < 60;
+
     public IReadOnlyList<TraitDef> PersonalityTraits => personalityTraits;
+
     private Pawn Spren => (Pawn)parent;
 
     public void ToggleAutonomy() {
@@ -101,11 +106,11 @@ public class SprenBond : ThingComp {
             TraitDef def = personalityTraits[i];
             if (def == traitKind) {
                 multiplier *= 0.8f;
-            }
-            else if (def == traitAbrasive) {
+            } else if (def == traitAbrasive) {
                 multiplier *= 1.2f;
+            } else if (def == traitNerves) {
+                multiplier *= 0.85f;
             }
-            else if (def == traitNerves) multiplier *= 0.85f;
         }
 
         return multiplier;
@@ -162,15 +167,13 @@ public class SprenBond : ThingComp {
             if (autoDismissed && bondedRadiant.Spawned && bondedRadiant.Map != null && !Spren.Spawned) {
                 autoDismissed = false;
                 Summon(bondedRadiant.Map, bondedRadiant.Position);
-            }
-            else if (sleepDismissed &&
-                       bondedRadiant.Spawned &&
-                       bondedRadiant.Map != null &&
-                       !bondedRadiant.IsAsleep()) {
+            } else if (sleepDismissed &&
+                         bondedRadiant.Spawned &&
+                         bondedRadiant.Map != null &&
+                         !bondedRadiant.IsAsleep()) {
                 sleepDismissed = false;
                 Summon(bondedRadiant.Map, bondedRadiant.Position);
-            }
-            else if (autonomous && bondedRadiant.Spawned && bondedRadiant.Map != null && !bondedRadiant.IsAsleep()) {
+            } else if (autonomous && bondedRadiant.Spawned && bondedRadiant.Map != null && !bondedRadiant.IsAsleep()) {
                 TickAutonomous();
             }
 
@@ -242,8 +245,7 @@ public class SprenBond : ThingComp {
             if (bondedRadiant!.Spawned && bondedRadiant.Map != null) {
                 Summon(bondedRadiant.Map, bondedRadiant.Position);
             }
-        }
-        else {
+        } else {
             Dismiss();
         }
     }

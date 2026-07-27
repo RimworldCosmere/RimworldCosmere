@@ -353,9 +353,9 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
         string statusSuffix = status switch {
             IdealStatus.Achieved => " ✓",
-            IdealStatus.Current => "",
+            IdealStatus.Current => string.Empty,
             IdealStatus.Blocked => " (Blocked)",
-            _ => "",
+            _ => string.Empty,
         };
 
         using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, statusColor))
@@ -410,7 +410,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     }
 
     private static string GetAbilityNames(List<AbilityDef> abilities) {
-        string result = "";
+        string result = string.Empty;
         for (int i = 0; i < abilities.Count; i++) {
             if (i > 0) result += ", ";
             result += abilities[i].LabelCap;
@@ -440,8 +440,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
         if (order.favorableTraits != null && order.favorableTraits.Count > 0) {
             DrawTraitPills(listing, order.favorableTraits, AchievedColor);
-        }
-        else {
+        } else {
             using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
                 listing.Label("None");
         }
@@ -460,8 +459,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
         if (order.incompatibleTraits != null && order.incompatibleTraits.Count > 0) {
             DrawTraitPills(listing, order.incompatibleTraits, BlockedColor);
-        }
-        else {
+        } else {
             using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
                 listing.Label("None");
         }
@@ -481,8 +479,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             TraitDegreeData? degreeData = null;
             try {
                 degreeData = trait.def?.DataAtDegree(degree);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Logger.Verbose(
                     $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex}"
                 );
@@ -512,8 +509,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
                 bgColor = new Color(pillColor.r, pillColor.g, pillColor.b, 0.4f);
                 borderCol = pillColor;
                 textColor = Color.white;
-            }
-            else {
+            } else {
                 bgColor = new Color(0.3f, 0.3f, 0.3f, 0.2f);
                 borderCol = new Color(0.4f, 0.4f, 0.4f, 0.5f);
                 textColor = new Color(0.55f, 0.55f, 0.55f);
@@ -525,8 +521,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, textColor)) {
                 if (pawnHasTrait) {
                     Widgets.Label(pillRect, $"<b>{traitLabel}</b>");
-                }
-                else {
+                } else {
                     Widgets.Label(pillRect, traitLabel);
                 }
             }

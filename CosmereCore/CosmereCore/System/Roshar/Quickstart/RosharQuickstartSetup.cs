@@ -1,7 +1,7 @@
-using Verse;
 using Cosmere.Core.Quickstart;
 using Cosmere.System.Roshar.Extension;
 using Cosmere.System.Roshar.Gene;
+using Verse;
 
 namespace Cosmere.System.Roshar.Quickstart;
 
@@ -21,6 +21,7 @@ internal static class RosharQuickstartSetup {
                 bondsmith.godsprenName = "Stormfather";
                 bondsmith.UpdateAbilities();
             }
+
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 25);
         });
@@ -53,6 +54,7 @@ internal static class RosharQuickstartSetup {
                 bondsmith.godsprenName = "Nightwatcher";
                 bondsmith.UpdateAbilities();
             }
+
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
         });
 
@@ -87,6 +89,7 @@ internal static class RosharQuickstartSetup {
                 bondsmith.godsprenName = "Sibling";
                 bondsmith.UpdateAbilities();
             }
+
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
         });
     }

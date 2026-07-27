@@ -17,8 +17,12 @@ public sealed class Profile(
 )
     : global::System.Attribute {
     public string? Label { get; } = label;
+
     public ProfileMode Mode { get; } = mode;
+
     public float SampleProbability { get; } = sampleProbability;
+
     public string? Category { get; } = category;
+
     public bool Aggregate { get; } = aggregate;
 }

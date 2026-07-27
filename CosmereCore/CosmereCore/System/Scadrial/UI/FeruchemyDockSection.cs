@@ -20,6 +20,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     private static float StripHeight =>
         StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight + 26f;
+
     private const float IdleTarget = 50f;
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
@@ -176,6 +177,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float buttonY = endsRect.yMax + 8f;
+
         // Shown from the moment compounding is earned, whether or not this metal
         // can take it right now. A control that vanishes teaches nothing; one that
         // sits there greyed says the pawn is missing something.
@@ -194,8 +196,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         }
     }
 
-    /// The compounded pool gets its own dial: drag left to tap it, right to
-    /// compound into it, burning allomantic reserve to do so.
+    // The compounded pool gets its own dial: drag left to tap it, right to
+    // compound into it, burning allomantic reserve to do so.
     private float DrawCompoundedDial(
         Rect inner,
         float y,
@@ -245,9 +247,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return ends.yMax;
     }
 
-    /// The dial is the control, so the ability follows it. A dial pushed into the
-    /// compound half that cannot start falls back to idle rather than sitting on a
-    /// setting the pawn is not honouring.
+    // The dial is the control, so the ability follows it. A dial pushed into the
+    // compound half that cannot start falls back to idle rather than sitting on a
+    // setting the pawn is not honouring.
     private void SyncCompounding(Pawn pawn, InvestitureCell cell, Feruchemist gene) {
         AllomancyAbility? ability = CompoundingAccess.AbilityFor(pawn, cell.SubsystemId);
         if (ability == null) return;
@@ -284,8 +286,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (delta < 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
             Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
-        }
-        else if (delta > 0f) {
+        } else if (delta > 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
             Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), CompoundTint);
         }
@@ -296,8 +297,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider
-    /// brings its own tan gradient, which fights everything around it.
+    // Hand-drawn so the dial keeps the section's chrome. The vanilla slider
+    // brings its own tan gradient, which fights everything around it.
     private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity) {
         DrawDialBacking(rect, gene, capacity);
 
@@ -313,8 +314,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         HandleDialDrag(rect, metalId, gene, capacity, false);
     }
 
-    /// Shared by both dials. Compounded runs tap-only, so its reachable span stops
-    /// at the idle point rather than continuing into the store half.
+    // Shared by both dials. Compounded runs tap-only, so its reachable span stops
+    // at the idle point rather than continuing into the store half.
     private void HandleDialDrag(Rect rect, string dialId, Feruchemist gene, Capacity capacity, bool compounded) {
         float min = (compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded)
             ? 0f
@@ -343,7 +344,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         else gene.targetValue = snapped;
     }
 
-
     private static void DrawDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
         Widgets.DrawBoxSolid(rect, new Color(0.047f, 0.043f, 0.035f));
 
@@ -360,8 +360,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (delta < 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
             Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
-        }
-        else if (delta > 0f) {
+        } else if (delta > 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
             Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), StoreFill);
         }
@@ -371,9 +370,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             new Color(0.353f, 0.322f, 0.271f)
         );
     }
-
-
-
 
     private string Tooltip(Pawn pawn, InvestitureCell cell, Capacity capacity) {
         string effect = MetalEffect(pawn, cell);
@@ -393,15 +389,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    /// What this metal stores and taps, in the metal def's own words. The tooltip
-    /// described the click rather than the power before this.
+    // What this metal stores and taps, in the metal def's own words. The tooltip
+    // described the click rather than the power before this.
     private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
         MetallicArtsMetalDef? metal =
             DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
         string? description = metal?.feruchemy?.description;
 
         return string.IsNullOrEmpty(description)
-            ? ""
+            ? string.Empty
             : description!.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
     }
 
@@ -448,7 +444,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-
     private static Feruchemist? FindGene(Pawn pawn, string metalDefName) {
         if (pawn.genes == null) return null;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
@@ -481,15 +476,25 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         }
 
         public float Stored { get; }
+
         public float Compounded { get; }
+
         public float Max { get; }
+
         public bool HasMetalmind { get; }
+
         public bool CanTap { get; }
+
         public bool CanStore { get; }
+
         public bool CanTapCompounded { get; }
+
         public bool CanStoreCompounded { get; }
+
         public float Fraction => Max > 0f ? (Stored + Compounded) / Max : 0f;
+
         public float StoredFraction => Max > 0f ? Stored / Max : 0f;
+
         public float CompoundedFraction => Max > 0f ? Compounded / Max : 0f;
     }
 }

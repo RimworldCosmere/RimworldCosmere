@@ -12,7 +12,8 @@ internal static class CosmerePatchGuard {
     internal static bool Patched;
 }
 
-public abstract class CosmereMod<TSettings> : Verse.Mod where TSettings : CosmereModSettings, new() {
+public abstract class CosmereMod<TSettings> : Verse.Mod
+    where TSettings : CosmereModSettings, new() {
     public CosmereMod(ModContentPack content) : base(content) {
         LongEventHandler.QueueLongEvent(
             () => {

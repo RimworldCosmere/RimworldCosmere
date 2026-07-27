@@ -14,7 +14,9 @@ public class SurgeChargeHediff : AllomanticHediff {
     public Action? endCallback;
 
     public int endInTicks = -1;
+
     public SurgeChargeHediff() { }
+
     public SurgeChargeHediff(HediffDef d, Pawn p, IAbility<Allomancer, IHediff<Allomancer>> a) : base(d, p, a) { }
 
     public override void Tick() {

@@ -11,6 +11,7 @@ public class Shard : Verse.Entity, IExposable, ILoadReferenceable {
     }
 
     public override string LabelCap => def.LabelCap;
+
     public override string Label => def.label;
 
     public void ExposeData() { }

@@ -1,15 +1,18 @@
-using RimWorld;
 using Cosmere.Core;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Quickstart;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Quickstart;
 
 public class CosmereQuickstart : AbstractQuickstart {
     public override int mapSize => 75;
+
     public override TaggedString description => "Cosmere All-Stars: Radiants + Mistborn + mundane";
+
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
+
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
 
     public override void PostApplyConfiguration() {

@@ -21,7 +21,7 @@ public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource
     }
 
     public bool Equals(AllomanticBurnSource other) {
-        return (Def?.Equals(other.Def)) ?? (other.Def == null);
+        return Def?.Equals(other.Def) ?? (other.Def == null);
     }
 
     public override bool Equals(object obj) {

@@ -1,6 +1,6 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Parts;
 
 public class ScenPart_ScenarioProgression : ScenPart {
@@ -12,7 +12,7 @@ public class ScenPart_ScenarioProgression : ScenPart {
     }
 
     public override string Summary(Scenario scen) {
-        if (progression == null) return "";
+        if (progression == null) return string.Empty;
         return $"Scenario progression: {progression.label}";
     }
 }

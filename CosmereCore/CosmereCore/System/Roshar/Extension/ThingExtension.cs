@@ -1,6 +1,6 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.System.Roshar.Util;
 using Cosmere.System.Roshar.Comp.Map;
+using Cosmere.System.Roshar.Util;
 using RimWorld;
 using Verse;
 

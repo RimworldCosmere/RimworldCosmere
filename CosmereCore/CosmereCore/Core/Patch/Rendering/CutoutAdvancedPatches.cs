@@ -146,8 +146,7 @@ public static class CutoutAdvancedPatch {
         if (drawNow) {
             if (DrawNowMaterial == null) {
                 DrawNowMaterial = new Material(mat);
-            }
-            else {
+            } else {
                 DrawNowMaterial.CopyPropertiesFromMaterial(mat);
             }
 
@@ -157,8 +156,7 @@ public static class CutoutAdvancedPatch {
 
             DrawNowMaterial.SetPass(0);
             Graphics.DrawMeshNow(mesh, matrix);
-        }
-        else {
+        } else {
             Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, properties);
         }
 

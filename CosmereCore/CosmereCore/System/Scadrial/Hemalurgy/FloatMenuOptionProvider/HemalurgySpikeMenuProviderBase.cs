@@ -6,7 +6,9 @@ namespace Cosmere.System.Scadrial.Hemalurgy.FloatMenuOptionProvider;
 
 public abstract class HemalurgySpikeMenuProviderBase : RimWorld.FloatMenuOptionProvider {
     protected override bool Drafted => false;
+
     protected override bool Undrafted => true;
+
     protected override bool Multiselect => false;
 
     protected bool ValidateSurgeryPair(

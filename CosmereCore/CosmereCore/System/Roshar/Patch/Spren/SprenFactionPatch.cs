@@ -1,6 +1,6 @@
-
 using HarmonyLib;
 using Verse;
+
 namespace Cosmere.System.Roshar.Patch.Spren;
 
 [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]

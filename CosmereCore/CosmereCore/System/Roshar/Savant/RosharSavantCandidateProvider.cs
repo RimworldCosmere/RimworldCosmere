@@ -32,5 +32,4 @@ public class RosharSavantCandidateProvider : ISavantCandidateProvider {
             $"RosharSavantCandidateProvider: forced {pawn.NameShortColored} to surgebinding savant for {chosenSurge.defName}"
         );
     }
-
 }

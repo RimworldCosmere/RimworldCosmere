@@ -7,11 +7,15 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class Shardplate : SurgebindingAbility {
     private static ThingDef? _shardplateDef;
+
     private static ThingDef ShardplateDef => _shardplateDef ??= ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardplate;
+
     private static ThingDef? _shardhelmDef;
+
     private static ThingDef ShardhelmDef => _shardhelmDef ??= ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm;
 
     public Shardplate(Pawn pawn) : base(pawn) { }
+
     public Shardplate(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     protected override void OnEnable() {

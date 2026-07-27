@@ -1,8 +1,8 @@
+using System.Reflection;
+using Cosmere.Core.Patch;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
-using System.Reflection;
-using Cosmere.Core.Patch;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 

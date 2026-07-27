@@ -3,5 +3,5 @@ using Verse;
 namespace Cosmere.Core.DefModExtension;
 
 public class InvestitureSkillExtension : Verse.DefModExtension {
-    public string requiresInvestitureSystem = "";
+    public string requiresInvestitureSystem = string.Empty;
 }

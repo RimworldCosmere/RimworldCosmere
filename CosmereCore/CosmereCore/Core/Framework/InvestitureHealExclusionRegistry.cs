@@ -14,6 +14,7 @@ public static class InvestitureHealExclusionRegistry {
         for (int i = 0; i < excludedPrefixes.Count; i++) {
             if (defName.StartsWith(excludedPrefixes[i])) return true;
         }
+
         return false;
     }
 }

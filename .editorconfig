@@ -1,23 +1,114 @@
 root = true
 
 [*]
-# Optional: indent settings
 indent_style = space
 indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-# Recommended: keep consistent file headers or documentation
 file_header_template = unset
 
-
-[*.xml]
+[*.{xml,xml.template}]
 max_line_length = off
 
-[*.xml.template]
-max_line_length = off
+[*.{csproj,props,targets,slnx}]
+indent_size = 2
 
 [*.cs]
-# Force block-scoped namespaces (with braces)
-csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Layout, mirroring Cosmere.slnx.DotSettings so Rider and dotnet format agree.
+# Braces sit at the end of the line, else/catch/finally hug the closing brace.
+csharp_new_line_before_open_brace = none
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
 csharp_indent_braces = false
-csharp_new_line_before_open_brace = false
-dotnet_style_prefer_collection_expression = true
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_preserve_single_line_blocks = true
+
+csharp_style_namespace_declarations = file_scoped:warning
+
+# METHOD_OR_OPERATOR_BODY = BlockBody, ACCESSOR_OWNER_BODY = ExpressionBody.
+csharp_style_expression_bodied_methods = false:suggestion
+csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_local_functions = false:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+
+# OBJECT_CREATION_WHEN_TYPE_EVIDENT = ExplicitlyTyped - the codebase names its types.
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = false:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# INSTANCE_MEMBERS_QUALIFY_DECLARED_IN = 0 - members are never this-qualified.
+dotnet_style_qualification_for_field = false:warning
+dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_method = false:warning
+dotnet_style_qualification_for_event = false:warning
+
+dotnet_style_prefer_collection_expression = true:suggestion
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:suggestion
+dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:suggestion
+
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = true
+
+# StyleCop: rules that contradict the style above, or that RimWorld forbids.
+#
+# Defs are deserialized from XML by field name, so they need public camelCase
+# fields. Harmony patches need __instance / __result parameter names. Neither is
+# negotiable, so the naming and visibility families stay off.
+dotnet_diagnostic.SA1500.severity = none  # braces on their own line
+dotnet_diagnostic.SA1501.severity = none  # statement on single line
+dotnet_diagnostic.SA1502.severity = none  # element on single line
+dotnet_diagnostic.SA1503.severity = none  # braces on every statement
+dotnet_diagnostic.SA1101.severity = none  # prefix local calls with this
+dotnet_diagnostic.SA1200.severity = none  # usings inside namespace
+dotnet_diagnostic.SA1009.severity = none  # closing paren spacing
+dotnet_diagnostic.SA1111.severity = none  # closing paren on line of last param
+dotnet_diagnostic.SA1633.severity = none  # file header
+dotnet_diagnostic.SA1401.severity = none  # fields must be private
+dotnet_diagnostic.SA1300.severity = none  # element begins with uppercase
+dotnet_diagnostic.SA1303.severity = none  # const begins with uppercase
+dotnet_diagnostic.SA1304.severity = none  # non-private readonly uppercase
+dotnet_diagnostic.SA1306.severity = none  # field names camelCase
+dotnet_diagnostic.SA1307.severity = none  # public field PascalCase
+dotnet_diagnostic.SA1309.severity = none  # field must not begin with underscore
+dotnet_diagnostic.SA1310.severity = none  # field must not contain underscore
+dotnet_diagnostic.SA1311.severity = none  # static readonly PascalCase
+dotnet_diagnostic.SA1312.severity = none  # variable begins lowercase
+dotnet_diagnostic.SA1313.severity = none  # parameter begins lowercase
+dotnet_diagnostic.SA1414.severity = none  # tuple types must have element names
+dotnet_diagnostic.SA0001.severity = none  # XML comment analysis disabled
+
+# StyleCop: opinions with real churn and little payoff here.
+dotnet_diagnostic.SA1201.severity = none  # element ordering
+dotnet_diagnostic.SA1202.severity = none  # ordering by access
+dotnet_diagnostic.SA1203.severity = none  # constants before fields
+dotnet_diagnostic.SA1204.severity = none  # static before instance
+dotnet_diagnostic.SA1214.severity = none  # readonly before non-readonly
+dotnet_diagnostic.SA1402.severity = none  # one type per file
+dotnet_diagnostic.SA1404.severity = none  # suppression needs justification
+dotnet_diagnostic.SA1407.severity = none  # arithmetic parentheses
+dotnet_diagnostic.SA1408.severity = none  # conditional parentheses
+dotnet_diagnostic.SA1118.severity = none  # parameter spans multiple lines
+dotnet_diagnostic.SA1128.severity = none  # ctor initializer on own line
+dotnet_diagnostic.SA1649.severity = none  # file name matches type name
+
+# StyleCop documentation family. The codebase uses /// as plain prose rather
+# than structured XML docs, and GenerateDocumentationFile is off, so requiring
+# <summary>/<param> tags would mean annotating 4,400 members to satisfy a
+# document nobody builds.
+dotnet_diagnostic.SA1600.severity = none  # elements must be documented
+dotnet_diagnostic.SA1601.severity = none  # partial elements must be documented
+dotnet_diagnostic.SA1602.severity = none  # enumeration items must be documented
+dotnet_diagnostic.SA1604.severity = none  # documentation must have summary
+dotnet_diagnostic.SA1611.severity = none  # parameters must be documented
+dotnet_diagnostic.SA1616.severity = none  # returns tag must have text

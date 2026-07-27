@@ -14,10 +14,13 @@ public class EntropicAura : SurgebindingAbility {
     private const float BaseDamage = 3f;
 
     private static ThingDef? _entropicAuraDef;
+
     private static ThingDef? AuraMoteDef => _entropicAuraDef ??= ThingDefOf.Cosmere_Roshar_Thing_EntropicAura;
+
     private Mote? auraMote;
 
     public EntropicAura(Pawn pawn) : base(pawn) { }
+
     public EntropicAura(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;
@@ -84,8 +87,7 @@ public class EntropicAura : SurgebindingAbility {
                 if (Gene.CurrentIdeal >= 3) {
                     DegradeEquipment(targetPawn);
                 }
-            }
-            else if (thing is Building && thing.def.useHitPoints) {
+            } else if (thing is Building && thing.def.useHitPoints) {
                 int dmg = Math.Max(1, (int)structureDamage);
                 thing.HitPoints -= dmg;
                 if (thing.HitPoints <= 0) {

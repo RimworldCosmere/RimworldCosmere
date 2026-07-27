@@ -1,7 +1,7 @@
 ﻿using Cosmere.Core.Page;
 using HarmonyLib;
-using Verse;
 using RimWorld;
+using Verse;
 using DefModExtension_Shards = Cosmere.Core.DefModExtension.Shards;
 
 namespace Cosmere.Core.Patch;

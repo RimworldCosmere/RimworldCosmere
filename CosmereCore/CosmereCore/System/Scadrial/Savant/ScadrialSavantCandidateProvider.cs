@@ -16,8 +16,7 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
             if (gene is Allomancer allomancer && SavantUtility.CanBeSavant(allomancer.metal)) {
                 Allomancer chosen = allomancer;
                 candidates.Add(() => ApplyAllomanticSavant(pawn, chosen));
-            }
-            else if (gene is Feruchemist feruchemist && SavantUtility.CanBeSavant(feruchemist.metal)) {
+            } else if (gene is Feruchemist feruchemist && SavantUtility.CanBeSavant(feruchemist.metal)) {
                 Feruchemist chosen = feruchemist;
                 candidates.Add(() => ApplyFeruchemicalSavant(pawn, chosen));
             }
@@ -45,5 +44,4 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
             $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to feruchemical savant for {chosen.metal.defName}"
         );
     }
-
 }

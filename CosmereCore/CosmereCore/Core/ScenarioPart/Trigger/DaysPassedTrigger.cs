@@ -1,5 +1,5 @@
-
 using RimWorld;
+
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
 public class DaysPassedTrigger : ProgressionTrigger {

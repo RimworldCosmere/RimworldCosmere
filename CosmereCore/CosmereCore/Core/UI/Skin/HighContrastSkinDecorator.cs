@@ -11,13 +11,19 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
     }
 
     public string SystemId => inner.SystemId;
+
     public string HeaderLabel => inner.HeaderLabel;
 
     public Color AccentColor => Saturate(inner.AccentColor, 1.35f);
+
     public Color BarFillColor => Saturate(inner.BarFillColor, 1.2f);
+
     public Color BarBackgroundColor => new Color(0f, 0f, 0f, 0.95f);
+
     public Color HeaderTextColor => Color.white;
+
     public Color PanelBackgroundColor => new Color(0f, 0f, 0f, 0.9f);
+
     public Color BorderTintColor => Color.white;
 
     public GameFont HeaderFont => GameFont.Medium;
@@ -31,7 +37,6 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
     public Font? GetFont(FontRole role) {
         return inner.GetFont(role);
     }
-
 
     private static Color Saturate(Color src, float factor) {
         float max = Mathf.Max(src.r, Mathf.Max(src.g, src.b));

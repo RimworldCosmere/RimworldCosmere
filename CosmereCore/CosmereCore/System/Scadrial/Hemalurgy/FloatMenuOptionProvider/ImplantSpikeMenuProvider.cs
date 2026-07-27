@@ -1,6 +1,6 @@
+using Cosmere.Core.Lib.FloatSubMenu;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Util;
-using Cosmere.Core.Lib.FloatSubMenu;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -74,5 +74,4 @@ public class ImplantSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
 
         return options;
     }
-
 }

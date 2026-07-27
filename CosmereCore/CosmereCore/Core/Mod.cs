@@ -35,7 +35,8 @@ public class Mod : CosmereMod<CoreModSettings> {
 
     public static List<CosmereModSettings> cosmereSettings => settingsList ??= BuildSettingsList();
 
-    public static T GetModSettings<T>() where T : CosmereModSettings, new() {
+    public static T GetModSettings<T>()
+        where T : CosmereModSettings, new() {
         if (settingsByType.TryGetValue(typeof(T), out CosmereModSettings? cached)) return (T)cached;
         EnsureSettingsBuilt();
         return (T)settingsByType[typeof(T)];
@@ -63,8 +64,7 @@ public class Mod : CosmereMod<CoreModSettings> {
                 if (!instance.Enabled) continue;
                 settingsByType[t] = instance;
                 result.Add(instance);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Logger.Error($"Failed to instantiate settings type {t.FullName}: {ex}");
             }
         }

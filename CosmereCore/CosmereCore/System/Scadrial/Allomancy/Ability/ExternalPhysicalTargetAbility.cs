@@ -6,6 +6,7 @@ namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
 public class ExternalPhysicalTargetAbility : AllomancyAbility {
     public ExternalPhysicalTargetAbility(Pawn pawn) : base(pawn) { }
+
     public ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool CanApplyOn(LocalTargetInfo target) {

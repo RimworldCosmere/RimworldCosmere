@@ -9,13 +9,14 @@ public class Lifesurge : SurgebindingAbility {
     private const float WoundHealCostFraction = 0.1f;
     private const float DiseaseCureCostMultiplier = 1.5f;
     private static ThingDef? _pulseDef;
+
     private static ThingDef? PulseMoteDef => _pulseDef ??= ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
 
     private static readonly int[] DurationSeconds = [10, 15, 20, 25, 30];
     private static readonly int[] MaxWoundsToHeal = [1, 3, 5, int.MaxValue, int.MaxValue];
 
-
     public Lifesurge(Pawn pawn) : base(pawn) { }
+
     public Lifesurge(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {

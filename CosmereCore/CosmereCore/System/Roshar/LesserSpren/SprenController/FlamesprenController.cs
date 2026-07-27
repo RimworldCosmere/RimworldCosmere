@@ -9,9 +9,13 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class FlamesprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Flamespren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.8f;
+
     public override int minParticlesPerCell => 3;
+
     public override int maxParticlesPerCell => 8;
 
     public override List<GemDef> compatibleGemTypes => [

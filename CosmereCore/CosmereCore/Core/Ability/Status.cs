@@ -7,10 +7,13 @@ public record struct Status(Active active, int power) : IExposable {
     public int power = power;
 
     public static Status PowerOne => new Status(Active.On, 1);
+
     public static Status PowerTwo => new Status(Active.On, 2);
+
     public static Status PowerTen => new Status(Active.On, 10);
 
     public bool IsActive => active.Equals(Active.On);
+
     public bool IsPoweredUp => power > 1;
 
     public void ExposeData() {
@@ -33,5 +36,4 @@ public record struct Status(Active active, int power) : IExposable {
     public static explicit operator bool(Status status) {
         return status.active == Active.On;
     }
-
 }

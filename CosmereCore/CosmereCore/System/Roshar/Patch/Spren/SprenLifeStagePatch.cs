@@ -1,7 +1,7 @@
+using Cosmere.System.Roshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Cosmere.System.Roshar.Comp.Thing;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 

@@ -10,6 +10,7 @@ public class GravitationalPull : SurgebindingAbility {
     private readonly List<Pawn> pawnsInArea = [];
 
     public GravitationalPull(Pawn pawn) : base(pawn) { }
+
     public GravitationalPull(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

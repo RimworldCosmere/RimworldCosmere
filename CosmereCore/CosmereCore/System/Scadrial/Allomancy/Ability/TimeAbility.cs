@@ -11,7 +11,9 @@ public class TimeAbility : AllomancyAbility {
     private readonly List<Pawn> pawnsInBubble = [];
     private Mote? bubble;
     private Mote? bubbleWithDistortion;
+
     public TimeAbility(Pawn pawn) : base(pawn) { }
+
     public TimeAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private ThingDef moteDef => metal.Equals(MetallicArtsMetalDefOf.Cadmium)
@@ -42,7 +44,6 @@ public class TimeAbility : AllomancyAbility {
         if (bubbleWithDistortion != null && !bubbleWithDistortion.Destroyed) bubbleWithDistortion.Destroy();
     }
 
-
     public override void AbilityTick() {
         base.AbilityTick();
         if (!atLeastBurning) return;
@@ -53,7 +54,6 @@ public class TimeAbility : AllomancyAbility {
 
         bubble.Scale = moteScale;
         bubbleWithDistortion.Scale = moteScale * 0.8f;
-
 
         float radius = BaseRadius * GetStrength();
 

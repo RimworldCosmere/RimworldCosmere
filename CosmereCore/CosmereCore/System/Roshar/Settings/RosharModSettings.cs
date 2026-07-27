@@ -36,7 +36,6 @@ public class RosharModSettings : CosmereModSettings {
 
     public override string Name => "Roshar";
 
-
     public override void ExposeData() {
         Scribe_Values.Look(ref enableHighstorms, "enableHighstorms", true);
         Scribe_Values.Look(ref enableHighstormPushing, "enableHighstormPushing", true);
@@ -57,7 +56,6 @@ public class RosharModSettings : CosmereModSettings {
         Scribe_Values.Look(ref progressionDifficulty, "progressionDifficulty", 1f);
         Scribe_Values.Look(ref showIdealRequirements, "showIdealRequirements", true);
     }
-
 
     public override void DoTabContents(Form listing) {
         listing.Fieldset(

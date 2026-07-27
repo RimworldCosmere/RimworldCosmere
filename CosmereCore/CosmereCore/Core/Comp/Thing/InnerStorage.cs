@@ -120,6 +120,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public override void Initialize(CompProperties originalProps) {
         base.Initialize(originalProps);
         parent.DoTick();
+
         // Ticker type HAS to be normal for the parent
         parent.def.tickerType = TickerType.Normal;
         innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems, props.oneStackOnly);
@@ -144,14 +145,12 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
     }
 
-
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
         if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
 
         AddHaulDestination();
     }
-
 
     public int GetSpaceRemainingWithEnroute(ThingDef stuff, Pawn? excludeEnrouteFor = null) {
         if (Map == null) return 0;

@@ -1,12 +1,12 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class AddTraitAction : ProgressionAction {
     public int degree;
-    public string pawnName = "";
-    public string trait = "";
+    public string pawnName = string.Empty;
+    public string trait = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

@@ -73,12 +73,14 @@ public static class TryOpportunisticJobPatch {
                         new CodeInstruction(OpCodes.Ldloc_S, innerStorage.LocalIndex), // Load from `innerStorage`
                         new CodeInstruction(OpCodes.Brfalse_S, continueLabelOne), // skip if not
 
-                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage.LocalIndex), //Load from `innerStorage`
-                        //Call the getter for ParentThing
+                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage.LocalIndex), // Load from `innerStorage`
+
+                        // Call the getter for ParentThing
                         new CodeInstruction(
                             OpCodes.Call,
                             AccessTools.Property(typeof(Comp.Thing.InnerStorage), "ParentThing").GetGetMethod()
                         ),
+
                         // Call the getter for Position on the Thing
                         new CodeInstruction(
                             OpCodes.Call,
@@ -105,6 +107,7 @@ public static class TryOpportunisticJobPatch {
                             OpCodes.Ldloc_S,
                             haulDestination
                         ), // haulDestination (already IS InnerStorage)
+
                         // new CodeInstruction(OpCodes.Castclass, typeof(IHaulDestination)),
                         new CodeInstruction(OpCodes.Call, haulMethod),
                         new CodeInstruction(OpCodes.Ret),

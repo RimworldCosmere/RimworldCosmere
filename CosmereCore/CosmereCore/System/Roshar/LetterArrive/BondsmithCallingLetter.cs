@@ -6,7 +6,7 @@ using Verse;
 namespace Cosmere.System.Roshar.LetterArrive;
 
 public class BondsmithCallingLetter : ChoiceLetter {
-    private string sprenName = "";
+    private string sprenName = string.Empty;
 
     public override bool ShouldAutomaticallyOpenLetter => true;
 
@@ -57,6 +57,6 @@ public class BondsmithCallingLetter : ChoiceLetter {
 
     public override void ExposeData() {
         base.ExposeData();
-        Scribe_Values.Look(ref sprenName, "sprenName", "");
+        Scribe_Values.Look(ref sprenName, "sprenName", string.Empty);
     }
 }

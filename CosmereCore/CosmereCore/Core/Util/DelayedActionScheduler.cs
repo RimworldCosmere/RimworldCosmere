@@ -26,11 +26,9 @@ public class DelayedActionScheduler {
 
             try {
                 item.action?.Invoke();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Logger.Error($"DelayedActionScheduler: scheduled action threw: {ex}");
-            }
-            finally {
+            } finally {
                 Scheduled.RemoveAt(i);
             }
         }
@@ -43,6 +41,7 @@ public class DelayedActionScheduler {
 
     private class GameComponentDelayedActionScheduler : GameComponent {
         public GameComponentDelayedActionScheduler() { }
+
         public GameComponentDelayedActionScheduler(Game game) { }
 
         public override void GameComponentTick() {

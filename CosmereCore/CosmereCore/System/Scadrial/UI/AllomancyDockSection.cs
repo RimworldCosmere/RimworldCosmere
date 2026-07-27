@@ -29,8 +29,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private static float BaseStripHeight =>
         StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + StripButtonHeight + 14f;
 
-    /// Only the open metal draws a strip, so the compounding readout can claim
-    /// extra room without every other row paying for it.
+    // Only the open metal draws a strip, so the compounding readout can claim
+    // extra room without every other row paying for it.
     private float StripHeightFor(Pawn pawn) {
         if (expandedMetal == null) return BaseStripHeight;
         if (CompoundingAccess.FeruchemistFor(pawn, expandedMetal) is not { isCompounding: true }) {
@@ -105,6 +105,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
         InvestitureCell cell = row.Cell;
+
         // Nothing to draw for a metal this pawn cannot burn.
         if (FindGene(pawn, cell.SubsystemId) == null) return;
 
@@ -214,8 +215,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
         Event.current?.Use();
     }
 
-    /// Progress toward a full metalmind, with what it is costing and how long the
-    /// reserve or the remaining room will let it run - whichever runs out first.
+    // Progress toward a full metalmind, with what it is costing and how long the
+    // reserve or the remaining room will let it run - whichever runs out first.
     private float DrawCompoundProgress(Rect inner, float y, Feruchemist feruchemist, InvestitureCell cell) {
         float compounded = feruchemist.CompoundedAmount;
         float capacity = compounded + feruchemist.CompoundedFreeSpace;
@@ -252,11 +253,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
         return line.yMax;
     }
 
-    /// How long until the metalmind being filled is full, and until every
-    /// fillable metalmind is - the second is what actually matters when a pawn
-    /// carries a dozen of them.
+    // How long until the metalmind being filled is full, and until every
+    // fillable metalmind is - the second is what actually matters when a pawn
+    // carries a dozen of them.
     private static string RemainingLabel(Feruchemist feruchemist, float rate) {
-        if (rate <= 0f) return "";
+        if (rate <= 0f) return string.Empty;
 
         return "CC_Dock_Allomancy_CompoundEta".Translate(
             Period(feruchemist.CurrentCompoundedFreeSpace / rate).Named("ONE"),
@@ -285,7 +286,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             ? "\n" + "CC_Dock_State_Flaring".Translate()
             : cell.IsActive
                 ? "\n" + "CC_Dock_State_Burning".Translate()
-                : "";
+                : string.Empty;
 
         return "CC_Dock_Allomancy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),
@@ -295,15 +296,15 @@ public sealed class AllomancyDockSection : DockSectionBase {
         );
     }
 
-    /// What burning this metal actually does, in the metal def's own words. The
-    /// tooltip described the click rather than the power before this.
+    // What burning this metal actually does, in the metal def's own words. The
+    // tooltip described the click rather than the power before this.
     private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
         MetallicArtsMetalDef? metal =
             DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
         string? description = metal?.allomancy?.description;
 
         return string.IsNullOrEmpty(description)
-            ? ""
+            ? string.Empty
             : description!.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
     }
 

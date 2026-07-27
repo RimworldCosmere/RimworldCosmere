@@ -12,9 +12,13 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class LifesprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Lifespren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.7f;
+
     public override int minParticlesPerCell => 2;
+
     public override int maxParticlesPerCell => 5;
 
     public override List<GemDef> compatibleGemTypes => [
@@ -27,6 +31,7 @@ public class LifesprenController : DynamicSprenController {
     public override float captureRarityMultiplier => 0.6f;
 
     public override Color sprenColor => new Color(0.1f, 0.9f, 0.1f, 0.8f);
+
     public override float sprenSizeMultiplier => 0.9f;
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {

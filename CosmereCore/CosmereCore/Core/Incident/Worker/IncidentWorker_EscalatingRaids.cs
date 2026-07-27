@@ -1,6 +1,6 @@
+using Cosmere.Core.DefModExtension;
 using RimWorld;
 using Verse;
-using Cosmere.Core.DefModExtension;
 
 namespace Cosmere.Core.Incident.Worker;
 

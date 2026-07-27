@@ -12,6 +12,4 @@ public class FabrialBasicAugmenter : FabrialBasicBuilding {
         base.SpawnSetup(map, respawningAfterLoad);
         basicFabrialAugmenter = GetComp<BasicFabrialAugmenter>();
     }
-
-
 }

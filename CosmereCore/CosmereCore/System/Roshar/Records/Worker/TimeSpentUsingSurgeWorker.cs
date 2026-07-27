@@ -9,7 +9,7 @@ public class TimeSpentUsingSurgeWorker : RecordWorker {
     private SurgeDef? surgeCache;
 
     private SurgeDef surge => surgeCache ??=
-        DefDatabase<SurgeDef>.GetNamed(def.defName.Replace("Cosmere_Roshar_Record_TimeSpentUsing_", ""));
+        DefDatabase<SurgeDef>.GetNamed(def.defName.Replace("Cosmere_Roshar_Record_TimeSpentUsing_", string.Empty));
 
     public override bool ShouldMeasureTimeNow(Pawn? pawn) {
         if (pawn?.abilities == null) return false;

@@ -1,10 +1,10 @@
-
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class AddGeneAction : ProgressionAction {
-    public string gene = "";
-    public string pawnName = "";
+    public string gene = string.Empty;
+    public string pawnName = string.Empty;
     public bool xenogene = true;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {

@@ -9,13 +9,21 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class RocksprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Rockspren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.05f;
+
     public override int minParticlesPerCell => 2;
+
     public override int maxParticlesPerCell => 3;
+
     protected override float maxSpreadDistance => 0.3f;
+
     protected override float movementSpeed => 2f;
+
     protected override float randomDirectionAmount => 0.1f;
+
     public override float sprenSizeMultiplier => 1.5f;
 
     public override List<GemDef> compatibleGemTypes => [
@@ -25,6 +33,7 @@ public class RocksprenController : StaticSprenController {
     ];
 
     public override float captureRarityMultiplier => 1.0f;
+
     public override Color sprenColor => new Color(0.6f, 0.5f, 0.4f, 0.8f);
 
     protected override Material GetBaseMaterial() {

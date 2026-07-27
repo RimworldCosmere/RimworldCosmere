@@ -5,16 +5,16 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 public class ImplantedSpikeData : IExposable {
     public float chargeStrength = 1f;
     public bool isThinNeedle;
-    public string metalDefName = "";
+    public string metalDefName = string.Empty;
     public HemalurgicStealType stealType;
-    public string stolenDefName = "";
+    public string stolenDefName = string.Empty;
     public List<string> stolenDefNames = [];
     public float storedInvestiture;
 
     public void ExposeData() {
-        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
+        Scribe_Values.Look(ref metalDefName, "metalDefName", string.Empty);
         Scribe_Values.Look(ref stealType, "stealType");
-        Scribe_Values.Look(ref stolenDefName, "stolenDefName", "");
+        Scribe_Values.Look(ref stolenDefName, "stolenDefName", string.Empty);
         Scribe_Collections.Look(ref stolenDefNames, "stolenDefNames", LookMode.Value);
         Scribe_Values.Look(ref chargeStrength, "chargeStrength", 1f);
         Scribe_Values.Look(ref storedInvestiture, "storedInvestiture");

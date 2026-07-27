@@ -14,7 +14,9 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 
 public class MetalCost : CompAbilityEffect {
     private new AllomancyAbility parent => (AllomancyAbility)base.parent;
+
     private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
+
     private Allomancer gene => parent.Gene;
 
     private float currentCost => parent.GetDesiredBurnRateForStatus(parent.nextStatus);

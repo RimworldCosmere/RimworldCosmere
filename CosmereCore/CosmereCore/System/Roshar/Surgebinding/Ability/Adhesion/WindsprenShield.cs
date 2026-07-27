@@ -13,12 +13,14 @@ public class WindsprenShield : SurgebindingAbility {
     private const int BaseRadius = 3;
     public static readonly HashSet<Pawn> ShieldedPawns = [];
     private static ThingDef? _auraMoteDef;
+
     private static ThingDef? AuraMoteDef => _auraMoteDef ??= ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
 
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
 
     public WindsprenShield(Pawn pawn) : base(pawn) { }
+
     public WindsprenShield(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

@@ -35,8 +35,7 @@ public static class SystemSwitcherStrip {
                 GUI.color = mark;
                 GUI.DrawTexture(orb.ContractedBy(3f), sigil);
                 GUI.color = prev;
-            }
-            else {
+            } else {
                 Rect dot = new Rect(orb.center.x - 4f, orb.center.y - 4f, 8f, 8f);
                 Widgets.DrawBoxSolid(dot, mark);
             }

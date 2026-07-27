@@ -19,7 +19,7 @@ public class UseSetting : PatchOperation {
 
         string valueStr = settingValue switch {
             bool b => b.ToString().ToLowerInvariant(),
-            _ => settingValue?.ToString() ?? "",
+            _ => settingValue?.ToString() ?? string.Empty,
         };
 
         if (!string.Equals(valueStr, expect, StringComparison.OrdinalIgnoreCase)) {

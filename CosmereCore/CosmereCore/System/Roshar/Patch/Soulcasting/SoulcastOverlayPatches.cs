@@ -1,8 +1,8 @@
+using Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
+using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
-using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 
 namespace Cosmere.System.Roshar.Patch.Soulcasting;
 

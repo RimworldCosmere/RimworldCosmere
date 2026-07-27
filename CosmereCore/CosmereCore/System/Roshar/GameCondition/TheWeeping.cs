@@ -10,6 +10,7 @@ public class TheWeeping : RimWorld.GameCondition {
     private const float SpheresDrainPerInterval = 0.5f;
 
     private static WeatherDef? cachedRain;
+
     private static WeatherDef Rain => cachedRain ??= DefDatabase<WeatherDef>.GetNamed("Rain");
 
     public override void Init() {

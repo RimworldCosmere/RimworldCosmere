@@ -14,6 +14,7 @@ namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
 public abstract class LineDrawingAuraProperties : HediffCompProperties {
     public virtual float radius { get; set; } = 15;
+
     public virtual Color lineColor { get; set; }
 
     public virtual Material lineMaterial =>
@@ -26,9 +27,13 @@ public abstract class LineDrawingAuraProperties : HediffCompProperties {
 
 public abstract class LineDrawingAura : HediffComp {
     protected Material? cachedLineMaterial;
+
     protected new virtual LineDrawingAuraProperties props => (LineDrawingAuraProperties)base.props;
+
     protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
+
     protected MetallicArtsMetalDef metal => parent.metal;
+
     protected float radius => props.radius * parent.Severity;
 
     protected bool atLeastBurning {
@@ -42,6 +47,7 @@ public abstract class LineDrawingAura : HediffComp {
     }
 
     protected abstract IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map);
+
     protected abstract LineToRender GetLineToRender(Verse.Thing thing);
 
     public override void CompPostPostRemoved() {

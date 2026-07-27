@@ -1,8 +1,8 @@
-using Cosmere.System.Roshar.Nightwatcher;
 using Cosmere.Core.Nightwatcher;
 using Cosmere.System.Roshar.Comp.Hediff;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.Nightwatcher;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -199,8 +199,7 @@ public class Dialog_NightwatcherEncounter : Window {
             bool isSelected = selectedBoon == boon;
             if (isSelected) {
                 Widgets.DrawBoxSolid(rowRect, new Color(0.2f, 0.45f, 0.3f, 0.4f));
-            }
-            else if (Mouse.IsOver(rowRect)) {
+            } else if (Mouse.IsOver(rowRect)) {
                 Widgets.DrawBoxSolid(rowRect, new Color(0.3f, 0.3f, 0.3f, 0.3f));
             }
 
@@ -232,8 +231,7 @@ public class Dialog_NightwatcherEncounter : Window {
             if (Widgets.ButtonInvisible(rowRect)) {
                 if (boon.Applicator is INightwatcherChoiceProvider) {
                     ShowChoiceMenu(boon);
-                }
-                else {
+                } else {
                     selectedBoon = boon;
                     selectedChoiceKey = null;
                 }
@@ -418,7 +416,7 @@ public class Dialog_NightwatcherEncounter : Window {
             if (!string.IsNullOrEmpty(extra)) effects.Add(extra!);
         }
 
-        return effects.Count > 0 ? string.Join("  |  ", effects) : "";
+        return effects.Count > 0 ? string.Join("  |  ", effects) : string.Empty;
     }
 
     private static string GetCurseEffects(NightwatcherCurseDef curse) {
@@ -459,7 +457,7 @@ public class Dialog_NightwatcherEncounter : Window {
             effects.Add("CRO_NW_Effect_EvolvesAfterYears".Translate(years.Named("YEARS")));
         }
 
-        return effects.Count > 0 ? string.Join("  |  ", effects) : "";
+        return effects.Count > 0 ? string.Join("  |  ", effects) : string.Empty;
     }
 
     private static string GetHediffLabel(HediffDef hediff) {
@@ -478,7 +476,7 @@ public class Dialog_NightwatcherEncounter : Window {
         if (stage.statOffsets != null) {
             for (int i = 0; i < stage.statOffsets.Count; i++) {
                 StatModifier mod = stage.statOffsets[i];
-                string sign = mod.value >= 0 ? "+" : "";
+                string sign = mod.value >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatOffset".Translate(
                     sign.Named("SIGN"),
                     mod.value.Named("VALUE"),
@@ -491,7 +489,7 @@ public class Dialog_NightwatcherEncounter : Window {
             for (int i = 0; i < stage.statFactors.Count; i++) {
                 StatModifier mod = stage.statFactors[i];
                 float pct = (mod.value - 1f) * 100f;
-                string sign = pct >= 0 ? "+" : "";
+                string sign = pct >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatFactor".Translate(
                     sign.Named("SIGN"),
                     pct.Named("VALUE"),
@@ -504,7 +502,7 @@ public class Dialog_NightwatcherEncounter : Window {
             for (int i = 0; i < stage.capMods.Count; i++) {
                 PawnCapacityModifier cap = stage.capMods[i];
                 if (cap.offset != 0f) {
-                    string sign = cap.offset >= 0 ? "+" : "";
+                    string sign = cap.offset >= 0 ? "+" : string.Empty;
                     effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
                         sign.Named("SIGN"),
                         (cap.offset * 100f).Named("VALUE"),
@@ -515,7 +513,7 @@ public class Dialog_NightwatcherEncounter : Window {
         }
 
         if (stage.painOffset != 0f) {
-            string sign = stage.painOffset >= 0 ? "+" : "";
+            string sign = stage.painOffset >= 0 ? "+" : string.Empty;
             effects.Add("CRO_NW_Effect_PainOffset".Translate(
                 sign.Named("SIGN"),
                 stage.painOffset.Named("VALUE")
@@ -526,8 +524,8 @@ public class Dialog_NightwatcherEncounter : Window {
     }
 
     private void SendResultLetter() {
-        string boonLabel = selectedBoon?.LabelCap ?? "";
-        string curseLabel = drawnCurse?.LabelCap ?? "";
+        string boonLabel = selectedBoon?.LabelCap ?? string.Empty;
+        string curseLabel = drawnCurse?.LabelCap ?? string.Empty;
 
         Find.LetterStack.ReceiveLetter(
             "Cosmere_Roshar_NW_Letter_Title".Translate(pawn.Named("PAWN")),

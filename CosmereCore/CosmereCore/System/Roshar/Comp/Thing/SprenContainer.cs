@@ -10,6 +10,7 @@ public class SprenContainer : ThingComp {
     private SprenType? capturedSprenType;
 
     public bool hasCapturedSpren => capturedSprenType.HasValue;
+
     public SprenType? CapturedSprenType => capturedSprenType;
 
     public void CaptureSpren(SprenType sprenType) {

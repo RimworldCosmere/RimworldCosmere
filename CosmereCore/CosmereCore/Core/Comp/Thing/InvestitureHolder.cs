@@ -137,6 +137,7 @@ public class InvestitureHolder : ThingComp {
 
                         break;
                     }
+
                 case Pawn pawn:
                     if (pawn.inventory?.innerContainer != null) {
                         ThingOwner invContainer = pawn.inventory.innerContainer;

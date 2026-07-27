@@ -1,10 +1,10 @@
 using System;
 using Cosmere.Core.Savant;
-using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
@@ -12,21 +12,21 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
 
-/// Which stored pool the tap controls act on.
+// Which stored pool the tap controls act on.
 public enum FeruchemyChannel {
     Ordinary,
     Compounded,
 }
 
 public class Feruchemist : Metalborn {
-    /// The dial's neutral point. Below it the pawn taps, above it they store.
+    // The dial's neutral point. Below it the pawn taps, above it they store.
     public const float IdleTarget = 50f;
     public const float MaxSeverity = 20f;
     public const float MaxTransferPerSecond = 10f;
 
-    /// TickStoreOrTap runs once per real second, so this is per second - the old
-    /// name said rare tick and the readout converted as if it were, which is how
-    /// the reading came out four times under what the metalmind actually moved.
+    // TickStoreOrTap runs once per real second, so this is per second - the old
+    // name said rare tick and the readout converted as if it were, which is how
+    // the reading came out four times under what the metalmind actually moved.
     public static readonly float AmountPerSecond = MaxTransferPerSecond / MaxSeverity;
     private HediffDef? cachedCompoundHediffDef;
 
@@ -41,11 +41,11 @@ public class Feruchemist : Metalborn {
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
 
-    /// The compounded pool has its own dial: below idle it taps, above idle it
-    /// compounds, burning allomantic reserve to fill itself.
+    // The compounded pool has its own dial: below idle it taps, above idle it
+    // compounds, burning allomantic reserve to fill itself.
     public float compoundedTargetValue = IdleTarget;
 
-    /// How hard the dial is calling for compounding, nought to one.
+    // How hard the dial is calling for compounding, nought to one.
     public float CompoundFraction =>
         Mathf.Clamp01((compoundedTargetValue - IdleTarget) / (100f - IdleTarget));
 
@@ -78,10 +78,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// A metal is declared twice - once as MetalDef and again as the richer
-    /// MetallicArtsMetalDef - so the two live in separate databases and are never
-    /// the same object. Metalminds resolve the plain one while the gene holds the
-    /// arts one, which made every implant invisible to its own gene.
+    // A metal is declared twice - once as MetalDef and again as the richer
+    // MetallicArtsMetalDef - so the two live in separate databases and are never
+    // the same object. Metalminds resolve the plain one while the gene holds the
+    // arts one, which made every implant invisible to its own gene.
     private bool SameMetal(Core.Def.MetalDef? candidate) {
         return candidate != null && candidate.defName == metal.defName;
     }
@@ -124,8 +124,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Room in the one metalmind compounding is filling right now. Deposits go in
-    /// order, so this is the first that will accept charge.
+    // Room in the one metalmind compounding is filling right now. Deposits go in
+    // order, so this is the first that will accept charge.
     public float CurrentCompoundedFreeSpace {
         get {
             List<IMetalmindSource> mms = metalminds;
@@ -137,7 +137,7 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Room left across every metalmind this pawn can actually compound into.
+    // Room left across every metalmind this pawn can actually compound into.
     public float CompoundedFreeSpace {
         get {
             float total = 0f;
@@ -151,6 +151,7 @@ public class Feruchemist : Metalborn {
     }
 
     public override float InitialResourceMax => 100f;
+
     public override float Max => 100f;
 
     public override float Value {
@@ -164,15 +165,20 @@ public class Feruchemist : Metalborn {
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanStore) continue;
                     float add = Mathf.Min(mms[i].FreeSpace, delta);
-                    if (add > 0f) { mms[i].AddStored(add); delta -= add; }
+                    if (add > 0f) {
+                        mms[i].AddStored(add);
+                        delta -= add;
+                    }
                 }
-            }
-            else if (delta < 0f) {
+            } else if (delta < 0f) {
                 delta = -delta;
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanTap) continue;
                     float remove = Mathf.Min(mms[i].StoredAmount, delta);
-                    if (remove > 0f) { mms[i].ConsumeStored(remove); delta -= remove; }
+                    if (remove > 0f) {
+                        mms[i].ConsumeStored(remove);
+                        delta -= remove;
+                    }
                 }
 
                 // Setting the resource directly has to be able to reach zero, so it
@@ -181,7 +187,10 @@ public class Feruchemist : Metalborn {
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanTapCompounded) continue;
                     float remove = Mathf.Min(mms[i].CompoundedAmount, delta);
-                    if (remove > 0f) { mms[i].ConsumeCompounded(remove); delta -= remove; }
+                    if (remove > 0f) {
+                        mms[i].ConsumeCompounded(remove);
+                        delta -= remove;
+                    }
                 }
             }
         }
@@ -266,31 +275,32 @@ public class Feruchemist : Metalborn {
     }
 
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
+
     public bool isCompounding => compoundHediffDef != null && pawn.health.hediffSet.HasHediff(compoundHediffDef);
 
-    /// Compounding pours charge into a metalmind exactly as storing does, so it
-    /// counts as storing - mirroring isTapping, which already covers both the
-    /// ordinary and the compounded channel. Paused compounding is excluded because
-    /// nothing is flowing while it waits on metal to burn.
+    // Compounding pours charge into a metalmind exactly as storing does, so it
+    // counts as storing - mirroring isTapping, which already covers both the
+    // ordinary and the compounded channel. Paused compounding is excluded because
+    // nothing is flowing while it waits on metal to burn.
     public bool isStoringAny =>
         isStoring || (isCompounding && !isCompoundPaused && compoundedTargetValue > IdleTarget);
 
-    /// What compounding is currently pouring in, and what it costs, so the
-    /// allomancy panel can report both without reaching for the hediff itself.
+    // What compounding is currently pouring in, and what it costs, so the
+    // allomancy panel can report both without reaching for the hediff itself.
     public float CompoundStorePerSecond =>
         compoundHediff is Scadrial.Feruchemy.Hediff.Compound store ? store.StorePerSecond : 0f;
 
-    /// Still set to compound, but waiting on metal to burn.
+    // Still set to compound, but waiting on metal to burn.
     public bool isCompoundPaused =>
         compoundHediff is Scadrial.Feruchemy.Hediff.Compound held && held.Paused;
 
     public float CompoundMetalDrainPerSecond =>
         compoundHediff is Scadrial.Feruchemy.Hediff.Compound drain ? drain.MetalDrainPerSecond : 0f;
 
-    /// Charge moved per real second at the current dial setting, negative while
-    /// tapping. Zero when the dial sits in its dead band or the direction is shut.
-    /// What the compounded dial is moving, negative while tapping it and positive
-    /// while compounding into it.
+    // Charge moved per real second at the current dial setting, negative while
+    // tapping. Zero when the dial sits in its dead band or the direction is shut.
+    // What the compounded dial is moving, negative while tapping it and positive
+    // while compounding into it.
     public float CompoundedRatePerSecond {
         get {
             if (compoundedTargetValue > IdleTarget) return isCompoundPaused ? 0f : CompoundStorePerSecond;
@@ -303,6 +313,7 @@ public class Feruchemist : Metalborn {
     public float TransferRatePerSecond {
         get {
             float rate = dialRatePerSecond;
+
             // Compounding runs alongside the dial rather than replacing it, so the
             // readout has to carry both or it understates what is happening.
             if (compoundHediff is Scadrial.Feruchemy.Hediff.Compound compound) {
@@ -328,8 +339,8 @@ public class Feruchemist : Metalborn {
     private const float DeadBand = 2f;
     private const float CurveExponent = 2.5f;
 
-    /// The dial reads in whole units per second, so it steps in twentieths of a
-    /// severity point rather than anywhere along the curve.
+    // The dial reads in whole units per second, so it steps in twentieths of a
+    // severity point rather than anywhere along the curve.
     public const float RateQuantum = 0.05f;
 
     private static float SeverityQuantum => RateQuantum / AmountPerSecond;
@@ -350,9 +361,9 @@ public class Feruchemist : Metalborn {
         return baseSeverity;
     }
 
-    /// Inverse of the curve above. Lives here because the storing side carries a
-    /// savant penalty, so the mapping depends on pawn state and cannot be a
-    /// second copy of the arithmetic somewhere in the UI.
+    // Inverse of the curve above. Lives here because the storing side carries a
+    // savant penalty, so the mapping depends on pawn state and cannot be a
+    // second copy of the arithmetic somewhere in the UI.
     private float TargetForSeverity(float severity, bool storing) {
         float unpenalised = storing
             ? severity / SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage)
@@ -364,7 +375,7 @@ public class Feruchemist : Metalborn {
         return IdleTarget + (storing ? delta : -delta);
     }
 
-    /// Nudges a raw dial position onto the nearest rate step.
+    // Nudges a raw dial position onto the nearest rate step.
     public float SnapTarget(float rawTarget) {
         if (Mathf.Abs(rawTarget - IdleTarget) < DeadBand) return IdleTarget;
 
@@ -377,7 +388,6 @@ public class Feruchemist : Metalborn {
 
         return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
     }
-
 
     private void TryRemoveHediffByDef(HediffDef? def) {
         if (def == null) return;
@@ -436,12 +446,10 @@ public class Feruchemist : Metalborn {
         if (targetValue < IdleTarget && canTap && ordinary > 0f) {
             TryRemoveHediffByDef(storeHediffDef);
             if (tapHediffDef != null) pawn.health.GetOrAddHediff(tapHediffDef).Severity = ordinary;
-        }
-        else if (targetValue > IdleTarget && canStore && ordinary > 0f) {
+        } else if (targetValue > IdleTarget && canStore && ordinary > 0f) {
             TryRemoveHediffByDef(tapHediffDef);
             pawn.health.GetOrAddHediff(storeHediffDef).Severity = ordinary;
-        }
-        else {
+        } else {
             TryRemoveHediffByDef(tapHediffDef);
             TryRemoveHediffByDef(storeHediffDef);
         }
@@ -453,8 +461,7 @@ public class Feruchemist : Metalborn {
             if (tapCompoundedHediffDef != null) {
                 pawn.health.GetOrAddHediff(tapCompoundedHediffDef).Severity = compounded;
             }
-        }
-        else {
+        } else {
             TryRemoveHediffByDef(tapCompoundedHediffDef);
         }
     }
@@ -482,8 +489,7 @@ public class Feruchemist : Metalborn {
                 .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
                 .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
-        }
-        else if (isTapping || isStoring) {
+        } else if (isTapping || isStoring) {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
                 .Learn(
                     Mathf.Lerp(1, 2, effectiveSeverity) * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval
@@ -513,8 +519,8 @@ public class Feruchemist : Metalborn {
         );
     }
 
-    /// Carries the remainder across sources. Dumping the full amount into the first
-    /// eligible metalmind let its clamp discard the overflow silently.
+    // Carries the remainder across sources. Dumping the full amount into the first
+    // eligible metalmind let its clamp discard the overflow silently.
     private bool Distribute(
         float amount,
         Func<IMetalmindSource, bool> eligible,

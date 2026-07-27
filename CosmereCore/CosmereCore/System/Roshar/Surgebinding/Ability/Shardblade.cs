@@ -7,11 +7,13 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class Shardblade : SurgebindingAbility {
     private static ThingDef? _shardbladeDef;
+
     private static ThingDef ShardbladeDef => _shardbladeDef ??= ThingDefOf.Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
 
     private readonly List<ThingWithComps> previousEquipment = [];
 
     public Shardblade(Pawn pawn) : base(pawn) { }
+
     public Shardblade(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override AcceptanceReport CanCast => base.CanCast && PawnHasShardblade();
@@ -29,8 +31,7 @@ public class Shardblade : SurgebindingAbility {
                 if (pawn.inventory.innerContainer.TryAdd(equipment)) {
                     previousEquipment.Add(equipment);
                     equipment.DeSpawn();
-                }
-                else {
+                } else {
                     pawn.equipment.TryDropEquipment(equipment, out _, pawn.Position);
                 }
             }

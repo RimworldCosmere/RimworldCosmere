@@ -9,7 +9,6 @@ public class ThoughtWorker_Precept_VorinRoles : ThoughtWorker_Precept {
 
         // Men: physical work (combat, construction, mining). Women: scholarly work (research, art, crafting).
         // Mood boost if the pawn has work assignments matching their Vorin role.
-
         bool isMale = p.gender == Gender.Male;
         Pawn_WorkSettings workSettings = p.workSettings;
         if (workSettings == null) return ThoughtState.Inactive;

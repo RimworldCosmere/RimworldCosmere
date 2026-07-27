@@ -8,25 +8,35 @@ using Verse;
 
 namespace Cosmere.Core.Hediff;
 
-public interface IHediff<TGene> where TGene : Invested {
+public interface IHediff<TGene>
+    where TGene : Invested {
     public HashSet<IAbility<TGene, IHediff<TGene>>> SourceAbilities { get; }
+
     public float ExtraSeverity { get; set; }
+
     public float Severity { get; set; }
+
     public TGene Gene { get; }
+
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
 
     public void RemoveSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
+
     public void PostMake();
+
     public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
+
     public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
 }
 
 public abstract class AbstractHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
     : AbstractHediff<Invested>(hediffDef, pawn, ability);
 
-public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> where TGene : Invested {
+public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
+    where TGene : Invested {
     protected IAbility<TGene, IHediff<TGene>> ability = null!;
     private TGene geneInt = null!;
+
     protected AbstractHediff() { }
 
     protected AbstractHediff(HediffDef hediffDef, Pawn pawn, IAbility<TGene, IHediff<TGene>> ability) {
@@ -37,9 +47,10 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
     }
 
     public override string LabelBase =>
-        base.LabelBase + (SourceAbilities.Count > 1 ? $" ({SourceAbilities.Count} sources)" : "");
+        base.LabelBase + (SourceAbilities.Count > 1 ? $" ({SourceAbilities.Count} sources)" : string.Empty);
 
     public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
+
     protected InvestitureHolder? investiture => pawn.GetInvestiture();
 
     public TGene Gene {
@@ -48,6 +59,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
     }
 
     public float ExtraSeverity { get; set; } = 0f;
+
     public HashSet<IAbility<TGene, IHediff<TGene>>> SourceAbilities { get; } = [];
 
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility) {
@@ -61,6 +73,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
     }
 
     public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
+
     public event Action<IHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
 
     public override void TickInterval(int delta) {

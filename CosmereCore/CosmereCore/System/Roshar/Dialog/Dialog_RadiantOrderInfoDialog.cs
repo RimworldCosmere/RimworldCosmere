@@ -63,7 +63,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
     }
 
     private void DrawOathDisplay(FoundationListing listing, Ideal ideal, int idealIndex) {
-        string quote = ideal.quotes.Count > 0 ? ideal.quotes[0] : "";
+        string quote = ideal.quotes.Count > 0 ? ideal.quotes[0] : string.Empty;
         string idealLabel = $"{GetOrdinal(idealIndex + 1)} Ideal of the {order.LabelCap}";
 
         float quoteHeight;

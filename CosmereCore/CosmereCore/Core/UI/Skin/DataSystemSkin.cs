@@ -34,14 +34,23 @@ public sealed class DataSystemSkin : ISystemSkin {
     }
 
     public string SystemId { get; }
+
     public string HeaderLabel => headerLabelKey.Translate();
+
     public Color AccentColor { get; }
+
     public Color BarFillColor { get; }
+
     public Color BarBackgroundColor { get; }
+
     public Color HeaderTextColor { get; }
+
     public GameFont HeaderFont { get; }
+
     public Color PanelBackgroundColor { get; }
+
     public Color BorderTintColor { get; }
+
     public Texture2D? Sigil => cachedSigil ??= sigilSource?.Invoke();
 
     public Color? GetColor(ThemeSlot slot) {

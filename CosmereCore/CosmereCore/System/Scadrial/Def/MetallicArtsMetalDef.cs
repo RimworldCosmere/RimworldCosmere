@@ -75,7 +75,7 @@ public class MetallicArtsMetalDef : MetalDef {
 
 public class MetalAllomancyDef {
     public AllomancyAxis? axis;
-    public string description = "";
+    public string description = string.Empty;
     public AllomancyGroup? group;
     public Texture2D icon = null!;
     public Texture2D invertedIcon = null!;
@@ -84,7 +84,7 @@ public class MetalAllomancyDef {
 }
 
 public class MetalFeruchemyDef {
-    public string description = "";
+    public string description = string.Empty;
     public FeruchemyGroup? group;
     public Texture2D icon = null!;
     public Texture2D invertedIcon = null!;

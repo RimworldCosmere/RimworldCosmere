@@ -8,7 +8,7 @@ public class SpawnItemAction : ProgressionAction {
     public string? letterText;
     public string? letterTitle;
     public string? stuff;
-    public string thing = "";
+    public string thing = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thing);

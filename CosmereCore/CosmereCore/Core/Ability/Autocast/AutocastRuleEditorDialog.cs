@@ -24,11 +24,13 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
     public override void DoWindowContents(Rect inRect) {
         float y = inRect.y;
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(inRect.x, y, inRect.width, 30f),
                 "CC_Autocast_Editor_Title".Translate(abilityLabel.Named("ABILITY"))
             );
+        }
+
         y += 34f;
 
         Rect enabledRect = new Rect(inRect.x, y, 160f, 24f);
@@ -88,8 +90,8 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         return y + 28f;
     }
 
-    /// A dial is held rather than cast, so it needs a direction to hold it in, how
-    /// hard, and where to leave it once the triggers stop passing.
+    // A dial is held rather than cast, so it needs a direction to hold it in, how
+    // hard, and where to leave it once the triggers stop passing.
     private float DrawDialSettings(Rect inRect, float y) {
         bool tapping = AutocastDialRange.IsTapping(rule.Kind, rule.ActiveTarget);
         float intensity = AutocastDialRange.Intensity(rule.Kind, rule.ActiveTarget);
@@ -119,11 +121,12 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, tapping, moved);
         }
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(rateSlider.xMax + 6f, y, 50f, 24f),
                 "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(moved * 100f).Named("PERCENT"))
             );
+        }
 
         y += 30f;
 
@@ -138,11 +141,12 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             Find.WindowStack.Add(new FloatMenu(opts));
         }
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f)))
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f))) {
             Widgets.Label(
                 new Rect(releaseRect.xMax + 10f, y, inRect.width - releaseRect.width - 10f, 24f),
                 "CC_Autocast_Editor_ReleaseDesc".Translate()
             );
+        }
 
         y += 28f;
 
@@ -173,11 +177,12 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, restTapping, restMoved);
         }
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(restSlider.xMax + 6f, y, 50f, 24f),
                 "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(restMoved * 100f).Named("PERCENT"))
             );
+        }
 
         return y + 30f;
     }
@@ -213,8 +218,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             Rect draftedLabel = new Rect(row.x + 160f, row.y + 8f, row.width - 200f, 24f);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(draftedLabel, "CC_Autocast_Editor_FiresWhileDrafted".Translate());
-        }
-        else {
+        } else {
             Rect cmpRect = new Rect(row.x + 160f, row.y + 8f, 80f, 24f);
             if (Widgets.ButtonText(cmpRect, ComparisonLabel(trigger.Comparison))) {
                 List<FloatMenuOption> opts = [];

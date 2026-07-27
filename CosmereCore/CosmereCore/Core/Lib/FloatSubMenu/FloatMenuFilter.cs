@@ -14,7 +14,9 @@ internal class FloatMenuFilter {
     private bool updateSize;
 
     public IEnumerable<FloatMenuOption> Unfiltered => options;
+
     public IEnumerable<FloatMenuOption> Filtered => filtered;
+
     public int Count => filtered.Count;
 
     public void Filter(

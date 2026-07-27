@@ -1,5 +1,5 @@
-
 using Verse;
+
 namespace Cosmere.Core.Framework;
 
 public interface IConnectionStealHandler {

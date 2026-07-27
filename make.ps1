@@ -250,12 +250,12 @@ switch ($Command.ToLower()) {
     
     "build-main" {
         Write-Info "Building main solution..."
-        Invoke-DotNet "build Cosmere.sln --configuration Release --verbosity minimal"
+        Invoke-DotNet "build Cosmere.slnx --configuration Release --verbosity minimal"
     }
     
     "build-tools" {
         Write-Info "Building Tools solution..."
-        Invoke-DotNet "build Cosmere.Tools.sln --configuration Release --verbosity minimal"
+        Invoke-DotNet "build Cosmere.Tools.slnx --configuration Release --verbosity minimal"
     }
     
     "build-assets" {
@@ -288,12 +288,12 @@ switch ($Command.ToLower()) {
     
     "build-main-debug" {
         Write-Info "Building main solution (Debug)..."
-        Invoke-DotNet "build Cosmere.sln --configuration Debug --verbosity minimal"
+        Invoke-DotNet "build Cosmere.slnx --configuration Debug --verbosity minimal"
     }
     
     "build-tools-debug" {
         Write-Info "Building Tools solution (Debug)..."
-        Invoke-DotNet "build Cosmere.Tools.sln --configuration Debug --verbosity minimal"
+        Invoke-DotNet "build Cosmere.Tools.slnx --configuration Debug --verbosity minimal"
     }
     
     "build-assets-force" {
@@ -303,37 +303,37 @@ switch ($Command.ToLower()) {
     
     "build-debug" {
         Write-Info "Building in debug mode..."
-        Invoke-DotNet "build Cosmere.sln --configuration Debug --verbosity minimal"
-        Invoke-DotNet "build Cosmere.Tools.sln --configuration Debug --verbosity minimal"
+        Invoke-DotNet "build Cosmere.slnx --configuration Debug --verbosity minimal"
+        Invoke-DotNet "build Cosmere.Tools.slnx --configuration Debug --verbosity minimal"
     }
     
     "clean" {
         Write-Info "Cleaning build outputs..."
-        Invoke-DotNet "clean Cosmere.sln --verbosity minimal"
-        Invoke-DotNet "clean Cosmere.Tools.sln --verbosity minimal"
+        Invoke-DotNet "clean Cosmere.slnx --verbosity minimal"
+        Invoke-DotNet "clean Cosmere.Tools.slnx --verbosity minimal"
     }
     
     "restore" {
         Write-Info "Restoring packages..."
-        Invoke-DotNet "restore Cosmere.sln --verbosity minimal"
-        Invoke-DotNet "restore Cosmere.Tools.sln --verbosity minimal"
+        Invoke-DotNet "restore Cosmere.slnx --verbosity minimal"
+        Invoke-DotNet "restore Cosmere.Tools.slnx --verbosity minimal"
     }
     
     "format" {
         Write-Info "Formatting code..."
-        Invoke-DotNet "format Cosmere.sln --include `"**/*.cs`" --verbosity minimal"
-        Invoke-DotNet "format Cosmere.Tools.sln --include `"**/*.cs`" --verbosity minimal"
+        Invoke-DotNet "format Cosmere.slnx --include `"**/*.cs`" --verbosity minimal"
+        Invoke-DotNet "format Cosmere.Tools.slnx --include `"**/*.cs`" --verbosity minimal"
     }
     
     "test" {
         Write-Info "Running tests..."
-        Invoke-DotNet "test Cosmere.sln --configuration Release --logger `"console;verbosity=minimal`""
+        Invoke-DotNet "test Cosmere.slnx --configuration Release --logger `"console;verbosity=minimal`""
     }
     
     "lint" {
         Write-Info "Running linting..."
-        Invoke-DotNet "format Cosmere.sln --verify-no-changes --verbosity minimal"
-        Invoke-DotNet "format Cosmere.Tools.sln --verify-no-changes --verbosity minimal"
+        Invoke-DotNet "format Cosmere.slnx --verify-no-changes --verbosity minimal"
+        Invoke-DotNet "format Cosmere.Tools.slnx --verify-no-changes --verbosity minimal"
     }
     
     "precommit" {
@@ -349,8 +349,8 @@ switch ($Command.ToLower()) {
         Write-Section "Git Status"
         git status --short --branch
         Write-Section "Solutions"
-        Write-Host "Main: Cosmere.sln"
-        Write-Host "Tools: Cosmere.Tools.sln"
+        Write-Host "Main: Cosmere.slnx"
+        Write-Host "Tools: Cosmere.Tools.slnx"
         Write-Section "Recent Commits"
         git log --oneline -5
     }
@@ -389,8 +389,8 @@ switch ($Command.ToLower()) {
     
     "check-deps" {
         Write-Info "Checking .NET dependencies..."
-        Invoke-DotNet "list Cosmere.sln package --outdated"
-        Invoke-DotNet "list Cosmere.Tools.sln package --outdated"
+        Invoke-DotNet "list Cosmere.slnx package --outdated"
+        Invoke-DotNet "list Cosmere.Tools.slnx package --outdated"
         Write-Info "Checking Node.js dependencies..."
         try { npm outdated } catch { }
     }
@@ -413,7 +413,7 @@ switch ($Command.ToLower()) {
     
     "profile" {
         Write-Info "Building with profiling..."
-        Invoke-DotNet "build Cosmere.sln --configuration Release -p:DefineConstants=`"PROFILING`" --verbosity minimal"
+        Invoke-DotNet "build Cosmere.slnx --configuration Release -p:DefineConstants=`"PROFILING`" --verbosity minimal"
     }
     
     "clean-all" {

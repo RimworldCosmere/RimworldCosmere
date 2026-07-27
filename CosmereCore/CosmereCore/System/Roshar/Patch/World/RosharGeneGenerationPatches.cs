@@ -34,8 +34,7 @@ public static class RosharGeneGenerationPatch {
 
         if (xenotype == XenotypeDefOf.Cosmere_Roshar_Xenotype_Lighteyes) {
             AddRankGene(pawn, DahnGenes, DahnWeights);
-        }
-        else if (xenotype == XenotypeDefOf.Cosmere_Roshar_Xenotype_Darkeyes) {
+        } else if (xenotype == XenotypeDefOf.Cosmere_Roshar_Xenotype_Darkeyes) {
             AddRankGene(pawn, NahnGenes, NahnWeights);
         }
     }

@@ -54,8 +54,7 @@ public class RemoveSpike : Recipe_Surgery {
             HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
             spike.stealType == HemalurgicStealType.AnyPower) {
             TryRemoveGene(pawn, spike.stolenDefName);
-        }
-        else if (spike.stealType == HemalurgicStealType.AllAbilities) {
+        } else if (spike.stealType == HemalurgicStealType.AllAbilities) {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
                 TryRemoveGene(pawn, spike.stolenDefNames[i]);
             }
@@ -108,8 +107,7 @@ public class RemoveSpike : Recipe_Surgery {
         if (ruinsInfluence != null) {
             if (spikeCount == 0) {
                 pawn.health.RemoveHediff(ruinsInfluence);
-            }
-            else {
+            } else {
                 ruinsInfluence.UpdateSpikeCount(spikeCount);
             }
         }

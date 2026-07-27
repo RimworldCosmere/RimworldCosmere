@@ -93,13 +93,11 @@ public class ImplantSpike : Recipe_Surgery {
             HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
             spike.stealType == HemalurgicStealType.AnyPower) {
             GrantGene(pawn, spike.stolenDefName);
-        }
-        else if (spike.stealType == HemalurgicStealType.AllAbilities) {
+        } else if (spike.stealType == HemalurgicStealType.AllAbilities) {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
                 GrantGene(pawn, spike.stolenDefNames[i]);
             }
-        }
-        else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
+        } else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
             ApplyConnectionImplant(pawn);
         }
     }

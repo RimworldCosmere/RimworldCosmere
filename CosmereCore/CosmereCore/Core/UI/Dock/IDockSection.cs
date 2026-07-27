@@ -7,6 +7,7 @@ namespace Cosmere.Core.UI.Dock;
 
 public interface IDockSection {
     string SystemId { get; }
+
     ISystemSkin Skin { get; }
 
     float GetHeaderHeight();

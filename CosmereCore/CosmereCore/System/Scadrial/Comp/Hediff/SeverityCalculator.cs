@@ -5,7 +5,7 @@ namespace Cosmere.System.Scadrial.Comp.Hediff;
 
 /**
  * Unfortunately necessary for how RimWorld/C# loads XML.
- * 
+ *
  * Usage:
  * <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
  *     <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>

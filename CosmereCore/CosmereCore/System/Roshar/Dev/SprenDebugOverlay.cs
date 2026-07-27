@@ -14,7 +14,6 @@ public static class SprenDebugOverlay {
         return controller?.sprenColor ?? Color.yellow;
     }
 
-
     public static void DrawOverlay() {
         if (!showOverlay || Find.CurrentMap == null) return;
 

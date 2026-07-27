@@ -1,5 +1,5 @@
-using RimWorld;
 using Cosmere.Core;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Util;

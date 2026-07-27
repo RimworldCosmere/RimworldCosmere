@@ -1,6 +1,6 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.System.Roshar.Util;
 
 public static class RosharGemConstants {

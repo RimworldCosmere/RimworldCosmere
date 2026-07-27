@@ -12,11 +12,14 @@ public class Bloom : SurgebindingAbility {
     private const int BaseRadius = 4;
     private const int PlantGrowthIntervalTicks = 60;
     private static ThingDef? _bloomAuraDef;
+
     private static ThingDef? AuraMoteDef => _bloomAuraDef ??= ThingDefOf.Cosmere_Roshar_Thing_BloomAura;
+
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
 
     public Bloom(Pawn pawn) : base(pawn) { }
+
     public Bloom(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

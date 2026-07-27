@@ -3,9 +3,9 @@ using Verse;
 
 namespace Cosmere.Core.UI.Dock;
 
-/// Dark parchment, built rather than shipped so it can be stretched or tiled to
-/// any surface without a nine-slice. Mottled by layered value noise, streaked
-/// along the grain, and darkened towards the edges the way a handled sheet ages.
+// Dark parchment, built rather than shipped so it can be stretched or tiled to
+// any surface without a nine-slice. Mottled by layered value noise, streaked
+// along the grain, and darkened towards the edges the way a handled sheet ages.
 [StaticConstructorOnStartup]
 public static class ParchmentTex {
     // Declared before the sheets on purpose: static fields initialise in order,
@@ -15,19 +15,19 @@ public static class ParchmentTex {
     private const int SheetWidth = 192;
     private const int SheetHeight = 96;
 
-    /// Large enough that a panel rarely shows the same patch twice. Tiling a small
-    /// sheet across a tall window repeated often enough to read as a pattern.
+    // Large enough that a panel rarely shows the same patch twice. Tiling a small
+    // sheet across a tall window repeated often enough to read as a pattern.
     private const int FieldSize = 512;
 
-    /// A single sheet, aged at its edges. For surfaces drawn one to one.
+    // A single sheet, aged at its edges. For surfaces drawn one to one.
     public static readonly Texture2D Sheet = Build(SheetWidth, SheetHeight, true);
 
-    /// The same stock without the aged rim, so it tiles across a large panel
-    /// without the darkened edges repeating as a grid of seams.
+    // The same stock without the aged rim, so it tiles across a large panel
+    // without the darkened edges repeating as a grid of seams.
     public static readonly Texture2D Field = Build(FieldSize, FieldSize, false);
 
-    /// Tiles the field across a rect at its natural scale, so the grain does not
-    /// stretch with the panel.
+    // Tiles the field across a rect at its natural scale, so the grain does not
+    // stretch with the panel.
     public static void DrawField(Rect rect) {
         GUI.DrawTextureWithTexCoords(
             rect,
@@ -84,7 +84,7 @@ public static class ParchmentTex {
         return tex;
     }
 
-    /// Darkens towards the rim, strongest in the corners.
+    // Darkens towards the rim, strongest in the corners.
     private static float EdgeFalloff(float u, float v) {
         float horizontal = 1f - Mathf.Clamp01(Mathf.Min(u, 1f - u) / 0.12f);
         float vertical = 1f - Mathf.Clamp01(Mathf.Min(v, 1f - v) / 0.2f);
@@ -92,9 +92,9 @@ public static class ParchmentTex {
         return Mathf.Clamp01(Mathf.Max(horizontal, vertical));
     }
 
-    /// Value noise whose lattice wraps at the given cycle counts, so sampling the
-    /// full sheet joins back to itself on both axes. The seed decorrelates layers
-    /// that share a frequency.
+    // Value noise whose lattice wraps at the given cycle counts, so sampling the
+    // full sheet joins back to itself on both axes. The seed decorrelates layers
+    // that share a frequency.
     private static float Tiled(float u, float v, int cyclesX, int cyclesY, int seed) {
         float x = u * cyclesX;
         float y = v * cyclesY;

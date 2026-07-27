@@ -11,6 +11,8 @@ public class GemDef : Verse.Def {
     public Color? glowColor;
 
     public string coloredLabel => label.Colorize(ColoredText.DateTimeColor);
+
     public ThingDef Item => cachedItem ??= DefDatabase<ThingDef>.GetNamed("Raw" + defName);
+
     public ThingDef MineableItem => cachedMineableItem ??= DefDatabase<ThingDef>.GetNamed("Mineable" + defName);
 }

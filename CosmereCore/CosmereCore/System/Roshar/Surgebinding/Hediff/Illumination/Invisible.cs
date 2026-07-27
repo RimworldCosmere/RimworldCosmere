@@ -9,8 +9,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff.Illumination;
 public class Invisible : SurgebindingHediff {
     public Invisible() { }
 
-    public Invisible(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public Invisible(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 
     public override void PostAdd(DamageInfo? dinfo) {
         base.PostAdd(dinfo);

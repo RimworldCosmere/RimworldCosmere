@@ -1,5 +1,5 @@
-
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart;
 
 public static class NamedPawnApplierRegistry {

@@ -20,6 +20,7 @@ public class NightwatcherCurseDef : Verse.Def {
     public TraitDef? stripTrait;
 
     private ICurseApplicator? applicatorCache;
+
     public ICurseApplicator? Applicator {
         get {
             if (applicatorClass == null) return null;

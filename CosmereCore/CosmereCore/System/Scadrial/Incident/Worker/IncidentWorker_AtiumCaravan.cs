@@ -37,8 +37,7 @@ public class IncidentWorker_AtiumCaravan : RimWorld.IncidentWorker {
         }
 
         // Give a few pawns Atium
-        foreach (Pawn? p in attackers.Take(2)) // First two
-        {
+        foreach (Pawn? p in attackers.Take(2)) {
             Verse.Thing atium = ThingMaker.MakeThing(Core.ThingDefOf.Atium);
             atium.stackCount = Rand.RangeInclusive(1, 3);
             p.inventory?.TryAddItemNotForSale(atium);

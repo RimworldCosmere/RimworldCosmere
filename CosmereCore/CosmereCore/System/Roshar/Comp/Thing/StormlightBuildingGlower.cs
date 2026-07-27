@@ -29,15 +29,15 @@ public class StormlightBuildingGlower : CompGlower {
         get {
             InvestitureHolder? holder = parent.GetComp<InvestitureHolder>();
             if (holder == null) return 0f;
-
             float current = holder.currentInvestitureSelf;
             float max = holder.maxInvestitureSelf;
             if (max <= 0f || current <= 0f) return 0f;
-
             float percent = Mathf.Clamp01(current / max);
             return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
         }
-        set { }
+
+        set {
+        }
     }
 
     protected override bool ShouldBeLitNow {

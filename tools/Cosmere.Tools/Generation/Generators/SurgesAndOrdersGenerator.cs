@@ -5,24 +5,21 @@ using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation.Generators;
 
-public class SurgesAndOrdersGenerator : BaseGenerator
-{
+public class SurgesAndOrdersGenerator : BaseGenerator {
     private readonly DataLoader _dataLoader;
-    
-    public SurgesAndOrdersGenerator(GeneratorOptions options, IFileSystem fileSystem) : base(options, fileSystem)
-    {
+
+    public SurgesAndOrdersGenerator(GeneratorOptions options, IFileSystem fileSystem) : base(options, fileSystem) {
         _dataLoader = new DataLoader(fileSystem);
     }
 
-    public override async Task GenerateAsync()
-    {
+    public override async Task GenerateAsync() {
         var surges = await _dataLoader.LoadAllAsync<SurgeInfo>("Surges");
         var orders = await _dataLoader.LoadAllAsync<RadiantOrderInfo>("RadiantOrders");
-        
+
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "SurgesAndOrders");
         var rosharXmlDir = FileSystem.Path.Combine("CosmereRoshar");
         var rosharCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Roshar");
-        
+
         // Compile all templates in parallel
         var surgeDefTemplateTask = CompileTemplateAsync(templatesDir, "SurgeDef.xml.template");
         var surgeDefOfTemplateTask = CompileTemplateAsync(templatesDir, "SurgeDefOf.cs.template");
@@ -34,8 +31,13 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         var bondedSprenDefTemplateTask = CompileTemplateAsync(templatesDir, "BondedSprenDef.xml.template");
 
         await Task.WhenAll(
-            surgeDefTemplateTask, surgeDefOfTemplateTask, radiantOrderDefTemplateTask,
-            radiantOrderDefOfTemplateTask, geneDefTemplateTask, geneDefOfTemplateTask, traitDefOfTemplateTask,
+            surgeDefTemplateTask,
+            surgeDefOfTemplateTask,
+            radiantOrderDefTemplateTask,
+            radiantOrderDefOfTemplateTask,
+            geneDefTemplateTask,
+            geneDefOfTemplateTask,
+            traitDefOfTemplateTask,
             bondedSprenDefTemplateTask
         );
 
@@ -47,14 +49,13 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         var geneDefOfTemplate = geneDefOfTemplateTask.Result;
         var traitDefOfTemplate = traitDefOfTemplateTask.Result;
         var bondedSprenDefTemplate = bondedSprenDefTemplateTask.Result;
-        
+
         // Generate all files in parallel
         var fileWriteTasks = new List<Task>();
-        
+
         // Generate Surge definitions
         var surgeDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "Surges");
-        foreach (var surge in surges)
-        {
+        foreach (var surge in surges) {
             var content = surgeDefTemplate(new { surge });
             fileWriteTasks.Add(WriteGeneratedFileAsync(surgeDefOutputDir, $"{surge.Name.ToDefName()}Surge.generated.xml", content));
         }
@@ -65,8 +66,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
 
         // Generate Radiant Order definitions
         var radiantOrderDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "RadiantOrders");
-        foreach (var order in orders)
-        {
+        foreach (var order in orders) {
             var content = radiantOrderDefTemplate(new { order });
             fileWriteTasks.Add(WriteGeneratedFileAsync(radiantOrderDefOutputDir, $"{order.Name.ToDefName()}Order.generated.xml", content));
         }
@@ -77,8 +77,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
 
         // Generate Gene definitions for Radiant Orders
         var geneDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "Genes");
-        foreach (var order in orders)
-        {
+        foreach (var order in orders) {
             var content = geneDefTemplate(new { order });
             fileWriteTasks.Add(WriteGeneratedFileAsync(geneDefOutputDir, $"{order.Name.ToDefName()}Gene.generated.xml", content));
         }
@@ -98,11 +97,11 @@ public class SurgesAndOrdersGenerator : BaseGenerator
                 bondableOrders.Add(order);
             }
         }
+
         var bondedSprenDefContent = bondedSprenDefTemplate(new { orders = bondableOrders });
         fileWriteTasks.Add(WriteGeneratedFileAsync(bondedSprenDefOutputDir, "BondedSpren.generated.xml", bondedSprenDefContent));
 
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);
     }
-
 }

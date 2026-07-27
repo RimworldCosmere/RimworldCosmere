@@ -1,7 +1,7 @@
-using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
-using Cosmere.System.Scadrial.Hemalurgy;
-using Cosmere.System.Scadrial.Hemalurgy.Util;
 using Cosmere.Core.Lib.FloatSubMenu;
+using Cosmere.System.Scadrial.Hemalurgy;
+using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
+using Cosmere.System.Scadrial.Hemalurgy.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -84,8 +84,7 @@ public class LiveSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
                 }
 
                 options.Add(FloatSubMenuFactory.CompatMMMCreate(spikeLabel, geneOptions));
-            }
-            else {
+            } else {
                 options.Add(
                     new FloatMenuOption(
                         spikeLabel,
@@ -108,5 +107,4 @@ public class LiveSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
         comp.pendingStealTarget = selectedGene;
         HemalurgySurgeryJob.TryStart(surgeon, target, spike, JobDefOf.Cosmere_Scadrial_Job_ChargeLiveSpike);
     }
-
 }

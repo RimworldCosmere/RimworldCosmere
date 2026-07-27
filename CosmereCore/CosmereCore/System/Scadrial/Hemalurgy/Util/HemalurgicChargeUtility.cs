@@ -1,9 +1,9 @@
+using System;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Framework;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
-using System;
 using UnityEngine;
 using Verse;
 
@@ -215,8 +215,9 @@ public static class HemalurgicChargeUtility {
         float injurySeverity = 20f;
         if (medicalSkill >= 10) {
             injurySeverity = 8f;
+        } else if (medicalSkill >= 7) {
+            injurySeverity = 12f;
         }
-        else if (medicalSkill >= 7) injurySeverity = 12f;
 
         BodyPartRecord? torso = donor.health.hediffSet.GetNotMissingParts()
             .FirstOrDefault(p => p.def == BodyPartDefOf.Torso);
@@ -228,8 +229,7 @@ public static class HemalurgicChargeUtility {
         Verse.Hediff? bloodLoss = donor.health.hediffSet.GetFirstHediffOfDef(RimWorld.HediffDefOf.BloodLoss);
         if (bloodLoss != null) {
             bloodLoss.Severity += 0.3f;
-        }
-        else {
+        } else {
             Verse.Hediff newBloodLoss = HediffMaker.MakeHediff(RimWorld.HediffDefOf.BloodLoss, donor);
             newBloodLoss.Severity = 0.3f;
             donor.health.AddHediff(newBloodLoss);

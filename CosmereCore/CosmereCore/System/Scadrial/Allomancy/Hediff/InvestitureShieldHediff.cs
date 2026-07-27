@@ -11,6 +11,7 @@ namespace Cosmere.System.Scadrial.Allomancy.Hediff;
 
 public class InvestitureShieldHediff : AllomanticHediff {
     private bool messageSent;
+
     public InvestitureShieldHediff() { }
 
     public InvestitureShieldHediff(
@@ -40,8 +41,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         for (int i = genes.Count - 1; i >= 0; i--) {
             if (Mathf.Approximately(genes[i].Value, 0f)) {
                 genes.RemoveAt(i);
-            }
-            else if (metal == MetallicArtsMetalDefOf.Aluminum && genes[i].metal == MetallicArtsMetalDefOf.Aluminum) {
+            } else if (metal == MetallicArtsMetalDefOf.Aluminum && genes[i].metal == MetallicArtsMetalDefOf.Aluminum) {
                 genes.RemoveAt(i);
             }
         }
@@ -88,11 +88,11 @@ public class InvestitureShieldHediff : AllomanticHediff {
                 .Resolve();
         }
 
-        return "";
+        return string.Empty;
     }
 
     public static string FormatDefList(List<MetallicArtsMetalDef> defs) {
-        if (defs.Count == 0) return "";
+        if (defs.Count == 0) return string.Empty;
         if (defs.Count == 1) return defs[0].LabelCap;
         if (defs.Count == 2) return $"{defs[0].LabelCap} and {defs[1].LabelCap}";
 

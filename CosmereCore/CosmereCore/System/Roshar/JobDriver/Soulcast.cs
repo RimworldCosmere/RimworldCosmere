@@ -19,8 +19,7 @@ public class Soulcast : Verse.AI.JobDriver {
         if (TargetA.HasThing) {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
-        }
-        else {
+        } else {
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
         }
 

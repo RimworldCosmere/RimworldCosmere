@@ -8,6 +8,7 @@ namespace Cosmere.System.Roshar.Thing.Pawn.Animal;
 
 public class TrueSpren : Spren {
     private Verse.Pawn? bond => playerSettings?.Master;
+
     private Connection? connectionWithBond => bond == null ? null : this.GetConnection(bond);
 
     public override void Notify_SignalReceived(Signal signal) {

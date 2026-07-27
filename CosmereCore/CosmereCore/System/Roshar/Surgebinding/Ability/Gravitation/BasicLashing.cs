@@ -14,6 +14,7 @@ public class BasicLashing : SurgebindingAbility {
     private readonly List<Pawn> lashedAllies = [];
 
     public BasicLashing(Pawn pawn) : base(pawn) { }
+
     public BasicLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {

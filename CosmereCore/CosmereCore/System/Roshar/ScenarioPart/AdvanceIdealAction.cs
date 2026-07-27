@@ -1,13 +1,13 @@
-using Verse;
 using Cosmere.Core;
 using Cosmere.Core.ScenarioPart;
 using Cosmere.Core.ScenarioPart.Action;
 using Cosmere.System.Roshar.Gene;
+using Verse;
 
 namespace Cosmere.System.Roshar.ScenarioPart;
 
 public class AdvanceIdealAction : ProgressionAction {
-    public string pawnName = "";
+    public string pawnName = string.Empty;
     public int targetIdeal = -1;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {

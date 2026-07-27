@@ -1,6 +1,6 @@
+using Cosmere.System.Scadrial.Util;
 using HarmonyLib;
 using Verse;
-using Cosmere.System.Scadrial.Util;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 

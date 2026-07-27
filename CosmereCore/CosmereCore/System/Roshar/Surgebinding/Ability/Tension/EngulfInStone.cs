@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class EngulfInStone : SurgebindingAbility {
     public EngulfInStone(Pawn pawn) : base(pawn) { }
+
     public EngulfInStone(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
@@ -24,15 +25,13 @@ public class EngulfInStone : SurgebindingAbility {
             ThingDef wallStuff = stuff ?? RimWorld.ThingDefOf.BlocksGranite;
             Verse.Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, wallStuff);
             GenSpawn.Spawn(wall, cell, map);
-        }
-        else if (cell.Standable(map)) {
+        } else if (cell.Standable(map)) {
             Verse.Thing wall = ThingMaker.MakeThing(
                 RimWorld.ThingDefOf.Wall,
                 RimWorld.ThingDefOf.BlocksGranite
             );
             GenSpawn.Spawn(wall, cell, map);
-        }
-        else {
+        } else {
             return false;
         }
 

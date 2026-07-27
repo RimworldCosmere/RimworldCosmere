@@ -10,7 +10,7 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
-    /// Below this a tick would move nothing worth counting, so it waits instead.
+    // Below this a tick would move nothing worth counting, so it waits instead.
     private const float MinimumCharge = 0.001f;
 
     private const float ChargeAtSkillFloor = 15f;
@@ -18,8 +18,8 @@ public class Compound : AllomanticHediff {
     private const float SkillFloor = 10f;
     private const float SkillCeiling = 20f;
 
-    /// Held rather than stopped: the reserve has run dry but the pawn is still
-    /// set to compound, and will pick up again the moment a vial restocks them.
+    // Held rather than stopped: the reserve has run dry but the pawn is still
+    // set to compound, and will pick up again the moment a vial restocks them.
     public bool Paused { get; private set; }
 
     public Compound() { }
@@ -30,22 +30,22 @@ public class Compound : AllomanticHediff {
         ability
     ) { }
 
-    /// Reserve burned per real second. Chosen so an unpractised Compounder fills
-    /// a seventy-five unit metalmind in about an in-game hour; skill raises the
-    /// yield rather than the burn, so practice fills faster off the same metal.
+    // Reserve burned per real second. Chosen so an unpractised Compounder fills
+    // a seventy-five unit metalmind in about an in-game hour; skill raises the
+    // yield rather than the burn, so practice fills faster off the same metal.
     protected const float MetalPerSecond = 0.12f;
 
     public float MetalDrainPerSecond => MetalPerSecond * DialFraction;
 
-    /// Scaled by how far the dial is pushed, so the player sets the pace rather
-    /// than compounding being one speed you either take or leave.
+    // Scaled by how far the dial is pushed, so the player sets the pace rather
+    // than compounding being one speed you either take or leave.
     public virtual float StorePerSecond => MetalPerSecond * DialFraction * ChargePerMetalUnit;
 
     private float DialFraction =>
         pawn.genes?.GetFeruchemicGeneForMetal(metal) is { } gene ? gene.CompoundFraction : 1f;
 
-    /// A Compounder practised in both arts wrings more out of the same swallowed
-    /// metal, so yield rises with the average of the two skills.
+    // A Compounder practised in both arts wrings more out of the same swallowed
+    // metal, so yield rises with the average of the two skills.
     private float ChargePerMetalUnit {
         get {
             if (pawn.skills == null) return ChargeAtSkillFloor;

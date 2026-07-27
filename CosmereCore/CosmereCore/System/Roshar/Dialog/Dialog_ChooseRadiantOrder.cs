@@ -34,8 +34,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             }
 
             if (availableOrders.Count == 0) availableOrders = RadiantOrders;
-        }
-        else {
+        } else {
             normalOrders ??= BuildNormalOrders();
             availableOrders = normalOrders;
         }
@@ -147,8 +146,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             GUI.color = origColor;
 
             TooltipHandler.TipRegion(secondButtonRect, "Maximum number of Bondsmiths (3) has been reached.");
-        }
-        else if (CTAButtonText(secondButtonRect, joinString)) {
+        } else if (CTAButtonText(secondButtonRect, joinString)) {
             pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
 
             TrueSprenSpawner? spawner = pawn!.Map?.GetComponent<TrueSprenSpawner>();
@@ -188,8 +186,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
 
             if (surgebinder?.bondedSpren != null) {
                 Find.Selector.Select(surgebinder.bondedSpren);
-            }
-            else {
+            } else {
                 Find.Selector.Select(pawn!);
             }
         }

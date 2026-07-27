@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
-using Verse;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
+using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.UI.Radial;
 
@@ -56,8 +56,7 @@ public static class RadialCenterPreview {
                     TextAnchor.MiddleCenter,
                     DockPalette.MutedText
                 );
-            }
-            else {
+            } else {
                 UIText.EllipsisLabel(
                     ChordRow(center, -9f, tinyH),
                     "CC_Radial_Hover_Prompt".Translate(),
@@ -66,8 +65,7 @@ public static class RadialCenterPreview {
                     DockPalette.MutedText
                 );
             }
-        }
-        else {
+        } else {
             bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
             string title = flareArmed
                 ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
@@ -97,8 +95,7 @@ public static class RadialCenterPreview {
 
             if (hoveredLeaf.IsLocked && hoveredLeaf.LockReason != null) {
                 UIText.EllipsisLabel(ChordRow(center, bodyBottom - tinyH, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
-            }
-            else {
+            } else {
                 string meta = BuildMetaLine(hoveredLeaf);
                 if (meta.Length > 0) {
                     UIText.EllipsisLabel(ChordRow(center, bodyBottom - tinyH, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
@@ -108,6 +105,7 @@ public static class RadialCenterPreview {
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
                 float barHeight = tinyH + 6f;
+
                 // Pinned width: deriving it from the chord at the bar's own y
                 // would resize the bar whenever the footer moves.
                 Rect barRow = new Rect(
@@ -181,8 +179,7 @@ public static class RadialCenterPreview {
             }
 
             DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
-        }
-        else if (!canFlare) {
+        } else if (!canFlare) {
             // Quick mode draws no buttons, so this hint takes the button row.
             UIText.EllipsisLabel(
                 ChordRow(center, ButtonRowY, tinyH),
@@ -194,9 +191,9 @@ public static class RadialCenterPreview {
         }
     }
 
-    /// Trims text until its wrapped height fits maxLines, appending an ellipsis.
-    /// Truncate measures a single line, which does not predict how many lines the
-    /// text wraps to, so long descriptions would otherwise spill past their rect.
+    // Trims text until its wrapped height fits maxLines, appending an ellipsis.
+    // Truncate measures a single line, which does not predict how many lines the
+    // text wraps to, so long descriptions would otherwise spill past their rect.
     private static string FitToLines(string text, float width, int maxLines) {
         float lineHeight = Text.LineHeightOf(GameFont.Tiny);
         float maxHeight = lineHeight * maxLines + 1f;
@@ -210,11 +207,11 @@ public static class RadialCenterPreview {
             else high = mid - 1;
         }
 
-        return low <= 0 ? "" : text.Substring(0, low).TrimEnd() + "...";
+        return low <= 0 ? string.Empty : text.Substring(0, low).TrimEnd() + "...";
     }
 
-    /// Draws the action title, wrapping to a second line when it will not fit,
-    /// and returns how many lines it used so the rows below can shift down.
+    // Draws the action title, wrapping to a second line when it will not fit,
+    // and returns how many lines it used so the rows below can shift down.
     private static int DrawWrappedTitle(Vector2 center, float y, float lineHeight, string title, Color color) {
         Rect oneLine = ChordRow(center, y, lineHeight);
         float needed;
@@ -262,8 +259,7 @@ public static class RadialCenterPreview {
             GUIUtility.ScaleAroundPivot(new Vector2(-1f, 1f), iconRect.center);
             GUI.DrawTexture(iconRect, icon);
             GUI.matrix = prevMatrix;
-        }
-        else {
+        } else {
             GUI.DrawTexture(iconRect, icon);
         }
 
@@ -284,7 +280,7 @@ public static class RadialCenterPreview {
     private static string BuildMetaLine(RadialLeaf leaf) {
         // The cost hint doubles as the burn rate, which is shown inside the
         // reserve bar; only surface it here when there is no bar to carry it.
-        string meta = leaf.ReserveFraction.HasValue || leaf.CostHint == null ? "" : leaf.CostHint;
+        string meta = leaf.ReserveFraction.HasValue || leaf.CostHint == null ? string.Empty : leaf.CostHint;
         if (leaf.CooldownTicksRemaining > 0) {
             float seconds = leaf.CooldownTicksRemaining / (float)GenTicks.TicksPerRealSecond;
             string cd = "CC_Radial_Cooldown".Translate(seconds.ToString("F1").Named("SECONDS"));
@@ -295,6 +291,6 @@ public static class RadialCenterPreview {
     }
 
     private static string BuildRateLine(RadialLeaf leaf) {
-        return leaf.CostHint ?? "";
+        return leaf.CostHint ?? string.Empty;
     }
 }

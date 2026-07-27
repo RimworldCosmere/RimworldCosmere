@@ -50,7 +50,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             StoredAmount = metalmindComp.StoredAmount,
             CompoundedAmount = metalmindComp.CompoundedAmount,
             MaxAmount = metalmindComp.MaxAmount,
-            ownerName = metalmindComp.owner?.Name?.ToStringFull ?? "",
+            ownerName = metalmindComp.owner?.Name?.ToStringFull ?? string.Empty,
         };
 
         ImplantedMetalminds.Attach(pawn, data, part);
@@ -65,7 +65,6 @@ public class ImplantMetalmind : Recipe_Surgery {
             MessageTypeDefOf.PositiveEvent
         );
     }
-
 
     private Metalmind? FindMetalmind(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {

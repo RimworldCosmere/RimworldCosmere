@@ -47,6 +47,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         if (!mistsActive) return;
         if (currentTick < mistsStartTick) return;
+
         // Every hour: scan for exposed pawns
         if (currentTick % GenDate.TicksPerHour == 0) {
             IReadOnlyList<Pawn> allPawns = map.mapPawns.AllPawnsSpawned;
@@ -111,7 +112,6 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
             $"Next scheduled at tick {nextMistsStartTick} (interval {intervalTicks}, last at {lastMistsStartTick})"
         );
     }
-
 
     public override void ExposeData() {
         Scribe_Values.Look(ref mistsActive, "mistsActive");

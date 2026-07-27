@@ -1,6 +1,6 @@
+using Cosmere.Core.UI.Model;
 using UnityEngine;
 using Verse;
-using Cosmere.Core.UI.Model;
 
 namespace Cosmere.Core.UI.Codex;
 

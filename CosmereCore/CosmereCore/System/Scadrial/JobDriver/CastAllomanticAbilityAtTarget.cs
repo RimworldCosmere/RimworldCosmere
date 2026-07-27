@@ -54,11 +54,12 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     }
 
     // TODO: Add distance from target to equation of push strength
+
     /// <summary>
     ///     Right now, if thing hits a cell that isnt walkable, it stops.
     ///     Instead, it should add the mass of the thing in the way, and recalculate, the previous call, pushing both if the
     ///     math still works out, otherwise it should flip,
-    ///     and start pushing the opposite way for the remainder of the distance
+    ///     and start pushing the opposite way for the remainder of the distance.
     /// </summary>
     private void MoveThing(Verse.Thing thing, bool movePawn) {
         SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);

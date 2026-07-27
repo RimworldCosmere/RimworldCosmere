@@ -7,6 +7,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
 
 public class Slick : SurgebindingAbility {
     public Slick(Pawn pawn) : base(pawn) { }
+
     public Slick(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {

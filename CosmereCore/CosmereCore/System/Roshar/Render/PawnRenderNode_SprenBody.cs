@@ -51,8 +51,7 @@ public class PawnRenderNode_SprenBody : PawnRenderNode {
         for (int i = 1; i <= 20; i++) {
             if (ContentFinder<Texture2D>.Get($"{basePath}{i}_{gender}_south", false) != null) {
                 count = i;
-            }
-            else {
+            } else {
                 break;
             }
         }

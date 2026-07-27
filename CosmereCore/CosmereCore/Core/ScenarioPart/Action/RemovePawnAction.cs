@@ -1,6 +1,6 @@
-using Verse;
 using RimWorld;
 using RimWorld.Planet;
+using Verse;
 
 namespace Cosmere.Core.ScenarioPart.Action;
 
@@ -8,7 +8,7 @@ public class RemovePawnAction : ProgressionAction {
     public string? letterText;
     public string? letterTitle;
     public string method = "vanish";
-    public string pawnName = "";
+    public string pawnName = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

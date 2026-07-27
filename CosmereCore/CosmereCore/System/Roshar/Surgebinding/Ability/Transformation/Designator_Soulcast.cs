@@ -27,6 +27,7 @@ public class Designator_Soulcast : Designator {
         cachedDesignationDef ??= DefDatabase<DesignationDef>.GetNamed("Cosmere_Roshar_Designation_Soulcast");
 
     public override DrawStyleCategoryDef DrawStyleCategory => DrawStyleCategoryDefOf.Areas;
+
     public override bool DragDrawMeasurements => true;
 
     public override AcceptanceReport CanDesignateCell(IntVec3 cell) {

@@ -8,6 +8,5 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff.Adhesion;
 public class WindsprenShielded : SurgebindingHediff {
     public WindsprenShielded() { }
 
-    public WindsprenShielded(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public WindsprenShielded(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 }

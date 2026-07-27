@@ -7,7 +7,9 @@ namespace Cosmere.System.Scadrial.StatPart;
 public class GenerationalDecay : RimWorld.StatPart {
     private const float MinimumValue = 0.1f;
     private const float GenerationalMultiplier = 0.5f;
+
     private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
+
     private bool feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
 
     private StatDef stat => allomancy

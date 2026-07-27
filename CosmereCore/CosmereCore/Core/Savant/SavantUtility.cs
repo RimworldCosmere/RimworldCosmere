@@ -156,12 +156,10 @@ public static class SavantUtility {
                 Verse.Hediff hediff = HediffMaker.MakeHediff(savantHediffDef, pawn);
                 hediff.Severity = SeverityForStage(newStage);
                 pawn.health.AddHediff(hediff);
-            }
-            else {
+            } else {
                 existing.Severity = SeverityForStage(newStage);
             }
-        }
-        else if (newStage == 0 && savantHediffDef != null) {
+        } else if (newStage == 0 && savantHediffDef != null) {
             Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
             if (existing is not null) pawn.health.RemoveHediff(existing);
         }

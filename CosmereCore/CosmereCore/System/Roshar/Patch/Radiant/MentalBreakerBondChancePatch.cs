@@ -21,11 +21,9 @@ public static class MentalBreakerBondChancePatch {
         float increment = 0f;
         if (__instance.BreakExtremeIsImminent) {
             increment = 2.5f;
-        }
-        else if (__instance.BreakMajorIsImminent) {
+        } else if (__instance.BreakMajorIsImminent) {
             increment = 0.9f;
-        }
-        else if (__instance.BreakMinorIsImminent) {
+        } else if (__instance.BreakMinorIsImminent) {
             increment = 0.5f;
         }
 

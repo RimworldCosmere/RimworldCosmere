@@ -39,6 +39,7 @@ public class Connection : IExposable {
     }
 
     public Verse.Thing? ThingOne => ObjectOne as Verse.Thing;
+
     public Verse.Thing? ThingTwo => ObjectTwo as Verse.Thing;
 
     public void ExposeData() {

@@ -85,17 +85,13 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
 
         if (ratio >= 1.5f) {
             ResolveVictory(survivors);
-        }
-        else if (ratio >= 1.0f) {
+        } else if (ratio >= 1.0f) {
             ResolveHardWon(survivors);
-        }
-        else if (ratio >= 0.6f) {
+        } else if (ratio >= 0.6f) {
             ResolvePyrrhic(survivors);
-        }
-        else if (ratio >= 0.3f) {
+        } else if (ratio >= 0.3f) {
             ResolveFailure(survivors);
-        }
-        else {
+        } else {
             ResolveDisaster(survivors);
         }
 

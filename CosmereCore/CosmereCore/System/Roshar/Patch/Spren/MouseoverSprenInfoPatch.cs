@@ -1,8 +1,8 @@
-using HarmonyLib;
-using UnityEngine;
 using System.Reflection.Emit;
 using System.Text;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
+using HarmonyLib;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Spren;

@@ -262,8 +262,7 @@ public class FloatSubMenu : FloatMenuOption {
         if (enter) {
             Vector2 localPos = new Vector2(rect.xMax, rect.yMin) + MenuOffset;
             OpenSubMenu(parentMenu, localPos);
-        }
-        else {
+        } else {
             CloseSubMenu();
         }
     }

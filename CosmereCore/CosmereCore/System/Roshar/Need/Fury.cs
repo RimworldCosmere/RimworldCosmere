@@ -58,13 +58,11 @@ public class Fury : RimWorld.Need {
             JobDef jobDef = curJob.def;
             if (jobDef == RimWorld.JobDefOf.Mine || jobDef == RimWorld.JobDefOf.FinishFrame) {
                 decay = MiningDecayPerHour;
-            }
-            else if (jobDef == RimWorld.JobDefOf.DoBill) {
+            } else if (jobDef == RimWorld.JobDefOf.DoBill) {
                 if (curJob.workGiverDef?.workType == WorkTypeDefOf.Smithing) {
                     decay = SmithingDecayPerHour;
                 }
-            }
-            else if (jobDef == RimWorld.JobDefOf.Meditate) {
+            } else if (jobDef == RimWorld.JobDefOf.Meditate) {
                 decay = MeditatingDecayPerHour;
             }
         }
@@ -115,8 +113,7 @@ public class Fury : RimWorld.Need {
                 pawn,
                 MessageTypeDefOf.ThreatSmall
             );
-        }
-        else {
+        } else {
             Logger.Verbose($"Fury break failed for {pawn.NameShortColored} - TryStartMentalState returned false");
         }
     }

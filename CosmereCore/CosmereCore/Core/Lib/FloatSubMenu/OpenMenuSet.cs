@@ -69,8 +69,7 @@ internal class OpenMenuSet {
     public static void Open(FloatMenu parent, FloatSubMenuInner child) {
         if (sets.TryGetValue(parent, out OpenMenuSet? set)) {
             set.Add(child);
-        }
-        else {
+        } else {
             // The constructor registers both menus in `sets`, so this write is
             // the same value again rather than new state. Kept explicit because
             // a bare `new` that is never read looks like a mistake.

@@ -14,7 +14,7 @@ public abstract class StaticSprenController : BaseSprenController {
     );
 
     public override IntRange activeInfoRefreshInterval => new IntRange(
-        GenTicks.SecondsToTicks(240), // 4 minutes  
+        GenTicks.SecondsToTicks(240), // 4 minutes
         GenTicks.SecondsToTicks(480) // 8 minutes
     );
 }

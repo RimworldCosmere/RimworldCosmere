@@ -7,6 +7,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 
 public class LightweavingDecoy : SurgebindingAbility {
     public LightweavingDecoy(Pawn pawn) : base(pawn) { }
+
     public LightweavingDecoy(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private int decoyCount => Math.Clamp(Gene.CurrentIdeal, 1, 4);

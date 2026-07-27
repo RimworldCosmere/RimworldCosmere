@@ -1,13 +1,13 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class SetSkillAction : ProgressionAction {
     public int level = -1;
     public string? passion;
-    public string pawnName = "";
-    public string skill = "";
+    public string pawnName = string.Empty;
+    public string skill = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

@@ -26,7 +26,9 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private float compoundedAmountInt;
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
+
     public Pawn? owner { get; private set; }
+
     private new MetalmindProperties props => (MetalmindProperties)base.props;
 
     public bool IsCoppermind => Metal?.defName == "Copper";
@@ -54,15 +56,19 @@ public class Metalmind : ThingComp, IMetalmindSource {
     public float MaxAmount => props.maxAmount;
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
+
     public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalStored);
 
     // Both pools draw on the same space, so filling either is bounded by the total.
     public bool CanStore => !IsCoppermind && Equipped && FreeSpace > 0f;
+
     public bool CanTap => !IsCoppermind && Equipped && StoredAmount > 0f;
+
     public bool CanTapCompounded => !IsCoppermind && Equipped && CompoundedAmount > 0f;
 
     // Worn metalminds can hold compounded charge but cannot be compounded into.
     public bool CanStoreCompounded => false;
+
     public bool IsImplanted => false;
 
     public float StoredAmount {

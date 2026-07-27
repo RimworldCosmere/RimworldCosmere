@@ -14,7 +14,6 @@ public static class StormShelterManager {
     private static readonly List<RegionInfo> Regions
         = [];
 
-
     public static void RebuildShelterCache(Verse.Map map) {
         CellToRegionIndex.Clear();
         Regions.Clear();

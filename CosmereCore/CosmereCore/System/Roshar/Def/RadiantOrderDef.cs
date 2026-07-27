@@ -27,10 +27,10 @@ public class RadiantOrderDef : Verse.Def {
     public List<Ideal> ideals = null!;
     public List<TraitRequirement> incompatibleTraits = null!;
     public Texture2D invertedIcon = null!;
-    public string sprenDescription = "";
-    public string sprenLabel = "";
+    public string sprenDescription = string.Empty;
+    public string sprenLabel = string.Empty;
     public List<string> sprenNamePool = [];
-    public string sprenTexturePath = "";
+    public string sprenTexturePath = string.Empty;
     public List<SurgeDef> surges = null!;
 
     private Type idealCheckerClass =>

@@ -28,7 +28,6 @@ public static partial class GeneDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_NobleLowWorkDrive;
 
-
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_SkaaHeritage;
 
@@ -49,7 +48,6 @@ public static partial class GeneDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_SkaaAgnostic;
-
 
     [MayRequire("Cosmere.Scadrial")]
     public static GeneDef Cosmere_Scadrial_Gene_TerrisHeritage;
@@ -73,7 +71,6 @@ public static partial class GeneDefOf {
     public static GeneDef GetMistingGeneForMetal(MetalDef def) {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Misting" + def.defName, false);
     }
-
 
     public static GeneDef GetFerringGeneForMetal(MetalDef def) {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Ferring" + def.defName, false);

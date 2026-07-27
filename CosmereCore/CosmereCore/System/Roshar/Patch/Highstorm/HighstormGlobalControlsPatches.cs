@@ -1,10 +1,10 @@
+using System.Reflection;
+using System.Reflection.Emit;
+using Cosmere.System.Roshar.Comp.Map;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using System.Reflection;
-using System.Reflection.Emit;
-using Cosmere.System.Roshar.Comp.Map;
 using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
@@ -21,14 +21,17 @@ public static class HighstormGlobalControlsPatch {
     [HarmonyPrepare]
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (!patchedReadout)
+            if (!patchedReadout) {
                 Logger.Warning(
                     "GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied."
                 );
-            if (!patchedToggle)
+            }
+
+            if (!patchedToggle) {
                 Logger.Warning(
                     "PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied."
                 );
+            }
         }
         );
         return true;

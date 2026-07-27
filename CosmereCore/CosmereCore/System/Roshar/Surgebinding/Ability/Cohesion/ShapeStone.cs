@@ -6,6 +6,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Cohesion;
 
 public class ShapeStone : SurgebindingAbility {
     public ShapeStone(Pawn pawn) : base(pawn) { }
+
     public ShapeStone(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
@@ -26,8 +27,7 @@ public class ShapeStone : SurgebindingAbility {
             Gene.RemoveFromReserve(cost);
             building.Destroy(DestroyMode.KillFinalize);
             FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
-        }
-        else if (building == null && cell.Standable(map)) {
+        } else if (building == null && cell.Standable(map)) {
             Gene.RemoveFromReserve(cost);
             ThingDef wallDef = RimWorld.ThingDefOf.Wall;
             ThingDef stuffDef = GetLocalStoneStuff(cell, map);
@@ -62,7 +62,7 @@ public class ShapeStone : SurgebindingAbility {
             if (mineableThing?.IsStuff == true) return mineableThing;
 
             ThingDef? blocksVersion = DefDatabase<ThingDef>.GetNamedSilentFail(
-                "Blocks" + building.def.defName.Replace("Smoothed", "")
+                "Blocks" + building.def.defName.Replace("Smoothed", string.Empty)
             );
             if (blocksVersion != null) return blocksVersion;
         }

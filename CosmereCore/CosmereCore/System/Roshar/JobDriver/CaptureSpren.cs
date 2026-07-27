@@ -12,7 +12,9 @@ public class CaptureSpren : Verse.AI.JobDriver {
     private const int CaptureDuration = 180; // 3 seconds
 
     protected IntVec3 targetCell => job.GetTarget(CellIndex).Cell;
+
     protected Verse.Thing? gemstone => job.GetTarget(GemIndex).Thing;
+
     protected SprenType? targetSprenType => job.targetC.Cell.x >= 0 ? (SprenType?)job.targetC.Cell.x : null;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
@@ -78,8 +80,7 @@ public class CaptureSpren : Verse.AI.JobDriver {
                         gem,
                         targetSprenType.Value
                     );
-                }
-                else {
+                } else {
                     // Try to capture any available spren
                     success = LesserSprenCaptureSystem.TryCaptureAnySprenWithinRadius(
                         targetCell,

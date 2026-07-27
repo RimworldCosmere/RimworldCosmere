@@ -38,7 +38,6 @@ public static partial class TraitDefOf {
         return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Misting" + def.defName, false);
     }
 
-
     public static TraitDef GetFerringTraitForMetal(MetalDef def) {
         return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Ferring" + def.defName, false);
     }

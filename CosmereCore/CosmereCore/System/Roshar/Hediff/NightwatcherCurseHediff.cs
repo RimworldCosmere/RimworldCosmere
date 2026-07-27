@@ -7,13 +7,14 @@ public class NightwatcherCurseHediff : NightwatcherPassiveHediff {
     private NightwatcherCurseDef curseDef = null!;
 
     public NightwatcherCurseDef Curse => curseDef;
+
     public override string LabelBase => $"Nightwatcher: {curseDef?.LabelCap ?? "unknown"}";
 
     public override string Description {
         get {
             string intro =
                 "The Nightwatcher has laid a curse upon {PAWN_nameDef}. It cannot be removed by any ordinary means.";
-            return (intro + "\n\n" + (curseDef?.description ?? "")).Formatted(pawn.Named("PAWN"));
+            return (intro + "\n\n" + (curseDef?.description ?? string.Empty)).Formatted(pawn.Named("PAWN"));
         }
     }
 

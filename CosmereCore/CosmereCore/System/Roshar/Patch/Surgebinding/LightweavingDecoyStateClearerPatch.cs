@@ -1,5 +1,5 @@
-using HarmonyLib;
 using Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
+using HarmonyLib;
 using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;

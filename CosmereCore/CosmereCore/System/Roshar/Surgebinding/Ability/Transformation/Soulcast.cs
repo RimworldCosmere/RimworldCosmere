@@ -1,7 +1,7 @@
 using System;
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.Core.Lib.FloatSubMenu;
+using Cosmere.System.Roshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -18,10 +18,13 @@ public class Soulcast : SurgebindingAbility {
     private const int StonecuttingYield = 20;
 
     public Soulcast(Pawn pawn) : base(pawn) { }
+
     public Soulcast(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     internal SoulcastMode? storedMode { get; set; }
+
     internal ThingDef? storedMaterial { get; set; }
+
     internal TerrainDef? storedTerrain { get; set; }
 
     private float BaseCost => def.beuPerTick / (1 << Gene.CurrentIdeal);
@@ -56,22 +59,26 @@ public class Soulcast : SurgebindingAbility {
                 if (storedMaterial != null && target.HasThing) DoChangeStuffOnTarget(target.Thing, storedMaterial);
                 break;
             case SoulcastMode.Wall:
-                if (storedMaterial != null)
+                if (storedMaterial != null) {
                     DoFortify(
                         target.Cell,
                         pawn.Map,
                         storedMaterial,
                         BaseCost * SoulcastMaterials.GetMaterialCost(storedMaterial) * AirWallMultiplier
                     );
+                }
+
                 break;
             case SoulcastMode.Terraform:
-                if (storedTerrain != null)
+                if (storedTerrain != null) {
                     DoTerraform(
                         target.Cell,
                         pawn.Map,
                         storedTerrain,
                         TerrainBaseCost * SoulcastMaterials.GetTerrainCost(storedTerrain)
                     );
+                }
+
                 break;
             case SoulcastMode.Geyser:
                 DoSpawnGeyser(target.Cell, pawn.Map);

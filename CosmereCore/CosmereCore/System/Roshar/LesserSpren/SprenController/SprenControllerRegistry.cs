@@ -11,7 +11,9 @@ public static class SprenControllerRegistry {
     private static List<BaseSprenController> cachedDynamic = [];
 
     public static IReadOnlyList<BaseSprenController> enabledControllers => cachedEnabled;
+
     public static IReadOnlyList<BaseSprenController> enabledStaticControllers => cachedStatic;
+
     public static IReadOnlyList<BaseSprenController> enabledDynamicControllers => cachedDynamic;
 
     public static void Register(BaseSprenController controller) {

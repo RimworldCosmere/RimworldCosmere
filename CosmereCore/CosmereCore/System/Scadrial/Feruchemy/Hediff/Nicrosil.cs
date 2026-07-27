@@ -9,8 +9,11 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Nicrosil : HediffWithComps {
     private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);
+
     private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreNicrosil);
+
     private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
+
     private Feruchemist? nicrosil => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 
     // Applied per rare tick here, unlike the gene's per-second store and tap, so
@@ -21,7 +24,7 @@ public class Nicrosil : HediffWithComps {
         ChangePerRareTick * CompoundedTap.Scale(def, Severity) * (isTapping ? -1 : 1);
 
     // There's a little bit of a race condition here that i'm not 100% sure how to fix.
-    // Continuing to store/tap nicrosil will slowly increase how much investiture you have 
+    // Continuing to store/tap nicrosil will slowly increase how much investiture you have
     private bool shouldResetNicrosil {
         get {
             if (investiture == null) return false;

@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
 
 public class ReinforceStructure : SurgebindingAbility {
     public ReinforceStructure(Pawn pawn) : base(pawn) { }
+
     public ReinforceStructure(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {

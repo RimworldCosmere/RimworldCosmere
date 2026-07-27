@@ -20,22 +20,18 @@ public static class TimeBubblePatch {
         Pawn? pawn = PawnField(__instance);
         if (pawn?.health == null || pawn.Dead) return true;
 
-
         // If we are in a cadmium bubble, time slows down, needs should decay a third as fast
         if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleCadmium)) {
             if (!pawn.IsHashIntervalTick(BaseInterval * CadmiumMultiplier, delta)) {
                 return false;
             }
-        }
-        else if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleBendalloy)) {
+        } else if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleBendalloy)) {
             if (!pawn.IsHashIntervalTick(Mathf.RoundToInt((float)BaseInterval / BendalloyDivisor), delta)) {
                 return false;
             }
-        }
-        else {
+        } else {
             return true;
         }
-
 
         for (int index = 0; index < __instance.AllNeeds.Count; ++index) {
             __instance.AllNeeds[index].NeedInterval();

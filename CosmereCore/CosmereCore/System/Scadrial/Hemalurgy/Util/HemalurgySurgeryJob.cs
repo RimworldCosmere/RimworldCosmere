@@ -1,5 +1,5 @@
-using RimWorld;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -41,8 +41,7 @@ public static class HemalurgySurgeryJob {
         GuestStatus? guestStatus = null;
         if (donor.IsPrisonerOfColony) {
             guestStatus = GuestStatus.Prisoner;
-        }
-        else if (donor.IsSlaveOfColony) {
+        } else if (donor.IsSlaveOfColony) {
             guestStatus = GuestStatus.Slave;
         }
 

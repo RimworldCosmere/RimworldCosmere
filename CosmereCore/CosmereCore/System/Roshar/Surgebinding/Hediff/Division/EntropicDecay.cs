@@ -8,6 +8,5 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff.Division;
 public class EntropicDecay : SurgebindingHediff {
     public EntropicDecay() { }
 
-    public EntropicDecay(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public EntropicDecay(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 }

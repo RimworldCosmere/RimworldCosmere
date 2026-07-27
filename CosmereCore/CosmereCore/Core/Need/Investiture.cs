@@ -161,7 +161,6 @@ public class Investiture : RimWorld.Need {
             rect.y += num;
         }
 
-
         Rect tooltipRect = rectForTooltip ?? rect;
         if (Mouse.IsOver(tooltipRect)) {
             Widgets.DrawHighlight(tooltipRect);

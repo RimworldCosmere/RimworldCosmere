@@ -15,8 +15,7 @@ public static class CultivationSprenPatch {
     public static void RegisterBuilding(Building building) {
         if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == SprenType.Lifespren) {
             ActiveLifeSprenBuildings.Add(building);
-        }
-        else if (building.GetComp<BasicFabrialDiminisher>()?.currentSpren == SprenType.Lifespren) {
+        } else if (building.GetComp<BasicFabrialDiminisher>()?.currentSpren == SprenType.Lifespren) {
             ActiveLifeSprenBuildings.Add(building);
         }
     }
@@ -59,9 +58,8 @@ public static class CultivationSprenPatch {
                 if (comp is { powerOn: true } && comp.currentSpren == SprenType.Lifespren) {
                     return 1;
                 }
-            }
-            else if (thing is FabrialBasicDiminisher diminisher &&
-                       plantPos.DistanceTo(diminisher.Position) <= 5f) {
+            } else if (thing is FabrialBasicDiminisher diminisher &&
+                         plantPos.DistanceTo(diminisher.Position) <= 5f) {
                 BasicFabrialDiminisher? comp = diminisher.GetComp<BasicFabrialDiminisher>();
                 if (comp is { powerOn: true } && comp.currentSpren == SprenType.Lifespren) {
                     return 2;

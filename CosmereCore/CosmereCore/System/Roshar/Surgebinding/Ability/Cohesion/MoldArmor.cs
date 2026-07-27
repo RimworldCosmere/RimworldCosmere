@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Cohesion;
 
 public class MoldArmor : SurgebindingAbility {
     public MoldArmor(Pawn pawn) : base(pawn) { }
+
     public MoldArmor(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (30f + Gene.CurrentIdeal * 15f));

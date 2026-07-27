@@ -27,7 +27,6 @@ public static class Builder {
         noiseStrength = 10,
     };
 
-
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(
         int mapID,
         BaseSprenController controller,
@@ -67,7 +66,6 @@ public static class Builder {
         renderer.material
             .SetColor(UnityEngine.Shader.PropertyToID("_Color"), newColor);
     }
-
 
     private static void ConfigureParticleSystem(
         UnityEngine.ParticleSystem particleSys,

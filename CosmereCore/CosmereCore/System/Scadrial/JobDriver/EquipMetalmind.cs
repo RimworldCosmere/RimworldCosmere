@@ -7,6 +7,7 @@ namespace Cosmere.System.Scadrial.JobDriver;
 
 public class EquipMetalmind : Verse.AI.JobDriver {
     private Verse.Thing metalmind => job.targetA.Thing;
+
     private Metalmind? metalmindComp => metalmind.TryGetComp<Metalmind>();
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {

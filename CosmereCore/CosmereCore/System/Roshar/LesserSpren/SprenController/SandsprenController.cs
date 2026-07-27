@@ -8,9 +8,13 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class SandsprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Sandspren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.025f;
+
     public override int minParticlesPerCell => 1;
+
     public override int maxParticlesPerCell => 2;
 
     public override List<GemDef> compatibleGemTypes => [
@@ -20,6 +24,7 @@ public class SandsprenController : StaticSprenController {
     ];
 
     public override float captureRarityMultiplier => 1.0f;
+
     public override Color sprenColor => new Color(0.9f, 0.8f, 0.5f, 0.6f);
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(

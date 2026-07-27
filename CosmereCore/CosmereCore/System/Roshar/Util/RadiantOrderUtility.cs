@@ -1,7 +1,7 @@
 ﻿using Cosmere.Core.Framework;
 using Cosmere.System.Roshar.Comp.Game;
-using Verse;
 using Cosmere.System.Roshar.Comp.Thing;
+using Verse;
 
 namespace Cosmere.System.Roshar.Util;
 

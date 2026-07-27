@@ -10,6 +10,7 @@ public class Invisibility : SurgebindingAbility {
     public static readonly HashSet<Pawn> InvisiblePawns = [];
 
     public Invisibility(Pawn pawn) : base(pawn) { }
+
     public Invisibility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {

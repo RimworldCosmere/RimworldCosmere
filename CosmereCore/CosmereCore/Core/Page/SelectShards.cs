@@ -66,8 +66,7 @@ public class SelectShards : RimWorld.Page {
                 if (toggled != isEnabled) {
                     if (toggled) {
                         ShardUtility.Enable(shard);
-                    }
-                    else {
+                    } else {
                         ShardUtility.Disable(shard);
                     }
                 }

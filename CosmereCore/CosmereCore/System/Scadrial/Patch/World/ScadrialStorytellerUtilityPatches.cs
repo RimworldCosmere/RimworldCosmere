@@ -1,10 +1,10 @@
-using HarmonyLib;
-using RimWorld;
-using Verse;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
 using Cosmere.System.Scadrial.Util;
+using HarmonyLib;
+using RimWorld;
+using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 
@@ -40,8 +40,7 @@ public static class ScadrialStorytellerUtilityPatch {
         float bonus = 0f;
         if (pawn.IsMistborn() || pawn.IsFullFeruchemist()) {
             bonus += MistbornOrFullFeruchemistBonus;
-        }
-        else {
+        } else {
             List<Allomancer> allomancerGenes = pawn.genes.GetAllomanticGenes();
             for (int i = 0; i < allomancerGenes.Count; i++) {
                 bonus += SingleMetalBonus;

@@ -47,8 +47,7 @@ public static class StealTargetSelector {
                     candidates.Add(geneDef);
                 }
             }
-        }
-        else if (HemalurgicConstants.IsFeruchemicSteal(stealType)) {
+        } else if (HemalurgicConstants.IsFeruchemicSteal(stealType)) {
             string[] groupMetals = HemalurgicConstants.GetFeruchemicGroupMetals(stealType);
             for (int i = 0; i < groupMetals.Length; i++) {
                 MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(groupMetals[i]);
@@ -58,8 +57,7 @@ public static class StealTargetSelector {
                     candidates.Add(geneDef);
                 }
             }
-        }
-        else if (stealType == HemalurgicStealType.AnyPower) {
+        } else if (stealType == HemalurgicStealType.AnyPower) {
             List<Allomancer> allomantic = donor.genes.GetAllomanticGenes();
             for (int i = 0; i < allomantic.Count; i++) {
                 candidates.Add(allomantic[i].def);

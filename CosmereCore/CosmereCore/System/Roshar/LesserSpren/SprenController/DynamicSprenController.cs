@@ -11,6 +11,7 @@ public abstract class DynamicSprenController : BaseSprenController {
     public override IntRange validInfoRefreshInterval => new IntRange(int.MaxValue, int.MaxValue);
 
     public override IntRange activeInfoRefreshInterval => new IntRange(0, 0);
+
     public override IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => activeSpawnInfo;
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map) {

@@ -8,6 +8,5 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff.Gravitation;
 public class Lashed : SurgebindingHediff {
     public Lashed() { }
 
-    public Lashed(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public Lashed(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 }

@@ -1,6 +1,6 @@
-using Verse;
 using System.Text;
 using RimWorld.Planet;
+using Verse;
 
 namespace Cosmere.System.Scadrial.Util;
 

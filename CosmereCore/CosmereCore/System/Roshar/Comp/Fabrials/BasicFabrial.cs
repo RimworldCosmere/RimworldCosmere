@@ -18,6 +18,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     public bool hasGemstone => insertedGemstone != null;
 
     private SprenContainer? Spren => insertedGemstone?.TryGetComp<SprenContainer>();
+
     private InvestitureHolder? Holder => insertedGemstone?.TryGetComp<InvestitureHolder>();
 
     public SprenType? currentSpren => Spren?.CapturedSprenType;
@@ -31,8 +32,11 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     ];
 
     public abstract void AddGemstone(ThingWithComps gemstone);
+
     public abstract void RemoveGemstone();
+
     protected abstract void ApplyFlameSprenHeat();
+
     protected abstract void ApplyColdSprenCooling();
 
     protected void RegisterBuilding() {

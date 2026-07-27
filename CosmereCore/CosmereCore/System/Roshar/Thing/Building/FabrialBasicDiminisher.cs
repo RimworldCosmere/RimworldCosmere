@@ -12,6 +12,4 @@ public class FabrialBasicDiminisher : FabrialBasicBuilding {
         base.SpawnSetup(map, respawningAfterLoad);
         basicFabrialDiminisher = GetComp<BasicFabrialDiminisher>();
     }
-
-
 }

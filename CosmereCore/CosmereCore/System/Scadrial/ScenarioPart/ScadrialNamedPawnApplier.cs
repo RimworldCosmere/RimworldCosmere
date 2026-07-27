@@ -1,6 +1,6 @@
-using Verse;
 using Cosmere.Core.ScenarioPart;
 using Cosmere.System.Scadrial.Util;
+using Verse;
 
 namespace Cosmere.System.Scadrial.ScenarioPart;
 

@@ -107,6 +107,7 @@ public sealed class RadialWindow : Verse.Window {
         Vector2 mouse = Event.current.mousePosition;
 
         UpdateHover(center, mouse);
+
         // Fills the window exactly; anything larger would clip to a hard edge.
         float vignetteSize = WindowExtent * 2f;
         Color prevGuiColor = GUI.color;
@@ -154,18 +155,19 @@ public sealed class RadialWindow : Verse.Window {
                     ? snapshot.Systems[state.HoveredIndex].Label
                     : null;
             case RadialStateKind.SubsectionTier: {
-                RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
-                return state.HoveredIndex < sys.Subsections.Count
-                    ? sys.Subsections[state.HoveredIndex].Label
-                    : null;
-            }
+                    RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
+                    return state.HoveredIndex < sys.Subsections.Count
+                        ? sys.Subsections[state.HoveredIndex].Label
+                        : null;
+                }
+
             default:
                 return null;
         }
     }
 
     private string BuildBreadcrumb() {
-        if (state.Kind == RadialStateKind.SystemTier) return "";
+        if (state.Kind == RadialStateKind.SystemTier) return string.Empty;
         if (state.Kind == RadialStateKind.SubsectionTier) {
             return snapshot.Systems[state.SelectedSystemIndex].Label;
         }
@@ -204,6 +206,7 @@ public sealed class RadialWindow : Verse.Window {
                     );
                     break;
                 }
+
             case RadialStateKind.AbilityTier: {
                     RadialSubsection sub = snapshot
                         .Systems[state.SelectedSystemIndex]
@@ -245,8 +248,7 @@ public sealed class RadialWindow : Verse.Window {
         if (e.type == EventType.MouseDown && e.button == 1) {
             if (state.Kind == RadialStateKind.SystemTier) {
                 Close(false);
-            }
-            else {
+            } else {
                 state.Back();
             }
 
@@ -271,20 +273,21 @@ public sealed class RadialWindow : Verse.Window {
                 AutoSkipOneOptionTiers();
                 break;
             case RadialStateKind.SubsectionTier: {
-                state.SelectedSubsectionIndex = state.HoveredIndex;
-                state.Kind = RadialStateKind.AbilityTier;
-                RadialSubsection chosen = snapshot
-                    .Systems[state.SelectedSystemIndex]
-                    .Subsections[state.SelectedSubsectionIndex];
-                if (chosen.Leaves.Count == 1) {
-                    state.HoveredIndex = 0;
-                    CommitAndClose(ShiftHeld());
-                    return;
+                    state.SelectedSubsectionIndex = state.HoveredIndex;
+                    state.Kind = RadialStateKind.AbilityTier;
+                    RadialSubsection chosen = snapshot
+                        .Systems[state.SelectedSystemIndex]
+                        .Subsections[state.SelectedSubsectionIndex];
+                    if (chosen.Leaves.Count == 1) {
+                        state.HoveredIndex = 0;
+                        CommitAndClose(ShiftHeld());
+                        return;
+                    }
+
+                    state.HoveredIndex = -1;
+                    break;
                 }
 
-                state.HoveredIndex = -1;
-                break;
-            }
             case RadialStateKind.AbilityTier:
                 CommitAndClose(false);
                 break;
@@ -306,7 +309,6 @@ public sealed class RadialWindow : Verse.Window {
                     state.Kind = RadialStateKind.AbilityTier;
                     continue;
                 }
-
             }
 
             break;

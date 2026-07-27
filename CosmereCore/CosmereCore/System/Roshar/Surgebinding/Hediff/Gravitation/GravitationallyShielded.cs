@@ -12,6 +12,5 @@ public class GravitationallyShielded : SurgebindingHediff {
         HediffDef hediffDef,
         Pawn pawn,
         IAbility<Surgebinder, IHediff<Surgebinder>> ability
-    ) :
-        base(hediffDef, pawn, ability) { }
+    ) : base(hediffDef, pawn, ability) { }
 }

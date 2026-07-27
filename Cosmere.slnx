@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="CosmereCore/CosmereCore/Cosmere.csproj" />
+  <Properties Name="RiderSharedRunConfigurations" Scope="PostLoad">
+    <Property Name="File" Value=".claude\worktrees\agent-ac8065a0\.run\start -- -d -f.run.xml" />
+  </Properties>
+</Solution>

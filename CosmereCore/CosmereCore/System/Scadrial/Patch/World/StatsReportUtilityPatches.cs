@@ -1,6 +1,6 @@
-using HarmonyLib;
 using Cosmere.Core.Def;
 using Cosmere.Core.DefModExtension;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -22,7 +22,7 @@ public static class StatsReportUtilityPatch {
         __result = new StatDrawEntry(
             StatCategoryDefOf.BasicsImportant,
             (string)"Description".Translate(),
-            "",
+            string.Empty,
             description,
             99999,
             hyperlinks: Dialog_InfoCard.DefsToHyperlinks(def.descriptionHyperlinks)

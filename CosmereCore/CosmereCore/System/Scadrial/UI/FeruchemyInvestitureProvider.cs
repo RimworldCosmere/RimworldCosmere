@@ -11,6 +11,7 @@ namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<FeruchemyCodexContent> {
     public const string Id = "Feruchemy";
+
     public override string SystemId => Id;
 
     public override bool IsInvested(Pawn pawn) {
@@ -73,5 +74,4 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
         // sustained states rather than the quick casts the radial exists for.
         return null;
     }
-
 }

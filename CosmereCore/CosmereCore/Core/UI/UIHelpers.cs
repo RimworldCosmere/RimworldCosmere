@@ -62,13 +62,15 @@ public static class UIHelpers {
         Find.WindowStack.Add(new DropdownMenu(buttonRect, options));
     }
 
-    public static Dictionary<string, int> GetEnumValues<T>() where T : Enum {
+    public static Dictionary<string, int> GetEnumValues<T>()
+        where T : Enum {
         Dictionary<string, int> result = new Dictionary<string, int>();
         Array values = Enum.GetValues(typeof(T));
         for (int i = 0; i < values.Length; i++) {
             T v = (T)values.GetValue(i);
             result[v.ToString()] = (int)(object)v;
         }
+
         return result;
     }
 
@@ -78,7 +80,8 @@ public static class UIHelpers {
         Action<T?> onSelected,
         bool allowNone = true,
         string? placeholder = null
-    ) where T : Enum {
+    )
+        where T : Enum {
         if (Enum.GetUnderlyingType(typeof(T)) != typeof(int)) {
             throw new ArgumentException($"Enum type {typeof(T)} must have int as its underlying type.");
         }
@@ -105,7 +108,7 @@ public static class UIHelpers {
             sub,
             val => val ? "Yes" : "No",
             currentValue,
-            "",
+            string.Empty,
             new Dictionary<string, bool> {
                 { "Yes", true },
                 { "No", false },

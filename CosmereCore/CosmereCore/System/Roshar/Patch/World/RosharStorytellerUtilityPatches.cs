@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.Gene;
 using HarmonyLib;
 using RimWorld;
-using Cosmere.System.Roshar.Gene;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.World;

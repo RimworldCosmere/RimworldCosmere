@@ -15,8 +15,8 @@ public static class RadialWedgeTex {
     private static readonly Dictionary<int, Texture2D> edgeCache = new Dictionary<int, Texture2D>();
     private static Texture2D? gizmoIconCache;
 
-    /// A small spoked ring standing in for the wheel, drawn rather than shipped
-    /// as art so it matches whatever the ring geometry becomes.
+    // A small spoked ring standing in for the wheel, drawn rather than shipped
+    // as art so it matches whatever the ring geometry becomes.
     public static Texture2D GizmoIcon() {
         if (gizmoIconCache != null) return gizmoIconCache;
 

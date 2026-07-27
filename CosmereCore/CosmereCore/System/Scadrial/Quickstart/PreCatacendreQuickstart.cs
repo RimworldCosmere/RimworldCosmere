@@ -1,4 +1,3 @@
-using RimWorld;
 using Cosmere.Core;
 using Cosmere.Core.Def;
 using Cosmere.Core.Need;
@@ -6,6 +5,7 @@ using Cosmere.Core.Quickstart;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
 using Cosmere.System.Scadrial.Gene;
+using RimWorld;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 
@@ -13,9 +13,13 @@ namespace Cosmere.System.Scadrial.Quickstart;
 
 public class PreCatacendreQuickstart : AbstractQuickstart {
     public override int mapSize => 100;
+
     public override TaggedString description => "Used to test Pre-catacendre pawns";
+
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
+
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
+
     public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre;
 
     public override void PostStart() {
@@ -60,10 +64,11 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
             pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
             pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-            //GenSpawn.Spawn(grandfather, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            //GenSpawn.Spawn(grandmother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            //GenSpawn.Spawn(father, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            //GenSpawn.Spawn(mother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+
+            // GenSpawn.Spawn(grandfather, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            // GenSpawn.Spawn(grandmother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            // GenSpawn.Spawn(father, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            // GenSpawn.Spawn(mother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
             StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(pawn);
             StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(pawn);
         }

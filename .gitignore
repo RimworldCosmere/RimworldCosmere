@@ -8,7 +8,7 @@ riderModule.iml
 node_modules
 .scripts/.cache
 **/*.generated.*
-Cosmere.sln.DotSettings.user
+Cosmere.slnx.DotSettings.user
 **/Assemblies
 **/AssetBundles
 **/.lastassetbuildhash

@@ -1,7 +1,7 @@
-using HarmonyLib;
-using RimWorld;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Gene;
+using HarmonyLib;
+using RimWorld;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 using Shardblade = Cosmere.System.Roshar.Surgebinding.Ability.Shardblade;

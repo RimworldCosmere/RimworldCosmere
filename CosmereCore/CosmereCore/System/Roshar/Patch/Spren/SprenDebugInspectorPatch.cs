@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.LesserSpren.MapComponent;
 using HarmonyLib;
 using LudeonTK;
-using Cosmere.System.Roshar.LesserSpren.MapComponent;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Spren;

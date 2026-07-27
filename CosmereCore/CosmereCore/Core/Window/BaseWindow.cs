@@ -50,23 +50,37 @@ public abstract class BaseWindow : Verse.Window {
     protected virtual Vector2 initialWindowSize { get; }
 
     protected virtual bool hasFooter { get; set; } = false;
+
     protected virtual bool drawBorder { get; set; } = false;
+
     protected virtual float headerHeight => Spacing.Get(6);
+
     protected virtual float footerHeight => hasFooter ? Spacing.Get(4) : 0;
+
     protected virtual float footerButtonHeight => Spacing.Get(2);
+
     protected virtual float bodyHeight => initialWindowSize.y - headerHeight - footerHeight;
+
     protected virtual Padding padding => Padding.Spacing;
 
     protected virtual float bodyPadding => Spacing.Get(scrollViewStatus.scrollVisibile ? 2 : 4);
+
     protected override float Margin => drawBorder ? 1 : 0;
+
     public sealed override Vector2 InitialSize => initialWindowSize;
 
     protected virtual TextAnchor headerAlignment => TextAnchor.MiddleCenter;
+
     protected virtual Color headerTextColor => HeaderTextColor;
+
     protected virtual Color bodyTextColor => BodyTextColor;
+
     protected virtual GameFont titleFont => GameFont.Medium;
+
     protected virtual GameFont subtitleFont => GameFont.Small;
+
     protected virtual GameFont bodyFont => GameFont.Small;
+
     protected abstract TaggedString GetTitle();
 
     protected virtual TaggedString? GetSubtitle() {
@@ -188,7 +202,6 @@ public abstract class BaseWindow : Verse.Window {
 
         if (left) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, thickness, rect.height), thickness, texture);
     }
-
 
     protected void DrawDropShadow(Rect rect) {
         Rect rect1 = rect.ContractedBy(DropShadowContract);

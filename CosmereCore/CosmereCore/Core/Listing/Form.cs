@@ -150,8 +150,7 @@ public class Form : FoundationListing {
                 curX -= options.padding.left;
 
                 currentHeight += options.padding.top + options.padding.bottom;
-            }
-            else {
+            } else {
                 Rect rect = GetRect(height.Value).ContractedBy(options.padding);
                 Form sub = new Form { verticalSpacing = options.verticalSpacing, parentListing = this };
 

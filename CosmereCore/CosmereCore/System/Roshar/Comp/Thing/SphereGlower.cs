@@ -46,7 +46,6 @@ public class SphereGlower : CompGlower {
             float total = 0f;
             float max = 0f;
             List<Verse.Thing> currentSpheres = spheres;
-
             for (int i = 0; i < currentSpheres.Count; i++) {
                 if (!currentSpheres[i].TryGetComp(out InvestitureHolder investiture) ||
                     investiture.currentInvestiture <= 0.0) {
@@ -58,11 +57,12 @@ public class SphereGlower : CompGlower {
             }
 
             if (max <= 0.0) return 0f;
-
             float percent = Mathf.Clamp01(total / max);
             return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
         }
-        set { }
+
+        set {
+        }
     }
 
     public override ColorInt GlowColor {
@@ -70,7 +70,6 @@ public class SphereGlower : CompGlower {
             Color blended = Color.black;
             float totalWeight = 0f;
             List<Verse.Thing> currentSpheres = spheres;
-
             for (int i = 0; i < currentSpheres.Count; i++) {
                 InvestitureHolder? investiture = currentSpheres[i].GetInvestiture();
                 if (investiture == null || investiture.currentInvestiture <= 0f) continue;
@@ -84,7 +83,9 @@ public class SphereGlower : CompGlower {
 
             return totalWeight <= 0f ? new ColorInt(Color.black) : new ColorInt(blended / totalWeight);
         }
-        set { }
+
+        set {
+        }
     }
 
     protected override bool ShouldBeLitNow {
@@ -165,7 +166,7 @@ public class SphereGlower : CompGlower {
     }
 
     private static Color GetSphereColor(Verse.Thing sphere) {
-        string stuffName = sphere.Stuff?.defName.Replace("Raw", "") ?? "Diamond";
+        string stuffName = sphere.Stuff?.defName.Replace("Raw", string.Empty) ?? "Diamond";
         GemDef? gem = DefDatabase<GemDef>.GetNamedSilentFail(stuffName) ?? GemDefOf.Diamond;
 
         return gem.glowColor ?? gem.color;

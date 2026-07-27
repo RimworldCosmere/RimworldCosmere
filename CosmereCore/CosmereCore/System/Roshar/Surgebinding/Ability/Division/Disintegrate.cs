@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Division;
 
 public class Disintegrate : SurgebindingAbility {
     public Disintegrate(Pawn pawn) : base(pawn) { }
+
     public Disintegrate(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {

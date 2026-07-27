@@ -1,7 +1,7 @@
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
-using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy;
+using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
 using Verse;
 
@@ -105,8 +105,7 @@ public class ChargeSpike : Recipe_Surgery {
                     DropSpike(spikeComp.parent, billDoer);
                 }
             );
-        }
-        else {
+        } else {
             HemalurgicChargeUtility.DriveHemalurgicCharge(
                 donor,
                 billDoer,
@@ -133,8 +132,7 @@ public class ChargeSpike : Recipe_Surgery {
             }
 
             GenPlace.TryPlaceThing(newSpike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
-        }
-        else if (!spike.Spawned) {
+        } else if (!spike.Spawned) {
             GenPlace.TryPlaceThing(spike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
         }
     }

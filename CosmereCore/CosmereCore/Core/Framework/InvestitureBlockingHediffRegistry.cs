@@ -13,6 +13,7 @@ public static class InvestitureBlockingHediffRegistry {
         for (int i = 0; i < blockingHediffs.Count; i++) {
             if (pawn.health.hediffSet.HasHediff(blockingHediffs[i])) return true;
         }
+
         return false;
     }
 }

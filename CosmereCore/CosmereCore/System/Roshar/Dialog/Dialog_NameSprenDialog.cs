@@ -53,8 +53,7 @@ public class Dialog_NameSprenDialog : Window {
                 enterPressed) {
                 if (curName.NullOrEmpty()) {
                     Messages.Message("NameInvalid".Translate(), spren, MessageTypeDefOf.NeutralEvent, false);
-                }
-                else {
+                } else {
                     spren.Name = new NameSingle(curName.Trim());
                     Messages.Message(
                         "CRO_NameSpren_Named".Translate(curName.Trim().Named("NAME")),

@@ -1,6 +1,6 @@
+using System.Reflection;
 using HarmonyLib;
 using Verse;
-using System.Reflection;
 
 namespace Cosmere.System.Roshar.Patch.Nightwatcher;
 

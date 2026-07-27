@@ -82,8 +82,9 @@ public sealed class Dialog_StoreMemory : Window {
             Rect row = new Rect(0f, i * rowHeight, viewRect.width, rowHeight);
             if (selectedMemoryIndex == i) {
                 Widgets.DrawBoxSolid(row, SelectedRowColor);
+            } else if (Mouse.IsOver(row)) {
+                Widgets.DrawBoxSolid(row, HoverRowColor);
             }
-            else if (Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
 
             float offset = memory.MoodOffset();
             Color color = offset >= 0f ? PositiveMoodColor : NegativeMoodColor;
@@ -142,8 +143,9 @@ public sealed class Dialog_StoreMemory : Window {
 
             if (isSelected) {
                 Widgets.DrawBoxSolid(row, SelectedRowColor);
+            } else if (fits && Mouse.IsOver(row)) {
+                Widgets.DrawBoxSolid(row, HoverRowColor);
             }
-            else if (fits && Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
 
             Color labelColor = fits ? Color.white : DisabledTextColor;
             Rect label = new Rect(row.x + 6f, row.y + 2f, row.width - 12f, 18f);
@@ -174,11 +176,9 @@ public sealed class Dialog_StoreMemory : Window {
         string status;
         if (selectedMemoryIndex < 0) {
             status = (string)"CC_Codex_Feruchemy_StoreMemory_Hint_SelectMemory".Translate();
-        }
-        else if (selectedCoppermindIndex < 0) {
+        } else if (selectedCoppermindIndex < 0) {
             status = (string)"CC_Codex_Feruchemy_StoreMemory_Hint_SelectCoppermind".Translate();
-        }
-        else {
+        } else {
             status = string.Empty;
         }
 

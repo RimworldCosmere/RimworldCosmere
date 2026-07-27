@@ -11,6 +11,7 @@ public class SoftenGround : SurgebindingAbility {
     private int zoneExpiryTick = -1;
 
     public SoftenGround(Pawn pawn) : base(pawn) { }
+
     public SoftenGround(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

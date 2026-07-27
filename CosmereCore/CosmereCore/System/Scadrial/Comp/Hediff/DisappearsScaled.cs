@@ -18,6 +18,7 @@ public class DisappearsScaled : HediffComp {
     private int startTick = -1;
     private int ticksLeft = -1;
     private int totalTicks = -1;
+
     private static int CurrentTick => Find.TickManager.TicksGame;
 
     private new DisappearsScaledProperties props => (DisappearsScaledProperties)base.props;

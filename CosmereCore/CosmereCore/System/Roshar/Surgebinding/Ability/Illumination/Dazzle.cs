@@ -7,6 +7,7 @@ public class Dazzle : SurgebindingAbility {
     private const int BaseRadius = 4;
 
     public Dazzle(Pawn pawn) : base(pawn) { }
+
     public Dazzle(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

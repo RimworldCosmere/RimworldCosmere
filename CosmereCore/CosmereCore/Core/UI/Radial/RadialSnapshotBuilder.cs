@@ -19,5 +19,4 @@ public static class RadialSnapshotBuilder {
 
         return new RadialSnapshot(pawn, systems, Find.TickManager.TicksGame);
     }
-
 }

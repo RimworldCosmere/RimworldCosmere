@@ -26,23 +26,33 @@ public abstract class BaseSprenController {
     private int nextValidInfoRefresh;
 
     public virtual Texture2D sprenTexture => DefaultTexture;
+
     public virtual Material sprenMaterial => GetConfiguredMaterial();
+
     public abstract SprenType sprenType { get; }
+
     public abstract bool isEnabled { get; }
+
     public virtual IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
+
     public virtual IReadOnlyCollection<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
 
     public abstract IntRange validInfoRefreshInterval { get; }
+
     public abstract IntRange activeInfoRefreshInterval { get; }
 
     public virtual int minParticlesPerCell => 1;
+
     public virtual int maxParticlesPerCell => 2;
+
     public virtual FloatRange lifetime => new FloatRange(4f, 10f);
 
     public virtual float cellSpawnChance => 0.05f; // 5% default chance per valid cell to spawn spren
 
     protected virtual float maxSpreadDistance => 0.5f;
+
     protected virtual float movementSpeed => 5f;
+
     protected virtual float randomDirectionAmount => 0.3f;
 
     protected internal SprenSpawnInformation defaultSpawnInformation => new SprenSpawnInformation(
@@ -57,12 +67,17 @@ public abstract class BaseSprenController {
     );
 
     public virtual List<GemDef> compatibleGemTypes => [];
+
     public virtual float captureRarityMultiplier => 0.7f;
+
     public virtual bool canBeCaptured => compatibleGemTypes.Count > 0;
 
     public abstract Color sprenColor { get; }
+
     public virtual float sprenSizeMultiplier => 1f;
+
     public virtual float emissionRateMultiplier => 1f;
+
     public virtual float sprenSpeedMultiplier => 1f;
 
     private Material GetConfiguredMaterial() {
@@ -133,7 +148,7 @@ public abstract class BaseSprenController {
     }
 
     public virtual string DebugStringAt(IntVec3 position) {
-        return "";
+        return string.Empty;
     }
 
     public abstract SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map);

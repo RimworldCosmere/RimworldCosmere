@@ -1,8 +1,8 @@
-using UnityEngine;
-using Verse;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
+using UnityEngine;
+using Verse;
 
 namespace Cosmere.System.Nalthis.UI;
 

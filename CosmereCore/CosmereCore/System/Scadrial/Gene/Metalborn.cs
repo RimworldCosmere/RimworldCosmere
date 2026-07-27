@@ -14,6 +14,7 @@ public abstract class Metalborn : Invested {
         ?? throw new InvalidOperationException($"Metalborn gene '{def.defName}' is missing MetalsLinked with a valid metal.");
 
     protected override Color BarColor => metal.color.SaturationChanged(1f);
+
     protected override Color BarHighlightColor => metal.color.SaturationChanged(2f);
 
     protected override void PostAddOrRemove() {

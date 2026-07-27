@@ -20,9 +20,11 @@ public class OpenPerpendicularity : SurgebindingAbility {
     private ThingDef? auraMoteDef;
 
     public OpenPerpendicularity(Pawn pawn) : base(pawn) { }
+
     public OpenPerpendicularity(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     protected virtual string AuraMoteDefName => "Cosmere_Roshar_Thing_PerpendicularityAura";
+
     private ThingDef? AuraMoteDef => auraMoteDef ??= DefDatabase<ThingDef>.GetNamedSilentFail(AuraMoteDefName);
 
     private float radius => BaseRadius + Gene.CurrentIdeal * 2;

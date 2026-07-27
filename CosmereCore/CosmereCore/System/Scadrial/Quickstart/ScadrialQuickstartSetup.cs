@@ -1,10 +1,10 @@
-using RimWorld;
-using Verse;
 using Cosmere.Core;
 using Cosmere.Core.Quickstart;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
 using Cosmere.System.Scadrial.Gene;
+using RimWorld;
+using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 
 namespace Cosmere.System.Scadrial.Quickstart;
@@ -54,7 +54,6 @@ internal static class ScadrialQuickstartSetup {
             );
         });
     }
-
 
     private static void AddAllMetalminds(Pawn pawn) {
         foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {

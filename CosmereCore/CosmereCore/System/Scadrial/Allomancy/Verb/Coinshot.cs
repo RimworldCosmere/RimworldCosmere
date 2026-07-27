@@ -9,6 +9,7 @@ namespace Cosmere.System.Scadrial.Allomancy.Verb;
 
 public class Coinshot : Verb_Shoot {
     private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;
+
     public override ThingDef Projectile => ThingDefOf.Cosmere_Scadrial_Thing_ClipProjectile;
 
     public override void WarmupComplete() {

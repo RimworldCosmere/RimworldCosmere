@@ -7,10 +7,10 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-/// Compounding is never granted to a pawn, so its ability is built on demand for a
-/// twinborn holding both genes for the metal. Shared because both arts ask about
-/// it: Allomancy offers the action, Feruchemy decides whether the compounded pool
-/// is worth showing at all.
+// Compounding is never granted to a pawn, so its ability is built on demand for a
+// twinborn holding both genes for the metal. Shared because both arts ask about
+// it: Allomancy offers the action, Feruchemy decides whether the compounded pool
+// is worth showing at all.
 public static class CompoundingAccess {
     public const int SkillFloor = 10;
 
@@ -21,9 +21,9 @@ public static class CompoundingAccess {
 
     private static int cachedPawnId = -1;
 
-    /// Whether the pawn has any business seeing compounding controls. Deliberately
-    /// looser than Gate - the controls appear once either half is earned, and then
-    /// say what the other half is still missing.
+    // Whether the pawn has any business seeing compounding controls. Deliberately
+    // looser than Gate - the controls appear once either half is earned, and then
+    // say what the other half is still missing.
     public static bool Discovered(Pawn pawn) {
         if (Research is { IsFinished: true }) return true;
 
@@ -31,7 +31,7 @@ public static class CompoundingAccess {
                SkillLevel(pawn, SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower) >= SkillFloor;
     }
 
-    /// Whether compounding this metal can actually start right now, and if not, why.
+    // Whether compounding this metal can actually start right now, and if not, why.
     public static AcceptanceReport Gate(Pawn pawn, Feruchemist gene, AllomancyAbility ability) {
         if (Research is { IsFinished: false }) {
             return "CC_Dock_Feruchemy_CompoundNoResearch".Translate(Research.LabelCap.Named("RESEARCH"));

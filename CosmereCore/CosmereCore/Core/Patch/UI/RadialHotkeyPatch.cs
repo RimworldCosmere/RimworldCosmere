@@ -11,8 +11,7 @@ public static class RadialHotkeyPatch {
     public static void Postfix() {
         try {
             RadialController.OnHotkeyPoll();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.Error($"radial hotkey poll failed: {ex}");
         }
     }

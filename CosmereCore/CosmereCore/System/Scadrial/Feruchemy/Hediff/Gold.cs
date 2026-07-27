@@ -6,6 +6,7 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Gold : HediffWithComps {
     private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
+
     private Feruchemist? gold => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
 
     public override void PostMake() {

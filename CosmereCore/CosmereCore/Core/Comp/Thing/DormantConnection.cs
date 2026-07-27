@@ -16,7 +16,9 @@ public struct HiddenGeneData : IExposable {
 
 public class DormantConnection : ThingComp {
     private Dictionary<GeneDef, int> hiddenGenes = [];
+
     public bool hasDormantConnections => hiddenGenes.Count > 0;
+
     private Pawn pawn => (Pawn)parent;
 
     public override void CompTickInterval(int delta) {

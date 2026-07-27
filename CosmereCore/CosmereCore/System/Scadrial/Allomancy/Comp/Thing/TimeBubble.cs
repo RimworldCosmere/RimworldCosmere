@@ -22,7 +22,9 @@ public class TimeBubbleProperties : CompProperties_ThingContainer {
 public class TimeBubble : ThingComp {
     public MetallicArtsMetalDef? metal;
     private int ticksAlive;
+
     public Pawn? owner { get; set; }
+
     private new TimeBubbleProperties props => (TimeBubbleProperties)base.props;
 
     private HediffDef? hediffToApply => metal == null

@@ -15,7 +15,9 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability;
 
 public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHediff> {
     private SurgeDef? cachedSurgeDef;
+
     public SurgebindingAbility(Pawn pawn) : base(pawn) { }
+
     public SurgebindingAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public RadiantOrderDef radiantOrder {
@@ -26,6 +28,7 @@ public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHedi
             return order;
         }
     }
+
     public GemDef gem => radiantOrder.gemstone;
 
     public override Surgebinder Gene => cachedGene ??= pawn.genes.GetSurgebindingGeneForOrder(radiantOrder)!;

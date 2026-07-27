@@ -9,6 +9,7 @@ public class DecayTouch : SurgebindingAbility {
     private const int DamageIntervalTicks = 60;
 
     public DecayTouch(Pawn pawn) : base(pawn) { }
+
     public DecayTouch(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float pawnDamage => 3f + Gene.CurrentIdeal * 2f;
@@ -43,8 +44,7 @@ public class DecayTouch : SurgebindingAbility {
                 instigator: pawn
             );
             targetPawn.TakeDamage(dinfo);
-        }
-        else {
+        } else {
             float dmg = structureDamage;
             target.HitPoints = Math.Max(0, target.HitPoints - (int)dmg);
             if (target.HitPoints <= 0) {

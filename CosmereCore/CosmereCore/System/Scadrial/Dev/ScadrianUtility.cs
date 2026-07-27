@@ -13,8 +13,8 @@ namespace Cosmere.System.Scadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianUtility {
-    /// Compounding demands level ten in both arts, so a pawn meant to demonstrate
-    /// it cannot be left on whatever pawn generation rolled.
+    // Compounding demands level ten in both arts, so a pawn meant to demonstrate
+    // it cannot be left on whatever pawn generation rolled.
     public static void SetMetallicArtsSkills(Pawn pawn, int level) {
         if (pawn.skills == null) return;
 
@@ -22,8 +22,8 @@ public static class ScadrianUtility {
         pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = level;
     }
 
-    /// Compounding only reaches a metalmind inside the body, so a pawn meant to
-    /// demonstrate it needs implants rather than the bands everyone else carries.
+    // Compounding only reaches a metalmind inside the body, so a pawn meant to
+    // demonstrate it needs implants rather than the bands everyone else carries.
     public static void AddImplantedMetalminds(Pawn pawn, MetalDef metal, int count) {
         ThingDef? implantDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Scadrial_Thing_MetalmindImplant");
         if (implantDef == null || pawn.health == null) return;
@@ -49,7 +49,7 @@ public static class ScadrianUtility {
                     metalDefName = metal.defName,
                     metalmindType = implantDef.defName,
                     MaxAmount = capacity,
-                    ownerName = pawn.Name?.ToStringFull ?? "",
+                    ownerName = pawn.Name?.ToStringFull ?? string.Empty,
                 },
                 torso
             );
@@ -203,8 +203,7 @@ public static class ScadrianUtility {
     public static void GiveRandomAllomanticAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddMistborn(pawn);
-        }
-        else {
+        } else {
             GeneUtility.AddRandomAllomanticGene(pawn);
         }
     }
@@ -218,8 +217,7 @@ public static class ScadrianUtility {
     public static void GiveRandomFeruchemicalAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddFullFeruchemist(pawn);
-        }
-        else {
+        } else {
             GeneUtility.AddRandomFeruchemicalGene(pawn);
         }
     }

@@ -18,7 +18,8 @@ public class SeverityCalculatorProperties : HediffCompProperties {
     public int tickInterval = GenTicks.TickRareInterval;
 }
 
-public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
+public class SeverityCalculator<TGene> : HediffComp
+    where TGene : Invested {
     private float cachedSeverity = -1;
     private float desiredSeverity = -1;
     private bool severityDirty = true;
@@ -42,7 +43,7 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
     }
 
     public override string CompLabelInBracketsExtra =>
-        ticksLeft >= 0 ? $"{Mathf.RoundToInt(ticksLeft).ToStringTicksToPeriod()} left" : "";
+        ticksLeft >= 0 ? $"{Mathf.RoundToInt(ticksLeft).ToStringTicksToPeriod()} left" : string.Empty;
 
     private float ticksLeft => desiredSeverity < 0
         ? -1
@@ -75,7 +76,6 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
             RecalculateSeverity();
         }
     }
-
 
     private void OnSourceRemoved(
         IHediff<TGene> hediff,

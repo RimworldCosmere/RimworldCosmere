@@ -1,12 +1,12 @@
 using Cosmere.Core;
+using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
-using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Savant;
 using RimWorld;
-using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -52,6 +52,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 "CC_Codex_Allomancy_ProgressionHeader".Translate()
             );
         }
+
         y += 34f;
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
@@ -95,8 +96,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 GUI.color = metal.color;
                 GUI.DrawTexture(swatch, mark);
                 GUI.color = prevMark;
-            }
-            else {
+            } else {
                 Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
             }
 
@@ -145,8 +145,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
             if (hasVialControls) {
                 DrawVialSettingsButton(vialButtonRect, gene);
-            }
-            else {
+            } else {
                 DrawVialSettingsUnavailable(vialButtonRect, metal);
             }
 
@@ -159,6 +158,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     private Vector2 progressionScroll;
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
+
     public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
 
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
@@ -181,9 +181,9 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         }
     }
 
-    /// Nothing at all in this column read as an oversight rather than as a metal
-    /// that has no reserve to keep. A dimmed vial says the setting exists and does
-    /// not apply here.
+    // Nothing at all in this column read as an oversight rather than as a metal
+    // that has no reserve to keep. A dimmed vial says the setting exists and does
+    // not apply here.
     private static void DrawVialSettingsUnavailable(Rect rect, MetallicArtsMetalDef metal) {
         TooltipHandler.TipRegion(
             rect,

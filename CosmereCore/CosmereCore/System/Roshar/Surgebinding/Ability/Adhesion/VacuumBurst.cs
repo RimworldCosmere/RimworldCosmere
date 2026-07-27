@@ -9,6 +9,7 @@ public class VacuumBurst : SurgebindingAbility {
     private const float BaseDamage = 5f;
 
     public VacuumBurst(Pawn pawn) : base(pawn) { }
+
     public VacuumBurst(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

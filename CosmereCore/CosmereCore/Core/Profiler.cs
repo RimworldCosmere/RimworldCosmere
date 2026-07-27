@@ -53,8 +53,7 @@ public static class Profiler {
             }
 
             Initialized = true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.Error($"Profiler initialization failed: {ex}");
         }
     }
@@ -75,8 +74,7 @@ public static class Profiler {
     private static IEnumerable<Type> SafeGetTypes(Assembly a) {
         try {
             return a.GetTypes();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.Verbose($"Failed to get types from assembly {a.FullName}: {ex.Message}");
             return [];
         }
@@ -87,8 +85,7 @@ public static class Profiler {
             return t.GetMethods(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
             );
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.Verbose($"Failed to get methods from type {t.FullName}: {ex.Message}");
             return [];
         }
@@ -98,8 +95,7 @@ public static class Profiler {
         if (!Attrs.TryGetValue(__originalMethod, out Profile? attr)) return;
 
         if (attr.Mode == ProfileMode.Instrumentation) {
-            (int CurrentManagedThreadId, MethodBase __originalMethod) key = (Environment.CurrentManagedThreadId,
-                __originalMethod);
+            (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
             ConcurrentStack<Stopwatch>? stack = InstStacks.GetOrAdd(key, _ => new ConcurrentStack<Stopwatch>());
             Stopwatch sw = Stopwatch.StartNew();
             stack.Push(sw);
@@ -123,8 +119,7 @@ public static class Profiler {
         string label = Labels.TryGetValue(__originalMethod, out string? l) ? l : __originalMethod.Name;
 
         if (attr.Mode == ProfileMode.Instrumentation) {
-            (int CurrentManagedThreadId, MethodBase __originalMethod) key = (Environment.CurrentManagedThreadId,
-                __originalMethod);
+            (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
             if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.Count == 0) return;
 
             if (!stack.TryPop(out Stopwatch sw)) return;
@@ -133,8 +128,7 @@ public static class Profiler {
             if (attr.Aggregate) {
                 Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
                 agg.Add(sw.ElapsedTicks, 1, 1.0f);
-            }
-            else {
+            } else {
                 Logger.Profile(label, sw.ElapsedTicks);
             }
 
@@ -149,6 +143,7 @@ public static class Profiler {
 
             if (token.sampled && token.sw != null) {
                 token.sw.Stop();
+
                 // Scale by 1/p to get unbiased estimate
                 float p = Mathf.Clamp(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability, 0.000001f, 1f);
                 double weight = 1.0 / p;
@@ -156,8 +151,7 @@ public static class Profiler {
                 if (attr.Aggregate) {
                     Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
                     agg.Add(token.sw.ElapsedTicks, 1, weight);
-                }
-                else {
+                } else {
                     long estTicks = (long)(token.sw.ElapsedTicks * weight);
                     Logger.Profile($"[SAMP] {label}", estTicks);
                 }
@@ -168,10 +162,10 @@ public static class Profiler {
     // Finalizer — always runs, even on exceptions. Clean up per-call state.
     public static void CleanupProfiling(MethodBase __originalMethod) {
         // For instrumentation, if an exception bypassed EndProfiling, pop & drop
-        (int CurrentManagedThreadId, MethodBase __originalMethod) key = (Environment.CurrentManagedThreadId,
-            __originalMethod);
+        (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
         if (InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) && stack.Count > 0) {
             stack.TryPop(out _);
+
             // we could log as "faulted" if desired; for now just discard
         }
 
@@ -179,6 +173,7 @@ public static class Profiler {
         Stack<SampleToken>? sstack = SampleStack.Value!;
         if (sstack.Count > 0) {
             SampleToken token = sstack.Pop();
+
             // discard on exception path
         }
     }
@@ -205,15 +200,16 @@ public static class Profiler {
         double meanMs = snapshot.totalTicks / Math.Max(1.0, snapshot.samples) * tickToMs;
 
         string mode = snapshot.mode == ProfileMode.Sampling ? "SAMP" : "INST";
-        string cat = string.IsNullOrEmpty(snapshot.category) ? "" : $" [{snapshot.category}]";
+        string cat = string.IsNullOrEmpty(snapshot.category) ? string.Empty : $" [{snapshot.category}]";
         Logger.Verbose(
             $"{mode}{cat} {snapshot.label}: calls={snapshot.calls}, samples={snapshot.samples}, mean≈{meanMs:F3}ms, total≈{totalMs:F1}ms, min≈{snapshot.minTicks * tickToMs:F3}ms, max≈{snapshot.maxTicks * tickToMs:F3}ms"
         );
     }
 
     /// <summary>
-    ///     Begin a disposable profiling scope. Use with: using var _ = Profiler.Scope("Label", ...);
+    ///     Begin a disposable profiling scope. Use with: using var _ = Profiler.Scope("Label", ...).
     /// </summary>
+    /// <returns></returns>
     public static ScopeTimer Scope(
         string label,
         ProfileMode mode = ProfileMode.Instrumentation,
@@ -235,6 +231,7 @@ public static class Profiler {
 
     private readonly struct SampleToken(bool sampled, Stopwatch? sw) {
         public bool sampled { get; } = sampled;
+
         public Stopwatch? sw { get; } = sw;
     }
 
@@ -325,8 +322,7 @@ public static class Profiler {
             if (mode == ProfileMode.Instrumentation) {
                 sampled = true; // always measure in instrumentation mode
                 sw = Stopwatch.StartNew();
-            }
-            else {
+            } else {
                 sampled = Rand.Value < this.p; // Bernoulli
                 sw = sampled ? Stopwatch.StartNew() : null;
             }
@@ -346,11 +342,10 @@ public static class Profiler {
 
                 Agg? agg = ScopeAggs.GetOrAdd(label, _ => new Agg(localLabel, localCategory, localMode));
                 agg.Add(scaledTicks, 1, 1.0); // already scaled above
-            }
-            else {
+            } else {
                 double ms = sw.ElapsedTicks * (1000.0 / Stopwatch.Frequency) * weight;
                 string modeString = mode == ProfileMode.Sampling ? "SAMP" : "INST";
-                string cat = string.IsNullOrEmpty(category) ? "" : $" [{category}]";
+                string cat = string.IsNullOrEmpty(category) ? string.Empty : $" [{category}]";
                 Logger.Verbose($"{modeString}{cat} {label}: {ms:F3}ms");
             }
         }

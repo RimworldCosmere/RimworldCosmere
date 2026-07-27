@@ -1,10 +1,10 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class TriggerIncidentAction : ProgressionAction {
-    public string incident = "";
+    public string incident = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         IncidentDef? def = DefDatabase<IncidentDef>.GetNamedSilentFail(incident);

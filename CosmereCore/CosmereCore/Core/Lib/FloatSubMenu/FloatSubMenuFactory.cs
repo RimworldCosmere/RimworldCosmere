@@ -29,6 +29,7 @@ public static class FloatSubMenuFactory {
         if (CompatMMM) {
             return new FloatMenuOption(label, CompatSub(subOptions), priority, null, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority);
         }
+
         return new FloatSubMenu(label, subOptions, priority, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority);
     }
 
@@ -65,6 +66,7 @@ public static class FloatSubMenuFactory {
                 graphicIndexOverride
             );
         }
+
         return new FloatSubMenu(label, subOptions, shownItemForIcon, thingStyle, forceBasicStyle, priority, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority, graphicIndexOverride);
     }
 
@@ -101,6 +103,7 @@ public static class FloatSubMenuFactory {
                 extraPartRightJustified
             );
         }
+
         return new FloatSubMenu(label, subOptions, itemIcon, iconColor, priority, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority, iconJustification, extraPartRightJustified);
     }
 }

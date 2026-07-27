@@ -1,13 +1,13 @@
+using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
-using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
 using Cosmere.System.Scadrial.Feruchemy.UI;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Savant;
 using RimWorld;
-using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -66,6 +66,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 "CC_Codex_Feruchemy_Progression_Header".Translate()
             );
         }
+
         y += 34f;
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
@@ -101,8 +102,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 GUI.color = metal.color;
                 GUI.DrawTexture(swatch, mark);
                 GUI.color = prevMark;
-            }
-            else {
+            } else {
                 Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
             }
 
@@ -180,11 +180,13 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         );
 
         if (copperminds.Count == 0) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor)) {
                 Widgets.Label(
                     new Rect(rect.x, rect.y + 34f, rect.width, 24f),
                     "CC_Codex_Feruchemy_NoCopperminds".Translate()
                 );
+            }
+
             return;
         }
 
@@ -290,8 +292,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
                 Widgets.Label(emptyRow, "CC_Codex_Feruchemy_CoppermindEmpty".Translate());
             y += 24f;
-        }
-        else {
+        } else {
             for (int i = 0; i < memories.Count; i++) {
                 Rect row = new Rect(rect.x, y, rect.width, 22f);
                 if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
@@ -307,11 +308,12 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                     ? memory.owner.LabelShortCap
                     : (string)"CC_Codex_Feruchemy_UnknownStoredBy".Translate();
                 Rect attributionRect = new Rect(labelRect.xMax, row.y, row.width - labelRect.width - 12f, row.height);
-                using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, SecondaryTextColor))
+                using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, SecondaryTextColor)) {
                     Widgets.Label(
                         attributionRect,
                         "CC_Codex_Feruchemy_MemoryStoredBy".Translate(storedBy.Named("STOREDBY"))
                     );
+                }
 
                 y += 22f;
             }
@@ -346,8 +348,8 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         return result;
     }
 
-    /// Feruchemy casts nothing. Each metal the pawn can work is a dial that rules
-    /// hold, so the metals are the targets rather than any ability.
+    // Feruchemy casts nothing. Each metal the pawn can work is a dial that rules
+    // hold, so the metals are the targets rather than any ability.
     public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {
         List<AutocastTarget> targets = [];
         List<Feruchemist> ferus = CollectFeruchemists(pawn);

@@ -11,6 +11,7 @@ public readonly struct MetalRow {
     }
 
     public InvestitureCell Cell { get; }
+
     public string AxisGlyph { get; }
 }
 
@@ -20,12 +21,13 @@ public sealed class MetalGroup {
     }
 
     public string LabelKey { get; }
+
     public List<MetalRow> Rows { get; } = [];
 }
 
 public static class MetalGroupTable {
-    /// Rows hold a copy of the cell, so a cached grouping goes stale the moment a
-    /// metal starts burning. Refresh the values in place and keep the ordering.
+    // Rows hold a copy of the cell, so a cached grouping goes stale the moment a
+    // metal starts burning. Refresh the values in place and keep the ordering.
     public static void RefreshCells(IReadOnlyList<MetalGroup> groups, IReadOnlyList<InvestitureCell> cells) {
         for (int g = 0; g < groups.Count; g++) {
             List<MetalRow> rows = groups[g].Rows;
@@ -104,7 +106,7 @@ public static class MetalGroupTable {
                 groups.Add(current);
             }
 
-            current.Rows.Add(new MetalRow(cell, ""));
+            current.Rows.Add(new MetalRow(cell, string.Empty));
         }
 
         return groups;
@@ -135,9 +137,9 @@ public static class MetalGroupTable {
     }
 
     private static string Glyph(AllomancyPolarity polarity, AllomancyAxis axis) {
-        if (polarity == AllomancyPolarity.None && axis == AllomancyAxis.None) return "";
-        string p = polarity == AllomancyPolarity.Pushing ? "^" : polarity == AllomancyPolarity.Pulling ? "v" : "";
-        string a = axis == AllomancyAxis.External ? "E" : axis == AllomancyAxis.Internal ? "I" : "";
+        if (polarity == AllomancyPolarity.None && axis == AllomancyAxis.None) return string.Empty;
+        string p = polarity == AllomancyPolarity.Pushing ? "^" : polarity == AllomancyPolarity.Pulling ? "v" : string.Empty;
+        string a = axis == AllomancyAxis.External ? "E" : axis == AllomancyAxis.Internal ? "I" : string.Empty;
         return p + a;
     }
 

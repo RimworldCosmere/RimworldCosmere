@@ -9,10 +9,15 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class FearsprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Fearspren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.7f;
+
     public override int minParticlesPerCell => 1;
+
     public override int maxParticlesPerCell => 4;
+
     public override FloatRange lifetime => new FloatRange(10f, 20f);
 
     public override List<GemDef> compatibleGemTypes => [
@@ -25,7 +30,9 @@ public class FearsprenController : DynamicSprenController {
     public override float captureRarityMultiplier => 0.6f;
 
     public override Color sprenColor => new Color(0.2f, 0.1f, 0.3f, 0.9f);
+
     public override float sprenSizeMultiplier => 0.8f;
+
     public override float emissionRateMultiplier => 1.5f;
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
@@ -54,13 +61,11 @@ public class FearsprenController : DynamicSprenController {
                 // Very close to extreme mental break
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.8f);
-            }
-            else if (currentMood <= majorBreakThreshold + 0.1f) {
+            } else if (currentMood <= majorBreakThreshold + 0.1f) {
                 // Close to major mental break
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.5f);
-            }
-            else if (currentMood < 0.25f) {
+            } else if (currentMood < 0.25f) {
                 // Generally very low mood (likely stressed/fearful)
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.3f);
@@ -88,10 +93,10 @@ public class FearsprenController : DynamicSprenController {
 
     public override string DebugStringAt(IntVec3 position) {
         Map? map = Find.CurrentMap;
-        if (map == null) return "";
+        if (map == null) return string.Empty;
 
         Pawn? pawn = map.thingGrid.ThingsAt(position).OfType<Pawn>().FirstOrDefault();
-        if (pawn?.needs?.mood == null) return "";
+        if (pawn?.needs?.mood == null) return string.Empty;
 
         StringBuilder debug = new StringBuilder();
         debug.AppendLine($"  Current Mood: {pawn.needs.mood.CurLevel:F2}");
@@ -115,12 +120,10 @@ public class FearsprenController : DynamicSprenController {
         if (currentMood <= extremeThreshold + 0.05f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.8f);
-        }
-        else if (currentMood <= majorThreshold + 0.1f) {
+        } else if (currentMood <= majorThreshold + 0.1f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.5f);
-        }
-        else if (currentMood < 0.25f) {
+        } else if (currentMood < 0.25f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.3f);
         }

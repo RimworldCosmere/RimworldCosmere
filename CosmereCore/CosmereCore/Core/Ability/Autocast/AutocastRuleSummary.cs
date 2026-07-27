@@ -4,8 +4,8 @@ using Verse;
 
 namespace Cosmere.Core.Ability.Autocast;
 
-/// One line describing what a rule does, so a pawn with several rules against the
-/// same metal can be told apart at a glance without opening each one.
+// One line describing what a rule does, so a pawn with several rules against the
+// same metal can be told apart at a glance without opening each one.
 public static class AutocastRuleSummary {
     public static string Describe(AutocastRule rule) {
         // A rule with no triggers never runs, so it says so rather than claiming

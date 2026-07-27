@@ -1,6 +1,6 @@
-
 using HarmonyLib;
 using RimWorld;
+
 namespace Cosmere.System.Roshar.Patch.Gem;
 
 [HarmonyPatch(typeof(Verse.Thing))]

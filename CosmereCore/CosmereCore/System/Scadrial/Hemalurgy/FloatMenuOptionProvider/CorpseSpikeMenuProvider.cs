@@ -8,7 +8,9 @@ namespace Cosmere.System.Scadrial.Hemalurgy.FloatMenuOptionProvider;
 
 public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
     protected override bool Drafted => false;
+
     protected override bool Undrafted => true;
+
     protected override bool Multiselect => false;
 
     protected override FloatMenuOption? GetSingleOptionFor(Verse.Thing clickedThing, FloatMenuContext context) {

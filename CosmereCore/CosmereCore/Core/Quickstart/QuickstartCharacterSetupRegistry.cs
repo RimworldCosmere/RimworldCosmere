@@ -11,6 +11,7 @@ public static class QuickstartCharacterSetupRegistry {
             list = [];
             setups[pawnIndex] = list;
         }
+
         list.Add(setup);
     }
 

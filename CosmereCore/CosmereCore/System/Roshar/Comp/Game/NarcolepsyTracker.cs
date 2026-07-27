@@ -9,7 +9,6 @@ public class NarcolepsyTracker : GameComponent {
 
     private List<Pawn> trackedPawns = [];
 
-
     public NarcolepsyTracker(Verse.Game game) {
         Instance = this;
     }

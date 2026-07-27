@@ -1,7 +1,7 @@
 ﻿#nullable disable
+using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using Verse;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Cosmere.Core.Shader;
 

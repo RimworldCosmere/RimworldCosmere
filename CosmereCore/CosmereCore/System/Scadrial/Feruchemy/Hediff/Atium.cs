@@ -33,7 +33,9 @@ public class Atium : HediffWithComps {
     }
 
     private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
+
     private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
+
     private Feruchemist? atium => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
 
     public override void PostMake() {

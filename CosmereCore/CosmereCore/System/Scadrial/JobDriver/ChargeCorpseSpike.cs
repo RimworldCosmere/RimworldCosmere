@@ -1,7 +1,6 @@
-using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
-
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -12,6 +11,7 @@ public class ChargeCorpseSpike : Verse.AI.JobDriver {
     private const int WorkDuration = 1500;
 
     private Corpse corpse => (Corpse)job.targetA.Thing;
+
     private Verse.Thing spike => job.targetB.Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {

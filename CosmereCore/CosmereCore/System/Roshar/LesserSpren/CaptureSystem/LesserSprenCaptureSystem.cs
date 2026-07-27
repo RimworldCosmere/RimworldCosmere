@@ -44,6 +44,7 @@ public static class LesserSprenCaptureSystem {
     /// <summary>
     ///     Try to capture a spren particle. On failure, drains 90% of the gem's investiture.
     /// </summary>
+    /// <returns></returns>
     public static bool AttemptCaptureSpren(
         SprenSpawnInformation info,
         Map map,

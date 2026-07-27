@@ -9,6 +9,7 @@ public sealed class DockAccordion {
     private const float BodyPadX = 4f;
     private Vector2 scrollPos;
     private bool defaulted;
+
     public string? ExpandedSystemId { get; set; }
 
     public void Draw(
@@ -56,8 +57,7 @@ public sealed class DockAccordion {
                 Widgets.BeginScrollView(bodyRect, ref scrollPos, viewRect);
                 section.DrawBody(new Rect(0f, 0f, viewRect.width, bodyHeight), pawn, snap, ctx);
                 Widgets.EndScrollView();
-            }
-            else {
+            } else {
                 section.DrawBody(bodyRect, pawn, snap, ctx);
             }
 

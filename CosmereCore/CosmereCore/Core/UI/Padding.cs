@@ -40,8 +40,11 @@ public record struct Padding {
     }
 
     public float top { get; set; }
+
     public float right { get; set; }
+
     public float bottom { get; set; }
+
     public float left { get; set; }
 
     public Vector2 ToSymmetricVector2() {

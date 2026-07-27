@@ -55,7 +55,7 @@ public class ScenPart_NamedPawns : ScenPart {
     }
 
     public override string Summary(Scenario scen) {
-        if (pawns.Count == 0) return "";
+        if (pawns.Count == 0) return string.Empty;
         return "Named characters: " + string.Join(", ", pawns.Select(p => p.firstName ?? "Unknown"));
     }
 
@@ -116,10 +116,10 @@ public class ScenPart_NamedPawns : ScenPart {
         return null;
     }
 
-    /// A named pawn is written to be someone in particular, so the story they are
-    /// given has to stick. Left to pawn generation they take a random pair, which
-    /// is both off-character and how they end up incapable of work the scenario
-    /// never meant to bar them from.
+    // A named pawn is written to be someone in particular, so the story they are
+    // given has to stick. Left to pawn generation they take a random pair, which
+    // is both off-character and how they end up incapable of work the scenario
+    // never meant to bar them from.
     private static void ApplyBackstories(Pawn pawn, NamedPawnDef template) {
         if (pawn.story == null) return;
 
@@ -127,8 +127,7 @@ public class ScenPart_NamedPawns : ScenPart {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.childhood);
             if (story == null) {
                 Logger.Warning($"ScenPart_NamedPawns: Childhood '{template.childhood}' not found, skipping");
-            }
-            else {
+            } else {
                 pawn.story.Childhood = story;
             }
         }
@@ -137,8 +136,7 @@ public class ScenPart_NamedPawns : ScenPart {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.adulthood);
             if (story == null) {
                 Logger.Warning($"ScenPart_NamedPawns: Adulthood '{template.adulthood}' not found, skipping");
-            }
-            else {
+            } else {
                 pawn.story.Adulthood = story;
             }
         }

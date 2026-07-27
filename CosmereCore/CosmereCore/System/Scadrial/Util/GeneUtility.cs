@@ -1,8 +1,8 @@
+using Cosmere.Core.Util;
+using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Cosmere.Core.Util;
-using Cosmere.System.Scadrial.Def;
 using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Util;
@@ -14,9 +14,9 @@ public static class GeneUtility {
 
     private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
-    /// Genes are assigned before the pawn is named, so reading a name here throws
-    /// on anything freshly generated. Only pawns being redressed already have one,
-    /// which is why this failed on some generations and not others.
+    // Genes are assigned before the pawn is named, so reading a name here throws
+    // on anything freshly generated. Only pawns being redressed already have one,
+    // which is why this failed on some generations and not others.
     private static string GenerationLabel(Pawn pawn) {
         return pawn.Name?.ToStringShort ?? pawn.kindDef?.defName ?? "unnamed";
     }
@@ -35,7 +35,6 @@ public static class GeneUtility {
         if (genes.Xenotype?.Equals(XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble) ?? false) {
             AddHeritageGene(genes, GeneDefOf.Cosmere_Scadrial_Gene_TerrisHeritage, 0.10f);
         }
-
 
         bool isTerris = IsTerris(pawn);
         bool isNoble = IsNoble(pawn);
@@ -56,8 +55,7 @@ public static class GeneUtility {
                 );
                 if (success) {
                     AddMistborn(pawn);
-                }
-                else {
+                } else {
                     success = RollChance(16, out roll);
                     Logger.Verbose(
                         $"Trying for Misting. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
@@ -78,8 +76,7 @@ public static class GeneUtility {
             );
             if (success) {
                 AddFullFeruchemist(pawn);
-            }
-            else {
+            } else {
                 success = RollChance(64, out roll);
                 Logger.Verbose(
                     $"Trying for Ferring. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
@@ -166,16 +163,14 @@ public static class GeneUtility {
         if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection)) snapped = true;
         if (snapped) {
             SnapUtility.Snap(pawn);
-        }
-        else if (canSnap && Rand.Chance(1f / 16f)) {
+        } else if (canSnap && Rand.Chance(1f / 16f)) {
             SnapUtility.Snap(pawn);
             snapped = true;
         }
 
         if (snapped) {
             pawn.genes.EnsureGene(gene);
-        }
-        else {
+        } else {
             dormantConnection.AddHiddenGene(gene);
         }
     }
@@ -183,8 +178,7 @@ public static class GeneUtility {
     public static void AddMistborn(Pawn pawn, bool canSnap = true, bool snapped = false, string? snapCause = null) {
         if (snapped) {
             SnapUtility.Snap(pawn, snapCause);
-        }
-        else if (canSnap && Rand.Chance(1f / 16f)) {
+        } else if (canSnap && Rand.Chance(1f / 16f)) {
             SnapUtility.Snap(pawn, snapCause);
             snapped = true;
         }
@@ -207,8 +201,7 @@ public static class GeneUtility {
     ) {
         if (snapped) {
             SnapUtility.Snap(pawn, snapCause);
-        }
-        else if (canSnap && Rand.Chance(1f / 16f)) {
+        } else if (canSnap && Rand.Chance(1f / 16f)) {
             SnapUtility.Snap(pawn, snapCause);
             snapped = true;
         }

@@ -1,7 +1,7 @@
+using Cosmere.System.Scadrial.Allomancy.Hediff;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Cosmere.System.Scadrial.Allomancy.Hediff;
 
 namespace Cosmere.System.Scadrial.Util;
 

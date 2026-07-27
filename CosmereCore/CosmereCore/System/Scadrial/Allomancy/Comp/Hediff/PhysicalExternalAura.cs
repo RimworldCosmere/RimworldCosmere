@@ -30,7 +30,7 @@ public class PhysicalExternalAura : LineDrawingAura {
         // The fade value never goes below 0.3 to keep distant lines visible.
         float fade = Mathf.Max(0.3f, Mathf.Clamp01((radius - Mathf.Max(distance, 3f)) / (radius - 3f)));
 
-        // Thickness scales between 0.15 and 0.3 based on metal mass, 
+        // Thickness scales between 0.15 and 0.3 based on metal mass,
         // with 10kg or more giving maximum thickness.
         float thickness = Mathf.Lerp(0.15f, 0.3f, Mathf.Clamp01(mass / 10f));
 

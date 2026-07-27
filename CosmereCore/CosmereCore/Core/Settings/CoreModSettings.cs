@@ -131,8 +131,7 @@ public class CoreModSettings : CosmereModSettings {
                     TaggedString? description = GetDescription();
                     if (description == null) {
                         fieldset.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
-                    }
-                    else {
+                    } else {
                         using (new TextBlock(TextAnchor.UpperLeft)) {
                             fieldset.Label(description.Value);
                         }

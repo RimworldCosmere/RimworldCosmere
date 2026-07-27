@@ -26,7 +26,7 @@ public static class Pawn_GeneTrackerExtension {
         if (orderDef == RadiantOrderDefOf.Bondsmith) return null;
         if (orderDef.sprenNamePool.Count == 0) return null;
 
-        string sprenDefName = "Cosmere_Roshar_Race_" + orderDef.sprenLabel.Replace(" ", "");
+        string sprenDefName = "Cosmere_Roshar_Race_" + orderDef.sprenLabel.Replace(" ", string.Empty);
         PawnKindDef? sprenKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(sprenDefName);
         if (sprenKind == null) {
             Logger.Error($"Could not find bonded spren PawnKindDef: {sprenDefName}");

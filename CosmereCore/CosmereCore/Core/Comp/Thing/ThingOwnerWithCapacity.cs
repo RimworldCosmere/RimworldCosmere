@@ -3,7 +3,8 @@ using Verse;
 
 namespace Cosmere.Core.Comp.Thing;
 
-public class ThingOwnerWithCapacity<T> : ThingOwner<T> where T : Verse.Thing {
+public class ThingOwnerWithCapacity<T> : ThingOwner<T>
+    where T : Verse.Thing {
     private int maxCapacity;
 
     public ThingOwnerWithCapacity() { }

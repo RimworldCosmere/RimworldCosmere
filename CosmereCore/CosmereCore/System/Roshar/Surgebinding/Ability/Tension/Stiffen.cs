@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class Stiffen : SurgebindingAbility {
     public Stiffen(Pawn pawn) : base(pawn) { }
+
     public Stiffen(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (15f + Gene.CurrentIdeal * 5f));

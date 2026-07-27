@@ -12,6 +12,7 @@ public class FrictionTrap : SurgebindingAbility {
     private int zoneExpiryTick = -1;
 
     public FrictionTrap(Pawn pawn) : base(pawn) { }
+
     public FrictionTrap(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private float radius => BaseRadius + Gene.CurrentIdeal;

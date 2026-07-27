@@ -31,8 +31,7 @@ public static class PawnHealthTrackerPatientCleanupPatch {
             if (patient.health.Dead && !patient.IsPrisoner) {
                 pawnTracker.OnPatientLost();
                 patientsToRemove.Add(patient);
-            }
-            else if (NeedsNoTending(patient)) {
+            } else if (NeedsNoTending(patient)) {
                 pawnTracker.OnPatientSaved(patient.IsPrisonerOfColony);
                 patientsToRemove.Add(patient);
             }

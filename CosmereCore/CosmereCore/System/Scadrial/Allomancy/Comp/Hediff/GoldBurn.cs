@@ -32,6 +32,7 @@ public class GoldBurn : HediffComp {
 
     private readonly List<ThoughtDef> memoriesAdded = [];
     private float lastSeverity;
+
     private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
 
     private new AllomanticHediff parent => (AllomanticHediff)base.parent;
@@ -46,15 +47,14 @@ public class GoldBurn : HediffComp {
         parent.ExtraSeverity += 0.01f;
         lastSeverity = parent.Severity;
 
-        if (Rand.Chance(0.2f)) // ~1 every 5 ticks
-        {
+        // ~1 every 5 ticks
+        if (Rand.Chance(0.2f)) {
             ThoughtDef random = GoldThoughts.RandomElement();
             memoriesAdded.AddDistinct(random);
             Thought_Memory? thought = memories.GetFirstMemoryOfDef(random);
             if (thought == null) {
                 memories.TryGainMemoryFast(random);
-            }
-            else if (thought.CurStageIndex < random.stages.Count - 1) {
+            } else if (thought.CurStageIndex < random.stages.Count - 1) {
                 thought.SetForcedStage(thought.CurStageIndex + 1);
             }
         }

@@ -1,6 +1,5 @@
 namespace Cosmere.Tools.Generation;
 
-public interface IGenerator
-{
+public interface IGenerator {
     Task GenerateAsync();
 }

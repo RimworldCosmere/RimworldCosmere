@@ -3,8 +3,8 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class RemoveGeneAction : ProgressionAction {
-    public string gene = "";
-    public string pawnName = "";
+    public string gene = string.Empty;
+    public string pawnName = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

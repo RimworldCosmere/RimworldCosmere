@@ -8,10 +8,10 @@ namespace Cosmere.Core.Ability.Autocast;
 public sealed class AutocastRunner : GameComponent {
     private const int TickInterval = 60;
 
-    /// Targets a rule has already claimed this tick. Two rules on one metal would
-    /// otherwise both write the dial every tick and the last one would silently
-    /// win; instead the first rule in the list holds it, so the order the player
-    /// sees in the panel is the order of priority.
+    // Targets a rule has already claimed this tick. Two rules on one metal would
+    // otherwise both write the dial every tick and the last one would silently
+    // win; instead the first rule in the list holds it, so the order the player
+    // sees in the panel is the order of priority.
     private static readonly HashSet<string> claimed = [];
 
     public AutocastRunner(Game game) { }
@@ -62,10 +62,10 @@ public sealed class AutocastRunner : GameComponent {
         }
     }
 
-    /// A dial is held rather than cast, so the rule keeps setting it while its
-    /// triggers pass and puts it back when they stop. It only lets go of a dial it
-    /// is actually holding, so a setting the player moved by hand is left alone.
-    /// Returns whether the rule is holding the dial.
+    // A dial is held rather than cast, so the rule keeps setting it while its
+    // triggers pass and puts it back when they stop. It only lets go of a dial it
+    // is actually holding, so a setting the player moved by hand is left alone.
+    // Returns whether the rule is holding the dial.
     private static bool TickDialRule(Pawn pawn, AutocastRule rule, bool dormant) {
         IAutocastDial? dial = AutocastDialRegistry.For(rule.Kind);
         if (dial == null) return false;
@@ -90,7 +90,6 @@ public sealed class AutocastRunner : GameComponent {
 
         return false;
     }
-
 
     private static void SeedDefaults(Pawn pawn, GameComponent_Autocast store) {
         List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
@@ -135,9 +134,9 @@ public sealed class AutocastRunner : GameComponent {
         }
     }
 
-    /// Cells to the closest pawn of the given allegiance. Returns a distance
-    /// nothing can be within when there is none, so "an enemy within ten" simply
-    /// fails on an empty map rather than firing.
+    // Cells to the closest pawn of the given allegiance. Returns a distance
+    // nothing can be within when there is none, so "an enemy within ten" simply
+    // fails on an empty map rather than firing.
     private static float NearestDistance(Pawn pawn, bool hostile) {
         Map? map = pawn.Map;
         if (map == null) return float.MaxValue;

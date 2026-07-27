@@ -13,7 +13,9 @@ public sealed class SurgebindingDockSection : IDockSection {
     private const float BodyHeight = 112f;
     private const float PipSize = 10f;
     private const float InfoButtonSize = 20f;
+
     public string SystemId => "Surgebinding";
+
     public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
 
     public float GetHeaderHeight() {
@@ -65,11 +67,12 @@ public sealed class SurgebindingDockSection : IDockSection {
         }
 
         Rect sliderLabel = new Rect(rect.x + 6f, sliderRow.yMax, rect.width - 12f, 14f);
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.75f, 0.85f, 1f)))
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.75f, 0.85f, 1f))) {
             Widgets.Label(
                 sliderLabel,
                 "CC_Dock_Surgebinding_RefillBelow".Translate(gene.targetValue.ToString("F0").Named("VALUE"))
             );
+        }
     }
 
     private void DrawIdealPips(Rect row, Surgebinder gene) {

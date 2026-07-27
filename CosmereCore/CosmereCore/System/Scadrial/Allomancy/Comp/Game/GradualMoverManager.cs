@@ -27,8 +27,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
                 movement.thing.Position = movement.end.ToIntVec3();
                 activeMovements.RemoveAt(i);
                 DispatchPickupJob(movement, pawn);
-            }
-            else {
+            } else {
                 activeMovements[i] = movement;
             }
         }

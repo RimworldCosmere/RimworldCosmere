@@ -1,5 +1,5 @@
-using Verse;
 using RimWorld;
+using Verse;
 using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Incident.Worker;
@@ -31,6 +31,7 @@ public class IncidentWorker_Highstorm : IncidentWorker {
             Logger.Warning("Missing Highstorm ModExtension on Cosmere_Roshar_HighstormCondition");
             return false;
         }
+
         int stormDuration = Mod.highstormDurationTicks > 0 ? Mod.highstormDurationTicks : ext.stormDuration;
         RimWorld.GameCondition storm = GameConditionMaker.MakeCondition(stormDef, stormDuration);
         map.gameConditionManager.RegisterCondition(storm);

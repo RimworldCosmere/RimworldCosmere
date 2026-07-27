@@ -43,8 +43,7 @@ public class StormlightNode : ThingComp {
         StringBuilder sb = new StringBuilder();
         if (Network != null) {
             sb.AppendFormat("Network: {0:F0} / {1:F0} Stormlight", Network.TotalStored, Network.TotalCapacity);
-        }
-        else {
+        } else {
             sb.Append("Not connected to stormlight network");
         }
 

@@ -1,9 +1,9 @@
-using Verse;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
 using Cosmere.Core.UI.Radial;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using RimWorld;
+using Verse;
 
 namespace Cosmere.System.Scadrial.UI.Radial;
 
@@ -24,8 +24,7 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
             Status next;
             if (flareShift) {
                 next = a.status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring;
-            }
-            else {
+            } else {
                 next = a.atLeastBurning ? BurningStatus.Off : BurningStatus.Burning;
             }
 

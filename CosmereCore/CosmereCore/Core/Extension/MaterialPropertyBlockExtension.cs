@@ -1,6 +1,7 @@
 ﻿using Cosmere.Core.Shader.Properties;
 
 using UnityEngine;
+
 namespace Cosmere.Core.Extension;
 
 public static class MaterialPropertyBlockExtension {

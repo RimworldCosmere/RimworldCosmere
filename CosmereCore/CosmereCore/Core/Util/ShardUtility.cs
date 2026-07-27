@@ -18,8 +18,7 @@ public static class ShardUtility {
             bool result = AreAnyEnabled(shardDefs);
             cache = result;
             return result;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.Verbose($"Shard check failed during init: {ex}");
             return false;
         }

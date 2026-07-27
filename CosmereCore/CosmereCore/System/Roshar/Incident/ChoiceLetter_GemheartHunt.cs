@@ -17,7 +17,7 @@ public class ChoiceLetter_GemheartHunt : ChoiceLetter {
             }
 
             DiaOption sendExpedition = new DiaOption("Send Expedition") {
-                action = delegate {
+                action = () => {
                     Find.WindowStack.Add(new Dialog_GemheartExpedition(map));
                     Find.LetterStack.RemoveLetter(this);
                 },
@@ -36,7 +36,7 @@ public class ChoiceLetter_GemheartHunt : ChoiceLetter {
             yield return sendExpedition;
 
             yield return new DiaOption("Ignore") {
-                action = delegate { Find.LetterStack.RemoveLetter(this); },
+                action = () => { Find.LetterStack.RemoveLetter(this); },
                 resolveTree = true,
             };
         }

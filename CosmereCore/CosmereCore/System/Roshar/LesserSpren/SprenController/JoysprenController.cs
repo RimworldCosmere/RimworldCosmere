@@ -8,10 +8,15 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class JoysprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Joyspren;
+
     public override bool isEnabled => true;
+
     public override float cellSpawnChance => 0.3f;
+
     public override int minParticlesPerCell => 1;
+
     public override int maxParticlesPerCell => 2;
+
     public override FloatRange lifetime => new FloatRange(1f, 4f);
 
     public override List<GemDef> compatibleGemTypes => [

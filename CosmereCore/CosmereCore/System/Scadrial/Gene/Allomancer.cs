@@ -1,7 +1,7 @@
 ﻿using Cosmere.Core;
 using Cosmere.Core.Savant;
-using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Thing;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
@@ -63,6 +63,7 @@ public class Allomancer : Metalborn {
     }
 
     public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
+
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
     private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
@@ -193,15 +194,13 @@ public class Allomancer : Metalborn {
                                      GenTicks.TickLongInterval;
                 if (existing.Severity <= 0.01f) pawn.health.RemoveHediff(existing);
             }
-        }
-        else {
+        } else {
             Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef);
             if (existing == null) {
                 Hediff hediff = HediffMaker.MakeHediff(withdrawalHediffDef, pawn);
                 hediff.Severity = 0.05f;
                 pawn.health.AddHediff(hediff);
-            }
-            else {
+            } else {
                 existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay /
                                      GenDate.TicksPerDay *
                                      GenTicks.TickLongInterval;

@@ -21,6 +21,7 @@ public class NightwatcherBoonDef : Verse.Def {
     public float surgebindingConnectionBoost = 0f;
 
     private IBoonApplicator? applicatorCache;
+
     public IBoonApplicator? Applicator {
         get {
             if (applicatorClass == null) return null;

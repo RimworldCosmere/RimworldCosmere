@@ -1,10 +1,10 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Action;
 
 public class RemoveGameConditionAction : ProgressionAction {
-    public string gameCondition = "";
+    public string gameCondition = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         GameConditionDef? def = DefDatabase<GameConditionDef>.GetNamedSilentFail(gameCondition);

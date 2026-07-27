@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Transportation;
 
 public class Elsecall : SurgebindingAbility {
     public Elsecall(Pawn pawn) : base(pawn) { }
+
     public Elsecall(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {

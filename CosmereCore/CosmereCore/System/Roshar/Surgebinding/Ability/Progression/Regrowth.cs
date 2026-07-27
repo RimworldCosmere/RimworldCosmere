@@ -6,6 +6,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Progression;
 
 public class Regrowth : SurgebindingAbility {
     public Regrowth(Pawn pawn) : base(pawn) { }
+
     public Regrowth(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {

@@ -36,7 +36,6 @@ public static class PawnInventoryTrackerDropAllNearPawnHelperPatch {
                 // ldftn ShouldDrop
                 // newobj Func<Thing, bool>
                 // call Enumerable.Where<Thing>
-
                 yield return new CodeInstruction(OpCodes.Ldnull);
                 yield return new CodeInstruction(OpCodes.Ldftn, shouldDrop);
                 yield return new CodeInstruction(OpCodes.Newobj, funcCtor);
@@ -44,8 +43,7 @@ public static class PawnInventoryTrackerDropAllNearPawnHelperPatch {
 
                 // Now call AddRange on the filtered list
                 yield return instruction;
-            }
-            else {
+            } else {
                 yield return instruction;
             }
         }

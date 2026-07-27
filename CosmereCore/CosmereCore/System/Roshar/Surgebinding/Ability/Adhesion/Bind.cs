@@ -5,6 +5,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
 
 public class Bind : SurgebindingAbility {
     public Bind(Pawn pawn) : base(pawn) { }
+
     public Bind(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (5f + Gene.CurrentIdeal * 2.5f));

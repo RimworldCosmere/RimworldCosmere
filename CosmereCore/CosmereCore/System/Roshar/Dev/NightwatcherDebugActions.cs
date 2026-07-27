@@ -1,6 +1,6 @@
-using Cosmere.System.Roshar.Nightwatcher;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.Nightwatcher;
 using LudeonTK;
 using RimWorld;
 using Verse;

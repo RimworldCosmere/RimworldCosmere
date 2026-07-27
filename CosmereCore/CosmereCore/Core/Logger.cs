@@ -33,7 +33,7 @@ public static class Logger {
                 case >= LogLevel.Warning when Prefs.OpenLogOnWarnings: Log.TryOpenLogWindow(); break;
             }
 
-            string stack = "";
+            string stack = string.Empty;
             StackTrace stackTrace = new StackTrace(1, true);
             for (int i = 0; i < stackTrace.FrameCount; i++) {
                 StackFrame? frame = stackTrace.GetFrame(i); // 1 = immediate caller
@@ -46,14 +46,14 @@ public static class Logger {
                     string filename = Regex.Replace(
                         frame.GetFileName()!,
                         @"^.*?(RimworldCosmere[\\/]RimworldCosmere[\\/]|RimWorld[\\/]Mods[\\/])+[\\/]*",
-                        ""
+                        string.Empty
                     );
                     filename = Regex.Replace(filename, @"^(\w+)[\\/]\1[\\/]", "$1\\");
 
                     filename = filename
                         .TrimStart('\\')
                         .TrimStart('/')
-                        .Replace(".cs", "");
+                        .Replace(".cs", string.Empty);
 
                     stack = $"[{filename}:{frame.GetFileLineNumber()}]";
                 }
@@ -68,11 +68,9 @@ public static class Logger {
                 $"{ColoredMessage(LogColors[level], $"[Cosmere]{stack}[{level.ToString()}]")} {message}"
             );
             Log.ResetMessageCount();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Debug.LogException(new Exception("An error occured while logging an error: ", e));
-        }
-        finally {
+        } finally {
             if (level >= LogLevel.Error) CurrentlyLoggingError = false;
         }
     }
@@ -136,11 +134,9 @@ public static class Logger {
         double milliseconds = nanoseconds / 1_000_000;
         if (milliseconds >= 1) {
             Message($"[Profile] {label} took {milliseconds}ms", LogLevel.Important);
-        }
-        else if (microseconds >= 1) {
+        } else if (microseconds >= 1) {
             Message($"[Profile] {label} took {microseconds}μs", LogLevel.Important);
-        }
-        else {
+        } else {
             Message($"[Profile] {label} took {nanoseconds}ns", LogLevel.Important);
         }
     }

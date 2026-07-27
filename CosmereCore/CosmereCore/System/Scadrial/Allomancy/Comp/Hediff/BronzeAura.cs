@@ -18,6 +18,7 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
 
 public class BronzeAura : LineDrawingAura {
     private Mote? mote;
+
     private float moteScale => MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
 
     private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
@@ -38,7 +39,7 @@ public class BronzeAura : LineDrawingAura {
         // The fade value never goes below 0.3 to keep distant lines visible.
         float fade = Mathf.Max(0.3f, Mathf.Clamp01((radius - Mathf.Max(distance, 3f)) / (radius - 3f)));
 
-        // Thickness scales between 0.15 and 1 based on thing's investiture, 
+        // Thickness scales between 0.15 and 1 based on thing's investiture,
         // with 10000 BEUs or more giving maximum thickness.
         float thickness = Mathf.Lerp(0.15f, 1f, Mathf.Clamp01(investiture / 50000f));
 
@@ -58,9 +59,9 @@ public class BronzeAura : LineDrawingAura {
         }
 
         base.CompPostTick(ref severityAdjustment);
-        //ThingDef
-    }
 
+        // ThingDef
+    }
 
     private Mote? CreateMote() {
         if (mote?.Destroyed == false) {

@@ -128,12 +128,14 @@ public static class HemalurgicConstants {
                     float move = donor.GetStatValue(StatDef.Named("MoveSpeed")) / 4.6f;
                     return Mathf.Clamp((melee + manip + move) / 3f, 0.25f, 2f);
                 }
+
             case HemalurgicStealType.HumanSenses: {
                     float sight = donor.health?.capacities?.GetLevel(PawnCapacityDefOf.Sight) ?? 1f;
                     float hearing = donor.health?.capacities?.GetLevel(PawnCapacityDefOf.Hearing) ?? 1f;
                     float shooting = donor.GetStatValue(StatDef.Named("ShootingAccuracyPawn"));
                     return Mathf.Clamp((sight + hearing + shooting) / 3f, 0.25f, 2f);
                 }
+
             case HemalurgicStealType.EmotionalFortitude: {
                     float social = donor.GetStatValue(StatDef.Named("SocialImpact"));
                     float mbThreshold = donor.GetStatValue(StatDef.Named("MentalBreakThreshold"));
@@ -141,6 +143,7 @@ public static class HemalurgicConstants {
                     float negotiation = donor.GetStatValue(StatDef.Named("NegotiationAbility"));
                     return Mathf.Clamp((social + breakResist + negotiation) / 3f, 0.25f, 2f);
                 }
+
             case HemalurgicStealType.MentalFortitude: {
                     float learning = donor.GetStatValue(StatDef.Named("GlobalLearningFactor"));
                     float research = donor.GetStatValue(StatDef.Named("ResearchSpeed"));
@@ -148,6 +151,7 @@ public static class HemalurgicConstants {
                     float intelFactor = Mathf.Clamp(intellect / 10f, 0.25f, 2f);
                     return Mathf.Clamp((learning + research + intelFactor) / 3f, 0.25f, 2f);
                 }
+
             default:
                 return 1f;
         }

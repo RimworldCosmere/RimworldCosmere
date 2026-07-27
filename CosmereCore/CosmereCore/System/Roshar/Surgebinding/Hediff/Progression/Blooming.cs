@@ -8,6 +8,5 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff.Progression;
 public class Blooming : SurgebindingHediff {
     public Blooming() { }
 
-    public Blooming(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public Blooming(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 }

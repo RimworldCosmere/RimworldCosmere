@@ -17,8 +17,7 @@ public static class SkinFontCache {
             Font font;
             try {
                 font = Font.CreateDynamicFontFromOSFont(family, pixelSize);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Logger.Verbose(
                     $"SkinFontCache: CreateDynamicFontFromOSFont('{family}') threw {ex.GetType().Name}: {ex.Message}"
                 );

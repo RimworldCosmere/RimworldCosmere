@@ -195,7 +195,7 @@ jobs:
 
       - name: Restore solution dependencies
         working-directory: RimworldCosmere
-        run: dotnet restore Cosmere.sln
+        run: dotnet restore Cosmere.slnx
 
       - name: Set build configuration
         working-directory: RimworldCosmere
@@ -250,9 +250,9 @@ jobs:
           # Build version: use full semantic version for dotnet
           BUILD_VERSION="$VERSION"
 
-          echo "Building Cosmere.sln@$BUILD_VERSION ($CONFIG)"
+          echo "Building Cosmere.slnx@$BUILD_VERSION ($CONFIG)"
 
-          dotnet build Cosmere.sln \
+          dotnet build Cosmere.slnx \
             --configuration "$CONFIG" \
             -p:Version="$BUILD_VERSION" \
             -p:FileVersion="$MAJOR.$MINOR.$PATCH.$REVISION" \
@@ -263,7 +263,7 @@ jobs:
       - name: Build solution (non-tagged)
         if: ${{ github.ref_type != 'tag' }}
         working-directory: RimworldCosmere
-        run: dotnet build Cosmere.sln --configuration Debug --no-restore
+        run: dotnet build Cosmere.slnx --configuration Debug --no-restore
 
       - name: Verify Cosmere.dll exists
         working-directory: RimworldCosmere

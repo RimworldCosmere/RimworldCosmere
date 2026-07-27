@@ -1,12 +1,12 @@
-
 using RimWorld;
 using Verse;
+
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
 public class PawnSkillTrigger : ProgressionTrigger {
     public int minLevel;
-    public string pawnName = "";
-    public string skill = "";
+    public string pawnName = string.Empty;
+    public string skill = string.Empty;
 
     public override bool IsMet(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

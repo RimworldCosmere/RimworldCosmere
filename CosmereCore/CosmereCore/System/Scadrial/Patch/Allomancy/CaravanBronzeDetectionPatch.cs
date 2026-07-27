@@ -1,8 +1,8 @@
-using HarmonyLib;
-using Verse;
 using Cosmere.System.Scadrial.Util;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Allomancy;
 

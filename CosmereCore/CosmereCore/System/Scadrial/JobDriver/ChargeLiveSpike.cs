@@ -1,6 +1,6 @@
-using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.Core;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
 using Verse;
@@ -13,7 +13,9 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
     private const int WaitForDonorTimeout = 10000;
 
     private Pawn donor => (Pawn)job.targetA.Thing;
+
     private Verse.Thing spike => job.targetB.Thing;
+
     private Building_Bed? bed => job.targetC.Thing as Building_Bed;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
@@ -43,8 +45,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch);
             yield return Toils_Bed.TuckIntoBed(TargetIndex.C, TargetIndex.A);
-        }
-        else if (!donorInBed && donor.Downed) {
+        } else if (!donorInBed && donor.Downed) {
             // Already downed: just carry to bed
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
@@ -61,8 +62,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
             // Voluntary: donor is walking to bed via WaitInBed job, go wait at bed
             yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.InteractionCell);
             yield return MakeWaitForDonorToil();
-        }
-        else {
+        } else {
             // Donor is in bed already
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
         }

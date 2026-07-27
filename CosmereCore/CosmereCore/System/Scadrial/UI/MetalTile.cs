@@ -5,8 +5,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-/// How a metal's tile reads at a glance. Inert is not the same as Empty: an
-/// inert metal has no metalmind to work with, while an empty one is ready to fill.
+// How a metal's tile reads at a glance. Inert is not the same as Empty: an
+// inert metal has no metalmind to work with, while an empty one is ready to fill.
 public enum MetalTileState {
     Idle,
     Active,
@@ -14,8 +14,8 @@ public enum MetalTileState {
     Inert,
 }
 
-/// A single cell of the Metallic Arts table: glyph, name, a right-aligned note,
-/// and the metal's own colour as a level band along the base.
+// A single cell of the Metallic Arts table: glyph, name, a right-aligned note,
+// and the metal's own colour as a level band along the base.
 public static class MetalTile {
     public const float Height = 31f;
     private const float GlyphSize = 14f;
@@ -60,6 +60,7 @@ public static class MetalTile {
         }
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
+
         // Empty sits between inert and stocked: there is something to work with
         // here, just nothing in it yet, so it dims without going dead.
         bool empty = !inert && fraction <= 0f && !hot;

@@ -13,7 +13,9 @@ public class BondToThing : Verse.AI.JobDriver {
     // ~1 every 11.1 in-game years (60000 ticks/day * 60 days/year)
     private const float ConnectionPerInterval = 0.0005f;
     private new int startTick;
+
     private Verse.Thing Target => job.targetB.Thing;
+
     private Connection? connection => pawn.GetConnection(Target);
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
@@ -27,8 +29,7 @@ public class BondToThing : Verse.AI.JobDriver {
         Connection? conn = pawn.GetConnection(Target);
         this.FailOn(() => conn == null || conn.Value >= 1);
 
-        //yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
-
+        // yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
         yield return new Toil {
             initAction = () => {
                 if (pawn.DistanceTo(Target) <= 5) return;

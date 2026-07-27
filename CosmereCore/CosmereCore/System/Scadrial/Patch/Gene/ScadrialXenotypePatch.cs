@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Cosmere.Core.Util;
 using HarmonyLib;
 using RimWorld;
-using Cosmere.Core.Util;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Gene;
@@ -20,7 +20,6 @@ public static class ScadrialXenotypePatch {
         // Forcing one onto whatever else a map generator asks for - Anomaly's
         // monolith among them - breaks generation further down.
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
-
 
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony)) return;
 

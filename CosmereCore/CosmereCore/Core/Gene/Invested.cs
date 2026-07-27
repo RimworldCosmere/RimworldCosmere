@@ -1,8 +1,8 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Investiture;
 using RimWorld;
-using Verse;
 using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.Gene;
 
@@ -12,10 +12,15 @@ public abstract class Invested : Gene_Resource {
     public List<DrainSource> Sources => sources;
 
     public virtual float MinimumAmount => 0;
-    public virtual string InvestitureLabel => "";
+
+    public virtual string InvestitureLabel => string.Empty;
+
     public virtual float MaxInvestitureLevel => -1f;
+
     public override float InitialResourceMax => 1f;
+
     public override float MinLevelForAlert => .15f;
+
     public override float MaxLevelOffset => .1f;
 
     public abstract override float Max { get; }
@@ -25,11 +30,13 @@ public abstract class Invested : Gene_Resource {
     public override float ValuePercent => Max > 0 ? Value / Max : 0;
 
     public override int ValueForDisplay => PostProcessValue(Value);
+
     public override int MaxForDisplay => PostProcessValue(Max);
 
     public virtual List<AbilityDef> Abilities => def.abilities;
 
     protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
+
     protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
 
     public override void Reset() {

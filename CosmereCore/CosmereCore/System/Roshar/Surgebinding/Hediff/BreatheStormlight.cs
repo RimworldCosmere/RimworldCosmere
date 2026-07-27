@@ -11,10 +11,10 @@ namespace Cosmere.System.Roshar.Surgebinding.Hediff;
 public class BreatheStormlight : SurgebindingHediff {
     private const float MaxDrawDistance = 5f;
     private const float BaseAbsorbAmount = 1f;
+
     public BreatheStormlight() { }
 
-    public BreatheStormlight(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
-        base(hediffDef, pawn, ability) { }
+    public BreatheStormlight(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(hediffDef, pawn, ability) { }
 
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
@@ -39,7 +39,6 @@ public class BreatheStormlight : SurgebindingHediff {
             amountDrawn += pawn.GetCellsAround(MaxDrawDistance)
                 .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));
         }
-
     }
 
     private float TryAbsorbFromThing(Verse.Thing thing) {

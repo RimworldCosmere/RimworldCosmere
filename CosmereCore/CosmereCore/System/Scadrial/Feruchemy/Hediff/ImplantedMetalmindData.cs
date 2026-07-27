@@ -7,19 +7,19 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     private MetalDef? cachedMetal;
     private float maxAmountInt;
-    public string metalDefName = "";
-    public string metalmindType = "";
-    public string ownerName = "";
+    public string metalDefName = string.Empty;
+    public string metalmindType = string.Empty;
+    public string ownerName = string.Empty;
     private float compoundedAmountInt;
     private float storedAmountInt;
 
     public void ExposeData() {
-        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
-        Scribe_Values.Look(ref metalmindType, "metalmindType", "");
+        Scribe_Values.Look(ref metalDefName, "metalDefName", string.Empty);
+        Scribe_Values.Look(ref metalmindType, "metalmindType", string.Empty);
         Scribe_Values.Look(ref storedAmountInt, "storedAmount");
         Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
         Scribe_Values.Look(ref maxAmountInt, "maxAmount");
-        Scribe_Values.Look(ref ownerName, "ownerName", "");
+        Scribe_Values.Look(ref ownerName, "ownerName", string.Empty);
     }
 
     public float StoredAmount {
@@ -38,14 +38,20 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     }
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
+
     public float FreeSpace => Mathf.Max(0f, maxAmountInt - TotalStored);
 
     // Both pools draw on the same space, so filling either is bounded by the total.
     public bool CanStore => Equipped && FreeSpace > 0f;
+
     public bool CanTap => Equipped && StoredAmount > 0f;
+
     public bool CanTapCompounded => Equipped && CompoundedAmount > 0f;
+
     public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
+
     public bool IsImplanted => true;
+
     public bool Equipped => true;
 
     public MetalDef Metal {
@@ -66,8 +72,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
     }
 
-    /// Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
-    /// after load to keep the two pools inside a capacity that may have changed.
+    // Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
+    // after load to keep the two pools inside a capacity that may have changed.
     public void ReconcileCapacity() {
         if (storedAmountInt + compoundedAmountInt <= maxAmountInt) return;
         compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);

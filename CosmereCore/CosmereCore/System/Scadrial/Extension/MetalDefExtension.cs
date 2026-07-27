@@ -28,11 +28,4 @@ public static class MetalDefExtension {
     public static TraitDef? GetFerringTrait(this MetalDef def) {
         return TraitDefOf.GetFerringTraitForMetal(def);
     }
-
-    public static AllomanticAbilityDef? GetCompoundAbility(this MetalDef def) {
-        AbilityDef? ability =
-            DefDatabase<AbilityDef>.GetNamedSilentFail("Cosmere_Scadrial_Ability_Compound" + def.defName);
-
-        return (AllomanticAbilityDef)ability ?? null;
-    }
 }

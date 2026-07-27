@@ -7,8 +7,6 @@ namespace Cosmere.System.Scadrial;
 public static partial class HediffDefOf {
     {{#each metals as | metal |}}
     [MayRequire("Cosmere.Scadrial")]
-    public static HediffDef Cosmere_Scadrial_Hediff_Compound{{defName metal.name}};
-    [MayRequire("Cosmere.Scadrial")]
     public static HediffDef Cosmere_Scadrial_Hediff_Store{{defName metal.name}};
     [MayRequire("Cosmere.Scadrial")]
     public static HediffDef Cosmere_Scadrial_Hediff_Tap{{defName metal.name}};

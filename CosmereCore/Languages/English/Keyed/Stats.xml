@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CC_StatsReport_BodyType>Multiplier for body size "{0}"</CC_StatsReport_BodyType>
     <CC_StatsReport_GearAndInventoryInvestiture>Investiture from Gear and Inventory</CC_StatsReport_GearAndInventoryInvestiture>
     <CC_StatsReport_InvestitureHolder>Held Investiture</CC_StatsReport_InvestitureHolder>
     <CC_StatsReport_NeedInvestiture>Base Investiture</CC_StatsReport_NeedInvestiture>
+    <CC_StatsReport_BuildingMaterial>Building material</CC_StatsReport_BuildingMaterial>
 </LanguageData>

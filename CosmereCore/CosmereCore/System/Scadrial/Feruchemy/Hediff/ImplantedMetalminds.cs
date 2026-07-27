@@ -33,8 +33,22 @@ public class ImplantedMetalminds : HediffWithComps {
     }
 
     public void AddMetalmind(ImplantedMetalmindData data) {
+        if (data.loadId < 0) data.loadId = NextLoadId();
+
         metalminds.Add(data);
         Severity = metalminds.Count;
+    }
+
+    // Ids only have to be unique among this pawn's implants, and they must not be
+    // reused after one burns out or the player's chosen target would silently move
+    // to a different metalmind.
+    private int NextLoadId() {
+        int next = 0;
+        for (int i = 0; i < metalminds.Count; i++) {
+            if (metalminds[i].loadId >= next) next = metalminds[i].loadId + 1;
+        }
+
+        return next;
     }
 
     public ImplantedMetalmindData? RemoveMetalmindAt(int index) {
@@ -78,6 +92,10 @@ public class ImplantedMetalminds : HediffWithComps {
         if (Scribe.mode == LoadSaveMode.PostLoadInit && metalminds != null) {
             for (int i = 0; i < metalminds.Count; i++) {
                 metalminds[i].ReconcileCapacity();
+
+                // Saves written before implants carried an id load them all as -1,
+                // which would make every one of them answer to the same target.
+                if (metalminds[i].loadId < 0) metalminds[i].loadId = i;
             }
         }
 

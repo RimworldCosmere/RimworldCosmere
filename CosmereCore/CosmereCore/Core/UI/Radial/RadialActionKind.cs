@@ -6,5 +6,4 @@ public enum RadialActionKind {
     ToggleFeruchemyTap,
     ToggleFeruchemyStore,
     ResetFeruchemyIdle,
-    InvokeCompound,
 }

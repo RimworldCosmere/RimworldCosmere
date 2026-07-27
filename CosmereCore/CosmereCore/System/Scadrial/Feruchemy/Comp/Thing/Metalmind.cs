@@ -24,6 +24,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private bool equippedInt = true;
 
     private float compoundedAmountInt;
+    private float capacityLostInt;
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
 
@@ -53,7 +54,15 @@ public class Metalmind : ThingComp, IMetalmindSource {
         set => equippedInt = value;
     }
 
-    public float MaxAmount => props.maxAmount;
+    // props.maxAmount is shared by every metalmind of this def, so capacity burnt
+    // away by compounding is tracked per instance and subtracted here.
+    public float MaxAmount => Mathf.Max(0f, props.maxAmount - capacityLostInt);
+
+    public bool IsBurnedOut => MaxAmount <= 0f;
+
+    public string SourceId => "thing:" + parent.thingIDNumber;
+
+    public string SourceLabel => parent.LabelNoCount;
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
 
@@ -64,7 +73,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public bool CanTap => !IsCoppermind && Equipped && StoredAmount > 0f;
 
-    public bool CanTapCompounded => !IsCoppermind && Equipped && CompoundedAmount > 0f;
+    public bool CanTapCompounded => !IsCoppermind && Equipped && TotalStored > 0f;
 
     // Worn metalminds can hold compounded charge but cannot be compounded into.
     public bool CanStoreCompounded => false;
@@ -131,11 +140,19 @@ public class Metalmind : ThingComp, IMetalmindSource {
         CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount);
     }
 
+    // Drawing compounded charge eats the metalmind that carried it. Capacity drops
+    // by what was spent, so the two run out together.
     public void ConsumeCompounded(float amount) {
         if (!CanTapCompounded) return;
         if (!ValidateOwner()) return;
 
-        CompoundedAmount = Mathf.Clamp(CompoundedAmount - amount, 0, MaxAmount);
+        float spent = Mathf.Min(amount, TotalStored);
+
+        float fromCompounded = Mathf.Min(spent, CompoundedAmount);
+        CompoundedAmount -= fromCompounded;
+        StoredAmount -= spent - fromCompounded;
+
+        capacityLostInt += spent;
     }
 
     public bool CanFitMemory(float magnitude) {
@@ -227,6 +244,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
         Scribe_Values.Look(ref storedAmountInt, "storedAmount");
         Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
+        Scribe_Values.Look(ref capacityLostInt, "capacityLost", 0f);
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
 

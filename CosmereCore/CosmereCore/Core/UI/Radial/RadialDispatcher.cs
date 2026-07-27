@@ -7,7 +7,7 @@ public static class RadialDispatcher {
     public static void Dispatch(Pawn pawn, RadialLeaf leaf, string subsystemId, bool flareShift) {
         if (leaf.IsLocked) return;
 
-        if (leaf.Kind == RadialActionKind.CastAbility || leaf.Kind == RadialActionKind.InvokeCompound) {
+        if (leaf.Kind == RadialActionKind.CastAbility) {
             DispatchAbility(pawn, leaf.AbilityDef);
             return;
         }

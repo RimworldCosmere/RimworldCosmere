@@ -13,6 +13,4 @@
   <CS_Feruchemy_ImplantLine>{LABEL}: {AMOUNT} / {MAX}</CS_Feruchemy_ImplantLine>
   <CS_Feruchemy_ImplantLineCompounded>{LABEL}: {AMOUNT} / {MAX} ({COMPOUNDED} compounded)</CS_Feruchemy_ImplantLineCompounded>
   <CS_MetalmindCompounded>({COMPOUNDED} compounded)</CS_MetalmindCompounded>
-  <CS_Feruchemy_CompoundOutOfMetal>{PAWN} has no {METAL} left to compound.</CS_Feruchemy_CompoundOutOfMetal>
-  <CS_Feruchemy_CompoundNoRoom>{PAWN}'s implanted {METAL} metalminds are full.</CS_Feruchemy_CompoundNoRoom>
 </LanguageData>

@@ -9,7 +9,6 @@ namespace Cosmere.System.Scadrial.Def;
 public class AllomanticAbilityDef : AbilityDef {
     public bool applyDragOnTarget = false;
     public HediffDef? dragHediff;
-    public bool isCompound;
     public MetallicArtsMetalDef metal = null!;
     public float minSeverityForDrag = 1f;
 

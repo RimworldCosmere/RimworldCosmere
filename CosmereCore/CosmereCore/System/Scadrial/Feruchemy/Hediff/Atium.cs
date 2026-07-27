@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
@@ -9,8 +10,16 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Atium : HediffWithComps {
     private const int TicksPerDay = GenDate.TicksPerDay;
-    private const int MinAgeYears = 21;
     private const float AgeTicksPerGameTick = 43200f;
+
+    // How young atium will take a pawn. Flat rather than read off the race, since
+    // life stages are flagged loosely enough that teenagers count as adult.
+    private const int MinAgeYears = 18;
+
+    // Held in ticks and compared as a long. Float loses whole ticks past about
+    // sixteen million, and this floor is sixty-five million, so a float compare
+    // lands either side of it and the dial never sees itself arrive.
+    private const long MinAgeTicks = MinAgeYears * (long)GenDate.TicksPerYear;
 
     private static readonly string[] AgeConditionNames = [
         "BadBack", "Frail", "Cataract", "Blindness", "HearingLoss",
@@ -47,6 +56,38 @@ public class Atium : HediffWithComps {
         }
     }
 
+    // Hands back the share of this interval's draw that bought no years, so a
+    // pawn arriving at the floor is not charged for the part that did nothing.
+    private void RefundUnused(float fraction) {
+        Feruchemist? gene = atium;
+        if (gene == null || fraction <= 0f) return;
+
+        float refund = Feruchemist.AmountPerSecond * Severity * fraction;
+        if (refund <= 0f) return;
+
+        if (CompoundedTap.IsCompounded(def)) gene.AddCompoundedToStore(refund);
+        else gene.AddToStore(refund);
+    }
+
+    // Stops whichever dial is drawing on this metal, leaving the other alone.
+    private void ParkDial() {
+        Feruchemist? gene = atium;
+        if (gene == null) return;
+
+        if (CompoundedTap.IsCompounded(def)) {
+            gene.compoundedTargetValue = Feruchemist.IdleTarget;
+            gene.compounding = false;
+        } else {
+            gene.targetValue = Feruchemist.IdleTarget;
+        }
+
+        Messages.Message(
+            "CS_Feruchemy_AtiumFloorReached".Translate(pawn.Named("PAWN")),
+            pawn,
+            MessageTypeDefOf.NeutralEvent
+        );
+    }
+
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
@@ -54,12 +95,37 @@ public class Atium : HediffWithComps {
 
         if (!isTapping && !isStoring) return;
 
+        // Age has a floor. A dial left pushed against it spends charge, and now the
+        // metalmind itself, to move a number that cannot move - so park it rather
+        // than let the pawn burn an implant away for nothing.
         float direction = isStoring ? +1f : -1f;
         float severityFactor = CompoundedTap.Scale(def, Severity) / 5.0f;
-        long ageDeltaTicks = (long)(direction * delta * AgeTicksPerGameTick * severityFactor);
-        long newBiologicalAge = pawn.ageTracker.AgeBiologicalTicks + ageDeltaTicks;
+        long requested = (long)(delta * AgeTicksPerGameTick * severityFactor);
+        long current = pawn.ageTracker.AgeBiologicalTicks;
 
-        pawn.ageTracker.AgeBiologicalTicks = (long)Mathf.Max(newBiologicalAge, MinAgeYears * GenDate.TicksPerYear);
+        if (direction < 0f) {
+            // Ordinary aging ticks the pawn back up between rare ticks, so they sit a
+            // few hundred ticks above the floor rather than on it. Asking whether they
+            // have arrived never answers yes; ask how much is left to shed instead.
+            long available = current - MinAgeTicks;
+            if (available <= 0L) {
+                ParkDial();
+
+                return;
+            }
+
+            long applied = Math.Min(requested, available);
+            pawn.ageTracker.AgeBiologicalTicks = current - applied;
+
+            // The draw only paid for the years actually shed, so hand back the rest
+            // and stop: the pawn is at the floor and further tapping buys nothing.
+            if (applied < requested) {
+                RefundUnused(1f - applied / (float)requested);
+                ParkDial();
+            }
+        } else {
+            pawn.ageTracker.AgeBiologicalTicks = current + requested;
+        }
 
         float ageYears = pawn.ageTracker.AgeBiologicalYearsFloat;
         if (!isTapping ||

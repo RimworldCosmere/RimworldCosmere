@@ -18,8 +18,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
+    private const float TargetRowHeight = 20f;
+
     private static float StripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight + 26f;
+        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
+        TargetRowHeight + 32f;
 
     private const float IdleTarget = 50f;
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
@@ -83,13 +86,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             rect,
             cell.Icon,
             MetalLabel(cell),
-            capacity.HasMetalmind ? $"{capacity.Stored:0}+{capacity.Compounded:0}/{capacity.Max:0}" : "—",
+            capacity.HasMetalmind ? capacity.Readout : "\u2014",
             capacity.StoredFraction,
             MetalPalette.For(cell.SubsystemId),
             state,
             tint,
             capacity.CompoundedFraction,
-            capacity.CanStoreCompounded || capacity.Compounded > 0f ? CompoundTint : null
+            capacity.CanStoreCompounded || capacity.Internal > 0f ? CompoundTint : null
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell, capacity), cell.SubsystemId.GetHashCode());
@@ -116,9 +119,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        string direction = gene.isCompoundPaused
-            ? "CC_Dock_Feruchemy_CompoundPaused".Translate()
-            : gene.isCompounding
+        // Burning the metalmind reads first: it is the loudest thing happening and
+        // the only one that destroys something.
+        string direction = capacity.CompoundedRate < 0f
+            ? "CC_Dock_Feruchemy_BurningMetalmind".Translate()
+            : capacity.CompoundedRate > 0f
                 ? "CC_Dock_Feruchemy_Compounding".Translate()
                 : gene.isTapping
                     ? "CC_Dock_Feruchemy_Tapping".Translate()
@@ -134,16 +139,18 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            $"{capacity.Stored:0} + {capacity.Compounded:0} / {capacity.Max:0}",
+            capacity.Readout,
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.435f, 0.404f, 0.361f)
         );
 
+        bool compounded = gene.compounding;
+
         // Below fifty taps, above stores. The reachable span is bounded by what
         // the metalminds can actually give or accept right now.
         Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 6f, inner.width, DialHeight);
-        DrawDial(sliderRect, cell.SubsystemId, gene, capacity);
+        DrawDial(sliderRect, cell.SubsystemId, gene, capacity, compounded);
 
         Rect endsRect = new Rect(inner.x, sliderRect.yMax + 3f, inner.width, tinyH);
         UIText.EllipsisLabel(
@@ -151,14 +158,18 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             "CC_Dock_Feruchemy_Tap".Translate(),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            capacity.CanTap ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
+            (compounded ? capacity.CanTapCompounded : capacity.CanTap)
+                ? compounded ? CompoundTint : new Color(0.498f, 0.541f, 0.565f)
+                : new Color(0.310f, 0.286f, 0.255f)
         );
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Store".Translate(),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
-            capacity.CanStore ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
+            (compounded ? capacity.CanStoreCompounded : capacity.CanStore)
+                ? compounded ? CompoundTint : new Color(0.498f, 0.541f, 0.565f)
+                : new Color(0.310f, 0.286f, 0.255f)
         );
 
         float rate = gene.TransferRatePerSecond;
@@ -176,14 +187,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
                         : StoreFill
         );
 
-        float buttonY = endsRect.yMax + 8f;
-
-        // Shown from the moment compounding is earned, whether or not this metal
-        // can take it right now. A control that vanishes teaches nothing; one that
-        // sits there greyed says the pawn is missing something.
-        if (CompoundingAccess.Discovered(pawn)) {
-            buttonY = DrawCompoundedDial(inner, endsRect.yMax + 6f, pawn, cell, gene, capacity) + 8f;
-        }
+        float afterTarget = DrawTargetRow(inner, endsRect.yMax + 6f, gene);
+        float buttonY = DrawCompoundToggle(inner, afterTarget + 6f, pawn, cell, gene) + 8f;
 
         if (DockChrome.Button(
                 new Rect(inner.x, buttonY, inner.width, StripButtonHeight),
@@ -196,78 +201,197 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         }
     }
 
-    // The compounded pool gets its own dial: drag left to tap it, right to
-    // compound into it, burning allomantic reserve to do so.
-    private float DrawCompoundedDial(
-        Rect inner,
-        float y,
-        Pawn pawn,
-        InvestitureCell cell,
-        Feruchemist gene,
-        Capacity capacity
-    ) {
-        float tinyH = Text.LineHeightOf(GameFont.Tiny);
+    // Which metalmind the dials act on. A pawn wearing a band and carrying three
+    // implants needs to say which one they mean before compounding makes sense,
+    // since burning one destroys it.
+    private static float DrawTargetRow(Rect inner, float y, Feruchemist gene) {
+        Rect row = new Rect(inner.x, y, inner.width, TargetRowHeight);
+        string label = TargetLabel(gene);
 
-        Rect dial = new Rect(inner.x, y, inner.width, DialHeight);
-        DrawCompoundedDialBacking(dial, gene, capacity);
-
-        float handleX = dial.x + dial.width * (Mathf.Clamp(gene.compoundedTargetValue, 0f, 100f) / 100f);
-        Widgets.DrawBoxSolid(
-            new Rect(handleX - 1.5f, dial.y - 2f, 3f, dial.height + 4f),
-            new Color(0.898f, 0.812f, 0.588f)
+        Widgets.DrawBoxSolid(row, new Color(0.055f, 0.063f, 0.071f));
+        Widgets.DrawHighlightIfMouseover(row);
+        TooltipHandler.TipRegion(
+            row,
+            "CC_Dock_Feruchemy_TargetTip".Translate(TargetUnits(gene).Named("UNITS"))
         );
 
-        Rect ends = new Rect(inner.x, dial.yMax + 3f, inner.width, tinyH);
         UIText.EllipsisLabel(
-            ends,
-            "CC_Dock_Feruchemy_Tap".Translate(),
+            new Rect(row.x + 6f, row.y, row.width - 26f, row.height),
+            "CC_Dock_Feruchemy_TargetLabel".Translate(label.Named("TARGET")),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            capacity.CanTapCompounded ? CompoundTint : new Color(0.310f, 0.286f, 0.255f)
+            new Color(0.604f, 0.659f, 0.678f)
         );
         UIText.EllipsisLabel(
-            ends,
-            "CC_Dock_Feruchemy_Compound".Translate(),
-            GameFont.Tiny,
-            TextAnchor.MiddleRight,
-            capacity.CanStoreCompounded ? CompoundTint : new Color(0.310f, 0.286f, 0.255f)
-        );
-
-        float rate = gene.CompoundedRatePerSecond;
-        UIText.EllipsisLabel(
-            ends,
-            "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
+            new Rect(row.xMax - 20f, row.y, 14f, row.height),
+            "v",
             GameFont.Tiny,
             TextAnchor.MiddleCenter,
-            Mathf.Approximately(rate, 0f) ? new Color(0.376f, 0.353f, 0.318f) : CompoundTint
+            new Color(0.435f, 0.478f, 0.498f)
         );
 
-        HandleDialDrag(dial, cell.SubsystemId + ":compounded", gene, capacity, true);
-        SyncCompounding(pawn, cell, gene);
-        return ends.yMax;
+        if (Widgets.ButtonInvisible(row)) {
+            OpenTargetMenu(gene);
+            Event.current?.Use();
+        }
+
+        return row.yMax;
     }
 
-    // The dial is the control, so the ability follows it. A dial pushed into the
-    // compound half that cannot start falls back to idle rather than sitting on a
-    // setting the pawn is not honouring.
-    private void SyncCompounding(Pawn pawn, InvestitureCell cell, Feruchemist gene) {
-        AllomancyAbility? ability = CompoundingAccess.AbilityFor(pawn, cell.SubsystemId);
-        if (ability == null) return;
+    // The raw figures behind the percentage, for the hover.
+    private static string TargetUnits(Feruchemist gene) {
+        float held = 0f;
+        float max = 0f;
 
-        bool wants = gene.compoundedTargetValue > IdleTarget;
-        if (wants == gene.isCompounding) return;
+        List<IMetalmindSource> sources = gene.metalminds;
+        for (int i = 0; i < sources.Count; i++) {
+            if (!MatchesDisplayTarget(gene, sources[i])) continue;
 
-        if (!wants) {
-            ability.UpdateStatus(BurningStatus.Off);
-            return;
+            held += sources[i].TotalStored;
+            max += sources[i].MaxAmount;
         }
 
-        if (!CompoundingAccess.Gate(pawn, gene, ability).Accepted) {
+        return $"{held:0} / {max:0}";
+    }
+
+    private static bool MatchesDisplayTarget(Feruchemist gene, IMetalmindSource source) {
+        return gene.targetMetalmindId switch {
+            Feruchemist.TargetAll => true,
+            Feruchemist.TargetInternal => source.IsImplanted,
+            Feruchemist.TargetExternal => !source.IsImplanted,
+            _ => source.SourceId == gene.targetMetalmindId,
+        };
+    }
+
+    private static string Percent(float held, float max) {
+        return max > 0f ? $"{held / max * 100f:0}%" : "0%";
+    }
+
+    // What the row reads while pointed at a group, or at one metalmind.
+    private static string TargetLabel(Feruchemist gene) {
+        if (!Feruchemist.IsGroupTarget(gene.targetMetalmindId)) {
+            IMetalmindSource? selected = gene.SelectedSource;
+
+            return selected == null
+                ? "CC_Dock_Feruchemy_TargetAll".Translate().Resolve()
+                : $"{selected.SourceLabel} ({Percent(selected.TotalStored, selected.MaxAmount)})";
+        }
+
+        string key = gene.targetMetalmindId switch {
+            Feruchemist.TargetInternal => "CC_Dock_Feruchemy_TargetInternal",
+            Feruchemist.TargetExternal => "CC_Dock_Feruchemy_TargetExternal",
+            _ => "CC_Dock_Feruchemy_TargetAll",
+        };
+
+        return GroupSummary(gene, key, gene.targetMetalmindId);
+    }
+
+    // Groups carry their own running total, so choosing one does not hide how much
+    // is actually in there.
+    private static string GroupSummary(Feruchemist gene, string key, string target) {
+        float stored = 0f;
+        float max = 0f;
+        int count = 0;
+
+        List<IMetalmindSource> sources = gene.metalminds;
+        for (int i = 0; i < sources.Count; i++) {
+            bool internalOnly = target == Feruchemist.TargetInternal;
+            bool externalOnly = target == Feruchemist.TargetExternal;
+            if (internalOnly && !sources[i].IsImplanted) continue;
+            if (externalOnly && sources[i].IsImplanted) continue;
+
+            stored += sources[i].TotalStored;
+            max += sources[i].MaxAmount;
+            count++;
+        }
+
+        return $"{key.Translate(count.Named("COUNT")).Resolve()} ({Percent(stored, max)})";
+    }
+
+    private static void OpenTargetMenu(Feruchemist gene) {
+        List<FloatMenuOption> options = [
+            new FloatMenuOption(
+                GroupSummary(gene, "CC_Dock_Feruchemy_TargetAll", Feruchemist.TargetAll),
+                () => gene.targetMetalmindId = Feruchemist.TargetAll
+            ),
+            new FloatMenuOption(
+                GroupSummary(gene, "CC_Dock_Feruchemy_TargetInternal", Feruchemist.TargetInternal),
+                () => gene.targetMetalmindId = Feruchemist.TargetInternal
+            ),
+            new FloatMenuOption(
+                GroupSummary(gene, "CC_Dock_Feruchemy_TargetExternal", Feruchemist.TargetExternal),
+                () => gene.targetMetalmindId = Feruchemist.TargetExternal
+            ),
+        ];
+
+        List<IMetalmindSource> sources = gene.metalminds;
+        for (int i = 0; i < sources.Count; i++) {
+            IMetalmindSource source = sources[i];
+            string id = source.SourceId;
+            options.Add(
+                new FloatMenuOption(
+                    $"{source.SourceLabel} ({Percent(source.TotalStored, source.MaxAmount)})",
+                    () => gene.targetMetalmindId = id
+                )
+            );
+        }
+
+        Find.WindowStack.Add(new FloatMenu(options));
+    }
+
+    // Compounding is only offered on an implanted metalmind, because burning one
+    // destroys it and a worn band is not what the pawn is setting alight. The
+    // toggle parks the other pool so only one is ever moving.
+    private float DrawCompoundToggle(Rect inner, float y, Pawn pawn, InvestitureCell cell, Feruchemist gene) {
+        // The internal group is every implant, so compounding reaches it just as it
+        // reaches a single one.
+        bool eligible = gene.TargetIsInternalOnly;
+        AcceptanceReport report = CompoundingAccess.Gate(pawn, gene);
+
+        // Losing the implant or the gate mid-compound parks the pool rather than
+        // leaving it draining behind a control the player can no longer see.
+        if (gene.compounding && (!eligible || !report.Accepted)) {
+            gene.compounding = false;
             gene.compoundedTargetValue = IdleTarget;
-            return;
         }
 
-        ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+        if (!eligible) return y - 6f;
+
+        bool on = gene.compounding;
+        Rect rect = new Rect(inner.x, y, inner.width, StripButtonHeight);
+
+        TooltipHandler.TipRegion(
+            rect,
+            report.Accepted
+                ? "CC_Dock_Feruchemy_CompoundTip".Translate()
+                : "CC_Dock_Feruchemy_CompoundBlocked".Translate(
+                    (report.Reason.NullOrEmpty()
+                        ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
+                        : report.Reason).Named("REASON")
+                )
+        );
+
+        string label = on
+            ? "CC_Dock_Feruchemy_StopCompound".Translate()
+            : "CC_Dock_Feruchemy_Compound".Translate();
+        if (!DockChrome.Button(rect, label, report.Accepted && eligible, CompoundTint)) return rect.yMax;
+
+        // Carry whatever the dial was set to across, and no further. The rate is the
+        // player's to choose, so an idle dial stays idle rather than being pegged
+        // somewhere on their behalf.
+        if (on) {
+            gene.compounding = false;
+            gene.targetValue = gene.compoundedTargetValue;
+            gene.compoundedTargetValue = IdleTarget;
+        } else {
+            gene.compounding = true;
+            gene.compoundedTargetValue = gene.targetValue;
+            gene.targetValue = IdleTarget;
+        }
+
+        Event.current?.Use();
+
+        return rect.yMax;
     }
 
     private static void DrawCompoundedDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
@@ -299,19 +423,18 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     // Hand-drawn so the dial keeps the section's chrome. The vanilla slider
     // brings its own tan gradient, which fights everything around it.
-    private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity) {
-        DrawDialBacking(rect, gene, capacity);
+    private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity, bool compounded) {
+        if (compounded) DrawCompoundedDialBacking(rect, gene, capacity);
+        else DrawDialBacking(rect, gene, capacity);
 
-        float min = capacity.CanTap || capacity.CanTapCompounded ? 0f : IdleTarget;
-        float max = capacity.CanStore ? 100f : IdleTarget;
-
-        float handleX = rect.x + rect.width * (Mathf.Clamp(gene.targetValue, 0f, 100f) / 100f);
+        float value = compounded ? gene.compoundedTargetValue : gene.targetValue;
+        float handleX = rect.x + rect.width * (Mathf.Clamp(value, 0f, 100f) / 100f);
         Widgets.DrawBoxSolid(
             new Rect(handleX - 1.5f, rect.y - 2f, 3f, rect.height + 4f),
-            new Color(0.816f, 0.851f, 0.871f)
+            compounded ? new Color(0.898f, 0.812f, 0.588f) : new Color(0.816f, 0.851f, 0.871f)
         );
 
-        HandleDialDrag(rect, metalId, gene, capacity, false);
+        HandleDialDrag(rect, metalId, gene, capacity, compounded);
     }
 
     // Shared by both dials. Compounded runs tap-only, so its reachable span stops
@@ -383,8 +506,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         return "CC_Dock_Feruchemy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),
-            capacity.Stored.ToString("0").Named("STORED"),
-            capacity.Max.ToString("0").Named("MAX"),
+            capacity.UnitsReadout.Named("STORED"),
             effect.Named("EFFECT")
         );
     }
@@ -423,24 +545,35 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (gene == null) return default;
 
         List<IMetalmindSource> sources = gene.metalminds;
-        float stored = 0f;
-        float compounded = 0f;
+        float internalHeld = 0f;
+        float externalHeld = 0f;
+        float internalMax = 0f;
+        float externalMax = 0f;
         float max = 0f;
         for (int i = 0; i < sources.Count; i++) {
-            stored += sources[i].StoredAmount;
-            compounded += sources[i].CompoundedAmount;
+            if (sources[i].IsImplanted) {
+                internalHeld += sources[i].TotalStored;
+                internalMax += sources[i].MaxAmount;
+            } else {
+                externalHeld += sources[i].TotalStored;
+                externalMax += sources[i].MaxAmount;
+            }
+
             max += sources[i].MaxAmount;
         }
 
         return new Capacity(
-            stored,
-            compounded,
+            internalHeld,
+            externalHeld,
+            internalMax,
+            externalMax,
             max,
             sources.Count > 0,
             gene.canTap,
             gene.canStore,
             gene.canTapCompounded,
-            gene.canStoreCompounded
+            gene.canStoreCompounded,
+            gene.CompoundedRatePerSecond
         );
     }
 
@@ -456,28 +589,75 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     private readonly struct Capacity {
         public Capacity(
-            float stored,
-            float compounded,
+            float internalHeld,
+            float externalHeld,
+            float internalMax,
+            float externalMax,
             float max,
             bool hasMetalmind,
             bool canTap,
             bool canStore,
             bool canTapCompounded,
-            bool canStoreCompounded
+            bool canStoreCompounded,
+            float compoundedRate
         ) {
-            Stored = stored;
-            Compounded = compounded;
+            Internal = internalHeld;
+            External = externalHeld;
+            InternalMax = internalMax;
+            ExternalMax = externalMax;
             Max = max;
             HasMetalmind = hasMetalmind;
             CanTap = canTap;
             CanStore = canStore;
             CanTapCompounded = canTapCompounded;
             CanStoreCompounded = canStoreCompounded;
+            CompoundedRate = compoundedRate;
         }
 
-        public float Stored { get; }
+        // Charge held in implanted metalminds.
+        public float Internal { get; }
 
-        public float Compounded { get; }
+        // Charge held in worn and carried metalminds.
+        public float External { get; }
+
+        public float InternalMax { get; }
+
+        public float ExternalMax { get; }
+
+        // Each kind of metalmind reads against its own capacity, and a kind the
+        // pawn has none of is left out rather than shown as a flat zero.
+        public string Readout {
+            get {
+                bool hasInternal = InternalMax > 0f;
+                bool hasExternal = ExternalMax > 0f;
+
+                if (hasInternal && hasExternal) {
+                    return $"{Internal / InternalMax * 100f:0}% + {External / ExternalMax * 100f:0}%";
+                }
+
+                if (hasInternal) return $"{Internal / InternalMax * 100f:0}%";
+                if (hasExternal) return $"{External / ExternalMax * 100f:0}%";
+
+                return "0%";
+            }
+        }
+
+        // The same split in raw units, for the hover.
+        public string UnitsReadout {
+            get {
+                bool hasInternal = InternalMax > 0f;
+                bool hasExternal = ExternalMax > 0f;
+
+                if (hasInternal && hasExternal) {
+                    return $"{Internal:0}/{InternalMax:0} implanted, {External:0}/{ExternalMax:0} worn";
+                }
+
+                if (hasInternal) return $"{Internal:0}/{InternalMax:0} implanted";
+                if (hasExternal) return $"{External:0}/{ExternalMax:0} worn";
+
+                return "0";
+            }
+        }
 
         public float Max { get; }
 
@@ -491,10 +671,16 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         public bool CanStoreCompounded { get; }
 
-        public float Fraction => Max > 0f ? (Stored + Compounded) / Max : 0f;
+        // Positive while filling the pool, negative while burning the metalmind.
+        public float CompoundedRate { get; }
 
-        public float StoredFraction => Max > 0f ? Stored / Max : 0f;
+        public float Fraction => Max > 0f ? (Internal + External) / Max : 0f;
 
-        public float CompoundedFraction => Max > 0f ? Compounded / Max : 0f;
+        // Each band fills against its own capacity, so a full set of implants reads
+        // as a full bar rather than as its share of the combined total. That keeps
+        // the bars saying the same thing as the percentages above them.
+        public float StoredFraction => ExternalMax > 0f ? External / ExternalMax : 0f;
+
+        public float CompoundedFraction => InternalMax > 0f ? Internal / InternalMax : 0f;
     }
 }

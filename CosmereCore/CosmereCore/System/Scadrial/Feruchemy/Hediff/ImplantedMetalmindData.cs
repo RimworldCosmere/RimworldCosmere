@@ -10,6 +10,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     public string metalDefName = string.Empty;
     public string metalmindType = string.Empty;
     public string ownerName = string.Empty;
+    public int loadId = -1;
     private float compoundedAmountInt;
     private float storedAmountInt;
 
@@ -20,6 +21,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
         Scribe_Values.Look(ref maxAmountInt, "maxAmount");
         Scribe_Values.Look(ref ownerName, "ownerName", string.Empty);
+        Scribe_Values.Look(ref loadId, "loadId", -1);
     }
 
     public float StoredAmount {
@@ -46,7 +48,10 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     public bool CanTap => Equipped && StoredAmount > 0f;
 
-    public bool CanTapCompounded => Equipped && CompoundedAmount > 0f;
+    // Burning draws on whatever the metalmind holds. Charge stored by hand is the
+    // same charge - what makes it compounding is setting the metal alight rather
+    // than drawing it out, so there is no separate pool to fill first.
+    public bool CanTapCompounded => Equipped && TotalStored > 0f;
 
     public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
 
@@ -84,8 +89,27 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         compoundedAmountInt = Mathf.Clamp(compoundedAmountInt + amount, 0, maxAmountInt - storedAmountInt);
     }
 
+    // Drawing compounded charge eats the metalmind that carried it. Capacity
+    // drops by what was spent, so the two run out together and a metalmind filled
+    // entirely by compounding is used up exactly when it empties.
+    // Spends the metalmind itself along with its charge. Capacity falls by what
+    // was drawn, so the metal runs out exactly when the charge does.
     public void ConsumeCompounded(float amount) {
         if (!CanTapCompounded) return;
-        compoundedAmountInt = Mathf.Clamp(compoundedAmountInt - amount, 0, maxAmountInt);
+
+        float spent = Mathf.Min(amount, TotalStored);
+
+        float fromCompounded = Mathf.Min(spent, compoundedAmountInt);
+        compoundedAmountInt -= fromCompounded;
+        storedAmountInt -= spent - fromCompounded;
+
+        maxAmountInt = Mathf.Max(0f, maxAmountInt - spent);
     }
+
+    public bool IsBurnedOut => maxAmountInt <= 0f;
+
+    public string SourceId => "implant:" + loadId;
+
+    public string SourceLabel =>
+        "CC_Dock_Feruchemy_TargetImplant".Translate((Metal?.label ?? metalDefName).Named("METAL")).Resolve();
 }

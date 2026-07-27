@@ -57,9 +57,6 @@ public static class ScadrialUIRegistration {
         AutocastDefaults.Register("Cosmere_Scadrial_Ability_Tin", [
             new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 0f),
         ]);
-        AutocastDefaults.Register("Cosmere_Scadrial_Ability_CompoundGold", [
-            new AutocastTrigger(AutocastTriggerKind.HealthPercent, AutocastComparison.LessThan, 0.4f),
-        ]);
     }
 
     private static MetallicArtsMetalDef? SteelIcon() {

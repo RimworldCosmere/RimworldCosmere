@@ -22,22 +22,12 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private const float ReserveBarHeight = 10f;
     private const float StripButtonHeight = 22f;
     private static readonly Color Accent = new Color(0.478f, 0.400f, 0.263f);
-    private static readonly Color CompoundTint = new Color(0.851f, 0.667f, 0.286f);
-
-    private const float ProgressBarHeight = 6f;
 
     private static float BaseStripHeight =>
         StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + StripButtonHeight + 14f;
 
-    // Only the open metal draws a strip, so the compounding readout can claim
-    // extra room without every other row paying for it.
     private float StripHeightFor(Pawn pawn) {
-        if (expandedMetal == null) return BaseStripHeight;
-        if (CompoundingAccess.FeruchemistFor(pawn, expandedMetal) is not { isCompounding: true }) {
-            return BaseStripHeight;
-        }
-
-        return BaseStripHeight + ProgressBarHeight + Text.LineHeightOf(GameFont.Tiny) + 7f;
+        return BaseStripHeight;
     }
 
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
@@ -115,16 +105,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        Feruchemist? feruchemist = CompoundingAccess.FeruchemistFor(pawn, cell.SubsystemId);
-        bool compounding = feruchemist is { isCompounding: true };
-
-        string state = compounding
-            ? "CC_Dock_Feruchemy_Compounding".Translate()
-            : cell.IsFlaring
-                ? "CC_Dock_State_Flaring".Translate()
-                : cell.IsActive
-                    ? "CC_Dock_State_Burning".Translate()
-                    : "CC_Dock_Feruchemy_Idle".Translate();
+        string state = cell.IsFlaring
+            ? "CC_Dock_State_Flaring".Translate()
+            : cell.IsActive
+                ? "CC_Dock_State_Burning".Translate()
+                : "CC_Dock_Feruchemy_Idle".Translate();
 
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
@@ -148,27 +133,15 @@ public sealed class AllomancyDockSection : DockSectionBase {
             MetalPalette.For(cell.SubsystemId)
         );
 
-        float nextY = bar.yMax;
-        if (compounding) nextY = DrawCompoundProgress(inner, bar.yMax, feruchemist!, cell);
-
-        float buttonY = nextY + 8f;
-        AllomancyAbility? compound = CompoundingAccess.AbilityFor(pawn, cell.SubsystemId);
-        bool showCompound = compound != null && feruchemist != null && CompoundingAccess.Discovered(pawn);
-
-        int buttons = showCompound ? 3 : 2;
-        float buttonWidth = (inner.width - 5f * (buttons - 1)) / buttons;
+        float buttonY = bar.yMax + 8f;
+        float buttonWidth = (inner.width - 5f) / 2f;
 
         string burnLabel = cell.IsActive
             ? "CC_Dock_Allomancy_StopBurn".Translate()
             : "CC_Dock_Allomancy_Burn".Translate();
         Rect burnRect = new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight);
-        TooltipHandler.TipRegion(
-            burnRect,
-            compounding
-                ? "CC_Dock_Allomancy_BusyCompounding".Translate()
-                : "CC_Dock_Allomancy_BurnTip".Translate(MetalLabel(cell).Named("METAL"))
-        );
-        if (DockChrome.Button(burnRect, burnLabel, !compounding, Accent)) {
+        TooltipHandler.TipRegion(burnRect, "CC_Dock_Allomancy_BurnTip".Translate(MetalLabel(cell).Named("METAL")));
+        if (DockChrome.Button(burnRect, burnLabel, true, Accent)) {
             ToggleBurn(pawn, cell.SubsystemId, false);
             Event.current?.Use();
         }
@@ -177,96 +150,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
         string flareLabel = cell.IsFlaring
             ? "CC_Dock_Allomancy_StopFlare".Translate()
             : "CC_Dock_Allomancy_Flare".Translate();
-        TooltipHandler.TipRegion(
-            flareRect,
-            compounding
-                ? "CC_Dock_Allomancy_BusyCompounding".Translate()
-                : "CC_Dock_Allomancy_FlareTip".Translate(MetalLabel(cell).Named("METAL"))
-        );
-        if (DockChrome.Button(flareRect, flareLabel, !compounding, Accent)) {
+        TooltipHandler.TipRegion(flareRect, "CC_Dock_Allomancy_FlareTip".Translate(MetalLabel(cell).Named("METAL")));
+        if (DockChrome.Button(flareRect, flareLabel, true, Accent)) {
             ToggleBurn(pawn, cell.SubsystemId, true);
             Event.current?.Use();
         }
-
-        if (!showCompound) return;
-
-        AcceptanceReport report = CompoundingAccess.Gate(pawn, feruchemist!, compound!);
-        bool canCompound = report.Accepted || compounding;
-
-        Rect compoundRect = new Rect(inner.x + (buttonWidth + 5f) * 2f, buttonY, buttonWidth, StripButtonHeight);
-        TooltipHandler.TipRegion(
-            compoundRect,
-            canCompound
-                ? "CC_Dock_Allomancy_CompoundTip".Translate(MetalLabel(cell).Named("METAL"))
-                : "CC_Dock_Feruchemy_CompoundBlocked".Translate(
-                    (report.Reason.NullOrEmpty()
-                        ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
-                        : report.Reason).Named("REASON")
-                )
-        );
-
-        string compoundLabel = compounding
-            ? "CC_Dock_Feruchemy_StopStoreCompounded".Translate()
-            : "CC_Dock_Feruchemy_StoreCompounded".Translate();
-        if (!DockChrome.Button(compoundRect, compoundLabel, canCompound, Accent)) return;
-
-        if (compounding) compound!.UpdateStatus(BurningStatus.Off);
-        else compound!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
-        Event.current?.Use();
-    }
-
-    // Progress toward a full metalmind, with what it is costing and how long the
-    // reserve or the remaining room will let it run - whichever runs out first.
-    private float DrawCompoundProgress(Rect inner, float y, Feruchemist feruchemist, InvestitureCell cell) {
-        float compounded = feruchemist.CompoundedAmount;
-        float capacity = compounded + feruchemist.CompoundedFreeSpace;
-
-        Rect progress = new Rect(inner.x, y + 3f, inner.width, ProgressBarHeight);
-        Widgets.DrawBoxSolid(progress, new Color(0.047f, 0.043f, 0.035f));
-        if (capacity > 0f) {
-            Widgets.DrawBoxSolid(
-                new Rect(progress.x, progress.y, progress.width * Mathf.Clamp01(compounded / capacity), progress.height),
-                CompoundTint
-            );
-        }
-
-        float tinyH = Text.LineHeightOf(GameFont.Tiny);
-        Rect line = new Rect(inner.x, progress.yMax + 3f, inner.width, tinyH);
-
-        float rate = feruchemist.CompoundStorePerSecond;
-        UIText.EllipsisLabel(
-            line,
-            "CC_Dock_Allomancy_CompoundRate".Translate(rate.ToString("0.00").Named("RATE")),
-            GameFont.Tiny,
-            TextAnchor.MiddleLeft,
-            CompoundTint
-        );
-
-        UIText.EllipsisLabel(
-            line,
-            RemainingLabel(feruchemist, rate),
-            GameFont.Tiny,
-            TextAnchor.MiddleRight,
-            new Color(0.545f, 0.502f, 0.427f)
-        );
-
-        return line.yMax;
-    }
-
-    // How long until the metalmind being filled is full, and until every
-    // fillable metalmind is - the second is what actually matters when a pawn
-    // carries a dozen of them.
-    private static string RemainingLabel(Feruchemist feruchemist, float rate) {
-        if (rate <= 0f) return string.Empty;
-
-        return "CC_Dock_Allomancy_CompoundEta".Translate(
-            Period(feruchemist.CurrentCompoundedFreeSpace / rate).Named("ONE"),
-            Period(feruchemist.CompoundedFreeSpace / rate).Named("ALL")
-        );
-    }
-
-    private static string Period(float seconds) {
-        return ((int)(seconds * GenTicks.TicksPerRealSecond)).ToStringTicksToPeriod();
     }
 
     private static Allomancer? FindGene(Pawn pawn, string metalDefName) {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <LoadCosmereMod>Loading Cosmere - Core</LoadCosmereMod>
     <CC_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CC_Current_Investiture>
@@ -12,4 +12,5 @@
     <CC_Ordinal_3_Long>Third</CC_Ordinal_3_Long>
     <CC_Ordinal_4_Long>Fourth</CC_Ordinal_4_Long>
     <CC_Ordinal_5_Long>Fifth</CC_Ordinal_5_Long>
+    <CC_Quickstart_Reload>Reloading quickstart</CC_Quickstart_Reload>
 </LanguageData>

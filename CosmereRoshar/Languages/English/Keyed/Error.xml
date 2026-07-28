@@ -2,4 +2,5 @@
 <LanguageData>
     <CR_Error_Example>Example Error</CR_Error_Example>
     <CRO_Surgebinding_HonorNotPresent>Honor is not present.</CRO_Surgebinding_HonorNotPresent>
+    <CRO_Radiant_Requires_Honor>Surgebinding requires the Honor shard, which is not enabled in this game. Start a scenario that includes Honor.</CRO_Radiant_Requires_Honor>
 </LanguageData>

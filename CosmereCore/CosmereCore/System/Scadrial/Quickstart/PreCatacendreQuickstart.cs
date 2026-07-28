@@ -1,4 +1,5 @@
 using Cosmere.Core;
+using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
 using Cosmere.Core.Need;
 using Cosmere.Core.Quickstart;
@@ -34,6 +35,18 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     }
 
     public override void PrepareColonists(List<Pawn> pawns) {
+        // The PreCatacendre scenario enables Ruin and Preservation, so Allomancy works out of the
+        // box. Honor, Cultivation and Odium are added here rather than in the scenario so this
+        // quickstart can also exercise Roshar content - every Radiant grant silently no-ops without
+        // Honor. Enabled by name: the Roshar ShardDefOf lives in a namespace Scadrial code must not
+        // import.
+        Shards? shards = Current.Game?.GetComponent<Shards>();
+        if (shards != null) {
+            shards.EnableShard("Honor", true);
+            shards.EnableShard("Cultivation", true);
+            shards.EnableShard("Odium", true);
+        }
+
         if (pawns.Count == 0) return;
 
         Pawn? pawn;

@@ -734,13 +734,22 @@ public class Surgebinder : Invested {
     }
 
     internal void DebugTriggerOath() {
-        if (CurrentIdeal >= 4) return;
+        if (CurrentIdeal >= 4) {
+            RejectIdealAdvance();
+            return;
+        }
+
         pendingOath = true;
         SendOathNotification(CurrentIdeal + 1);
     }
 
     internal void DebugSpeakOathNow() {
-        if (CurrentIdeal >= 4) return;
+        // A debug command that does nothing and says nothing is impossible to diagnose from the
+        // outside, so every path that declines to advance reports why.
+        if (CurrentIdeal >= 4) {
+            RejectIdealAdvance();
+            return;
+        }
 
         int nextIdeal = CurrentIdeal + 1;
         if (radiantOrderDef.idealChecker.HasIncompatibleTrait(pawn, nextIdeal)) {
@@ -756,6 +765,25 @@ public class Surgebinder : Invested {
         pendingOath = false;
         CurrentIdeal = nextIdeal;
         radiantOrderDef.idealChecker.ConsummateOath(pawn, this, CurrentIdeal);
+
+        List<AbilityDef> granted = radiantOrderDef.GetAbilities(CurrentIdealInt).ToList();
+        Logger.Info(
+            $"{pawn.LabelShort}: {radiantOrderDef.defName} ideal -> {CurrentIdealDisplay}, " +
+            $"abilities now [{string.Join(", ", granted.Select(a => a.defName))}]"
+        );
+        Messages.Message(
+            $"{pawn.NameShortColored} spoke the Ideal ({CurrentIdealDisplay}) - {granted.Count} ability(s)",
+            pawn,
+            MessageTypeDefOf.PositiveEvent
+        );
+    }
+
+    private void RejectIdealAdvance() {
+        Messages.Message(
+            $"{pawn.NameShortColored} is already at the highest Ideal ({CurrentIdealDisplay})",
+            pawn,
+            MessageTypeDefOf.RejectInput
+        );
     }
 
     internal void DebugResetCooldown() {

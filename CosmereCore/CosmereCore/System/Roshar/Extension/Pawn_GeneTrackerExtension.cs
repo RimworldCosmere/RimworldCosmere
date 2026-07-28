@@ -115,7 +115,17 @@ public static class Pawn_GeneTrackerExtension {
         string? sprenName = null,
         bool showNamingDialog = false
     ) {
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
+        // Every Radiant path funnels through here, so bailing silently makes Surgebinding look
+        // simply broken rather than switched off: the order dialog still closes, the choice comp is
+        // still removed, and the pawn just never becomes a Surgebinder.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) {
+            Logger.Warning(
+                $"Cannot grant Radiant order '{geneDef.defName}' to {genes.pawn?.LabelShort}: the Honor shard is " +
+                "not enabled in this game. Surgebinding requires a scenario that enables Honor."
+            );
+            Messages.Message("CRO_Radiant_Requires_Honor".Translate(), genes.pawn, MessageTypeDefOf.RejectInput);
+            return null;
+        }
 
         Pawn pawn = genes.pawn;
         RadiantOrderDef? orderDef = geneDef.GetModExtension<RadiantOrder>()?.order;

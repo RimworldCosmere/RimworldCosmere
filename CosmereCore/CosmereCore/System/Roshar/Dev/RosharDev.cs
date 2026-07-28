@@ -30,6 +30,21 @@ public static class RosharDev {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void BondWithSpren(Pawn pawn) {
-        RadiantOrderUtility.BondWithSpren(pawn);
+        SprenBondResult result = RadiantOrderUtility.TryBondWithSpren(pawn);
+        (string text, MessageTypeDef type) = result switch {
+            SprenBondResult.Offered => (
+                $"A spren approaches {pawn.NameShortColored}. Open the letter to choose an order - " +
+                "they are not a Surgebinder until they do.",
+                MessageTypeDefOf.PositiveEvent),
+            SprenBondResult.AlreadySurgebinder => (
+                $"{pawn.NameShortColored} is already a Surgebinder", MessageTypeDefOf.RejectInput),
+            SprenBondResult.InvestitureBlocked => (
+                $"{pawn.NameShortColored} has a hediff blocking Investiture", MessageTypeDefOf.RejectInput),
+            _ => (
+                $"{pawn.NameShortColored} broke a bond too recently to be offered another",
+                MessageTypeDefOf.RejectInput),
+        };
+
+        Messages.Message(text, pawn, type);
     }
 }

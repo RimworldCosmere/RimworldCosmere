@@ -74,9 +74,11 @@
         <description>A massive blade of terrible beauty, once bonded to a living spren. Now the spren is a deadeye — trapped in a mindless state — and the blade has become inert. It still cuts with impossible sharpness, but it requires ten heartbeats to summon and will never again respond to its wielder's thoughts. Dead Shardblades are feared and coveted across Roshar.</description>
         <thingClass>Cosmere.System.Roshar.Thing.Weapon.DeadShardblade</thingClass>
         <drawerType>RealtimeOnly</drawerType>
+        <!-- Folder + Graphic_Random: each dead blade picks one of the ten sword models by its
+             thingIDNumber, so the choice is stable for that blade and survives saves. -->
         <graphicData>
-            <texPath>Things/Weapon/Shardblade/SwordI</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Things/Weapon/Shardblade</texPath>
+            <graphicClass>Graphic_Random</graphicClass>
             <shaderType>CutoutAdvanced</shaderType>
             <drawSize>(1.5, 1.5)</drawSize>
         </graphicData>

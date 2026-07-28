@@ -131,7 +131,14 @@ public class CutoutAdvanced : ThingComp {
                 return null;
         }
 
-        graphic = graphic is Graphic_RandomRotated rotated ? rotated.SubGraphic : graphic;
+        // Resolve to the concrete subgraphic first. A collection graphic's own path is the folder,
+        // so the directory-stripping below would otherwise climb one level too far and look for the
+        // mask next to the folder instead of inside it.
+        graphic = graphic switch {
+            Graphic_RandomRotated rotated => rotated.SubGraphic,
+            Graphic_Random random => random.SubGraphicFor(parent),
+            _ => graphic,
+        };
         string path = graphic is Graphic_Multi multi ? multi.GraphicPath : graphic.path;
 
         if (material != null) {
@@ -154,7 +161,14 @@ public class CutoutAdvanced : ThingComp {
         block.Clear();
         block.SetTexture(CutoutAdvancedShaderProperties.MainTex, material.mainTexture);
         if (palettes.Count == 0) {
-            palettes = props.palettes;
+            // Ask the parent before falling back to the def. IDynamicPalette exists precisely so a
+            // Thing can derive its palette from runtime state - its stuff, its bonded pawn - and a
+            // Thing that never got one assigned (loaded from a save, or spawned outside PostMake)
+            // would otherwise bail out below and draw nothing at all.
+            palettes = parent is IDynamicPalette dynamicPalette ? dynamicPalette.GetMaterials() : props.palettes;
+            if (palettes.Count == 0) {
+                palettes = props.palettes;
+            }
         }
 
         if (palettes.NullOrEmpty()) {

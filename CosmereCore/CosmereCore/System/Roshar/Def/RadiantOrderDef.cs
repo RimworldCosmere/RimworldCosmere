@@ -27,6 +27,9 @@ public class RadiantOrderDef : Verse.Def {
     public List<Ideal> ideals = null!;
     public List<TraitRequirement> incompatibleTraits = null!;
     public Texture2D invertedIcon = null!;
+
+    /// <summary>The glyph as a flat white silhouette, for surfaces that want it unaccented.</summary>
+    public Texture2D whiteIcon = null!;
     public string sprenDescription = string.Empty;
     public string sprenLabel = string.Empty;
     public List<string> sprenNamePool = [];
@@ -71,6 +74,7 @@ public class RadiantOrderDef : Verse.Def {
             bannerIcon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/Banner{defName}");
             if (icon != null) {
                 invertedIcon = icon.CloneTexture().InvertColors();
+                whiteIcon = icon.CloneTexture().Silhouette(Color.white);
             }
 
             AssignTraitCompatibility();

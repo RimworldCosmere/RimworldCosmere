@@ -74,6 +74,31 @@ public static class TextureExtension {
         return texture;
     }
 
+    /// <summary>
+    ///     Flattens every pixel to <paramref name="color" /> while keeping the original alpha, giving a
+    ///     solid-colour silhouette of the artwork.
+    /// </summary>
+    /// <remarks>
+    ///     Needed because GUI.color multiplies: a glyph that is already painted red cannot be drawn
+    ///     white by tinting it, only darker. Recolouring the pixels is the only way.
+    /// </remarks>
+    public static Texture2D Silhouette(this Texture2D texture, Color color) {
+        if (!texture.isReadable) {
+            Logger.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
+            return texture;
+        }
+
+        Color[] pixels = texture.GetPixels();
+        for (int i = 0; i < pixels.Length; i++) {
+            pixels[i] = new Color(color.r, color.g, color.b, pixels[i].a);
+        }
+
+        texture.SetPixels(pixels);
+        texture.Apply();
+
+        return texture;
+    }
+
     public static Texture2D CloneTexture(this Texture2D original) {
         RenderTexture rt = RenderTexture.GetTemporary(original.width, original.height);
         Graphics.Blit(original, rt);

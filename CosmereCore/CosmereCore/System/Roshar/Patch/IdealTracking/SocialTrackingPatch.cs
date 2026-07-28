@@ -1,42 +1,41 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.TryInteractWith))]
-public static class SocialTrackingPatch {
-    private static readonly AccessTools.FieldRef<Pawn_InteractionsTracker, Pawn> PawnRef =
-        AccessTools.FieldRefAccess<Pawn>(typeof(Pawn_InteractionsTracker), "pawn");
+[Patch]
+public abstract class SocialTrackingPatch : Pawn_InteractionsTracker {
+    [InjectField("pawn")]
+    private readonly Pawn initiator = null!;
 
-    private static void Prefix(Pawn_InteractionsTracker __instance, Pawn recipient, out int __state) {
-        Pawn initiator = PawnRef(__instance);
-        __state = -999;
+    protected SocialTrackingPatch(Pawn pawn) : base(pawn) { }
 
+    // The opinion delta needs a reading from both sides of the interaction.
+    [Inject(At.Around, nameof(TryInteractWith))]
+    private bool AroundTryInteractWith(
+        Pawn? recipient,
+        InteractionDef intDef,
+        Operation<Pawn?, InteractionDef, bool> original
+    ) {
         Surgebinder? surgebinder = initiator.genes?.GetFirstGeneOfType<Surgebinder>();
-        if (surgebinder == null) return;
-        if (recipient?.relations == null) return;
+        bool tracked = surgebinder != null && recipient?.relations != null;
+        int oldOpinion = tracked ? recipient!.relations.OpinionOf(initiator) : 0;
 
-        __state = recipient.relations.OpinionOf(initiator);
-    }
+        bool result = original.Invoke(recipient, intDef);
 
-    private static void Postfix(Pawn_InteractionsTracker __instance, Pawn recipient, bool __result, int __state) {
-        if (!__result) return;
-        if (__state == -999) return;
+        if (!result || !tracked) return result;
 
-        Pawn initiator = PawnRef(__instance);
-        Surgebinder? surgebinder = initiator.genes?.GetFirstGeneOfType<Surgebinder>();
-        if (surgebinder == null) return;
-        if (recipient?.relations == null) return;
-
-        int newOpinion = recipient.relations.OpinionOf(initiator);
-        if (newOpinion > __state) {
+        int newOpinion = recipient!.relations.OpinionOf(initiator);
+        if (newOpinion > oldOpinion) {
             initiator.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_SocialHealing, 1);
         }
 
-        if (__state < 20 && newOpinion >= 20) {
+        if (oldOpinion < 20 && newOpinion >= 20) {
             initiator.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 1);
         }
+
+        return result;
     }
 }

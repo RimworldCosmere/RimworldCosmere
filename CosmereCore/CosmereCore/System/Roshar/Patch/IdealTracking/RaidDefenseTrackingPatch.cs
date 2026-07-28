@@ -1,27 +1,22 @@
-using System.Reflection;
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch]
-public static class RaidDefenseTrackingPatch {
-    private static MethodBase TargetMethod() {
-        return typeof(Lord).GetMethod("Cleanup", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-    }
+[Patch]
+public abstract class RaidDefenseTrackingPatch : Lord {
+    [Inject(At.Head, nameof(Cleanup))]
+    private void BeforeCleanup() {
+        if (Map == null) return;
+        if (faction == null || !faction.HostileTo(Faction.OfPlayer)) return;
 
-    [HarmonyPrefix]
-    private static void Prefix(Lord __instance) {
-        if (__instance.Map == null) return;
-        if (__instance.faction == null || !__instance.faction.HostileTo(Faction.OfPlayer)) return;
-
-        LordJob lordJob = __instance.LordJob;
+        LordJob lordJob = LordJob;
         if (lordJob is not LordJob_AssaultColony and not LordJob_AssaultThings) return;
 
-        List<Pawn> colonists = __instance.Map.mapPawns.FreeColonistsSpawned;
+        List<Pawn> colonists = Map.mapPawns.FreeColonistsSpawned;
         int downedCount = 0;
         int standingCount = 0;
 

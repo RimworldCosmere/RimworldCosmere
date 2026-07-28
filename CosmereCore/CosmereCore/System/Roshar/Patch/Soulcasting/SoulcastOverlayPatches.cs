@@ -1,14 +1,15 @@
+using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
 using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Soulcasting;
 
-[HarmonyPatch(typeof(MapInterface), nameof(MapInterface.MapInterfaceUpdate))]
-public static class SoulcastOverlayPatch {
-    private static void Postfix() {
+[Patch]
+public abstract class SoulcastOverlayPatch : MapInterface {
+    [Inject(At.Return, nameof(MapInterfaceUpdate))]
+    private void AfterMapInterfaceUpdate() {
         Map? map = Find.CurrentMap;
         if (map != null) {
             SoulcastOverlay.Draw(map);
@@ -17,11 +18,15 @@ public static class SoulcastOverlayPatch {
     }
 }
 
-[HarmonyPatch(typeof(DesignationManager), nameof(DesignationManager.RemoveDesignation))]
-public static class DesignationRemovedPatch {
-    private static void Postfix(DesignationManager __instance, Designation des) {
+[Patch(typeof(DesignationManager))]
+public abstract class DesignationRemovedPatch {
+    [InjectInstance]
+    protected abstract DesignationManager Self { get; }
+
+    [Inject(At.Return, nameof(DesignationManager.RemoveDesignation))]
+    private void AfterRemoveDesignation(Designation des) {
         if (des.def == Designator_Soulcast.DesignationDef) {
-            SoulcastOverlay.Remove(des.target.Cell, __instance.map);
+            SoulcastOverlay.Remove(des.target.Cell, Self.map);
         }
     }
 }

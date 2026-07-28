@@ -1,28 +1,29 @@
+using Concord;
 using Cosmere.System.Scadrial.Util;
-using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Allomancy;
 
-[HarmonyPatch(typeof(Caravan), "TickInterval")]
-public static class CaravanBronzeDetectionPatch {
+[Patch]
+public abstract class CaravanBronzeDetectionPatch : Caravan {
     private static readonly Dictionary<int, int> lastKnownTile = [];
 
-    [HarmonyPostfix]
-    public static void Postfix(Caravan __instance) {
-        if (!__instance.IsPlayerControlled) return;
+    [Inject(At.Return, nameof(TickInterval))]
+    private void AfterTickInterval() {
+        Caravan self = this;
+        if (!self.IsPlayerControlled) return;
 
-        int caravanId = __instance.ID;
-        int currentTile = __instance.Tile;
+        int caravanId = self.ID;
+        int currentTile = self.Tile;
 
         bool isFirstSeen = !lastKnownTile.TryGetValue(caravanId, out int previousTile);
         lastKnownTile[caravanId] = currentTile;
 
         if (isFirstSeen || previousTile == currentTile) return;
 
-        List<Pawn> pawns = __instance.PawnsListForReading;
+        List<Pawn> pawns = self.PawnsListForReading;
         if (!AllomancyUtility.CaravanHasActiveBronzeSeeker(pawns)) return;
 
         string? resourceReport = BronzeDetectionUtility.GetTileResourceReport(currentTile);

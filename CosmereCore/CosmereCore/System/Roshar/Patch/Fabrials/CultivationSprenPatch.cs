@@ -1,15 +1,14 @@
-using System.Diagnostics.CodeAnalysis;
+using Concord;
 using Cosmere.System.Roshar.Comp.Fabrials;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.Thing.Building;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Fabrials;
 
-[HarmonyPatch(typeof(Plant), "get_GrowthRate")]
-public static class CultivationSprenPatch {
+[Patch]
+public abstract class CultivationSprenPatch : Plant {
     private static readonly List<Building> ActiveLifeSprenBuildings = [];
 
     public static void RegisterBuilding(Building building) {
@@ -24,25 +23,26 @@ public static class CultivationSprenPatch {
         ActiveLifeSprenBuildings.Remove(building);
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public static void Postfix(Plant __instance, ref float __result) {
-        if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 1) {
+    [Inject(At.Return, nameof(GrowthRate))]
+    private void AfterGrowthRate(ControlHandle<float> ch) {
+        Plant self = this;
+        if (self.Spawned && IsNearLifeSprenBuilding(self) == 1) {
             bool resting = true;
-            if (!(GenLocalDate.DayPercent(__instance) < 0.25f)) {
-                resting = GenLocalDate.DayPercent(__instance) > 0.8f;
+            if (!(GenLocalDate.DayPercent(self) < 0.25f)) {
+                resting = GenLocalDate.DayPercent(self) > 0.8f;
             }
 
-            if (__instance.LifeStage != PlantLifeStage.Growing || resting) {
-                __result *= 1f;
+            if (self.LifeStage != PlantLifeStage.Growing || resting) {
+                ch.ReturnValue *= 1f;
                 return;
             }
 
-            __result *= 1.25f;
+            ch.ReturnValue *= 1.25f;
             return;
         }
 
-        if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 2) {
-            __result *= 0.25f;
+        if (self.Spawned && IsNearLifeSprenBuilding(self) == 2) {
+            ch.ReturnValue *= 0.25f;
         }
     }
 
@@ -59,7 +59,7 @@ public static class CultivationSprenPatch {
                     return 1;
                 }
             } else if (thing is FabrialBasicDiminisher diminisher &&
-                         plantPos.DistanceTo(diminisher.Position) <= 5f) {
+                       plantPos.DistanceTo(diminisher.Position) <= 5f) {
                 BasicFabrialDiminisher? comp = diminisher.GetComp<BasicFabrialDiminisher>();
                 if (comp is { powerOn: true } && comp.currentSpren == SprenType.Lifespren) {
                     return 2;

@@ -1,19 +1,22 @@
+using Concord;
 using Cosmere.System.Roshar.Util;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 
-[HarmonyPatch(typeof(Region), nameof(Region.DangerFor))]
-public static class HighstormDangerPatch {
-    [HarmonyPostfix]
-    public static void Postfix(Region __instance, Pawn p, ref Danger __result) {
-        if (__result == Danger.Deadly) return;
+[Patch(typeof(Region))]
+public abstract class HighstormDangerPatch {
+    [InjectInstance]
+    protected abstract Region Self { get; }
 
-        Room room = __instance.Room;
+    [Inject(At.Return, nameof(Region.DangerFor))]
+    private void AfterDangerFor(Pawn p, ControlHandle<Danger> ch) {
+        if (ch.ReturnValue == Danger.Deadly) return;
+
+        Room room = Self.Room;
         if (room == null || !room.PsychologicallyOutdoors) return;
 
-        Map map = __instance.Map;
+        Map map = Self.Map;
         if (map == null) return;
 
         if (StormlightUtility.IsHighstormImmune(p)) return;
@@ -21,7 +24,7 @@ public static class HighstormDangerPatch {
         List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
         for (int i = 0; i < conditions.Count; i++) {
             if (conditions[i] is Cosmere.System.Roshar.GameCondition.Highstorm hs && hs.IsDangerousPhase) {
-                __result = Danger.Deadly;
+                ch.ReturnValue = Danger.Deadly;
                 return;
             }
         }

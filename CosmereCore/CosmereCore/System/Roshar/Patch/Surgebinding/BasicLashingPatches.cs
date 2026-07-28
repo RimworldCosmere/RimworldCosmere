@@ -1,5 +1,5 @@
+using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Gravitation;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -7,28 +7,32 @@ using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.DrawPos), MethodType.Getter)]
-public static class BasicLashingFloatPatch {
+[Patch]
+public abstract class BasicLashingFloatPatch : Pawn {
     private const float FloatHeight = 0.5f;
 
-    private static void Postfix(Pawn __instance, ref Vector3 __result) {
-        if (!BasicLashing.FlyingPawns.Contains(__instance)) return;
+    [Inject(At.Return, nameof(DrawPos))]
+    private void AfterDrawPos(ControlHandle<Vector3> ch) {
+        Pawn self = this;
+        if (!BasicLashing.FlyingPawns.Contains(self)) return;
 
-        __result += new Vector3(0f, 0f, FloatHeight);
+        ch.ReturnValue += new Vector3(0f, 0f, FloatHeight);
     }
 }
 
-[HarmonyPatch(typeof(Verb_MeleeAttack), "TryCastShot")]
-public static class BasicLashingMeleeBlockPatch {
-    private static bool Prefix(Verb_MeleeAttack __instance, ref bool __result) {
-        if (__instance.CurrentTarget.Thing is not Pawn targetPawn) return true;
-        if (!BasicLashing.FlyingPawns.Contains(targetPawn)) return true;
+[Patch]
+public abstract class BasicLashingMeleeBlockPatch : Verb_MeleeAttack {
+    [Inject(At.Head, nameof(TryCastShot))]
+    private Control BeforeTryCastShot(ControlHandle<bool> ch) {
+        Verb_MeleeAttack self = this;
+        if (self.CurrentTarget.Thing is not Pawn targetPawn) return Control.Continue;
+        if (!BasicLashing.FlyingPawns.Contains(targetPawn)) return Control.Continue;
 
-        Pawn? attacker = __instance.CasterPawn;
-        if (attacker == null) return true;
-        if (BasicLashing.FlyingPawns.Contains(attacker)) return true;
+        Pawn? attacker = self.CasterPawn;
+        if (attacker == null) return Control.Continue;
+        if (BasicLashing.FlyingPawns.Contains(attacker)) return Control.Continue;
 
-        __result = false;
-        return false;
+        ch.ReturnValue = false;
+        return Control.Cancel;
     }
 }

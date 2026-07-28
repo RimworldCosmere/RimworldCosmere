@@ -1,5 +1,5 @@
+using Concord;
 using Cosmere.Core.Ability;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.Profile;
@@ -27,10 +27,10 @@ public class Invisibility : SurgebindingAbility {
         InvisiblePawns.Remove(pawn);
     }
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [Patch(typeof(MemoryUtility))]
     public static class InvisibilityStateClearer {
-        [HarmonyPostfix]
-        public static void Postfix() {
+        [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+        private static void AfterClearAllMapsAndWorld() {
             InvisiblePawns.Clear();
         }
     }

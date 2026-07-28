@@ -1,27 +1,28 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(
-    typeof(Pawn_RelationsTracker),
-    nameof(Pawn_RelationsTracker.RemoveDirectRelation),
-    typeof(PawnRelationDef),
-    typeof(Pawn)
-)]
-public static class RelationshipLossTrackingPatch {
-    private static readonly AccessTools.FieldRef<Pawn_RelationsTracker, Pawn> PawnRef =
-        AccessTools.FieldRefAccess<Pawn>(typeof(Pawn_RelationsTracker), "pawn");
+[Patch]
+public abstract class RelationshipLossTrackingPatch : Pawn_RelationsTracker {
+    [InjectField("pawn")]
+    private readonly Pawn trackedPawn = null!;
 
-    private static void Prefix(Pawn_RelationsTracker __instance, PawnRelationDef def, Pawn otherPawn) {
-        Pawn pawn = PawnRef(__instance);
-        if (pawn == null || pawn.Dead) return;
+    protected RelationshipLossTrackingPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(
+        At.Head,
+        nameof(RemoveDirectRelation),
+        parameterTypes: [typeof(PawnRelationDef), typeof(Pawn)]
+    )]
+    private void BeforeRemoveDirectRelation(PawnRelationDef def, Pawn otherPawn) {
+        if (trackedPawn == null || trackedPawn.Dead) return;
 
         if (!IsCloseRelation(def)) return;
 
-        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+        Surgebinder? surgebinder = trackedPawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return;
 
         surgebinder.OnRelationshipLost();

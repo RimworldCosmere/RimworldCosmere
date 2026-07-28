@@ -1,5 +1,5 @@
+using Concord;
 using Cosmere.Core.Comp.Game;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -12,11 +12,12 @@ namespace Cosmere.Core.Patch.World;
 //
 // Verified as vanilla by disabling every Cosmere pawn generation patch in turn -
 // the failure persisted with all of them off.
-[HarmonyPatch(typeof(GenStep_Monolith), "ScatterAt")]
-public static class MonolithSkipPatch {
-    private static bool Prefix() {
+[Patch]
+public abstract class MonolithSkipPatch : GenStep_Monolith {
+    [Inject(At.Head, nameof(ScatterAt))]
+    private Control BeforeScatterAt() {
         Shards? shards = Current.Game?.GetComponent<Shards>();
 
-        return shards == null || shards.enabledShards.Count == 0;
+        return shards == null || shards.enabledShards.Count == 0 ? Control.Continue : Control.Cancel;
     }
 }

@@ -1,16 +1,18 @@
+using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Tension;
-using HarmonyLib;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;
 
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.MaxHitPoints), MethodType.Getter)]
-public static class HardenMaxHpPatch {
-    private static void Postfix(Verse.Thing __instance, ref int __result) {
-        if (__instance is not Building building) return;
+[Patch]
+public abstract class HardenMaxHpPatch : Verse.Thing {
+    [Inject(At.Return, nameof(MaxHitPoints))]
+    private void AfterMaxHitPoints(ControlHandle<int> ch) {
+        Verse.Thing self = this;
+        if (self is not Building building) return;
         if (!Harden.TryGetHardenMultiplier(building, out float multiplier)) return;
 
-        __result = Mathf.RoundToInt(__result * (1f + multiplier));
+        ch.ReturnValue = Mathf.RoundToInt(ch.ReturnValue * (1f + multiplier));
     }
 }

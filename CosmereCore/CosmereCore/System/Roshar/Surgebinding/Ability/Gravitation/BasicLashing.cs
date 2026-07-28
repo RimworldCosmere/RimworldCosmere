@@ -1,6 +1,6 @@
+using Concord;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Surgebinding.Util;
-using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -150,10 +150,10 @@ public class BasicLashing : SurgebindingAbility {
         return true;
     }
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [Patch(typeof(MemoryUtility))]
     public static class BasicLashingStateClearer {
-        [HarmonyPostfix]
-        public static void Postfix() {
+        [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+        private static void AfterClearAllMapsAndWorld() {
             FlyingPawns.Clear();
         }
     }

@@ -1,13 +1,14 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(GenGuest), nameof(GenGuest.PrisonerRelease))]
+[Patch(typeof(GenGuest))]
 public static class PrisonerReleaseTrackingPatch {
-    private static void Postfix(Pawn p) {
+    [Inject(At.Return, nameof(GenGuest.PrisonerRelease))]
+    private static void AfterPrisonerRelease(Pawn p) {
         if (p?.Map == null) return;
 
         List<Pawn> colonists = p.Map.mapPawns.FreeColonistsSpawned;
@@ -22,15 +23,14 @@ public static class PrisonerReleaseTrackingPatch {
     }
 }
 
-[HarmonyPatch(
-    typeof(InteractionWorker_RecruitAttempt),
-    nameof(InteractionWorker_RecruitAttempt.DoRecruit),
-    typeof(Pawn),
-    typeof(Pawn),
-    typeof(bool)
-)]
-public static class RecruitTrackingPatch {
-    private static void Postfix(Pawn recruiter, Pawn recruitee) {
+[Patch]
+public abstract class RecruitTrackingPatch : InteractionWorker_RecruitAttempt {
+    [Inject(
+        At.Return,
+        nameof(DoRecruit),
+        parameterTypes: [typeof(Pawn), typeof(Pawn), typeof(bool)]
+    )]
+    private static void AfterDoRecruit(Pawn recruiter, Pawn recruitee) {
         if (recruiter == null) return;
 
         Surgebinder? surgebinder = recruiter.genes?.GetFirstGeneOfType<Surgebinder>();
@@ -41,9 +41,10 @@ public static class RecruitTrackingPatch {
     }
 }
 
-[HarmonyPatch(typeof(ExecutionUtility), nameof(ExecutionUtility.DoExecutionByCut))]
+[Patch(typeof(ExecutionUtility))]
 public static class ExecutionTrackingPatch {
-    private static void Postfix(Pawn executioner, Pawn victim) {
+    [Inject(At.Return, nameof(ExecutionUtility.DoExecutionByCut))]
+    private static void AfterDoExecutionByCut(Pawn executioner, Pawn victim) {
         if (executioner == null) return;
 
         Surgebinder? surgebinder = executioner.genes?.GetFirstGeneOfType<Surgebinder>();

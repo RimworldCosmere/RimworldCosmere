@@ -1,11 +1,11 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.World;
 
-[HarmonyPatch]
+[Patch(typeof(Verse.PawnGenerator))]
 public static class RosharGeneGenerationPatch {
     private static readonly string[] DahnGenes = [
         "Cosmere_Roshar_Gene_Dahn_High",
@@ -23,9 +23,8 @@ public static class RosharGeneGenerationPatch {
 
     private static readonly float[] NahnWeights = [0.2f, 0.5f, 0.3f];
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(Verse.PawnGenerator), "GenerateGenes")]
-    public static void PostfixGenerateGenes(Pawn? pawn, PawnGenerationRequest request) {
+    [Inject(At.Return, "GenerateGenes")]
+    private static void AfterGenerateGenes(Pawn? pawn, PawnGenerationRequest request) {
         if (pawn?.RaceProps.Humanlike != true) return;
         if (pawn.genes == null) return;
 

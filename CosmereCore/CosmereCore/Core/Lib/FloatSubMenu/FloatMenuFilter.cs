@@ -1,11 +1,14 @@
 ﻿using System;
-using HarmonyLib;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Lib.FloatSubMenu;
 
 internal class FloatMenuFilter {
+    private static readonly FieldInfo OptionsField =
+        typeof(FloatMenu).GetField("options", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
     private (Func<FloatMenuOption, bool>? predicate, bool reset, bool recursive) delayed;
     private List<FloatMenuOption> filtered = null!;
     private FloatMenu? initialized;
@@ -48,9 +51,8 @@ internal class FloatMenuFilter {
     }
 
     protected void Init(FloatMenu floatMenu, Action? action) {
-        Traverse<List<FloatMenuOption>> listField = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options");
-        options = listField.Value;
-        listField.Value = filtered = options.ToList();
+        options = (List<FloatMenuOption>)OptionsField.GetValue(floatMenu);
+        OptionsField.SetValue(floatMenu, filtered = options.ToList());
         initialized = floatMenu;
         action?.Invoke();
         if (delayed.predicate != null) {

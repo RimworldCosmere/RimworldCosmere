@@ -1,12 +1,13 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(PawnGenerator), "GenerateBodyType")]
+[Patch(typeof(PawnGenerator))]
 public static class PawnBodyTypeFallbackPatch {
-    public static void Postfix(Pawn pawn) {
+    [Inject(At.Return, "GenerateBodyType")]
+    private static void AfterGenerateBodyType(Pawn pawn) {
         if (pawn?.story == null) return;
         if (pawn.story.bodyType != null) return;
         if (pawn.RaceProps == null || !pawn.RaceProps.Humanlike) return;

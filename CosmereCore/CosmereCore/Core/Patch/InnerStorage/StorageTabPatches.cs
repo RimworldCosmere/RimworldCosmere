@@ -1,17 +1,21 @@
+using Concord;
 using Cosmere.Core.Tab;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 
-[HarmonyPatch]
-public static class StorageTabPatch {
-    [HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.GetInspectTabs))]
-    [HarmonyPostfix]
-    public static IEnumerable<InspectTabBase> PostfixGetInspectTabs(
+[Patch]
+public abstract class StorageTabPatch : Verse.Thing {
+    [Inject(At.Return, nameof(GetInspectTabs))]
+    private void AfterGetInspectTabs(ControlHandle<IEnumerable<InspectTabBase>> ch) {
+        Verse.Thing self = this;
+        ch.ReturnValue = WithStorageTabs(ch.ReturnValue, self);
+    }
+
+    private static IEnumerable<InspectTabBase> WithStorageTabs(
         IEnumerable<InspectTabBase>? values,
-        Verse.Thing __instance
+        Verse.Thing instance
     ) {
         if (values != null) {
             foreach (InspectTabBase tab in values) {
@@ -19,7 +23,7 @@ public static class StorageTabPatch {
             }
         }
 
-        if (__instance is not Pawn pawn) yield break;
+        if (instance is not Pawn pawn) yield break;
         if (pawn.apparel == null) yield break;
 
         HashSet<string> seenTabNames = [];

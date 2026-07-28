@@ -1,14 +1,15 @@
-﻿using Cosmere.Core.DefModExtension;
+using Concord;
+using Cosmere.Core.DefModExtension;
 using Cosmere.Core.Util;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(PageUtility), nameof(PageUtility.StitchedPages))]
+[Patch(typeof(PageUtility))]
 public static class LockShardSelectionPatch {
-    private static void Prefix(ref IEnumerable<RimWorld.Page> pages) {
+    [Inject(At.Head, nameof(PageUtility.StitchedPages))]
+    private static void BeforeStitchedPages() {
         string? scenarioName = Find.Scenario?.name;
         ScenarioDef? def = DefDatabase<ScenarioDef>.AllDefsListForReading.FirstOrDefault(x => x.label == scenarioName);
         Shards? shards = def?.GetModExtension<Shards>();

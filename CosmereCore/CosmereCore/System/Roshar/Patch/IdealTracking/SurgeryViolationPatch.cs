@@ -1,15 +1,15 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Recipe_Surgery), "CheckSurgeryFail")]
-public static class SurgeryViolationPatch {
-    private static void Postfix(bool __result, Pawn surgeon, Pawn patient) {
-        if (!__result) return;
+[Patch]
+public abstract class SurgeryViolationPatch : Recipe_Surgery {
+    [Inject(At.Return, nameof(CheckSurgeryFail))]
+    private void AfterCheckSurgeryFail(Pawn surgeon, Pawn patient, ControlHandle<bool> ch) {
+        if (!ch.ReturnValue) return;
         if (surgeon == null || patient == null) return;
 
         if (ViolationUtility.IsSurgebinderOfOrder(surgeon, RadiantOrderDefOf.Truthwatcher)) {

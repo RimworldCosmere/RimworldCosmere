@@ -1,18 +1,18 @@
+using Concord;
 using Cosmere.System.Roshar.Comp.Map;
-using HarmonyLib;
 using RimWorld;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 
-[HarmonyPatch(typeof(MainTabWindow_Architect), nameof(MainTabWindow_Architect.WindowUpdate))]
-public static class StormlightOverlayPatch {
+[Patch]
+public abstract class StormlightOverlayPatch : MainTabWindow_Architect {
     private static string? stormlightCategoryDefName;
 
-    [HarmonyPostfix]
-    public static void Postfix(MainTabWindow_Architect __instance) {
+    [Inject(At.Return, nameof(WindowUpdate))]
+    private void AfterWindowUpdate() {
         stormlightCategoryDefName ??= "Cosmere_Roshar_DesignationStormlight";
 
-        ArchitectCategoryTab? openTab = __instance.selectedDesPanel;
+        ArchitectCategoryTab? openTab = selectedDesPanel;
         if (openTab != null && openTab.def.defName == stormlightCategoryDefName) {
             StormlightOverlayDrawHandler.DrawThisFrame();
         }

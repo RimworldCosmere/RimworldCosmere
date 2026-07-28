@@ -1,7 +1,7 @@
+using Concord;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Surgebinding.Util;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -124,10 +124,10 @@ public class WindsprenShield : SurgebindingAbility {
         }
     }
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [Patch(typeof(MemoryUtility))]
     public static class WindsprenShieldStateClearer {
-        [HarmonyPostfix]
-        public static void Postfix() {
+        [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+        private static void AfterClearAllMapsAndWorld() {
             ShieldedPawns.Clear();
         }
     }

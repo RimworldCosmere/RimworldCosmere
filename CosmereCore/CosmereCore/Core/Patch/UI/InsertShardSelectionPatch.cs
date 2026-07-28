@@ -1,12 +1,12 @@
-﻿using Cosmere.Core.Page;
-using HarmonyLib;
+using Concord;
+using Cosmere.Core.Page;
 using RimWorld;
 using Verse;
 using DefModExtension_Shards = Cosmere.Core.DefModExtension.Shards;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(PageUtility), nameof(PageUtility.StitchedPages))]
+[Patch(typeof(PageUtility))]
 public static class InsertShardSelectionPatch {
     private static bool allowShardChange {
         get {
@@ -19,7 +19,8 @@ public static class InsertShardSelectionPatch {
         }
     }
 
-    private static void Prefix(ref IEnumerable<RimWorld.Page> pages) {
+    [Inject(At.Head, nameof(PageUtility.StitchedPages))]
+    private static void BeforeStitchedPages(IEnumerable<RimWorld.Page> pages) {
         if (!allowShardChange) {
             return;
         }

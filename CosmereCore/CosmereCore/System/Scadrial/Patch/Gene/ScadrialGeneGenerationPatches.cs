@@ -1,14 +1,13 @@
-﻿using HarmonyLib;
+using Concord;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 
 namespace Cosmere.System.Scadrial.Patch.Gene;
 
-[HarmonyPatch]
+[Patch(typeof(Verse.PawnGenerator))]
 public static class ScadrialGeneGenerationPatch {
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(Verse.PawnGenerator), "GenerateGenes")]
-    public static void PostfixGenerateGenes(Pawn? pawn, PawnGenerationRequest request) {
+    [Inject(At.Return, "GenerateGenes")]
+    private static void AfterGenerateGenes(Pawn? pawn, PawnGenerationRequest request) {
         if (pawn?.RaceProps.Humanlike != true) {
             return;
         }

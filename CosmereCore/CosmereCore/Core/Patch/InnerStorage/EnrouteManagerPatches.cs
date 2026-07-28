@@ -1,42 +1,36 @@
-using System.Reflection;
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 
-[HarmonyPatch]
-public static class EnrouteManagerPatch {
-    private static readonly MethodInfo GetOrAddTracker = AccessTools.Method(
-        typeof(EnrouteManager),
-        "GetOrAddTracker"
-    );
+[Patch]
+public abstract class EnrouteManagerAddEnroutePatch : EnrouteManager {
+    protected EnrouteManagerAddEnroutePatch(Map map) : base(map) { }
 
-    [HarmonyPatch(typeof(EnrouteManager), nameof(EnrouteManager.AddEnroute))]
-    [HarmonyPrefix]
-    public static bool PrefixAddEnroute(
-        EnrouteManager __instance,
-        IHaulEnroute container,
-        Pawn pawn,
-        ThingDef stuff,
-        int count
-    ) {
-        if (container is not Comp.Thing.InnerStorage innerStorage) return true;
+    [InjectMethod("GetOrAddTracker")]
+    protected abstract ThingCountTracker GetOrAddTrackerFor(IHaulEnroute container);
 
-        ThingCountTracker tracker = (ThingCountTracker)GetOrAddTracker.Invoke(__instance, [innerStorage]);
+    [Inject(At.Head, nameof(AddEnroute))]
+    private Control BeforeAddEnroute(IHaulEnroute container, Pawn pawn, ThingDef stuff, int count) {
+        if (container is not Comp.Thing.InnerStorage innerStorage) return Control.Continue;
+
+        ThingCountTracker tracker = GetOrAddTrackerFor(innerStorage);
         tracker.Add(pawn, stuff, count);
 
         pawn.MapHeld.events.Notify_HaulEnrouteAdded(innerStorage.ParentThing, pawn, stuff, count);
-        return false;
+        return Control.Cancel;
     }
+}
 
-    [HarmonyPatch(typeof(ThingCountTracker), nameof(ThingCountTracker.ParentThing), MethodType.Getter)]
-    [HarmonyPrefix]
-    public static bool PrefixGetParentThing(ThingCountTracker __instance, ref Verse.Thing __result) {
-        if (__instance.parent is not Comp.Thing.InnerStorage innerStorage) return true;
+[Patch]
+public abstract class ThingCountTrackerParentThingPatch : ThingCountTracker {
+    [Inject(At.Head, nameof(ParentThing))]
+    private Control BeforeParentThing(ControlHandle<Verse.Thing> ch) {
+        if (parent is not Comp.Thing.InnerStorage innerStorage) return Control.Continue;
 
-        __result = innerStorage.ParentThing!;
-        return false;
+        ch.ReturnValue = innerStorage.ParentThing!;
+        return Control.Cancel;
     }
 }

@@ -1,27 +1,39 @@
-﻿using Cosmere.Core.Thing;
-
-using HarmonyLib;
+using System;
+using Concord;
+using Cosmere.Core.Thing;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Pawn_FlightTracker))]
-public static class PermanentFlightForSplinterPatch {
-    [HarmonyPatch(nameof(Pawn_FlightTracker.FlightTick))]
-    [HarmonyPostfix]
-    public static void PostfixFlightTick(Pawn ___pawn, ref int ___flyingTicks, ref int ___flightState) {
-        if (___pawn is Splinter) {
-            ___flyingTicks = 0;
-            ___flightState = 1;
+[Patch]
+public abstract class PermanentFlightForSplinterPatch : Pawn_FlightTracker {
+    [InjectField("pawn")]
+    private readonly Pawn trackedPawn = null!;
+
+    [InjectField("flyingTicks")]
+    private int flyingTicks;
+
+    // Pawn_FlightTracker.FlightState is a private nested enum, so its type cannot be named here.
+    // Declaring the field as object is Concord's escape hatch for exactly that: the access is
+    // still emitted against the real field, boxed on read and unboxed on write.
+    [InjectField("flightState")]
+    private object flightState = null!;
+
+    protected PermanentFlightForSplinterPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(FlightTick))]
+    private void AfterFlightTick() {
+        if (trackedPawn is Splinter) {
+            flyingTicks = 0;
+
+            // FlightState.Flying
+            flightState = Enum.ToObject(flightState.GetType(), 1);
         }
     }
 
-    [HarmonyPatch(nameof(Pawn_FlightTracker.ForceLand))]
-    [HarmonyPrefix]
-    public static bool PrefixForceLand(Pawn ___pawn) {
-        if (___pawn is Splinter) return false;
-
-        return true;
+    [Inject(At.Head, nameof(ForceLand))]
+    private Control BeforeForceLand() {
+        return trackedPawn is Splinter ? Control.Cancel : Control.Continue;
     }
 }

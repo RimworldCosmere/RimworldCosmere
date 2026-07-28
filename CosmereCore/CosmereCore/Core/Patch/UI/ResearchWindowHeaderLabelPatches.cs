@@ -1,15 +1,17 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch]
-public static class ResearchWindowHeaderLabelPatch {
-    [HarmonyPatch(typeof(MainTabWindow_Research), "HeaderLabel")]
-    [HarmonyPostfix]
-    public static bool Prefix(ResearchPrerequisitesUtility.UnlockedHeader headerProject, ref string __result) {
-        __result = string.Join(
+[Patch]
+public abstract class ResearchWindowHeaderLabelPatch : MainTabWindow_Research {
+    [Inject(At.Head, "HeaderLabel")]
+    private Control BeforeHeaderLabel(
+        ResearchPrerequisitesUtility.UnlockedHeader headerProject,
+        ControlHandle<string> ch
+    ) {
+        ch.ReturnValue = string.Join(
             ", ",
             headerProject.unlockedBy.Select<ResearchProjectDef, object>(rp =>
                 rp.IsFinished
@@ -18,6 +20,6 @@ public static class ResearchWindowHeaderLabelPatch {
             )
         );
 
-        return false; // Skip original method
+        return Control.Cancel;
     }
 }

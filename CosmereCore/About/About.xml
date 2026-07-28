@@ -15,8 +15,14 @@
             <packageId>Ludeon.RimWorld.Biotech</packageId>
             <displayName>Biotech</displayName>
         </li>
+        <li>
+            <packageId>concordlib.concord</packageId>
+            <displayName>Concord</displayName>
+            <downloadUrl>https://github.com/ConcordLib/RimWorld/releases/latest</downloadUrl>
+        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
+        <li>concordlib.concord</li>
     </forceLoadAfter>
 </ModMetaData>

@@ -1,59 +1,60 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
+using Concord;
 using Cosmere.Core.Util;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 
-[HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.TryOpportunisticJob))]
-public static class TryOpportunisticJobPatch {
-    private static int patchedCount;
+[Patch]
+public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
+    private static readonly MethodInfo? HaulMethod = typeof(HaulUtility).GetMethod(
+        nameof(HaulUtility.PawnHaulThingToInnerStorage),
+        [typeof(Pawn), typeof(Verse.Thing), typeof(IHaulDestination)]
+    );
 
-    [HarmonyPrepare]
-    public static bool Prepare() {
-        LongEventHandler.ExecuteWhenFinished(() => {
-            if (patchedCount != 2) {
-                Logger.Warning("Pawn_JobTracker.TryOpportunisticJob transpiler could not be applied.");
-            }
-        }
-        );
-        return true;
-    }
+    private static readonly MethodInfo ParentThingGetter =
+        typeof(Comp.Thing.InnerStorage).GetProperty("ParentThing")!.GetGetMethod();
 
-    [HarmonyTranspiler]
-    public static IEnumerable<CodeInstruction> AddInnerStorageCheck(
+    private static readonly MethodInfo PositionGetter =
+        typeof(Verse.Thing).GetProperty("Position")!.GetGetMethod();
+
+    private static readonly FieldInfo? JobTrackerPawn = typeof(Pawn_JobTracker).GetField(
+        "pawn",
+        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+    );
+
+    protected TryOpportunisticJobPatch(Pawn newPawn) : base(newPawn) { }
+
+    [Inject(At.Transpiler, nameof(TryOpportunisticJob))]
+    private static IEnumerable<CodeInstruction> AddInnerStorageCheck(
         IEnumerable<CodeInstruction> instructions,
-        ILGenerator generator
+        ITranspilerContext context
     ) {
-        patchedCount = 0;
+        Type innerStorageType = typeof(Comp.Thing.InnerStorage);
+
         List<CodeInstruction> code = instructions.ToList();
 
-        // Labels to skip to if cast fails
-        Label continueLabelOne = generator.DefineLabel();
-        Label continueLabelTwo = generator.DefineLabel();
+        // Qualified: Concord.Label collides with System.Reflection.Emit.Label, and this file
+        // needs the latter's OpCodes.
+        Concord.Label continueLabelOne = context.DefineLabel();
+        Concord.Label continueLabelTwo = context.DefineLabel();
 
-        MethodInfo? haulMethod = AccessTools.Method(
-            typeof(HaulUtility),
-            nameof(HaulUtility.PawnHaulThingToInnerStorage),
-            [typeof(Pawn), typeof(Verse.Thing), typeof(IHaulDestination)]
-        );
+        LocalRef innerStorage = context.DeclareLocal(innerStorageType);
+        LocalRef haulDestination = default;
 
-        Type innerStorageType = typeof(Comp.Thing.InnerStorage);
-        LocalBuilder innerStorage = generator.DeclareLocal(innerStorageType);
-
-        LocalBuilder? haulDestination = null;
-        LocalBuilder? intVec3 = null;
+        // Local, not a field: Concord reruns transpilers on every recompose of the target.
+        int patchedCount = 0;
 
         for (int i = 0; i < code.Count; i++) {
             if (i == 0) continue;
 
             if (!code[i - 1].opcode.Equals(OpCodes.Ldloc_S)) continue;
             if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
-            if (!code[i].operand.Equals(typeof(ISlotGroupParent))) continue;
+            if (code[i].operand is not Type operand || operand != typeof(ISlotGroupParent)) continue;
             if (patchedCount > 2) {
                 Logger.Warning(
                     "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
@@ -63,29 +64,19 @@ public static class TryOpportunisticJobPatch {
 
             List<CodeInstruction> newInstructions = [];
             if (patchedCount == 0) {
-                haulDestination = (LocalBuilder)code[i - 1].operand;
-                intVec3 = (LocalBuilder)code[i + 3].operand;
+                haulDestination = (LocalRef)code[i - 1].operand!;
+                LocalRef intVec3 = (LocalRef)code[i + 3].operand!;
                 object? skipLabel = code[i + 4].operand;
                 newInstructions.AddRange(
                     [
                         new CodeInstruction(OpCodes.Isinst, innerStorageType), // is InnerStorage?
-                        new CodeInstruction(OpCodes.Stloc_S, innerStorage.LocalIndex), // Store in `innerStorage`
-                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage.LocalIndex), // Load from `innerStorage`
+                        new CodeInstruction(OpCodes.Stloc_S, innerStorage), // Store in `innerStorage`
+                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
                         new CodeInstruction(OpCodes.Brfalse_S, continueLabelOne), // skip if not
 
-                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage.LocalIndex), // Load from `innerStorage`
-
-                        // Call the getter for ParentThing
-                        new CodeInstruction(
-                            OpCodes.Call,
-                            AccessTools.Property(typeof(Comp.Thing.InnerStorage), "ParentThing").GetGetMethod()
-                        ),
-
-                        // Call the getter for Position on the Thing
-                        new CodeInstruction(
-                            OpCodes.Call,
-                            AccessTools.Property(typeof(Verse.Thing), "Position").GetGetMethod()
-                        ),
+                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
+                        new CodeInstruction(OpCodes.Call, ParentThingGetter),
+                        new CodeInstruction(OpCodes.Call, PositionGetter),
                         new CodeInstruction(OpCodes.Stloc_S, intVec3),
                         new CodeInstruction(OpCodes.Br_S, skipLabel),
                         new CodeInstruction(OpCodes.Ldloc_S, haulDestination)
@@ -101,15 +92,13 @@ public static class TryOpportunisticJobPatch {
                         new CodeInstruction(OpCodes.Brfalse_S, continueLabelTwo), // skip if not
 
                         new CodeInstruction(OpCodes.Ldarg_0), // p
-                        new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Pawn_JobTracker), "pawn")),
-                        new CodeInstruction(OpCodes.Ldloc_S, 4), // t
+                        new CodeInstruction(OpCodes.Ldfld, JobTrackerPawn),
+                        new CodeInstruction(OpCodes.Ldloc_S, context.GetLocal(4)), // t
                         new CodeInstruction(
                             OpCodes.Ldloc_S,
                             haulDestination
                         ), // haulDestination (already IS InnerStorage)
-
-                        // new CodeInstruction(OpCodes.Castclass, typeof(IHaulDestination)),
-                        new CodeInstruction(OpCodes.Call, haulMethod),
+                        new CodeInstruction(OpCodes.Call, HaulMethod),
                         new CodeInstruction(OpCodes.Ret),
                         new CodeInstruction(OpCodes.Ldloc_S, haulDestination)
                             .WithLabels(continueLabelTwo), // haulDestination
@@ -122,6 +111,16 @@ public static class TryOpportunisticJobPatch {
             patchedCount++;
         }
 
-        return patchedCount == 2 ? code : instructions;
+        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
+        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
+        // it before this transpiler has run.
+        if (patchedCount != 2) {
+            Logger.Warning(
+                $"Pawn_JobTracker.TryOpportunisticJob transpiler expected 2 `isinst ISlotGroupParent` sites, found {patchedCount}."
+            );
+            return instructions;
+        }
+
+        return code;
     }
 }

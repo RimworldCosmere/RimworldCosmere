@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,11 +10,15 @@ public class FloatMenuSearch : FloatMenuOption {
     private const float Width = 240f;
     private const float Height = QuickSearchWidget.WidgetHeight + 2 * Margin;
 
+    private static readonly FieldInfo CachedWidthField =
+        typeof(FloatMenuOption).GetField("cachedRequiredWidth", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+    private static readonly FieldInfo CachedHeightField =
+        typeof(FloatMenuOption).GetField("cachedRequiredHeight", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
     private readonly FloatMenuFilter filter = new FloatMenuFilter();
-    private readonly Traverse<float> heightField;
     private readonly QuickSearchWidget search = new QuickSearchWidget();
     private readonly bool subMenus;
-    private readonly Traverse<float> widthField;
 
     public FloatMenuSearch(bool subMenus = false) : base(" ", () => { }) {
         extraPartOnGUI = ExtraPart;
@@ -23,10 +27,6 @@ public class FloatMenuSearch : FloatMenuOption {
         action = OnClicked;
 
         this.subMenus = subMenus;
-
-        Traverse traverse = Traverse.Create(this);
-        widthField = traverse.Field<float>("cachedRequiredWidth");
-        heightField = traverse.Field<float>("cachedRequiredHeight");
     }
 
     private void OnClicked() {
@@ -56,7 +56,7 @@ public class FloatMenuSearch : FloatMenuOption {
     }
 
     private void AfterSizeMode() {
-        widthField.Value = Width;
-        heightField.Value = Height;
+        CachedWidthField.SetValue(this, Width);
+        CachedHeightField.SetValue(this, Height);
     }
 }

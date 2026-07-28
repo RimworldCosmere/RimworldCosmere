@@ -1,21 +1,17 @@
 using System;
-using System.Reflection;
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Page_ChooseIdeoPreset), "DoClassic")]
-public static class DoClassicNextGuardPatch {
-    private static readonly FieldInfo ClassicIdeoField = AccessTools.Field(
-        typeof(Page_ChooseIdeoPreset),
-        "classicIdeo"
-    );
+[Patch]
+public abstract class DoClassicNextGuardPatch : Page_ChooseIdeoPreset {
+    [InjectField("classicIdeo")]
+    private readonly Ideo classicIdeo = null!;
 
-    public static bool Prefix(Page_ChooseIdeoPreset __instance) {
-        Ideo? classicIdeo = ClassicIdeoField.GetValue(__instance) as Ideo;
-
+    [Inject(At.Head, "DoClassic")]
+    private Control BeforeDoClassic() {
         List<Faction> factions = Find.FactionManager.AllFactionsListForReading;
         for (int i = 0; i < factions.Count; i++) {
             Faction faction = factions[i];
@@ -28,20 +24,20 @@ public static class DoClassicNextGuardPatch {
         Find.IdeoManager.RemoveUnusedStartingIdeos();
         Find.Scenario.PostIdeoChosen();
 
-        if (__instance.next != null) {
-            __instance.next.prev = Find.Storyteller.def.tutorialMode ? __instance.prev : __instance;
-            Find.WindowStack.Add(__instance.next);
+        if (next != null) {
+            next.prev = Find.Storyteller.def.tutorialMode ? prev : this;
+            Find.WindowStack.Add(next);
         }
 
-        Action nextAct = __instance.nextAct;
+        Action nextAct = this.nextAct;
         if (nextAct != null) {
             nextAct();
         }
 
         TutorSystem.Notify_Event("PageClosed");
         TutorSystem.Notify_Event("GoToNextPage");
-        __instance.Close();
+        Close();
 
-        return false;
+        return Control.Cancel;
     }
 }

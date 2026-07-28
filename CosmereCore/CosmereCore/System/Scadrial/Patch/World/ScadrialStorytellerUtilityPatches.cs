@@ -1,22 +1,25 @@
+using Concord;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
 using Cosmere.System.Scadrial.Util;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 
-[HarmonyPatch(typeof(StorytellerUtility), nameof(StorytellerUtility.DefaultThreatPointsNow))]
-[HarmonyPatch([typeof(IIncidentTarget)])]
+[Patch(typeof(StorytellerUtility))]
 public static class ScadrialStorytellerUtilityPatch {
     private const float MistbornOrFullFeruchemistBonus = 150f;
     private const float SingleMetalBonus = 20f;
     private const float ThreatPerSpike = 30f;
 
-    [HarmonyPostfix]
-    public static void Postfix(ref float __result, IIncidentTarget target) {
+    [Inject(
+        At.Return,
+        nameof(StorytellerUtility.DefaultThreatPointsNow),
+        parameterTypes: [typeof(IIncidentTarget)]
+    )]
+    private static void AfterDefaultThreatPointsNow(IIncidentTarget target, ControlHandle<float> ch) {
         Map? map = target as Map;
         if (map == null) return;
 
@@ -26,11 +29,11 @@ public static class ScadrialStorytellerUtilityPatch {
             bonus += GetThreatBonusForPawn(colonists[i]);
         }
 
-        __result += bonus;
+        ch.ReturnValue += bonus;
 
         float copperReduction = AllomancyUtility.GetCoppercloudStrength(map);
         if (copperReduction > 0f) {
-            __result *= 1f - copperReduction;
+            ch.ReturnValue *= 1f - copperReduction;
         }
     }
 

@@ -1,37 +1,24 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Allomancy;
 
-[HarmonyPatch]
-public static class AtiumElectrumSteelPatch {
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Verb_MeleeAttack), "TryCastShot")]
-    public static bool PrefixVerbShoot(Verb_MeleeAttack __instance, ref bool __result) {
-        return Patch(__instance, ref __result);
-    }
+// NOTE: these injections set the return value and then let the original run, so the original's
+// own return value wins and the hit-chance calculation below has no effect. That is exactly what
+// the Harmony prefixes did (they assigned __result and returned true), and the port keeps it
+// unchanged - making it bite would be a combat balance change, not a migration.
+public static class AtiumElectrumSteel {
+    // Returns the roll rather than taking the ControlHandle: Concord requires the handle be used
+    // only as the direct receiver of a control call, so it cannot be passed to a shared helper.
+    internal static bool TryResolveHit(Verb verb, out bool hit) {
+        hit = false;
+        if (!verb.CurrentTarget.HasThing || verb.CurrentTarget.Thing is not Pawn targetPawn) return false;
+        if (verb.caster is not Pawn casterPawn) return false;
+        if (casterPawn.Equals(targetPawn)) return false;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Verb_Shoot), "TryCastShot")]
-    public static bool PrefixVerbShoot(Verb_Shoot __instance, ref bool __result) {
-        return Patch(__instance, ref __result);
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Verb_CastAbility), "TryCastShot")]
-    public static bool PrefixVerbCastAbility(Verb_CastAbility __instance, ref bool __result) {
-        return Patch(__instance, ref __result);
-    }
-
-    private static bool Patch(Verb verb, ref bool result) {
-        if (!verb.CurrentTarget.HasThing || verb.CurrentTarget.Thing is not Pawn targetPawn) return true;
-        if (verb.caster is not Pawn casterPawn) return true;
-        if (casterPawn.Equals(targetPawn)) return true;
-
-        result = ShouldHit(verb, casterPawn, targetPawn);
-
+        hit = ShouldHit(verb, casterPawn, targetPawn);
         return true;
     }
 
@@ -87,5 +74,29 @@ public static class AtiumElectrumSteelPatch {
         // Clamp final value for safety
         baseHitChance = Mathf.Clamp(baseHitChance, 0.05f, 1f);
         return Rand.Chance(baseHitChance);
+    }
+}
+
+[Patch]
+public abstract class AtiumElectrumSteelMeleePatch : Verb_MeleeAttack {
+    [Inject(At.Head, nameof(TryCastShot))]
+    private void BeforeTryCastShot(ControlHandle<bool> ch) {
+        if (AtiumElectrumSteel.TryResolveHit(this, out bool hit)) ch.ReturnValue = hit;
+    }
+}
+
+[Patch]
+public abstract class AtiumElectrumSteelShootPatch : Verb_Shoot {
+    [Inject(At.Head, nameof(TryCastShot))]
+    private void BeforeTryCastShot(ControlHandle<bool> ch) {
+        if (AtiumElectrumSteel.TryResolveHit(this, out bool hit)) ch.ReturnValue = hit;
+    }
+}
+
+[Patch]
+public abstract class AtiumElectrumSteelCastAbilityPatch : Verb_CastAbility {
+    [Inject(At.Head, nameof(TryCastShot))]
+    private void BeforeTryCastShot(ControlHandle<bool> ch) {
+        if (AtiumElectrumSteel.TryResolveHit(this, out bool hit)) ch.ReturnValue = hit;
     }
 }

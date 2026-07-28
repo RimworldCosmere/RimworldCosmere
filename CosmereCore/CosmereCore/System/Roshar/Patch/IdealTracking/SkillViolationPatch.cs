@@ -1,24 +1,29 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(SkillRecord), nameof(SkillRecord.Learn))]
-public static class SkillViolationPatch {
-    private static void Prefix(SkillRecord __instance, float xp, out int __state) {
-        __state = __instance.Level;
-    }
+[Patch]
+public abstract class SkillViolationPatch : SkillRecord {
+    // The pre-call level is only knowable before Learn runs, so the whole call is wrapped.
+    [Inject(At.Around, nameof(Learn))]
+    private void AroundLearn(
+        float xp,
+        bool direct,
+        bool ignoreLearnRate,
+        VoidOperation<float, bool, bool> original
+    ) {
+        SkillRecord self = this;
+        int oldLevel = self.Level;
 
-    private static void Postfix(SkillRecord __instance, float xp, int __state) {
+        original.Invoke(xp, direct, ignoreLearnRate);
+
         if (xp >= 0) return;
+        if (self.Level >= oldLevel) return;
 
-        int newLevel = __instance.Level;
-        if (newLevel >= __state) return;
-
-        Pawn pawn = __instance.Pawn;
+        Pawn pawn = self.Pawn;
         if (pawn == null) return;
 
         if (ViolationUtility.IsSurgebinderOfOrder(pawn, RadiantOrderDefOf.Elsecaller)) {

@@ -1,14 +1,18 @@
-﻿using HarmonyLib;
+﻿using System.Reflection;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Lib.FloatSubMenu;
 
 public class FloatMenuDivider : FloatMenuOption {
+    private static readonly FieldInfo CachedWidthField =
+        typeof(FloatMenuOption).GetField("cachedRequiredWidth", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+    private static readonly FieldInfo CachedHeightField =
+        typeof(FloatMenuOption).GetField("cachedRequiredHeight", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
     private readonly string? label;
 
-    private readonly Traverse<float> widthField;
-    private readonly Traverse<float> heightField;
     private readonly float labelWidth;
     private readonly Vector2 size;
     private const float HorizMargin = 3f;
@@ -19,10 +23,6 @@ public class FloatMenuDivider : FloatMenuOption {
 
     public FloatMenuDivider(string? label = null) : base(" ", NoAction) {
         this.label = label;
-
-        Traverse traverse = Traverse.Create(this);
-        widthField = traverse.Field<float>("cachedRequiredWidth");
-        heightField = traverse.Field<float>("cachedRequiredHeight");
 
         GameFont font = Text.Font;
         Text.Font = GameFont.Tiny;
@@ -37,8 +37,8 @@ public class FloatMenuDivider : FloatMenuOption {
     private static void NoAction() { }
 
     private void SetupSize() {
-        widthField.Value = size.x;
-        heightField.Value = size.y;
+        CachedWidthField.SetValue(this, size.x);
+        CachedHeightField.SetValue(this, size.y);
     }
 
     public override bool DoGUI(Rect rect, bool colonistOrdering, FloatMenu floatMenu) {

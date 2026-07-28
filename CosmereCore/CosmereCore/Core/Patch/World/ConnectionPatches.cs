@@ -1,30 +1,26 @@
-﻿using Cosmere.Core.Comp.Game;
+using Concord;
+using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Entity;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.Core.Patch.World;
 
-[HarmonyPatch]
+[Patch(typeof(PawnGenerator))]
 public static class ConnectionPatch {
-    [HarmonyPatch(
-        typeof(PawnGenerator),
-        nameof(PawnGenerator.GeneratePawn),
-        typeof(PawnGenerationRequest)
-    )]
-    [HarmonyPostfix]
-    public static void GeneratePawnPostfix(Pawn __result) {
-        if (__result == null || __result.NonHumanlikeOrWildMan()) return;
+    [Inject(At.Return, nameof(PawnGenerator.GeneratePawn), parameterTypes: [typeof(PawnGenerationRequest)])]
+    private static void AfterGeneratePawn(ControlHandle<Pawn> ch) {
+        Pawn result = ch.ReturnValue;
+        if (result == null || result.NonHumanlikeOrWildMan()) return;
 
         // Pawns are generated for throwaway purposes too - a book's author byline,
         // for one - and those are never placed, so they have no tile and the world
         // may not be up yet. Nothing here is worth failing generation over.
-        __result.GetOrCreateConnection(__result.Tile.Layer);
+        result.GetOrCreateConnection(result.Tile.Layer);
 
-        if (__result.Faction != null && Find.World != null) {
-            __result.GetOrCreateConnection(__result.Faction);
-            foreach (Pawn pawn in Find.WorldPawns.AllPawnsAlive.Where(pawn => pawn.Faction == __result.Faction)) {
-                if (!pawn.Destroyed) __result.GetOrCreateConnection(pawn);
+        if (result.Faction != null && Find.World != null) {
+            result.GetOrCreateConnection(result.Faction);
+            foreach (Pawn pawn in Find.WorldPawns.AllPawnsAlive.Where(pawn => pawn.Faction == result.Faction)) {
+                if (!pawn.Destroyed) result.GetOrCreateConnection(pawn);
             }
         }
 
@@ -34,7 +30,7 @@ public static class ConnectionPatch {
         if (shards == null) return;
 
         foreach (Shard? shard in shards.enabledShards.Values) {
-            __result.GetOrCreateConnection(shard);
+            result.GetOrCreateConnection(shard);
         }
     }
 }

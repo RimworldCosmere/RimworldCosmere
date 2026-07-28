@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using Cosmere.Core.Attribute;
-using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -36,19 +35,19 @@ public static class Profiler {
         if (!Mod.debugMode) return;
 
         try {
-            Harmony harmony = new Harmony("Cosmere.Profiler");
-
+            int attributed = 0;
             foreach (MethodInfo method in profiledMethods) {
                 Profile attr = method.GetCustomAttribute<Profile>()!;
-                string label = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
-                Labels[method] = label;
+                Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Attrs[method] = attr;
+                attributed++;
+            }
 
-                harmony.Patch(
-                    method,
-                    new HarmonyMethod(typeof(Profiler), nameof(StartProfiling)),
-                    new HarmonyMethod(typeof(Profiler), nameof(EndProfiling)),
-                    finalizer: new HarmonyMethod(typeof(Profiler), nameof(CleanupProfiling))
+            if (attributed > 0) {
+                Logger.Warning(
+                    $"{attributed} method(s) carry [Profile], but attribute-driven profiling is not wired up. " +
+                    "StartProfiling/EndProfiling need to know which method they are running in, and Concord has no " +
+                    "equivalent of Harmony's __originalMethod yet. Use Profiler.Scope(...) until it does."
                 );
             }
 
@@ -66,8 +65,8 @@ public static class Profiler {
             .Where(m =>
                 !m.IsAbstract &&
                 !m.ContainsGenericParameters &&
-                m.HasAttribute<Profile>() &&
-                m.IsDeclaredMember()
+                m.GetCustomAttribute<Profile>() != null &&
+                m.DeclaringType == m.ReflectedType
             )
             .Distinct(new MethodComparer());
 

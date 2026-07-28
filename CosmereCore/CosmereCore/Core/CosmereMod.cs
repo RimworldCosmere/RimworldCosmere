@@ -1,15 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Concord;
 using Cosmere.Core.Framework;
 using Cosmere.Core.Settings;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.Core;
 
 internal static class CosmerePatchGuard {
     internal static bool Patched;
+
+    // Held for the process lifetime; disposing the handle would unpatch everything.
+    internal static IPatchHandle? ConcordPatches;
 }
 
 public abstract class CosmereMod<TSettings> : Verse.Mod
@@ -26,7 +29,7 @@ public abstract class CosmereMod<TSettings> : Verse.Mod
                     DateTime lastWrite = File.GetLastWriteTime(dllPath);
                     Logger.Important($"Cosmere DLL compiled: {lastWrite:yyyy-MM-dd HH:mm:ss}");
 
-                    new Harmony(content.PackageId).PatchAll(assembly);
+                    CosmerePatchGuard.ConcordPatches = Patcher.Apply(assembly);
                     CosmerePatchGuard.Patched = true;
                 }
             },

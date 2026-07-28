@@ -1,20 +1,17 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch.Gem;
 
-[HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
-public static class JobOnThingBlockBadGemsPatch {
-    private static bool Prefix(
-        ref Verse.AI.Job __result,
-        Pawn pawn,
-        Verse.Thing thing
-    ) {
+[Patch]
+public abstract class JobOnThingBlockBadGemsPatch : WorkGiver_DoBill {
+    [Inject(At.Head, nameof(JobOnThing))]
+    private Control BeforeJobOnThing(Pawn pawn, Verse.Thing thing, bool forced, ControlHandle<Verse.AI.Job> ch) {
         IBillGiver? billGiver = thing as IBillGiver;
         if (billGiver == null || !billGiver.BillStack.AnyShouldDoNow) {
-            return true;
+            return Control.Continue;
         }
 
         foreach (Bill bill in billGiver.BillStack) {
@@ -35,11 +32,11 @@ public static class JobOnThingBlockBadGemsPatch {
             }
 
             if (!hasValidGem) {
-                __result = null!;
-                return false;
+                ch.ReturnValue = null!;
+                return Control.Cancel;
             }
         }
 
-        return true;
+        return Control.Continue;
     }
 }

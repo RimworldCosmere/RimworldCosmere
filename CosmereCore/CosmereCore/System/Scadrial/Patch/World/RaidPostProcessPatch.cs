@@ -1,15 +1,15 @@
+using Concord;
 using Cosmere.System.Scadrial.Util;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 
-[HarmonyPatch(typeof(IncidentWorker_Raid), "PostProcessSpawnedPawns")]
-public static class RaidPostProcessPatch {
-    [HarmonyPostfix]
-    public static void Postfix(IncidentParms parms, List<Pawn> pawns) {
+[Patch]
+public abstract class RaidPostProcessPatch : IncidentWorker_Raid {
+    [Inject(At.Return, nameof(PostProcessSpawnedPawns))]
+    private void AfterPostProcessSpawnedPawns(IncidentParms parms, List<Pawn> pawns) {
         Map? map = parms.target as Map;
         if (map == null) return;
 
@@ -24,7 +24,10 @@ public static class RaidPostProcessPatch {
             if (raider.health == null) continue;
             if (!Rand.Chance(confusionChance)) continue;
 
-            Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.Cosmere_Scadrial_Hediff_CopperConfusion, raider);
+            Verse.Hediff hediff = HediffMaker.MakeHediff(
+                HediffDefOf.Cosmere_Scadrial_Hediff_CopperConfusion,
+                raider
+            );
             raider.health.AddHediff(hediff);
             confusedCount++;
         }

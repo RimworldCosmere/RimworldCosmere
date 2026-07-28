@@ -1,35 +1,37 @@
-﻿using HarmonyLib;
+using Concord;
 using Verse;
 
 namespace Cosmere.Core.Lib.FloatSubMenu;
 
-[HarmonyPatch]
-internal static class Patches {
-    private static bool replaceDist;
-    private static float dist;
+internal static class DistanceOverride {
+    internal static bool replaceDist;
+    internal static float dist;
+}
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(FloatMenu), "UpdateBaseColor")]
-    public static void UpdateBaseColor_Pre(FloatMenu __instance) {
+[Patch]
+internal abstract class FloatMenuUpdateBaseColorPatch : FloatMenu {
+    protected FloatMenuUpdateBaseColorPatch(List<FloatMenuOption> options) : base(options) { }
+
+    [Inject(At.Head, "UpdateBaseColor")]
+    private void BeforeUpdateBaseColor() {
         // Make sure we do not replace any values needed to calculate replacement.
-        replaceDist = false;
-        replaceDist = FloatSubMenu.ShouldReplaceDistanceFor(__instance, ref dist);
+        DistanceOverride.replaceDist = false;
+        DistanceOverride.replaceDist = FloatSubMenu.ShouldReplaceDistanceFor(this, ref DistanceOverride.dist);
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(FloatMenu), "UpdateBaseColor")]
-    public static void UpdateBaseColor_Post() {
-        replaceDist = false;
+    [Inject(At.Return, "UpdateBaseColor")]
+    private void AfterUpdateBaseColor() {
+        DistanceOverride.replaceDist = false;
     }
+}
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(GenUI), nameof(GenUI.DistFromRect))]
-    public static bool DistFromRect_Pre(ref float __result) {
-        if (replaceDist) {
-            __result = dist;
-            return false;
-        }
+[Patch(typeof(GenUI))]
+internal static class DistFromRectPatch {
+    [Inject(At.Head, nameof(GenUI.DistFromRect))]
+    private static Control BeforeDistFromRect(ControlHandle<float> ch) {
+        if (!DistanceOverride.replaceDist) return Control.Continue;
 
-        return true;
+        ch.ReturnValue = DistanceOverride.dist;
+        return Control.Cancel;
     }
 }

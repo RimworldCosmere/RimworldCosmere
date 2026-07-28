@@ -1,12 +1,16 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Page_ChooseIdeoPreset), nameof(Page_ChooseIdeoPreset.PostOpen))]
-public static class ForcePlayerFixedIdeoPatch {
-    public static void Postfix(Page_ChooseIdeoPreset __instance) {
+[Patch]
+public abstract class ForcePlayerFixedIdeoPatch : Page_ChooseIdeoPreset {
+    [InjectField("classicIdeo")]
+    private Ideo classicIdeo = null!;
+
+    [Inject(At.Return, nameof(PostOpen))]
+    private void AfterPostOpen() {
         Faction? player = Faction.OfPlayer;
         FactionDef? def = player?.def;
         if (def == null || !def.fixedIdeo) return;
@@ -33,7 +37,7 @@ public static class ForcePlayerFixedIdeoPatch {
         Ideo? forcedIdeo = player.ideos.PrimaryIdeo;
         if (forcedIdeo == null) return;
 
-        AccessTools.Field(typeof(Page_ChooseIdeoPreset), "classicIdeo").SetValue(__instance, forcedIdeo);
+        classicIdeo = forcedIdeo;
         Find.IdeoManager.RemoveUnusedStartingIdeos();
         Logger.Info(
             $"ForcePlayerFixedIdeoPatch: forced player ideo to '{forcedIdeo.name}' from fixedIdeo on {def.defName}"

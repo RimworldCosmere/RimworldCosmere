@@ -1,25 +1,24 @@
+using Concord;
 using Cosmere.Core.Def;
 using Cosmere.Core.DefModExtension;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 
-[HarmonyPatch]
+[Patch(typeof(RimWorld.StatsReportUtility))]
 public static class StatsReportUtilityPatch {
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(RimWorld.StatsReportUtility), "DescriptionEntry", typeof(Verse.Def))]
-    public static bool RemoveTokens(Verse.Def def, ref StatDrawEntry __result) {
-        if (def is not GeneDef geneDef) return true;
+    [Inject(At.Head, "DescriptionEntry", parameterTypes: [typeof(Verse.Def)])]
+    private static Control BeforeDescriptionEntry(Verse.Def def, ControlHandle<StatDrawEntry> ch) {
+        if (def is not GeneDef geneDef) return Control.Continue;
 
         MetalsLinked? extension = geneDef.GetModExtension<MetalsLinked>();
-        if (extension == null) return true;
+        if (extension == null) return Control.Continue;
         MetalDef? metal = extension.Metals?.FirstOrDefault();
-        if (metal == null) return true;
+        if (metal == null) return Control.Continue;
         TaggedString description =
             geneDef.description.Formatted("the current pawn".Named("PAWN"), metal.Named("METAL"));
-        __result = new StatDrawEntry(
+        ch.ReturnValue = new StatDrawEntry(
             StatCategoryDefOf.BasicsImportant,
             (string)"Description".Translate(),
             string.Empty,
@@ -28,6 +27,6 @@ public static class StatsReportUtilityPatch {
             hyperlinks: Dialog_InfoCard.DefsToHyperlinks(def.descriptionHyperlinks)
         );
 
-        return false;
+        return Control.Cancel;
     }
 }

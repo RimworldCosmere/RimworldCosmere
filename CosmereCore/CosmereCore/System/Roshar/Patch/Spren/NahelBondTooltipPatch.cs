@@ -1,38 +1,38 @@
+using System;
 using System.Reflection;
+using Concord;
 using Cosmere.Core.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 
-[HarmonyPatch]
+[Patch(typeof(SocialCardUtility))]
 public static class NahelBondTooltipPatch {
     private static PawnRelationDef? nahelBondDef;
 
-    private static readonly AccessTools.FieldRef<object, List<PawnRelationDef>> RelationsRef =
-        AccessTools.FieldRefAccess<List<PawnRelationDef>>(
-            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"),
-            "relations"
-        );
+    // CachedSocialTabEntry is a private nested type, so its fields stay behind reflection.
+    private static readonly Type? EntryType =
+        typeof(SocialCardUtility).GetNestedType("CachedSocialTabEntry", BindingFlags.NonPublic);
 
-    private static readonly AccessTools.FieldRef<object, Pawn> OtherPawnRef =
-        AccessTools.FieldRefAccess<Pawn>(
-            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"),
-            "otherPawn"
-        );
+    private static readonly FieldInfo? RelationsField =
+        EntryType?.GetField("relations", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-    private static MethodBase TargetMethod() {
-        return AccessTools.Method(typeof(SocialCardUtility), "GetPawnRowTooltip");
-    }
+    private static readonly FieldInfo? OtherPawnField =
+        EntryType?.GetField("otherPawn", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-    private static void Postfix(ref string __result, object entry, Pawn selPawnForSocialInfo) {
+    [Inject(At.Return, "GetPawnRowTooltip")]
+    private static void AfterGetPawnRowTooltip(
+        object entry,
+        Pawn selPawnForSocialInfo,
+        ControlHandle<string> ch
+    ) {
         nahelBondDef ??= DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
         if (nahelBondDef == null) return;
 
-        List<PawnRelationDef> relations = RelationsRef(entry);
-        Pawn otherPawn = OtherPawnRef(entry);
+        List<PawnRelationDef>? relations = RelationsField?.GetValue(entry) as List<PawnRelationDef>;
+        Pawn? otherPawn = OtherPawnField?.GetValue(entry) as Pawn;
         if (relations == null || otherPawn == null) return;
 
         bool hasNahelBond = false;
@@ -76,6 +76,6 @@ public static class NahelBondTooltipPatch {
             }
         }
 
-        __result += bondInfo;
+        ch.ReturnValue += bondInfo;
     }
 }

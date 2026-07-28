@@ -1,17 +1,17 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Concord;
 using Cosmere.Core.Settings;
-using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorPatch {
-    private static readonly FieldInfo? PlayerFactionFactionDef =
-        AccessTools.Field(typeof(ScenPart_PlayerFaction), "factionDef");
+    private static readonly FieldInfo? PlayerFactionFactionDef = typeof(ScenPart_PlayerFaction).GetField(
+        "factionDef",
+        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+    );
 
     private static string? GetPlayerFactionDefName(Scenario scenario) {
         foreach (ScenPart part in scenario.AllParts) {
@@ -74,14 +74,16 @@ public static class FactionGeneratorPatch {
     }
 }
 
-[HarmonyPatch(typeof(FactionGenerator), nameof(FactionGenerator.ConfigurableFactions), MethodType.Getter)]
-[SuppressMessage("ReSharper", "InconsistentNaming")]
+[Patch(typeof(FactionGenerator))]
 public static class FactionGeneratorConfigurableFactionsPatch {
-    private static void Postfix(ref IEnumerable<FactionDef> __result) {
+    // ConfigurableFactions is a yield-return iterator. PatchBody.Declared (the default) attaches to
+    // the method as written, which hands back the IEnumerable this replaces.
+    [Inject(At.Return, "get_" + nameof(FactionGenerator.ConfigurableFactions))]
+    private static void AfterConfigurableFactions(ControlHandle<IEnumerable<FactionDef>> ch) {
         Scenario scenario = Find.Scenario;
         string scenarioName = scenario?.name ?? "(null)";
         Logger.Verbose($"FactionGeneratorPatch: Filtering factions for scenario '{scenarioName}'");
-        __result = FilterFactions(__result);
+        ch.ReturnValue = FilterFactions(ch.ReturnValue);
     }
 
     private static IEnumerable<FactionDef> FilterFactions(IEnumerable<FactionDef> factions) {
@@ -95,15 +97,14 @@ public static class FactionGeneratorConfigurableFactionsPatch {
     }
 }
 
-[HarmonyPatch(
-    typeof(FactionGenerator),
-    nameof(FactionGenerator.CreateFactionAndAddToManager),
-    typeof(PlanetLayer),
-    typeof(FactionDef)
-)]
-[SuppressMessage("ReSharper", "InconsistentNaming")]
+[Patch(typeof(FactionGenerator))]
 public static class FactionGeneratorCreateFactionPatch {
-    private static bool Prefix(FactionDef facDef) {
-        return FactionGeneratorPatch.IsFactionAllowedForScenario(facDef);
+    [Inject(
+        At.Head,
+        nameof(FactionGenerator.CreateFactionAndAddToManager),
+        parameterTypes: [typeof(PlanetLayer), typeof(FactionDef)]
+    )]
+    private static Control BeforeCreateFactionAndAddToManager(FactionDef facDef) {
+        return FactionGeneratorPatch.IsFactionAllowedForScenario(facDef) ? Control.Continue : Control.Cancel;
     }
 }

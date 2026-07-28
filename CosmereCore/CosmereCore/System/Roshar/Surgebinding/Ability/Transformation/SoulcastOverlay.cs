@@ -1,16 +1,21 @@
-using HarmonyLib;
+using Concord;
 using UnityEngine;
 using Verse;
 using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 
-[HarmonyPatch]
+[Patch(typeof(MemoryUtility))]
+public static class SoulcastOverlayStateClearer {
+    [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    private static void AfterClearAllMapsAndWorld() {
+        SoulcastOverlay.OnClearAllMapsAndWorld();
+    }
+}
+
 public static class SoulcastOverlay {
     private static readonly Dictionary<int, List<OverlayEntry>> _byMap = [];
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
-    [HarmonyPostfix]
     public static void OnClearAllMapsAndWorld() {
         _byMap.Clear();
     }

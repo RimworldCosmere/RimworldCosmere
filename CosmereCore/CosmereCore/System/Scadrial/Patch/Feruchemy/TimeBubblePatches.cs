@@ -1,42 +1,44 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Feruchemy;
 
-[HarmonyPatch]
-public static class TimeBubblePatch {
-    private static readonly AccessTools.FieldRef<Pawn_NeedsTracker, Pawn> PawnField =
-        AccessTools.FieldRefAccess<Pawn_NeedsTracker, Pawn>("pawn");
+[Patch]
+public abstract class TimeBubblePatch : Pawn_NeedsTracker {
+    [InjectField("pawn")]
+    private readonly Pawn trackedPawn = null!;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Pawn_NeedsTracker), nameof(Pawn_NeedsTracker.NeedsTrackerTickInterval))]
-    public static bool Prefix(Pawn_NeedsTracker __instance, int delta) {
+    protected TimeBubblePatch(Pawn newPawn) : base(newPawn) { }
+
+    [Inject(At.Head, nameof(NeedsTrackerTickInterval))]
+    private Control BeforeNeedsTrackerTickInterval(int delta) {
         const int BaseInterval = 150;
         const int CadmiumMultiplier = 3;
         const int BendalloyDivisor = 3;
 
-        Pawn? pawn = PawnField(__instance);
-        if (pawn?.health == null || pawn.Dead) return true;
+        Pawn? pawn = trackedPawn;
+        if (pawn?.health == null || pawn.Dead) return Control.Continue;
 
         // If we are in a cadmium bubble, time slows down, needs should decay a third as fast
         if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleCadmium)) {
             if (!pawn.IsHashIntervalTick(BaseInterval * CadmiumMultiplier, delta)) {
-                return false;
+                return Control.Cancel;
             }
         } else if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleBendalloy)) {
             if (!pawn.IsHashIntervalTick(Mathf.RoundToInt((float)BaseInterval / BendalloyDivisor), delta)) {
-                return false;
+                return Control.Cancel;
             }
         } else {
-            return true;
+            return Control.Continue;
         }
 
-        for (int index = 0; index < __instance.AllNeeds.Count; ++index) {
-            __instance.AllNeeds[index].NeedInterval();
+        Pawn_NeedsTracker self = this;
+        for (int index = 0; index < self.AllNeeds.Count; ++index) {
+            self.AllNeeds[index].NeedInterval();
         }
 
-        return false;
+        return Control.Cancel;
     }
 }

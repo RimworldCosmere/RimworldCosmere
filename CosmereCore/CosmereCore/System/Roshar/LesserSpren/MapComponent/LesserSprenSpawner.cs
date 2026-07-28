@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Text;
+using Concord;
 using Cosmere.System.Roshar.Dev;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
-using HarmonyLib;
 using RimWorld.Planet;
 using Verse;
 using Verse.Profile;
 
 namespace Cosmere.System.Roshar.LesserSpren.MapComponent;
 
-[HarmonyPatch]
+[Patch(typeof(MemoryUtility))]
+public static class LesserSprenSpawnerStateClearer {
+    [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    private static void AfterClearAllMapsAndWorld() {
+        LesserSprenSpawner.OnClearAllMapsAndWorld();
+    }
+}
+
 public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     private static readonly List<SprenType> PendingInitialization = [];
 
@@ -22,8 +29,6 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
 
     private int mapID = map.GetHashCode();
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
-    [HarmonyPostfix]
     public static void OnClearAllMapsAndWorld() {
         CleanupAllSystems();
     }

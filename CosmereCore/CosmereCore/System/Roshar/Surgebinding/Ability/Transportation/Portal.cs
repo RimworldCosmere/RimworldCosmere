@@ -1,6 +1,6 @@
+using Concord;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Surgebinding.Thing;
-using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -207,33 +207,37 @@ public class Portal : SurgebindingAbility {
     }
 }
 
-[HarmonyPatch(typeof(CaravanFormingUtility), nameof(CaravanFormingUtility.StartFormingCaravan))]
+[Patch(typeof(CaravanFormingUtility))]
 public static class PortalCaravanInterceptPatch {
-    private static bool Prefix(List<Pawn> pawns, PlanetTile destinationTile) {
-        if (Portal.activePortals.Count == 0) return true;
+    [Inject(At.Head, nameof(CaravanFormingUtility.StartFormingCaravan))]
+    private static Control BeforeStartFormingCaravan(List<Pawn> pawns, PlanetTile destinationTile) {
+        if (Portal.activePortals.Count == 0) return Control.Continue;
 
         Portal active = Portal.activePortals.Values.First();
         active.OnCaravanConfirmed(pawns, destinationTile);
-        return false;
+        return Control.Cancel;
     }
 }
 
-[HarmonyPatch(typeof(WorldRoutePlanner), nameof(WorldRoutePlanner.GetTicksToWaypoint))]
-public static class PortalRouteTimePatch {
-    private static void Postfix(ref int __result) {
-        if (Portal.activePortals.Count > 0) __result = 0;
+[Patch]
+public abstract class PortalRouteTimePatch : WorldRoutePlanner {
+    [Inject(At.Return, nameof(GetTicksToWaypoint))]
+    private void AfterGetTicksToWaypoint(ControlHandle<int> ch) {
+        if (Portal.activePortals.Count > 0) ch.ReturnValue = 0;
     }
 }
 
-[HarmonyPatch(typeof(Caravan), nameof(Caravan.GetGizmos))]
+[Patch]
 [StaticConstructorOnStartup]
-public static class PortalCaravanGizmoPatch {
+public abstract class PortalCaravanGizmoPatch : Caravan {
     private static readonly Texture2D PortalIcon =
         ContentFinder<Texture2D>.Get("UI/Icons/Abilities/Portal", false) ?? BaseContent.BadTex;
 
-    private static void Postfix(Caravan __instance, ref IEnumerable<Verse.Gizmo> __result) {
+    [Inject(At.Return, nameof(GetGizmos))]
+    private void AfterGetGizmos(ControlHandle<IEnumerable<Verse.Gizmo>> ch) {
+        Caravan self = this;
         List<Verse.Gizmo> extra = [];
-        List<Pawn> pawns = __instance.PawnsListForReading;
+        List<Pawn> pawns = self.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
             Pawn p = pawns[i];
             if (p.abilities == null) continue;
@@ -254,7 +258,7 @@ public static class PortalCaravanGizmoPatch {
                             }
 
                             if (Portal.activePortals.Count > 0) return;
-                            captured.ActivateFromCaravan(__instance);
+                            captured.ActivateFromCaravan(self);
                         },
                     }
                 );
@@ -263,7 +267,7 @@ public static class PortalCaravanGizmoPatch {
         }
 
         if (extra.Count > 0) {
-            __result = __result.Concat(extra);
+            ch.ReturnValue = ch.ReturnValue.Concat(extra);
         }
     }
 }

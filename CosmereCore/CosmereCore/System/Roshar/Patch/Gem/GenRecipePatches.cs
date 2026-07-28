@@ -1,13 +1,19 @@
-using HarmonyLib;
+using Concord;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Gem;
 
-[HarmonyPatch(typeof(GenRecipe))]
+[Patch(typeof(GenRecipe))]
 public static class GenRecipePatch {
-    [HarmonyPatch(nameof(GenRecipe.MakeRecipeProducts))]
-    [HarmonyPostfix]
-    public static IEnumerable<Verse.Thing> PostfixMakeRecipeProducts(
+    [Inject(At.Return, nameof(GenRecipe.MakeRecipeProducts))]
+    private static void AfterMakeRecipeProducts(
+        Verse.Thing dominantIngredient,
+        ControlHandle<IEnumerable<Verse.Thing>> ch
+    ) {
+        ch.ReturnValue = RestuffGemProducts(ch.ReturnValue, dominantIngredient);
+    }
+
+    private static IEnumerable<Verse.Thing> RestuffGemProducts(
         IEnumerable<Verse.Thing> result,
         Verse.Thing dominantIngredient
     ) {

@@ -1,21 +1,21 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.Destroy))]
-public static class ArtDestructionViolationPatch {
-    private static void Prefix(Verse.Thing __instance, DestroyMode mode) {
+[Patch]
+public abstract class ArtDestructionViolationPatch : Verse.Thing {
+    [Inject(At.Head, nameof(Destroy))]
+    private void BeforeDestroy(DestroyMode mode) {
         if (mode != DestroyMode.Deconstruct) return;
 
-        CompArt compArt = __instance.TryGetComp<CompArt>();
+        CompArt compArt = this.TryGetComp<CompArt>();
         if (compArt == null) return;
         if (!compArt.Active) return;
 
-        Map map = __instance.Map;
+        Map map = Map;
         if (map == null) return;
 
         List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;

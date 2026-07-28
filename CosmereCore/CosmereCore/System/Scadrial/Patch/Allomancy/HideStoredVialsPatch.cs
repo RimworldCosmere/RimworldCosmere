@@ -1,20 +1,21 @@
+using Concord;
 using Cosmere.System.Scadrial.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Allomancy;
 
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.Print))]
-public static class HideStoredVialsPatch {
-    [HarmonyPrefix]
-    public static bool Prefix(Verse.Thing __instance) {
-        if (__instance.def.category != ThingCategory.Item) return true;
-        if (__instance.Map == null) return true;
+[Patch]
+public abstract class HideStoredVialsPatch : Verse.Thing {
+    [Inject(At.Head, nameof(Print))]
+    private Control BeforePrint() {
+        Verse.Thing self = this;
+        if (self.def.category != ThingCategory.Item) return Control.Continue;
+        if (self.Map == null) return Control.Continue;
 
-        SlotGroup slotGroup = __instance.Position.GetSlotGroup(__instance.Map);
-        if (slotGroup?.parent is Building_VialCabinet) return false;
+        SlotGroup slotGroup = self.Position.GetSlotGroup(self.Map);
+        if (slotGroup?.parent is Building_VialCabinet) return Control.Cancel;
 
-        return true;
+        return Control.Continue;
     }
 }

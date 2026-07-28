@@ -1,14 +1,14 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(ExecutionUtility), nameof(ExecutionUtility.DoExecutionByCut))]
+[Patch(typeof(ExecutionUtility))]
 public static class ExecutionViolationPatch {
-    private static void Postfix(Pawn executioner, Pawn victim) {
+    [Inject(At.Return, nameof(ExecutionUtility.DoExecutionByCut))]
+    private static void AfterDoExecutionByCut(Pawn executioner, Pawn victim) {
         if (executioner == null) return;
 
         if (ViolationUtility.IsSurgebinderOfOrder(executioner, RadiantOrderDefOf.Edgedancer)) {
@@ -17,9 +17,10 @@ public static class ExecutionViolationPatch {
     }
 }
 
-[HarmonyPatch(typeof(Recipe_RemoveBodyPart), nameof(Recipe_RemoveBodyPart.ApplyOnPawn))]
-public static class OrganHarvestViolationPatch {
-    private static void Postfix(Pawn pawn, BodyPartRecord part, Pawn billDoer) {
+[Patch]
+public abstract class OrganHarvestViolationPatch : Recipe_RemoveBodyPart {
+    [Inject(At.Return, nameof(ApplyOnPawn))]
+    private void AfterApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer) {
         if (billDoer == null) return;
         if (pawn == null) return;
         if (part == null) return;
@@ -38,9 +39,10 @@ public static class OrganHarvestViolationPatch {
     }
 }
 
-[HarmonyPatch(typeof(GenGuest), nameof(GenGuest.EnslavePrisoner))]
+[Patch(typeof(GenGuest))]
 public static class EnslavementViolationPatch {
-    private static void Postfix(Pawn warden, Pawn prisoner) {
+    [Inject(At.Return, nameof(GenGuest.EnslavePrisoner))]
+    private static void AfterEnslavePrisoner(Pawn warden, Pawn prisoner) {
         if (warden == null) return;
 
         if (ViolationUtility.IsSurgebinderOfOrder(warden, RadiantOrderDefOf.Willshaper)) {
@@ -61,9 +63,12 @@ public static class EnslavementViolationPatch {
     }
 }
 
-[HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.CapturedBy))]
-public static class ArrestViolationPatch {
-    private static void Postfix(Pawn_GuestTracker __instance, Faction by, Pawn byPawn) {
+[Patch]
+public abstract class ArrestViolationPatch : Pawn_GuestTracker {
+    protected ArrestViolationPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(CapturedBy))]
+    private void AfterCapturedBy(Faction by, Pawn byPawn) {
         if (byPawn == null) return;
         if (by != Faction.OfPlayer) return;
 

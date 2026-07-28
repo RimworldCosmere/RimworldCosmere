@@ -1,13 +1,14 @@
+using Concord;
 using Cosmere.System.Roshar.Comp.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Radiant;
 
-[HarmonyPatch(typeof(TendUtility), nameof(TendUtility.DoTend))]
+[Patch(typeof(TendUtility))]
 public static class TendUtilityPatientTrackingPatch {
-    private static void Postfix(Pawn? doctor, Pawn? patient) {
+    [Inject(At.Return, nameof(TendUtility.DoTend))]
+    private static void AfterDoTend(Pawn? doctor, Pawn? patient) {
         if (doctor == null || patient == null || patient.NonHumanlikeOrWildMan() || doctor == patient) {
             return;
         }

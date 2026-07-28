@@ -1,22 +1,24 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.Notify_RescuedBy))]
-public static class RescueTrackingPatch {
-    private static readonly AccessTools.FieldRef<Pawn_RelationsTracker, Pawn> PawnRef =
-        AccessTools.FieldRefAccess<Pawn>(typeof(Pawn_RelationsTracker), "pawn");
+[Patch]
+public abstract class RescueTrackingPatch : Pawn_RelationsTracker {
+    [InjectField("pawn")]
+    private readonly Pawn rescued = null!;
 
-    private static void Postfix(Pawn_RelationsTracker __instance, Pawn rescuer) {
+    protected RescueTrackingPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(Notify_RescuedBy))]
+    private void AfterNotify_RescuedBy(Pawn rescuer) {
         Surgebinder? surgebinder = rescuer.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return;
 
         rescuer.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_PawnsRescued, 1);
 
-        Pawn rescued = PawnRef(__instance);
         if (rescued?.Faction == null) return;
         if (!rescued.Faction.HostileTo(rescuer.Faction)) return;
 

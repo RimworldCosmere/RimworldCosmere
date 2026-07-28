@@ -1,21 +1,19 @@
+using Concord;
 using Cosmere.System.Scadrial.Util;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.World;
 
-[HarmonyPatch(typeof(DeepResourceGrid), nameof(DeepResourceGrid.AnyActiveDeepScannersOnMap))]
-public static class DeepResourceGridPatch {
-    private static readonly AccessTools.FieldRef<DeepResourceGrid, Map> MapField =
-        AccessTools.FieldRefAccess<DeepResourceGrid, Map>("map");
+[Patch(typeof(DeepResourceGrid))]
+public abstract class DeepResourceGridPatch {
+    [InjectField("map")]
+    private readonly Map gridMap = null!;
 
-    [HarmonyPostfix]
-    public static void Postfix(DeepResourceGrid __instance, ref bool __result) {
-        if (__result) return;
+    [Inject(At.Return, nameof(DeepResourceGrid.AnyActiveDeepScannersOnMap))]
+    private void AfterAnyActiveDeepScannersOnMap(ControlHandle<bool> ch) {
+        if (ch.ReturnValue) return;
+        if (gridMap == null) return;
 
-        Map map = MapField(__instance);
-        if (map == null) return;
-
-        __result = AllomancyUtility.HasActiveBronzeSeeker(map);
+        ch.ReturnValue = AllomancyUtility.HasActiveBronzeSeeker(gridMap);
     }
 }

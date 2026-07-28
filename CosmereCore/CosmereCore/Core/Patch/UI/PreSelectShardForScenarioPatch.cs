@@ -1,14 +1,15 @@
-﻿using Cosmere.Core.Util;
-using HarmonyLib;
+using Concord;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 using DefModExtension_Shards = Cosmere.Core.DefModExtension.Shards;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Scenario), nameof(Scenario.PreConfigure))]
-public static class PreSelectShardForScenarioPatch {
-    private static void Prefix() {
+[Patch]
+public abstract class PreSelectShardForScenarioPatch : Scenario {
+    [Inject(At.Head, nameof(PreConfigure))]
+    private void BeforePreConfigure() {
         string? scenarioName = Find.Scenario?.name;
         if (string.IsNullOrEmpty(scenarioName)) return;
 

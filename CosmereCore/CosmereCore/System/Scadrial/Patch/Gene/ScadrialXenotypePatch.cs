@@ -1,19 +1,23 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using Concord;
 using Cosmere.Core.Util;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Gene;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[HarmonyPatch(typeof(Verse.PawnGenerator), nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn))]
+[Patch(typeof(Verse.PawnGenerator))]
 public static class ScadrialXenotypePatch {
-    // A postfix rather than a prefix: skipping the original stopped whatever else
+    // A return injection rather than a head one: cancelling the original stopped whatever else
     // it does on the way to a return value, which left vanilla generation to fail
     // on a factionless pawn. Overriding its answer is enough.
-    [HarmonyPriority(Priority.Low)]
-    private static void Postfix(PawnGenerationRequest request, ref XenotypeDef __result) {
+    //
+    // Priority 1 so this composes outermost and its answer is the one that survives, matching
+    // the Harmony Priority.Low postfix it replaces.
+    [Inject(At.Return, nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn), Priority = 1)]
+    private static void AfterGetXenotypeForGeneratedPawn(
+        PawnGenerationRequest request,
+        ControlHandle<XenotypeDef> ch
+    ) {
         if (request.ForcedXenotype != null) return;
 
         // A xenotype only means anything to a humanlike with a gene tracker.
@@ -26,7 +30,7 @@ public static class ScadrialXenotypePatch {
         bool preCatacendre = ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation);
 
         if (preCatacendre) {
-            __result = new[] {
+            ch.ReturnValue = new[] {
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Skaa,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble,
@@ -34,7 +38,7 @@ public static class ScadrialXenotypePatch {
             return;
         }
 
-        __result = new[] {
+        ch.ReturnValue = new[] {
             XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
             XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian,
         }.RandomElement();

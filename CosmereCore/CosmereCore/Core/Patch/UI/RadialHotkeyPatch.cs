@@ -1,14 +1,14 @@
 using System;
+using Concord;
 using Cosmere.Core.UI.Radial;
-using HarmonyLib;
 using RimWorld;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(UIRoot_Play), nameof(UIRoot_Play.UIRootOnGUI))]
-public static class RadialHotkeyPatch {
-    [HarmonyPostfix]
-    public static void Postfix() {
+[Patch]
+public abstract class RadialHotkeyPatch : UIRoot_Play {
+    [Inject(At.Return, nameof(UIRootOnGUI))]
+    private void AfterUIRootOnGUI() {
         try {
             RadialController.OnHotkeyPoll();
         } catch (Exception ex) {

@@ -1,19 +1,30 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
+using Concord;
 using Verse;
 using ThingUtility = Cosmere.Core.Util.ThingUtility;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Pawn_InventoryTracker), "DropAllNearPawnHelper")]
-[HarmonyPatch([typeof(IntVec3), typeof(bool), typeof(bool), typeof(bool)])]
-public static class PawnInventoryTrackerDropAllNearPawnHelperPatch {
-    [HarmonyTranspiler]
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il) {
-        MethodInfo? addRange = AccessTools.Method(typeof(List<Verse.Thing>), nameof(List<Verse.Thing>.AddRange));
-        MethodInfo? shouldDrop = AccessTools.Method(typeof(ThingUtility), nameof(ThingUtility.ShouldDrop));
+[Patch]
+public abstract class PawnInventoryTrackerDropAllNearPawnHelperPatch : Pawn_InventoryTracker {
+    protected PawnInventoryTrackerDropAllNearPawnHelperPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(
+        At.Transpiler,
+        "DropAllNearPawnHelper",
+        parameterTypes: [typeof(IntVec3), typeof(bool), typeof(bool), typeof(bool)]
+    )]
+    private static IEnumerable<CodeInstruction> FilterDroppedThings(IEnumerable<CodeInstruction> instructions) {
+        MethodInfo? addRange = typeof(List<Verse.Thing>).GetMethod(
+            nameof(List<Verse.Thing>.AddRange),
+            [typeof(IEnumerable<Verse.Thing>)]
+        );
+        MethodInfo? shouldDrop = typeof(ThingUtility).GetMethod(
+            nameof(ThingUtility.ShouldDrop),
+            BindingFlags.Public | BindingFlags.Static
+        );
         ConstructorInfo? funcCtor = typeof(Func<Verse.Thing, bool>).GetConstructor([typeof(object), typeof(IntPtr)]);
 
         MethodInfo where = typeof(Enumerable)
@@ -27,7 +38,7 @@ public static class PawnInventoryTrackerDropAllNearPawnHelperPatch {
 
         foreach (CodeInstruction? instruction in instructions) {
             // Find: list.AddRange(arg)
-            if (instruction.Calls(addRange)) {
+            if (instruction.Is(OpCodes.Call, addRange) || instruction.Is(OpCodes.Callvirt, addRange)) {
                 // Instead of calling AddRange(arg)
                 // transform arg => arg.Where(ShouldDrop)
 

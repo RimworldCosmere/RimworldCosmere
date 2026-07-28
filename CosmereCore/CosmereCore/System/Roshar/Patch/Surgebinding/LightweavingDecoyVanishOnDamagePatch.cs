@@ -1,29 +1,32 @@
-using Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.LightweavingDecoy;
+using LightweavingDecoyRegistry = Cosmere.System.Roshar.Surgebinding.Ability.Illumination.LightweavingDecoyRegistry;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.PreApplyDamage))]
-public static class LightweavingDecoyVanishOnDamagePatch {
-    [HarmonyPrefix]
-    public static bool Prefix(Pawn __instance, ref DamageInfo dinfo, out bool absorbed) {
+[Patch]
+public abstract class LightweavingDecoyVanishOnDamagePatch : Pawn {
+    // Both parameters must be declared byref to match the target. Taking absorbed by value compiles
+    // the assignments to starg against a bool& slot, which the runtime rejects as invalid IL.
+    [Inject(At.Head, nameof(PreApplyDamage))]
+    private Control BeforePreApplyDamage(ref DamageInfo dinfo, ref bool absorbed) {
         absorbed = false;
-        if (!DecoyHediff.IsDecoy(__instance)) return true;
+        Pawn self = this;
+        if (!DecoyHediff.IsDecoy(self)) return Control.Continue;
 
         absorbed = true;
-        if (__instance.Spawned) {
-            FleckMaker.Static(__instance.Position, __instance.Map, FleckDefOf.PsycastAreaEffect);
-            __instance.DeSpawn();
+        if (self.Spawned) {
+            FleckMaker.Static(self.Position, self.Map, FleckDefOf.PsycastAreaEffect);
+            self.DeSpawn();
         }
 
-        LightweavingDecoyRegistry.Remove(__instance);
-        if (!__instance.Destroyed) {
-            __instance.Discard(true);
+        LightweavingDecoyRegistry.Remove(self);
+        if (!self.Destroyed) {
+            self.Discard(true);
         }
 
-        return false;
+        return Control.Cancel;
     }
 }

@@ -1,21 +1,27 @@
+using Concord;
 using Cosmere.Core.UI.Radial;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
-public static class RadialGizmoPatch {
-    private static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo>? values, Pawn __instance) {
+[Patch]
+public abstract class RadialGizmoPatch : Pawn {
+    [Inject(At.Return, nameof(GetGizmos))]
+    private void AfterGetGizmos(ControlHandle<IEnumerable<Gizmo>> ch) {
+        Pawn self = this;
+        ch.ReturnValue = WithRadialGizmo(ch.ReturnValue, self);
+    }
+
+    private static IEnumerable<Gizmo> WithRadialGizmo(IEnumerable<Gizmo>? values, Pawn instance) {
         if (values != null) {
             foreach (Gizmo gizmo in values) {
                 yield return gizmo;
             }
         }
 
-        if (__instance.Faction is not { IsPlayer: true }) yield break;
-        if (!RadialController.HasRadialFor(__instance)) yield break;
+        if (instance.Faction is not { IsPlayer: true }) yield break;
+        if (!RadialController.HasRadialFor(instance)) yield break;
 
-        yield return new Command_OpenRadial(__instance);
+        yield return new Command_OpenRadial(instance);
     }
 }

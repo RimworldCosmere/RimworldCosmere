@@ -1,14 +1,15 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(CharacterCardUtility), nameof(CharacterCardUtility.PawnCardSize))]
+[Patch(typeof(CharacterCardUtility))]
 public static class CharacterCardUtilitySizePatch {
-    public static void Postfix(Pawn pawn, ref Vector2 __result) {
-        __result = GetViewSize(pawn, __result);
+    [Inject(At.Return, nameof(CharacterCardUtility.PawnCardSize))]
+    private static void AfterPawnCardSize(Pawn pawn, ControlHandle<Vector2> ch) {
+        ch.ReturnValue = GetViewSize(pawn, ch.ReturnValue);
     }
 
     private static Vector2 GetViewSize(Pawn p, Vector2 result) {

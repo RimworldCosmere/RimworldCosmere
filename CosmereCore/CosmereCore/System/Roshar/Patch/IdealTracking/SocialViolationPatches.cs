@@ -1,18 +1,19 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.StartSocialFight))]
-public static class SocialFightViolationPatch {
-    private static readonly AccessTools.FieldRef<Pawn_InteractionsTracker, Pawn> PawnRef =
-        AccessTools.FieldRefAccess<Pawn>(typeof(Pawn_InteractionsTracker), "pawn");
+[Patch]
+public abstract class SocialFightViolationPatch : Pawn_InteractionsTracker {
+    [InjectField("pawn")]
+    private readonly Pawn initiator = null!;
 
-    private static void Postfix(Pawn_InteractionsTracker __instance) {
-        Pawn initiator = PawnRef(__instance);
+    protected SocialFightViolationPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(StartSocialFight))]
+    private void AfterStartSocialFight() {
         if (initiator == null) return;
 
         if (ViolationUtility.IsSurgebinderOfOrder(initiator, RadiantOrderDefOf.Skybreaker)) {
@@ -25,23 +26,38 @@ public static class SocialFightViolationPatch {
     }
 }
 
-[HarmonyPatch(typeof(Faction), nameof(Faction.TryAffectGoodwillWith))]
-public static class FactionGoodwillViolationPatch {
-    private static void Prefix(Faction __instance, Faction other, int goodwillChange, out int __state) {
-        __state = __instance.IsPlayer ? __instance.GoodwillWith(other) : -999;
-    }
+[Patch]
+public abstract class FactionGoodwillViolationPatch : Faction {
+    // The pre-call goodwill is only readable before the change lands.
+    [Inject(At.Around, nameof(TryAffectGoodwillWith))]
+    private bool AroundTryAffectGoodwillWith(
+        Faction other,
+        int goodwillChange,
+        bool canSendMessage,
+        bool canSendHostilityLetter,
+        HistoryEventDef reason,
+        RimWorld.Planet.GlobalTargetInfo? lookTarget,
+        Operation<Faction, int, bool, bool, HistoryEventDef, RimWorld.Planet.GlobalTargetInfo?, bool> original
+    ) {
+        Faction self = this;
+        bool tracked = self.IsPlayer;
+        int previousGoodwill = tracked ? self.GoodwillWith(other) : 0;
 
-    private static void Postfix(Faction __instance, Faction other, int goodwillChange, bool __result, int __state) {
-        if (!__result) return;
-        if (__state == -999) return;
-        if (!__instance.IsPlayer) return;
-        if (goodwillChange >= 0) return;
+        bool result = original.Invoke(
+            other,
+            goodwillChange,
+            canSendMessage,
+            canSendHostilityLetter,
+            reason,
+            lookTarget
+        );
 
-        int previousGoodwill = __state;
-        int currentGoodwill = __instance.GoodwillWith(other);
+        if (!result || !tracked) return result;
+        if (goodwillChange >= 0) return result;
 
+        int currentGoodwill = self.GoodwillWith(other);
         bool wentHostile = previousGoodwill >= 0 && currentGoodwill < 0;
-        if (!wentHostile) return;
+        if (!wentHostile) return result;
 
         List<Pawn> colonists = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists;
         for (int i = 0; i < colonists.Count; i++) {
@@ -50,5 +66,7 @@ public static class FactionGoodwillViolationPatch {
                 ViolationUtility.ApplyViolation(colonist, 0.3f, "faction turned hostile");
             }
         }
+
+        return result;
     }
 }

@@ -1,16 +1,15 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Verse.Thing))]
-public static class DebugSpawnPatch {
-    [HarmonyPatch(nameof(Verse.Thing.Notify_DebugSpawned))]
-    [HarmonyPostfix]
-    public static void PostfixNotify_DebugSpawned(Verse.Thing __instance) {
-        if (__instance.def.CanHaveFaction) {
-            __instance.SetFactionDirect(Find.Selector.SelectedPawns.FirstOrDefault()?.Faction ?? Faction.OfPlayer);
+[Patch]
+public abstract class DebugSpawnPatch : Verse.Thing {
+    [Inject(At.Return, nameof(Notify_DebugSpawned))]
+    private void AfterNotify_DebugSpawned() {
+        if (def.CanHaveFaction) {
+            SetFactionDirect(Find.Selector.SelectedPawns.FirstOrDefault()?.Faction ?? Faction.OfPlayer);
         }
     }
 }

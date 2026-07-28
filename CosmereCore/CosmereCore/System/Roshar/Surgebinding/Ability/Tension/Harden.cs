@@ -1,6 +1,6 @@
 using System;
+using Concord;
 using Cosmere.Core.Ability;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.Profile;
@@ -103,10 +103,10 @@ public class Harden : SurgebindingAbility {
         Scribe_Collections.Look(ref hardenedStructures, "hardenedStructures", LookMode.Reference);
     }
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [Patch(typeof(MemoryUtility))]
     public static class HardenStateClearer {
-        [HarmonyPostfix]
-        public static void Postfix() {
+        [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+        private static void AfterClearAllMapsAndWorld() {
             hardenedBuildings.Clear();
         }
     }

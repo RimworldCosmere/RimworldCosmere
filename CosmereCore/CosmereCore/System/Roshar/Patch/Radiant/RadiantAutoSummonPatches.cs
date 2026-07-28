@@ -1,6 +1,6 @@
+using Concord;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Logger = Cosmere.Core.Logger;
@@ -9,8 +9,7 @@ using Shardplate = Cosmere.System.Roshar.Surgebinding.Ability.Shardplate;
 
 namespace Cosmere.System.Roshar.Patch.Radiant;
 
-[HarmonyPatch]
-public static class RadiantAutoSummonPatch {
+public static class RadiantAutoSummon {
     private const int DismissGraceTicks = 5000;
     private static readonly HashSet<int> AutoSummonedPawns = [];
     private static readonly Dictionary<int, int> LastCombatTick = new Dictionary<int, int>();
@@ -26,7 +25,7 @@ public static class RadiantAutoSummonPatch {
         defsResolved = cachedBladeAbilityDef != null || cachedPlateAbilityDef != null;
     }
 
-    private static bool TryAutoSummon(Pawn pawn) {
+    public static bool TryAutoSummon(Pawn pawn) {
         if (pawn.Drafted) return false;
 
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
@@ -62,18 +61,7 @@ public static class RadiantAutoSummonPatch {
         return summoned;
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(JobGiver_ConfigurableHostilityResponse), "TryGetAttackNearbyEnemyJob")]
-    private static void AutoSummonOnAttackJob(Pawn pawn, Verse.AI.Job __result) {
-        if (__result == null) return;
-        if (pawn.playerSettings?.hostilityResponse != HostilityResponseMode.Attack) return;
-        TryAutoSummon(pawn);
-    }
-
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(JobGiver_ConfigurableHostilityResponse), "TryGiveJob")]
-    private static void AutoDismissPostfix(Pawn pawn, Verse.AI.Job __result) {
-        if (__result != null) return;
+    public static void TryAutoDismiss(Pawn pawn) {
         if (pawn.Drafted) return;
 
         int pawnId = pawn.thingIDNumber;
@@ -109,13 +97,32 @@ public static class RadiantAutoSummonPatch {
         AutoSummonedPawns.Remove(pawnId);
         LastCombatTick.Remove(pawnId);
     }
+}
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(Pawn), nameof(Pawn.PreApplyDamage))]
-    private static void AutoSummonOnDamage(Pawn __instance, ref DamageInfo dinfo) {
-        if (__instance.Drafted) return;
+[Patch]
+public abstract class RadiantAutoSummonJobPatch : JobGiver_ConfigurableHostilityResponse {
+    [Inject(At.Return, "TryGetAttackNearbyEnemyJob")]
+    private void AfterTryGetAttackNearbyEnemyJob(Pawn pawn, ControlHandle<Verse.AI.Job> ch) {
+        if (ch.ReturnValue == null) return;
+        if (pawn.playerSettings?.hostilityResponse != HostilityResponseMode.Attack) return;
+        RadiantAutoSummon.TryAutoSummon(pawn);
+    }
+
+    [Inject(At.Return, nameof(TryGiveJob))]
+    private void AfterTryGiveJob(Pawn pawn, ControlHandle<Verse.AI.Job> ch) {
+        if (ch.ReturnValue != null) return;
+        RadiantAutoSummon.TryAutoDismiss(pawn);
+    }
+}
+
+[Patch]
+public abstract class RadiantAutoSummonDamagePatch : Pawn {
+    [Inject(At.Return, nameof(PreApplyDamage))]
+    private void AfterPreApplyDamage(ref DamageInfo dinfo) {
+        Pawn self = this;
+        if (self.Drafted) return;
         if (dinfo.Instigator is not Pawn attacker) return;
-        if (!attacker.HostileTo(__instance)) return;
-        TryAutoSummon(__instance);
+        if (!attacker.HostileTo(self)) return;
+        RadiantAutoSummon.TryAutoSummon(self);
     }
 }

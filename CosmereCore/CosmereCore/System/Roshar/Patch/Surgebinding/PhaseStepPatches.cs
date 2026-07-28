@@ -1,94 +1,107 @@
 using System;
+using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Gravitation;
-using HarmonyLib;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch.Surgebinding;
 
-[HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell")]
-[HarmonyPatch([typeof(Pawn), typeof(IntVec3)])]
-public static class FlyingMoveCostPatch {
-    private static void Postfix(Pawn pawn, IntVec3 c, ref float __result) {
+[Patch]
+public abstract class FlyingMoveCostPatch : Pawn_PathFollower {
+    protected FlyingMoveCostPatch(Pawn newPawn) : base(newPawn) { }
+
+    [Inject(At.Return, "CostToMoveIntoCell", parameterTypes: [typeof(Pawn), typeof(IntVec3)])]
+    private static void AfterCostToMoveIntoCell(Pawn pawn, IntVec3 c, ControlHandle<float> ch) {
         if (pawn == null) return;
         if (!BasicLashing.FlyingPawns.Contains(pawn)) return;
 
-        __result = c.x != pawn.Position.x && c.z != pawn.Position.z
+        ch.ReturnValue = c.x != pawn.Position.x && c.z != pawn.Position.z
             ? pawn.TicksPerMoveDiagonal
             : pawn.TicksPerMoveCardinal;
     }
 }
 
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.BlocksPawn))]
-public static class FlyingBlocksPawnPatch {
-    private static void Postfix(Pawn p, ref bool __result) {
-        if (!__result) return;
+[Patch]
+public abstract class FlyingBlocksPawnPatch : Verse.Thing {
+    [Inject(At.Return, nameof(BlocksPawn))]
+    private void AfterBlocksPawn(Pawn p, ControlHandle<bool> ch) {
+        if (!ch.ReturnValue) return;
         if (p == null) return;
         if (BasicLashing.FlyingPawns.Contains(p)) {
-            __result = false;
+            ch.ReturnValue = false;
         }
     }
 }
 
-[HarmonyPatch(
-    typeof(ReachabilityUtility),
-    nameof(ReachabilityUtility.CanReach),
-    typeof(Pawn),
-    typeof(LocalTargetInfo),
-    typeof(PathEndMode),
-    typeof(Danger),
-    typeof(bool),
-    typeof(bool),
-    typeof(TraverseMode)
-)]
+[Patch(typeof(ReachabilityUtility))]
 public static class FlyingReachabilityPatch {
-    private static bool Prefix(Pawn pawn, ref bool __result) {
-        if (pawn == null || !pawn.Spawned) return true;
-        if (!BasicLashing.FlyingPawns.Contains(pawn)) return true;
+    [Inject(
+        At.Head,
+        nameof(ReachabilityUtility.CanReach),
+        parameterTypes: [
+            typeof(Pawn),
+            typeof(LocalTargetInfo),
+            typeof(PathEndMode),
+            typeof(Danger),
+            typeof(bool),
+            typeof(bool),
+            typeof(TraverseMode),
+        ]
+    )]
+    private static Control BeforeCanReach(Pawn pawn, ControlHandle<bool> ch) {
+        if (pawn == null || !pawn.Spawned) return Control.Continue;
+        if (!BasicLashing.FlyingPawns.Contains(pawn)) return Control.Continue;
 
-        __result = true;
-        return false;
+        ch.ReturnValue = true;
+        return Control.Cancel;
     }
 }
 
-[HarmonyPatch(
-    typeof(Reachability),
-    nameof(Reachability.CanReach),
-    typeof(IntVec3),
-    typeof(LocalTargetInfo),
-    typeof(PathEndMode),
-    typeof(TraverseParms)
-)]
-public static class FlyingReachabilityDirectPatch {
+[Patch]
+public abstract class FlyingReachabilityDirectPatch : Reachability {
     [ThreadStatic]
     private static bool patching;
 
-    private static bool Prefix(ref TraverseParms traverseParams, ref bool __state) {
-        __state = false;
-        if (patching) return true;
+    protected FlyingReachabilityDirectPatch(Verse.Map map) : base(map) { }
+
+    [Inject(
+        At.Around,
+        nameof(CanReach),
+        parameterTypes: [typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms)]
+    )]
+    private bool AroundCanReach(
+        IntVec3 start,
+        LocalTargetInfo dest,
+        PathEndMode peMode,
+        TraverseParms traverseParams,
+        Operation<IntVec3, LocalTargetInfo, PathEndMode, TraverseParms, bool> original
+    ) {
+        if (patching) return original.Invoke(start, dest, peMode, traverseParams);
+
         Pawn? pawn = traverseParams.pawn;
-        if (pawn == null) return true;
-        if (!BasicLashing.FlyingPawns.Contains(pawn)) return true;
+        if (pawn == null) return original.Invoke(start, dest, peMode, traverseParams);
+        if (!BasicLashing.FlyingPawns.Contains(pawn)) return original.Invoke(start, dest, peMode, traverseParams);
 
         traverseParams.mode = TraverseMode.PassAllDestroyableThings;
         traverseParams.canBashDoors = true;
         traverseParams.canBashFences = true;
-        patching = true;
-        __state = true;
-        return true;
-    }
 
-    private static void Finalizer(bool __state) {
-        if (__state) patching = false;
+        patching = true;
+        try {
+            return original.Invoke(start, dest, peMode, traverseParams);
+        } finally {
+            patching = false;
+        }
     }
 }
 
-[HarmonyPatch(typeof(Building), nameof(Building.PathWalkCostFor))]
-public static class FlyingBuildingCostPatch {
-    private static void Postfix(Building __instance, Pawn p, ref ushort __result) {
+[Patch]
+public abstract class FlyingBuildingCostPatch : Building {
+    [Inject(At.Return, nameof(PathWalkCostFor))]
+    private void AfterPathWalkCostFor(Pawn p, ControlHandle<ushort> ch) {
         if (p == null) return;
         if (!BasicLashing.FlyingPawns.Contains(p)) return;
 
-        __result = 0;
+        ch.ReturnValue = 0;
     }
 }

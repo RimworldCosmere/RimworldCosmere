@@ -1,14 +1,14 @@
+using Concord;
 using Cosmere.System.Roshar.Comp.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 
-[HarmonyPatch(typeof(LifeStageWorker_HumanlikeAdult), nameof(LifeStageWorker_HumanlikeAdult.Notify_LifeStageStarted))]
-public static class SprenLifeStagePatch {
-    private static bool Prefix(Pawn pawn) {
-        if (pawn.def.HasComp(typeof(SprenBond))) return false;
-        return true;
+[Patch]
+public abstract class SprenLifeStagePatch : LifeStageWorker_HumanlikeAdult {
+    [Inject(At.Head, nameof(Notify_LifeStageStarted))]
+    private Control BeforeNotify_LifeStageStarted(Pawn pawn) {
+        return pawn.def.HasComp(typeof(SprenBond)) ? Control.Cancel : Control.Continue;
     }
 }

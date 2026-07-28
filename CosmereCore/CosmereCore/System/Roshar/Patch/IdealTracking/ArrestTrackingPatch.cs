@@ -1,13 +1,16 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.CapturedBy))]
-public static class ArrestTrackingPatch {
-    private static void Postfix(Pawn_GuestTracker __instance, Faction by, Pawn byPawn) {
+[Patch]
+public abstract class ArrestTrackingPatch : Pawn_GuestTracker {
+    protected ArrestTrackingPatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(CapturedBy))]
+    private void AfterCapturedBy(Faction by, Pawn byPawn) {
         if (byPawn == null) return;
         if (by != Faction.OfPlayer) return;
 

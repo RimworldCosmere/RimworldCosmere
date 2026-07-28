@@ -1,39 +1,37 @@
 using System;
-using System.Reflection;
+using Concord;
 using Cosmere.System.Roshar.Comp.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 
-[HarmonyPatch(typeof(Pawn_DraftController), nameof(Pawn_DraftController.ShowDraftGizmo), MethodType.Getter)]
-public static class BondedSprenDraftGizmoPatch {
-    private static FieldInfo? pawnField;
+[Patch]
+public abstract class BondedSprenDraftGizmoPatch : Pawn_DraftController {
+    protected BondedSprenDraftGizmoPatch(Pawn pawn) : base(pawn) { }
 
-    private static void Postfix(ref bool __result, Pawn_DraftController __instance) {
-        if (!__result) return;
-        pawnField ??= AccessTools.Field(typeof(Pawn_DraftController), "pawn");
-        Pawn? pawn = pawnField?.GetValue(__instance) as Pawn;
+    [Inject(At.Return, nameof(ShowDraftGizmo))]
+    private void AfterShowDraftGizmo(ControlHandle<bool> ch) {
+        if (!ch.ReturnValue) return;
         if (pawn?.TryGetComp<SprenBond>() == null) return;
-        __result = false;
+        ch.ReturnValue = false;
     }
 }
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.ThreatDisabled))]
-public static class BondedSprenThreatDisabledPatch {
-    private static void Postfix(ref bool __result, Pawn __instance) {
-        if (__result) return;
-        if (__instance.TryGetComp<SprenBond>() == null) return;
-        __result = true;
+[Patch]
+public abstract class BondedSprenThreatDisabledPatch : Pawn {
+    [Inject(At.Return, nameof(ThreatDisabled))]
+    private void AfterThreatDisabled(ControlHandle<bool> ch) {
+        if (ch.ReturnValue) return;
+        Pawn self = this;
+        if (self.TryGetComp<SprenBond>() == null) return;
+        ch.ReturnValue = true;
     }
 }
 
-[HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.StartJob))]
-public static class BondedSprenStartJobFilterPatch {
-    private static FieldInfo? pawnField;
-
+[Patch]
+public abstract class BondedSprenStartJobFilterPatch : Pawn_JobTracker {
     private static readonly HashSet<string> BlockedJobDefNames = new HashSet<string>(StringComparer.Ordinal) {
         "Equip",
         "Wear",
@@ -51,14 +49,14 @@ public static class BondedSprenStartJobFilterPatch {
         "PredatorHunt",
     };
 
-    private static bool Prefix(Pawn_JobTracker __instance, Verse.AI.Job newJob) {
-        if (newJob?.def == null) return true;
-        if (!BlockedJobDefNames.Contains(newJob.def.defName)) return true;
+    protected BondedSprenStartJobFilterPatch(Pawn newPawn) : base(newPawn) { }
 
-        pawnField ??= AccessTools.Field(typeof(Pawn_JobTracker), "pawn");
-        Pawn? pawn = pawnField?.GetValue(__instance) as Pawn;
-        if (pawn?.TryGetComp<SprenBond>() == null) return true;
+    [Inject(At.Head, nameof(StartJob))]
+    private Control BeforeStartJob(Verse.AI.Job newJob) {
+        if (newJob?.def == null) return Control.Continue;
+        if (!BlockedJobDefNames.Contains(newJob.def.defName)) return Control.Continue;
+        if (pawn?.TryGetComp<SprenBond>() == null) return Control.Continue;
 
-        return false;
+        return Control.Cancel;
     }
 }

@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
+using Concord;
 using Cosmere.System.Roshar.Comp.Map;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,71 +9,13 @@ using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 
+// Kept for the Texture2D field: RimWorld's startup check flags any type holding one, even though
+// the icon here is loaded lazily on the main thread rather than in a static constructor.
 [StaticConstructorOnStartup]
-[HarmonyPatch]
 public static class HighstormGlobalControlsPatch {
     public static bool showHighstormReadout = true;
 
-    private static bool patchedReadout;
-    private static bool patchedToggle;
     private static Texture2D? highstormIcon;
-
-    [HarmonyPrepare]
-    public static bool Prepare() {
-        LongEventHandler.ExecuteWhenFinished(() => {
-            if (!patchedReadout) {
-                Logger.Warning(
-                    "GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied."
-                );
-            }
-
-            if (!patchedToggle) {
-                Logger.Warning(
-                    "PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied."
-                );
-            }
-        }
-        );
-        return true;
-    }
-
-    [HarmonyPatch(typeof(GlobalControls), nameof(GlobalControls.GlobalControlsOnGUI))]
-    [HarmonyTranspiler]
-    public static IEnumerable<CodeInstruction> ReadoutTranspiler(IEnumerable<CodeInstruction> instructions) {
-        MethodInfo doDateMethod = AccessTools.Method(
-            typeof(GlobalControlsUtility),
-            nameof(GlobalControlsUtility.DoDate)
-        );
-        MethodInfo drawReadout = AccessTools.Method(typeof(HighstormGlobalControlsPatch), nameof(DrawHighstormReadout));
-
-        foreach (CodeInstruction instruction in instructions) {
-            yield return instruction;
-
-            if (!patchedReadout && instruction.Calls(doDateMethod)) {
-                yield return new CodeInstruction(OpCodes.Ldloc_0);
-                yield return new CodeInstruction(OpCodes.Ldloca_S, (byte)1);
-                yield return new CodeInstruction(OpCodes.Call, drawReadout);
-                patchedReadout = true;
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(PlaySettings), nameof(PlaySettings.DoPlaySettingsGlobalControls))]
-    [HarmonyTranspiler]
-    public static IEnumerable<CodeInstruction> ToggleTranspiler(IEnumerable<CodeInstruction> instructions) {
-        MethodInfo doMapControls = AccessTools.Method(typeof(PlaySettings), "DoMapControls");
-        MethodInfo drawToggle = AccessTools.Method(typeof(HighstormGlobalControlsPatch), nameof(DrawHighstormToggle));
-
-        foreach (CodeInstruction instruction in instructions) {
-            yield return instruction;
-
-            if (!patchedToggle && instruction.Calls(doMapControls)) {
-                yield return new CodeInstruction(OpCodes.Ldarg_1);
-                yield return new CodeInstruction(OpCodes.Call, drawToggle);
-                patchedToggle = true;
-            }
-        }
-    }
 
     public static void DrawHighstormReadout(float leftX, ref float curBaseY) {
         if (!showHighstormReadout) return;
@@ -110,5 +52,82 @@ public static class HighstormGlobalControlsPatch {
             SoundDefOf.Mouseover_ButtonToggle
         );
         GUI.color = prevColor;
+    }
+}
+
+[Patch]
+public abstract class HighstormReadoutPatch : GlobalControls {
+    [Inject(At.Transpiler, nameof(GlobalControlsOnGUI))]
+    private static IEnumerable<CodeInstruction> InsertReadout(IEnumerable<CodeInstruction> instructions) {
+        MethodInfo doDateMethod = typeof(GlobalControlsUtility).GetMethod(
+            nameof(GlobalControlsUtility.DoDate),
+            BindingFlags.Public | BindingFlags.Static
+        )!;
+        MethodInfo drawReadout = typeof(HighstormGlobalControlsPatch).GetMethod(
+            nameof(HighstormGlobalControlsPatch.DrawHighstormReadout),
+            BindingFlags.Public | BindingFlags.Static
+        )!;
+
+        // The "first match only" guard is a local, not a field: Concord recomposes the target
+        // from raw IL on every patch and unpatch, so a static flag would suppress the insert
+        // on every run after the first.
+        bool inserted = false;
+
+        foreach (CodeInstruction instruction in instructions) {
+            yield return instruction;
+
+            if (inserted) continue;
+            if (!instruction.Is(OpCodes.Call, doDateMethod) && !instruction.Is(OpCodes.Callvirt, doDateMethod)) {
+                continue;
+            }
+
+            yield return new CodeInstruction(OpCodes.Ldloc_0);
+            yield return new CodeInstruction(OpCodes.Ldloca_S, (byte)1);
+            yield return new CodeInstruction(OpCodes.Call, drawReadout);
+            inserted = true;
+        }
+
+        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
+        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
+        // it before this transpiler has run.
+        if (!inserted) {
+            Logger.Warning("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler found no DoDate call.");
+        }
+    }
+}
+
+[Patch(typeof(PlaySettings))]
+public static class HighstormTogglePatch {
+    [Inject(At.Transpiler, nameof(PlaySettings.DoPlaySettingsGlobalControls))]
+    private static IEnumerable<CodeInstruction> InsertToggle(IEnumerable<CodeInstruction> instructions) {
+        MethodInfo doMapControls = typeof(PlaySettings).GetMethod(
+            "DoMapControls",
+            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+        )!;
+        MethodInfo drawToggle = typeof(HighstormGlobalControlsPatch).GetMethod(
+            nameof(HighstormGlobalControlsPatch.DrawHighstormToggle),
+            BindingFlags.Public | BindingFlags.Static
+        )!;
+
+        bool inserted = false;
+
+        foreach (CodeInstruction instruction in instructions) {
+            yield return instruction;
+
+            if (inserted) continue;
+            if (!instruction.Is(OpCodes.Call, doMapControls) && !instruction.Is(OpCodes.Callvirt, doMapControls)) {
+                continue;
+            }
+
+            yield return new CodeInstruction(OpCodes.Ldarg_1);
+            yield return new CodeInstruction(OpCodes.Call, drawToggle);
+            inserted = true;
+        }
+
+        if (!inserted) {
+            Logger.Warning(
+                "PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler found no DoMapControls call."
+            );
+        }
     }
 }

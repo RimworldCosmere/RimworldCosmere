@@ -1,29 +1,32 @@
+using Concord;
 using Cosmere.System.Roshar.Comp.Thing;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch.Radiant;
 
-[HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.MentalBreakerTickInterval))]
-public static class MentalBreakerBondChancePatch {
-    private static readonly AccessTools.FieldRef<MentalBreaker, Pawn> pawnRef =
-        AccessTools.FieldRefAccess<Pawn>(typeof(MentalBreaker), "pawn");
+[Patch]
+public abstract class MentalBreakerBondChancePatch : MentalBreaker {
+    [InjectField("pawn")]
+    private readonly Pawn trackedPawn = null!;
 
-    private static void Postfix(MentalBreaker __instance, int delta) {
+    protected MentalBreakerBondChancePatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Return, nameof(MentalBreakerTickInterval))]
+    private void AfterMentalBreakerTickInterval(int delta) {
         if (!GenTicks.IsTickIntervalDelta(GenTicks.TicksPerRealSecond, delta)) return;
-        Pawn? pawn = pawnRef(__instance);
+        Pawn? pawn = trackedPawn;
         if (pawn.NonHumanlikeOrWildMan() || !pawn.IsColonist) return;
         PawnTracker pawnTracker = pawn.GetComp<PawnTracker>();
         if (pawnTracker == null || pawn.records.GetAsInt(RecordDefOf.Cosmere_Roshar_Record_BondsFormed) > 0) return;
 
         float increment = 0f;
-        if (__instance.BreakExtremeIsImminent) {
+        if (BreakExtremeIsImminent) {
             increment = 2.5f;
-        } else if (__instance.BreakMajorIsImminent) {
+        } else if (BreakMajorIsImminent) {
             increment = 0.9f;
-        } else if (__instance.BreakMinorIsImminent) {
+        } else if (BreakMinorIsImminent) {
             increment = 0.5f;
         }
 

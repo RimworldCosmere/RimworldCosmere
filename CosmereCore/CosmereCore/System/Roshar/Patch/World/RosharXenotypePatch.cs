@@ -1,19 +1,23 @@
-using System.Diagnostics.CodeAnalysis;
+using Concord;
 using Cosmere.Core.Util;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.World;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[HarmonyPatch(typeof(Verse.PawnGenerator), nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn))]
+[Patch(typeof(Verse.PawnGenerator))]
 public static class RosharXenotypePatch {
-    // A postfix rather than a prefix: skipping the original stopped whatever else
+    // A return injection rather than a head one: cancelling the original stopped whatever else
     // it does on the way to a return value, which left vanilla generation to fail
     // on a factionless pawn. Overriding its answer is enough.
-    [HarmonyPriority(Priority.Low)]
-    private static void Postfix(PawnGenerationRequest request, ref XenotypeDef __result) {
+    //
+    // Priority 1 so this composes outermost and its answer is the one that survives, matching
+    // the Harmony Priority.Low postfix it replaces.
+    [Inject(At.Return, nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn), Priority = 1)]
+    private static void AfterGetXenotypeForGeneratedPawn(
+        PawnGenerationRequest request,
+        ControlHandle<XenotypeDef> ch
+    ) {
         if (request.ForcedXenotype != null) return;
 
         // A xenotype only means anything to a humanlike with a gene tracker.
@@ -24,7 +28,7 @@ public static class RosharXenotypePatch {
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium)) return;
 
         // 70% darkeyes, 30% lighteyes - reflecting Rosharan demographics
-        __result = Rand.Value < 0.7f
+        ch.ReturnValue = Rand.Value < 0.7f
             ? XenotypeDefOf.Cosmere_Roshar_Xenotype_Darkeyes
             : XenotypeDefOf.Cosmere_Roshar_Xenotype_Lighteyes;
     }

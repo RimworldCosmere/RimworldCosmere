@@ -1,19 +1,24 @@
-using HarmonyLib;
+using Concord;
 using UnityEngine;
 using Verse;
 using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
 
-[HarmonyPatch]
+[Patch(typeof(MemoryUtility))]
+public static class FrictionTrapOverlayStateClearer {
+    [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    private static void AfterClearAllMapsAndWorld() {
+        FrictionTrapOverlay.OnClearAllMapsAndWorld();
+    }
+}
+
 public static class FrictionTrapOverlay {
     private static readonly List<ZoneEntry> zones = [];
     private static readonly List<IntVec3> cellBuffer = [];
     private static readonly Color BorderColor = new Color(0.4f, 0.75f, 0.95f, 0.6f);
     private static readonly Color FillColor = new Color(0.4f, 0.75f, 0.95f, 0.12f);
 
-    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
-    [HarmonyPostfix]
     public static void OnClearAllMapsAndWorld() {
         zones.Clear();
         cellBuffer.Clear();

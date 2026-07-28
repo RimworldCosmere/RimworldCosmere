@@ -1,17 +1,20 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.World;
 
-[HarmonyPatch(typeof(StorytellerUtility), nameof(StorytellerUtility.DefaultThreatPointsNow))]
-[HarmonyPatch([typeof(IIncidentTarget)])]
+[Patch(typeof(StorytellerUtility))]
 public static class RosharStorytellerUtilityPatch {
     private const float ThreatPerIdeal = 40f;
 
-    [HarmonyPostfix]
-    public static void Postfix(ref float __result, IIncidentTarget target) {
+    [Inject(
+        At.Return,
+        nameof(StorytellerUtility.DefaultThreatPointsNow),
+        parameterTypes: [typeof(IIncidentTarget)]
+    )]
+    private static void AfterDefaultThreatPointsNow(IIncidentTarget target, ControlHandle<float> ch) {
         Map? map = target as Map;
         if (map == null) return;
 
@@ -29,6 +32,6 @@ public static class RosharStorytellerUtilityPatch {
             }
         }
 
-        __result += bonus;
+        ch.ReturnValue += bonus;
     }
 }

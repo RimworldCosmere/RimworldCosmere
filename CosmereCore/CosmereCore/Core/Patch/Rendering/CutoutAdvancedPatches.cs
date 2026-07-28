@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+using System;
+using Concord;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Shader.Properties;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,14 +10,10 @@ using ShaderDatabase = Cosmere.Core.Shader.ShaderDatabase;
 namespace Cosmere.Core.Patch.Rendering;
 
 [StaticConstructorOnStartup]
-[HarmonyPatch]
-public static class CutoutAdvancedPatch {
+public static class CutoutAdvancedMaterial {
     private static Material? DrawNowMaterial;
 
-    private static MethodInfo GraphicsRandomRotatedGetRotInRack =>
-        AccessTools.Method(typeof(Graphic_RandomRotated), "GetRotInRack");
-
-    private static void ApplyMPBToMaterial(Material mat, MaterialPropertyBlock mpb) {
+    public static void ApplyMPBToMaterial(Material mat, MaterialPropertyBlock mpb) {
         Texture tex = mpb.GetTexture(CutoutAdvancedShaderProperties.MainTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.MainTex, tex);
 
@@ -105,15 +101,31 @@ public static class CutoutAdvancedPatch {
         );
     }
 
-    [HarmonyPatch(
-        typeof(DynamicPawnRenderNodeSetup_Apparel),
-        nameof(DynamicPawnRenderNodeSetup_Apparel.GetDynamicNodes)
-    )]
-    [HarmonyPostfix]
-    public static IEnumerable<(PawnRenderNode node, PawnRenderNode parent)>
-        DynamicPawnRenderNodeSetup_ApparelGetDynamicNodesPostfix(
-            this IEnumerable<(PawnRenderNode node, PawnRenderNode parent)> nodes
-        ) {
+    public static Material ForDrawNow(Material source, MaterialPropertyBlock? properties) {
+        if (DrawNowMaterial == null) {
+            DrawNowMaterial = new Material(source);
+        } else {
+            DrawNowMaterial.CopyPropertiesFromMaterial(source);
+        }
+
+        if (properties != null) {
+            ApplyMPBToMaterial(DrawNowMaterial, properties);
+        }
+
+        return DrawNowMaterial;
+    }
+}
+
+[Patch]
+public abstract class DynamicApparelNodesPatch : DynamicPawnRenderNodeSetup_Apparel {
+    [Inject(At.Return, nameof(GetDynamicNodes))]
+    private void AfterGetDynamicNodes(ControlHandle<IEnumerable<(PawnRenderNode node, PawnRenderNode parent)>> ch) {
+        ch.ReturnValue = WithCutoutAdvancedSubworker(ch.ReturnValue);
+    }
+
+    private static IEnumerable<(PawnRenderNode node, PawnRenderNode parent)> WithCutoutAdvancedSubworker(
+        IEnumerable<(PawnRenderNode node, PawnRenderNode parent)> nodes
+    ) {
         foreach ((PawnRenderNode node, PawnRenderNode parent) entry in nodes) {
             if (entry.node?.apparel?.TryGetComp(out CutoutAdvanced _) ?? false) {
                 entry.node.Props.subworkerClasses ??= [];
@@ -123,50 +135,47 @@ public static class CutoutAdvancedPatch {
             yield return entry;
         }
     }
+}
 
-    [HarmonyPatch(
-        typeof(GenDraw),
+[Patch(typeof(GenDraw))]
+public static class GenDrawMeshNowOrLaterPatch {
+    [Inject(
+        At.Head,
         nameof(GenDraw.DrawMeshNowOrLater),
-        typeof(Mesh),
-        typeof(Matrix4x4),
-        typeof(Material),
-        typeof(bool),
-        typeof(MaterialPropertyBlock)
+        parameterTypes: [
+            typeof(Mesh),
+            typeof(Matrix4x4),
+            typeof(Material),
+            typeof(bool),
+            typeof(MaterialPropertyBlock),
+        ]
     )]
-    [HarmonyPrefix]
-    public static bool GenDrawDrawMeshNowOrLaterPrefix(
+    private static Control BeforeDrawMeshNowOrLater(
         Mesh mesh,
         Matrix4x4 matrix,
         Material mat,
         bool drawNow,
-        MaterialPropertyBlock? properties = null
+        MaterialPropertyBlock? properties
     ) {
-        if (mat.shader != ShaderDatabase.CutoutAdvanced) return true;
+        if (mat.shader != ShaderDatabase.CutoutAdvanced) return Control.Continue;
 
         if (drawNow) {
-            if (DrawNowMaterial == null) {
-                DrawNowMaterial = new Material(mat);
-            } else {
-                DrawNowMaterial.CopyPropertiesFromMaterial(mat);
-            }
-
-            if (properties != null) {
-                ApplyMPBToMaterial(DrawNowMaterial, properties);
-            }
-
-            DrawNowMaterial.SetPass(0);
+            Material material = CutoutAdvancedMaterial.ForDrawNow(mat, properties);
+            material.SetPass(0);
             Graphics.DrawMeshNow(mesh, matrix);
         } else {
             Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, properties);
         }
 
-        return false;
+        return Control.Cancel;
     }
+}
 
-    [HarmonyPatch(typeof(PawnRenderUtility), nameof(PawnRenderUtility.DrawEquipmentAiming))]
-    [HarmonyPrefix]
-    public static bool PawnRenderUtilityDrawEquipmentAimingPrefix(Verse.Thing eq, Vector3 drawLoc, float aimAngle) {
-        if (!eq.TryGetComp(out CutoutAdvanced comp)) return true;
+[Patch(typeof(PawnRenderUtility))]
+public static class PawnRenderUtilityDrawEquipmentAimingPatch {
+    [Inject(At.Head, nameof(PawnRenderUtility.DrawEquipmentAiming))]
+    private static Control BeforeDrawEquipmentAiming(Verse.Thing eq, Vector3 drawLoc, float aimAngle) {
+        if (!eq.TryGetComp(out CutoutAdvanced comp)) return Control.Continue;
 
         float num = aimAngle - 90f;
         Mesh mesh;
@@ -208,61 +217,84 @@ public static class CutoutAdvancedPatch {
         MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, eq.Graphic, material);
         Graphics.DrawMesh(mesh, matrix, material, 0, null, 0, mpb);
 
-        return false;
+        return Control.Cancel;
     }
+}
 
-    [HarmonyPatch(typeof(Verse.Graphic), nameof(Verse.Graphic.DrawWorker))]
-    [HarmonyPrefix]
-    public static void GraphicDrawWorkerPrefix(out Verse.Thing __state, Verse.Thing thing) {
-        __state = thing;
-    }
+[Patch]
+public abstract class GraphicDrawMeshIntPatch : Verse.Graphic {
+    // DrawMeshInt never receives the Thing being drawn, so the enclosing DrawWorker call
+    // parks it here for the duration of that call.
+    [ThreadStatic]
+    private static Verse.Thing? drawingThing;
 
-    [HarmonyPatch(typeof(Verse.Graphic), "DrawMeshInt")]
-    [HarmonyPrefix]
-    public static bool GraphicDrawMeshInt(
-        Verse.Thing __state,
-        Mesh mesh,
+    [Inject(At.Around, nameof(DrawWorker))]
+    private void AroundDrawWorker(
         Vector3 loc,
-        Quaternion quat,
-        Material mat
+        Rot4 rot,
+        ThingDef thingDef,
+        Verse.Thing thing,
+        float extraRotation,
+        VoidOperation<Vector3, Rot4, ThingDef, Verse.Thing, float> original
     ) {
-        if (!__state.TryGetComp(out CutoutAdvanced comp)) return true;
-
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, __state.Graphic, mat);
-        Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
-        return false;
+        Verse.Thing? previous = drawingThing;
+        drawingThing = thing;
+        try {
+            original.Invoke(loc, rot, thingDef, thing, extraRotation);
+        } finally {
+            drawingThing = previous;
+        }
     }
 
-    [HarmonyPatch(typeof(Graphic_RandomRotated), nameof(Verse.Graphic.DrawWorker))]
-    [HarmonyPrefix]
-    public static bool GraphicRandomRotatedDrawWorkerPrefix(
-        Graphic_RandomRotated __instance,
-        float ___maxAngle,
+    [Inject(At.Head, nameof(DrawMeshInt))]
+    private Control BeforeDrawMeshInt(Mesh mesh, Vector3 loc, Quaternion quat, Material mat) {
+        Verse.Thing? thing = drawingThing;
+        if (thing == null) return Control.Continue;
+        if (!thing.TryGetComp(out CutoutAdvanced comp)) return Control.Continue;
+
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, thing.Graphic, mat);
+        Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
+        return Control.Cancel;
+    }
+}
+
+[Patch]
+public abstract class GraphicRandomRotatedDrawWorkerPatch : Graphic_RandomRotated {
+    [InjectField("maxAngle")]
+    private readonly float maxAngle;
+
+    protected GraphicRandomRotatedDrawWorkerPatch(Verse.Graphic subGraphic, float maxAngle)
+        : base(subGraphic, maxAngle) { }
+
+    [InjectMethod("GetRotInRack")]
+    protected abstract float? GetRotInRack(Verse.Thing thing, ThingDef thingDef, IntVec3 loc);
+
+    [Inject(At.Head, nameof(DrawWorker))]
+    private Control BeforeDrawWorker(
         Vector3 loc,
         Rot4 rot,
         ThingDef thingDef,
         Verse.Thing? thing,
         float extraRotation
     ) {
-        if (thing == null || !thing.TryGetComp(out CutoutAdvanced comp)) return true;
+        if (thing == null || !thing.TryGetComp(out CutoutAdvanced comp)) return Control.Continue;
 
-        Mesh mesh = __instance.MeshAt(rot);
+        Mesh mesh = MeshAt(rot);
 
-        float? rotInRack =
-            (float?)GraphicsRandomRotatedGetRotInRack.Invoke(__instance, [thing, thingDef, loc.ToIntVec3()]);
+        float? rotInRack = GetRotInRack(thing, thingDef, loc.ToIntVec3());
 
-        float num = rotInRack ?? (float)(-(double)___maxAngle + thing.thingIDNumber * 542 % (___maxAngle * 2.0));
+        float num = rotInRack ?? (float)(-(double)maxAngle + thing.thingIDNumber * 542 % (maxAngle * 2.0));
 
         float angle = num + extraRotation;
         Vector3 position = loc;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        Material material = __instance.MatSingleFor(thing);
+        Material material = MatSingleFor(thing);
         MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(
             CutoutAdvanced.MPB,
-            __instance.SubGraphic,
+            SubGraphic,
             material
         );
         Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, mpb);
-        return false;
+        return Control.Cancel;
     }
 }

@@ -1,18 +1,19 @@
+using Concord;
 using Cosmere.System.Roshar.LesserSpren.MapComponent;
-using HarmonyLib;
 using LudeonTK;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Spren;
 
-[HarmonyPatch(typeof(EditWindow_DebugInspector), "CurrentDebugString")]
-public static class SprenDebugInspectorPatch {
-    public static void Postfix(ref string __result) {
+[Patch]
+public abstract class SprenDebugInspectorPatch : EditWindow_DebugInspector {
+    [Inject(At.Return, "CurrentDebugString")]
+    private void AfterCurrentDebugString(ControlHandle<string> ch) {
         if (!Core.Mod.debugMode) return;
 
         LesserSprenSpawner? spawner = Find.CurrentMap?.GetComponent<LesserSprenSpawner>();
         if (spawner == null) return;
 
-        __result += "\n" + spawner.DebugStringAt(Verse.UI.MouseCell());
+        ch.ReturnValue += "\n" + spawner.DebugStringAt(Verse.UI.MouseCell());
     }
 }

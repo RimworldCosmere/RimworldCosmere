@@ -1,13 +1,14 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
-public static class ConstructionTrackingPatch {
-    private static void Postfix(Pawn worker) {
+[Patch]
+public abstract class ConstructionTrackingPatch : Frame {
+    [Inject(At.Return, nameof(CompleteConstruction))]
+    private void AfterCompleteConstruction(Pawn worker) {
         if (worker == null) return;
 
         Surgebinder? surgebinder = worker.genes?.GetFirstGeneOfType<Surgebinder>();

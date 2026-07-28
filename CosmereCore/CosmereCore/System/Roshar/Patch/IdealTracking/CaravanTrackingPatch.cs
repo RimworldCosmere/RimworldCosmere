@@ -1,23 +1,26 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(
-    typeof(CaravanExitMapUtility),
-    nameof(CaravanExitMapUtility.ExitMapAndCreateCaravan),
-    typeof(IEnumerable<Pawn>),
-    typeof(Faction),
-    typeof(PlanetTile),
-    typeof(PlanetTile),
-    typeof(PlanetTile),
-    typeof(bool)
-)]
+[Patch(typeof(CaravanExitMapUtility))]
 public static class CaravanTrackingPatch {
-    private static void Postfix(IEnumerable<Pawn> pawns) {
+    [Inject(
+        At.Return,
+        nameof(CaravanExitMapUtility.ExitMapAndCreateCaravan),
+        parameterTypes: [
+            typeof(IEnumerable<Pawn>),
+            typeof(Faction),
+            typeof(PlanetTile),
+            typeof(PlanetTile),
+            typeof(PlanetTile),
+            typeof(bool),
+        ]
+    )]
+    private static void AfterExitMapAndCreateCaravan(IEnumerable<Pawn> pawns) {
         foreach (Pawn pawn in pawns) {
             if (pawn.Dead || !pawn.RaceProps.Humanlike) continue;
 

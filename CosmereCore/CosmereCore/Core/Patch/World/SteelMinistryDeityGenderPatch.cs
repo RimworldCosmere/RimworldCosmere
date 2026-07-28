@@ -1,15 +1,16 @@
-using HarmonyLib;
+using Concord;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(IdeoFoundation_Deity), "FillDeity")]
-public static class SteelMinistryDeityGenderPatch {
+[Patch]
+public abstract class SteelMinistryDeityGenderPatch : IdeoFoundation_Deity {
     private const string SteelMinistryMemeDefName = "Cosmere_Structure_SteelMinistry";
 
-    public static void Postfix(IdeoFoundation_Deity __instance, IdeoFoundation_Deity.Deity deity) {
-        Ideo? ideo = __instance.ideo;
+    [Inject(At.Return, "FillDeity")]
+    private void AfterFillDeity(Deity deity) {
+        Ideo? ideo = this.ideo;
         if (ideo?.StructureMeme == null) return;
         if (ideo.StructureMeme.defName != SteelMinistryMemeDefName) return;
 

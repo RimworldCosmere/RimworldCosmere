@@ -1,13 +1,14 @@
+using Concord;
 using Cosmere.System.Roshar.Gene;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(ResearchManager), nameof(ResearchManager.FinishProject))]
-public static class ResearchTrackingPatch {
-    private static void Postfix(ResearchProjectDef proj, Pawn researcher) {
+[Patch(typeof(ResearchManager))]
+public abstract class ResearchTrackingPatch {
+    [Inject(At.Return, nameof(ResearchManager.FinishProject))]
+    private void AfterFinishProject(ResearchProjectDef proj, Pawn researcher) {
         if (researcher == null) return;
 
         Surgebinder? surgebinder = researcher.genes?.GetFirstGeneOfType<Surgebinder>();

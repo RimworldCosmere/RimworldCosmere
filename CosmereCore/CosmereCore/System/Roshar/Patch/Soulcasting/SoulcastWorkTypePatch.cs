@@ -1,26 +1,31 @@
+using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.Soulcasting;
 
-[HarmonyPatch(typeof(Pawn_WorkSettings), nameof(Pawn_WorkSettings.SetPriority))]
-public static class SoulcastWorkTypePatch {
-    [HarmonyPrefix]
-    public static bool Prefix(WorkTypeDef w, int priority, Pawn ___pawn) {
-        if (priority != 0) return true;
+[Patch]
+public abstract class SoulcastWorkTypePatch : Pawn_WorkSettings {
+    [InjectField("pawn")]
+    private readonly Pawn trackedPawn = null!;
+
+    protected SoulcastWorkTypePatch(Pawn pawn) : base(pawn) { }
+
+    [Inject(At.Head, nameof(SetPriority))]
+    private Control BeforeSetPriority(WorkTypeDef w, int priority) {
+        if (priority != 0) return Control.Continue;
 
         WorkTypeDef? soulcastWork = RosharWorkTypeDefOf.Cosmere_Roshar_WorkType_Soulcasting;
-        if (soulcastWork == null || w != soulcastWork) return true;
+        if (soulcastWork == null || w != soulcastWork) return Control.Continue;
 
-        if (___pawn?.abilities == null) return true;
+        if (trackedPawn?.abilities == null) return Control.Continue;
 
-        List<Ability> abilities = ___pawn.abilities.AllAbilitiesForReading;
+        List<Ability> abilities = trackedPawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < abilities.Count; i++) {
-            if (abilities[i] is Soulcast) return false;
+            if (abilities[i] is Soulcast) return Control.Cancel;
         }
 
-        return true;
+        return Control.Continue;
     }
 }

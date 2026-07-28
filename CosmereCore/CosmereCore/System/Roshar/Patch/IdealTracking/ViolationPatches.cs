@@ -1,34 +1,44 @@
-using Cosmere.System.Roshar;
+using Concord;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
-public static class KillViolationPatch {
-    private static void Prefix(
-        Pawn __instance,
+// Pawn.Kill gets exactly one whole-method Around, so both pre-call-state consumers ride on it:
+// the killer-violation checks below and the witness tracking in DeathWitnessTracking.
+[Patch]
+public abstract class PawnKillPatch : Pawn {
+    [Inject(At.Around, nameof(Kill))]
+    private void AroundKill(
         DamageInfo? dinfo,
-        out (bool downed, bool friendly, bool colonist, bool fleeing) __state
+        Verse.Hediff exactCulprit,
+        VoidOperation<DamageInfo?, Verse.Hediff> original
     ) {
-        __state = (
-            __instance.Downed,
-            dinfo.HasValue && dinfo.Value.Instigator is Pawn killer && !__instance.HostileTo(killer),
-            __instance.Faction == Faction.OfPlayer,
-            __instance.CurJobDef == RimWorld.JobDefOf.FleeAndCower
+        Pawn self = this;
+
+        Map? mapHeld = DeathWitnessTracking.CaptureMapHeld(self);
+        (bool downed, bool friendly, bool colonist, bool fleeing) state = (
+            self.Downed,
+            dinfo.HasValue && dinfo.Value.Instigator is Pawn killer && !self.HostileTo(killer),
+            self.Faction == Faction.OfPlayer,
+            self.CurJobDef == RimWorld.JobDefOf.FleeAndCower
         );
+
+        original.Invoke(dinfo, exactCulprit);
+
+        DeathWitnessTracking.NotifyWitnesses(self, mapHeld);
+        ApplyKillViolations(self, dinfo, state);
     }
 
-    private static void Postfix(
-        Pawn __instance,
+    private static void ApplyKillViolations(
+        Pawn victim,
         DamageInfo? dinfo,
-        (bool downed, bool friendly, bool colonist, bool fleeing) __state
+        (bool downed, bool friendly, bool colonist, bool fleeing) state
     ) {
-        if (!__instance.RaceProps.Humanlike) return;
+        if (!victim.RaceProps.Humanlike) return;
         if (!dinfo.HasValue) return;
 
         Pawn? killer = dinfo.Value.Instigator as Pawn;
@@ -41,22 +51,23 @@ public static class KillViolationPatch {
         bool killerInBerserk = killer.InMentalState && killer.MentalStateDef == MentalStateDefOf.Berserk;
 
         if (orderDef == RadiantOrderDefOf.Windrunner) {
-            if (__state.colonist || __state.friendly) {
+            if (state.colonist || state.friendly) {
                 ViolationUtility.ApplyViolation(killer, 0.6f, "killing a friendly");
-            } else if (__state.downed || __state.fleeing) {
+            } else if (state.downed || state.fleeing) {
                 ViolationUtility.ApplyViolation(killer, 0.3f, "killing a defenseless enemy");
             }
         } else if (orderDef == RadiantOrderDefOf.Dustbringer) {
-            if (__state.colonist && killerInBerserk) {
+            if (state.colonist && killerInBerserk) {
                 ViolationUtility.ApplyViolation(killer, 0.6f, "killing a colonist in berserk rage");
             }
         }
     }
 }
 
-[HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.Apply))]
-public static class FriendlyFireViolationPatch {
-    private static void Postfix(DamageWorker __instance, DamageInfo dinfo, Verse.Thing victim) {
+[Patch]
+public abstract class FriendlyFireViolationPatch : DamageWorker {
+    [Inject(At.Return, nameof(Apply))]
+    private void AfterApply(DamageInfo dinfo, Verse.Thing victim) {
         if (victim is not Pawn targetPawn) return;
         if (!targetPawn.RaceProps.Humanlike) return;
 

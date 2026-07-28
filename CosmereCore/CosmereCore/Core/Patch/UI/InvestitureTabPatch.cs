@@ -1,15 +1,24 @@
+using Concord;
 using Cosmere.Core.Tab;
 using Cosmere.Core.UI.Model;
-using HarmonyLib;
 using Verse;
 
 namespace Cosmere.Core.Patch;
 
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.GetInspectTabs))]
-public static class InvestitureTabPatch {
+[Patch]
+public abstract class InvestitureTabPatch : Verse.Thing {
     private static ITab_Investiture? cachedTab;
 
-    private static IEnumerable<InspectTabBase> Postfix(IEnumerable<InspectTabBase>? values, Verse.Thing __instance) {
+    [Inject(At.Return, nameof(GetInspectTabs))]
+    private void AfterGetInspectTabs(ControlHandle<IEnumerable<InspectTabBase>> ch) {
+        Verse.Thing self = this;
+        ch.ReturnValue = WithInvestitureTab(ch.ReturnValue, self);
+    }
+
+    private static IEnumerable<InspectTabBase> WithInvestitureTab(
+        IEnumerable<InspectTabBase>? values,
+        Verse.Thing instance
+    ) {
         bool alreadyHasTab = false;
         if (values != null) {
             foreach (InspectTabBase tab in values) {
@@ -19,7 +28,7 @@ public static class InvestitureTabPatch {
         }
 
         if (alreadyHasTab) yield break;
-        if (__instance is not Pawn pawn) yield break;
+        if (instance is not Pawn pawn) yield break;
 
         IReadOnlyList<IInvestitureProvider> all = InvestitureProviderRegistry.All;
         bool invested = false;

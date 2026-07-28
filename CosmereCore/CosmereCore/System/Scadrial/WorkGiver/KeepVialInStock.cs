@@ -8,9 +8,9 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class KeepVialInStock : WorkGiver_Scanner {
-    private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
+    static private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
-    public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
+    public override PathEndMode PathEndMode => Verse.AI.PathEndMode.ClosestTouch;
 
     public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(vialDef);
 
@@ -23,7 +23,6 @@ public class KeepVialInStock : WorkGiver_Scanner {
         if (pawn.genes == null) return false;
         if (t is not Verse.Thing vial) return false;
 
-        // Check if this pawn needs any vials
         bool needsVial = false;
         Allomancer? neededGene = null;
         
@@ -39,12 +38,10 @@ public class KeepVialInStock : WorkGiver_Scanner {
             }
         }
 
-        if (!needsVial || neededGene == null) return false;
-
-        // Validate the vial matches what we need
+        if (!needsVial) return false;
         if (!vial.Spawned) return false;
         if (vial.IsForbidden(pawn)) return false;
-        if (!vial.Stuff.Equals(neededGene.metal.Item)) return false;
+        if (!vial.Stuff.Equals(neededGene!.metal.Item)) return false;
 
         return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10, 1);
     }

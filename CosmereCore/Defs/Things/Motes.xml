@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <!-- Lives in Core, not Scadrial, because Roshar inherits from it too. RimWorld resolves
+         ParentName across mods only when the parent's mod loads first, and Roshar loads before
+         Scadrial, so a Scadrial-owned abstract leaves every Roshar aura unresolved. -->
     <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteBase" Abstract="True">
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteLow</altitudeLayer>

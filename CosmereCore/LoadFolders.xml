@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Folder-level DLC gating. MayRequire on a def field works fine, but on a PatchOperation it does
+not stop PatchOperationAdd from reporting failure when its xpath matches nothing - so every
+operation in Ideology_PreceptAssociations.xml logged an error for players without Ideology.
+Keeping that file in a folder the game only loads when the DLC is active is the only thing that
+actually suppresses it.
+
+The explicit <li>/</li> is required: adding this file at all replaces the default load list, so
+the mod root has to be named or nothing else loads.
+-->
+<loadFolders>
+    <v1.6>
+        <li>/</li>
+        <li IfModActive="Ludeon.RimWorld.Ideology">Ideology</li>
+    </v1.6>
+</loadFolders>

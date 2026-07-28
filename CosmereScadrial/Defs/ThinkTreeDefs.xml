@@ -5,10 +5,4 @@
         <insertTag>Humanlike_PreMain</insertTag>
         <thinkRoot Class="Cosmere.System.Scadrial.JobGiver.IngestVial" />
     </ThinkTreeDef>
-    <ThinkTreeDef>
-        <defName>Cosmere_Scadrial_KeepVialInStock</defName>
-        <insertTag>Humanlike_PostMain</insertTag>
-        <insertPriority>7.5</insertPriority>
-        <thinkRoot Class="Cosmere.System.Scadrial.JobGiver.KeepVialInStock" />
-    </ThinkTreeDef>
 </Defs>

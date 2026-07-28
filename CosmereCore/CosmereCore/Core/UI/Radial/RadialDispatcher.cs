@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -29,6 +30,15 @@ public static class RadialDispatcher {
 
         RimWorld.Ability? ability = pawn.abilities.GetAbility(def);
         if (ability == null) return;
+
+        // Switching something off must not depend on being able to afford it. CanCast asks whether
+        // the reserve can pay the cost, and a sustained surge you can no longer pay for is exactly
+        // the one you most need to stop - gating the toggle on it left it stuck on.
+        if (ability is IToggleableAbility { IsToggleable: true, IsActive: true } toggle) {
+            toggle.TurnOff();
+            return;
+        }
+
         if (!ability.CanCast) return;
 
         if (def.targetRequired) {

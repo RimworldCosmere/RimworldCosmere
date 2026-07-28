@@ -7,11 +7,13 @@ namespace Cosmere.Core.Ability.Autocast;
 public sealed class AutocastRuleEditorDialog : Verse.Window {
     private readonly string abilityLabel;
     private readonly AutocastRule rule;
+    private readonly bool toggleable;
     private Vector2 scroll;
 
-    public AutocastRuleEditorDialog(AutocastRule rule, string abilityLabel) {
+    public AutocastRuleEditorDialog(AutocastRule rule, string abilityLabel, bool toggleable = false) {
         this.rule = rule;
         this.abilityLabel = abilityLabel;
+        this.toggleable = toggleable;
         doCloseX = true;
         forcePause = true;
         absorbInputAroundWindow = true;
@@ -19,7 +21,8 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         draggable = false;
     }
 
-    public override Vector2 InitialSize => new Vector2(520f, rule.Kind == AutocastRuleKind.FeruchemyDial ? 520f : 460f);
+    public override Vector2 InitialSize =>
+        new Vector2(520f, rule.Kind == AutocastRuleKind.FeruchemyDial ? 520f : toggleable ? 490f : 460f);
 
     public override void DoWindowContents(Rect inRect) {
         float y = inRect.y;
@@ -86,8 +89,22 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
 
         Rect capSlider = new Rect(inRect.x + 170f, y + 4f, inRect.width - 180f, 18f);
         rule.CostCapFraction = Widgets.HorizontalSlider(capSlider, rule.CostCapFraction, 0f, 1f);
+        y += 28f;
 
-        return y + 28f;
+        // Only a sustained ability can be switched back off; a one-shot cast has already finished.
+        if (toggleable) {
+            Rect releaseRect = new Rect(inRect.x, y, inRect.width, 24f);
+            Widgets.CheckboxLabeled(
+                releaseRect,
+                "CC_Autocast_Editor_ToggleOffWhenInactive".Translate(),
+                ref rule.ToggleOffWhenInactive,
+                placeCheckboxNearText: true
+            );
+            TooltipHandler.TipRegion(releaseRect, "CC_Autocast_Editor_ToggleOffWhenInactive_Tip".Translate());
+            y += 28f;
+        }
+
+        return y;
     }
 
     // A dial is held rather than cast, so it needs a direction to hold it in, how

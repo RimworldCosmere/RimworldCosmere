@@ -34,6 +34,11 @@ public sealed class AutocastRule : IExposable {
     public AutocastRelease Release = AutocastRelease.ToIdle;
     public float RestTarget = 50f;
 
+    // For a toggled ability, whether to switch it back off once the triggers stop passing. A rule
+    // that reads "while drafted" usually means "and not otherwise", but that is the player's call:
+    // some sustained surges are worth keeping up between fights.
+    public bool ToggleOffWhenInactive;
+
     // Whether this rule is the reason the dial is where it is. Persisted so a
     // save made mid-hold releases the dial it set rather than one the player
     // moved by hand afterwards.
@@ -50,6 +55,7 @@ public sealed class AutocastRule : IExposable {
         Scribe_Values.Look(ref Release, "release");
         Scribe_Values.Look(ref RestTarget, "restTarget", 50f);
         Scribe_Values.Look(ref Holding, "holding");
+        Scribe_Values.Look(ref ToggleOffWhenInactive, "toggleOffWhenInactive");
         Scribe_Collections.Look(ref Triggers, "triggers", LookMode.Deep);
         if (Scribe.mode == LoadSaveMode.PostLoadInit && Triggers == null) {
             Triggers = [];

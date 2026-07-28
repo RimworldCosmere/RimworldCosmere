@@ -50,5 +50,23 @@ public static class RosharUIRegistration {
             new AutocastTrigger(AutocastTriggerKind.HealthPercent, AutocastComparison.LessThan, 0.6f),
             new AutocastTrigger(AutocastTriggerKind.ReservePercent, AutocastComparison.GreaterThan, 0.1f),
         ]);
+
+        // Draw a breath before the Light runs out rather than after.
+        AutocastDefaults.Register("Cosmere_Roshar_Ability_BreatheStormlight", [
+            new AutocastTrigger(AutocastTriggerKind.ReservePercent, AutocastComparison.LessThan, 0.2f),
+        ]);
+
+        // Drafted is the closest thing to "in combat" the trigger set has: it is the moment the
+        // player has decided this pawn is fighting, which is when Blade and Plate should be up.
+        AutocastDefaults.Register(
+            "Cosmere_Roshar_Ability_ToggleShardblade",
+            [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],
+            toggleOffWhenInactive: true
+        );
+        AutocastDefaults.Register(
+            "Cosmere_Roshar_Ability_ToggleShardplate",
+            [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],
+            toggleOffWhenInactive: true
+        );
     }
 }

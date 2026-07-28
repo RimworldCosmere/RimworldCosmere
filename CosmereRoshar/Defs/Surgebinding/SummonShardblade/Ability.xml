@@ -7,6 +7,5 @@
         <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Shardblade</abilityClass>
         <beuPerTick>0</beuPerTick>
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
-        <showInRadial>false</showInRadial>
     </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
 </Defs>

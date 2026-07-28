@@ -31,7 +31,7 @@ public abstract class AbstractAbility<TGene>(Pawn pawn, AbilityDef def)
     : AbstractAbility<TGene, AbstractHediff<TGene>>(pawn, def)
     where TGene : Invested;
 
-public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbility<TGene, THediff>
+public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbility<TGene, THediff>, IToggleableAbility
     where TGene : Invested
     where THediff : IHediff<TGene> {
     protected Mote? activeMote;
@@ -58,6 +58,14 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public Status? nextStatus { get; protected set; }
 
     public override AcceptanceReport CanCast => Gene.CanLowerReserve(def.beuPerTick);
+
+    public bool IsToggleable => def.toggleable;
+
+    public bool IsActive => status.IsActive;
+
+    public void TurnOff() {
+        UpdateStatus(Active.Off);
+    }
 
     public override string Tooltip {
         get {

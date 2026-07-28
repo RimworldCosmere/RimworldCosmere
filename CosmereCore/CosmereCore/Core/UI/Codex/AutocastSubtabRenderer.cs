@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability;
 using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.UI.Model;
 using UnityEngine;
@@ -71,7 +72,8 @@ public static class AutocastSubtabRenderer {
             Widgets.Label(new Rect(icon.xMax + 6f, header.y, add.x - icon.xMax - 10f, header.height), target.Label);
 
         if (Widgets.ButtonImage(add, TexButton.Plus)) {
-            Find.WindowStack.Add(new AutocastRuleEditorDialog(store.AddRule(pawn, target.Kind, target.Id), target.Label));
+            Find.WindowStack.Add(new AutocastRuleEditorDialog(
+                store.AddRule(pawn, target.Kind, target.Id), target.Label, IsToggleableAbility(pawn, target)));
         }
 
         y += HeaderHeight;
@@ -81,7 +83,7 @@ public static class AutocastSubtabRenderer {
         // Deferred: removing inside the loop would resize the list being walked.
         AutocastRule? removing = null;
         for (int i = 0; i < rules.Count; i++) {
-            if (DrawRule(new Rect(0f, y, width, RowHeight), rules[i], target, i % 2 == 1)) removing = rules[i];
+            if (DrawRule(new Rect(0f, y, width, RowHeight), pawn, rules[i], target, i % 2 == 1)) removing = rules[i];
             y += RowHeight;
         }
 
@@ -91,7 +93,7 @@ public static class AutocastSubtabRenderer {
     }
 
     // Returns true when the player asked for this rule to go.
-    private static bool DrawRule(Rect row, AutocastRule rule, AutocastTarget target, bool striped) {
+    private static bool DrawRule(Rect row, Pawn pawn, AutocastRule rule, AutocastTarget target, bool striped) {
         if (striped) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
         Widgets.DrawHighlightIfMouseover(row);
 
@@ -109,11 +111,25 @@ public static class AutocastSubtabRenderer {
             Widgets.Label(summary, AutocastRuleSummary.Describe(rule));
 
         if (Widgets.ButtonText(edit, "CC_Codex_Autocast_EditButton".Translate())) {
-            Find.WindowStack.Add(new AutocastRuleEditorDialog(rule, target.Label));
+            Find.WindowStack.Add(new AutocastRuleEditorDialog(rule, target.Label, IsToggleableAbility(pawn, target)));
         }
 
         TooltipHandler.TipRegion(remove, "CC_Codex_Autocast_RemoveRule".Translate());
 
         return Widgets.ButtonImage(remove, TexButton.Delete);
+    }
+
+    // Only a sustained ability can be switched back off, so only those get the release option.
+    private static bool IsToggleableAbility(Pawn pawn, AutocastTarget target) {
+        if (target.Kind != AutocastRuleKind.Ability || pawn.abilities == null) return false;
+
+        List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
+        for (int i = 0; i < abilities.Count; i++) {
+            if (abilities[i].def.defName == target.Id) {
+                return abilities[i] is IToggleableAbility { IsToggleable: true };
+            }
+        }
+
+        return false;
     }
 }

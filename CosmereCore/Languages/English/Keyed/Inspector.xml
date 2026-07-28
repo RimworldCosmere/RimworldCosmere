@@ -78,6 +78,8 @@
 
   <CC_Autocast_Editor_Title>Autocast: {ABILITY}</CC_Autocast_Editor_Title>
   <CC_Autocast_Editor_Enabled>Enabled</CC_Autocast_Editor_Enabled>
+  <CC_Autocast_Editor_ToggleOffWhenInactive>Release when triggers stop</CC_Autocast_Editor_ToggleOffWhenInactive>
+  <CC_Autocast_Editor_ToggleOffWhenInactive_Tip>Switch this ability back off once its triggers no longer pass. A rule that summons Blade and Plate while drafted will dismiss them again on undrafting.</CC_Autocast_Editor_ToggleOffWhenInactive_Tip>
   <CC_Autocast_Editor_MaxReserveSpend>Max reserve spend: {PERCENT}%</CC_Autocast_Editor_MaxReserveSpend>
   <CC_Autocast_Editor_TriggersHeader>Triggers (all must match):</CC_Autocast_Editor_TriggersHeader>
   <CC_Autocast_Editor_AddTrigger>Add trigger</CC_Autocast_Editor_AddTrigger>

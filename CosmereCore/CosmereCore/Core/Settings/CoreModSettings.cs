@@ -28,6 +28,12 @@ public class CoreModSettings : CosmereModSettings {
     public bool radialPausesGame;
     public bool reduceMotion;
 
+    // Where the player dragged the investiture dock to, in screen pixels. Held unclamped, so it can
+    // legitimately sit slightly outside the screen when dragged into a corner - which is why a
+    // separate flag records whether it was ever set rather than reading a sentinel out of the value.
+    public Vector2 dockPosition;
+    public bool dockPositionSet;
+
     public bool showDormantConnection;
     public string? testScenarioDefName;
 
@@ -78,6 +84,29 @@ public class CoreModSettings : CosmereModSettings {
                 );
             },
             SubListingOptions.WithoutTopPadding()
+        );
+
+        listing.Fieldset(
+            "CC_Settings_Category_Interface".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CC_Settings_ResetDockPosition_Label".Translate(),
+                    "CC_Settings_ResetDockPosition_Tooltip".Translate(),
+                    sub => {
+                        Rect button = sub.GetRect(24f);
+                        if (!dockPositionSet) {
+                            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.6f, 0.6f, 0.6f)))
+                                Widgets.Label(button, "CC_Settings_ResetDockPosition_Default".Translate());
+                            return;
+                        }
+
+                        if (Widgets.ButtonText(button.LeftPartPixels(140f), "CC_Settings_ResetDockPosition_Button".Translate())) {
+                            dockPositionSet = false;
+                            dockPosition = Vector2.zero;
+                        }
+                    }
+                );
+            }
         );
 
         listing.Fieldset(
@@ -196,5 +225,7 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref highContrast, "highContrast");
         Scribe_Values.Look(ref radialAnchorMouse, "radialAnchorMouse", true);
         Scribe_Values.Look(ref radialPausesGame, "radialPausesGame");
+        Scribe_Values.Look(ref dockPosition, "dockPosition");
+        Scribe_Values.Look(ref dockPositionSet, "dockPositionSet");
     }
 }

@@ -20,6 +20,8 @@ public class MetalmindProperties : CompProperties {
 
 public class Metalmind : ThingComp, IMetalmindSource {
     private MetalDef? cachedMetal;
+    private CompQuality? cachedQualityComp;
+    private bool qualityCompResolved;
 
     private bool equippedInt = true;
 
@@ -54,9 +56,27 @@ public class Metalmind : ThingComp, IMetalmindSource {
         set => equippedInt = value;
     }
 
-    // props.maxAmount is shared by every metalmind of this def, so capacity burnt
-    // away by compounding is tracked per instance and subtracted here.
-    public float MaxAmount => Mathf.Max(0f, props.maxAmount - capacityLostInt);
+    // The comp reference is cached, not the factor: quality is assigned after
+    // PostPostMake runs, so caching the value would freeze every metalmind at normal.
+    // Reading Quality off the held comp stays cheap and stays current.
+    private float CapacityFactor {
+        get {
+            if (!qualityCompResolved) {
+                cachedQualityComp = parent.TryGetComp<CompQuality>();
+                qualityCompResolved = true;
+            }
+
+            return cachedQualityComp == null
+                ? 1f
+                : ScadrialMetallurgyConstants.MetalmindCapacityFactor(cachedQualityComp.Quality);
+        }
+    }
+
+    // props.maxAmount is shared by every metalmind of this def, so quality scales that
+    // shared base and capacity burnt away by compounding is tracked per instance and
+    // subtracted after - burning a legendary metalmind costs the same absolute capacity
+    // as burning an awful one.
+    public float MaxAmount => Mathf.Max(0f, props.maxAmount * CapacityFactor - capacityLostInt);
 
     public bool IsBurnedOut => MaxAmount <= 0f;
 
@@ -99,6 +119,11 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private void SyncInvestitureMirror() {
         investitureHolder.currentInvestitureSelf =
             TotalStored * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+
+        // Max is mirrored here too, not just at PostPostMake: quality is stamped on after
+        // the thing is made, and compounding shrinks capacity later in the item's life.
+        investitureHolder.maxInvestitureSelf =
+            MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
     }
 
     public MetalDef? Metal {
@@ -213,7 +238,14 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     public override void PostPostMake() {
-        investitureHolder.maxInvestitureSelf = MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+        SyncInvestitureMirror();
+    }
+
+    public override void PostSpawnSetup(bool respawningAfterLoad) {
+        base.PostSpawnSetup(respawningAfterLoad);
+
+        // By now quality has been stamped on, so the mirror written at make time is stale.
+        SyncInvestitureMirror();
     }
 
     public Pawn? GetHoldingPawn() {
@@ -250,6 +282,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             cachedMetal = null;
+            cachedQualityComp = null;
+            qualityCompResolved = false;
             if (parent?.Stuff != null) {
                 cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
             }
@@ -257,10 +291,14 @@ public class Metalmind : ThingComp, IMetalmindSource {
             owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
 
-            // A save written when this metalmind held more capacity would load
-            // over-full once both pools are counted.
+            // A save written when this metalmind held more capacity would load over-full
+            // once both pools are counted. Capacity can shrink because compounding burnt
+            // it, or because a save predates quality scaling and this metalmind is
+            // below-normal quality. Compounded charge is spent first, then the plain
+            // store, so the cheaper pool absorbs the loss.
             if (storedAmountInt + compoundedAmountInt > MaxAmount) {
                 compoundedAmountInt = Mathf.Max(0f, MaxAmount - storedAmountInt);
+                storedAmountInt = Mathf.Min(storedAmountInt, MaxAmount);
             }
 
             SyncInvestitureMirror();
@@ -272,7 +310,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
         NamedArgument coloredMetal = Metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
-        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalStored:F1} / {MaxAmount}");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalStored:F1} / {MaxAmount:F1}");
         if (compoundedAmountInt > 0f) {
             sb.Append(" " + "CS_MetalmindCompounded".Translate(compoundedAmountInt.ToString("F1").Named("COMPOUNDED")));
         }

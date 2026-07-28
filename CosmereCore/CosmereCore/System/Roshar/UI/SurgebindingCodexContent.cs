@@ -16,7 +16,7 @@ using Verse;
 namespace Cosmere.System.Roshar.UI;
 
 [StaticConstructorOnStartup]
-public sealed class SurgebindingCodexContent : ICodexContentProvider {
+public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSystemMark {
     private const float StripWidth = 90f;
     private const float StripEntryHeight = 64f;
 
@@ -51,6 +51,20 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     public string? HeaderLabelFor(Pawn pawn) {
         Surgebinder? s = GetSurgebinder(pawn);
         return s?.radiantOrderDef?.LabelCap;
+    }
+
+    // The order's own glyph and colour, so a Dustbringer reads as a Dustbringer in the rail rather
+    // than as generic Surgebinding.
+    public Texture2D? SigilFor(Pawn pawn, bool selected) {
+        RadiantOrderDef? order = GetSurgebinder(pawn)?.radiantOrderDef;
+        if (order == null) return null;
+
+        // Plain white when it is not the active art, the order's own colours when it is.
+        return selected ? order.icon : order.whiteIcon;
+    }
+
+    public Color? AccentFor(Pawn pawn) {
+        return GetSurgebinder(pawn)?.radiantOrderDef?.color;
     }
 
     public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
@@ -94,12 +108,13 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
-                new Rect(rect.x, y, rect.width - 110f, 30f),
+                CodexChrome.ContentHeader(rect, y, 30f).LeftPartPixels(rect.width - 110f),
                 "CC_Codex_Surgebinding_OrderRow".Translate(order.LabelCap.Named("ORDER"))
             );
         }
 
-        Rect infoButton = new Rect(rect.xMax - 100f, y + 3f, 100f, 24f);
+        Rect orderRow = CodexChrome.ContentHeader(rect, y, 30f);
+        Rect infoButton = new Rect(orderRow.xMax - 100f, y + 3f, 100f, 24f);
         if (Widgets.ButtonText(infoButton, "CC_Codex_Surgebinding_OrderInfo".Translate())) {
             Find.WindowStack.Add(new Dialog_RadiantOrderInfoDialog(pawn, s, RadiantOrderInfoMode.View));
         }
@@ -108,7 +123,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
             Widgets.Label(
-                new Rect(rect.x, y, rect.width, 24f),
+                CodexChrome.ContentHeader(rect, y, 24f),
                 "CC_Codex_Surgebinding_IdealsSworn".Translate(s.CurrentIdealDisplay.Named("CURRENT"))
             );
         }

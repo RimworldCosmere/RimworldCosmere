@@ -24,15 +24,33 @@ public static class SystemSwitcherStrip {
             ISystemSkin skin = SystemSkinRegistry.ForOrFallback(provider.SystemId);
             Rect orb = new Rect(railRect.x + (railRect.width - OrbSize) / 2f, y, OrbSize, OrbSize);
 
-            // No box and no ring: the mark alone carries it, lit in the system's
-            // own colour when chosen and muted otherwise.
+            // No box and no ring: the mark alone carries it, lit when chosen and muted otherwise.
             bool selected = i == state.SelectedSystemIndex;
-            Color mark = selected ? skin.AccentColor : DockPalette.MutedText;
 
+            // A per-pawn mark wins over the system sigil, and brings its own colours with it - an
+            // order glyph is already painted in the order's colour, so filling it with an accent
+            // would multiply the two and muddy it. Tint only the flat system sigils.
             Texture2D? sigil = skin.Sigil;
+            Color accent = skin.AccentColor;
+            bool selfColoured = false;
+            if (provider.Codex is ICodexSystemMark perPawn) {
+                Texture2D? pawnSigil = perPawn.SigilFor(pawn, selected);
+                if (pawnSigil != null) {
+                    sigil = pawnSigil;
+                    selfColoured = true;
+                }
+
+                accent = perPawn.AccentFor(pawn) ?? accent;
+            }
+
+            Color mark = selected ? accent : DockPalette.MutedText;
+
             if (sigil != null) {
                 Color prev = GUI.color;
-                GUI.color = mark;
+
+                // A self-coloured mark already arrives in the right colours for its state, so it is
+                // drawn as-is; only the flat system sigils get filled with the accent.
+                GUI.color = selfColoured ? Color.white : mark;
                 GUI.DrawTexture(orb.ContractedBy(3f), sigil);
                 GUI.color = prev;
             } else {

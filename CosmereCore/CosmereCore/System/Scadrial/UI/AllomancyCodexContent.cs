@@ -42,13 +42,13 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         List<Allomancer> genes = CollectAllomancers(pawn);
         if (genes.Count == 0) return;
 
-        // The body runs to the frame now, so content sets its own inset.
-        const float contentPad = 4f;
+        // Inside a row, not around the table: the rows themselves run to the frame.
+        const float rowPad = 4f;
         float y = rect.y;
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
-                new Rect(rect.x + contentPad, y, rect.width - contentPad, 30f),
+                CodexChrome.ContentHeader(rect, y, 30f),
                 "CC_Codex_Allomancy_ProgressionHeader".Translate()
             );
         }
@@ -59,7 +59,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         if (skill != null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
-                    new Rect(rect.x + contentPad, y, rect.width - contentPad, 24f),
+                    CodexChrome.ContentHeader(rect, y, 24f),
                     "CC_Codex_Allomancy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
             }
@@ -89,7 +89,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
             // The metal's own mark in the metal's own colour, rather than an
             // anonymous chip that only the colour distinguished.
-            Rect swatch = new Rect(row.x + contentPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
+            Rect swatch = new Rect(row.x + rowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
             Texture2D? mark = metal.allomancy?.invertedIcon;
             if (mark != null) {
                 Color prevMark = GUI.color;
@@ -125,7 +125,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
             const float buttonSize = 28f;
             Rect vialButtonRect = new Rect(
-                row.xMax - buttonSize - contentPad,
+                row.xMax - buttonSize - rowPad,
                 row.y + (rowHeight - buttonSize) / 2f,
                 buttonSize,
                 buttonSize

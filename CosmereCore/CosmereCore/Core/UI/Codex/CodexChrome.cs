@@ -23,12 +23,21 @@ public static class CodexChrome {
         Widgets.DrawBoxSolid(rect, new Color(accent.r, accent.g, accent.b, 0.35f));
     }
 
+    /// <summary>
+    ///     The inset a content provider's heading block sits in, so every art's title and subtitle line
+    ///     up with the panel title above them and with each other. Rows and tables are not padded: they
+    ///     run to the frame.
+    /// </summary>
+    public static Rect ContentHeader(Rect body, float y, float height) {
+        return new Rect(body.x + Gutter, y, body.width - Gutter * 2f, height);
+    }
+
     public static Rect BodyRect(Rect tabRect, bool hasSwitcher) {
         float top = HeaderHeight + SubtabBarHeight;
         float left = hasSwitcher ? RailWidth : 0f;
 
-        // No horizontal gutter: the body runs to the frame, and content sets its
-        // own inset where it wants one.
+        // No horizontal gutter: rows and tables run to the frame on purpose. Only the heading block
+        // above them is inset, via ContentHeader.
         return new Rect(
             tabRect.x + left,
             tabRect.y + top + Gutter,

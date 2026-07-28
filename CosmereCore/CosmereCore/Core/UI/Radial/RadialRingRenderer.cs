@@ -117,12 +117,26 @@ public static class RadialRingRenderer {
                 : new Color(0.16f, 0.175f, 0.205f);
             bg.a = 0.97f;
 
+            // Locked or unaffordable, it cannot be used, so it does not light up under the cursor
+            // either - a wedge that highlights invites a click that will be ignored.
+            bool disabled = isLocked || hasInsufficientResources;
+
             // A lit metal keeps a warm fill of its own so it reads as burning
             // even when the cursor is elsewhere; hovering still wins over it.
             if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
-            if (i == hoveredIndex) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
-            if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.4f);
-            else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);
+            if (i == hoveredIndex && !disabled) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
+
+            // Drained of colour rather than merely faded: a washed-out fill reads as unavailable at a
+            // glance, where a translucent one just looks like a different shade of the same thing.
+            if (disabled) {
+                float grey = (bg.r + bg.g + bg.b) / 3f;
+                bg = new Color(
+                    Mathf.Lerp(bg.r, grey, 0.8f) * 0.75f,
+                    Mathf.Lerp(bg.g, grey, 0.8f) * 0.75f,
+                    Mathf.Lerp(bg.b, grey, 0.8f) * 0.75f,
+                    isLocked ? 0.45f : 0.7f
+                );
+            }
 
             Matrix4x4 prevMatrix = GUI.matrix;
             Verse.UI.RotateAroundPivot(i * arcDeg, center);
@@ -138,7 +152,7 @@ public static class RadialRingRenderer {
             GUI.color = bg;
             GUI.DrawTexture(texRect, wedgeTex);
 
-            if (i == hoveredIndex && !isLocked) {
+            if (i == hoveredIndex && !disabled) {
                 GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.85f);
                 GUI.DrawTexture(texRect, RadialWedgeTex.InnerEdge(count));
             }
@@ -168,7 +182,7 @@ public static class RadialRingRenderer {
                 Color originalGui = GUI.color;
                 GUI.color = new Color(0f, 0f, 0f, 0.45f);
                 GUI.DrawTexture(iconRect.ExpandedBy(5f), RadialWedgeTex.Disc());
-                GUI.color = isLocked ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
+                GUI.color = disabled ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
                 GUI.DrawTexture(iconRect, icon);
                 GUI.color = originalGui;
             }
@@ -178,10 +192,11 @@ public static class RadialRingRenderer {
                 Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
             }
 
-            if (reserveFraction.HasValue && !isLocked && hasInsufficientResources) {
-                Rect pctRect = new Rect(iconMid.x - 18f, iconRect.yMax + 3f, 36f, Text.LineHeightOf(GameFont.Tiny));
+            // A bare "1%" under an icon reads as a chance or a progress bar. Say the actual problem.
+            if (!isLocked && hasInsufficientResources) {
+                Rect reasonRect = new Rect(iconMid.x - 45f, iconRect.yMax + 3f, 90f, Text.LineHeightOf(GameFont.Tiny));
                 using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
-                    Widgets.Label(pctRect, $"{Mathf.RoundToInt(reserveFraction.Value * 100f)}%");
+                    Widgets.Label(reasonRect, "CC_Radial_CannotAfford".Translate());
             }
 
             if (isLocked) {
@@ -190,21 +205,28 @@ public static class RadialRingRenderer {
                     Widgets.Label(lockRect, "x");
             }
 
-            float tinyH = Text.LineHeightOf(GameFont.Tiny);
             Vector2 labelMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.LabelBandRadius, center);
-            float labelWidth = RadialLayout.ChordWidthAt(RadialLayout.LabelBandRadius, count) - 8f;
-            Rect labelRect = new Rect(labelMid.x - labelWidth / 2f, labelMid.y - tinyH / 2f, labelWidth, tinyH);
+            float labelWidth = RadialLayout.LabelFitWidthAt(
+                i,
+                count,
+                RadialLayout.LabelBandRadius,
+                RadialLayout.AbilityRingInner,
+                RadialLayout.AbilityRingOuter
+            ) - 8f;
             bool flareArmed = i == hoveredIndex
-                && !isLocked
+                && !disabled
                 && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            Color labelColor = isLocked
+            Color labelColor = disabled
                 ? new Color(0.36f, 0.42f, 0.46f)
                 : flareArmed
                     ? DockPalette.Flare
                     : i == hoveredIndex
                         ? Color.white
                         : new Color(0.81f, 0.85f, 0.87f);
-            UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
+
+            // Wrapped rather than truncated: the wedge is short on width but has height to spare, and
+            // "Summon Sh..." tells the player nothing.
+            UIText.WrappedLabel(labelMid, labelWidth, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
         }
     }
 }

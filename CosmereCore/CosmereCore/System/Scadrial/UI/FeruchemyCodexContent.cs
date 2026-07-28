@@ -14,7 +14,8 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyCodexContent : ICodexContentProvider {
-    private const float ContentPad = 4f;
+    // Inside a row, not around the table: rows run to the frame.
+    private const float RowPad = 4f;
 
     private static readonly Color PositiveMoodColor = new Color(0.45f, 0.85f, 0.45f);
     private static readonly Color NegativeMoodColor = new Color(0.9f, 0.45f, 0.45f);
@@ -62,7 +63,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
-                new Rect(rect.x + ContentPad, y, rect.width - ContentPad, 30f),
+                CodexChrome.ContentHeader(rect, y, 30f),
                 "CC_Codex_Feruchemy_Progression_Header".Translate()
             );
         }
@@ -73,7 +74,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         if (skill != null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
-                    new Rect(rect.x + ContentPad, y, rect.width - ContentPad, 24f),
+                    CodexChrome.ContentHeader(rect, y, 24f),
                     "CC_Codex_Feruchemy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
             }
@@ -95,7 +96,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             Rect row = new Rect(0f, y, viewRect.width, rowHeight);
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            Rect swatch = new Rect(row.x + ContentPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
+            Rect swatch = new Rect(row.x + RowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
             Texture2D? mark = metal.feruchemy?.invertedIcon;
             if (mark != null) {
                 Color prevMark = GUI.color;
@@ -157,11 +158,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
 
     public void DrawMemories(Rect rect, Pawn pawn, CodexState state) {
-        // Inset once here rather than at every rect below: the body runs to the
-        // frame now, so each subtab supplies its own margin.
-        rect = new Rect(rect.x + ContentPad, rect.y, rect.width - ContentPad * 2f, rect.height);
-
-        Rect headerRow = new Rect(rect.x, rect.y, rect.width, 30f);
+        Rect headerRow = CodexChrome.ContentHeader(rect, rect.y, 30f);
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(headerRow.x, headerRow.y, headerRow.width - 170f, headerRow.height),

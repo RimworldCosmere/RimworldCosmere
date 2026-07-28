@@ -166,6 +166,7 @@ public static class IdealDebugCommands {
         actionType = DebugActionType.ToolMapForPawns,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
+    
     public static void SetFuryLevel(Pawn pawn) {
         Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Fury;
         if (fury == null) {
@@ -193,6 +194,46 @@ public static class IdealDebugCommands {
             );
         }
 
+        Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
+    }
+    
+    [DebugAction(
+        "Cosmere/Roshar/Ideals",
+        "Set Dead Honored",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void SetDeadHonored(Pawn pawn) {
+        List<DebugMenuOption> options = [];
+        for (int i = 1; i <= 15; i++) {
+            int value = i;
+            options.Add(new DebugMenuOption($"{value}", DebugMenuOptionMode.Action, () => {
+                float current = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_DeadHonored);
+                float delta = value - current;
+                pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_DeadHonored, delta);
+                Messages.Message($"Set Dead Honored to {value} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
+            }));
+        }
+        Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
+    }
+
+    [DebugAction(
+        "Cosmere/Roshar/Ideals",
+        "Set Fury Mastered",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void SetFuryMastered(Pawn pawn) {
+        List<DebugMenuOption> options = [];
+        for (int i = 1; i <= 20; i++) {
+            int value = i;
+            options.Add(new DebugMenuOption($"{value}", DebugMenuOptionMode.Action, () => {
+                float current = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_FuryMastered);
+                float delta = value - current;
+                pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FuryMastered, delta);
+                Messages.Message($"Set Fury Mastered to {value} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
+            }));
+        }
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 

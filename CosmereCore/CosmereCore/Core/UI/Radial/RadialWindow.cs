@@ -125,7 +125,7 @@ public sealed class RadialWindow : Verse.Window {
             HoveredWedgeTitle(),
             breadcrumb,
             BrowseMode,
-            () => { if (state.Kind == RadialStateKind.SystemTier) Close(false); else state.Back(); },
+            GoBack,
             () => Close(false)
         );
         HandleInput();
@@ -246,12 +246,7 @@ public sealed class RadialWindow : Verse.Window {
         if (e == null) return;
 
         if (e.type == EventType.MouseDown && e.button == 1) {
-            if (state.Kind == RadialStateKind.SystemTier) {
-                Close(false);
-            } else {
-                state.Back();
-            }
-
+            GoBack();
             RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
             e.Use();
             return;
@@ -292,6 +287,27 @@ public sealed class RadialWindow : Verse.Window {
                 CommitAndClose(false);
                 break;
         }
+    }
+
+    // The mirror of AutoSkipOneOptionTiers. The forward path steps straight over any
+    // tier that offered a single choice, so going back has to step over the same ones -
+    // otherwise Back lands on a ring holding one wedge the player never chose from, and
+    // the only way out of it is to press Back again. Skipping past the top closes.
+    private void GoBack() {
+        if (state.Kind is RadialStateKind.SystemTier or RadialStateKind.Closed) {
+            Close(false);
+            return;
+        }
+
+        if (state.Kind == RadialStateKind.AbilityTier) {
+            // Read the subsection count before Back clears the system it belongs to.
+            int subsections = snapshot.Systems[state.SelectedSystemIndex].Subsections.Count;
+            state.Back();
+            if (subsections > 1) return;
+        }
+
+        state.Back();
+        if (snapshot.Systems.Count <= 1) Close(false);
     }
 
     private void AutoSkipOneOptionTiers() {

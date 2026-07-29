@@ -67,7 +67,8 @@
     <CC_Settings_Reset_Confirm>Reset all {SYSTEM} settings?</CC_Settings_Reset_Confirm>
     <CC_Settings_Confirm>Confirm</CC_Settings_Confirm>
     <CC_Settings_Cancel>Cancel</CC_Settings_Cancel>
-    <CC_Settings_Close>Close</CC_Settings_Close>
+    <CC_Settings_Title>Cosmere</CC_Settings_Title>
+<CC_Settings_Close>Close</CC_Settings_Close>
     <CC_Settings_Choice_None>None</CC_Settings_Choice_None>
     <CC_Settings_Choice_No>No</CC_Settings_Choice_No>
     <CC_Settings_Choice_Yes>Yes</CC_Settings_Choice_Yes>

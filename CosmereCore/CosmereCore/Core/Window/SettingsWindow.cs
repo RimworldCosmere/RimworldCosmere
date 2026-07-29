@@ -14,6 +14,9 @@ public sealed class SettingsWindow {
     private readonly Dictionary<string, IReadOnlyList<SettingSection>> sectionsBySystem = [];
     private readonly List<CosmereModSettings> systems;
 
+    private readonly Dictionary<string, string> selectedSectionBySystem = [];
+    private readonly List<SettingSection> visibleSections = [];
+
     private CosmereModSettings selectedSystem;
     private string searchText = string.Empty;
 
@@ -44,18 +47,21 @@ public sealed class SettingsWindow {
             sections = sectionsBySystem[selectedSystem.Name];
         }
 
-        SettingsHeaderRenderer.DrawCrest(layout.Crest, skin);
-        string? selectedSection = SettingsHeaderRenderer.DrawSectionRail(
+        if (SettingsHeaderRenderer.DrawCrest(layout.Crest, skin)) RequestClose();
+
+        string activeSectionKey = ActiveSectionKey(sections);
+        string? requestedSection = SettingsHeaderRenderer.DrawSectionTabs(
             layout.SectionRail,
-            skin,
             sections,
-            navigation.ScrollTargetSectionKey
+            activeSectionKey
         );
-        if (selectedSection != null) {
-            navigation.FlashSection(selectedSystem.Name, selectedSection);
+        if (requestedSection != null && requestedSection != activeSectionKey) {
+            selectedSectionBySystem[selectedSystem.Name] = requestedSection;
+            activeSectionKey = requestedSection;
+            navigation.SetScroll(selectedSystem.Name, Vector2.zero);
         }
 
-        DrawContentShell(layout.ContentViewport, layout.Content, skin, sections);
+        DrawContentShell(layout.ContentViewport, layout.Content, skin, SectionsFor(sections, activeSectionKey));
         footerRenderer.Draw(
             layout.Footer,
             selectedSystem.Name,
@@ -75,6 +81,33 @@ public sealed class SettingsWindow {
 
     public void CancelResetConfirmation() {
         footerRenderer.CancelConfirmation();
+    }
+
+    // Tabs paginate, so the pane draws exactly one section. Falls back to the first
+    // visible section whenever the remembered one is gone, e.g. a dev-only section
+    // whose visibility delegate turned false while the window was open.
+    private string ActiveSectionKey(IReadOnlyList<SettingSection> sections) {
+        string? remembered = selectedSectionBySystem.TryGetValue(selectedSystem.Name, out string? key) ? key : null;
+        string? firstVisible = null;
+        for (int i = 0; i < sections.Count; i++) {
+            SettingSection section = sections[i];
+            if (!section.IsVisible) continue;
+
+            firstVisible ??= section.Key;
+            if (section.Key == remembered) return remembered;
+        }
+
+        return firstVisible ?? string.Empty;
+    }
+
+    private IReadOnlyList<SettingSection> SectionsFor(IReadOnlyList<SettingSection> sections, string sectionKey) {
+        visibleSections.Clear();
+        for (int i = 0; i < sections.Count; i++) {
+            SettingSection section = sections[i];
+            if (section.Key == sectionKey && section.IsVisible) visibleSections.Add(section);
+        }
+
+        return visibleSections;
     }
 
     private void SelectSystem(CosmereModSettings system) {

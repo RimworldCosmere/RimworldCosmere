@@ -13,20 +13,24 @@ public abstract class CosmereSettingsWindowSizePatch : Dialog_ModSettings {
     [InjectField(nameof(global::Verse.Window.doCloseButton))]
     private new bool doCloseButton;
 
+    [InjectField(nameof(global::Verse.Window.doCloseX))]
+    private new bool doCloseX;
+
     protected CosmereSettingsWindowSizePatch(Verse.Mod mod) : base(mod) { }
 
     [Inject(At.Head, nameof(DoWindowContents))]
     private Control BeforeDoWindowContents(Rect inRect) {
         if (settingsMod is not Mod mod) return Control.Continue;
 
+        // The window draws its own title in the sidebar and its own close in the top bar,
+        // so both pieces of vanilla chrome are suppressed and the whole rect is ours.
         doCloseButton = false;
+        doCloseX = false;
+
         GameFont previousFont = Text.Font;
         try {
-            Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(0f, 0f, inRect.width - 167f, 35f), settingsMod.SettingsCategory());
             Text.Font = GameFont.Small;
-            Rect content = new Rect(0f, 40f, inRect.width, inRect.height - 40f);
-            settingsMod.DoSettingsWindowContents(content);
+            settingsMod.DoSettingsWindowContents(inRect);
 
             if (mod.ConsumeSettingsCloseRequest()) Close();
             return Control.Cancel;

@@ -2,7 +2,9 @@ namespace Cosmere.Core.Settings.Layout;
 
 public readonly record struct SettingsWindowLayoutData(
     float CrestX,
+    float CrestY,
     float SectionRailX,
+    float SectionRailY,
     float ContentViewportX,
     float ContentViewportY,
     float ContentViewportWidth,

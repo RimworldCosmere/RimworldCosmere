@@ -12,8 +12,9 @@ public readonly record struct SettingsWindowLayout(
     Rect Footer
 ) {
     public const float SidebarWidth = SettingsWindowLayoutMath.SidebarWidth;
+    public const float TitleHeight = SettingsWindowLayoutMath.TitleHeight;
     public const float CrestHeight = SettingsWindowLayoutMath.CrestHeight;
-    public const float SectionRailHeight = SettingsWindowLayoutMath.SectionRailHeight;
+    public const float SectionTabHeight = SettingsWindowLayoutMath.SectionTabHeight;
     public const float FooterHeight = SettingsWindowLayoutMath.FooterHeight;
     public const float Gap = SettingsWindowLayoutMath.Gap;
     public const float ContentPadding = 14f;
@@ -32,9 +33,9 @@ public readonly record struct SettingsWindowLayout(
         SettingsWindowLayoutData layout = SettingsWindowLayoutMath.Create(x, y, width, height);
 
         return new SettingsWindowLayout(
-            new Rect(x, y, SidebarWidth, height),
-            new Rect(layout.CrestX, y, layout.ContentViewportWidth, CrestHeight),
-            new Rect(layout.SectionRailX, y + CrestHeight + Gap, layout.ContentViewportWidth, SectionRailHeight),
+            new Rect(x, y, SidebarWidth, layout.FooterY - y),
+            new Rect(layout.CrestX, layout.CrestY, layout.ContentViewportWidth, CrestHeight),
+            new Rect(layout.SectionRailX, layout.SectionRailY, layout.ContentViewportWidth, SectionTabHeight),
             new Rect(
                 layout.ContentViewportX,
                 layout.ContentViewportY,
@@ -42,7 +43,7 @@ public readonly record struct SettingsWindowLayout(
                 layout.ContentViewportHeight
             ),
             new Rect(layout.ContentX, layout.ContentY, layout.ContentWidth, layout.ContentHeight),
-            new Rect(layout.FooterX, layout.FooterY, layout.ContentViewportWidth, FooterHeight)
+            new Rect(layout.FooterX, layout.FooterY, width, FooterHeight)
         );
     }
 }

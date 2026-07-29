@@ -12,6 +12,7 @@ public sealed class SettingsFooterRenderer {
     private const float CloseButtonWidth = 112f;
     private const float ResetButtonWidth = 250f;
     private const float ButtonGap = 8f;
+    private const float EdgePadding = 12f;
 
     private string? confirmationSystemKey;
 
@@ -36,7 +37,7 @@ public sealed class SettingsFooterRenderer {
             DrawReset(rect, systemKey, systemName, skin);
         }
 
-        Rect closeRect = new Rect(rect.xMax - CloseButtonWidth, rect.y + (rect.height - ButtonHeight) / 2f, CloseButtonWidth, ButtonHeight);
+        Rect closeRect = new Rect(rect.xMax - EdgePadding - CloseButtonWidth, rect.y + (rect.height - ButtonHeight) / 2f, CloseButtonWidth, ButtonHeight);
         if (DrawButton(closeRect, (string)"CC_Settings_Close".Translate(), skin.AccentColor, false)) {
             CancelConfirmation();
             requestClose();
@@ -44,7 +45,7 @@ public sealed class SettingsFooterRenderer {
     }
 
     private void DrawReset(Rect rect, string systemKey, string systemName, ISystemSkin skin) {
-        Rect resetRect = new Rect(rect.x, rect.y + (rect.height - ButtonHeight) / 2f, ResetButtonWidth, ButtonHeight);
+        Rect resetRect = new Rect(rect.x + EdgePadding, rect.y + (rect.height - ButtonHeight) / 2f, ResetButtonWidth, ButtonHeight);
         string label = (string)"CC_Settings_Reset_System".Translate(systemName.Named("SYSTEM"));
         if (DrawButton(resetRect, label, skin.AccentColor, true)) {
             confirmationSystemKey = systemKey;
@@ -55,7 +56,7 @@ public sealed class SettingsFooterRenderer {
         string label = (string)"CC_Settings_Reset_Confirm".Translate(systemName.Named("SYSTEM"));
         float confirmWidth = 92f;
         float cancelWidth = 84f;
-        Rect labelRect = new Rect(rect.x, rect.y, rect.width - confirmWidth - cancelWidth - ButtonGap * 2f - CloseButtonWidth - ButtonGap, rect.height);
+        Rect labelRect = new Rect(rect.x + EdgePadding, rect.y, rect.width - EdgePadding * 2f - confirmWidth - cancelWidth - ButtonGap * 2f - CloseButtonWidth - ButtonGap, rect.height);
         UIText.EllipsisLabel(labelRect, label, GameFont.Small, TextAnchor.MiddleLeft, skin.HeaderTextColor);
 
         float buttonsX = labelRect.xMax + ButtonGap;

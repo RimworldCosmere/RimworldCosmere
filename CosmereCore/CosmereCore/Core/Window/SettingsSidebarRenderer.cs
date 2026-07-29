@@ -22,7 +22,20 @@ public static class SettingsSidebarRenderer {
     ) {
         Widgets.DrawBoxSolid(rect, new Color(0.06f, 0.07f, 0.09f, 0.92f));
 
-        Rect searchRect = new Rect(rect.x + Padding, rect.y + Padding, rect.width - Padding * 2f, SearchHeight);
+        // The sidebar butts straight against the pane, so this edge is what separates them.
+        Widgets.DrawBoxSolid(new Rect(rect.xMax - 1f, rect.y, 1f, rect.height), new Color(1f, 1f, 1f, 0.09f));
+
+        // Vanilla's own dialog title is suppressed, so the window names itself here.
+        Rect titleRect = new Rect(rect.x + Padding, rect.y, rect.width - Padding * 2f, SettingsWindowLayout.TitleHeight);
+        UIText.EllipsisLabel(
+            titleRect,
+            (string)"CC_Settings_Title".Translate(),
+            GameFont.Medium,
+            TextAnchor.MiddleLeft,
+            new Color(0.88f, 0.90f, 0.93f)
+        );
+
+        Rect searchRect = new Rect(rect.x + Padding, titleRect.yMax, rect.width - Padding * 2f, SearchHeight);
         searchText = Widgets.TextField(searchRect, searchText);
         if (searchText.NullOrEmpty()) {
             UIText.EllipsisLabel(

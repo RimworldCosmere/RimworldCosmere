@@ -6,7 +6,14 @@
 #   make all      - Full build (clean, generate, build both solutions, build assets)
 #   make quick    - Quick development cycle (generate + build main solution)
 
-.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status sonar sonar-up sonar-down
+.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status sonar sonar-up sonar-down game-kill game-run game-restart game-log
+
+# Where the Linux install lives, and the save folder that carries the Cosmere
+# modlist and mod settings. Launching without -savedatafolder picks up whatever
+# the default folder has, which is a different modlist entirely.
+RIMWORLD_DIR ?= /mnt/games/RimWorld
+COSMERE_SAVEDATA ?= $(RIMWORLD_DIR)/SaveData-Cosmere
+COSMERE_LOG ?= /tmp/cosmere-run.log
 
 # Use bash with xpg_echo so `echo` interprets \033 escape sequences
 # (default /bin/sh on many distros is dash, which prints them literally)
@@ -54,6 +61,31 @@ dev: quick build-assets ## Development build (generate + build main + build asse
 
 setup: install-deps restore ## Initial project setup
 	@echo "$(GREEN)✓ Project setup complete!$(NC)"
+
+##@ Game
+
+# The bracket in [R]imWorldLinux keeps the pattern from matching the recipe shell's
+# own command line, which otherwise makes pkill take out make along with the game.
+game-kill: ## Stop any running RimWorld
+	@echo "$(BLUE)Stopping RimWorld...$(NC)"
+	@pkill -f '[R]imWorldLinux' 2>/dev/null && sleep 3 || true
+	@echo "$(GREEN)✓ RimWorld stopped$(NC)"
+
+game-run: ## Launch RimWorld detached on the Cosmere save folder
+	@test -x "$(RIMWORLD_DIR)/RimWorldLinux" \
+		|| { echo "$(RED)No RimWorld at $(RIMWORLD_DIR) - set RIMWORLD_DIR$(NC)"; exit 2; }
+	@rm -f "$(COSMERE_LOG)"
+	@echo "$(GREEN)Launching RimWorld...$(NC)"
+	@cd "$(RIMWORLD_DIR)" && setsid --fork ./RimWorldLinux -savedatafolder="$(COSMERE_SAVEDATA)" -logfile "$(COSMERE_LOG)" >/dev/null 2>&1 </dev/null
+	@sleep 5
+	@pgrep -f '[R]imWorldLinux' >/dev/null \
+		&& echo "$(GREEN)✓ RimWorld up - log: $(COSMERE_LOG)$(NC)" \
+		|| { echo "$(RED)✗ RimWorld exited during startup - see $(COSMERE_LOG)$(NC)"; exit 1; }
+
+game-restart: game-kill game-run ## Stop RimWorld and launch it again
+
+game-log: ## Follow the Cosmere run log
+	@tail -f "$(COSMERE_LOG)"
 
 ##@ Code Generation
 

@@ -98,7 +98,11 @@ public sealed class SettingsContentRenderer {
 
     private MeasuredSection MeasureSection(string systemKey, SettingSection section, float columnWidth) {
         List<MeasuredRow> rows = [];
-        float labelWidth = GetLabelWidth(columnWidth);
+
+        // Rows are inset by the section padding on both sides, so measuring against the
+        // bare column width wraps the text differently than drawing does and the last
+        // line of every long description lands outside the height it was measured for.
+        float labelWidth = GetLabelWidth(columnWidth - SectionPadding * 2f);
         float height = SectionPadding + SectionTitleHeight + DividerGap + DividerHeight + DividerGap;
 
         for (int i = 0; i < section.Settings.Count; i++) {

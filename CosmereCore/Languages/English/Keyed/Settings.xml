@@ -15,18 +15,18 @@
     <CC_Settings_RadialAnchorMouse_Description>When enabled the ability radial opens centered on the mouse cursor. When disabled it opens centered on the selected pawn.</CC_Settings_RadialAnchorMouse_Description>
 
     <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
-    <CC_Settings_LogLevel_Label>Log Level: </CC_Settings_LogLevel_Label>
+    <CC_Settings_LogLevel_Label>Log level</CC_Settings_LogLevel_Label>
     <CC_Settings_LogLevel_Description>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Description>
     
-    <CC_Settings_DebugMode_Label>Debug Mode: </CC_Settings_DebugMode_Label>
+    <CC_Settings_DebugMode_Label>Debug mode</CC_Settings_DebugMode_Label>
     <CC_Settings_DebugMode_Description>Provides extra debugging features</CC_Settings_DebugMode_Description>
     
-    <CC_Settings_Quickstarter_Label>Quickstarter: </CC_Settings_Quickstarter_Label>
+    <CC_Settings_Quickstarter_Label>Quickstarter</CC_Settings_Quickstarter_Label>
     <CC_Settings_Quickstarter_Description>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CC_Settings_Quickstarter_Description>
     <CC_Settings_Quickstarter_Placeholder>Select a Quickstarter </CC_Settings_Quickstarter_Placeholder>
     <CC_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CC_Settings_Quickstarter_FailedToFind>
 
-    <CC_Settings_TestScenario_Label>Test Scenario: </CC_Settings_TestScenario_Label>
+    <CC_Settings_TestScenario_Label>Test scenario</CC_Settings_TestScenario_Label>
     <CC_Settings_TestScenario_Description>Scenario used by the ScenarioTestQuickstart. Lets you boot straight into any scenario with default pawn generation.</CC_Settings_TestScenario_Description>
     <CC_Settings_TestScenario_Placeholder>Select a Scenario </CC_Settings_TestScenario_Placeholder>
 

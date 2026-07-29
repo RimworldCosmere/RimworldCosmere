@@ -174,7 +174,9 @@ public sealed class SettingsControlRenderer {
         string label = ChoiceLabel(control.Value, options, control.AllowNone);
         Color textColor = interactive ? skin.HeaderTextColor : DisabledTextColor(skin);
 
-        Widgets.DrawBoxSolid(rect, new Color(skin.PanelBackgroundColor.r, skin.PanelBackgroundColor.g, skin.PanelBackgroundColor.b, interactive ? 0.70f : 0.38f));
+        // Dropdowns share the tan affordance the buttons use. Drawn on the panel colour they
+        // read as static text, and a player has no way to tell the value can be changed.
+        Widgets.DrawBoxSolid(rect, new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, interactive ? 0.32f : 0.14f));
         UIText.EllipsisLabel(rect.ContractedBy(6f, 0f), label, GameFont.Small, TextAnchor.MiddleLeft, textColor);
 
         if (!interactive) {

@@ -106,7 +106,7 @@ public sealed class SettingsWindow {
         }
 
         Rect viewRect = new Rect(0f, 0f, contentRect.width, Mathf.Max(viewportRect.height, contentRenderer.ContentHeight));
-        Widgets.BeginScrollView(viewportRect, ref scroll, viewRect, false);
+        Widgets.BeginScrollView(viewportRect, ref scroll, viewRect);
         try {
             contentRenderer.Draw(
                 viewRect,

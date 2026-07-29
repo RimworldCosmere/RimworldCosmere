@@ -1,7 +1,6 @@
 using System;
-using Cosmere.Core.Listing;
 using Cosmere.Core.Quickstart;
-using Cosmere.Core.UI;
+using Cosmere.Core.Settings.Model;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -49,164 +48,215 @@ public class CoreModSettings : CosmereModSettings {
 
     public override string Name => "Core";
 
-    public override void DoTabContents(Form listing) {
-        listing.Fieldset(
-            "CC_Settings_Category_Connection".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CC_Settings_Connection_ShowDormantConnection_Label".Translate(),
-                    "CC_Settings_Connection_ShowDormantConnection_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref showDormantConnection)
-                );
-            },
-            SubListingOptions.WithoutTopPadding()
-        );
-
-        listing.Fieldset(
-            "CC_Settings_Category_FactionFiltering".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CC_Settings_DisableEmpire_Label".Translate(),
-                    "CC_Settings_DisableEmpire_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref disableEmpireInCosmereScenarios)
-                );
-                fieldset.Field(
-                    "CC_Settings_DisableOdyssey_Label".Translate(),
-                    "CC_Settings_DisableOdyssey_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref disableOdysseyFactionsInCosmereScenarios)
-                );
-            },
-            SubListingOptions.WithoutTopPadding()
-        );
-
-        listing.Fieldset(
-            "CC_Settings_Category_Radial".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CC_Settings_RadialAnchorMouse_Label".Translate(),
-                    "CC_Settings_RadialAnchorMouse_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref radialAnchorMouse)
-                );
-                fieldset.Field(
-                    "CC_Settings_RadialPause_Label".Translate(),
-                    "CC_Settings_RadialPause_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref radialPausesGame)
-                );
-            },
-            SubListingOptions.WithoutTopPadding()
-        );
-
-        listing.Fieldset(
-            "CC_Settings_Category_Interface".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CC_Settings_ResetDockPosition_Label".Translate(),
-                    "CC_Settings_ResetDockPosition_Tooltip".Translate(),
-                    sub => {
-                        Rect button = sub.GetRect(24f);
-                        if (!dockPositionSet) {
-                            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.6f, 0.6f, 0.6f)))
-                                Widgets.Label(button, "CC_Settings_ResetDockPosition_Default".Translate());
-                            return;
-                        }
-
-                        if (Widgets.ButtonText(button.LeftPartPixels(140f), "CC_Settings_ResetDockPosition_Button".Translate())) {
-                            dockPositionSet = false;
-                            dockPosition = Vector2.zero;
-                        }
-                    }
-                );
-
-                fieldset.Field(
-                    "CC_Settings_DockSectionMaxHeight_Label".Translate(),
-                    "CC_Settings_DockSectionMaxHeight_Tooltip".Translate(),
-                    sub => {
-                        float picked = sub.Slider(
-                            dockSectionMaxHeight,
-                            MinDockSectionMaxHeight,
-                            MaxDockSectionMaxHeight
-                        );
-
-                        // Snapped to ten pixels. The slider is a couple of hundred
-                        // pixels wide covering a thousand, so raw values land on
-                        // arbitrary fractions the player cannot aim at or read back.
-                        dockSectionMaxHeight = Mathf.Round(picked / 10f) * 10f;
-                    }
-                );
-            }
-        );
-
-        listing.Fieldset(
-            "CC_Settings_Category_Debug".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CC_Settings_LogLevel_Label".Translate(),
-                    "CC_Settings_LogLevel_Tooltip".Translate(),
-                    sub => UIHelpers.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
-                );
-
-                if (!Prefs.DevMode) return;
-
-                fieldset.Field(
-                    "CC_Settings_DebugMode_Label".Translate(),
-                    "CC_Settings_DebugMode_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref debugMode)
-                );
-
-                fieldset.Field(
-                    "CC_Settings_Quickstarter_Label".Translate(),
-                    "CC_Settings_Quickstarter_Tooltip".Translate(),
-                    sub => UIHelpers.Dropdown(
-                        sub,
-                        GetQuickstartScenarioLabel,
-                        quickstartName,
-                        "CC_Settings_Quickstarter_Placeholder".Translate(),
-                        quickstarters,
-                        val => quickstartName = val
+    public override IReadOnlyList<SettingSection> BuildSections() {
+        IReadOnlyList<SettingSection> sections = [
+            new SettingSection(
+                "connection",
+                "CC_Settings_Category_Connection",
+                [
+                    new SettingDescriptor(
+                        "show-dormant-connection",
+                        "CC_Settings_Connection_ShowDormantConnection_Label",
+                        "CC_Settings_Connection_ShowDormantConnection_Description",
+                        new CheckboxControl(
+                            () => showDormantConnection,
+                            updated => showDormantConnection = updated,
+                            false
+                        )
                     ),
-                    new FieldOptions { minimumColumnWidth = 400 }
-                );
-
-                if (IsScenarioTestQuickstartSelected()) {
-                    fieldset.Field(
-                        "CC_Settings_TestScenario_Label".Translate(),
-                        "CC_Settings_TestScenario_Tooltip".Translate(),
-                        sub => UIHelpers.Dropdown(
-                            sub,
-                            GetTestScenarioLabel,
-                            testScenarioDefName,
-                            "CC_Settings_TestScenario_Placeholder".Translate(),
-                            GetScenarioDefItems(),
-                            val => testScenarioDefName = val
+                ]
+            ),
+            new SettingSection(
+                "faction-filtering",
+                "CC_Settings_Category_FactionFiltering",
+                [
+                    new SettingDescriptor(
+                        "disable-empire",
+                        "CC_Settings_DisableEmpire_Label",
+                        "CC_Settings_DisableEmpire_Description",
+                        new CheckboxControl(
+                            () => disableEmpireInCosmereScenarios,
+                            updated => disableEmpireInCosmereScenarios = updated,
+                            false
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "disable-odyssey-factions",
+                        "CC_Settings_DisableOdyssey_Label",
+                        "CC_Settings_DisableOdyssey_Description",
+                        new CheckboxControl(
+                            () => disableOdysseyFactionsInCosmereScenarios,
+                            updated => disableOdysseyFactionsInCosmereScenarios = updated,
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "ability-radial",
+                "CC_Settings_Category_Radial",
+                [
+                    new SettingDescriptor(
+                        "anchor-mouse",
+                        "CC_Settings_RadialAnchorMouse_Label",
+                        "CC_Settings_RadialAnchorMouse_Description",
+                        new CheckboxControl(
+                            () => radialAnchorMouse,
+                            updated => radialAnchorMouse = updated,
+                            true
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "pause-game",
+                        "CC_Settings_RadialPause_Label",
+                        "CC_Settings_RadialPause_Description",
+                        new CheckboxControl(
+                            () => radialPausesGame,
+                            updated => radialPausesGame = updated,
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "interface",
+                "CC_Settings_Category_Interface",
+                [
+                    new SettingDescriptor(
+                        "reset-dock-position",
+                        "CC_Settings_ResetDockPosition_Label",
+                        "CC_Settings_ResetDockPosition_Description",
+                        new ButtonControl(
+                            "CC_Settings_ResetDockPosition_Button",
+                            () => {
+                                dockPositionSet = false;
+                                dockPosition = Vector2.zero;
+                            },
+                            () => dockPositionSet ? null : "CC_Settings_ResetDockPosition_Default"
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "dock-section-max-height",
+                        "CC_Settings_DockSectionMaxHeight_Label",
+                        "CC_Settings_DockSectionMaxHeight_Description",
+                        new SliderControl(
+                            () => dockSectionMaxHeight,
+                            updated => dockSectionMaxHeight = Mathf.Round(updated / 10f) * 10f,
+                            DefaultDockSectionMaxHeight,
+                            MinDockSectionMaxHeight,
+                            MaxDockSectionMaxHeight,
+                            10f,
+                            value => value.ToString("0")
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "accessibility",
+                "CC_Settings_Category_Accessibility",
+                [
+                    new SettingDescriptor(
+                        "reduce-motion",
+                        "CC_Settings_ReduceMotion_Label",
+                        "CC_Settings_ReduceMotion_Description",
+                        new CheckboxControl(
+                            () => reduceMotion,
+                            updated => reduceMotion = updated,
+                            false
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "high-contrast",
+                        "CC_Settings_HighContrast_Label",
+                        "CC_Settings_HighContrast_Description",
+                        new CheckboxControl(
+                            () => highContrast,
+                            updated => highContrast = updated,
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "debug",
+                "CC_Settings_Category_Debug",
+                [
+                    new SettingDescriptor(
+                        "log-level",
+                        "CC_Settings_LogLevel_Label",
+                        "CC_Settings_LogLevel_Description",
+                        new ChoiceControl(
+                            () => logLevel.ToString(),
+                            updated => logLevel = Enum.Parse<LogLevel>(updated!),
+                            nameof(LogLevel.Verbose),
+                            () => [
+                                new Choice(nameof(LogLevel.None), "CC_Settings_LogLevel_None"),
+                                new Choice(nameof(LogLevel.Important), "CC_Settings_LogLevel_Important"),
+                                new Choice(nameof(LogLevel.Error), "CC_Settings_LogLevel_Error"),
+                                new Choice(nameof(LogLevel.Warning), "CC_Settings_LogLevel_Warning"),
+                                new Choice(nameof(LogLevel.Info), "CC_Settings_LogLevel_Info"),
+                                new Choice(nameof(LogLevel.Verbose), "CC_Settings_LogLevel_Verbose"),
+                            ],
+                            false
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "debug-mode",
+                        "CC_Settings_DebugMode_Label",
+                        "CC_Settings_DebugMode_Description",
+                        new CheckboxControl(
+                            () => debugMode,
+                            updated => debugMode = updated,
+                            false
                         ),
-                        new FieldOptions { minimumColumnWidth = 400 }
-                    );
-                }
+                        () => Prefs.DevMode
+                    ),
+                    new SettingDescriptor(
+                        "quickstarter",
+                        "CC_Settings_Quickstarter_Label",
+                        "CC_Settings_Quickstarter_Description",
+                        new ChoiceControl(
+                            () => quickstartName,
+                            updated => quickstartName = updated,
+                            null,
+                            GetQuickstarterChoices,
+                            true
+                        ),
+                        () => Prefs.DevMode
+                    ),
+                    new SettingDescriptor(
+                        "test-scenario",
+                        "CC_Settings_TestScenario_Label",
+                        "CC_Settings_TestScenario_Description",
+                        new ChoiceControl(
+                            () => testScenarioDefName,
+                            updated => testScenarioDefName = updated,
+                            null,
+                            GetScenarioChoices,
+                            true
+                        ),
+                        () => Prefs.DevMode && IsScenarioTestQuickstartSelected()
+                    ),
+                ]
+            ),
+        ];
 
-                if (!string.IsNullOrEmpty(quickstartName)) {
-                    TaggedString? description = GetDescription();
-                    if (description == null) {
-                        fieldset.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
-                    } else {
-                        using (new TextBlock(TextAnchor.UpperLeft)) {
-                            fieldset.Label(description.Value);
-                        }
-                    }
-                }
-            },
-            SubListingOptions.WithoutTopPadding().WithTextBlock(new TextBlock(TextAnchor.MiddleLeft))
-        );
-    }
-
-    private TaggedString? GetDescription() {
-        if (string.IsNullOrEmpty(quickstartName)) return null;
-        Type? type = Type.GetType(quickstartName!);
-        if (type == null) {
-            return null;
+        IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate(Name, sections);
+        foreach (string error in errors) {
+            Logger.Error($"Settings descriptor validation failed: {error}");
         }
 
-        AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
-        return quickstart.GetDescription().Resolve();
+        return sections;
+    }
+
+    private IReadOnlyList<Choice> GetQuickstarterChoices() {
+        List<Choice> choices = [];
+        foreach (KeyValuePair<string, string> quickstarter in quickstarters) {
+            string? label = GetQuickstartScenarioLabel(quickstarter.Value);
+            choices.Add(new Choice(quickstarter.Value, label ?? quickstarter.Key));
+        }
+
+        return choices;
     }
 
     private string? GetQuickstartScenarioLabel(string? quickstarter) {
@@ -226,6 +276,17 @@ public class CoreModSettings : CosmereModSettings {
         if (string.IsNullOrEmpty(defName)) return null;
         ScenarioDef? def = DefDatabase<ScenarioDef>.GetNamedSilentFail(defName);
         return def == null ? defName : def.LabelCap.ToString();
+    }
+
+    private IReadOnlyList<Choice> GetScenarioChoices() {
+        Dictionary<string, string> scenarioDefs = GetScenarioDefItems();
+        List<Choice> choices = [];
+        foreach (KeyValuePair<string, string> scenarioDef in scenarioDefs) {
+            string? label = GetTestScenarioLabel(scenarioDef.Value);
+            choices.Add(new Choice(scenarioDef.Value, label ?? scenarioDef.Key));
+        }
+
+        return choices;
     }
 
     private static Dictionary<string, string> GetScenarioDefItems() {

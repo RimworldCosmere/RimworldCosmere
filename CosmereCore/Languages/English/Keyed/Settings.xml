@@ -2,32 +2,32 @@
 <LanguageData>
     <CC_Settings_Category_Connection>Connection</CC_Settings_Category_Connection>
     <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
-    <CC_Settings_Connection_ShowDormantConnection_Tooltip>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Tooltip>
+    <CC_Settings_Connection_ShowDormantConnection_Description>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Description>
     
     <CC_Settings_Category_FactionFiltering>Faction Filtering</CC_Settings_Category_FactionFiltering>
     <CC_Settings_DisableEmpire_Label>Disable Empire in Cosmere Scenarios</CC_Settings_DisableEmpire_Label>
-    <CC_Settings_DisableEmpire_Tooltip>When enabled, the Empire faction (Royalty DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableEmpire_Tooltip>
+    <CC_Settings_DisableEmpire_Description>When enabled, the Empire faction (Royalty DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableEmpire_Description>
     <CC_Settings_DisableOdyssey_Label>Disable Odyssey Factions in Cosmere Scenarios</CC_Settings_DisableOdyssey_Label>
-    <CC_Settings_DisableOdyssey_Tooltip>When enabled, Mechanoid Hive and Insect Geneline factions (Odyssey DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableOdyssey_Tooltip>
+    <CC_Settings_DisableOdyssey_Description>When enabled, Mechanoid Hive and Insect Geneline factions (Odyssey DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableOdyssey_Description>
 
     <CC_Settings_Category_Radial>Ability radial</CC_Settings_Category_Radial>
     <CC_Settings_RadialAnchorMouse_Label>Open at mouse cursor</CC_Settings_RadialAnchorMouse_Label>
-    <CC_Settings_RadialAnchorMouse_Tooltip>When enabled the ability radial opens centered on the mouse cursor. When disabled it opens centered on the selected pawn.</CC_Settings_RadialAnchorMouse_Tooltip>
+    <CC_Settings_RadialAnchorMouse_Description>When enabled the ability radial opens centered on the mouse cursor. When disabled it opens centered on the selected pawn.</CC_Settings_RadialAnchorMouse_Description>
 
     <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
     <CC_Settings_LogLevel_Label>Log Level: </CC_Settings_LogLevel_Label>
-    <CC_Settings_LogLevel_Tooltip>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Tooltip>
+    <CC_Settings_LogLevel_Description>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Description>
     
     <CC_Settings_DebugMode_Label>Debug Mode: </CC_Settings_DebugMode_Label>
-    <CC_Settings_DebugMode_Tooltip>Provides extra debugging features</CC_Settings_DebugMode_Tooltip>
+    <CC_Settings_DebugMode_Description>Provides extra debugging features</CC_Settings_DebugMode_Description>
     
     <CC_Settings_Quickstarter_Label>Quickstarter: </CC_Settings_Quickstarter_Label>
-    <CC_Settings_Quickstarter_Tooltip>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CC_Settings_Quickstarter_Tooltip>
+    <CC_Settings_Quickstarter_Description>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CC_Settings_Quickstarter_Description>
     <CC_Settings_Quickstarter_Placeholder>Select a Quickstarter </CC_Settings_Quickstarter_Placeholder>
     <CC_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CC_Settings_Quickstarter_FailedToFind>
 
     <CC_Settings_TestScenario_Label>Test Scenario: </CC_Settings_TestScenario_Label>
-    <CC_Settings_TestScenario_Tooltip>Scenario used by the ScenarioTestQuickstart. Lets you boot straight into any scenario with default pawn generation.</CC_Settings_TestScenario_Tooltip>
+    <CC_Settings_TestScenario_Description>Scenario used by the ScenarioTestQuickstart. Lets you boot straight into any scenario with default pawn generation.</CC_Settings_TestScenario_Description>
     <CC_Settings_TestScenario_Placeholder>Select a Scenario </CC_Settings_TestScenario_Placeholder>
 
 
@@ -37,12 +37,36 @@
     <CC_Quickstart_Scenario>Scenario: </CC_Quickstart_Scenario>
     <CC_Quickstart_PauseAfterLoad>Pause After Load: </CC_Quickstart_PauseAfterLoad>
   <CC_Settings_RadialPause_Label>Pause on wheel</CC_Settings_RadialPause_Label>
-  <CC_Settings_RadialPause_Tooltip>Halt time while the ability wheel is open, and resume at the same speed when it closes. A game already paused stays paused.</CC_Settings_RadialPause_Tooltip>
+  <CC_Settings_RadialPause_Description>Halt time while the ability wheel is open, and resume at the same speed when it closes. A game already paused stays paused.</CC_Settings_RadialPause_Description>
   <CC_Settings_Category_Interface>Interface</CC_Settings_Category_Interface>
   <CC_Settings_ResetDockPosition_Label>Investiture dock position</CC_Settings_ResetDockPosition_Label>
-  <CC_Settings_ResetDockPosition_Tooltip>The dock can be dragged anywhere on screen. Reset it to return it to the left edge.</CC_Settings_ResetDockPosition_Tooltip>
+  <CC_Settings_ResetDockPosition_Description>The dock can be dragged anywhere on screen. Reset it to return it to the left edge.</CC_Settings_ResetDockPosition_Description>
   <CC_Settings_ResetDockPosition_Button>Reset to default</CC_Settings_ResetDockPosition_Button>
   <CC_Settings_ResetDockPosition_Default>At its default position</CC_Settings_ResetDockPosition_Default>
   <CC_Settings_DockSectionMaxHeight_Label>Dock section height</CC_Settings_DockSectionMaxHeight_Label>
-  <CC_Settings_DockSectionMaxHeight_Tooltip>How tall an open section of the investiture dock may grow before it scrolls instead. A Mistborn burns sixteen metals, and the whole table will not fit on a short screen.</CC_Settings_DockSectionMaxHeight_Tooltip>
+  <CC_Settings_DockSectionMaxHeight_Description>How tall an open section of the investiture dock may grow before it scrolls instead. A Mistborn burns sixteen metals, and the whole table will not fit on a short screen.</CC_Settings_DockSectionMaxHeight_Description>
+    <CC_Settings_Category_Accessibility>Accessibility</CC_Settings_Category_Accessibility>
+    <CC_Settings_ReduceMotion_Label>Reduce motion</CC_Settings_ReduceMotion_Label>
+    <CC_Settings_ReduceMotion_Description>Stops pulsing and breathing animations on lit panels.</CC_Settings_ReduceMotion_Description>
+    <CC_Settings_HighContrast_Label>High contrast</CC_Settings_HighContrast_Label>
+    <CC_Settings_HighContrast_Description>Brightens system accents and strengthens panel borders.</CC_Settings_HighContrast_Description>
+
+    <CC_Settings_LogLevel_None>None</CC_Settings_LogLevel_None>
+    <CC_Settings_LogLevel_Important>Important</CC_Settings_LogLevel_Important>
+    <CC_Settings_LogLevel_Error>Error</CC_Settings_LogLevel_Error>
+    <CC_Settings_LogLevel_Warning>Warning</CC_Settings_LogLevel_Warning>
+    <CC_Settings_LogLevel_Info>Info</CC_Settings_LogLevel_Info>
+    <CC_Settings_LogLevel_Verbose>Verbose</CC_Settings_LogLevel_Verbose>
+
+    <CC_Settings_Search_Placeholder>Search settings</CC_Settings_Search_Placeholder>
+    <CC_Settings_Search_NoResults>No settings match "{QUERY}".</CC_Settings_Search_NoResults>
+    <CC_Settings_System_Empty>This system has no visible settings.</CC_Settings_System_Empty>
+    <CC_Settings_Unavailable>Setting unavailable</CC_Settings_Unavailable>
+    <CC_Settings_Reset_System>Reset {SYSTEM} to defaults</CC_Settings_Reset_System>
+    <CC_Settings_Reset_Confirm>Reset all {SYSTEM} settings?</CC_Settings_Reset_Confirm>
+    <CC_Settings_Confirm>Confirm</CC_Settings_Confirm>
+    <CC_Settings_Cancel>Cancel</CC_Settings_Cancel>
+    <CC_Settings_Choice_Yes>Yes</CC_Settings_Choice_Yes>
+    <CC_Settings_Choice_No>No</CC_Settings_Choice_No>
+
 </LanguageData>

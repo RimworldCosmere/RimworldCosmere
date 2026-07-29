@@ -14,6 +14,8 @@ public sealed class SettingsFooterRenderer {
     private const float ButtonGap = 8f;
     private const float EdgePadding = 12f;
 
+    private static readonly Color DangerTint = new Color(1f, 0.62f, 0.58f);
+
     private string? confirmationSystemKey;
 
     public void CancelConfirmation() {
@@ -28,7 +30,6 @@ public sealed class SettingsFooterRenderer {
         ISystemSkin skin,
         global::System.Action requestClose
     ) {
-        Widgets.DrawBoxSolid(rect, new Color(0.05f, 0.06f, 0.08f, 0.92f));
         Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, rect.width, 1f), new Color(skin.BorderTintColor.r, skin.BorderTintColor.g, skin.BorderTintColor.b, 0.55f));
 
         if (confirmationSystemKey == systemKey) {
@@ -38,7 +39,7 @@ public sealed class SettingsFooterRenderer {
         }
 
         Rect closeRect = new Rect(rect.xMax - EdgePadding - CloseButtonWidth, rect.y + (rect.height - ButtonHeight) / 2f, CloseButtonWidth, ButtonHeight);
-        if (DrawButton(closeRect, (string)"CC_Settings_Close".Translate(), skin.AccentColor, false)) {
+        if (DrawButton(closeRect, (string)"CC_Settings_Close".Translate(), false)) {
             CancelConfirmation();
             requestClose();
         }
@@ -47,7 +48,7 @@ public sealed class SettingsFooterRenderer {
     private void DrawReset(Rect rect, string systemKey, string systemName, ISystemSkin skin) {
         Rect resetRect = new Rect(rect.x + EdgePadding, rect.y + (rect.height - ButtonHeight) / 2f, ResetButtonWidth, ButtonHeight);
         string label = (string)"CC_Settings_Reset_System".Translate(systemName.Named("SYSTEM"));
-        if (DrawButton(resetRect, label, skin.AccentColor, true)) {
+        if (DrawButton(resetRect, label, true)) {
             confirmationSystemKey = systemKey;
         }
     }
@@ -61,14 +62,14 @@ public sealed class SettingsFooterRenderer {
 
         float buttonsX = labelRect.xMax + ButtonGap;
         Rect confirmRect = new Rect(buttonsX, rect.y + (rect.height - ButtonHeight) / 2f, confirmWidth, ButtonHeight);
-        if (DrawButton(confirmRect, (string)"CC_Settings_Confirm".Translate(), skin.AccentColor, true)) {
+        if (DrawButton(confirmRect, (string)"CC_Settings_Confirm".Translate(), true)) {
             ResetAll(sections);
             CancelConfirmation();
             return;
         }
 
         Rect cancelRect = new Rect(confirmRect.xMax + ButtonGap, rect.y + (rect.height - ButtonHeight) / 2f, cancelWidth, ButtonHeight);
-        if (DrawButton(cancelRect, (string)"CC_Settings_Cancel".Translate(), skin.AccentColor, false)) {
+        if (DrawButton(cancelRect, (string)"CC_Settings_Cancel".Translate(), false)) {
             CancelConfirmation();
         }
     }
@@ -82,20 +83,22 @@ public sealed class SettingsFooterRenderer {
         }
     }
 
-    private static bool DrawButton(Rect rect, string label, Color accent, bool primary) {
-        Color fill = primary
-            ? new Color(accent.r, accent.g, accent.b, 0.22f)
-            : new Color(1f, 1f, 1f, 0.08f);
-        Color textColor = primary ? Color.white : new Color(0.82f, 0.84f, 0.88f);
-        Widgets.DrawBoxSolid(rect, fill);
-        if (primary) {
-            Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), accent);
+    // Widgets.ButtonText carries the vanilla button atlas, so these read as the same
+    // buttons the rest of the game uses rather than flat boxes. Destructive actions tint
+    // that atlas red instead of getting their own shape.
+    private static bool DrawButton(Rect rect, string label, bool destructive) {
+        Color previousColor = GUI.color;
+        if (destructive) GUI.color = DangerTint;
+
+        bool clicked;
+        try {
+            clicked = Widgets.ButtonText(rect, label);
+        } finally {
+            GUI.color = previousColor;
         }
 
-        UIText.EllipsisLabel(rect.ContractedBy(6f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
         TooltipHandler.TipRegion(rect, label);
-        Widgets.DrawHighlightIfMouseover(rect);
-        MouseoverSounds.DoRegion(rect);
-        return Widgets.ButtonInvisible(rect);
+
+        return clicked;
     }
 }

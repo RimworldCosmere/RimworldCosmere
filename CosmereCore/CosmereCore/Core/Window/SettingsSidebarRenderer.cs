@@ -20,8 +20,6 @@ public static class SettingsSidebarRenderer {
         CosmereModSettings selectedSettings,
         ref string searchText
     ) {
-        Widgets.DrawBoxSolid(rect, new Color(0.06f, 0.07f, 0.09f, 0.92f));
-
         // The sidebar butts straight against the pane, so this edge is what separates them.
         Widgets.DrawBoxSolid(new Rect(rect.xMax - 1f, rect.y, 1f, rect.height), new Color(1f, 1f, 1f, 0.09f));
 
@@ -58,8 +56,8 @@ public static class SettingsSidebarRenderer {
             Rect row = new Rect(rect.x + Padding, y, rect.width - Padding * 2f, RowHeight);
             bool selected = systemSettings == selectedSettings;
 
-            DrawSystemRow(row, skin, selected);
-            TooltipHandler.TipRegion(row, skin.HeaderLabel);
+            DrawSystemRow(row, systemSettings.DisplayLabel, skin, selected);
+            TooltipHandler.TipRegion(row, systemSettings.DisplayLabel);
             Widgets.DrawHighlightIfMouseover(row);
             MouseoverSounds.DoRegion(row);
             if (Widgets.ButtonInvisible(row)) return systemSettings;
@@ -70,7 +68,7 @@ public static class SettingsSidebarRenderer {
         return null;
     }
 
-    private static void DrawSystemRow(Rect rect, ISystemSkin skin, bool selected) {
+    private static void DrawSystemRow(Rect rect, string label, ISystemSkin skin, bool selected) {
         if (selected) {
             Widgets.DrawBoxSolid(rect, new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, 0.16f));
             Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, 3f, rect.height), skin.AccentColor);
@@ -89,7 +87,7 @@ public static class SettingsSidebarRenderer {
         Color labelColor = selected ? skin.HeaderTextColor : new Color(0.72f, 0.74f, 0.78f);
         UIText.EllipsisLabel(
             new Rect(sigilRect.xMax + 8f, rect.y, rect.xMax - sigilRect.xMax - 16f, rect.height),
-            skin.HeaderLabel,
+            label,
             GameFont.Small,
             TextAnchor.MiddleLeft,
             labelColor

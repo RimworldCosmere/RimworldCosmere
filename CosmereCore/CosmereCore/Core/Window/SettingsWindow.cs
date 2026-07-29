@@ -52,6 +52,7 @@ public sealed class SettingsWindow {
         string activeSectionKey = ActiveSectionKey(sections);
         string? requestedSection = SettingsHeaderRenderer.DrawSectionTabs(
             layout.SectionRail,
+            skin,
             sections,
             activeSectionKey
         );

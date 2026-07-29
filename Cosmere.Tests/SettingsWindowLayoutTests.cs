@@ -40,16 +40,12 @@ public class SettingsWindowLayoutTests {
     }
 
     [TestMethod]
-    public void TabStripGetsItsOwnBandBelowTheCrest() {
+    public void HeaderRowsStackInPlaceAboveTheContent() {
         SettingsWindowLayoutData layout = SettingsWindowLayoutMath.Create(0f, 0f, 900f, 700f);
 
-        // TabDrawer.DrawTabs shifts its rect up by one tab height before drawing, so the
-        // band it draws into must start at or below the crest's bottom edge.
-        float crestBottom = layout.CrestY + SettingsWindowLayoutMath.CrestHeight;
-        Assert.IsTrue(
-            layout.SectionRailY - SettingsWindowLayoutMath.SectionTabHeight >= crestBottom,
-            $"Tabs would paint over the crest: strip draws from {layout.SectionRailY - SettingsWindowLayoutMath.SectionTabHeight}, crest ends at {crestBottom}."
-        );
-        Assert.AreEqual(layout.SectionRailY, layout.ContentY);
+        // The rail draws inside the rect it is handed, so the rows simply stack: crest,
+        // then tabs, then content.
+        Assert.AreEqual(SettingsWindowLayoutMath.CrestHeight, layout.SectionRailY - layout.CrestY);
+        Assert.AreEqual(SettingsWindowLayoutMath.SectionTabHeight, layout.ContentY - layout.SectionRailY);
     }
 }

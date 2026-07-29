@@ -34,10 +34,7 @@ public readonly record struct SettingsWindowLayout(
 
         return new SettingsWindowLayout(
             new Rect(x, y, SidebarWidth, layout.FooterY - y),
-            new Rect(layout.CrestX, layout.CrestY, layout.ContentViewportWidth, CrestHeight),
-            // DrawTabs shifts this rect up by 32 and draws there, so it is handed a
-            // zero-height line at the bottom of the reserved band rather than the band.
-            new Rect(layout.SectionRailX, layout.SectionRailY, layout.ContentViewportWidth, 0f),
+            new Rect(layout.CrestX, layout.CrestY, layout.ContentViewportWidth, CrestHeight),            new Rect(layout.SectionRailX, layout.SectionRailY, layout.ContentViewportWidth, SectionTabHeight),
             new Rect(
                 layout.ContentViewportX,
                 layout.ContentViewportY,

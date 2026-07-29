@@ -48,6 +48,8 @@ public class CoreModSettings : CosmereModSettings {
 
     public override string Name => "Core";
 
+    public override string DisplayLabel => (string)"CC_Settings_System_Core".Translate();
+
     public override IReadOnlyList<SettingSection> BuildSections() {
         IReadOnlyList<SettingSection> sections = [
             new SettingSection(

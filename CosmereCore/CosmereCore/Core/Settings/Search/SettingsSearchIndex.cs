@@ -68,22 +68,26 @@ public sealed class SettingsSearchIndex {
     }
 
     private static void AppendNormalized(StringBuilder haystack, string? text) {
-        if (string.IsNullOrEmpty(text)) return;
+        if (text is not { Length: > 0 } normalizedText) return;
+        int index = 0;
 
-        bool inTag = false;
+        while (index < normalizedText.Length) {
+            char character = normalizedText[index];
 
-        foreach (char character in text!) {
-            if (character == '<') {
-                inTag = true;
+            if (character != '<') {
+                haystack.Append(character);
+                index++;
                 continue;
             }
 
-            if (character == '>') {
-                inTag = false;
+            int closingBracket = normalizedText.IndexOf('>', index + 1);
+            if (closingBracket < 0) {
+                haystack.Append(character);
+                index++;
                 continue;
             }
 
-            if (!inTag) haystack.Append(character);
+            index = closingBracket + 1;
         }
 
         haystack.Append(' ');

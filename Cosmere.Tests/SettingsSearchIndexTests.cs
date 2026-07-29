@@ -63,6 +63,33 @@ public class SettingsSearchIndexTests {
     }
 
     [TestMethod]
+    public void UnclosedOpeningBracketRemainsSearchable() {
+        SettingsSearchIndex index = new SettingsSearchIndex([
+            new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Value must be <5", string.Empty),
+        ]);
+
+        Assert.AreEqual(1, index.Search("5").Count);
+    }
+
+    [TestMethod]
+    public void StrayClosingBracketRemainsSearchable() {
+        SettingsSearchIndex index = new SettingsSearchIndex([
+            new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Value > 5", string.Empty),
+        ]);
+
+        Assert.AreEqual(1, index.Search(">").Count);
+    }
+
+    [TestMethod]
+    public void EmptyRichTextTagIsStrippedWithoutCorruptingText() {
+        SettingsSearchIndex index = new SettingsSearchIndex([
+            new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Storm<>light reserve", string.Empty),
+        ]);
+
+        Assert.AreEqual(1, index.Search("stormlight reserve").Count);
+    }
+
+    [TestMethod]
     public void CountBySystemReturnsGroupedCount() {
         SettingsSearchIndex index = new SettingsSearchIndex([
             new SettingsSearchDocument("Roshar", "Roshar", "storms", "Storms", "frequency", "Mist frequency", string.Empty),

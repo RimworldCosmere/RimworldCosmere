@@ -3,7 +3,7 @@ using global::System.Collections.Generic;
 namespace Cosmere.Core.Settings.Layout;
 
 public static class SettingsColumnLayout {
-    public static IReadOnlyList<SettingSectionPlacement> Place(
+    public static SettingsColumnLayoutResult Place(
         IReadOnlyList<SettingSectionMeasurement> sections,
         float columnWidth,
         float gap
@@ -23,6 +23,9 @@ public static class SettingsColumnLayout {
             else rightHeight += section.Height + gap;
         }
 
-        return placements;
+        float contentHeight = leftHeight >= rightHeight ? leftHeight - gap : rightHeight - gap;
+        if (contentHeight < 0f) contentHeight = 0f;
+
+        return new SettingsColumnLayoutResult(placements, contentHeight);
     }
 }

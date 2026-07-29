@@ -16,6 +16,12 @@ public static class MetallicArtsTable {
     private const float TileGap = 3f;
     private const int Columns = 2;
 
+    // The open tile runs down through this gap to reach its detail panel, so the
+    // panel clears the closed tile beside it rather than butting against the whole
+    // row. Only the open tile crosses it, which is what makes the pair read as one
+    // shape and its neighbour as a separate one.
+    public const float JoinGap = TileGap;
+
     public static float HeightFor(
         IReadOnlyList<MetalGroup> groups,
         string? expandedSubsystemId,
@@ -29,7 +35,7 @@ public static class MetallicArtsTable {
             height += QuadHeaderHeight;
             height += RowCount(group.Rows.Count) * (MetalTile.Height + TileGap);
             if (expandedSubsystemId != null && ContainsMetal(group, expandedSubsystemId)) {
-                height += expandedStripHeight + TileGap;
+                height += JoinGap + expandedStripHeight;
             }
 
             height += QuadGap;
@@ -44,8 +50,9 @@ public static class MetallicArtsTable {
         Color headerColor,
         string? expandedSubsystemId,
         float expandedStripHeight,
+        float stripFullHeight,
         Action<Rect, MetalRow> drawTile,
-        Action<Rect, MetalRow>? drawStrip
+        Action<Rect, MetalRow, Rect>? drawStrip
     ) {
         float y = rect.y;
         float tileWidth = (rect.width - TileGap * (Columns - 1)) / Columns;
@@ -77,19 +84,51 @@ public static class MetallicArtsTable {
                 bool endOfRow = column == Columns - 1 || r == group.Rows.Count - 1;
                 if (!endOfRow) continue;
 
-                y += MetalTile.Height + TileGap;
-
-                // The strip drops in beneath whichever row holds the open metal,
-                // so it never separates a tile from its neighbour.
-                if (expandedSubsystemId == null || drawStrip == null) continue;
-                int rowStart = r - column;
-                for (int i = rowStart; i <= r; i++) {
-                    if (group.Rows[i].Cell.SubsystemId != expandedSubsystemId) continue;
-                    Rect stripRect = new Rect(rect.x, y, rect.width, expandedStripHeight);
-                    drawStrip(stripRect, group.Rows[i]);
-                    y += expandedStripHeight + TileGap;
-                    break;
+                // The strip drops in beneath whichever row holds the open metal, so it
+                // never separates a tile from its neighbour - and it sits a join gap
+                // below that row, which the open tile alone reaches across. The pair
+                // reads as one surface; the closed tile beside it keeps its clearance.
+                int openIndex = -1;
+                if (expandedSubsystemId != null && drawStrip != null) {
+                    for (int i = r - column; i <= r; i++) {
+                        if (group.Rows[i].Cell.SubsystemId == expandedSubsystemId) openIndex = i;
+                    }
                 }
+
+                float rowY = y;
+                y += MetalTile.Height;
+                if (openIndex < 0) {
+                    y += TileGap;
+                    continue;
+                }
+
+                // The strip is handed the open tile's own rect, because that span is
+                // where its top edge has to stay open for the two to merge.
+                int openColumn = openIndex % Columns;
+                Rect openTileRect = new Rect(
+                    rect.x + openColumn * (tileWidth + TileGap),
+                    rowY,
+                    openColumn == 0 && openIndex == group.Rows.Count - 1 ? rect.width : tileWidth,
+                    MetalTile.Height
+                );
+
+                Rect stripRect = new Rect(rect.x, y + JoinGap, rect.width, expandedStripHeight);
+                if (expandedStripHeight < stripFullHeight - 0.5f) {
+                    // Mid-reveal. The panel is drawn at its finished size inside a clip
+                    // only as tall as it has opened so far, so it slides out from under
+                    // the tile rather than squashing its contents into a sliver.
+                    Widgets.BeginGroup(stripRect);
+                    drawStrip!(
+                        new Rect(0f, 0f, rect.width, stripFullHeight),
+                        group.Rows[openIndex],
+                        new Rect(openTileRect.x - stripRect.x, 0f, openTileRect.width, openTileRect.height)
+                    );
+                    Widgets.EndGroup();
+                } else {
+                    drawStrip!(stripRect, group.Rows[openIndex], openTileRect);
+                }
+
+                y += JoinGap + expandedStripHeight + TileGap;
             }
 
             y += QuadGap;

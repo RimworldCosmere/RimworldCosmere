@@ -9,7 +9,7 @@ public static class RadialDispatcher {
         if (leaf.IsLocked) return;
 
         if (leaf.Kind == RadialActionKind.CastAbility) {
-            DispatchAbility(pawn, leaf.AbilityDef);
+            CastOrToggle(pawn, leaf.AbilityDef);
             return;
         }
 
@@ -24,7 +24,10 @@ public static class RadialDispatcher {
         Logger.Verbose($"radial dispatch: no handler registered for action kind {leaf.Kind}");
     }
 
-    private static void DispatchAbility(Pawn pawn, AbilityDef? def) {
+    // Public because the wheel is not the only way to reach an ability any more: the
+    // dock's Surge panel lists them too, and both have to obey the same rules about
+    // toggling off, affordability and targeting.
+    public static void CastOrToggle(Pawn pawn, AbilityDef? def) {
         if (def == null) return;
         if (pawn.abilities == null) return;
 

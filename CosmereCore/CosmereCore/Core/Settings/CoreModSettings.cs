@@ -9,6 +9,11 @@ using Verse;
 namespace Cosmere.Core.Settings;
 
 public class CoreModSettings : CosmereModSettings {
+    public const float DefaultDockSectionMaxHeight = 600f;
+
+    private const float MinDockSectionMaxHeight = 200f;
+    private const float MaxDockSectionMaxHeight = 1200f;
+
     private readonly Dictionary<string, string> quickstarters = typeof(AbstractQuickstart).AllSubclassesNonAbstract()
         .ToDictionary(
             q => $"{q.Assembly.GetName().Name}: {q.Name}",
@@ -33,6 +38,11 @@ public class CoreModSettings : CosmereModSettings {
     // separate flag records whether it was ever set rather than reading a sentinel out of the value.
     public Vector2 dockPosition;
     public bool dockPositionSet;
+
+    // The dock grows to whatever the selected pawn carries, and a Mistborn's sixteen
+    // metals with a detail panel open runs past the bottom of most screens. Past this
+    // the open section scrolls rather than the dock getting taller.
+    public float dockSectionMaxHeight = DefaultDockSectionMaxHeight;
 
     public bool showDormantConnection;
     public string? testScenarioDefName;
@@ -104,6 +114,23 @@ public class CoreModSettings : CosmereModSettings {
                             dockPositionSet = false;
                             dockPosition = Vector2.zero;
                         }
+                    }
+                );
+
+                fieldset.Field(
+                    "CC_Settings_DockSectionMaxHeight_Label".Translate(),
+                    "CC_Settings_DockSectionMaxHeight_Tooltip".Translate(),
+                    sub => {
+                        float picked = sub.Slider(
+                            dockSectionMaxHeight,
+                            MinDockSectionMaxHeight,
+                            MaxDockSectionMaxHeight
+                        );
+
+                        // Snapped to ten pixels. The slider is a couple of hundred
+                        // pixels wide covering a thousand, so raw values land on
+                        // arbitrary fractions the player cannot aim at or read back.
+                        dockSectionMaxHeight = Mathf.Round(picked / 10f) * 10f;
                     }
                 );
             }
@@ -227,5 +254,6 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref radialPausesGame, "radialPausesGame");
         Scribe_Values.Look(ref dockPosition, "dockPosition");
         Scribe_Values.Look(ref dockPositionSet, "dockPositionSet");
+        Scribe_Values.Look(ref dockSectionMaxHeight, "dockSectionMaxHeight", DefaultDockSectionMaxHeight);
     }
 }

@@ -11,6 +11,24 @@ public abstract class Invested : Gene_Resource {
 
     public List<DrainSource> Sources => sources;
 
+    // What the reserve is losing per second right now. Ability upkeep is already
+    // charged once a second, so it reads straight; the holder's passive decay is
+    // charged once per rare tick and has to be divided back down, or it reports as a
+    // number four seconds wide. The holder stops decaying at the floor, and so does
+    // this - a reserve sitting at empty is not still draining.
+    public float DrainPerSecond {
+        get {
+            float rate = 0f;
+            for (int i = 0; i < sources.Count; i++) {
+                rate += sources[i].Rate;
+            }
+
+            if (Value > 1f) rate += investitureHolder.drainRate / (GenTicks.TickRareInterval / 60f);
+
+            return rate;
+        }
+    }
+
     public virtual float MinimumAmount => 0;
 
     public virtual string InvestitureLabel => string.Empty;

@@ -9,13 +9,13 @@ namespace Cosmere.Core.UI.Dock;
 
 public sealed class InvestitureDockWindow : Verse.Window {
     private const float CollapsedWidth = 156f;
-    private const float ExpandedWidth = 320f;
+    private const float ExpandedWidth = 370f;
     private const float MarginTop = 114f;
     private const float MarginBottom = 185f;
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
     private const float RibbonGap = 6f;
-    private const float RibbonIcon = 28f;
+    private const float RibbonIcon = 40f;
     private const float RibbonBar = 6f;
     private const float RibbonPad = 7f;
     private const float RibbonBleed = 6f;
@@ -253,10 +253,11 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Rect icon = new Rect(inRect.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
-                // Tinted to the lettering so the mark reads as part of the same
-                // inscription rather than as a pasted-on picture.
+                // White, as every mark in the dock is. Matching the lettering's cream
+                // read as part of the same inscription, but it cost contrast against
+                // the parchment, and the mark has to carry the ribbon on its own.
                 Color prevIcon = GUI.color;
-                GUI.color = RibbonInk;
+                GUI.color = Color.white;
                 GUI.DrawTexture(icon, sigil);
                 GUI.color = prevIcon;
             } else {
@@ -428,6 +429,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         }
 
         float height = PinButtonHeight + 8f;
+        float sectionMax = Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight;
         DockRenderContext probeCtx = new DockRenderContext();
         for (int i = 0; i < snapshots.Count; i++) {
             IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
@@ -435,7 +437,9 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             height += section.GetHeaderHeight();
             if (accordion.ExpandedSystemId == section.SystemId) {
-                height += section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx);
+                // Capped the same way the accordion caps it, or the window would size
+                // itself to a body the accordion is about to put in a scroll view.
+                height += Mathf.Min(section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx), sectionMax);
             }
         }
 

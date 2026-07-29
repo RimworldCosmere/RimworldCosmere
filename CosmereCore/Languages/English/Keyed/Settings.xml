@@ -43,4 +43,6 @@
   <CC_Settings_ResetDockPosition_Tooltip>The dock can be dragged anywhere on screen. Reset it to return it to the left edge.</CC_Settings_ResetDockPosition_Tooltip>
   <CC_Settings_ResetDockPosition_Button>Reset to default</CC_Settings_ResetDockPosition_Button>
   <CC_Settings_ResetDockPosition_Default>At its default position</CC_Settings_ResetDockPosition_Default>
+  <CC_Settings_DockSectionMaxHeight_Label>Dock section height</CC_Settings_DockSectionMaxHeight_Label>
+  <CC_Settings_DockSectionMaxHeight_Tooltip>How tall an open section of the investiture dock may grow before it scrolls instead. A Mistborn burns sixteen metals, and the whole table will not fit on a short screen.</CC_Settings_DockSectionMaxHeight_Tooltip>
 </LanguageData>

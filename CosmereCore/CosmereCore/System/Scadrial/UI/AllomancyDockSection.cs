@@ -1,4 +1,5 @@
 using Cosmere.Core.Ability;
+using Cosmere.Core.Tab;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
@@ -6,6 +7,7 @@ using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -20,21 +22,67 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private const float StripPadding = 7f;
     private const float ReserveBarHeight = 10f;
-    private const float StripButtonHeight = 22f;
+    private const float StripButtonHeight = 24f;
+
+    // BurnRate is charged once per rare tick, so it has to be divided back down to
+    // read as a rate rather than as a number four seconds wide.
+    private const float RareTicksPerSecond = GenTicks.TickRareInterval / 60f;
     private static readonly Color Accent = new Color(0.478f, 0.400f, 0.263f);
 
     private static float BaseStripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + StripButtonHeight + 14f;
+        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + StripButtonHeight + 22f;
 
-    private float StripHeightFor(Pawn pawn) {
-        return BaseStripHeight;
-    }
-
+    private readonly ScadrialCrest crest = new ScadrialCrest(false);
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
+    private readonly Reveal reveal = new Reveal();
     private string? expandedMetal;
+
+    // Which strip is on screen, which is not the same as which one the player has open:
+    // a closing strip has to keep drawing until it has finished sliding away.
+    private string? revealedMetal;
+    private float revealedHeight;
+
+    // Picked while another metal is still open, and held until that one has finished
+    // sliding away.
+    private string? pendingMetal;
     private IReadOnlyList<MetalGroup>? cachedGroups;
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
+
+    // Idempotent, because height is asked for several times a frame. Reveal itself only
+    // advances once per frame; this just re-reads where it got to.
+    private void StepReveal() {
+        // One panel at a time, in order: the open metal slides up, then the new one
+        // slides down. Swapping the contents mid-slide makes the panel jump rows while
+        // it is moving, which reads as a glitch rather than as an exchange.
+        if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
+            expandedMetal = pendingMetal;
+            pendingMetal = null;
+        }
+
+        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : BaseStripHeight);
+        if (expandedMetal != null) revealedMetal = expandedMetal;
+        else if (revealedHeight < 1f) revealedMetal = null;
+    }
+
+    // Clicking the open metal closes it; clicking a different one closes it first and
+    // queues the new one behind it.
+    private void ToggleMetal(string subsystemId) {
+        if (expandedMetal == subsystemId) {
+            expandedMetal = null;
+            pendingMetal = null;
+            return;
+        }
+
+        if (expandedMetal == null && revealedHeight < 1f) {
+            expandedMetal = subsystemId;
+            pendingMetal = null;
+            return;
+        }
+
+        expandedMetal = null;
+        pendingMetal = subsystemId;
+    }
 
     public override string SystemId => "Allomancy";
 
@@ -43,18 +91,26 @@ public sealed class AllomancyDockSection : DockSectionBase {
     }
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        return MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), expandedMetal, StripHeightFor(pawn));
+        crest.Refresh(pawn, snapshot);
+        StepReveal();
+        return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        crest.Refresh(pawn, snapshot);
+        crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
+        StepReveal();
+
+        Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
-            rect,
+            table,
             GroupsFor(pawn, snapshot),
             QuadHeader,
-            expandedMetal,
-            StripHeightFor(pawn),
+            revealedMetal,
+            revealedHeight,
+            BaseStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
-            (stripRect, row) => DrawStrip(stripRect, pawn, row)
+            (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
     }
 
@@ -66,6 +122,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
                 ? MetalTileState.Active
                 : MetalTileState.Idle;
 
+        MetallicArtsMetalDef? def = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
+        int savant = def != null && pawn.records != null
+            ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, def)
+            : 0;
+
         MetalTile.Draw(
             rect,
             cell.Icon,
@@ -74,7 +135,9 @@ public sealed class AllomancyDockSection : DockSectionBase {
             cell.Bar.Fraction,
             MetalPalette.For(cell.SubsystemId),
             state,
-            cell.IsFlaring ? FlaringTint : BurningTint
+            cell.IsFlaring ? FlaringTint : BurningTint,
+            savantStage: savant,
+            joinedBelow: revealedMetal == cell.SubsystemId
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell), cell.SubsystemId.GetHashCode());
@@ -88,19 +151,31 @@ public sealed class AllomancyDockSection : DockSectionBase {
             return;
         }
 
-        expandedMetal = expandedMetal == cell.SubsystemId ? null : cell.SubsystemId;
+        ToggleMetal(cell.SubsystemId);
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
         current?.Use();
     }
 
-    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
+    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row, Rect openTile) {
         InvestitureCell cell = row.Cell;
 
         // Nothing to draw for a metal this pawn cannot burn.
         if (FindGene(pawn, cell.SubsystemId) == null) return;
 
-        Widgets.DrawBoxSolid(rect, new Color(0.055f, 0.043f, 0.031f, 0.45f));
-        Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.259f, 0.227f, 0.169f));
+        // Same fill and stroke as the tile, opened along the tile's span: the two are
+        // one merged surface. A lit metal carries its accent down through the join as
+        // well, so the pair reads as burning rather than as a lit tile on a dead panel.
+        bool hot = cell.IsActive || cell.IsFlaring;
+        Color tint = cell.IsFlaring ? FlaringTint : BurningTint;
+        Panel.DrawNotchedTop(
+            rect,
+            MetalTile.Fill,
+            hot ? tint : MetalTile.Border,
+            openTile.x,
+            openTile.xMax,
+            hot ? tint : null,
+            Panel.LitWash(cell.IsFlaring)
+        );
 
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
@@ -111,50 +186,77 @@ public sealed class AllomancyDockSection : DockSectionBase {
                 ? "CC_Dock_State_Burning".Translate()
                 : "CC_Dock_Feruchemy_Idle".Translate();
 
+        // The metal's own name is already on the tile this strip opened from, so
+        // repeating it here spends the row on something the player just clicked.
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
-            MetalLabel(cell) + " - " + state,
+            state,
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
             new Color(0.780f, 0.718f, 0.596f)
         );
+
+        // Always shown, zero included. A readout that vanishes when idle makes the
+        // row change shape every time a metal lights, which reads as a glitch.
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            $"{cell.Bar.Fraction * 100f:0}%",
+            "CC_Dock_Feruchemy_Rate".Translate($"{BurnRatePerSecond(pawn, cell):+0.00;-0.00;0.00}".Named("RATE")),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
-            new Color(0.478f, 0.443f, 0.376f)
+            cell.IsActive ? new Color(0.851f, 0.643f, 0.255f) : new Color(0.478f, 0.443f, 0.376f)
         );
 
         Rect bar = new Rect(inner.x, inner.y + tinyH + 6f, inner.width, ReserveBarHeight);
-        Widgets.DrawBoxSolid(bar, new Color(0.047f, 0.043f, 0.035f));
+        Panel.Draw(bar, new Color(0.047f, 0.043f, 0.035f), new Color(0.259f, 0.227f, 0.169f));
         Widgets.DrawBoxSolid(
-            new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(cell.Bar.Fraction), bar.height),
+            new Rect(bar.x + 2f, bar.y + 2f, (bar.width - 4f) * Mathf.Clamp01(cell.Bar.Fraction), bar.height - 4f),
             MetalPalette.For(cell.SubsystemId)
         );
 
-        float buttonY = bar.yMax + 8f;
-        float buttonWidth = (inner.width - 5f) / 2f;
+        float buttonY = bar.yMax + 10f;
+        float buttonWidth = (inner.width - 6f) / 2f;
 
+        // Burning is the ordinary move and flaring the deliberate one, so they are
+        // not weighted the same. The primary flips to Stop rather than staying "Burn"
+        // while it burns.
         string burnLabel = cell.IsActive
             ? "CC_Dock_Allomancy_StopBurn".Translate()
             : "CC_Dock_Allomancy_Burn".Translate();
         Rect burnRect = new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight);
         TooltipHandler.TipRegion(burnRect, "CC_Dock_Allomancy_BurnTip".Translate(MetalLabel(cell).Named("METAL")));
-        if (DockChrome.Button(burnRect, burnLabel, true, Accent)) {
+        if (DockButton.Draw(
+                burnRect,
+                burnLabel,
+                Accent,
+                kind: cell.IsActive ? DockButtonKind.Active : DockButtonKind.Primary
+            )) {
             ToggleBurn(pawn, cell.SubsystemId, false);
             Event.current?.Use();
         }
 
-        Rect flareRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
+        Rect flareRect = new Rect(inner.x + buttonWidth + 6f, buttonY, buttonWidth, StripButtonHeight);
         string flareLabel = cell.IsFlaring
             ? "CC_Dock_Allomancy_StopFlare".Translate()
             : "CC_Dock_Allomancy_Flare".Translate();
         TooltipHandler.TipRegion(flareRect, "CC_Dock_Allomancy_FlareTip".Translate(MetalLabel(cell).Named("METAL")));
-        if (DockChrome.Button(flareRect, flareLabel, true, Accent)) {
+        if (DockButton.Draw(
+                flareRect,
+                flareLabel,
+                cell.IsFlaring ? FlaringTint : Accent,
+                kind: cell.IsFlaring ? DockButtonKind.Active : DockButtonKind.Ghost
+            )) {
             ToggleBurn(pawn, cell.SubsystemId, true);
             Event.current?.Use();
         }
+    }
+
+    // Charged once per rare tick, so the raw figure is four seconds of burn. Shown
+    // negative because a reserve going down should read as going down.
+    private static float BurnRatePerSecond(Pawn pawn, InvestitureCell cell) {
+        Allomancer? gene = FindGene(pawn, cell.SubsystemId);
+        if (gene == null) return 0f;
+
+        return -gene.BurnRate / RareTicksPerSecond;
     }
 
     private static Allomancer? FindGene(Pawn pawn, string metalDefName) {

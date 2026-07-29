@@ -31,6 +31,10 @@ public static class RosharUIRegistration {
         SprenControllerRegistry.Register(new WindsprenController());
 
         InvestitureProviderRegistry.Register(new SurgebindingInvestitureProvider());
+
+        // The Radiant plate is stored white on transparent, so GUI.color tints it
+        // straight to the rail's ink. Without a sigil the ribbon fell back to
+        // printing the first letter of the header.
         SystemSkinRegistry.Register(new DataSystemSkin(
             systemId: "Surgebinding",
             headerLabelKey: "CC_System_Surgebinding_Header",
@@ -39,7 +43,8 @@ public static class RosharUIRegistration {
             barBackgroundColor: new Color(0.03f, 0.06f, 0.12f),
             headerTextColor: new Color(0.90f, 0.95f, 1.00f),
             panelBackgroundColor: new Color(0.03f, 0.06f, 0.12f, 0.85f),
-            borderTintColor: new Color(0.55f, 0.78f, 1.00f)
+            borderTintColor: new Color(0.55f, 0.78f, 1.00f),
+            sigil: () => ContentFinder<Texture2D>.Get("UI/Icons/KnightsRadiant", false)
         ));
         DockSectionRegistry.Register(new SurgebindingDockSection());
         ConnectionStealRegistry.Register(new SurgebinderConnectionStealHandler());

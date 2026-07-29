@@ -1,3 +1,4 @@
+using Cosmere.Core.Tab;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
@@ -6,6 +7,7 @@ using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Extension;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -31,12 +33,58 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
     private static readonly Color CompoundTint = new Color(0.851f, 0.667f, 0.286f);
 
+    private readonly ScadrialCrest crest = new ScadrialCrest(true);
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
+    private readonly Reveal reveal = new Reveal();
     private IReadOnlyList<MetalGroup>? cachedGroups;
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
     private string? expandedMetal;
     private string? draggingDial;
+
+    // Which strip is on screen, which is not the same as which one the player has open:
+    // a closing strip has to keep drawing until it has finished sliding away.
+    private string? revealedMetal;
+    private float revealedHeight;
+
+    // Picked while another metal is still open, and held until that one has finished
+    // sliding away.
+    private string? pendingMetal;
+
+    // Idempotent, because height is asked for several times a frame. Reveal itself only
+    // advances once per frame; this just re-reads where it got to.
+    private void StepReveal() {
+        // One panel at a time, in order: the open metal slides up, then the new one
+        // slides down. Swapping the contents mid-slide makes the panel jump rows while
+        // it is moving, which reads as a glitch rather than as an exchange.
+        if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
+            expandedMetal = pendingMetal;
+            pendingMetal = null;
+        }
+
+        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : StripHeight);
+        if (expandedMetal != null) revealedMetal = expandedMetal;
+        else if (revealedHeight < 1f) revealedMetal = null;
+    }
+
+    // Clicking the open metal closes it; clicking a different one closes it first and
+    // queues the new one behind it.
+    private void ToggleMetal(string subsystemId) {
+        if (expandedMetal == subsystemId) {
+            expandedMetal = null;
+            pendingMetal = null;
+            return;
+        }
+
+        if (expandedMetal == null && revealedHeight < 1f) {
+            expandedMetal = subsystemId;
+            pendingMetal = null;
+            return;
+        }
+
+        expandedMetal = null;
+        pendingMetal = subsystemId;
+    }
 
     public override string SystemId => "Feruchemy";
 
@@ -45,18 +93,26 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     }
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        return MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), expandedMetal, StripHeight);
+        crest.Refresh(pawn, snapshot);
+        StepReveal();
+        return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        crest.Refresh(pawn, snapshot);
+        crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
+        StepReveal();
+
+        Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
-            rect,
+            table,
             GroupsFor(pawn, snapshot),
             QuadHeader,
-            expandedMetal,
+            revealedMetal,
+            revealedHeight,
             StripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
-            (stripRect, row) => DrawStrip(stripRect, pawn, row)
+            (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
     }
 
@@ -92,7 +148,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             state,
             tint,
             capacity.CompoundedFraction,
-            capacity.CanStoreCompounded || capacity.Internal > 0f ? CompoundTint : null
+            capacity.CanStoreCompounded || capacity.Internal > 0f ? CompoundTint : null,
+            SavantStageFor(pawn, cell),
+            revealedMetal == cell.SubsystemId
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell, capacity), cell.SubsystemId.GetHashCode());
@@ -102,19 +160,39 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         Event? ev = Event.current;
 
-        expandedMetal = expandedMetal == cell.SubsystemId ? null : cell.SubsystemId;
+        ToggleMetal(cell.SubsystemId);
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
         ev?.Use();
     }
 
-    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
+    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row, Rect openTile) {
         InvestitureCell cell = row.Cell;
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
         if (gene == null) return;
 
         Capacity capacity = CapacityOf(gene);
-        Widgets.DrawBoxSolid(rect, new Color(0.055f, 0.043f, 0.031f, 0.45f));
-        Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.239f, 0.216f, 0.188f));
+
+        // Same fill and stroke as the tile, opened along the tile's span: the two are
+        // one merged surface. A working metalmind carries its accent down through the
+        // join as well, so the pair reads as one thing that is running.
+        bool compounding = gene.isCompounding;
+        bool hot = compounding || gene.isTapping || gene.isStoring;
+        Color tint = compounding
+            ? CompoundTint
+            : gene.isStoring
+                ? StoreFill
+                : gene.isTapping
+                    ? TapFill
+                    : ActiveTint;
+        Panel.DrawNotchedTop(
+            rect,
+            MetalTile.Fill,
+            hot ? tint : MetalTile.Border,
+            openTile.x,
+            openTile.xMax,
+            hot ? tint : null,
+            Panel.LitWash(compounding)
+        );
 
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
@@ -132,7 +210,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
                         : "CC_Dock_Feruchemy_Idle".Translate();
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
-            MetalLabel(cell) + " - " + direction,
+            direction,
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
             new Color(0.604f, 0.659f, 0.678f)
@@ -190,11 +268,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         float afterTarget = DrawTargetRow(inner, endsRect.yMax + 6f, gene);
         float buttonY = DrawCompoundToggle(inner, afterTarget + 6f, pawn, cell, gene) + 8f;
 
-        if (DockChrome.Button(
+        if (DockButton.Draw(
                 new Rect(inner.x, buttonY, inner.width, StripButtonHeight),
                 "CC_Dock_Feruchemy_Idle".Translate(),
-                true,
-                ActiveTint
+                ActiveTint,
+                kind: DockButtonKind.Ghost
             )) {
             gene.Reset();
             Event.current?.Use();
@@ -374,7 +452,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string label = on
             ? "CC_Dock_Feruchemy_StopCompound".Translate()
             : "CC_Dock_Feruchemy_Compound".Translate();
-        if (!DockChrome.Button(rect, label, report.Accepted && eligible, CompoundTint)) return rect.yMax;
+        if (!DockButton.Draw(
+                rect,
+                label,
+                CompoundTint,
+                kind: on ? DockButtonKind.Active : DockButtonKind.Primary,
+                enabled: report.Accepted && eligible
+            )) {
+            return rect.yMax;
+        }
 
         // Carry whatever the dial was set to across, and no further. The rate is the
         // player's to choose, so an idle dial stays idle rather than being pegged
@@ -539,6 +625,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string label = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId)?.LabelCap ?? cell.SubsystemId;
         labelCache[cell.SubsystemId] = label;
         return label;
+    }
+
+    private static int SavantStageFor(Pawn pawn, InvestitureCell cell) {
+        if (pawn.records == null) return 0;
+
+        MetallicArtsMetalDef? def = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
+        return def == null ? 0 : ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, def);
     }
 
     private static Capacity CapacityOf(Feruchemist? gene) {

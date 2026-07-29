@@ -8,8 +8,46 @@
   <CC_Dock_Twinborn_TapOrStore>Tap | Store</CC_Dock_Twinborn_TapOrStore>
 
   <CC_Dock_Awakening_NoBreaths>No Breaths</CC_Dock_Awakening_NoBreaths>
+  <CC_Dock_Crest_BondedTo>bonded to {SPREN}</CC_Dock_Crest_BondedTo>
+  <CC_Dock_Crest_Ideal1>First Ideal</CC_Dock_Crest_Ideal1>
+  <CC_Dock_Crest_Ideal2>Second Ideal</CC_Dock_Crest_Ideal2>
+  <CC_Dock_Crest_Ideal3>Third Ideal</CC_Dock_Crest_Ideal3>
+  <CC_Dock_Crest_Ideal4>Fourth Ideal</CC_Dock_Crest_Ideal4>
+  <CC_Dock_Crest_Ideal5>Fifth Ideal</CC_Dock_Crest_Ideal5>
 
-  <CC_Dock_Surgebinding_RefillBelow>refill below {VALUE}</CC_Dock_Surgebinding_RefillBelow>
+  <CC_Dock_Crest_Mistborn>Mistborn</CC_Dock_Crest_Mistborn>
+  <CC_Dock_Crest_Misting>{METAL} Misting</CC_Dock_Crest_Misting>
+  <CC_Dock_Crest_Allomancer>Allomancer</CC_Dock_Crest_Allomancer>
+  <CC_Dock_Crest_Feruchemist>Feruchemist</CC_Dock_Crest_Feruchemist>
+  <CC_Dock_Crest_Ferring>{METAL} Ferring</CC_Dock_Crest_Ferring>
+  <CC_Dock_Crest_Burning>{COUNT} burning</CC_Dock_Crest_Burning>
+  <CC_Dock_Crest_Flaring>{COUNT} flaring</CC_Dock_Crest_Flaring>
+  <CC_Dock_Crest_BurningFlaring>{BURNING} burning, {FLARING} flaring</CC_Dock_Crest_BurningFlaring>
+  <CC_Dock_Crest_NothingBurning>nothing burning</CC_Dock_Crest_NothingBurning>
+  <CC_Dock_Crest_Tapping>{COUNT} tapping</CC_Dock_Crest_Tapping>
+  <CC_Dock_Crest_Storing>{COUNT} storing</CC_Dock_Crest_Storing>
+  <CC_Dock_Crest_TappingStoring>{TAPPING} tapping, {STORING} storing</CC_Dock_Crest_TappingStoring>
+  <CC_Dock_Crest_NothingMoving>nothing moving</CC_Dock_Crest_NothingMoving>
+  <CC_Dock_Crest_NoMetalminds>no metalminds carried</CC_Dock_Crest_NoMetalminds>
+  <CC_Dock_Crest_MetalCount>{COUNT} metals</CC_Dock_Crest_MetalCount>
+
+  <CC_Dock_Gauge_Reading>{CURRENT} / {MAX} {RESOURCE}</CC_Dock_Gauge_Reading>
+  <CC_Dock_Gauge_Rate>{0}/s</CC_Dock_Gauge_Rate>
+  <CC_Dock_Gauge_RefillBelow>refill below {PERCENT}%</CC_Dock_Gauge_RefillBelow>
+  <CC_Dock_Gauge_NoRefill>no auto-refill</CC_Dock_Gauge_NoRefill>
+  <CC_Dock_Gauge_NextCeiling>{IDEAL} raises the ceiling to {MAX}</CC_Dock_Gauge_NextCeiling>
+  <CC_Dock_Gauge_AllSpoken>The Words are all spoken</CC_Dock_Gauge_AllSpoken>
+
+  <CC_Dock_Order_Info>Open Order Info</CC_Dock_Order_Info>
+  <CC_Dock_Order_Tab_Tip>{ORDER}\n{IDEAL}</CC_Dock_Order_Tab_Tip>
+  <CC_Dock_Oath_Speak>Speak the Words</CC_Dock_Oath_Speak>
+  <CC_Dock_Oath_Tip>{IDEAL}\n\n{WORDS}</CC_Dock_Oath_Tip>
+
+  <CC_Dock_Ability_Locked>{IDEAL}</CC_Dock_Ability_Locked>
+  <CC_Dock_Ability_Cooldown>{TIME}</CC_Dock_Ability_Cooldown>
+
+  <CC_Dock_Surge_Readiness>{UNLOCKED}/{TOTAL}</CC_Dock_Surge_Readiness>
+  <CC_Dock_Surge_Tip>{SURGE}\n\n{UNLOCKED} of {TOTAL} applications within reach at this Ideal.\n\nClick to list them.</CC_Dock_Surge_Tip>
 
   <CC_Dock_Group_Burning>Burning</CC_Dock_Group_Burning>
   <CC_Dock_Group_Tapping>Tapping</CC_Dock_Group_Tapping>
@@ -48,7 +86,6 @@
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>
   <CC_Dock_Allomancy_BurnTip>Burn {METAL} steadily, drawing on the reserve.</CC_Dock_Allomancy_BurnTip>
   <CC_Dock_Allomancy_FlareTip>Flare {METAL}, burning harder and faster for a stronger effect.</CC_Dock_Allomancy_FlareTip>
-  <CC_Dock_Feruchemy_Compound>compound</CC_Dock_Feruchemy_Compound>
     <CC_Dock_Feruchemy_TargetLabel>{TARGET}</CC_Dock_Feruchemy_TargetLabel>
     <CC_Dock_Feruchemy_TargetAll>every metalmind ({COUNT})</CC_Dock_Feruchemy_TargetAll>
     <CC_Dock_Feruchemy_TargetInternal>every implanted metalmind ({COUNT})</CC_Dock_Feruchemy_TargetInternal>

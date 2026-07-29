@@ -1,3 +1,4 @@
+using Cosmere.Core.Settings;
 using Cosmere.Core.UI.Model;
 using UnityEngine;
 using Verse;
@@ -50,7 +51,14 @@ public sealed class DockAccordion {
             if (!isExpanded) continue;
 
             float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
-            float availableHeight = rect.yMax - y;
+
+            // Two ceilings, and the lower one wins: what is left of the window, and
+            // what the player will let a single section grow to. Without the second a
+            // Mistborn's table simply runs off the bottom of a short screen.
+            float availableHeight = Mathf.Min(
+                rect.yMax - y,
+                Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight
+            );
             Rect bodyRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, Mathf.Min(bodyHeight, availableHeight));
             if (bodyHeight > availableHeight) {
                 Rect viewRect = new Rect(0f, 0f, bodyRect.width - 16f, bodyHeight);

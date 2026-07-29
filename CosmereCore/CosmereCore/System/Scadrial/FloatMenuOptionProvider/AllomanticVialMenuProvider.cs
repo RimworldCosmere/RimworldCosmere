@@ -38,7 +38,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
             if (pawn.IsMistborn() && power.Equals(max)) {
-                return "CS_AlreadyMistborn".Translate();
+                return "CS_Vial_AlreadyMistborn".Translate();
             }
         }
 

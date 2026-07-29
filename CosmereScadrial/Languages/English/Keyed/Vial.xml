@@ -4,7 +4,7 @@
     <CS_NotAllomancer>not an Allomancer</CS_NotAllomancer>
     <CS_CurrentlyShielded>metals actively drained</CS_CurrentlyShielded>
     <CS_NotMisting>not a {MISTING}</CS_NotMisting>
-    <CS_AlreadyMistborn>already Mistborn</CS_AlreadyMistborn>
+    <CS_Vial_AlreadyMistborn>already Mistborn</CS_Vial_AlreadyMistborn>
     <CS_AlreadyMisting>already {0} Misting</CS_AlreadyMisting>
     <CS_AlreadyFullFeruchemist>already Full Feruchemist</CS_AlreadyFullFeruchemist>
     <CS_AlreadyFerring>already {0} Ferring</CS_AlreadyFerring>

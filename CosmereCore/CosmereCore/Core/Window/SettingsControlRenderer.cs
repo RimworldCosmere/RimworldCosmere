@@ -31,6 +31,12 @@ public sealed class SettingsControlRenderer {
         bool enabled,
         string? disabledReasonKey
     ) {
+        // Row height follows the description text, so a control handed the whole row grows
+        // with it - a one-line dropdown becomes a box three lines tall. Every control gets
+        // the height it declared, centred, the way the checkbox already sized itself.
+        float controlHeight = Mathf.Min(HeightFor(control), rect.height);
+        rect = new Rect(rect.x, rect.y + (rect.height - controlHeight) / 2f, rect.width, controlHeight);
+
         switch (control) {
             case CheckboxControl checkbox:
                 DrawCheckbox(rect, checkbox, enabled);

@@ -1,5 +1,6 @@
 using Cosmere.Core.Settings;
 using Cosmere.Core.Settings.Model;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Settings;

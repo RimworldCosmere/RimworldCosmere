@@ -115,6 +115,15 @@ public class SettingsDescriptorValidatorTests {
         CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/choice: duplicate choice value 'first'");
     }
 
+    [TestMethod]
+    public void LiteralChoiceKeepsDisplayTextSeparateFromLabelKey() {
+        Choice choice = Choice.Literal("quickstart", "ScenarioTestQuickstart");
+
+        Assert.IsTrue(choice.IsLiteral);
+        Assert.IsNull(choice.LabelKey);
+        Assert.AreEqual("ScenarioTestQuickstart", choice.LiteralDisplayText);
+    }
+
     private static string Format(float value) {
         return value.ToString();
     }

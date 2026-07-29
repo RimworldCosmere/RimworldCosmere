@@ -253,7 +253,7 @@ public class CoreModSettings : CosmereModSettings {
         List<Choice> choices = [];
         foreach (KeyValuePair<string, string> quickstarter in quickstarters) {
             string? label = GetQuickstartScenarioLabel(quickstarter.Value);
-            choices.Add(new Choice(quickstarter.Value, label ?? quickstarter.Key));
+            choices.Add(Choice.Literal(quickstarter.Value, label ?? quickstarter.Key));
         }
 
         return choices;
@@ -283,7 +283,7 @@ public class CoreModSettings : CosmereModSettings {
         List<Choice> choices = [];
         foreach (KeyValuePair<string, string> scenarioDef in scenarioDefs) {
             string? label = GetTestScenarioLabel(scenarioDef.Value);
-            choices.Add(new Choice(scenarioDef.Value, label ?? scenarioDef.Key));
+            choices.Add(Choice.Literal(scenarioDef.Value, label ?? scenarioDef.Key));
         }
 
         return choices;

@@ -44,7 +44,9 @@ public class ScadrialModSettings : CosmereModSettings {
                         "CS_Settings_MistsFrequency_Tooltip",
                         new ChoiceControl(
                             () => mistsFrequency.ToString(),
-                            updated => mistsFrequency = Enum.Parse<MistsFrequency>(updated!),
+                            updated => {
+                                if (Enum.TryParse(updated, out MistsFrequency parsed)) mistsFrequency = parsed;
+                            },
                             nameof(MistsFrequency.Daily),
                             () => [
                                 Choice.Keyed(nameof(MistsFrequency.Daily), "CS_Settings_MistsFrequency_Daily"),
@@ -66,7 +68,9 @@ public class ScadrialModSettings : CosmereModSettings {
                         "CS_Settings_PawnsKeepVialOnDown_Tooltip",
                         new ChoiceControl(
                             () => pawnsKeepVialsWhenDowned.ToString(),
-                            updated => pawnsKeepVialsWhenDowned = bool.Parse(updated!),
+                            updated => {
+                                if (bool.TryParse(updated, out bool parsed)) pawnsKeepVialsWhenDowned = parsed;
+                            },
                             true.ToString(),
                             () => [
                                 Choice.Keyed(true.ToString(), "CC_Settings_Choice_Yes"),
@@ -81,7 +85,9 @@ public class ScadrialModSettings : CosmereModSettings {
                         "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip",
                         new ChoiceControl(
                             () => pawnsKeepMetalmindsWhenDowned.ToString(),
-                            updated => pawnsKeepMetalmindsWhenDowned = bool.Parse(updated!),
+                            updated => {
+                                if (bool.TryParse(updated, out bool parsed)) pawnsKeepMetalmindsWhenDowned = parsed;
+                            },
                             true.ToString(),
                             () => [
                                 Choice.Keyed(true.ToString(), "CC_Settings_Choice_Yes"),

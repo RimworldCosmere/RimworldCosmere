@@ -61,6 +61,7 @@
     <CC_Settings_Search_Placeholder>Search settings</CC_Settings_Search_Placeholder>
     <CC_Settings_Search_NoResults>No settings match "{QUERY}".</CC_Settings_Search_NoResults>
     <CC_Settings_System_Empty>This system has no visible settings.</CC_Settings_System_Empty>
+    <CC_Settings_System_Core>Cosmere Core</CC_Settings_System_Core>
     <CC_Settings_Unavailable>Setting unavailable</CC_Settings_Unavailable>
     <CC_Settings_Reset_System>Reset {SYSTEM} to defaults</CC_Settings_Reset_System>
     <CC_Settings_Reset_Confirm>Reset all {SYSTEM} settings?</CC_Settings_Reset_Confirm>

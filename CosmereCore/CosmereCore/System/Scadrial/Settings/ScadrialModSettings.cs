@@ -1,7 +1,7 @@
-using Cosmere.Core.Listing;
+using System;
 using Cosmere.Core.Settings;
+using Cosmere.Core.Settings.Model;
 using Verse;
-using CoreUI = Cosmere.Core.UI.UIHelpers;
 
 namespace Cosmere.System.Scadrial.Settings;
 
@@ -20,63 +20,109 @@ public class ScadrialModSettings : CosmereModSettings {
 
     public override string Name => "Scadrial";
 
+    public override string SkinId => "Allomancy";
+
+    public override IReadOnlyList<SettingSection> BuildSections() {
+        IReadOnlyList<SettingSection> sections = [
+            new SettingSection(
+                "incidents",
+                "CS_Settings_Category_Incidents",
+                [
+                    new SettingDescriptor(
+                        "enable-mists",
+                        "CS_Settings_MistsEnabled_Label",
+                        "CS_Settings_MistsEnabled_Tooltip",
+                        new CheckboxControl(
+                            () => enableMists,
+                            updated => enableMists = updated,
+                            true
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "mists-frequency",
+                        "CS_Settings_MistsFrequency_Label",
+                        "CS_Settings_MistsFrequency_Tooltip",
+                        new ChoiceControl(
+                            () => mistsFrequency.ToString(),
+                            updated => mistsFrequency = Enum.Parse<MistsFrequency>(updated!),
+                            nameof(MistsFrequency.Daily),
+                            () => [
+                                Choice.Keyed(nameof(MistsFrequency.Daily), "CS_Settings_MistsFrequency_Daily"),
+                                Choice.Keyed(nameof(MistsFrequency.Weekly), "CS_Settings_MistsFrequency_Weekly"),
+                                Choice.Keyed(nameof(MistsFrequency.Monthly), "CS_Settings_MistsFrequency_Monthly"),
+                            ],
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "pawns",
+                "CS_Settings_Category_Pawns",
+                [
+                    new SettingDescriptor(
+                        "keep-vials-on-down",
+                        "CS_Settings_PawnsKeepVialOnDown_Label",
+                        "CS_Settings_PawnsKeepVialOnDown_Tooltip",
+                        new ChoiceControl(
+                            () => pawnsKeepVialsWhenDowned.ToString(),
+                            updated => pawnsKeepVialsWhenDowned = bool.Parse(updated!),
+                            true.ToString(),
+                            () => [
+                                Choice.Keyed(true.ToString(), "CC_Settings_Choice_Yes"),
+                                Choice.Keyed(false.ToString(), "CC_Settings_Choice_No"),
+                            ],
+                            false
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "keep-metalminds-on-down",
+                        "CS_Settings_PawnsKeepMetalmindsOnDown_Label",
+                        "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip",
+                        new ChoiceControl(
+                            () => pawnsKeepMetalmindsWhenDowned.ToString(),
+                            updated => pawnsKeepMetalmindsWhenDowned = bool.Parse(updated!),
+                            true.ToString(),
+                            () => [
+                                Choice.Keyed(true.ToString(), "CC_Settings_Choice_Yes"),
+                                Choice.Keyed(false.ToString(), "CC_Settings_Choice_No"),
+                            ],
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "allomancy",
+                "CS_Settings_Category_Allomancy",
+                [
+                    new SettingDescriptor(
+                        "always-show-auras",
+                        "CS_Settings_AlwaysShowAuras_Label",
+                        "CS_Settings_AlwaysShowAuras_Tooltip",
+                        new CheckboxControl(
+                            () => alwaysShowAllomanticAuras,
+                            updated => alwaysShowAllomanticAuras = updated,
+                            false
+                        )
+                    ),
+                ]
+            ),
+        ];
+
+        IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate(Name, sections);
+        foreach (string error in errors) {
+            Cosmere.Core.Logger.Error($"Settings descriptor validation failed: {error}");
+        }
+
+        return sections;
+    }
+
     public override void ExposeData() {
         Scribe_Values.Look(ref enableMists, "enableMists", true);
         Scribe_Values.Look(ref mistsFrequency, "mistsFrequency");
         Scribe_Values.Look(ref pawnsKeepMetalmindsWhenDowned, "pawnsKeepMetalmindsWhenDowned", true);
         Scribe_Values.Look(ref pawnsKeepVialsWhenDowned, "pawnsKeepVialsWhenDowned", true);
         Scribe_Values.Look(ref alwaysShowAllomanticAuras, "alwaysShowAllomanticAuras");
-    }
-
-    public override void DoTabContents(Form listing) {
-        listing.Fieldset(
-            "CS_Settings_Category_Incidents".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CS_Settings_MistsEnabled_Label".Translate(),
-                    "CS_Settings_MistsEnabled_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref enableMists)
-                );
-
-                fieldset.Field(
-                    "CS_Settings_MistsFrequency_Label".Translate(),
-                    "CS_Settings_MistsFrequency_Tooltip".Translate(),
-                    sub => CoreUI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
-                );
-            },
-            SubListingOptions.WithoutTopPadding()
-        );
-
-        listing.Fieldset(
-            "CS_Settings_Category_Pawns".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CS_Settings_PawnsKeepVialOnDown_Label".Translate(),
-                    "CS_Settings_PawnsKeepVialOnDown_Tooltip".Translate(),
-                    sub => CoreUI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
-                );
-
-                fieldset.Field(
-                    "CS_Settings_PawnsKeepMetalmindsOnDown_Label".Translate(),
-                    "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip".Translate(),
-                    sub => CoreUI.BoolEnumDropdown(
-                        sub,
-                        pawnsKeepMetalmindsWhenDowned,
-                        v => pawnsKeepMetalmindsWhenDowned = v
-                    )
-                );
-            }
-        );
-
-        listing.Fieldset(
-            "CS_Settings_Category_Allomancy".Translate(),
-            fieldset => {
-                fieldset.Field(
-                    "CS_Settings_AlwaysShowAuras_Label".Translate(),
-                    "CS_Settings_AlwaysShowAuras_Tooltip".Translate(),
-                    sub => sub.Checkbox(ref alwaysShowAllomanticAuras)
-                );
-            }
-        );
     }
 }

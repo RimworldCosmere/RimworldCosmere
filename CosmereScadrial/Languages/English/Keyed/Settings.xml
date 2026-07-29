@@ -2,22 +2,25 @@
 <LanguageData>
     <CS_Settings_Category_Incidents>Incident Settings</CS_Settings_Category_Incidents>
     
-    <CS_Settings_MistsEnabled_Label>Enable Mists:</CS_Settings_MistsEnabled_Label>
+    <CS_Settings_MistsEnabled_Label>Enable Mists</CS_Settings_MistsEnabled_Label>
     <CS_Settings_MistsEnabled_Tooltip>Whether the mists rise at night. When disabled, the mists will not appear.</CS_Settings_MistsEnabled_Tooltip>
-    <CS_Settings_MistsFrequency_Label>Mists Frequency: </CS_Settings_MistsFrequency_Label>
+    <CS_Settings_MistsFrequency_Label>Mists Frequency</CS_Settings_MistsFrequency_Label>
     <CS_Settings_MistsFrequency_Tooltip>How often will the mists come at night</CS_Settings_MistsFrequency_Tooltip>
+    <CS_Settings_MistsFrequency_Daily>Daily</CS_Settings_MistsFrequency_Daily>
+    <CS_Settings_MistsFrequency_Weekly>Weekly</CS_Settings_MistsFrequency_Weekly>
+    <CS_Settings_MistsFrequency_Monthly>Monthly</CS_Settings_MistsFrequency_Monthly>
 
     
     <CS_Settings_Category_Pawns>Pawn Settings</CS_Settings_Category_Pawns>
     
-    <CS_Settings_PawnsKeepVialOnDown_Label>Keep vials on down: </CS_Settings_PawnsKeepVialOnDown_Label>
+    <CS_Settings_PawnsKeepVialOnDown_Label>Keep vials on down</CS_Settings_PawnsKeepVialOnDown_Label>
     <CS_Settings_PawnsKeepVialOnDown_Tooltip>Should pawns drop all their vials when they get downed? Note they will still drop them when they die, regardless of this setting.</CS_Settings_PawnsKeepVialOnDown_Tooltip>
     
-    <CS_Settings_PawnsKeepMetalmindsOnDown_Label>Keep metalminds on down: </CS_Settings_PawnsKeepMetalmindsOnDown_Label>
+    <CS_Settings_PawnsKeepMetalmindsOnDown_Label>Keep metalminds on down</CS_Settings_PawnsKeepMetalmindsOnDown_Label>
     <CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip>Should pawns drop all their metalminds when they get downed? Note they will still drop them when they die, regardless of this setting.</CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip>
 
     <CS_Settings_Category_Allomancy>Allomancy Settings</CS_Settings_Category_Allomancy>
 
-    <CS_Settings_AlwaysShowAuras_Label>Always show allomantic auras: </CS_Settings_AlwaysShowAuras_Label>
+    <CS_Settings_AlwaysShowAuras_Label>Always show allomantic auras</CS_Settings_AlwaysShowAuras_Label>
     <CS_Settings_AlwaysShowAuras_Tooltip>When enabled, iron, steel, and bronze sight lines draw for every burning allomancer, not just the one selected. Can clutter the view in large colonies.</CS_Settings_AlwaysShowAuras_Tooltip>
 </LanguageData>

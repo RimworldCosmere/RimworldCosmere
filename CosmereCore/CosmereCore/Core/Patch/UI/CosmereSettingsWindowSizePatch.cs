@@ -44,6 +44,16 @@ public abstract class CosmereSettingsWindowSizePatch : Dialog_ModSettings {
         if (settingsMod is Mod mod) mod.ClearSettingsResetConfirmation();
     }
 
+    [Inject(At.Return, "get_" + nameof(Margin))]
+    private void AfterMargin(ControlHandle<float> ch) {
+        if (settingsMod is not Mod) return;
+
+        // Window contracts its rect by Margin before handing it to DoWindowContents, which
+        // rings the whole surface in 18px of dead space. The sidebar, tabs and footer draw
+        // their own edges, so the body wants the full rect.
+        ch.ReturnValue = 0f;
+    }
+
     [Inject(At.Return, nameof(InitialSize))]
     private void AfterInitialSize(ControlHandle<Vector2> ch) {
         if (settingsMod is not Mod) return;

@@ -47,11 +47,13 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                 f.targetValue
             );
 
+            // The icon is the inverted copy, as Allomancy's is: GUI.color multiplies, so
+            // the raw black art cannot take a tint and renders black on a black panel.
             cells.Add(
                 new InvestitureCell(
                     f.metal.defName,
                     f.metal.LabelCap,
-                    f.metal.feruchemy?.icon,
+                    f.metal.feruchemy?.invertedIcon,
                     bar,
                     f.isTapping || f.isStoring,
                     f.isCompounding

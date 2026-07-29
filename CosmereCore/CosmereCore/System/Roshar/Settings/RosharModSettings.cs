@@ -9,6 +9,9 @@ public class RosharModSettings : CosmereModSettings {
     private const float hour = 216000;
     private const float baseTime = hour * 8;
 
+    public const float MinNahelIntervalTicks = GenDate.TicksPerHour;
+    public const float MaxNahelIntervalTicks = GenDate.TicksPerDay * 600f;
+
     public bool enableHighstormPushing = true;
     public bool enableHighstorms = true;
     public bool enablePawnGlow;
@@ -36,8 +39,6 @@ public class RosharModSettings : CosmereModSettings {
     public override string SkinId => "Surgebinding";
 
     public override IReadOnlyList<SettingSection> BuildSections() {
-        float minNahelSprenSpawnIntervalTicks = GenDate.TicksPerHour;
-        float maxNahelSprenSpawnIntervalTicks = GenDate.DaysToTicks(600f);
         IReadOnlyList<SettingSection> sections = [
             new SettingSection(
                 "highstorms",
@@ -130,12 +131,12 @@ public class RosharModSettings : CosmereModSettings {
                                 ref nahelSprenSpawnMinIntervalTicks,
                                 ref nahelSprenSpawnAverageIntervalTicks,
                                 ref nahelSprenSpawnMaxIntervalTicks,
-                                minNahelSprenSpawnIntervalTicks,
-                                maxNahelSprenSpawnIntervalTicks
+                                MinNahelIntervalTicks,
+                                MaxNahelIntervalTicks
                             ),
                             baseTime,
-                            minNahelSprenSpawnIntervalTicks,
-                            maxNahelSprenSpawnIntervalTicks,
+                            MinNahelIntervalTicks,
+                            MaxNahelIntervalTicks,
                             TickUnit.Days
                         )
                     ),
@@ -150,12 +151,12 @@ public class RosharModSettings : CosmereModSettings {
                                 ref nahelSprenSpawnMinIntervalTicks,
                                 ref nahelSprenSpawnAverageIntervalTicks,
                                 ref nahelSprenSpawnMaxIntervalTicks,
-                                minNahelSprenSpawnIntervalTicks,
-                                maxNahelSprenSpawnIntervalTicks
+                                MinNahelIntervalTicks,
+                                MaxNahelIntervalTicks
                             ),
                             baseTime / 2,
-                            minNahelSprenSpawnIntervalTicks,
-                            maxNahelSprenSpawnIntervalTicks,
+                            MinNahelIntervalTicks,
+                            MaxNahelIntervalTicks,
                             TickUnit.Days
                         )
                     ),
@@ -170,12 +171,12 @@ public class RosharModSettings : CosmereModSettings {
                                 ref nahelSprenSpawnMinIntervalTicks,
                                 ref nahelSprenSpawnAverageIntervalTicks,
                                 ref nahelSprenSpawnMaxIntervalTicks,
-                                minNahelSprenSpawnIntervalTicks,
-                                maxNahelSprenSpawnIntervalTicks
+                                MinNahelIntervalTicks,
+                                MaxNahelIntervalTicks
                             ),
                             baseTime * 8,
-                            minNahelSprenSpawnIntervalTicks,
-                            maxNahelSprenSpawnIntervalTicks,
+                            MinNahelIntervalTicks,
+                            MaxNahelIntervalTicks,
                             TickUnit.Days
                         )
                     ),

@@ -1,12 +1,11 @@
 using Cosmere.Core.Settings.Model;
+using Cosmere.System.Roshar.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cosmere.Tests;
 
 [TestClass]
 public class RosharNahelIntervalTests {
-    private const float MinimumTicks = 2500f;
-    private const float MaximumTicks = 36000000f;
     private const float DefaultAverageTicks = 1728000f;
     private const float DefaultMinimumTicks = 864000f;
     private const float DefaultMaximumTicks = 13824000f;
@@ -24,15 +23,15 @@ public class RosharNahelIntervalTests {
         foreach (float invalidValue in invalidValues) {
             NahelIntervalControls intervals = new();
             intervals.Minimum.Value = invalidValue;
-            Assert.IsGreaterThanOrEqualTo(MinimumTicks, intervals.Minimum.Value);
+            AssertAtOrAboveFloor(intervals.Minimum.Value);
 
             intervals = new NahelIntervalControls();
             intervals.Average.Value = invalidValue;
-            Assert.IsGreaterThanOrEqualTo(MinimumTicks, intervals.Average.Value);
+            AssertAtOrAboveFloor(intervals.Average.Value);
 
             intervals = new NahelIntervalControls();
             intervals.Maximum.Value = invalidValue;
-            Assert.IsGreaterThanOrEqualTo(MinimumTicks, intervals.Maximum.Value);
+            AssertAtOrAboveFloor(intervals.Maximum.Value);
         }
     }
 
@@ -64,9 +63,11 @@ public class RosharNahelIntervalTests {
     }
 
     [TestMethod]
-    public void NahelIntervalControlsKeepRosharDefaults() {
+    public void NahelIntervalControlsKeepRosharDefaultsAndBounds() {
         NahelIntervalControls intervals = new();
 
+        Assert.AreEqual(2500f, RosharModSettings.MinNahelIntervalTicks);
+        Assert.AreEqual(36000000f, RosharModSettings.MaxNahelIntervalTicks);
         Assert.AreEqual(DefaultMinimumTicks, intervals.Minimum.Default);
         Assert.AreEqual(DefaultMinimumTicks, intervals.Minimum.Value);
         Assert.AreEqual(DefaultAverageTicks, intervals.Average.Default);
@@ -75,11 +76,25 @@ public class RosharNahelIntervalTests {
         Assert.AreEqual(DefaultMaximumTicks, intervals.Maximum.Value);
     }
 
-    private static void AssertOrdered(NahelIntervalControls intervals) {
-        Assert.IsLessThanOrEqualTo(intervals.Minimum.Value, intervals.Average.Value);
-        Assert.IsLessThanOrEqualTo(intervals.Average.Value, intervals.Maximum.Value);
+    private static void AssertAtOrAboveFloor(float value) {
+        Assert.IsTrue(
+            value >= RosharModSettings.MinNahelIntervalTicks,
+            $"Expected at least {RosharModSettings.MinNahelIntervalTicks}, but was {value}."
+        );
     }
 
+    private static void AssertOrdered(NahelIntervalControls intervals) {
+        Assert.IsTrue(
+            intervals.Minimum.Value <= intervals.Average.Value,
+            $"Minimum {intervals.Minimum.Value} exceeds average {intervals.Average.Value}."
+        );
+        Assert.IsTrue(
+            intervals.Average.Value <= intervals.Maximum.Value,
+            $"Average {intervals.Average.Value} exceeds maximum {intervals.Maximum.Value}."
+        );
+    }
+
+    // The net9 test host cannot load RimWorld's IExposable runtime, so this mirrors RosharModSettings.BuildSections.
     private sealed class NahelIntervalControls {
         private float average = DefaultAverageTicks;
         private float maximum = DefaultMaximumTicks;
@@ -93,12 +108,12 @@ public class RosharNahelIntervalTests {
                     ref minimum,
                     ref average,
                     ref maximum,
-                    MinimumTicks,
-                    MaximumTicks
+                    RosharModSettings.MinNahelIntervalTicks,
+                    RosharModSettings.MaxNahelIntervalTicks
                 ),
                 DefaultAverageTicks,
-                MinimumTicks,
-                MaximumTicks,
+                RosharModSettings.MinNahelIntervalTicks,
+                RosharModSettings.MaxNahelIntervalTicks,
                 TickUnit.Days
             );
             Minimum = new TicksControl(
@@ -108,12 +123,12 @@ public class RosharNahelIntervalTests {
                     ref minimum,
                     ref average,
                     ref maximum,
-                    MinimumTicks,
-                    MaximumTicks
+                    RosharModSettings.MinNahelIntervalTicks,
+                    RosharModSettings.MaxNahelIntervalTicks
                 ),
                 DefaultMinimumTicks,
-                MinimumTicks,
-                MaximumTicks,
+                RosharModSettings.MinNahelIntervalTicks,
+                RosharModSettings.MaxNahelIntervalTicks,
                 TickUnit.Days
             );
             Maximum = new TicksControl(
@@ -123,12 +138,12 @@ public class RosharNahelIntervalTests {
                     ref minimum,
                     ref average,
                     ref maximum,
-                    MinimumTicks,
-                    MaximumTicks
+                    RosharModSettings.MinNahelIntervalTicks,
+                    RosharModSettings.MaxNahelIntervalTicks
                 ),
                 DefaultMaximumTicks,
-                MinimumTicks,
-                MaximumTicks,
+                RosharModSettings.MinNahelIntervalTicks,
+                RosharModSettings.MaxNahelIntervalTicks,
                 TickUnit.Days
             );
         }

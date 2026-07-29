@@ -51,6 +51,10 @@ public class Mod : CosmereMod<CoreModSettings> {
         return settingsWindow?.ConsumeCloseRequest() ?? false;
     }
 
+    public void ClearSettingsResetConfirmation() {
+        settingsWindow?.CancelResetConfirmation();
+    }
+
     public override string SettingsCategory() {
         return "Cosmere";
     }

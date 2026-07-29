@@ -35,6 +35,11 @@ public abstract class CosmereSettingsWindowSizePatch : Dialog_ModSettings {
         }
     }
 
+    [Inject(At.Head, nameof(PreClose))]
+    private void BeforePreClose() {
+        if (settingsMod is Mod mod) mod.ClearSettingsResetConfirmation();
+    }
+
     [Inject(At.Return, nameof(InitialSize))]
     private void AfterInitialSize(ControlHandle<Vector2> ch) {
         if (settingsMod is not Mod) return;

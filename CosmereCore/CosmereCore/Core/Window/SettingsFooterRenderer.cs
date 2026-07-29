@@ -31,7 +31,7 @@ public sealed class SettingsFooterRenderer {
         Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, rect.width, 1f), new Color(skin.BorderTintColor.r, skin.BorderTintColor.g, skin.BorderTintColor.b, 0.55f));
 
         if (confirmationSystemKey == systemKey) {
-            DrawConfirmation(rect, sections, skin);
+            DrawConfirmation(rect, systemName, sections, skin);
         } else {
             DrawReset(rect, systemKey, systemName, skin);
         }
@@ -51,8 +51,8 @@ public sealed class SettingsFooterRenderer {
         }
     }
 
-    private void DrawConfirmation(Rect rect, IReadOnlyList<SettingSection> sections, ISystemSkin skin) {
-        string label = (string)"CC_Settings_Reset_Confirm".Translate(skin.HeaderLabel.Named("SYSTEM"));
+    private void DrawConfirmation(Rect rect, string systemName, IReadOnlyList<SettingSection> sections, ISystemSkin skin) {
+        string label = (string)"CC_Settings_Reset_Confirm".Translate(systemName.Named("SYSTEM"));
         float confirmWidth = 92f;
         float cancelWidth = 84f;
         Rect labelRect = new Rect(rect.x, rect.y, rect.width - confirmWidth - cancelWidth - ButtonGap * 2f - CloseButtonWidth - ButtonGap, rect.height);

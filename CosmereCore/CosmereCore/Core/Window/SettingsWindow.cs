@@ -54,11 +54,11 @@ public sealed class SettingsWindow {
             navigation.FlashSection(selectedSystem.Name, selectedSection);
         }
 
-        DrawContentShell(layout.Content, skin, sections);
+        DrawContentShell(layout.ContentViewport, skin, sections);
         footerRenderer.Draw(
             layout.Footer,
             selectedSystem.Name,
-            skin.HeaderLabel,
+            selectedSystem.Name,
             sections,
             skin,
             RequestClose
@@ -70,6 +70,10 @@ public sealed class SettingsWindow {
 
         CloseRequested = false;
         return true;
+    }
+
+    public void CancelResetConfirmation() {
+        footerRenderer.CancelConfirmation();
     }
 
     private void SelectSystem(CosmereModSettings system) {

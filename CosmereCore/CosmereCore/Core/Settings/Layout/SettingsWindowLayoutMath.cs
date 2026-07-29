@@ -18,8 +18,13 @@ public static class SettingsWindowLayoutMath {
         float mainX = x + SidebarWidth;
         float mainWidth = global::System.Math.Max(0f, x + width - mainX);
         float footerY = y + height - FooterHeight;
-        float sectionRailY = y + CrestHeight;
-        float contentY = sectionRailY + SectionTabHeight;
+
+        // TabDrawer.DrawTabs draws UPWARD: it shifts the rect it is handed up by 32 and
+        // opens a 9999-tall group there, so anything already drawn in that band gets
+        // painted over. The tab strip therefore gets its own reserved height below the
+        // crest, and the rect handed to DrawTabs sits at the bottom of that band.
+        float sectionRailY = y + CrestHeight + SectionTabHeight;
+        float contentY = sectionRailY;
         float contentHeight = global::System.Math.Max(0f, footerY - contentY);
         float contentWidth = global::System.Math.Max(0f, mainWidth - ScrollbarWidth);
 

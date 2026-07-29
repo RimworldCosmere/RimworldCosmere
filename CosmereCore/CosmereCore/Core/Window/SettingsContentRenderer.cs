@@ -37,7 +37,14 @@ public sealed class SettingsContentRenderer {
         sectionOffsets.Clear();
         rowOffsets.Clear();
 
-        float columnWidth = GetColumnWidth(contentWidth);
+        // Tabs paginate, so a tab holding a single section would strand it in a
+        // half-width column with the other half empty. One section gets the full pane.
+        int visibleCount = 0;
+        for (int i = 0; i < sections.Count; i++) {
+            if (sections[i].IsVisible) visibleCount++;
+        }
+
+        float columnWidth = visibleCount <= 1 ? GetSingleColumnWidth(contentWidth) : GetColumnWidth(contentWidth);
         for (int i = 0; i < sections.Count; i++) {
             SettingSection section = sections[i];
             try {
@@ -291,6 +298,10 @@ public sealed class SettingsContentRenderer {
 
     private static float GetColumnWidth(float contentWidth) {
         return Mathf.Max(0f, (contentWidth - SettingsWindowLayout.ContentPadding * 2f - ColumnGap) / 2f);
+    }
+
+    private static float GetSingleColumnWidth(float contentWidth) {
+        return Mathf.Max(0f, contentWidth - SettingsWindowLayout.ContentPadding * 2f);
     }
 
     private static float GetLabelWidth(float rowWidth) {

@@ -104,14 +104,26 @@ public class Surgebinder : Invested {
         }
     }
 
+    // A pawn can hold more than one Nahel bond, and every bond draws on the same
+    // Stormlight. The most advanced one sets the ceiling, so forming a second bond
+    // can never shrink the reserve. Reading only this gene left the capacity
+    // decided by whichever Surgebinder happened to sit first in the gene list.
     public override float MaxInvestitureLevel {
         get {
-            if (CurrentIdeal < radiantOrderDef.ideals.Count) {
-                int stormlightMax = radiantOrderDef.ideals[CurrentIdeal].stormlightMax;
-                if (stormlightMax > 0) return stormlightMax;
+            float ceiling = 0f;
+
+            List<Verse.Gene>? all = pawn.genes?.GenesListForReading;
+            for (int i = 0; all != null && i < all.Count; i++) {
+                if (all[i] is not Surgebinder bond || bond.Overridden) continue;
+
+                List<Ideal> ideals = bond.radiantOrderDef.ideals;
+                if (bond.CurrentIdeal >= ideals.Count) continue;
+
+                int stormlightMax = ideals[bond.CurrentIdeal].stormlightMax;
+                if (stormlightMax > ceiling) ceiling = stormlightMax;
             }
 
-            return 1f;
+            return ceiling > 0f ? ceiling : 1f;
         }
     }
 

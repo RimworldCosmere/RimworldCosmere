@@ -44,6 +44,7 @@
       ]
     },
     {
+      "stormlightMax": 1500,
       "label": "fourth ideal",
       "description": "The Stoneward accepts the burden of inspiring others, becoming the example that holds the line when all seems lost.",
       "quotes": [

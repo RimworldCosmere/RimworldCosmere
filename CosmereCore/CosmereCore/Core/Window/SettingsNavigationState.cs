@@ -40,6 +40,14 @@ public sealed class SettingsNavigationState {
         reduceMotionFrameRendered = false;
     }
 
+    public bool TryConsumeScrollTargetSection(out string? sectionKey) {
+        sectionKey = ScrollTargetSectionKey;
+        if (sectionKey == null) return false;
+
+        ScrollTargetSectionKey = null;
+        return true;
+    }
+
     public bool TryGetFlash(bool reduceMotion, out FlashState activeFlash, out float alpha) {
         if (flash == null) {
             activeFlash = default;

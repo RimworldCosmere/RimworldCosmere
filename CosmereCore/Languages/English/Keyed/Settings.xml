@@ -68,7 +68,11 @@
     <CC_Settings_Confirm>Confirm</CC_Settings_Confirm>
     <CC_Settings_Cancel>Cancel</CC_Settings_Cancel>
     <CC_Settings_Close>Close</CC_Settings_Close>
-    <CC_Settings_Choice_Yes>Yes</CC_Settings_Choice_Yes>
+    <CC_Settings_Choice_None>None</CC_Settings_Choice_None>
     <CC_Settings_Choice_No>No</CC_Settings_Choice_No>
+    <CC_Settings_Choice_Yes>Yes</CC_Settings_Choice_Yes>
+    <CC_Settings_Range_Maximum>Maximum value</CC_Settings_Range_Maximum>
+    <CC_Settings_Range_Minimum>Minimum value</CC_Settings_Range_Minimum>
+    <CC_Settings_Range_To>to</CC_Settings_Range_To>
 
 </LanguageData>

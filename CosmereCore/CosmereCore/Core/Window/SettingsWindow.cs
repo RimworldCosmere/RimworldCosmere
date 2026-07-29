@@ -8,6 +8,7 @@ using Verse;
 namespace Cosmere.Core.Window;
 
 public sealed class SettingsWindow {
+    private readonly SettingsContentRenderer contentRenderer = new SettingsContentRenderer();
     private readonly SettingsFooterRenderer footerRenderer = new SettingsFooterRenderer();
     private readonly SettingsNavigationState navigation = new SettingsNavigationState();
     private readonly Dictionary<string, IReadOnlyList<SettingSection>> sectionsBySystem = [];
@@ -54,7 +55,7 @@ public sealed class SettingsWindow {
             navigation.FlashSection(selectedSystem.Name, selectedSection);
         }
 
-        DrawContentShell(layout.ContentViewport, skin, sections);
+        DrawContentShell(layout.ContentViewport, layout.Content, skin, sections);
         footerRenderer.Draw(
             layout.Footer,
             selectedSystem.Name,
@@ -89,49 +90,40 @@ public sealed class SettingsWindow {
         return string.Compare(left.Name, right.Name, global::System.StringComparison.Ordinal);
     }
 
-    private void DrawContentShell(Rect rect, ISystemSkin skin, IReadOnlyList<SettingSection> sections) {
+    private void DrawContentShell(
+        Rect viewportRect,
+        Rect contentRect,
+        ISystemSkin skin,
+        IReadOnlyList<SettingSection> sections
+    ) {
+        contentRenderer.Measure(selectedSystem.Name, sections, contentRect.width);
         Vector2 scroll = navigation.GetScroll(selectedSystem.Name);
-        Rect viewRect = new Rect(0f, 0f, rect.width, rect.height);
-        Widgets.BeginScrollView(rect, ref scroll, viewRect, false);
-        try {
-            DrawContentShellBody(viewRect, skin, sections);
+        if (navigation.TryConsumeScrollTargetSection(out string? sectionKey) &&
+            sectionKey != null &&
+            contentRenderer.TryGetSectionOffset(sectionKey, out float sectionOffset)) {
+            float maxScroll = Mathf.Max(0f, contentRenderer.ContentHeight - viewportRect.height);
+            scroll.y = Mathf.Clamp(sectionOffset - SettingsWindowLayout.ContentPadding, 0f, maxScroll);
+        }
 
-            if (navigation.TryGetFlash(IsReducedMotionEnabled(), out SettingsNavigationState.FlashState flash, out float alpha) &&
-                flash.SystemKey == selectedSystem.Name) {
-                Widgets.DrawBoxSolid(viewRect, new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, alpha * 0.14f));
-            }
+        Rect viewRect = new Rect(0f, 0f, contentRect.width, Mathf.Max(viewportRect.height, contentRenderer.ContentHeight));
+        Widgets.BeginScrollView(viewportRect, ref scroll, viewRect, false);
+        try {
+            contentRenderer.Draw(
+                viewRect,
+                new Rect(0f, scroll.y, contentRect.width, viewportRect.height),
+                selectedSystem.Name,
+                skin,
+                navigation,
+                IsReducedMotionEnabled()
+            );
         } finally {
             Widgets.EndScrollView();
             navigation.SetScroll(selectedSystem.Name, scroll);
         }
     }
 
-    private static void DrawContentShellBody(Rect rect, ISystemSkin skin, IReadOnlyList<SettingSection> sections) {
-        Widgets.DrawBoxSolid(
-            rect,
-            new Color(skin.PanelBackgroundColor.r, skin.PanelBackgroundColor.g, skin.PanelBackgroundColor.b, 0.30f)
-        );
-        if (HasVisibleSections(sections)) return;
-
-        UIText.EllipsisLabel(
-            rect.ContractedBy(SettingsWindowLayout.ContentPadding),
-            (string)"CC_Settings_System_Empty".Translate(),
-            GameFont.Small,
-            TextAnchor.MiddleCenter,
-            skin.HeaderTextColor
-        );
-    }
-
     private static bool IsReducedMotionEnabled() {
         return Mod.GetModSettings<CoreModSettings>().reduceMotion;
-    }
-
-    private static bool HasVisibleSections(IReadOnlyList<SettingSection> sections) {
-        for (int i = 0; i < sections.Count; i++) {
-            if (sections[i].IsVisible) return true;
-        }
-
-        return false;
     }
 
     private void RequestClose() {

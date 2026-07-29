@@ -47,20 +47,22 @@ public static class SettingsHeaderRenderer {
     ) {
         Widgets.DrawBoxSolid(rect, new Color(skin.PanelBackgroundColor.r, skin.PanelBackgroundColor.g, skin.PanelBackgroundColor.b, 0.3f));
 
-        int visibleCount = 0;
-        for (int i = 0; i < sections.Count; i++) {
-            if (sections[i].IsVisible) visibleCount++;
-        }
-
-        if (visibleCount == 0) return null;
-
-        float sectionWidth = rect.width / visibleCount;
-        int visibleIndex = 0;
+        List<SettingSection> visibleSections = [];
         for (int i = 0; i < sections.Count; i++) {
             SettingSection section = sections[i];
-            if (!section.IsVisible) continue;
+            try {
+                if (section.IsVisible) visibleSections.Add(section);
+            } catch (global::System.Exception exception) {
+                Logger.Error($"Settings section rail {section.Key} failed: {exception}");
+            }
+        }
 
-            Rect sectionRect = new Rect(rect.x + sectionWidth * visibleIndex, rect.y, sectionWidth, rect.height);
+        if (visibleSections.Count == 0) return null;
+
+        float sectionWidth = rect.width / visibleSections.Count;
+        for (int i = 0; i < visibleSections.Count; i++) {
+            SettingSection section = visibleSections[i];
+            Rect sectionRect = new Rect(rect.x + sectionWidth * i, rect.y, sectionWidth, rect.height);
             bool selected = section.Key == selectedSectionKey;
             if (selected) {
                 Widgets.DrawBoxSolid(sectionRect, new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, 0.12f));
@@ -79,8 +81,6 @@ public static class SettingsHeaderRenderer {
             Widgets.DrawHighlightIfMouseover(sectionRect);
             MouseoverSounds.DoRegion(sectionRect);
             if (Widgets.ButtonInvisible(sectionRect)) return section.Key;
-
-            visibleIndex++;
         }
 
         return null;

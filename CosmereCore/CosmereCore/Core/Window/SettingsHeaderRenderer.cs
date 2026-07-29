@@ -9,8 +9,8 @@ namespace Cosmere.Core.Window;
 
 public static class SettingsHeaderRenderer {
     private const float CrestPadding = 10f;
-    private const float SigilSize = 26f;
-    private const float CloseSize = 24f;
+    private const float SigilSize = 34f;
+    private const float CloseSize = 32f;
 
     // Vanilla hangs its own close X off the window chrome. This one lives in our top bar
     // instead, so the header owns the whole row rather than leaving a gap for it.
@@ -97,10 +97,30 @@ public static class SettingsHeaderRenderer {
         return requested;
     }
 
+    // GameFont stops at Medium, so a glyph cannot be scaled to carry a crest this size.
+    // Two rotated bars give the mark whatever weight the header needs.
     private static bool DrawClose(Rect rect, ISystemSkin skin) {
-        UIText.EllipsisLabel(rect, "×", GameFont.Medium, TextAnchor.MiddleCenter, skin.HeaderTextColor);
+        bool hovered = Mouse.IsOver(rect);
+        Color color = hovered ? skin.AccentColor : skin.HeaderTextColor;
+
+        Vector2 pivot = rect.center;
+        float armLength = rect.width * 0.6f;
+        const float armThickness = 2.5f;
+        Rect arm = new Rect(pivot.x - armLength / 2f, pivot.y - armThickness / 2f, armLength, armThickness);
+
+        Matrix4x4 previousMatrix = GUI.matrix;
+        try {
+            GUIUtility.RotateAroundPivot(45f, pivot);
+            Widgets.DrawBoxSolid(arm, color);
+            GUI.matrix = previousMatrix;
+
+            GUIUtility.RotateAroundPivot(-45f, pivot);
+            Widgets.DrawBoxSolid(arm, color);
+        } finally {
+            GUI.matrix = previousMatrix;
+        }
+
         TooltipHandler.TipRegion(rect, "CloseButton".Translate());
-        Widgets.DrawHighlightIfMouseover(rect);
         MouseoverSounds.DoRegion(rect);
 
         return Widgets.ButtonInvisible(rect);

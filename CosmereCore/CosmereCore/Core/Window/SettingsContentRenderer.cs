@@ -71,11 +71,6 @@ public sealed class SettingsContentRenderer {
         SettingsNavigationState navigation,
         bool reduceMotion
     ) {
-        Widgets.DrawBoxSolid(
-            contentRect,
-            new Color(skin.PanelBackgroundColor.r, skin.PanelBackgroundColor.g, skin.PanelBackgroundColor.b, 0.30f)
-        );
-
         if (measuredSections.Count == 0) {
             UIText.EllipsisLabel(
                 contentRect.ContractedBy(SettingsWindowLayout.ContentPadding),

@@ -3,19 +3,40 @@ namespace Cosmere.Core.Settings.Layout;
 public static class SettingsWindowLayoutMath {
     public const float SidebarWidth = 200f;
     public const float TitleHeight = 40f;
-    public const float CrestHeight = 44f;
+
+    // Tall enough that the 34f sigil and the 32f close mark both clear their padding.
+    public const float CrestHeight = 52f;
 
     // Verse.TabDrawer.TabHeight, mirrored rather than referenced so this file stays
     // pure math the off-game test project can load.
     public const float SectionTabHeight = 32f;
-    public const float FooterHeight = 42f;
+
+    // Holds the 20f of air above the button row plus the row itself plus a bottom rest.
+    public const float FooterHeight = 62f;
     public const float Gap = 12f;
     public const float ScrollbarWidth = 20f;
 
+    // Air on each side of the drawn divider between the sidebar and the pane.
+    public const float SidebarGutter = 16f;
+
+    public const float PreferredWidth = 1200f;
+    public const float PreferredHeight = 1000f;
+
+    // Leaves the window clear of the screen edge on both sides at small resolutions.
+    public const float ScreenInset = 40f;
+
+    public static float PreferredWindowWidth(float screenWidth) {
+        return global::System.Math.Min(PreferredWidth, screenWidth - ScreenInset);
+    }
+
+    public static float PreferredWindowHeight(float screenHeight) {
+        return global::System.Math.Min(PreferredHeight, screenHeight - ScreenInset);
+    }
+
     public static SettingsWindowLayoutData Create(float x, float y, float width, float height) {
-        // Sidebar and pane share an edge and are separated by a drawn border rather than
-        // a gap, so the two regions read as one surface instead of two floating panels.
-        float mainX = x + SidebarWidth;
+        // The divider sits in the middle of this gutter, so neither the sidebar rows nor
+        // the pane content crowd the line that separates them.
+        float mainX = x + SidebarWidth + SidebarGutter;
         float mainWidth = global::System.Math.Max(0f, x + width - mainX);
         float footerY = y + height - FooterHeight;
 

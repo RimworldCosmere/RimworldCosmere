@@ -20,8 +20,12 @@ public static class SettingsSidebarRenderer {
         CosmereModSettings selectedSettings,
         ref string searchText
     ) {
-        // The sidebar butts straight against the pane, so this edge is what separates them.
-        Widgets.DrawBoxSolid(new Rect(rect.xMax - 1f, rect.y, 1f, rect.height), new Color(1f, 1f, 1f, 0.09f));
+        // The divider rides the middle of the gutter rather than the sidebar's own edge,
+        // so both sides get the same air.
+        Widgets.DrawBoxSolid(
+            new Rect(rect.xMax + SettingsWindowLayout.SidebarGutter / 2f, rect.y, 1f, rect.height),
+            new Color(1f, 1f, 1f, 0.09f)
+        );
 
         // Vanilla's own dialog title is suppressed, so the window names itself here.
         Rect titleRect = new Rect(rect.x + Padding, rect.y, rect.width - Padding * 2f, SettingsWindowLayout.TitleHeight);

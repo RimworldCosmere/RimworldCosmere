@@ -1,4 +1,5 @@
 using Concord;
+using Cosmere.Core.Window;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,49 +11,18 @@ public abstract class CosmereSettingsWindowSizePatch : Dialog_ModSettings {
     [InjectField("mod")]
     private readonly Verse.Mod settingsMod = null!;
 
-    [InjectField(nameof(global::Verse.Window.doCloseButton))]
-    private new bool doCloseButton;
-
-    [InjectField(nameof(global::Verse.Window.doCloseX))]
-    private new bool doCloseX;
-
     protected CosmereSettingsWindowSizePatch(Verse.Mod mod) : base(mod) { }
 
+    // Only Dialog_ModSettings' own declared members are safe injection targets. Anything
+    // it merely inherits - Margin, PostOpen - resolves up to Verse.Window and would patch
+    // every window in the game, so the handoff has to happen here on the first draw.
     [Inject(At.Head, nameof(DoWindowContents))]
     private Control BeforeDoWindowContents(Rect inRect) {
         if (settingsMod is not Mod mod) return Control.Continue;
 
-        // The window draws its own title in the sidebar and its own close in the top bar,
-        // so both pieces of vanilla chrome are suppressed and the whole rect is ours.
-        doCloseButton = false;
-        doCloseX = false;
+        Close(false);
+        Find.WindowStack.Add(new CosmereSettingsDialog(mod));
 
-        GameFont previousFont = Text.Font;
-        try {
-            Text.Font = GameFont.Small;
-            settingsMod.DoSettingsWindowContents(inRect);
-
-            if (mod.ConsumeSettingsCloseRequest()) Close();
-            return Control.Cancel;
-        } finally {
-            Text.Font = previousFont;
-        }
-    }
-
-    [Inject(At.Head, nameof(PreClose))]
-    private void BeforePreClose() {
-        if (settingsMod is Mod mod) mod.ClearSettingsResetConfirmation();
-    }
-
-    [Inject(At.Return, nameof(InitialSize))]
-    private void AfterInitialSize(ControlHandle<Vector2> ch) {
-        if (settingsMod is not Mod) return;
-
-        float targetWidth = Mathf.Min(1200f, Verse.UI.screenWidth - 40f);
-        float targetHeight = Mathf.Min(1000f, Verse.UI.screenHeight - 40f);
-        ch.ReturnValue = new Vector2(
-            Mathf.Max(ch.ReturnValue.x, targetWidth),
-            Mathf.Max(ch.ReturnValue.y, targetHeight)
-        );
+        return Control.Cancel;
     }
 }

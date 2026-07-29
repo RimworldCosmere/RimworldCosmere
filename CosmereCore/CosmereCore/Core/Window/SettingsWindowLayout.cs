@@ -19,6 +19,7 @@ public readonly record struct SettingsWindowLayout(
     public const float Gap = SettingsWindowLayoutMath.Gap;
     public const float ContentPadding = 14f;
     public const float ScrollbarWidth = SettingsWindowLayoutMath.ScrollbarWidth;
+    public const float SidebarGutter = SettingsWindowLayoutMath.SidebarGutter;
 
     public static SettingsWindowLayout Create(Rect inRect) {
         return Create(
@@ -34,7 +35,8 @@ public readonly record struct SettingsWindowLayout(
 
         return new SettingsWindowLayout(
             new Rect(x, y, SidebarWidth, layout.FooterY - y),
-            new Rect(layout.CrestX, layout.CrestY, layout.ContentViewportWidth, CrestHeight),            new Rect(layout.SectionRailX, layout.SectionRailY, layout.ContentViewportWidth, SectionTabHeight),
+            new Rect(layout.CrestX, layout.CrestY, layout.ContentViewportWidth, CrestHeight),
+            new Rect(layout.SectionRailX, layout.SectionRailY, layout.ContentViewportWidth, SectionTabHeight),
             new Rect(
                 layout.ContentViewportX,
                 layout.ContentViewportY,

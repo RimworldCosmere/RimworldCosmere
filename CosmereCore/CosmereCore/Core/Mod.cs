@@ -44,7 +44,11 @@ public class Mod : CosmereMod<CoreModSettings> {
 
     public override void DoSettingsWindowContents(Rect inRect) {
         settingsWindow ??= new SettingsWindow(cosmereSettings);
-        settingsWindow.DoWindowContents(inRect.ContractedBy(new Padding(32, 0, 0, 0)));
+        settingsWindow.Draw(inRect);
+    }
+
+    public bool ConsumeSettingsCloseRequest() {
+        return settingsWindow?.ConsumeCloseRequest() ?? false;
     }
 
     public override string SettingsCategory() {

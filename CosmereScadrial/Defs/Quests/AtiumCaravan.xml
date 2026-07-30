@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Quest.CosmereQuestDef>
+        <defName>Cosmere_Scadrial_Quest_AtiumCaravan</defName>
+        <label>The Ministry Convoy</label>
+        <description>A canton clerk has sold the schedules for an upcoming Ministry transfer. Three wagons will move between vaults on the appointed day, escorted by obligators and hazekillers. One wagon carries atium bound for the Lord Ruler's own vaults.</description>
+
+        <kind>Repeatable</kind>
+        <subject>Colony</subject>
+        <eras>
+            <li>Cosmere_Scadrial_Era_PreCatacendre</li>
+        </eras>
+
+        <giverFaction>Cosmere_Scadrial_Faction_SkaaRebels</giverFaction>
+        <targetFaction>Cosmere_Scadrial_Faction_FinalEmpireNPC</targetFaction>
+
+        <selectionWeight>1.2</selectionWeight>
+        <expireAfterDays>6</expireAfterDays>
+        <cooldownDays>25</cooldownDays>
+        <challengeRating>2</challengeRating>
+        <minColonists>3</minColonists>
+        <minDaysElapsed>5</minDaysElapsed>
+
+        <stages>
+            <li>
+                <key>choice</key>
+                <objective Class="Cosmere.Core.Quest.Objective.ChoiceObjective">
+                    <options>
+                        <li>
+                            <key>ambush</key>
+                            <labelKey>CS_Quest_AtiumCaravan_Ambush_Label</labelKey>
+                            <tipKey>CS_Quest_AtiumCaravan_Ambush_Tip</tipKey>
+                            <goodwillOnTarget>-25</goodwillOnTarget>
+                        </li>
+                        <li>
+                            <key>bribe</key>
+                            <labelKey>CS_Quest_AtiumCaravan_Bribe_Label</labelKey>
+                            <tipKey>CS_Quest_AtiumCaravan_Bribe_Tip</tipKey>
+                            <silverCost>300</silverCost>
+                        </li>
+                    </options>
+                </objective>
+            </li>
+            <li>
+                <key>travel</key>
+                <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
+                    <sitePart>Outpost</sitePart>
+                    <minTiles>3</minTiles>
+                    <maxTiles>10</maxTiles>
+                    <threatPoints>350</threatPoints>
+                </objective>
+            </li>
+            <li>
+                <key>clear</key>
+                <objective Class="Cosmere.Core.Quest.Objective.ClearSiteObjective" />
+            </li>
+        </stages>
+
+        <rewards>
+            <li Class="Cosmere.Core.Quest.Reward.GodMetalReward">
+                <metal>Atium</metal>
+                <countMin>2</countMin>
+                <countMax>4</countMax>
+            </li>
+            <li Class="Cosmere.Core.Quest.Reward.ThingReward">
+                <thingDef>Silver</thingDef>
+                <count>250</count>
+            </li>
+        </rewards>
+
+        <onFailure Class="Cosmere.Core.Quest.Outcome.GoodwillOutcome">
+            <goodwillChange>-15</goodwillChange>
+        </onFailure>
+    </Cosmere.Core.Quest.CosmereQuestDef>
+</Defs>

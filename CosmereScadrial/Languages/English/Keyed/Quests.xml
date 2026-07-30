@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Quest_AtiumCaravan_Ambush_Label>Ambush the convoy</CS_Quest_AtiumCaravan_Ambush_Label>
+    <CS_Quest_AtiumCaravan_Ambush_Tip>Strike the wagons on the open road. The obligators will fight back, and the Ministry will not forget who struck first.</CS_Quest_AtiumCaravan_Ambush_Tip>
+
+    <CS_Quest_AtiumCaravan_Bribe_Label>Bribe the escort captain</CS_Quest_AtiumCaravan_Bribe_Label>
+    <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
+</LanguageData>

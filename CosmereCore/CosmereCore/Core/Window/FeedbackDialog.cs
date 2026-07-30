@@ -9,6 +9,8 @@ namespace Cosmere.Core.Window;
 
 public sealed class FeedbackDialog : BaseWindow {
     private static readonly Color CounterColor = new Color(0.80f, 0.62f, 0.35f);
+    private static readonly Color SuccessColor = new Color(0.55f, 0.75f, 0.52f);
+    private static readonly Color FailureColor = new Color(0.82f, 0.47f, 0.42f);
 
     private readonly FeedbackReport report;
     private readonly byte[]? screenshot;
@@ -60,10 +62,18 @@ public sealed class FeedbackDialog : BaseWindow {
     }
 
     protected override void DrawBodyContent(FoundationListing listing) {
-        if (result != null) return;
+        if (result != null) {
+            DrawResultBody(listing);
+
+            return;
+        }
+
+        // The client holds the report by reference while a submit is in flight, so editing
+        // during a send would mutate the payload already on its way out.
+        bool locked = sending;
 
         listing.Label("CC_BetaHub_Field_Title".Translate());
-        report.Title = Widgets.TextField(listing.GetRect(Spacing.Get(1.75)), report.Title);
+        report.Title = DrawField(listing, report.Title, locked);
         listing.Gap(Spacing.Get(0.5));
 
         listing.Label(
@@ -71,7 +81,7 @@ public sealed class FeedbackDialog : BaseWindow {
                 ? "CC_BetaHub_Field_Description".Translate()
                 : "CC_BetaHub_Field_Idea".Translate()
         );
-        report.Description = Widgets.TextArea(listing.GetRect(Spacing.Get(7)), report.Description);
+        report.Description = DrawArea(listing, report.Description, Spacing.Get(7), locked);
 
         int needed = FeedbackValidator.RemainingCharacters(report.Kind, report.Description);
         if (needed > 0) {
@@ -84,34 +94,80 @@ public sealed class FeedbackDialog : BaseWindow {
 
         if (report.Kind == FeedbackKind.Bug) {
             listing.Label("CC_BetaHub_Field_Steps".Translate());
-            report.StepsToReproduce = Widgets.TextArea(listing.GetRect(Spacing.Get(4)), report.StepsToReproduce);
+            report.StepsToReproduce = DrawArea(listing, report.StepsToReproduce, Spacing.Get(4), locked);
             listing.Gap(Spacing.Get(0.5));
         }
 
         listing.Label("CC_BetaHub_Field_Mod".Translate());
-        DrawTargetRow(listing, FeedbackTarget.Unknown, "CC_BetaHub_Mod_Unknown");
-        DrawTargetRow(listing, FeedbackTarget.Core, "CC_BetaHub_Mod_Core");
-        DrawTargetRow(listing, FeedbackTarget.Scadrial, "CC_BetaHub_Mod_Scadrial");
-        DrawTargetRow(listing, FeedbackTarget.Roshar, "CC_BetaHub_Mod_Roshar");
+        DrawTargetRow(listing, FeedbackTarget.Unknown, "CC_BetaHub_Mod_Unknown", locked);
+        DrawTargetRow(listing, FeedbackTarget.Core, "CC_BetaHub_Mod_Core", locked);
+        DrawTargetRow(listing, FeedbackTarget.Scadrial, "CC_BetaHub_Mod_Scadrial", locked);
+        DrawTargetRow(listing, FeedbackTarget.Roshar, "CC_BetaHub_Mod_Roshar", locked);
         listing.Gap(Spacing.Get(0.5));
 
         listing.Label("CC_BetaHub_Field_Discord".Translate());
         Rect discordRect = listing.GetRect(Spacing.Get(1.75));
         TooltipHandler.TipRegion(discordRect, "CC_BetaHub_Field_DiscordTip".Translate());
-        report.DiscordUsername = Widgets.TextField(discordRect, report.DiscordUsername ?? string.Empty);
+        report.DiscordUsername = locked
+            ? report.DiscordUsername
+            : Widgets.TextField(discordRect, report.DiscordUsername ?? string.Empty);
+
+        if (locked) Widgets.Label(discordRect, report.DiscordUsername ?? string.Empty);
 
         if (report.Kind != FeedbackKind.Bug || screenshot == null) return;
 
         listing.Gap(Spacing.Get(0.5));
         Rect shotRect = listing.GetRect(Spacing.Get(1.75));
         bool include = report.IncludeScreenshot;
-        Widgets.CheckboxLabeled(shotRect, "CC_BetaHub_Field_IncludeScreenshot".Translate(), ref include);
+        Widgets.CheckboxLabeled(shotRect, "CC_BetaHub_Field_IncludeScreenshot".Translate(), ref include, locked);
         report.IncludeScreenshot = include;
 
         thumbnail ??= BuildThumbnail();
         if (thumbnail != null) {
             GUI.DrawTexture(listing.GetRect(Spacing.Get(7)), thumbnail, ScaleMode.ScaleToFit);
         }
+    }
+
+    /// <summary>
+    ///     Replaces the form once a submit has landed, so the window is never a tall empty box
+    ///     with one line of footer text.
+    /// </summary>
+    private void DrawResultBody(FoundationListing listing) {
+        SubmitResult finished = result!;
+        bool ok = finished.Outcome == SubmitOutcome.Success;
+
+        listing.Gap(Spacing.Get(2));
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, ok ? SuccessColor : FailureColor)) {
+            listing.Label(BetaHubStatusMapper.MessageKey(finished.Outcome)
+                .Translate((finished.ServerMessage ?? string.Empty).Named("REASON")));
+        }
+
+        if (ok || string.IsNullOrEmpty(finished.ServerMessage)) return;
+
+        listing.Gap(Spacing.Get(0.5));
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
+            listing.Label(finished.ServerMessage!);
+        }
+    }
+
+    private static string DrawField(FoundationListing listing, string value, bool locked) {
+        Rect rect = listing.GetRect(Spacing.Get(1.75));
+        if (!locked) return Widgets.TextField(rect, value);
+
+        Widgets.Label(rect, value);
+
+        return value;
+    }
+
+    private static string DrawArea(FoundationListing listing, string value, float height, bool locked) {
+        Rect rect = listing.GetRect(height);
+        if (!locked) return Widgets.TextArea(rect, value);
+
+        Widgets.Label(rect, value);
+
+        return value;
     }
 
     protected override void DrawFooter(Rect rect) {
@@ -136,11 +192,12 @@ public sealed class FeedbackDialog : BaseWindow {
         }
     }
 
-    private void DrawTargetRow(FoundationListing listing, FeedbackTarget target, string labelKey) {
+    private void DrawTargetRow(FoundationListing listing, FeedbackTarget target, string labelKey, bool locked) {
         Rect rect = listing.GetRect(Spacing.Get(1.5));
-        Widgets.DrawHighlightIfMouseover(rect);
+        if (!locked) Widgets.DrawHighlightIfMouseover(rect);
 
-        if (Widgets.RadioButtonLabeled(rect, labelKey.Translate(), report.Target == target)) {
+        bool selected = report.Target == target;
+        if (Widgets.RadioButtonLabeled(rect, labelKey.Translate(), selected) && !locked) {
             report.Target = target;
         }
     }
@@ -155,14 +212,11 @@ public sealed class FeedbackDialog : BaseWindow {
 
     private void DrawResultFooter(Rect inner, float buttonWidth) {
         SubmitResult finished = result!;
-        string message = BetaHubStatusMapper.MessageKey(finished.Outcome)
-            .Translate((finished.ServerMessage ?? string.Empty).Named("REASON"));
-
-        using (new TextBlock(TextAnchor.MiddleLeft, BodyTextColor)) {
-            Widgets.Label(inner.LeftPartPixels(inner.width - buttonWidth - Spacing.Get(0.5)), message);
-        }
-
         Rect actionRect = inner.RightPartPixels(buttonWidth);
+
+        if (Widgets.ButtonText(inner.LeftPartPixels(buttonWidth), "CC_BetaHub_Cancel".Translate())) {
+            Close();
+        }
 
         if (finished.Outcome == SubmitOutcome.Success) {
             if (Widgets.ButtonText(actionRect, "CC_BetaHub_ViewOnline".Translate())) {

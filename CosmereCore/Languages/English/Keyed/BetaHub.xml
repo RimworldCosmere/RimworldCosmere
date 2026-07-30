@@ -8,4 +8,27 @@
     <CC_BetaHub_Result_RateLimited>You have hit the daily report limit. Try again tomorrow.</CC_BetaHub_Result_RateLimited>
     <CC_BetaHub_Result_Rejected>BetaHub rejected the report: {REASON}</CC_BetaHub_Result_Rejected>
     <CC_BetaHub_Result_Unreachable>Could not reach BetaHub. Your report was kept, try again.</CC_BetaHub_Result_Unreachable>
+    <CC_BetaHub_Dialog_BugTitle>Report a Bug</CC_BetaHub_Dialog_BugTitle>
+    <CC_BetaHub_Dialog_SuggestTitle>Suggest Something</CC_BetaHub_Dialog_SuggestTitle>
+    <CC_BetaHub_Dialog_BugSubtitle>Goes straight to the Cosmere beta tracker with your log attached.</CC_BetaHub_Dialog_BugSubtitle>
+    <CC_BetaHub_Dialog_SuggestSubtitle>Goes straight to the Cosmere beta tracker.</CC_BetaHub_Dialog_SuggestSubtitle>
+    <CC_BetaHub_Field_Title>Title</CC_BetaHub_Field_Title>
+    <CC_BetaHub_Field_TitleHint>Leave blank and one is written for you</CC_BetaHub_Field_TitleHint>
+    <CC_BetaHub_Field_Description>What happened</CC_BetaHub_Field_Description>
+    <CC_BetaHub_Field_Idea>Your idea</CC_BetaHub_Field_Idea>
+    <CC_BetaHub_Field_Steps>Steps to reproduce</CC_BetaHub_Field_Steps>
+    <CC_BetaHub_Field_Mod>Which mod</CC_BetaHub_Field_Mod>
+    <CC_BetaHub_Field_Discord>Discord username, optional</CC_BetaHub_Field_Discord>
+    <CC_BetaHub_Field_DiscordTip>Only used if we need to ask you a follow up question.</CC_BetaHub_Field_DiscordTip>
+    <CC_BetaHub_Field_IncludeScreenshot>Include a screenshot</CC_BetaHub_Field_IncludeScreenshot>
+    <CC_BetaHub_Mod_Unknown>Not sure</CC_BetaHub_Mod_Unknown>
+    <CC_BetaHub_Mod_Core>Cosmere Core</CC_BetaHub_Mod_Core>
+    <CC_BetaHub_Mod_Scadrial>Scadrial</CC_BetaHub_Mod_Scadrial>
+    <CC_BetaHub_Mod_Roshar>Roshar</CC_BetaHub_Mod_Roshar>
+    <CC_BetaHub_CharsNeeded>{COUNT} more characters needed</CC_BetaHub_CharsNeeded>
+    <CC_BetaHub_Submit>Send</CC_BetaHub_Submit>
+    <CC_BetaHub_Sending>Sending...</CC_BetaHub_Sending>
+    <CC_BetaHub_Cancel>Cancel</CC_BetaHub_Cancel>
+    <CC_BetaHub_Retry>Retry</CC_BetaHub_Retry>
+    <CC_BetaHub_ViewOnline>View it on BetaHub</CC_BetaHub_ViewOnline>
 </LanguageData>

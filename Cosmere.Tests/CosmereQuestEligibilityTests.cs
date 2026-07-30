@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cosmere.Core.Quest;
+using Cosmere.Core.Quest.Prereq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cosmere.Tests;
@@ -201,5 +202,41 @@ public class CosmereQuestEligibilityTests {
         negative.selectionWeight = -3f;
         Assert.AreEqual(0f, CosmereQuestEligibility.WeightOf(negative));
         Assert.AreEqual(1.2f, CosmereQuestEligibility.WeightOf(Convoy()), 0.0001f);
+    }
+
+    [TestMethod]
+    public void FlagPrereqReadsTheWorldState() {
+        FlagPrereq prereq = new FlagPrereq { flag = "HathsinLead" };
+
+        QuestWorldState without = BaseState();
+        Assert.IsFalse(prereq.IsMet(without));
+
+        QuestWorldState with = BaseState();
+        with.flags.Add("HathsinLead");
+        Assert.IsTrue(prereq.IsMet(with));
+    }
+
+    [TestMethod]
+    public void ShardPrereqRequiresEveryListedShard() {
+        ShardPrereq prereq = new ShardPrereq {
+            shards = new List<string> { "Preservation", "Ruin" },
+        };
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        prereq.shards.Add("Harmony");
+        Assert.IsFalse(prereq.IsMet(BaseState()));
+    }
+
+    [TestMethod]
+    public void CapstoneStatePrereqDefaultsToRequiringCompletion() {
+        CapstoneStatePrereq prereq = new CapstoneStatePrereq {
+            questDefName = "Cosmere_Scadrial_Quest_PitsOfHathsin",
+        };
+
+        Assert.IsFalse(prereq.IsMet(BaseState()));
+
+        QuestWorldState done = BaseState();
+        done.capstoneStates["Cosmere_Scadrial_Quest_PitsOfHathsin"] = CapstoneState.Completed;
+        Assert.IsTrue(prereq.IsMet(done));
     }
 }

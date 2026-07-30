@@ -3,9 +3,9 @@ export function resolveBetaHubPublishState({ env, branchName, branches }) {
     return { shouldPublish: false, token: null };
   }
 
-  if (!env.BETAHUB_PAT) {
-    throw new Error('BETAHUB_PAT is required to publish a BetaHub release');
+  if (!env.BETA_HUB_API_KEY) {
+    throw new Error('BETA_HUB_API_KEY is required to publish a BetaHub release');
   }
 
-  return { shouldPublish: true, token: env.BETAHUB_PAT };
+  return { shouldPublish: true, token: env.BETA_HUB_API_KEY };
 }

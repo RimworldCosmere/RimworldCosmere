@@ -6,7 +6,7 @@ const branches = ['beta'];
 
 test('publishes on beta', () => {
   const state = resolveBetaHubPublishState({
-    env: { BETAHUB_PAT: 'pat-x' },
+    env: { BETA_HUB_API_KEY: 'pat-x' },
     branchName: 'beta',
     branches,
   });
@@ -16,7 +16,7 @@ test('publishes on beta', () => {
 test('does not publish on main or alpha', () => {
   for (const branchName of ['main', 'alpha', 'feat/whatever']) {
     const state = resolveBetaHubPublishState({
-      env: { BETAHUB_PAT: 'pat-x' },
+      env: { BETA_HUB_API_KEY: 'pat-x' },
       branchName,
       branches,
     });
@@ -27,7 +27,7 @@ test('does not publish on main or alpha', () => {
 test('a missing PAT on a publishing branch throws rather than skipping', () => {
   assert.throws(
     () => resolveBetaHubPublishState({ env: {}, branchName: 'beta', branches }),
-    /BETAHUB_PAT/,
+    /BETA_HUB_API_KEY/,
   );
 });
 

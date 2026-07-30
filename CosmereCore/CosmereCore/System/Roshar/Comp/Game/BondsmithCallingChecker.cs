@@ -9,6 +9,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Game;
 
 public class BondsmithCallingChecker : GameComponent {
+    private const int RequiredRadiantsBeforeCalling = 2;
     private static readonly string[] GodsprenNames = ["Stormfather", "Nightwatcher", "Sibling"];
     private HashSet<string> activeCallings = [];
     private HashSet<string> bondedGodspren = [];
@@ -39,6 +40,7 @@ public class BondsmithCallingChecker : GameComponent {
 
         RadiantTracker? tracker = Current.Game.GetComponent<RadiantTracker>();
         if (tracker == null || !tracker.CanProgressBondsmith()) return;
+        if (tracker.CountNonBondsmithRadiants() < RequiredRadiantsBeforeCalling) return;
 
         RecalculateActiveCallings();
         RecalculateBondedGodspren();

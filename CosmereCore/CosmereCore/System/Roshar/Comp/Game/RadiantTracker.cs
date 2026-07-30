@@ -28,6 +28,24 @@ public class RadiantTracker : GameComponent {
         if (activeBondsmithCount < 0) activeBondsmithCount = 0;
     }
 
+    public int CountNonBondsmithRadiants() {
+        int count = 0;
+        List<Verse.Map> maps = Find.Maps;
+        for (int m = 0; m < maps.Count; m++) {
+            List<Pawn> colonists = maps[m].mapPawns.FreeColonistsSpawned;
+            for (int i = 0; i < colonists.Count; i++) {
+                List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
+                for (int g = 0; g < genes.Count; g++) {
+                    if (genes[g] is not Surgebinder surgebinder) continue;
+                    if (surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith) continue;
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
     public void RecalculateBondsmithCount() {
         activeBondsmithCount = 0;
         List<Verse.Map> maps = Find.Maps;

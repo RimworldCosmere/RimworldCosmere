@@ -46,14 +46,26 @@ public class RolledReward : QuestReward {
         if (branches == null || branches.Count == 0) return "RolledReward has no branches.";
 
         List<RewardTableEntry> entries = new List<RewardTableEntry>();
+        List<string> keys = new List<string>();
         for (int i = 0; i < branches.Count; i++) {
-            if (branches[i].reward == null) return $"RolledReward branch '{branches[i].key}' has no reward.";
-            entries.Add(new RewardTableEntry { key = branches[i].key, weight = branches[i].weight });
+            RolledRewardBranch branch = branches[i];
+            string? key = branch.key;
+
+            if (branch.reward == null) return $"RolledReward branch '{key}' has no reward.";
+            if (key == null || key.Length == 0) return $"RolledReward branch {i} has no key.";
+            if (branch.weight <= 0) return $"RolledReward branch '{key}' weight must be positive.";
+
+            entries.Add(new RewardTableEntry { key = key, weight = branch.weight });
+            keys.Add(key);
         }
 
-        if (!RewardTable.IsValid(entries)) {
-            return $"RolledReward weights must sum to exactly 100, got {RewardTable.TotalWeight(entries)}.";
+        HashSet<string> seenKeys = new HashSet<string>();
+        for (int i = 0; i < keys.Count; i++) {
+            if (!seenKeys.Add(keys[i])) return $"RolledReward has duplicate branch key '{keys[i]}'.";
         }
+
+        int total = RewardTable.TotalWeight(entries);
+        if (total != 100) return $"RolledReward weights must sum to exactly 100, got {total}.";
 
         return null;
     }

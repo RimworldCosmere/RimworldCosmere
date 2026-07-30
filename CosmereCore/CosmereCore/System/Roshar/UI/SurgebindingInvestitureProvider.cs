@@ -91,12 +91,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
 
         if (subs.Count == 0) return null;
 
-        return new RadialSystem(
-            "Surgebinding",
-            "Stormlight",
-            null,
-            subs
-        );
+        return RadialSystem.ForSystem("Surgebinding", subs);
     }
 
     private static bool IsExcludedFromRadial(AbilityDef def) {

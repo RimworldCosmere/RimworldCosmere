@@ -126,11 +126,6 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
 
         if (subs.Count == 0) return null;
 
-        return new RadialSystem(
-            "Allomancy",
-            "Allomancy",
-            null,
-            subs
-        );
+        return RadialSystem.ForSystem("Allomancy", subs);
     }
 }

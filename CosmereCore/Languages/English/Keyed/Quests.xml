@@ -6,4 +6,6 @@
   <CC_Quest_Reward_Knowledge>Knowledge worth having</CC_Quest_Reward_Knowledge>
   <CC_Quest_Reward_Research>Research progress, about {PERCENT} percent of a project</CC_Quest_Reward_Research>
   <CC_Quest_Reward_Rolled>Payment, terms unstated</CC_Quest_Reward_Rolled>
+  <CC_Quest_TimedWork_Remaining>{TIME} of work remains here</CC_Quest_TimedWork_Remaining>
+  <CC_Quest_CarryHome_Remaining>Bring {COUNT} {THING} home</CC_Quest_CarryHome_Remaining>
 </LanguageData>

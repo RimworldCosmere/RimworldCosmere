@@ -72,7 +72,12 @@ public class CosmereQuestDef : Verse.Def {
 
         if (eras != null) {
             for (int i = 0; i < eras.Count; i++) {
-                string name = eras[i];
+                string? name = eras[i];
+                if (name == null || name.Length == 0) {
+                    yield return $"{defName}: eras[{i}] is empty.";
+                    continue;
+                }
+
                 if (Verse.DefDatabase<EraDef>.GetNamedSilentFail(name) == null) {
                     yield return $"{defName}: era '{name}' does not resolve.";
                 }

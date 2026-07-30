@@ -74,7 +74,7 @@ public static class CosmereQuestBuilder {
         }
 
         string successSignal = previousOutSignal;
-        string failSignal = $"{quest.GetUniqueLoadID()}.failed";
+        string failSignal = $"Quest{quest.id}.Failed";
 
         // Objectives build their own QuestPart_CosmereActivable pollers during the loop above,
         // so failSignal can only be assigned after the fact by walking what they added.
@@ -133,8 +133,14 @@ public static class CosmereQuestBuilder {
     /// <summary>
     ///     A signal name unique to this quest instance and this stage index. Quest.id is
     ///     assigned once in MakeRaw and never reused, so no two live quests can collide.
+    ///     Must NOT be built from quest.GetUniqueLoadID() - that returns "Quest_{id}" (with an
+    ///     underscore), which is the save-file cross-reference ID, not a signal-tag namespace.
+    ///     Quest.Notify_SignalReceived gates every non-global signal with
+    ///     `signal.tag.StartsWith($"Quest{id}.")` - no underscore - before it ever reaches a
+    ///     part's Notify_QuestSignalReceived. A tag built from GetUniqueLoadID() never matches
+    ///     that prefix and is silently dropped, which hangs the quest after its first stage.
     /// </summary>
     private static string SignalFor(RimWorld.Quest quest, int stageIndex) {
-        return $"{quest.GetUniqueLoadID()}.stage{stageIndex}";
+        return $"Quest{quest.id}.Stage{stageIndex}";
     }
 }

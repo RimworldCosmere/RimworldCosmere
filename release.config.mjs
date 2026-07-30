@@ -83,6 +83,13 @@ export default {
                     }
                 ]
             }
+        ],
+        [
+            "./tools/semantic-release-betahub/index.mjs",
+            {
+                "projectId": "pr-4628785616",
+                "branches": ["beta"]
+            }
         ]
     ],
     tagFormat: "${version}",

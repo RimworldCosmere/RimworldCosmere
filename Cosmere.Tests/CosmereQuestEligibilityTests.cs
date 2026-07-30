@@ -140,6 +140,17 @@ public class CosmereQuestEligibilityTests {
     }
 
     [TestMethod]
+    public void ZeroCooldownIgnoresHowRecentlyItWasOffered() {
+        QuestCandidate noCooldown = Convoy();
+        noCooldown.cooldownDays = 0;
+
+        QuestWorldState state = BaseState();
+        state.lastOfferedTick[noCooldown.defName] = state.currentTick;
+
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(noCooldown, state));
+    }
+
+    [TestMethod]
     public void MinColonistsAndMinDaysAreEnforced() {
         QuestCandidate pits = Convoy();
         pits.minColonists = 6;

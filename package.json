@@ -1,6 +1,7 @@
 {
   "scripts": {
     "test:steam-release": "node --test tools/semantic-release-steam/tests/*.test.mjs",
+    "test:betahub-release": "node --test tools/semantic-release-betahub/tests/*.test.mjs",
     "check:steam-release": "node tools/semantic-release-steam/tests/run-config-check.mjs"
   },
   "devDependencies": {

@@ -4,4 +4,8 @@
     <CC_BetaHub_Suggest>Suggest Something</CC_BetaHub_Suggest>
     <CC_BetaHub_ReportBug_Tip>Send a bug report to the Cosmere beta tracker. Your log and an optional screenshot go with it.</CC_BetaHub_ReportBug_Tip>
     <CC_BetaHub_Suggest_Tip>Send an idea to the Cosmere beta tracker.</CC_BetaHub_Suggest_Tip>
+    <CC_BetaHub_Result_Success>Report sent. Thank you.</CC_BetaHub_Result_Success>
+    <CC_BetaHub_Result_RateLimited>You have hit the daily report limit. Try again tomorrow.</CC_BetaHub_Result_RateLimited>
+    <CC_BetaHub_Result_Rejected>BetaHub rejected the report: {REASON}</CC_BetaHub_Result_Rejected>
+    <CC_BetaHub_Result_Unreachable>Could not reach BetaHub. Your report was kept, try again.</CC_BetaHub_Result_Unreachable>
 </LanguageData>

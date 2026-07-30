@@ -46,4 +46,37 @@ public class BetaHubStatusMapperTests {
             Assert.IsFalse(string.IsNullOrEmpty(BetaHubStatusMapper.MessageKey(outcome)), outcome.ToString());
         }
     }
+
+    /// <summary>
+    ///     Verified against the live project: submitting with a release_label that has no
+    ///     matching release, using a token without can_create_release, returns exactly this.
+    ///     Every in-game report fails this way until CI publishes a release for the build.
+    /// </summary>
+    [TestMethod]
+    public void AReleasePermissionForbiddenIsDistinguishedFromTheDailyCap() {
+        const string body = "{\"error\":\"Auth token does not have permission to create releases\"}";
+
+        Assert.IsTrue(BetaHubStatusMapper.IsMissingReleasePermission(403, body));
+    }
+
+    [TestMethod]
+    public void TheDailyCapForbiddenIsNotMistakenForAReleaseProblem() {
+        const string body = "{\"error\":\"Rate limit exceeded for this IP\"}";
+
+        Assert.IsFalse(BetaHubStatusMapper.IsMissingReleasePermission(403, body));
+    }
+
+    [TestMethod]
+    public void OnlyA403CanBeAReleasePermissionProblem() {
+        const string body = "{\"error\":\"Auth token does not have permission to create releases\"}";
+
+        Assert.IsFalse(BetaHubStatusMapper.IsMissingReleasePermission(422, body));
+        Assert.IsFalse(BetaHubStatusMapper.IsMissingReleasePermission(500, body));
+    }
+
+    [TestMethod]
+    public void AnAbsentBodyIsNotAReleasePermissionProblem() {
+        Assert.IsFalse(BetaHubStatusMapper.IsMissingReleasePermission(403, null));
+        Assert.IsFalse(BetaHubStatusMapper.IsMissingReleasePermission(403, string.Empty));
+    }
 }

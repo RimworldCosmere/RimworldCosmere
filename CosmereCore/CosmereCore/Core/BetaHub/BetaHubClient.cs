@@ -17,13 +17,25 @@ public sealed class SubmitResult {
 /// </summary>
 public static class BetaHubClient {
     public static void Submit(FeedbackReport report, byte[]? screenshotJpeg, Action<SubmitResult> onDone) {
+        Post(report, screenshotJpeg, onDone, includeReleaseLabel: true);
+    }
+
+    private static void Post(
+        FeedbackReport report,
+        byte[]? screenshotJpeg,
+        Action<SubmitResult> onDone,
+        bool includeReleaseLabel
+    ) {
         DiagnosticsFacts facts = DiagnosticsBundle.Collect();
         string url = report.Kind == FeedbackKind.Suggestion
             ? BetaHubConfig.FeatureRequestsUrl
             : BetaHubConfig.IssuesUrl;
+        string releaseKey = $"{BetaHubFormEncoder.ParameterRoot(report.Kind)}[release_label]";
 
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<string, string> pair in BetaHubFormEncoder.Encode(report, facts)) {
+            if (!includeReleaseLabel && pair.Key == releaseKey) continue;
+
             form.AddField(pair.Key, pair.Value);
         }
 
@@ -44,7 +56,19 @@ public static class BetaHubClient {
 
                 if (outcome != SubmitOutcome.Success) {
                     Logger.Warning($"BetaHub submit failed with {done.responseCode}: {body}");
+
+                    // A 403 naming release permission means CI has not published a release for
+                    // this build yet. Resending without the label files it against the latest
+                    // release, which beats losing the report.
+                    if (includeReleaseLabel && BetaHubStatusMapper.IsMissingReleasePermission(done.responseCode, body)) {
+                        Logger.Warning("Retrying the BetaHub submit without a release label.");
+                        Post(report, screenshotJpeg, onDone, includeReleaseLabel: false);
+
+                        return;
+                    }
+
                     onDone(result);
+
                     return;
                 }
 

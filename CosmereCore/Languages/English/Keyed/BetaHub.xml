@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CC_BetaHub_ReportBug>Report a Bug</CC_BetaHub_ReportBug>
+    <CC_BetaHub_Suggest>Suggest Something</CC_BetaHub_Suggest>
+    <CC_BetaHub_ReportBug_Tip>Send a bug report to the Cosmere beta tracker. Your log and an optional screenshot go with it.</CC_BetaHub_ReportBug_Tip>
+    <CC_BetaHub_Suggest_Tip>Send an idea to the Cosmere beta tracker.</CC_BetaHub_Suggest_Tip>
+</LanguageData>

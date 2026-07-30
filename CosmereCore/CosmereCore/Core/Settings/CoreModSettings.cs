@@ -1,4 +1,6 @@
 using System;
+using Cosmere.Core.BetaHub;
+using Cosmere.Core.Framework;
 using Cosmere.Core.Quickstart;
 using Cosmere.Core.Settings.Model;
 using RimWorld;
@@ -45,6 +47,9 @@ public class CoreModSettings : CosmereModSettings {
 
     public bool showDormantConnection;
     public string? testScenarioDefName;
+
+    public bool showFeedbackButtons = true;
+    public string? feedbackDiscordUsername;
 
     public override string Name => "Core";
 
@@ -150,6 +155,17 @@ public class CoreModSettings : CosmereModSettings {
                             10f,
                             value => value.ToString("0")
                         )
+                    ),
+                    new SettingDescriptor(
+                        "show-feedback-buttons",
+                        "CC_Settings_ShowFeedbackButtons_Label",
+                        "CC_Settings_ShowFeedbackButtons_Description",
+                        new CheckboxControl(
+                            () => showFeedbackButtons,
+                            updated => showFeedbackButtons = updated,
+                            true
+                        ),
+                        () => BetaHubGate.IsBetaRevision(BuildInfo.Revision)
                     ),
                 ]
             ),
@@ -318,5 +334,7 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref dockPosition, "dockPosition");
         Scribe_Values.Look(ref dockPositionSet, "dockPositionSet");
         Scribe_Values.Look(ref dockSectionMaxHeight, "dockSectionMaxHeight", DefaultDockSectionMaxHeight);
+        Scribe_Values.Look(ref showFeedbackButtons, "showFeedbackButtons", true);
+        Scribe_Values.Look(ref feedbackDiscordUsername, "feedbackDiscordUsername");
     }
 }

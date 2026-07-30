@@ -90,7 +90,7 @@ public class Dialog_QuestChoice : Verse.Window {
             if (option.silverCost > 0) labelRect.width -= Spacing.Get(5f);
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, blocked ? BlurbColor : Color.white)) {
-                Widgets.Label(labelRect, $"CC_Quest_Choice_{option.key}".Translate());
+                Widgets.Label(labelRect, ResolvedLabelKey(option).Translate());
             }
 
             if (option.silverCost > 0) {
@@ -137,7 +137,7 @@ public class Dialog_QuestChoice : Verse.Window {
     }
 
     private static string BuildTip(QuestChoiceOption option, bool blocked, int totalSilver) {
-        string tip = $"CC_Quest_Choice_{option.key}_Tip".Translate();
+        string tip = ResolvedTipKey(option).Translate();
         if (!blocked) return tip;
 
         int shortfall = option.silverCost - totalSilver;
@@ -150,7 +150,20 @@ public class Dialog_QuestChoice : Verse.Window {
 
     private static float RowHeight(QuestChoiceOption option, float rowWidth) {
         float labelWidth = rowWidth - Spacing.Get() - (option.silverCost > 0 ? Spacing.Get(5f) : 0f);
-        float textHeight = Text.CalcHeight($"CC_Quest_Choice_{option.key}".Translate(), labelWidth);
+        float textHeight = Text.CalcHeight(ResolvedLabelKey(option).Translate(), labelWidth);
         return Mathf.Max(textHeight + Spacing.Get(), Spacing.Get(3f));
+    }
+
+    // option.labelKey/tipKey are string? on the model (Scribe-compatible), but ChoiceObjective's
+    // ConfigError rejects null/empty at load time, so a rendered dialog never sees the fallback.
+    // Local-copy-then-narrow mirrors the idiom in Core/Quest/Prereq/FlagPrereq.cs.
+    private static string ResolvedLabelKey(QuestChoiceOption option) {
+        string? labelKey = option.labelKey;
+        return labelKey != null && labelKey.Length > 0 ? labelKey : string.Empty;
+    }
+
+    private static string ResolvedTipKey(QuestChoiceOption option) {
+        string? tipKey = option.tipKey;
+        return tipKey != null && tipKey.Length > 0 ? tipKey : string.Empty;
     }
 }

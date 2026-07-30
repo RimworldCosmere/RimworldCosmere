@@ -25,6 +25,8 @@ public class ChoiceObjective : QuestObjective {
 
         for (int i = 0; i < opts.Count; i++) {
             if (string.IsNullOrEmpty(opts[i].key)) return $"ChoiceObjective option {i} has no key.";
+            if (string.IsNullOrEmpty(opts[i].labelKey)) return $"ChoiceObjective option {i} has no labelKey.";
+            if (string.IsNullOrEmpty(opts[i].tipKey)) return $"ChoiceObjective option {i} has no tipKey.";
         }
 
         return null;

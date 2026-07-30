@@ -73,14 +73,61 @@ public static class CosmereQuestBuilder {
             previousOutSignal = outSignal;
         }
 
+        string successSignal = previousOutSignal;
+        string failSignal = $"{quest.GetUniqueLoadID()}.failed";
+
+        // Objectives build their own QuestPart_CosmereActivable pollers during the loop above,
+        // so failSignal can only be assigned after the fact by walking what they added.
+        List<QuestPart> parts = quest.PartsListForReading;
+        for (int i = 0; i < parts.Count; i++) {
+            if (parts[i] is QuestPart_CosmereActivable activable) {
+                activable.failSignal = failSignal;
+            }
+        }
+
+        // The reward part must be added before the success QuestPart_QuestEnd: Quest.
+        // Notify_SignalReceived evaluates each part's signalListenMode against the quest's
+        // *current* State as it walks the parts list in order, and QuestPart_QuestEnd.
+        // Notify_QuestSignalReceived calls Quest.End() synchronously, which flips State away
+        // from Ongoing. A part added after QuestPart_QuestEnd would find the quest already
+        // ended and never fire.
+        quest.AddPart(new QuestPart_CosmereReward {
+            quest = quest,
+            inSignal = successSignal,
+            def = def,
+            map = map,
+            subject = subject,
+            rewardSeed = ctx.rewardSeed,
+        });
+
         QuestPart_QuestEnd questEnd = new QuestPart_QuestEnd {
             quest = quest,
-            inSignal = previousOutSignal,
+            inSignal = successSignal,
             outcome = QuestEndOutcome.Success,
             sendLetter = true,
             playSound = true,
         };
         quest.AddPart(questEnd);
+
+        // Same ordering rule applies to the failure branch: the outcome resolver has to run
+        // before the failure QuestPart_QuestEnd ends the quest.
+        quest.AddPart(new QuestPart_CosmereOutcome {
+            quest = quest,
+            inSignal = failSignal,
+            def = def,
+            map = map,
+            subject = subject,
+            rewardSeed = ctx.rewardSeed,
+        });
+
+        QuestPart_QuestEnd failEnd = new QuestPart_QuestEnd {
+            quest = quest,
+            inSignal = failSignal,
+            outcome = QuestEndOutcome.Fail,
+            sendLetter = true,
+            playSound = true,
+        };
+        quest.AddPart(failEnd);
     }
 
     /// <summary>

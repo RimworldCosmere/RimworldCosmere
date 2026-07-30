@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core.Def;
 using Cosmere.Core.Quest.Outcome;
 using Cosmere.Core.Quest.Prereq;
 using Cosmere.Core.Quest.Reward;
@@ -14,7 +15,7 @@ namespace Cosmere.Core.Quest;
 public class CosmereQuestDef : Verse.Def {
     public int challengeRating = 1;
     public int cooldownDays;
-    public ScadrialEra era = ScadrialEra.Any;
+    public List<string>? eras;
     public int expireAfterDays = 10;
     public FactionDef? giverFaction;
     public QuestKind kind = QuestKind.Repeatable;
@@ -36,7 +37,7 @@ public class CosmereQuestDef : Verse.Def {
         return new QuestCandidate {
             defName = defName,
             kind = kind,
-            era = era,
+            eras = eras,
             requiredShards = requiredShards,
             requiredFlags = requiredFlags,
             requiredCapstone = requiredCapstone,
@@ -67,6 +68,15 @@ public class CosmereQuestDef : Verse.Def {
 
         if (expireAfterDays <= 0 && kind == QuestKind.Repeatable) {
             yield return $"{defName}: repeatable quests need a positive expireAfterDays.";
+        }
+
+        if (eras != null) {
+            for (int i = 0; i < eras.Count; i++) {
+                string name = eras[i];
+                if (Verse.DefDatabase<EraDef>.GetNamedSilentFail(name) == null) {
+                    yield return $"{defName}: era '{name}' does not resolve.";
+                }
+            }
         }
 
         if (stages != null) {

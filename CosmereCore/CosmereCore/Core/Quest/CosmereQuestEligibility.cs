@@ -20,7 +20,7 @@ public static class CosmereQuestEligibility {
     public static bool IsEligible(QuestCandidate? candidate, QuestWorldState? state) {
         if (candidate == null || state == null) return false;
 
-        if (!EraMatches(candidate.era, state.era)) return false;
+        if (!EraMatches(candidate.eras, state.era)) return false;
         if (state.freeColonistCount < candidate.minColonists) return false;
         if (state.daysElapsed < candidate.minDaysElapsed) return false;
 
@@ -52,8 +52,15 @@ public static class CosmereQuestEligibility {
         return result;
     }
 
-    private static bool EraMatches(ScadrialEra required, ScadrialEra actual) {
-        return required == ScadrialEra.Any || actual == ScadrialEra.Any || required == actual;
+    private static bool EraMatches(List<string>? required, string? actual) {
+        if (required == null || required.Count == 0) return true;
+        if (actual == null || actual.Length == 0) return false;
+
+        for (int i = 0; i < required.Count; i++) {
+            if (required[i] == actual) return true;
+        }
+
+        return false;
     }
 
     private static bool HasAll(List<string>? required, HashSet<string>? present) {

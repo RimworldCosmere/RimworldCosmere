@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <CC_Quest_Reward_Metal_Exact>{COUNT} {METAL}</CC_Quest_Reward_Metal_Exact>
+  <CC_Quest_Reward_Metal_Range>{MIN} to {MAX} {METAL}</CC_Quest_Reward_Metal_Range>
+  <CC_Quest_Reward_Thing>{COUNT} {THING}</CC_Quest_Reward_Thing>
+  <CC_Quest_Reward_Knowledge>Knowledge worth having</CC_Quest_Reward_Knowledge>
+  <CC_Quest_Reward_Research>Research progress, about {PERCENT} percent of a project</CC_Quest_Reward_Research>
+  <CC_Quest_Reward_Rolled>Payment, terms unstated</CC_Quest_Reward_Rolled>
+</LanguageData>

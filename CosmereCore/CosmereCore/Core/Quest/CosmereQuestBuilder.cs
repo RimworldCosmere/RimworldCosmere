@@ -21,10 +21,17 @@ public static class CosmereQuestBuilder {
     public static bool TryBuild(CosmereQuestDef def, Verse.Map map, Pawn? subject, out RimWorld.Quest? quest) {
         RimWorld.Quest built = RimWorld.Quest.MakeRaw();
         built.root = DefDatabase<QuestScriptDef>.GetNamed("Cosmere_Quest_Root");
+        if (built.root == null) {
+            Logger.Warning($"{def.defName}: quest build aborted - Cosmere_Quest_Root marker def is missing");
+            quest = null;
+            return false;
+        }
+
         built.name = def.LabelCap;
         built.description = def.description;
         built.challengeRating = def.challengeRating;
-        built.acceptanceExpireTick = Find.TickManager.TicksGame + def.expireAfterDays * GenDate.TicksPerDay;
+        long expireOffsetTicks = global::System.Math.Min((long)def.expireAfterDays * GenDate.TicksPerDay, int.MaxValue - Find.TickManager.TicksGame);
+        built.acceptanceExpireTick = Find.TickManager.TicksGame + (int)expireOffsetTicks;
 
         try {
             BuildStages(built, def, map, subject);

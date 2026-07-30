@@ -239,4 +239,34 @@ public class CosmereQuestEligibilityTests {
         done.capstoneStates["Cosmere_Scadrial_Quest_PitsOfHathsin"] = CapstoneState.Completed;
         Assert.IsTrue(prereq.IsMet(done));
     }
+
+    [TestMethod]
+    public void ColonistCountPrereqEnforcesItsMinimum() {
+        ColonistCountPrereq prereq = new ColonistCountPrereq { minCount = 8 };
+
+        QuestWorldState below = BaseState();
+        below.freeColonistCount = 7;
+        Assert.IsFalse(prereq.IsMet(below));
+
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        QuestWorldState above = BaseState();
+        above.freeColonistCount = 9;
+        Assert.IsTrue(prereq.IsMet(above));
+    }
+
+    [TestMethod]
+    public void DaysElapsedPrereqEnforcesItsMinimum() {
+        DaysElapsedPrereq prereq = new DaysElapsedPrereq { minDays = 100 };
+
+        QuestWorldState before = BaseState();
+        before.daysElapsed = 99;
+        Assert.IsFalse(prereq.IsMet(before));
+
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        QuestWorldState after = BaseState();
+        after.daysElapsed = 101;
+        Assert.IsTrue(prereq.IsMet(after));
+    }
 }

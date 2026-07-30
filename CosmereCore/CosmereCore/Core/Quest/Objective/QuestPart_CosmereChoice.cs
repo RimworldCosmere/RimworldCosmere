@@ -32,7 +32,7 @@ public class QuestPart_CosmereChoice : QuestPartActivable {
 
         chosenKey = option.key;
 
-        if (option.goodwillOnTarget != 0) ApplyGoodwill(option.goodwillOnTarget);
+        if (option.goodwillOnTarget != 0 && quest != null) ApplyGoodwill(option.goodwillOnTarget);
 
         Complete(chosenKey.Named("CHOICE"));
         return true;
@@ -40,7 +40,7 @@ public class QuestPart_CosmereChoice : QuestPartActivable {
 
     private void ApplyGoodwill(int delta) {
         foreach (Faction faction in quest.InvolvedFactions) {
-            if (faction.IsPlayer) continue;
+            if (faction == null || faction.IsPlayer) continue;
             faction.TryAffectGoodwillWith(Faction.OfPlayer, delta, true, true);
             return;
         }

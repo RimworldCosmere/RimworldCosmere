@@ -17,24 +17,9 @@ public static class QuestSilver {
     /// </summary>
     public static bool TryCharge(int amount) {
         if (amount <= 0) return true;
+        if (GetTotalSilver() < amount) return false;
 
-        List<Map> maps = Find.Maps;
-        List<Verse.Thing> stacks = new List<Verse.Thing>();
-        int total = 0;
-
-        for (int i = 0; i < maps.Count; i++) {
-            Map map = maps[i];
-            if (!map.IsPlayerHome) continue;
-
-            List<Verse.Thing> onMap = map.listerThings.ThingsOfDef(RimWorld.ThingDefOf.Silver);
-            for (int j = 0; j < onMap.Count; j++) {
-                stacks.Add(onMap[j]);
-                total += onMap[j].stackCount;
-            }
-        }
-
-        if (total < amount) return false;
-
+        List<Verse.Thing> stacks = CollectStacks();
         int remaining = amount;
         for (int i = stacks.Count - 1; i >= 0 && remaining > 0; i--) {
             Verse.Thing stack = stacks[i];
@@ -44,5 +29,31 @@ public static class QuestSilver {
         }
 
         return true;
+    }
+
+    /// <summary>
+    ///     Counts silver across every player home map without touching any of it. Safe to call
+    ///     every frame for UI affordability checks.
+    /// </summary>
+    public static int GetTotalSilver() {
+        List<Verse.Thing> stacks = CollectStacks();
+        int total = 0;
+        for (int i = 0; i < stacks.Count; i++) total += stacks[i].stackCount;
+        return total;
+    }
+
+    private static List<Verse.Thing> CollectStacks() {
+        List<Map> maps = Find.Maps;
+        List<Verse.Thing> stacks = new List<Verse.Thing>();
+
+        for (int i = 0; i < maps.Count; i++) {
+            Map map = maps[i];
+            if (!map.IsPlayerHome) continue;
+
+            List<Verse.Thing> onMap = map.listerThings.ThingsOfDef(RimWorld.ThingDefOf.Silver);
+            for (int j = 0; j < onMap.Count; j++) stacks.Add(onMap[j]);
+        }
+
+        return stacks;
     }
 }

@@ -11,4 +11,5 @@
   <CC_Quest_Choice_Title>How will you approach this</CC_Quest_Choice_Title>
   <CC_Quest_Choice_Blurb>The decision is made once. It cannot be revisited later.</CC_Quest_Choice_Blurb>
   <CC_Quest_Choice_InsufficientSilver>You do not have enough silver to choose this path.</CC_Quest_Choice_InsufficientSilver>
+  <CC_Quest_Choice_InsufficientSilver_Tip>You need {COST} more silver for this.</CC_Quest_Choice_InsufficientSilver_Tip>
 </LanguageData>

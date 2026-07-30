@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core.Quest;
 using Cosmere.Core.Quest.Objective;
 using UnityEngine;
 using Verse;
@@ -23,6 +24,10 @@ public class Dialog_QuestChoice : Verse.Window {
     private static readonly Color CostColor = new Color(0.82f, 0.8f, 0.68f);
     private static readonly Color BlurbColor = new Color(0.75f, 0.75f, 0.75f);
 
+    // Blocked-row wash: the accent colour itself at a fraction of its alpha, not a new hue -
+    // reads as "the same steel-blue surface, faded" rather than an unrelated warning colour.
+    private static readonly Color BlockedRowColor = new Color(AccentColor.r, AccentColor.g, AccentColor.b, 0.15f);
+
     private readonly QuestPart_CosmereChoice part;
 
     public Dialog_QuestChoice(QuestPart_CosmereChoice part) {
@@ -36,6 +41,11 @@ public class Dialog_QuestChoice : Verse.Window {
         draggable = false;
     }
 
+    // Window.InnerWindowOnGUI contracts the window rect by Margin (18f) before calling
+    // DoWindowContents. Overriding to 0 leaves Spacing.Get() as the only contraction in play,
+    // so CalcHeight's content width matches what DoWindowContents actually renders at.
+    protected override float Margin => 0f;
+
     public override Vector2 InitialSize => new Vector2(WindowWidth, CalcHeight());
 
     public override void DoWindowContents(Rect inRect) {
@@ -47,6 +57,7 @@ public class Dialog_QuestChoice : Verse.Window {
 
         Rect body = inRect.ContractedBy(Spacing.Get());
         float y = body.y;
+        int totalSilver = QuestSilver.GetTotalSilver();
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Rect title = new Rect(body.x, y, body.width, Text.CalcHeight("CC_Quest_Choice_Title".Translate(), body.width));
@@ -67,17 +78,18 @@ public class Dialog_QuestChoice : Verse.Window {
             QuestChoiceOption option = options[i];
             float rowHeight = RowHeight(option, body.width);
             Rect row = new Rect(body.x, y, body.width, rowHeight);
+            bool blocked = option.silverCost > totalSilver;
 
-            Widgets.DrawBoxSolid(row, RowColor);
+            Widgets.DrawBoxSolid(row, blocked ? BlockedRowColor : RowColor);
             Widgets.DrawHighlightIfMouseover(row);
-            TooltipHandler.TipRegion(row, $"CC_Quest_Choice_{option.key}_Tip".Translate());
+            TooltipHandler.TipRegion(row, BuildTip(option, blocked, totalSilver));
             MouseoverSounds.DoRegion(row);
 
             Rect inner = row.ContractedBy(Spacing.Get(0.5f));
             Rect labelRect = inner;
             if (option.silverCost > 0) labelRect.width -= Spacing.Get(5f);
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, blocked ? BlurbColor : Color.white)) {
                 Widgets.Label(labelRect, $"CC_Quest_Choice_{option.key}".Translate());
             }
 
@@ -122,6 +134,18 @@ public class Dialog_QuestChoice : Verse.Window {
         }
 
         return height;
+    }
+
+    private static string BuildTip(QuestChoiceOption option, bool blocked, int totalSilver) {
+        string tip = $"CC_Quest_Choice_{option.key}_Tip".Translate();
+        if (!blocked) return tip;
+
+        int shortfall = option.silverCost - totalSilver;
+        string shortfallTip = "CC_Quest_Choice_InsufficientSilver_Tip"
+            .Translate(((float)shortfall).ToStringMoney().Named("COST"))
+            .Resolve();
+
+        return shortfallTip + "\n\n" + tip;
     }
 
     private static float RowHeight(QuestChoiceOption option, float rowWidth) {

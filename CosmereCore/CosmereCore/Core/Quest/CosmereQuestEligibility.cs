@@ -41,12 +41,30 @@ public static class CosmereQuestEligibility {
         return CooldownElapsed(candidate, state);
     }
 
+    /// <summary>
+    ///     Whether the storyteller may offer this quest as a random incident. Capstones reach the
+    ///     player through scenario progression and Threats simply arrive, so neither belongs in the
+    ///     random offer pool no matter how eligible it otherwise is.
+    /// </summary>
+    public static bool IsOfferableByStoryteller(QuestCandidate? candidate, QuestWorldState? state) {
+        if (candidate == null) return false;
+        if (candidate.kind != QuestKind.Repeatable) return false;
+        return IsEligible(candidate, state);
+    }
+
+    /// <summary>
+    ///     Narrows candidates to the storyteller's random-offer pool. This is the storyteller path
+    ///     only - CosmereQuestManager.PickWeighted is its sole caller - so it excludes Capstone and
+    ///     Threat kinds via IsOfferableByStoryteller even when IsEligible would allow them. Callers
+    ///     that need the general "may this quest run right now" predicate should call IsEligible
+    ///     directly instead.
+    /// </summary>
     public static List<QuestCandidate> Filter(List<QuestCandidate>? candidates, QuestWorldState state) {
         List<QuestCandidate> result = new List<QuestCandidate>();
         if (candidates == null) return result;
 
         for (int i = 0; i < candidates.Count; i++) {
-            if (IsEligible(candidates[i], state)) result.Add(candidates[i]);
+            if (IsOfferableByStoryteller(candidates[i], state)) result.Add(candidates[i]);
         }
 
         return result;

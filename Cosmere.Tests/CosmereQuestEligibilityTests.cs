@@ -226,6 +226,61 @@ public class CosmereQuestEligibilityTests {
     }
 
     [TestMethod]
+    public void RepeatableThatIsOtherwiseEligibleIsOfferable() {
+        Assert.IsTrue(CosmereQuestEligibility.IsOfferableByStoryteller(Convoy(), BaseState()));
+    }
+
+    [TestMethod]
+    public void EligibleCapstoneIsNeverOfferableByStorytellerEvenWhenNotFired() {
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        Assert.IsFalse(CosmereQuestEligibility.IsOfferableByStoryteller(pits, state));
+    }
+
+    [TestMethod]
+    public void EligibleThreatIsNeverOfferableByStoryteller() {
+        QuestCandidate raid = Convoy();
+        raid.kind = QuestKind.Threat;
+        raid.defName = "Cosmere_Scadrial_Quest_KolossRampage";
+
+        Assert.IsFalse(CosmereQuestEligibility.IsOfferableByStoryteller(raid, BaseState()));
+    }
+
+    [TestMethod]
+    public void FilterDropsACapstoneFromAMixedListButKeepsTheRepeatable() {
+        QuestCandidate convoy = Convoy();
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        List<QuestCandidate> result =
+            CosmereQuestEligibility.Filter(new List<QuestCandidate> { convoy, pits }, state);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(convoy.defName, result[0].defName);
+    }
+
+    [TestMethod]
+    public void IsEligibleStillAcceptsAnEligibleCapstoneEvenThoughFilterWouldDropIt() {
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(pits, state));
+    }
+
+    [TestMethod]
     public void WeightIsClampedToNonNegative() {
         QuestCandidate negative = Convoy();
         negative.selectionWeight = -3f;

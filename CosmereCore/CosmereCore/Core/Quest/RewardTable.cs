@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace Cosmere.Core.Quest;
 
-/// <summary>One weighted branch of a rolled reward.</summary>
-public class RewardTableEntry {
-    public string? key;
-    public int weight;
-}
-
 /// <summary>
 ///     Verse-free weighted selection over a reward table. Tables must sum to exactly 100 so
 ///     a def author reading the XML sees percentages rather than opaque relative weights.

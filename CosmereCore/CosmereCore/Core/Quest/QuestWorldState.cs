@@ -2,35 +2,6 @@ using System.Collections.Generic;
 
 namespace Cosmere.Core.Quest;
 
-/// <summary>Which Scadrial era a quest belongs to. Any means it fires in both.</summary>
-public enum ScadrialEra {
-    Any,
-    PreCatacendre,
-    PostCatacendre,
-}
-
-/// <summary>How a quest reaches the player.</summary>
-public enum QuestKind {
-    /// <summary>Offered by the storyteller on weight, re-offers after a cooldown.</summary>
-    Repeatable,
-
-    /// <summary>Fired once from a ScenarioProgressionDef event. Can burn.</summary>
-    Capstone,
-
-    /// <summary>Not offered. It arrives, and the player deals with it.</summary>
-    Threat,
-}
-
-/// <summary>
-///     Whether a quest belongs to the colony or to one specific pawn. Pawn-scoped quests
-///     resolve a subject at offer time and thread it through every objective, reward and
-///     outcome. Nothing in the Scadrial arc uses Pawn; the Roshar arc uses it heavily.
-/// </summary>
-public enum QuestSubject {
-    Colony,
-    Pawn,
-}
-
 /// <summary>
 ///     A plain snapshot of everything <see cref="CosmereQuestEligibility" /> needs. Built by
 ///     CosmereQuestManager from live game state, and constructed directly in tests. Holds no

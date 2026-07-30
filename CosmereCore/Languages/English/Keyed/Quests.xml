@@ -8,4 +8,7 @@
   <CC_Quest_Reward_Rolled>Payment, terms unstated</CC_Quest_Reward_Rolled>
   <CC_Quest_TimedWork_Remaining>{TIME} of work remains here</CC_Quest_TimedWork_Remaining>
   <CC_Quest_CarryHome_Remaining>Bring {COUNT} {THING} home</CC_Quest_CarryHome_Remaining>
+  <CC_Quest_Choice_Title>How will you approach this</CC_Quest_Choice_Title>
+  <CC_Quest_Choice_Blurb>The decision is made once. It cannot be revisited later.</CC_Quest_Choice_Blurb>
+  <CC_Quest_Choice_InsufficientSilver>You do not have enough silver to choose this path.</CC_Quest_Choice_InsufficientSilver>
 </LanguageData>

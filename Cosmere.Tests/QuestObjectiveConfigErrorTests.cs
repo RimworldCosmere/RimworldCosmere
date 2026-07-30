@@ -11,6 +11,13 @@ namespace Cosmere.Tests;
 ///     which the JIT cannot resolve without Assembly-CSharp loaded - see task-12-report.md for
 ///     the probe that proved it throws FileNotFoundException.
 ///
+///     ChoiceObjective.ConfigError was probed too: its body only reads a List&lt;QuestChoiceOption&gt;
+///     count and a string key, neither RimWorld-typed. It still fails the same way, because
+///     QuestChoiceOption implements Verse.IExposable - loading that type's interface map
+///     requires resolving Verse.IExposable regardless of which method is called, throwing
+///     FileNotFoundException for Assembly-CSharp before ConfigError's own body ever runs. See
+///     task-13-report.md for the probe.
+///
 ///     reinforcementIntervalHours = 0 must stay legal: Crystal in the Deep disables
 ///     reinforcements by setting it to 0, and QuestPart_TimedWork.QueueReinforcements already
 ///     treats a non-positive interval as "no reinforcements". Only a negative value is an error.

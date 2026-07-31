@@ -8,9 +8,6 @@ using Verse.Sound;
 
 namespace Cosmere.Core.Window;
 
-// Holds Texture2D fields, so the game requires the attribute here even though BaseWindow
-// already carries one. It is not inherited for that check.
-[StaticConstructorOnStartup]
 public sealed class FeedbackDialog : BaseWindow {
     private static readonly Color CounterColor = new Color(0.80f, 0.62f, 0.35f);
     private static readonly Color SuccessColor = new Color(0.55f, 0.75f, 0.52f);
@@ -196,9 +193,21 @@ public sealed class FeedbackDialog : BaseWindow {
                 .Translate((finished.ServerMessage ?? string.Empty).Named("REASON")));
         }
 
-        if (ok || string.IsNullOrEmpty(finished.ServerMessage)) return;
-
         listing.Gap(Spacing.Get(0.5));
+
+        if (ok) {
+            if (string.IsNullOrEmpty(finished.IssueUrl)) return;
+
+            // Printed rather than left behind the button: OpenURL reaches no browser in a
+            // container or on a locked-down machine, and the player still needs the address.
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
+                listing.Label(finished.IssueUrl!);
+            }
+
+            return;
+        }
+
+        if (string.IsNullOrEmpty(finished.ServerMessage)) return;
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
             listing.Label(finished.ServerMessage!);
@@ -294,14 +303,19 @@ public sealed class FeedbackDialog : BaseWindow {
         SubmitResult finished = result!;
         Rect actionRect = inner.RightPartPixels(buttonWidth);
 
-        if (Widgets.ButtonText(inner.LeftPartPixels(buttonWidth), "CC_BetaHub_Cancel".Translate())) {
+        if (Widgets.ButtonText(inner.LeftPartPixels(buttonWidth), "CC_BetaHub_Close".Translate())) {
             Close();
         }
 
         if (finished.Outcome == SubmitOutcome.Success) {
+            if (string.IsNullOrEmpty(finished.IssueUrl)) return;
+
             if (Widgets.ButtonText(actionRect, "CC_BetaHub_ViewOnline".Translate())) {
-                if (!string.IsNullOrEmpty(finished.IssueUrl)) Application.OpenURL(finished.IssueUrl!);
-                Close();
+                // Copied as well as opened. OpenURL fails silently where no browser is
+                // reachable, and the window stays open so the address is still readable.
+                GUIUtility.systemCopyBuffer = finished.IssueUrl;
+                Application.OpenURL(finished.IssueUrl!);
+                Messages.Message("CC_BetaHub_LinkCopied".Translate(), RimWorld.MessageTypeDefOf.TaskCompletion, false);
             }
 
             return;

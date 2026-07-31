@@ -31,4 +31,6 @@
     <CC_BetaHub_Retry>Retry</CC_BetaHub_Retry>
     <CC_BetaHub_ViewOnline>View it on BetaHub</CC_BetaHub_ViewOnline>
     <CC_BetaHub_Field_Required>This field is required.</CC_BetaHub_Field_Required>
+    <CC_BetaHub_Close>Close</CC_BetaHub_Close>
+    <CC_BetaHub_LinkCopied>Link copied to your clipboard.</CC_BetaHub_LinkCopied>
 </LanguageData>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Quest.CosmereQuestDef>
+        <defName>Cosmere_Scadrial_Quest_HathsinGeodeRun</defName>
+        <label>Crystal in the Deep</label>
+        <description>A survivor of the Pits of Hathsin has come to the colony, palms scarred through to bone from years spent breaking geodes free of the stone. He remembers a seam the Ministry never found, buried past where the obligators cared to dig. He will lead the colony there, if they feed him first.</description>
+
+        <kind>Repeatable</kind>
+        <subject>Colony</subject>
+        <eras>
+            <li>Cosmere_Scadrial_Era_PreCatacendre</li>
+        </eras>
+
+        <selectionWeight>0.6</selectionWeight>
+        <expireAfterDays>12</expireAfterDays>
+        <cooldownDays>30</cooldownDays>
+        <challengeRating>1</challengeRating>
+        <minColonists>3</minColonists>
+
+        <stages>
+            <li>
+                <key>travel</key>
+                <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
+                    <sitePart>Manhunters</sitePart>
+                    <minTiles>10</minTiles>
+                    <maxTiles>22</maxTiles>
+                    <threatPoints>180</threatPoints>
+                </objective>
+            </li>
+            <li>
+                <key>clear</key>
+                <objective Class="Cosmere.Core.Quest.Objective.ClearSiteObjective" />
+            </li>
+            <li>
+                <key>harvest</key>
+                <objective Class="Cosmere.Core.Quest.Objective.TimedWorkObjective">
+                    <requiredDaysOnSite>1</requiredDaysOnSite>
+                    <reinforcementIntervalHours>0</reinforcementIntervalHours>
+                </objective>
+            </li>
+        </stages>
+
+        <rewards>
+            <li Class="Cosmere.Core.Quest.Reward.GodMetalReward">
+                <metal>Atium</metal>
+                <countMin>1</countMin>
+                <countMax>3</countMax>
+            </li>
+            <li Class="Cosmere.Core.Quest.Reward.FlagReward">
+                <flag>HathsinLead</flag>
+            </li>
+        </rewards>
+
+        <onFailure Class="Cosmere.Core.Quest.Outcome.NeverBurns" />
+    </Cosmere.Core.Quest.CosmereQuestDef>
+</Defs>

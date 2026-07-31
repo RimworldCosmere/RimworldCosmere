@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <IncidentDef>
+    <defName>Cosmere_Incident_Quest</defName>
+    <label>A call to Investiture</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.Core.Quest.IncidentWorker_CosmereQuest</workerClass>
+    <baseChance>1.4</baseChance>
+  </IncidentDef>
+</Defs>

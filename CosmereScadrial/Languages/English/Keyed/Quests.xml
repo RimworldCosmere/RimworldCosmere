@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Quest_AtiumCaravan_Ambush_Label>Ambush the convoy</CS_Quest_AtiumCaravan_Ambush_Label>
+    <CS_Quest_AtiumCaravan_Ambush_Tip>Strike the wagons on the open road. The obligators will fight back, and the Ministry will not forget who struck first.</CS_Quest_AtiumCaravan_Ambush_Tip>
+
+    <CS_Quest_AtiumCaravan_Bribe_Label>Bribe the escort captain</CS_Quest_AtiumCaravan_Bribe_Label>
+    <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
+
+    <CS_Quest_Reward_FirstBead>A single bead of Lerasium, if it survives the road</CS_Quest_Reward_FirstBead>
+
+    <CS_Quest_Lerasium_Title>One bead, and three ways to spend it</CS_Quest_Lerasium_Title>
+    <CS_Quest_Lerasium_Blurb>The bead is warm from the road, no larger than a fingertip. Choose. There will not be another.</CS_Quest_Lerasium_Blurb>
+
+    <CS_Quest_Lerasium_Drink>Drink it</CS_Quest_Lerasium_Drink>
+    <CS_Quest_Lerasium_Drink_Tip>One colonist becomes Mistborn. There is no second bead.</CS_Quest_Lerasium_Drink_Tip>
+    <CS_Quest_Lerasium_Drink_Blocked>No colonist stands free to take the bead.</CS_Quest_Lerasium_Drink_Blocked>
+
+    <CS_Quest_Lerasium_Give>Give it away</CS_Quest_Lerasium_Give>
+    <CS_Quest_Lerasium_Give_Tip>A permanent ally, and a Mistborn of theirs who comes when you are pressed.</CS_Quest_Lerasium_Give_Tip>
+
+    <CS_Quest_Lerasium_Hide>Hide it</CS_Quest_Lerasium_Hide>
+    <CS_Quest_Lerasium_Hide_Tip>Keep the bead. Decide later. Understand that others will come looking.</CS_Quest_Lerasium_Hide_Tip>
+    <CS_Quest_Lerasium_Hide_Confirm>The bead stays hidden, tucked away for another day.</CS_Quest_Lerasium_Hide_Confirm>
+
+    <CS_Quest_Lerasium_BeadMissing>The bead is gone. There is nothing left to spend.</CS_Quest_Lerasium_BeadMissing>
+</LanguageData>

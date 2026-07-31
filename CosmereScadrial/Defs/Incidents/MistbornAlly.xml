@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <IncidentDef>
+        <defName>Cosmere_Scadrial_Incident_MistbornAlly</defName>
+        <workerClass>Cosmere.System.Scadrial.Incident.Worker.IncidentWorker_MistbornAllyArrival</workerClass>
+        <category>Misc</category>
+        <letterLabel>A Debt Repaid</letterLabel>
+        <letterText>
+            Word reached the crew of trouble at your door. One of their own comes to stand with you now, a debt repaid for the bead you gave away.
+        </letterText>
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
+        <letterDef>PositiveEvent</letterDef>
+        <baseChance>0.02</baseChance>
+        <requireColonistsPresent>true</requireColonistsPresent>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.NamedPawnIncidentConfig">
+                <pawn>
+                    <firstName>Reen</firstName>
+                    <age>29</age>
+                    <gender>Male</gender>
+                    <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+                    <mistborn>true</mistborn>
+                    <traits>
+                        <li><def>Tough</def><degree>0</degree></li>
+                    </traits>
+                    <skills>
+                        <li><def>Melee</def><level>10</level></li>
+                        <li><def>Social</def><level>8</level></li>
+                    </skills>
+                </pawn>
+            </li>
+        </modExtensions>
+    </IncidentDef>
+</Defs>

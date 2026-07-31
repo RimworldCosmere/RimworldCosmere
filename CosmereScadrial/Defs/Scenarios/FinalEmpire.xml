@@ -261,6 +261,9 @@
         </shards>
         <allowChange>False</allowChange>
       </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
+      </li>
     </modExtensions>
   </ScenarioDef>
 </Defs>

@@ -71,6 +71,27 @@
         </actions>
       </li>
       <li>
+        <key>obligators_confession</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>70</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>kelsiers_sacrifice</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>The Obligator's Confession</title>
+            <text>A contact within the rebellion brings word from a dying man. An obligator, caught skimming from the Ministry's own coffers, traded his life for a confession before the end. He spoke of a vault sealed since the Ascension - one that holds a single bead of lerasium, the metal the Lord Ruler himself was made from. The Ministry does not admit the vault exists. The obligator is already dead. The vault is not.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.StartQuestAction">
+            <questDef>Cosmere_Scadrial_Quest_FirstLerasium</questDef>
+          </li>
+        </actions>
+      </li>
+      <li>
         <key>the_collapse</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <CC_Quest_Reward_Metal_Exact>{COUNT} {METAL}</CC_Quest_Reward_Metal_Exact>
+  <CC_Quest_Reward_Metal_Range>{MIN} to {MAX} {METAL}</CC_Quest_Reward_Metal_Range>
+  <CC_Quest_Reward_Thing>{COUNT} {THING}</CC_Quest_Reward_Thing>
+  <CC_Quest_Reward_Knowledge>Knowledge worth having</CC_Quest_Reward_Knowledge>
+  <CC_Quest_Reward_Research>Research progress, about {PERCENT} percent of a project</CC_Quest_Reward_Research>
+  <CC_Quest_Reward_Rolled>Payment, terms unstated</CC_Quest_Reward_Rolled>
+  <CC_Quest_TimedWork_Remaining>{TIME} of work remains here</CC_Quest_TimedWork_Remaining>
+  <CC_Quest_CarryHome_Remaining>Bring {COUNT} {THING} home</CC_Quest_CarryHome_Remaining>
+  <CC_Quest_Choice_Title>How will you approach this</CC_Quest_Choice_Title>
+  <CC_Quest_Choice_Blurb>The decision is made once. It cannot be revisited later.</CC_Quest_Choice_Blurb>
+  <CC_Quest_Choice_InsufficientSilver>You do not have enough silver to choose this path.</CC_Quest_Choice_InsufficientSilver>
+  <CC_Quest_Choice_InsufficientSilver_Tip>You need {COST} more silver for this.</CC_Quest_Choice_InsufficientSilver_Tip>
+</LanguageData>

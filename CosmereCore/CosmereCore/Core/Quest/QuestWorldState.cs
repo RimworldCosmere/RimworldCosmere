@@ -13,7 +13,7 @@ public class QuestWorldState {
     public int currentTick;
     public int daysElapsed;
     public HashSet<string> enabledShards = new HashSet<string>();
-    public ScadrialEra era = ScadrialEra.Any;
+    public string? era;
     public HashSet<string> flags = new HashSet<string>();
     public int freeColonistCount;
     public Dictionary<string, int> lastOfferedTick = new Dictionary<string, int>();

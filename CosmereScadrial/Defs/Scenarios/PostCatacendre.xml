@@ -91,6 +91,9 @@
         <shards><li>Harmony</li></shards>
         <allowChange>False</allowChange>
       </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PostCatacendre</era>
+      </li>
     </modExtensions>
   </ScenarioDef>
 </Defs>

@@ -9,7 +9,7 @@ namespace Cosmere.Core.Quest;
 public class QuestCandidate {
     public int cooldownDays;
     public string defName = string.Empty;
-    public ScadrialEra era = ScadrialEra.Any;
+    public List<string>? eras;
     public QuestKind kind = QuestKind.Repeatable;
     public int minColonists;
     public int minDaysElapsed;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cosmere.Core.Quest;
+using Cosmere.Core.Quest.Prereq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cosmere.Tests;
@@ -18,7 +19,7 @@ public class CosmereQuestEligibilityTests {
         return new QuestWorldState {
             currentTick = 100 * Day,
             daysElapsed = 100,
-            era = ScadrialEra.PreCatacendre,
+            era = "Cosmere_Scadrial_Era_PreCatacendre",
             freeColonistCount = 8,
             enabledShards = new HashSet<string> { "Preservation", "Ruin" },
         };
@@ -28,7 +29,7 @@ public class CosmereQuestEligibilityTests {
         return new QuestCandidate {
             defName = "Cosmere_Scadrial_Quest_AtiumCaravan",
             kind = QuestKind.Repeatable,
-            era = ScadrialEra.PreCatacendre,
+            eras = new List<string> { "Cosmere_Scadrial_Era_PreCatacendre" },
             cooldownDays = 25,
             selectionWeight = 1.2f,
         };
@@ -42,21 +43,50 @@ public class CosmereQuestEligibilityTests {
     [TestMethod]
     public void EraMismatchIsRejected() {
         QuestWorldState state = BaseState();
-        state.era = ScadrialEra.PostCatacendre;
+        state.era = "Cosmere_Scadrial_Era_PostCatacendre";
         Assert.IsFalse(CosmereQuestEligibility.IsEligible(Convoy(), state));
     }
 
     [TestMethod]
     public void EraAnyMatchesBothEras() {
         QuestCandidate anyEra = Convoy();
-        anyEra.era = ScadrialEra.Any;
+        anyEra.eras = null;
 
         QuestWorldState pre = BaseState();
         QuestWorldState post = BaseState();
-        post.era = ScadrialEra.PostCatacendre;
+        post.era = "Cosmere_Scadrial_Era_PostCatacendre";
+        QuestWorldState noEra = BaseState();
+        noEra.era = null;
 
         Assert.IsTrue(CosmereQuestEligibility.IsEligible(anyEra, pre));
         Assert.IsTrue(CosmereQuestEligibility.IsEligible(anyEra, post));
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(anyEra, noEra));
+    }
+
+    [TestMethod]
+    public void EraIsRejectedWhenWorldEraIsNull() {
+        QuestWorldState state = BaseState();
+        state.era = null;
+        Assert.IsFalse(CosmereQuestEligibility.IsEligible(Convoy(), state));
+    }
+
+    [TestMethod]
+    public void CandidateWithMultipleErasMatchesEitherButNotAThird() {
+        QuestCandidate multiEra = Convoy();
+        multiEra.eras = new List<string> {
+            "Cosmere_Scadrial_Era_PreCatacendre",
+            "Cosmere_Scadrial_Era_PostCatacendre",
+        };
+
+        QuestWorldState pre = BaseState();
+        QuestWorldState post = BaseState();
+        post.era = "Cosmere_Scadrial_Era_PostCatacendre";
+        QuestWorldState alloyOfLaw = BaseState();
+        alloyOfLaw.era = "Cosmere_Scadrial_Era_AlloyOfLaw";
+
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(multiEra, pre));
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(multiEra, post));
+        Assert.IsFalse(CosmereQuestEligibility.IsEligible(multiEra, alloyOfLaw));
     }
 
     [TestMethod]
@@ -186,7 +216,7 @@ public class CosmereQuestEligibilityTests {
         QuestCandidate ok = Convoy();
         QuestCandidate wrongEra = Convoy();
         wrongEra.defName = "wrong";
-        wrongEra.era = ScadrialEra.PostCatacendre;
+        wrongEra.eras = new List<string> { "Cosmere_Scadrial_Era_PostCatacendre" };
 
         List<QuestCandidate> result =
             CosmereQuestEligibility.Filter(new List<QuestCandidate> { ok, wrongEra }, BaseState());
@@ -196,10 +226,131 @@ public class CosmereQuestEligibilityTests {
     }
 
     [TestMethod]
+    public void RepeatableThatIsOtherwiseEligibleIsOfferable() {
+        Assert.IsTrue(CosmereQuestEligibility.IsOfferableByStoryteller(Convoy(), BaseState()));
+    }
+
+    [TestMethod]
+    public void EligibleCapstoneIsNeverOfferableByStorytellerEvenWhenNotFired() {
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        Assert.IsFalse(CosmereQuestEligibility.IsOfferableByStoryteller(pits, state));
+    }
+
+    [TestMethod]
+    public void EligibleThreatIsNeverOfferableByStoryteller() {
+        QuestCandidate raid = Convoy();
+        raid.kind = QuestKind.Threat;
+        raid.defName = "Cosmere_Scadrial_Quest_KolossRampage";
+
+        Assert.IsFalse(CosmereQuestEligibility.IsOfferableByStoryteller(raid, BaseState()));
+    }
+
+    [TestMethod]
+    public void FilterDropsACapstoneFromAMixedListButKeepsTheRepeatable() {
+        QuestCandidate convoy = Convoy();
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        List<QuestCandidate> result =
+            CosmereQuestEligibility.Filter(new List<QuestCandidate> { convoy, pits }, state);
+
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(convoy.defName, result[0].defName);
+    }
+
+    [TestMethod]
+    public void IsEligibleStillAcceptsAnEligibleCapstoneEvenThoughFilterWouldDropIt() {
+        QuestCandidate pits = Convoy();
+        pits.kind = QuestKind.Capstone;
+        pits.defName = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+
+        QuestWorldState state = BaseState();
+        state.capstoneStates[pits.defName] = CapstoneState.NotFired;
+
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(pits, state));
+    }
+
+    [TestMethod]
     public void WeightIsClampedToNonNegative() {
         QuestCandidate negative = Convoy();
         negative.selectionWeight = -3f;
         Assert.AreEqual(0f, CosmereQuestEligibility.WeightOf(negative));
         Assert.AreEqual(1.2f, CosmereQuestEligibility.WeightOf(Convoy()), 0.0001f);
+    }
+
+    [TestMethod]
+    public void FlagPrereqReadsTheWorldState() {
+        FlagPrereq prereq = new FlagPrereq { flag = "HathsinLead" };
+
+        QuestWorldState without = BaseState();
+        Assert.IsFalse(prereq.IsMet(without));
+
+        QuestWorldState with = BaseState();
+        with.flags.Add("HathsinLead");
+        Assert.IsTrue(prereq.IsMet(with));
+    }
+
+    [TestMethod]
+    public void ShardPrereqRequiresEveryListedShard() {
+        ShardPrereq prereq = new ShardPrereq {
+            shards = new List<string> { "Preservation", "Ruin" },
+        };
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        prereq.shards.Add("Harmony");
+        Assert.IsFalse(prereq.IsMet(BaseState()));
+    }
+
+    [TestMethod]
+    public void CapstoneStatePrereqDefaultsToRequiringCompletion() {
+        CapstoneStatePrereq prereq = new CapstoneStatePrereq {
+            questDefName = "Cosmere_Scadrial_Quest_PitsOfHathsin",
+        };
+
+        Assert.IsFalse(prereq.IsMet(BaseState()));
+
+        QuestWorldState done = BaseState();
+        done.capstoneStates["Cosmere_Scadrial_Quest_PitsOfHathsin"] = CapstoneState.Completed;
+        Assert.IsTrue(prereq.IsMet(done));
+    }
+
+    [TestMethod]
+    public void ColonistCountPrereqEnforcesItsMinimum() {
+        ColonistCountPrereq prereq = new ColonistCountPrereq { minCount = 8 };
+
+        QuestWorldState below = BaseState();
+        below.freeColonistCount = 7;
+        Assert.IsFalse(prereq.IsMet(below));
+
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        QuestWorldState above = BaseState();
+        above.freeColonistCount = 9;
+        Assert.IsTrue(prereq.IsMet(above));
+    }
+
+    [TestMethod]
+    public void DaysElapsedPrereqEnforcesItsMinimum() {
+        DaysElapsedPrereq prereq = new DaysElapsedPrereq { minDays = 100 };
+
+        QuestWorldState before = BaseState();
+        before.daysElapsed = 99;
+        Assert.IsFalse(prereq.IsMet(before));
+
+        Assert.IsTrue(prereq.IsMet(BaseState()));
+
+        QuestWorldState after = BaseState();
+        after.daysElapsed = 101;
+        Assert.IsTrue(prereq.IsMet(after));
     }
 }

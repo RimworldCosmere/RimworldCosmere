@@ -90,14 +90,22 @@ jobs:
         run: dotnet tool install --global dotnet-script
 
 
-      # unityhub 3.20.0 installs to /usr/lib/unityhub, unity-setup hardcodes /opt/unityhub.
-      # link it dangling on purpose, a valid path makes the action skip its own installer
-      # and never write the /usr/bin/unity-hub wrapper. drop on buildalon/unity-setup#57.
-      - name: Point /opt/unityhub at the 3.20.0 install location
+      # hub 3.20.0 against unity-setup's pre-3.20 assumptions. the symlink must stay dangling
+      # or the action skips its own installer, and the shim drops an [install-state] line that
+      # breaks its strict `editors -i` parser. delete both on buildalon/unity-setup#57.
+      - name: Adapt Unity Hub 3.20.0 to what unity-setup expects
         if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         run: |
           sudo ln -sfn /usr/lib/unityhub /opt/unityhub
-          ls -ld /opt/unityhub
+          sudo mkdir -p /opt/hub-shim
+          sudo tee /opt/hub-shim/unity-hub >/dev/null <<'SH'
+          #!/bin/bash
+          /usr/bin/unity-hub "$@" | grep -v --line-buffered '^\[install-state\]'
+          exit "${PIPESTATUS[0]}"
+          SH
+          sudo chmod 755 /opt/hub-shim/unity-hub
+          echo /opt/hub-shim >> "$GITHUB_PATH"
+          ls -ld /opt/unityhub /opt/hub-shim/unity-hub
 
       - uses: buildalon/unity-setup@v1
         if: steps.assetbundle-cache.outputs.cache-hit != 'true'

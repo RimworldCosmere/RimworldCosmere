@@ -1,50 +1,54 @@
-﻿![About](../.github/assets/scadrial/about.png)
+*Allomancy and Feruchemy, dragged onto the Rim.*
 
-*Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
+​
+
+![About](../.github/assets/scadrial/about.png)
+
+*The Metallic Arts, rebuilt for RimWorld: Allomancy, Feruchemy, and >!Hemalurgy!<.*
 
 - **Allomancy**
-    - Includes every base metal and >!Godmetal!<, each granting unique powers
-    - Mistings can burn a single metal — >!Coinshots, Soothers, Thugs, etc.!<
-    - Mistborn can burn all metals (if you're lucky enough to have one…)
-    - Full burn and flare systems with unique abilities, auras, and status effects
+    - Every base metal and >!Godmetal!<, each with its own power
+    - Mistings burn one metal. >!Coinshots, Soothers, Thugs, and the rest.!<
+    - Mistborn burn all of them, if you are lucky enough to get one
+    - Burning and flaring, with the abilities, auras, and status effects that come with each metal
     - Multi-metal vials, targeted abilities, and environmental effects
 
 - **Feruchemy**
-    - Store and tap traits like strength, speed, health, or senses
-    - Full Feruchemists can master the entire suite of metalminds
-    - Custom storage mechanics and UI integration for charge tracking
-    - >!Pawns with both Allomantic and Feruchemical powers in one metal can Compound!!<
+    - Store and tap strength, speed, health, or senses
+    - Full Feruchemists get the whole suite of metalminds
+    - Storage mechanics and a UI for tracking charge
+    - >!Pawns with both Allomantic and Feruchemical power in one metal can Compound.!<
 
 - **>!Hemalurgy - Coming Soon!<**
-    - >!Dark, dangerous, and very real. Use at your own moral peril. WIP but coming soon.!<
+    - >!Dark, dangerous, and entirely real. Use at your own moral peril. Still being built.!<
 
 - **Genetics-Based Metalborn**
-    - Allomantic and Feruchemical powers are inheritable via genes
-    - Supports player reproduction, pawn generation, and custom xenotypes
+    - Genes carry Allomantic and Feruchemical power to the next generation
+    - Works with player reproduction, pawn generation, and custom xenotypes
 
 - **Snapping**
-    - Pawns can 'snap' under stress, unlocking latent Metalborn potential
-    - Includes chance-based snaps during trauma or atmospheric events
+    - Stress can make a pawn snap and come out Metalborn
+    - Trauma and certain atmospheric events roll for it
 
 - **New Traits, Thoughts, and Needs**
-    - Investiture is gained by burning metals
-    - Custom thoughts for burning, flaring, auras, and suppression
-    - Reworked Skaa, Noble, and Terris xenotypes (based on heritage and genetics)
+    - Burning metals feeds a pawn's Investiture
+    - Thoughts for burning, flaring, auras, and suppression
+    - Skaa, Noble, and Terris xenotypes reworked around heritage and genetics
 
 - **Scenario Support**
     - Pre- and Post-Catacendre scenarios
-    - Choose whether Ruin & Preservation or Harmony govern your world
-    - Xenotype restrictions, gene weighting, and thematic pawn randomization
+    - Pick whether Ruin and Preservation or Harmony hold your world
+    - Xenotype restrictions, gene weighting, and pawn rolls that match the era
 
 ​
 
 ![Compatibility](../.github/assets/scadrial/compatibility.png)
 
 - Requires Biotech
-- Compatible with Ideology, Royalty, and Anomaly
-- Designed for RimWorld 1.6
+- Works alongside Ideology, Royalty, and Anomaly
+- Built for RimWorld 1.6
 - Safe to add at game start
-- Mid-save support is partial — best used in a new colony (you wont get all the metals)
+- Mid-save support is partial. Start a new colony if you want all the metals
 
 ​
 

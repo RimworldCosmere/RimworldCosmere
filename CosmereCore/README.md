@@ -4,58 +4,57 @@
 
 [![Discord](https://img.shields.io/discord/1367704184375349258?style=flat&label=Discord)](https://discord.gg/jTcrKfXdYU) [![GitHub branch status](https://img.shields.io/github/checks-status/RimworldCosmere/RimworldCosmere/main?label=Github)](https://github.com/RimworldCosmere/RimworldCosmere)
 
-***Spoilers abound. Be careful reading below. I've tried to mark things as spoilers, but I may miss things.***
-***Also be weary traversing the issues, or reading through Discord***
+***Spoilers ahead. I have marked what I could, but some will get through. The GitHub issues and the Discord are
+not marked at all, so tread carefully there.***
 
 ​
 
-*The foundational systems and definitions for all Cosmere-based RimWorld mods.*
+*The shared framework every other Cosmere mod is built on.*
 
-​
 ​
 
 ![About](../.github/assets/fallback/about.png)
 
-This mod lays the groundwork for Investiture across the Cosmere. It introduces key mechanics and systems used by other
-Cosmere mods.
+Cosmere Core carries the Investiture plumbing the rest of the Cosmere mods sit on. On its own it gives you the
+framework, not the magic. Allomancy, Surgebinding, and the rest arrive with their own Shardworld mods.
 
 Included features:
 
 - **New StatDefs**
-    - `MentalBreakAddFactor`: Modifies how likely a pawn is to suffer a mental break
-    - `MentalBreakRemoveFactor`: Modifies how likely a pawn is to be calmed from one
-    - `Cosmere_Time_Dilation_Factor`: Used mostly by Scadrial Bendalloy and Cadmium burners. Used to tweak a few things
-      that don't natively have stats (Burn rate of metals for example)
-    - `Cosmere_Investiture`: How much investiture a pawn has!
+    - `MentalBreakAddFactor`: Changes how likely a pawn is to suffer a mental break
+    - `MentalBreakRemoveFactor`: Changes how likely a pawn is to be calmed out of one
+    - `Cosmere_Time_Dilation_Factor`: Used mostly by Scadrial's Bendalloy and Cadmium burners, for tuning things
+      that have no stat of their own (metal burn rate, for one)
+    - `Cosmere_Investiture`: How much Investiture a pawn holds
 
 - **Investiture Need**  
-  A unique pawn need used to power magical abilities across all Shardworlds
+  A pawn need that powers Invested abilities across every Shardworld
 
 - **Investiture Research Project**  
-  Unlocks access to investiture-related gameplay
+  Opens up Investiture-related gameplay
 
 - **Invested Trait**  
-  Represents innate investiture, modeled after the Heightenings from Nalthis
+  Innate Investiture, modeled on the Heightenings from Nalthis
 
 - **Shard Selection System**  
-  Adds a game component that allows players to configure which Shards are present in their world  
-  (Used by mods like Scadrial, Roshar, Nalthis — each will auto-enable based on scenario)
+  A game component for picking which Shards exist in your world  
+  (Scadrial, Roshar, and Nalthis each switch themselves on based on the scenario you pick)
 
 ​
 
 ![Compatibility](../.github/assets/fallback/compatibility.png)
 
-- This is a *required core mod* for all other Cosmere expansions
+- Every other Cosmere expansion requires this mod
 - Safe to add at game start
-- Requires Biotech (These mods all use too much of the gene and xenotype system to decouple)
-- Compatible with RimWorld 1.6 + Biotech, Ideology, Royalty, and Anomaly
+- Requires Biotech. The gene and xenotype systems run through everything here, so there is no pulling them apart
+- Built for RimWorld 1.6, and works alongside Biotech, Ideology, Royalty, and Anomaly
 
 ​
 
 ![For Modders](../.github/assets/fallback/for modders.png)
 
-Cosmere Core defines shared traits, needs, and stats to ensure consistency across Shardworlds.  
-Mods can register new Shards via the provided game component and hook into the Investiture system.
+Core owns the shared traits, needs, and stats so every Shardworld reads the same.  
+Register a new Shard through the game component and hook into the Investiture system.
 
 ​
 
@@ -63,24 +62,23 @@ Mods can register new Shards via the provided game component and hook into the I
 
 ![Recommendations](../.github/assets/fallback/recommendations.png)
 
-Here are a couple recommended mods that work really well with the Cosmere mods:
+Mods that pair well with the Cosmere mods:
 
 * [Nice Bill Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3520130671)
-    * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
+    * Rusts! One of the best looking UI mods this game has. Makes the Bills UI far easier to work with
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
-    * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+    * Storms! Another one from Andromeda. Does the same for the Health tab
 * [Gotta Go Fast](https://steamcommunity.com/sharedfiles/filedetails/?id=3712112476)
-    * Drastically improves the phatfinding speed of pawns that are faster than normal, and/or pawns that can fly.
+    * Speeds up pathfinding for pawns that move faster than normal, or that fly
 * [BetterWeight](https://steamcommunity.com/sharedfiles/filedetails/?id=2221387317)
-    * Gives buildings realistic weights based on their material costs. Makes Steel Pushing and Iron Pulling on Scadrial feel right - heavy steel walls resist a Coinshot's Push, light wooden furniture flies across the room.
+    * Gives buildings real weights based on what they are built from. Steel Pushing and Iron Pulling on Scadrial
+      feel right with it installed. Heavy steel walls resist a Coinshot's Push. Light wooden furniture goes flying
 
 ​
 
 ![Support &amp; Feedback](../.github/assets/fallback/support.png)
 
-Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
-experience for everyone in the
-Cosmere.
+Bugs and suggestions go in either place below. We read both.
 
 - [GitHub Source](https://github.com/RimworldCosmere/RimworldCosmere)
 - [Discord Community](https://discord.gg/jTcrKfXdYU)
@@ -89,21 +87,23 @@ Cosmere.
 
 ![Support Us or Follow Along](../.github/assets/fallback/support us.png)
 
-Follow along with our development at: https://rimworldcosmere.com
+Follow development at https://rimworldcosmere.com
 
-Contribute and donate so we can get more art and other commissions:
+Donations go toward art and other commissions:
 
-* Recurring Donations: https://rimworldcosmere.com/#/portal/
-* One Time Donations: https://rimworldcosmere.com/#/portal/support
+* Recurring: https://rimworldcosmere.com/#/portal/
+* One time: https://rimworldcosmere.com/#/portal/support
 
 ​
 
 ![Attributions](../.github/assets/fallback/attributions.png)
 
-* Big thanks to Sir Van ('sir_vann' On Discord) for in-game art
-* Another big thanks to Immortalus ('_immortalus' on Discord) for the Mod Previews and a bunch more art
-* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially 'aelanna') for helping with
-  random questions
+Thank you to:
+
+* Sir Van ('sir_vann' on Discord) for in-game art
+* Immortalus ('_immortalus' on Discord) for the mod previews and a lot more art
+* Everyone in the RimWorld Discord #mod-development channel, 'aelanna' especially, for fielding a pile of odd
+  questions
 
 ***This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
 Entertainment, LLC or Ludeon Studios.***

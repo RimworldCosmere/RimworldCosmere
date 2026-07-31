@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
     <name>Cosmere - Core</name>
-    <description>This mod adds the core magic system from Brandon Sanderson's Cosmere Universe into Rimworld (Investiture &amp; Connection)</description>
+    <description>The shared Investiture and Connection framework behind every Cosmere mod. On its own it adds the plumbing, not the powers. Install a Shardworld mod for those.</description>
     <authors>
         <li>CryptikLemur</li>
         <li>Luucid</li>

@@ -31,6 +31,18 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
         }
     }
 
+    /// <summary>
+    ///     Removes the site from the world map if the quest ends before the player ever
+    ///     reached it. TravelToSiteObjective spawns the site at offer time, before the player
+    ///     accepts, so a declined, failed, or expired quest would otherwise leave it sitting on
+    ///     the map forever. A site the player did reach (site.HasMap) is left alone - it
+    ///     follows the normal MapParent.ShouldRemoveMapNow lifecycle instead.
+    /// </summary>
+    public override void Cleanup() {
+        base.Cleanup();
+        if (site != null && !site.Destroyed && !site.HasMap) site.Destroy();
+    }
+
     public override void ExposeData() {
         base.ExposeData();
         Scribe_References.Look(ref site, "site");

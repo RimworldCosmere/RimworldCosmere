@@ -20,4 +20,7 @@
 
     <CS_Quest_Lerasium_Hide>Hide it</CS_Quest_Lerasium_Hide>
     <CS_Quest_Lerasium_Hide_Tip>Keep the bead. Decide later. Understand that others will come looking.</CS_Quest_Lerasium_Hide_Tip>
+    <CS_Quest_Lerasium_Hide_Confirm>The bead stays hidden, tucked away for another day.</CS_Quest_Lerasium_Hide_Confirm>
+
+    <CS_Quest_Lerasium_BeadMissing>The bead is gone. There is nothing left to spend.</CS_Quest_Lerasium_BeadMissing>
 </LanguageData>

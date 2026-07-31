@@ -100,8 +100,7 @@ public class Dialog_LerasiumChoice : Verse.Window {
 
         Rect giveRow = new Rect(body.x, y, body.width, RowHeight("CS_Quest_Lerasium_Give", body.width));
         if (DrawRow(giveRow, "CS_Quest_Lerasium_Give", "CS_Quest_Lerasium_Give_Tip", false, null)) {
-            GiveAway();
-            Close();
+            if (GiveAway()) Close();
             return;
         }
 
@@ -178,32 +177,63 @@ public class Dialog_LerasiumChoice : Verse.Window {
         for (int i = 0; i < colonists.Count; i++) {
             Pawn pawn = colonists[i];
             options.Add(
-                new FloatMenuOption(pawn.LabelShortCap, () => GeneUtility.AddMistborn(pawn, false, true, "drank Lerasium"))
+                new FloatMenuOption(pawn.LabelShortCap, () => {
+                    if (!TryConsumeBead()) {
+                        Messages.Message("CS_Quest_Lerasium_BeadMissing".Translate(), MessageTypeDefOf.RejectInput, false);
+                        return;
+                    }
+
+                    GeneUtility.AddMistborn(pawn, false, true, "drank Lerasium");
+                })
             );
         }
 
         Find.WindowStack.Add(new FloatMenu(options));
     }
 
-    private void GiveAway() {
+    private bool GiveAway() {
         FactionDef? giverDef = ctx.def?.giverFaction;
         if (giverDef == null) {
             Logger.Error($"LerasiumChoiceReward on {ctx.def?.defName}: no giverFaction to make an ally.");
-            return;
+            return false;
         }
 
         Faction? faction = Find.FactionManager.FirstFactionOfDef(giverDef);
-        if (faction == null) return;
+        if (faction == null) return false;
+
+        if (!TryConsumeBead()) {
+            Messages.Message("CS_Quest_Lerasium_BeadMissing".Translate(), MessageTypeDefOf.RejectInput, false);
+            return false;
+        }
 
         faction.TryAffectGoodwillWith(Faction.OfPlayer, 200);
         QuestFlagStore.SetFlag(MistbornAllyFlag);
+        return true;
     }
 
-    private void HideBead() {
-        Verse.Map? map = ctx.map;
-        if (map == null) return;
+    // The bead CarryHomeObjective confirmed in storage stays exactly where it is - "hide it"
+    // means leave it alone, not place a second one. No physical thing needs to move.
+    private static void HideBead() {
+        Messages.Message("CS_Quest_Lerasium_Hide_Confirm".Translate(), MessageTypeDefOf.NeutralEvent, false);
+    }
 
-        Verse.Thing bead = ThingMaker.MakeThing(Core.ThingDefOf.Lerasium);
-        GenPlace.TryPlaceThing(bead, DropCellFinder.TradeDropSpot(map), map, ThingPlaceMode.Near);
+    // Shared by Drink and Give - the only two branches that spend the bead. CarryHomeObjective
+    // already confirmed one was in storage before this dialog opened, but a player can move or
+    // destroy things in the time it takes to resolve the choice, so this checks again rather
+    // than assuming it is still there.
+    private static bool TryConsumeBead() {
+        List<Verse.Map> maps = Find.Maps;
+        for (int i = 0; i < maps.Count; i++) {
+            Verse.Map map = maps[i];
+            if (!map.IsPlayerHome) continue;
+
+            List<Verse.Thing> stacks = map.listerThings.ThingsOfDef(Core.ThingDefOf.Lerasium);
+            if (stacks.Count == 0) continue;
+
+            stacks[0].SplitOff(1).Destroy();
+            return true;
+        }
+
+        return false;
     }
 }

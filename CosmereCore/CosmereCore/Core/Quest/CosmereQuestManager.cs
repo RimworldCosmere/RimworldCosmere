@@ -129,6 +129,7 @@ public class CosmereQuestManager : GameComponent {
         }
 
         Find.QuestManager.Add(quest);
+        QuestUtility.SendLetterQuestAvailable(quest);
         RecordOffered(def.defName);
         capstoneStates[def.defName] = CapstoneState.Offered;
         return true;

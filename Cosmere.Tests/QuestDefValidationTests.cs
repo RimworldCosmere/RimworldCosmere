@@ -73,6 +73,24 @@ public class QuestDefValidationTests {
         return names;
     }
 
+    private static string ScenarioProgressionDirectory => Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "ScenarioProgression");
+
+    private static HashSet<string> CapstonesReferencedByStartQuestAction() {
+        HashSet<string> referenced = new HashSet<string>();
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return referenced;
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            foreach (XElement action in XDocument.Load(path).Descendants("li")) {
+                if (!HasClass(action, "StartQuestAction")) continue;
+
+                XElement? questDef = action.Element("questDef");
+                if (questDef != null) referenced.Add(questDef.Value);
+            }
+        }
+
+        return referenced;
+    }
+
     private static HashSet<string> KnownTranslationKeys() {
         HashSet<string> keys = new HashSet<string>();
         foreach (string mod in new[] { "CosmereCore", "CosmereScadrial" }) {
@@ -277,6 +295,28 @@ public class QuestDefValidationTests {
                 def.Element("onFailure"),
                 $"{name}: is a Capstone but declares no onFailure. Use " +
                 "Cosmere.Core.Quest.Outcome.NeverBurns if it genuinely cannot fail."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     CosmereQuestEligibility.IsOfferableByStoryteller excludes Capstone quests from the
+    ///     random offer pool by design - they are meant to reach the player through
+    ///     StartQuestAction fired from scenario progression instead. A capstone with no
+    ///     StartQuestAction anywhere is unreachable content: nothing will ever offer it.
+    /// </summary>
+    [TestMethod]
+    public void EveryCapstoneIsReferencedByAStartQuestAction() {
+        HashSet<string> referenced = CapstonesReferencedByStartQuestAction();
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+            if (def.Element("kind")?.Value != "Capstone") continue;
+
+            Assert.IsTrue(
+                referenced.Contains(name),
+                $"{name}: is a Capstone but no StartQuestAction under " +
+                "CosmereScadrial/Defs/ScenarioProgression references it. Capstones are excluded " +
+                "from the storyteller's random offer pool, so this quest can never be offered."
             );
         }
     }

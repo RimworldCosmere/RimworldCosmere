@@ -120,6 +120,47 @@ public class FeedbackReportTests {
         Assert.AreEqual("Unknown", Find(BetaHubFormEncoder.Encode(report, SampleFacts()), "issue[custom][mod]"));
     }
 
+    [TestMethod]
+    public void ATitleIsRequired() {
+        Assert.IsFalse(FeedbackValidator.IsTitlePresent(null));
+        Assert.IsFalse(FeedbackValidator.IsTitlePresent(string.Empty));
+        Assert.IsFalse(FeedbackValidator.IsTitlePresent("   "));
+        Assert.IsTrue(FeedbackValidator.IsTitlePresent("Pewter burn does nothing"));
+    }
+
+    [TestMethod]
+    public void StepsAreRequiredOnABug() {
+        Assert.IsFalse(FeedbackValidator.AreStepsPresent(FeedbackKind.Bug, null));
+        Assert.IsFalse(FeedbackValidator.AreStepsPresent(FeedbackKind.Bug, "  "));
+        Assert.IsTrue(FeedbackValidator.AreStepsPresent(FeedbackKind.Bug, "Burn pewter"));
+    }
+
+    /// <summary>
+    ///     A suggestion has no steps field at all, so an absent value must not block it.
+    /// </summary>
+    [TestMethod]
+    public void StepsAreNotRequiredOnASuggestion() {
+        Assert.IsTrue(FeedbackValidator.AreStepsPresent(FeedbackKind.Suggestion, null));
+        Assert.IsTrue(FeedbackValidator.AreStepsPresent(FeedbackKind.Suggestion, string.Empty));
+    }
+
+    [TestMethod]
+    public void ABugIsCompleteOnlyWithTitleDescriptionAndSteps() {
+        string description = new string('a', 50);
+
+        Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Bug, null, description, "steps"));
+        Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Bug, "t", new string('a', 49), "steps"));
+        Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Bug, "t", description, null));
+        Assert.IsTrue(FeedbackValidator.IsComplete(FeedbackKind.Bug, "t", description, "steps"));
+    }
+
+    [TestMethod]
+    public void ASuggestionIsCompleteWithTitleAndDescriptionAlone() {
+        Assert.IsTrue(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "t", new string('a', 80), null));
+        Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "t", new string('a', 79), null));
+        Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "  ", new string('a', 80), null));
+    }
+
     private static string Find(List<KeyValuePair<string, string>> form, string key) {
         string? found = FindOrNull(form, key);
         Assert.IsNotNull(found, $"form had no key {key}");

@@ -23,4 +23,21 @@ public static class FeedbackValidator {
     public static bool IsSubmittable(FeedbackKind kind, string? description) {
         return RemainingCharacters(kind, description) == 0;
     }
+
+    public static bool IsTitlePresent(string? title) {
+        return !string.IsNullOrWhiteSpace(title);
+    }
+
+    /// <summary>
+    ///     Steps are required on a bug and do not exist on a suggestion.
+    /// </summary>
+    public static bool AreStepsPresent(FeedbackKind kind, string? steps) {
+        return kind != FeedbackKind.Bug || !string.IsNullOrWhiteSpace(steps);
+    }
+
+    public static bool IsComplete(FeedbackKind kind, string? title, string? description, string? steps) {
+        return IsTitlePresent(title)
+               && IsSubmittable(kind, description)
+               && AreStepsPresent(kind, steps);
+    }
 }

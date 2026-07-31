@@ -94,7 +94,14 @@ public sealed class FeedbackDialog : BaseWindow {
         bool locked = sending;
 
         listing.Label("CC_BetaHub_Field_Title".Translate());
-        report.Title = DrawField(listing, report.Title, locked);
+        Rect titleRect = listing.GetRect(Spacing.Get(1.75));
+        if (locked) {
+            Widgets.Label(titleRect, report.Title);
+        } else {
+            report.Title = Widgets.TextField(titleRect, report.Title);
+        }
+
+        MarkIfMissing(listing, titleRect, report.Title);
         listing.Gap(Spacing.Get(0.5));
 
         listing.Label(
@@ -133,7 +140,14 @@ public sealed class FeedbackDialog : BaseWindow {
 
         if (report.Kind == FeedbackKind.Bug) {
             listing.Label("CC_BetaHub_Field_Steps".Translate());
-            report.StepsToReproduce = DrawArea(listing, report.StepsToReproduce, Spacing.Get(4), locked);
+            Rect stepsRect = listing.GetRect(Spacing.Get(4));
+            if (locked) {
+                Widgets.Label(stepsRect, report.StepsToReproduce);
+            } else {
+                report.StepsToReproduce = Widgets.TextArea(stepsRect, report.StepsToReproduce);
+            }
+
+            MarkIfMissing(listing, stepsRect, report.StepsToReproduce);
             listing.Gap(Spacing.Get(0.5));
         }
 
@@ -188,22 +202,17 @@ public sealed class FeedbackDialog : BaseWindow {
         }
     }
 
-    private static string DrawField(FoundationListing listing, string value, bool locked) {
-        Rect rect = listing.GetRect(Spacing.Get(1.75));
-        if (!locked) return Widgets.TextField(rect, value);
+    /// <summary>
+    ///     Red border plus a red note, in the same slot the character counter uses.
+    /// </summary>
+    private void MarkIfMissing(FoundationListing listing, Rect rect, string value) {
+        if (!validationAttempted || !string.IsNullOrWhiteSpace(value)) return;
 
-        Widgets.Label(rect, value);
+        Widgets.DrawBox(rect, 1, ErrorBorderTexture);
 
-        return value;
-    }
-
-    private static string DrawArea(FoundationListing listing, string value, float height, bool locked) {
-        Rect rect = listing.GetRect(height);
-        if (!locked) return Widgets.TextArea(rect, value);
-
-        Widgets.Label(rect, value);
-
-        return value;
+        using (new TextBlock(GameFont.Tiny, ErrorColor)) {
+            listing.Label("CC_BetaHub_Field_Required".Translate());
+        }
     }
 
     protected override void DrawFooter(Rect rect) {
@@ -225,7 +234,7 @@ public sealed class FeedbackDialog : BaseWindow {
         // Send stays enabled when the form is incomplete so the click can say what is missing.
         // A disabled button gives the player nothing to act on.
         if (Widgets.ButtonText(sendRect, sendLabel, active: !sending)) {
-            if (FeedbackValidator.IsSubmittable(report.Kind, report.Description)) {
+            if (FeedbackValidator.IsComplete(report.Kind, report.Title, report.Description, report.StepsToReproduce)) {
                 Submit();
             } else {
                 validationAttempted = true;

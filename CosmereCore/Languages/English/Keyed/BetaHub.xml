@@ -13,7 +13,6 @@
     <CC_BetaHub_Dialog_BugSubtitle>Goes straight to the Cosmere beta tracker with your log attached.</CC_BetaHub_Dialog_BugSubtitle>
     <CC_BetaHub_Dialog_SuggestSubtitle>Goes straight to the Cosmere beta tracker.</CC_BetaHub_Dialog_SuggestSubtitle>
     <CC_BetaHub_Field_Title>Title</CC_BetaHub_Field_Title>
-    <CC_BetaHub_Field_TitleHint>Leave blank and one is written for you</CC_BetaHub_Field_TitleHint>
     <CC_BetaHub_Field_Description>What happened</CC_BetaHub_Field_Description>
     <CC_BetaHub_Field_Idea>Your idea</CC_BetaHub_Field_Idea>
     <CC_BetaHub_Field_Steps>Steps to reproduce</CC_BetaHub_Field_Steps>

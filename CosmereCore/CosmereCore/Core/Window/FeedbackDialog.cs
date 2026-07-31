@@ -164,6 +164,16 @@ public sealed class FeedbackDialog : BaseWindow {
 
         if (locked) Widgets.Label(discordRect, report.DiscordUsername ?? string.Empty);
 
+        listing.Gap(Spacing.Get(0.5));
+        listing.Label("CC_BetaHub_Field_Video".Translate());
+        Rect videoRect = listing.GetRect(Spacing.Get(1.75));
+        TooltipHandler.TipRegion(videoRect, "CC_BetaHub_Field_VideoTip".Translate());
+        report.VideoUrl = locked
+            ? report.VideoUrl
+            : Widgets.TextField(videoRect, report.VideoUrl ?? string.Empty);
+
+        if (locked) Widgets.Label(videoRect, report.VideoUrl ?? string.Empty);
+
         if (report.Kind != FeedbackKind.Bug || screenshot == null) return;
 
         listing.Gap(Spacing.Get(0.5));

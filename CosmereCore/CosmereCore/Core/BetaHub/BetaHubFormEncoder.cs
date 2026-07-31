@@ -26,8 +26,17 @@ public static class BetaHubFormEncoder {
 
         Add(form, $"{root}[custom][mod]", report.Target.ToString());
         Add(form, $"{root}[release_label]", facts.Revision);
-        Add(form, $"{root}[discord_username]", report.DiscordUsername);
         Add(form, $"{root}[source]", BetaHubConfig.SourceTag);
+
+        // discord_username is only honoured for anonymous FormUser callers, and a project
+        // token is not anonymous, so it is silently dropped. A custom field always lands.
+        Add(form, $"{root}[custom][discord]", report.DiscordUsername);
+        Add(form, $"{root}[custom][video_url]", report.VideoUrl);
+
+        if (report.Kind == FeedbackKind.Bug) {
+            Add(form, $"{root}[extras][device_info][value]", DiagnosticsText.BuildDeviceInfo(facts));
+            Add(form, $"{root}[extras][device_info][validation_mode]", "optional");
+        }
 
         return form;
     }

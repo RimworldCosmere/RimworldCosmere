@@ -33,4 +33,6 @@
     <CC_BetaHub_Field_Required>This field is required.</CC_BetaHub_Field_Required>
     <CC_BetaHub_Close>Close</CC_BetaHub_Close>
     <CC_BetaHub_LinkCopied>Link copied to your clipboard.</CC_BetaHub_LinkCopied>
+    <CC_BetaHub_Field_Video>Video link, optional</CC_BetaHub_Field_Video>
+    <CC_BetaHub_Field_VideoTip>Paste a YouTube, Streamable or Discord link if you recorded the problem.</CC_BetaHub_Field_VideoTip>
 </LanguageData>

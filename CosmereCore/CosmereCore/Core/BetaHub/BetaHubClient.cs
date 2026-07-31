@@ -111,7 +111,7 @@ public static class BetaHubClient {
 
     private static void AttachScreenshot(string issuePath, byte[] jpeg) {
         WWWForm form = new WWWForm();
-        form.AddBinaryData("screenshot[file]", jpeg, "cosmere-screenshot.jpg", "image/jpeg");
+        form.AddBinaryData("screenshot[image]", jpeg, "cosmere-screenshot.jpg", "image/jpeg");
 
         UnityWebRequest request = UnityWebRequest.Post(BetaHubConfig.ScreenshotsUrl(issuePath), form);
         Authorize(request);
@@ -125,7 +125,8 @@ public static class BetaHubClient {
         Logger.Warning($"BetaHub {what} upload failed with {done.responseCode}: {done.downloadHandler?.text}");
     }
 
-    // The create response's url ends in the g- prefixed id that media endpoints want.
+    // A published create returns the scoped id (/issues/8), a draft returns the g- form.
+    // Media endpoints accept either, so the last url segment is used as-is.
     private static string? ReadIssuePath(string? issueUrl) {
         if (string.IsNullOrEmpty(issueUrl)) return null;
 

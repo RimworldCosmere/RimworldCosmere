@@ -48,6 +48,13 @@ public static class DiagnosticsText {
         return builder.ToString();
     }
 
+    /// <summary>
+    ///     One line BetaHub parses into structured device data on the issue.
+    /// </summary>
+    public static string BuildDeviceInfo(DiagnosticsFacts facts) {
+        return $"{facts.OperatingSystem} | {facts.GraphicsDevice} | {facts.SystemMemoryMb} MB RAM";
+    }
+
     // Suggestions accept no attachments, so their build context has to ride in the
     // description. The SteamID stays out of it because that text is public.
     public static string BuildInlineFooter(DiagnosticsFacts facts) {

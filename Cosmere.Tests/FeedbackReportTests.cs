@@ -62,7 +62,7 @@ public class FeedbackReportTests {
         Assert.AreEqual("Pewter burn does nothing", Find(form, "issue[title]"));
         Assert.AreEqual("Scadrial", Find(form, "issue[custom][mod]"));
         Assert.AreEqual("2.0.0-beta.23", Find(form, "issue[release_label]"));
-        Assert.AreEqual("cryptik", Find(form, "issue[discord_username]"));
+        Assert.AreEqual("cryptik", Find(form, "issue[custom][discord]"));
         Assert.AreEqual("rimworld_ingame", Find(form, "issue[source]"));
         StringAssert.Contains(Find(form, "issue[unformatted_steps_to_reproduce]"), "Burn pewter");
     }
@@ -108,7 +108,7 @@ public class FeedbackReportTests {
         List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(report, SampleFacts());
 
         Assert.IsNull(FindOrNull(form, "issue[title]"));
-        Assert.IsNull(FindOrNull(form, "issue[discord_username]"));
+        Assert.IsNull(FindOrNull(form, "issue[custom][discord]"));
         Assert.IsNull(FindOrNull(form, "issue[unformatted_steps_to_reproduce]"));
     }
 
@@ -159,6 +159,52 @@ public class FeedbackReportTests {
         Assert.IsTrue(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "t", new string('a', 80), null));
         Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "t", new string('a', 79), null));
         Assert.IsFalse(FeedbackValidator.IsComplete(FeedbackKind.Suggestion, "  ", new string('a', 80), null));
+    }
+
+    /// <summary>
+    ///     discord_username is dropped by BetaHub unless the caller is an anonymous FormUser,
+    ///     which a project token is not. Verified against the live project.
+    /// </summary>
+    [TestMethod]
+    public void TheDiscordNameGoesInACustomFieldNotDiscordUsername() {
+        List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(SampleBug(), SampleFacts());
+
+        Assert.IsNull(FindOrNull(form, "issue[discord_username]"));
+        Assert.AreEqual("cryptik", Find(form, "issue[custom][discord]"));
+    }
+
+    [TestMethod]
+    public void ABugSendsDeviceInfoForBetaHubToParse() {
+        List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(SampleBug(), SampleFacts());
+
+        StringAssert.Contains(Find(form, "issue[extras][device_info][value]"), "Linux 6.9");
+        Assert.AreEqual("optional", Find(form, "issue[extras][device_info][validation_mode]"));
+    }
+
+    /// <summary>
+    ///     Only bugs were probed against the live API, so suggestions deliberately do not send it.
+    /// </summary>
+    [TestMethod]
+    public void ASuggestionSendsNoDeviceInfo() {
+        List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(SampleSuggestion(), SampleFacts());
+
+        Assert.IsNull(FindOrNull(form, "feature_request[extras][device_info][value]"));
+    }
+
+    [TestMethod]
+    public void AVideoLinkRidesInACustomField() {
+        FeedbackReport report = SampleBug();
+        report.VideoUrl = "https://youtu.be/abc123";
+
+        Assert.AreEqual(
+            "https://youtu.be/abc123",
+            Find(BetaHubFormEncoder.Encode(report, SampleFacts()), "issue[custom][video_url]")
+        );
+    }
+
+    [TestMethod]
+    public void AnAbsentVideoLinkIsOmitted() {
+        Assert.IsNull(FindOrNull(BetaHubFormEncoder.Encode(SampleBug(), SampleFacts()), "issue[custom][video_url]"));
     }
 
     private static string Find(List<KeyValuePair<string, string>> form, string key) {

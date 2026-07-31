@@ -8,6 +8,9 @@ using Verse.Sound;
 
 namespace Cosmere.Core.Window;
 
+// Holds Texture2D fields, so the game requires the attribute here even though BaseWindow
+// already carries one. It is not inherited for that check.
+[StaticConstructorOnStartup]
 public sealed class FeedbackDialog : BaseWindow {
     private static readonly Color CounterColor = new Color(0.80f, 0.62f, 0.35f);
     private static readonly Color SuccessColor = new Color(0.55f, 0.75f, 0.52f);

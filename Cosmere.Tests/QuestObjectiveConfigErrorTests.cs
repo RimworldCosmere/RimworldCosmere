@@ -18,6 +18,10 @@ namespace Cosmere.Tests;
 ///     FileNotFoundException for Assembly-CSharp before ConfigError's own body ever runs. See
 ///     task-13-report.md for the probe.
 ///
+///     SpawnThingObjective.ConfigError has the same ThingDef? thingDef field as
+///     CarryHomeObjective and was reprobed rather than assumed - same FileNotFoundException. See
+///     task-20a-report.md.
+///
 ///     reinforcementIntervalHours = 0 must stay legal: Crystal in the Deep disables
 ///     reinforcements by setting it to 0, and QuestPart_TimedWork.QueueReinforcements already
 ///     treats a non-positive interval as "no reinforcements". Only a negative value is an error.

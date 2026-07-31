@@ -1,4 +1,5 @@
 [global]
+# keep in sync with unity-version in .github/workflows/release.yml
 unity_version = "2022.3.35f1"
 exclude_patterns = ["*.meta"]
 link_method = "symlink"

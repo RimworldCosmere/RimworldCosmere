@@ -13,6 +13,7 @@ public class ChoiceObjective : QuestObjective {
         QuestPart_CosmereChoice choice = new QuestPart_CosmereChoice {
             quest = quest,
             options = options,
+            targetFaction = ctx.def.targetFaction,
             inSignalEnable = inSignal,
             outSignalsCompleted = new List<string> { outSignal },
         };

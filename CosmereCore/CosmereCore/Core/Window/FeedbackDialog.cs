@@ -11,6 +11,10 @@ public sealed class FeedbackDialog : BaseWindow {
     private static readonly Color CounterColor = new Color(0.80f, 0.62f, 0.35f);
     private static readonly Color SuccessColor = new Color(0.55f, 0.75f, 0.52f);
     private static readonly Color FailureColor = new Color(0.82f, 0.47f, 0.42f);
+    private static readonly Color SegmentOnColor = new Color(0.29f, 0.24f, 0.14f);
+    private static readonly Color SegmentOffColor = new Color(0.11f, 0.11f, 0.10f);
+    private static readonly Color SegmentOnText = new Color(0.94f, 0.90f, 0.82f);
+    private static readonly Texture2D SegmentEdgeTexture = new Color(0.30f, 0.26f, 0.20f).ToSolidColorTexture();
 
     private readonly FeedbackReport report;
     private readonly byte[]? screenshot;
@@ -20,7 +24,7 @@ public sealed class FeedbackDialog : BaseWindow {
     private Texture2D? thumbnail;
 
     private FeedbackDialog(FeedbackKind kind, byte[]? screenshot)
-        : base(new Vector2(620f, 640f)) {
+        : base(new Vector2(620f, kind == FeedbackKind.Bug ? 700f : 470f)) {
         this.screenshot = screenshot;
         report = new FeedbackReport {
             Kind = kind,
@@ -34,6 +38,7 @@ public sealed class FeedbackDialog : BaseWindow {
     public static void Open(FeedbackKind kind) {
         if (kind == FeedbackKind.Suggestion) {
             Find.WindowStack.Add(new FeedbackDialog(kind, null));
+
             return;
         }
 
@@ -99,10 +104,7 @@ public sealed class FeedbackDialog : BaseWindow {
         }
 
         listing.Label("CC_BetaHub_Field_Mod".Translate());
-        DrawTargetRow(listing, FeedbackTarget.Unknown, "CC_BetaHub_Mod_Unknown", locked);
-        DrawTargetRow(listing, FeedbackTarget.Core, "CC_BetaHub_Mod_Core", locked);
-        DrawTargetRow(listing, FeedbackTarget.Scadrial, "CC_BetaHub_Mod_Scadrial", locked);
-        DrawTargetRow(listing, FeedbackTarget.Roshar, "CC_BetaHub_Mod_Roshar", locked);
+        DrawTargetSegments(listing, locked);
         listing.Gap(Spacing.Get(0.5));
 
         listing.Label("CC_BetaHub_Field_Discord".Translate());
@@ -192,14 +194,40 @@ public sealed class FeedbackDialog : BaseWindow {
         }
     }
 
-    private void DrawTargetRow(FoundationListing listing, FeedbackTarget target, string labelKey, bool locked) {
-        Rect rect = listing.GetRect(Spacing.Get(1.5));
-        if (!locked) Widgets.DrawHighlightIfMouseover(rect);
+    /// <summary>
+///     Four options in one row rather than four stacked rows.
+    /// </summary>
+    /// <remarks>
+    ///     RadioButtonLabeled spans the whole listing width, which stranded each circle about
+    ///     700px from its own label. A segment row also buys back three rows of height, which
+    ///     is what was pushing the screenshot preview below the fold.
+    /// </remarks>
+    private void DrawTargetSegments(FoundationListing listing, bool locked) {
+        Rect row = listing.GetRect(Spacing.Get(1.75));
+        const float gap = 4f;
+        float width = (row.width - gap * 3f) / 4f;
 
+        DrawSegment(new Rect(row.x, row.y, width, row.height), FeedbackTarget.Unknown, "CC_BetaHub_Mod_Unknown", locked);
+        DrawSegment(new Rect(row.x + width + gap, row.y, width, row.height), FeedbackTarget.Core, "CC_BetaHub_Mod_Core", locked);
+        DrawSegment(new Rect(row.x + (width + gap) * 2f, row.y, width, row.height), FeedbackTarget.Scadrial, "CC_BetaHub_Mod_Scadrial", locked);
+        DrawSegment(new Rect(row.x + (width + gap) * 3f, row.y, width, row.height), FeedbackTarget.Roshar, "CC_BetaHub_Mod_Roshar", locked);
+    }
+
+    private void DrawSegment(Rect rect, FeedbackTarget target, string labelKey, bool locked) {
         bool selected = report.Target == target;
-        if (Widgets.RadioButtonLabeled(rect, labelKey.Translate(), selected) && !locked) {
-            report.Target = target;
+
+        Widgets.DrawBoxSolid(rect, selected ? SegmentOnColor : SegmentOffColor);
+        Widgets.DrawBox(rect, 1, selected ? BorderTexture : SegmentEdgeTexture);
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, selected ? SegmentOnText : BodyTextColor)) {
+            Widgets.Label(rect, labelKey.Translate());
         }
+
+        if (locked) return;
+
+        Widgets.DrawHighlightIfMouseover(rect);
+
+        if (Widgets.ButtonInvisible(rect)) report.Target = target;
     }
 
     private Texture2D? BuildThumbnail() {

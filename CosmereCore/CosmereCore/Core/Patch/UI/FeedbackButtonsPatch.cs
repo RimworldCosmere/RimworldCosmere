@@ -9,20 +9,25 @@ using Verse.Sound;
 
 namespace Cosmere.Core.Patch;
 
+/// <summary>
+///     Draws the beta feedback plates in the top right corner.
+/// </summary>
+/// <remarks>
+///     Hooked into MainButtonsOnGUI rather than the end of UIRootOnGUI. By the time UIRootOnGUI
+///     returns, something upstream has already called Event.current.Use(), so the event type is
+///     Used and GUI.Button can never fire. Hover still worked there, which made it look alive.
+/// </remarks>
 [Patch]
-public abstract class FeedbackButtonsPatch : UIRoot_Play {
+public abstract class FeedbackButtonsPatch : MainButtonsRoot {
     private static readonly Color PlateTop = new Color(0.23f, 0.20f, 0.16f);
     private static readonly Color PlateBottom = new Color(0.17f, 0.15f, 0.13f);
     private static readonly Color Accent = new Color(0.85f, 0.75f, 0.48f);
     private static readonly Color LabelColor = new Color(0.87f, 0.84f, 0.75f);
 
-    [Inject(At.Return, nameof(UIRootOnGUI))]
+    [Inject(At.Return, nameof(MainButtonsOnGUI))]
     private void DrawFeedbackButtons() {
         if (Current.ProgramState != ProgramState.Playing) return;
         if (Find.CurrentMap == null) return;
-
-        ScreenshotCapture.TryCaptureNow();
-
         if (!BetaHubConfig.ShouldShowFeedbackUi) return;
         if (Find.WindowStack.IsOpen<FeedbackDialog>()) return;
 

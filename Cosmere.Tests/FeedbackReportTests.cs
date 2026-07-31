@@ -207,6 +207,17 @@ public class FeedbackReportTests {
         Assert.IsNull(FindOrNull(BetaHubFormEncoder.Encode(SampleBug(), SampleFacts()), "issue[custom][video_url]"));
     }
 
+    [TestMethod]
+    public void AVideoLinkIsAppendedToTheDescriptionSoItRenders() {
+        FeedbackReport report = SampleBug();
+        report.VideoUrl = "https://youtu.be/abc123";
+
+        string description = Find(BetaHubFormEncoder.Encode(report, SampleFacts()), "issue[description]");
+
+        StringAssert.StartsWith(description, report.Description);
+        StringAssert.Contains(description, "https://youtu.be/abc123");
+    }
+
     private static string Find(List<KeyValuePair<string, string>> form, string key) {
         string? found = FindOrNull(form, key);
         Assert.IsNotNull(found, $"form had no key {key}");

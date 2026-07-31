@@ -18,6 +18,14 @@ public static class BetaHubFormEncoder {
         string description = report.Kind == FeedbackKind.Suggestion
             ? report.Description + DiagnosticsText.BuildInlineFooter(facts)
             : report.Description;
+
+        // BetaHub video clips are blob uploads only, verified against the live API: every URL
+        // shaped parameter answers "video can't be blank". So the link rides in the body, where
+        // it at least renders as a link, as well as in a custom field for filtering.
+        if (!string.IsNullOrWhiteSpace(report.VideoUrl)) {
+            description += $"\n\nVideo: {report.VideoUrl}";
+        }
+
         Add(form, $"{root}[description]", description);
 
         if (report.Kind == FeedbackKind.Bug) {

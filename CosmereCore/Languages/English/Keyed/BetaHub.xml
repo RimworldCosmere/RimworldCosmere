@@ -31,4 +31,5 @@
     <CC_BetaHub_Cancel>Cancel</CC_BetaHub_Cancel>
     <CC_BetaHub_Retry>Retry</CC_BetaHub_Retry>
     <CC_BetaHub_ViewOnline>View it on BetaHub</CC_BetaHub_ViewOnline>
+    <CC_BetaHub_Field_Required>This field is required.</CC_BetaHub_Field_Required>
 </LanguageData>

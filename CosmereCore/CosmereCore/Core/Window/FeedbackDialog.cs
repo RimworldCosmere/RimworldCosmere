@@ -4,6 +4,7 @@ using Cosmere.Core.Settings;
 using Cosmere.Core.UI;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.Core.Window;
 
@@ -14,17 +15,20 @@ public sealed class FeedbackDialog : BaseWindow {
     private static readonly Color SegmentOnColor = new Color(0.29f, 0.24f, 0.14f);
     private static readonly Color SegmentOffColor = new Color(0.11f, 0.11f, 0.10f);
     private static readonly Color SegmentOnText = new Color(0.94f, 0.90f, 0.82f);
+    private static readonly Color ErrorColor = new Color(0.85f, 0.35f, 0.32f);
+    private static readonly Texture2D ErrorBorderTexture = new Color(0.85f, 0.35f, 0.32f).ToSolidColorTexture();
     private static readonly Texture2D SegmentEdgeTexture = new Color(0.30f, 0.26f, 0.20f).ToSolidColorTexture();
 
     private readonly FeedbackReport report;
     private readonly byte[]? screenshot;
 
     private bool sending;
+    private bool validationAttempted;
     private SubmitResult? result;
     private Texture2D? thumbnail;
 
     private FeedbackDialog(FeedbackKind kind, byte[]? screenshot)
-        : base(new Vector2(620f, kind == FeedbackKind.Bug ? 700f : 470f)) {
+        : base(new Vector2(620f, kind == FeedbackKind.Bug ? 760f : 540f)) {
         this.screenshot = screenshot;
         report = new FeedbackReport {
             Kind = kind,
@@ -44,6 +48,14 @@ public sealed class FeedbackDialog : BaseWindow {
 
         ScreenshotCapture.RequestCapture(jpeg => Find.WindowStack.Add(new FeedbackDialog(kind, jpeg)));
     }
+
+    protected override bool drawHeaderSeparator => false;
+
+    protected override bool drawFooterSeparator => false;
+
+    protected override float bodyInset => Spacing.Get(0.375);
+
+    protected override float bodyPadding => Spacing.Get(2.5);
 
     public override void PreClose() {
         base.PreClose();
@@ -67,6 +79,10 @@ public sealed class FeedbackDialog : BaseWindow {
     }
 
     protected override void DrawBodyContent(FoundationListing listing) {
+        // bodyPadding only indents horizontally, so the first label would otherwise sit flush
+        // against the header.
+        listing.Gap(Spacing.Get(1));
+
         if (result != null) {
             DrawResultBody(listing);
 
@@ -86,10 +102,28 @@ public sealed class FeedbackDialog : BaseWindow {
                 ? "CC_BetaHub_Field_Description".Translate()
                 : "CC_BetaHub_Field_Idea".Translate()
         );
-        report.Description = DrawArea(listing, report.Description, Spacing.Get(7), locked);
+
+        Rect descriptionRect = listing.GetRect(Spacing.Get(7));
+        if (locked) {
+            Widgets.Label(descriptionRect, report.Description);
+        } else {
+            report.Description = Widgets.TextArea(descriptionRect, report.Description);
+        }
 
         int needed = FeedbackValidator.RemainingCharacters(report.Kind, report.Description);
-        if (needed > 0) {
+        bool descriptionInvalid = validationAttempted && needed > 0;
+
+        if (descriptionInvalid) Widgets.DrawBox(descriptionRect, 1, ErrorBorderTexture);
+
+        if (descriptionInvalid) {
+            using (new TextBlock(GameFont.Tiny, ErrorColor)) {
+                listing.Label(
+                    string.IsNullOrWhiteSpace(report.Description)
+                        ? "CC_BetaHub_Field_Required".Translate()
+                        : "CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT"))
+                );
+            }
+        } else if (needed > 0) {
             using (new TextBlock(GameFont.Tiny, CounterColor)) {
                 listing.Label("CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT")));
             }
@@ -126,7 +160,7 @@ public sealed class FeedbackDialog : BaseWindow {
 
         thumbnail ??= BuildThumbnail();
         if (thumbnail != null) {
-            GUI.DrawTexture(listing.GetRect(Spacing.Get(7)), thumbnail, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(listing.GetRect(Spacing.Get(5)), thumbnail, ScaleMode.ScaleToFit);
         }
     }
 
@@ -185,12 +219,18 @@ public sealed class FeedbackDialog : BaseWindow {
             Close();
         }
 
-        bool ready = !sending && FeedbackValidator.IsSubmittable(report.Kind, report.Description);
         Rect sendRect = inner.RightPartPixels(buttonWidth);
         string sendLabel = sending ? "CC_BetaHub_Sending".Translate() : "CC_BetaHub_Submit".Translate();
 
-        if (Widgets.ButtonText(sendRect, sendLabel, active: ready)) {
-            Submit();
+        // Send stays enabled when the form is incomplete so the click can say what is missing.
+        // A disabled button gives the player nothing to act on.
+        if (Widgets.ButtonText(sendRect, sendLabel, active: !sending)) {
+            if (FeedbackValidator.IsSubmittable(report.Kind, report.Description)) {
+                Submit();
+            } else {
+                validationAttempted = true;
+                RimWorld.SoundDefOf.ClickReject.PlayOneShotOnCamera();
+            }
         }
     }
 

@@ -65,6 +65,14 @@ public abstract class BaseWindow : Verse.Window {
 
     protected virtual float bodyPadding => Spacing.Get(scrollViewStatus.scrollVisibile ? 2 : 4);
 
+    protected virtual bool drawHeaderSeparator => true;
+
+    protected virtual bool drawFooterSeparator => true;
+
+    // Pulls the body in from the window edge so a scrollbar rides inside the frame rather
+    // than on top of the border.
+    protected virtual float bodyInset => 0f;
+
     protected override float Margin => drawBorder ? 1 : 0;
 
     public sealed override Vector2 InitialSize => initialWindowSize;
@@ -153,16 +161,16 @@ public abstract class BaseWindow : Verse.Window {
 
         Rect headerRect = new Rect(inRect.x, inRect.y, inRect.width, headerHeight);
         Rect bodyRect = new Rect(
-            inRect.x,
+            inRect.x + bodyInset,
             inRect.y + headerHeight,
-            inRect.width,
+            inRect.width - bodyInset * 2f,
             bodyHeight
         );
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - footerHeight, inRect.width, footerHeight);
 
         GUI.DrawTexture(headerRect.ContractedBy(Margin), HeaderBackground);
         DrawHeader(headerRect);
-        DrawBorder(headerRect, 3, bottom: true);
+        if (drawHeaderSeparator) DrawBorder(headerRect, 3, bottom: true);
 
         if (CloseButtonFor(inRect.AtZero())) {
             Close();
@@ -175,7 +183,7 @@ public abstract class BaseWindow : Verse.Window {
         if (hasFooter) {
             GUI.DrawTexture(footerRect.ContractedBy(Margin), FooterBackground);
             DrawFooter(footerRect);
-            DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
+            if (drawFooterSeparator) DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
         }
     }
 

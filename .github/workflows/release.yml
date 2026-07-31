@@ -90,8 +90,8 @@ jobs:
         run: dotnet tool install --global dotnet-script
 
 
-      # unityhub 3.20.0 moved the binary to /usr/lib/unityhub, unity-setup still wants
-      # /opt/unityhub/unityhub. delete when buildalon/unity-setup#57 ships.
+      # unityhub 3.20.0 moved the install tree to /usr/lib/unityhub, unity-setup still wants
+      # /opt/unityhub. delete when buildalon/unity-setup#57 ships.
       - name: Link Unity Hub to the path unity-setup expects
         if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         run: |
@@ -99,10 +99,11 @@ jobs:
           sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" > /etc/apt/sources.list.d/unityhub.list'
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends unityhub
-          if [ ! -e /opt/unityhub/unityhub ]; then
-            sudo mkdir -p /opt/unityhub
-            sudo ln -s "$(readlink -f "$(command -v unityhub)")" /opt/unityhub/unityhub
+          if [ ! -e /opt/unityhub/resources/app.asar ]; then
+            sudo rm -rf /opt/unityhub
+            sudo ln -s "$(dirname "$(readlink -f "$(command -v unityhub)")")" /opt/unityhub
           fi
+          ls -l /opt/unityhub/unityhub /opt/unityhub/resources/app.asar
 
       - uses: buildalon/unity-setup@v1
         if: steps.assetbundle-cache.outputs.cache-hit != 'true'

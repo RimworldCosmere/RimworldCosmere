@@ -23,7 +23,16 @@ public class ScenPart_NamedPawns : ScenPart {
         if (pawns.Count == 0) return;
 
         int index = ResolveTemplateIndex();
-        if (index < 0 || index >= pawns.Count) return;
+        if (index < 0 || index >= pawns.Count) {
+            Logger.Verbose(
+                $"ScenPart_NamedPawns: no template for generated pawn - index {index} outside 0..{pawns.Count - 1}"
+            );
+            return;
+        }
+
+        Logger.Verbose(
+            $"ScenPart_NamedPawns: applying template {index} ({pawns[index].firstName}) to {pawn.Name}, redressed={redressed}"
+        );
 
         ApplyTemplate(pawn, pawns[index]);
         generationCounter++;
@@ -79,7 +88,24 @@ public class ScenPart_NamedPawns : ScenPart {
         ApplyTraits(pawn, template);
         ApplySkills(pawn, template);
 
+        RedressAfterAgeChange(pawn);
+
         pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+    }
+
+    // This hook fires after gear generation, so aging a pawn down here trips
+    // LifeStageWorker_HumanlikeAdult into stripping adult-only apparel into their inventory.
+    private static void RedressAfterAgeChange(Pawn pawn) {
+        if (pawn.apparel == null || pawn.inventory == null) return;
+
+        List<Verse.Thing> carried = [.. pawn.inventory.innerContainer];
+        for (int i = 0; i < carried.Count; i++) {
+            if (carried[i] is not Apparel apparel) continue;
+            if (!ApparelUtility.HasPartsToWear(pawn, apparel.def)) continue;
+
+            pawn.inventory.innerContainer.Remove(apparel);
+            pawn.apparel.Wear(apparel, false);
+        }
     }
 
     private void ApplyPostStartEffects() {
@@ -153,7 +179,13 @@ public class ScenPart_NamedPawns : ScenPart {
             return;
         }
 
+        string before = pawn.genes?.Xenotype?.defName ?? "(none)";
         pawn.genes?.SetXenotype(xenotypeDef);
+        string after = pawn.genes?.Xenotype?.defName ?? "(none)";
+
+        Logger.Verbose(
+            $"ScenPart_NamedPawns: {template.firstName} xenotype {before} -> {after} (wanted {xenotypeDef.defName})"
+        );
     }
 
     private static void ApplyTraits(Pawn pawn, NamedPawnDef template) {

@@ -1,4 +1,6 @@
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
+using Cosmere.System.Scadrial.Thing;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -6,7 +8,7 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
 public class GoldAbility : AllomancyAbility {
-    private Pawn? hallucination;
+    private GoldShadow? hallucination;
     private AllomanticHediff? hediff;
 
     public GoldAbility(Pawn pawn) : base(pawn) { }
@@ -55,44 +57,34 @@ public class GoldAbility : AllomancyAbility {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
         }
 
-        // Remove hallucination
-        if (hallucination is { Spawned: true }) {
+        if (hallucination == null) return;
+
+        if (!hallucination.Destroyed) {
             hallucination.Destroy();
         }
+
+        hallucination = null;
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_References.Look(ref hallucination, "hallucination");
     }
 
     private void SpawnHallucination() {
         Map? map = pawn.MapHeld;
         if (map == null) return;
 
-        hallucination = PawnGenerator.GeneratePawn(
-            pawn.kindDef,
-            Faction.OfAncients // or a custom invisible/neutral faction
+        GoldShadow shadow = (GoldShadow)IllusoryPawnUtility.Create(
+            pawn,
+            PawnKindDefOf.Cosmere_Scadrial_PawnKind_GoldShadow
         );
-
-        hallucination.Name = pawn.Name;
-        hallucination.gender = pawn.gender;
-        hallucination.story.bodyType = pawn.story.bodyType;
-        hallucination.story.headType = pawn.story.headType;
-        hallucination.story.skinColorOverride = pawn.story.SkinColor;
-        hallucination.story.HairColor = pawn.story.HairColor;
-        hallucination.story.hairDef = pawn.story.hairDef;
-        hallucination.playerSettings = null;
-        hallucination.drafter = null;
-        hallucination.Rotation = Rot4.Random;
+        shadow.owner = pawn;
 
         IntVec3 loc = CellFinder.RandomClosewalkCellNear(pawn.Position, map, 3);
-        GenSpawn.Spawn(hallucination, loc, map);
+        GenSpawn.Spawn(shadow, loc, map);
+        shadow.Rotation = Rot4.Random;
 
-        // Make it non-interactive
-        hallucination.health.forceDowned = true;
-        hallucination.health.capacities.Clear();
-        hallucination.playerSettings = null;
-
-        hallucination.mindState.mentalStateHandler.TryStartMentalState(
-            MentalStateDefOf.Roaming,
-            "Hallucination revealing a different path",
-            true
-        );
+        hallucination = shadow;
     }
 }

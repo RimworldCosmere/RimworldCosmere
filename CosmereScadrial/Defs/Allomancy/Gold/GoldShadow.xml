@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- HumanlikeAdult's worker fills in backstories and rerolls body types, which assumes a
+         PawnGenerator-built pawn. The base worker just dirties capacities. -->
+    <LifeStageDef>
+        <defName>Cosmere_Scadrial_LifeStage_GoldShadow</defName>
+        <label>gold shadow</label>
+        <workerClass>LifeStageWorker</workerClass>
+        <developmentalStage>Adult</developmentalStage>
+        <visible>false</visible>
+        <reproductive>false</reproductive>
+        <sittingOffset>0.18</sittingOffset>
+        <silhouetteGraphicData>
+            <texPath>Things/Pawn/Humanlike/Silhouettes/Silhouette_HumanAdult</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
+        </silhouetteGraphicData>
+    </LifeStageDef>
+
+    <ThingDef ParentName="BasePawn">
+        <defName>Cosmere_Scadrial_Race_GoldShadow</defName>
+        <thingClass>Cosmere.System.Scadrial.Thing.GoldShadow</thingClass>
+        <label>gold shadow</label>
+        <description>The person you might have been, dragged into sight by a burning of gold.</description>
+        <selectable>false</selectable>
+        <drawGUIOverlay>false</drawGUIOverlay>
+        <race>
+            <intelligence>Humanlike</intelligence>
+            <thinkTreeMain>Cosmere_Scadrial_ThinkTree_GoldShadow</thinkTreeMain>
+            <thinkTreeConstant>Cosmere_Scadrial_ThinkTree_GoldShadowConstant</thinkTreeConstant>
+            <body>Human</body>
+            <renderTree>Humanlike</renderTree>
+            <baseBodySize>1</baseBodySize>
+            <baseHealthScale>1</baseHealthScale>
+            <hasGenders>true</hasGenders>
+            <nameCategory>NoName</nameCategory>
+            <foodType>None</foodType>
+            <baseHungerRate>0</baseHungerRate>
+            <needsRest>false</needsRest>
+            <makesFootprints>false</makesFootprints>
+            <canBePredatorPrey>false</canBePredatorPrey>
+            <predator>false</predator>
+            <trainability>None</trainability>
+            <herdAnimal>false</herdAnimal>
+            <lifeExpectancy>99999</lifeExpectancy>
+            <alwaysAwake>true</alwaysAwake>
+            <isImmuneToInfections>true</isImmuneToInfections>
+            <bleedRateFactor>0</bleedRateFactor>
+            <disableMating>true</disableMating>
+            <hasMeat>false</hasMeat>
+            <hediffGiverSets />
+            <lifeStageAges>
+                <li>
+                    <def>Cosmere_Scadrial_LifeStage_GoldShadow</def>
+                    <minAge>0</minAge>
+                </li>
+            </lifeStageAges>
+        </race>
+        <inspectorTabs Inherit="False" />
+        <statBases>
+            <Mass>0</Mass>
+            <MoveSpeed>4.6</MoveSpeed>
+            <Wildness>0</Wildness>
+            <MaxHitPoints>Infinity</MaxHitPoints>
+            <IncomingDamageFactor>0</IncomingDamageFactor>
+            <Flammability>0</Flammability>
+            <StaggerDurationFactor>0</StaggerDurationFactor>
+            <MentalBreakThreshold>0</MentalBreakThreshold>
+            <FilthRate>0</FilthRate>
+            <LifespanFactor>Infinity</LifespanFactor>
+            <ComfyTemperatureMin>-2000</ComfyTemperatureMin>
+            <ComfyTemperatureMax>2000</ComfyTemperatureMax>
+            <MarketValue>0</MarketValue>
+            <MeleeDodgeChance>1000</MeleeDodgeChance>
+            <MeleeHitChance>0</MeleeHitChance>
+            <MeleeDamageFactor>0</MeleeDamageFactor>
+            <CarryingCapacity>0</CarryingCapacity>
+        </statBases>
+        <comps Inherit="False">
+            <li>
+                <compClass>CompAttachBase</compClass>
+            </li>
+            <!-- The Investiture need is gated on Humanlike intelligence, so it gets added
+                 regardless and dereferences this comp. An illusion holds none. -->
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <startingInvestiture>0</startingInvestiture>
+                <maxInvestiture>0</maxInvestiture>
+                <shareInvestitureByDefault>false</shareInvestitureByDefault>
+                <valueBasedOnChildren>false</valueBasedOnChildren>
+                <showMax>false</showMax>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <PawnKindDef>
+        <defName>Cosmere_Scadrial_PawnKind_GoldShadow</defName>
+        <label>gold shadow</label>
+        <race>Cosmere_Scadrial_Race_GoldShadow</race>
+        <combatPower>0</combatPower>
+        <initialResistanceRange>0~0</initialResistanceRange>
+        <initialWillRange>0~0</initialWillRange>
+        <canArriveManhunter>false</canArriveManhunter>
+        <collidesWithPawns>false</collidesWithPawns>
+        <canMeleeAttack>false</canMeleeAttack>
+        <immuneToTraps>true</immuneToTraps>
+        <immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+    </PawnKindDef>
+
+    <ThinkTreeDef>
+        <defName>Cosmere_Scadrial_ThinkTree_GoldShadow</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="Cosmere.System.Scadrial.JobGiver.WanderAsGoldShadow" />
+                <li Class="JobGiver_IdleError" />
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+
+    <ThinkTreeDef>
+        <defName>Cosmere_Scadrial_ThinkTree_GoldShadowConstant</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>Despawned</treeDef>
+                </li>
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+</Defs>

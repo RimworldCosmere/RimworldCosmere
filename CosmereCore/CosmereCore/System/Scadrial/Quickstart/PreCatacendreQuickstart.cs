@@ -5,7 +5,6 @@ using Cosmere.Core.Need;
 using Cosmere.Core.Quickstart;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
-using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
@@ -49,155 +48,82 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
         if (pawns.Count == 0) return;
 
-        Pawn? pawn;
-        if (pawns.TryPopFront(out pawn)) {
-            ScadrianUtility.PrepareDevPawn(pawn);
-            pawn.Name = new NameSingle("Vin Venture");
-            pawn.gender = Gender.Female;
-
-            Pawn grandfather = GeneratePawn(Gender.Male, XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble);
-            grandfather.Name = new NameSingle("Vin Pat Grandfather");
-            GeneUtility.AddMistborn(grandfather, false, true);
-            grandfather.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
-            Pawn grandmother = GeneratePawn(Gender.Female, XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble);
-            grandmother.Name = new NameSingle("Vin Pat Grandmother");
-            GeneUtility.AddRandomAllomanticGene(grandmother, false, true);
-            grandmother.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasiumAlloy);
-
-            Pawn father = GeneratePawn(Gender.Male, XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble);
-            father.Name = new NameSingle("Vin Father");
-            GeneUtility.AddMistborn(father, false, true);
-            father.relations.AddDirectRelation(PawnRelationDefOf.Parent, grandfather);
-            father.relations.AddDirectRelation(PawnRelationDefOf.Parent, grandmother);
-
-            Pawn mother = GeneratePawn(Gender.Female, XenotypeDefOf.Cosmere_Scadrial_Xenotype_Skaa);
-            GeneUtility.AddMistborn(mother, false, true);
-            mother.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
-            mother.Name = new NameSingle("Vin Mother");
-
-            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
-            pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-
-            // GenSpawn.Spawn(grandfather, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            // GenSpawn.Spawn(grandmother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            // GenSpawn.Spawn(father, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            // GenSpawn.Spawn(mother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(pawn);
-            StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(pawn);
+        for (int i = 0; i < pawns.Count; i++) {
+            StockUp(pawns[i]);
         }
 
-        if (pawns.TryPopFront(out pawn)) {
-            if (pawn.needs.TryGetNeed(out Investiture investiture)) {
-                investiture.CurLevel = 10;
+        SpawnRashek(pawns[0]);
+    }
+
+    /// <summary>
+    ///     Tops up reserves and hands over vials and metalminds. Deliberately leaves names, genders
+    ///     and genes alone so the scenario's own roster is what you see.
+    /// </summary>
+    private static void StockUp(Pawn pawn) {
+        if (pawn.genes == null) return;
+
+        pawn.FillAllAllomanticReserves();
+
+        foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
+            if (metal.allomancy != null && !metal.godMetal) {
+                Verse.Thing vial = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial, metal.Item);
+                vial.stackCount = 20;
+                pawn.inventory.innerContainer.TryAdd(vial);
             }
 
-            ScadrianUtility.PrepareDevPawn(pawn);
-            GeneUtility.AddFullFeruchemist(pawn, false, true);
-            foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs.Where(x =>
-                         x.feruchemy?.userName != null
-                     )) {
+            if (metal.feruchemy?.userName != null) {
                 pawn.inventory.innerContainer.TryAdd(
                     ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
                 );
             }
-
-            pawn.Name = new NameSingle("Rashek");
-            pawn.gender = Gender.Male;
-            pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
-            pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
-            ScadrianUtility.SetMetallicArtsSkills(pawn, 20);
-            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Steel, 5);
-            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Iron, 5);
-            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Atium, 5);
         }
 
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, true, MetalDefOf.Steel);
-            PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
-            pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
-            pawn.gender = Gender.Male;
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, false, MetalDefOf.Steel);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddFullFeruchemist(pawn, false, true);
-            foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
-                if (metal.feruchemy?.userName == null) continue;
-                Verse.Thing metalmind = ThingMaker.MakeThing(
-                    ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand,
-                    metal.Item
-                );
-                pawn.inventory.innerContainer.TryAdd(metalmind);
-            }
-
-            pawn.Name = new NameSingle("Sazed");
-            pawn.gender = Gender.Male;
-            if (pawn.needs.TryGetNeed(out Investiture investiture)) {
-                investiture.CurLevel = 10;
-            }
-
-            StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(pawn);
-        }
+        StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(pawn);
+        StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(pawn);
     }
 
-    private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype) {
+    private void SpawnRashek(Pawn nearby) {
+        Map? map = nearby.MapHeld;
+        if (map == null) return;
+
+        Pawn rashek = GeneratePawn(
+            Gender.Male,
+            XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
+            new FloatRange(21, 21)
+        );
+
+        rashek.Name = new NameTriple("Lord", "Rashek", "Ruler");
+        rashek.ageTracker.AgeChronologicalTicks = 1050 * 3600000L;
+
+        GeneUtility.AddMistborn(rashek, false, true);
+        GeneUtility.AddFullFeruchemist(rashek, false, true);
+
+        rashek.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
+        rashek.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+        ScadrianUtility.SetMetallicArtsSkills(rashek, 20);
+        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Steel, 5);
+        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Iron, 5);
+        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Atium, 5);
+
+        StockUp(rashek);
+
+        if (rashek.needs.TryGetNeed(out Investiture investiture)) {
+            investiture.CurLevel = 10;
+        }
+
+        GenSpawn.Spawn(rashek, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 5), map);
+    }
+
+    private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, FloatRange? ageRange = null) {
         return PawnGenerator.GeneratePawn(
             new PawnGenerationRequest(
-                PawnKindDefOf.Colonist,
+                RimWorld.PawnKindDefOf.Colonist,
                 Faction.OfPlayer,
                 tile: Current.Game.CurrentMap.Tile,
                 forcedXenotype: xenotype,
                 fixedGender: gender,
-                biologicalAgeRange: new FloatRange(40, 60)
+                biologicalAgeRange: ageRange ?? new FloatRange(40, 60)
             )
         );
-    }
-
-    private static void PrepareColonistAsTwinborn(
-        Pawn pawn,
-        bool fillReserves,
-        bool createMetalmind,
-        bool snapped,
-        params MetalDef[] metals
-    ) {
-        foreach (MetalDef metal in metals) {
-            PrepareColonistAsMisting(pawn, fillReserves, snapped, metal);
-            PrepareColonistAsFerring(pawn, createMetalmind, snapped, metal);
-        }
-
-        pawn.Name = new NameSingle("TB: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
-    }
-
-    private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, bool snapped, params MetalDef[] metals) {
-        foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
-            if (fillReserves) {
-                Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
-                gene.FillReserve();
-            }
-        }
-
-        pawn.Name = new NameSingle("Misting: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
-    }
-
-    private static void PrepareColonistAsFerring(
-        Pawn pawn,
-        bool createMetalmind,
-        bool snapped,
-        params MetalDef[] metals
-    ) {
-        foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, snapped);
-            if (createMetalmind) {
-                pawn.inventory.innerContainer.TryAdd(
-                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
-                );
-            }
-        }
-
-        pawn.Name = new NameSingle("Ferring: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 }

@@ -11,38 +11,182 @@
         <factionDef>Cosmere_Scadrial_Faction_Refugees</factionDef>
       </playerFaction>
       <parts>
-        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
-          <def>ConfigurePawnsXenotypes</def>
-          <pawnChoiceCount>6</pawnChoiceCount>
-          <customSummary>Begin with six pawns: a mix of Skaa laborers, Terris stewards, and disillusioned Nobles, each escaping the Final Empire's oppressive grip.</customSummary>
-          <overrideKinds>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
             <li>
+              <firstName>Kelsier</firstName>
+              <lastName>Survivor</lastName>
+              <age>38</age>
+              <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
-              <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
+              <mistborn>true</mistborn>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>NaturalMood</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Shooting</def><level>8</level></li>
+              </skills>
             </li>
             <li>
-              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
-              <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
-            </li>
-            <li>
-              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
-              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
-            </li>
-          </overrideKinds>
-          <xenotypeCounts>
-            <li>
+              <firstName>Vin</firstName>
+              <age>16</age>
+              <gender>Female</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
-              <count>2</count>
+              <mistborn>true</mistborn>
+              <traits>
+                <li><def>Nerves</def><degree>-1</degree></li>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Shooting</def><level>6</level></li>
+                <li><def>Social</def><level>4</level></li>
+              </skills>
             </li>
             <li>
+              <firstName>Hammond</firstName>
+              <nickName>Ham</nickName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ladrian</firstName>
+              <nickName>Breeze</nickName>
+              <age>40</age>
+              <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
-              <count>2</count>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBrass</li>
+              </genes>
+              <traits>
+                <li><def>Greedy</def><degree>0</degree></li>
+                <li><def>Beauty</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>16</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
             </li>
             <li>
-              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
-              <count>2</count>
+              <firstName>Clubs</firstName>
+              <age>55</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCopper</li>
+              </genes>
+              <traits>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Crafting</def><level>14</level></li>
+                <li><def>Construction</def><level>12</level></li>
+              </skills>
             </li>
-          </xenotypeCounts>
+            <li>
+              <firstName>Dockson</firstName>
+              <age>38</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Sazed</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>16</level></li>
+                <li><def>Social</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marsh</firstName>
+              <age>40</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBronze</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Intellectual</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Spook</firstName>
+              <age>16</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingTin</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>-1</degree></li>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>6</level></li>
+                <li><def>Melee</def><level>4</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Yeden</firstName>
+              <age>40</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>-1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>6</level></li>
+                <li><def>Melee</def><level>4</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Renoux</firstName>
+              <age>50</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Intellectual</def><level>8</level></li>
+              </skills>
+            </li>
+          </pawns>
         </li>
 
         <li Class="ScenPart_PlayerPawnsArriveMethod">

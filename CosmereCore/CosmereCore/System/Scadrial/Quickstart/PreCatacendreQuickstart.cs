@@ -1,4 +1,3 @@
-using Cosmere.Core;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
 using Cosmere.Core.Need;
@@ -56,25 +55,41 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     }
 
     /// <summary>
-    ///     Tops up reserves and hands over vials and metalminds. Deliberately leaves names, genders
-    ///     and genes alone so the scenario's own roster is what you see.
+    ///     Tops up reserves and hands over vials and metalminds for the metals a pawn can actually
+    ///     use. Deliberately leaves names, genders and genes alone so the scenario's own roster is
+    ///     what you see.
     /// </summary>
-    private static void StockUp(Pawn pawn) {
+    private static void StockUp(Pawn pawn, List<(ThingDef kind, int count)>? metalminds = null) {
         if (pawn.genes == null) return;
 
         pawn.FillAllAllomanticReserves();
 
+        metalminds ??= [
+            (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindEarring, 3),
+            (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBracelet, 3),
+            (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, 3),
+            (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindImplant, 3),
+        ];
+
         foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
-            if (metal.allomancy != null && !metal.godMetal) {
+            if (pawn.genes.GetAllomanticGeneForMetal(metal) != null) {
                 Verse.Thing vial = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial, metal.Item);
                 vial.stackCount = 20;
                 pawn.inventory.innerContainer.TryAdd(vial);
             }
 
-            if (metal.feruchemy?.userName != null) {
-                pawn.inventory.innerContainer.TryAdd(
-                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
-                );
+            if (pawn.genes.GetFeruchemicGeneForMetal(metal) == null) continue;
+
+            foreach ((ThingDef kind, int count) in metalminds) {
+                if (kind == ThingDefOf.Cosmere_Scadrial_Thing_MetalmindImplant) {
+                    ScadrianUtility.AddImplantedMetalminds(pawn, metal, count);
+                    continue;
+                }
+
+                // Metalminds have a stack limit of one, so each is its own thing.
+                for (int i = 0; i < count; i++) {
+                    pawn.inventory.innerContainer.TryAdd(ThingMaker.MakeThing(kind, metal.Item));
+                }
             }
         }
 
@@ -101,11 +116,15 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         rashek.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
         rashek.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
         ScadrianUtility.SetMetallicArtsSkills(rashek, 20);
-        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Steel, 5);
-        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Iron, 5);
-        ScadrianUtility.AddImplantedMetalminds(rashek, MetalDefOf.Atium, 5);
 
-        StockUp(rashek);
+        // A full Feruchemist would otherwise walk out under a couple of hundred metalminds.
+        StockUp(
+            rashek,
+            [
+                (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, 1),
+                (ThingDefOf.Cosmere_Scadrial_Thing_MetalmindImplant, 3),
+            ]
+        );
 
         if (rashek.needs.TryGetNeed(out Investiture investiture)) {
             investiture.CurLevel = 10;

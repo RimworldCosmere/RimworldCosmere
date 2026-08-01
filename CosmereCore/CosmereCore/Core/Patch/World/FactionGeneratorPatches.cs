@@ -62,6 +62,12 @@ public static class FactionGeneratorPatch {
             return false;
         }
 
+        // Hidden factions never reach the faction list or the world map, and vanilla assumes
+        // they exist - Faction.OfAncients is null without one, which NREs PawnGenerator.
+        if (faction.hidden) {
+            return true;
+        }
+
         if (isCombinedCosmereScenario) {
             return isCosmereFaction;
         }

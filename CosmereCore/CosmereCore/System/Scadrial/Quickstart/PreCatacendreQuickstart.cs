@@ -89,7 +89,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         Pawn rashek = GeneratePawn(
             Gender.Male,
             XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
-            new FloatRange(21, 21)
+            21f
         );
 
         rashek.Name = new NameTriple("Lord", "Rashek", "Ruler");
@@ -114,7 +114,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         GenSpawn.Spawn(rashek, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 5), map);
     }
 
-    private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, FloatRange? ageRange = null) {
+    private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, float? fixedAge = null) {
         return PawnGenerator.GeneratePawn(
             new PawnGenerationRequest(
                 RimWorld.PawnKindDefOf.Colonist,
@@ -122,7 +122,8 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
                 tile: Current.Game.CurrentMap.Tile,
                 forcedXenotype: xenotype,
                 fixedGender: gender,
-                biologicalAgeRange: ageRange ?? new FloatRange(40, 60)
+                fixedBiologicalAge: fixedAge,
+                biologicalAgeRange: fixedAge.HasValue ? null : new FloatRange(40, 60)
             )
         );
     }

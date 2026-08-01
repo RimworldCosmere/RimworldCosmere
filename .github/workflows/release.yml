@@ -90,6 +90,36 @@ jobs:
         run: dotnet tool install --global dotnet-script
 
 
+      # hub 3.20.0 against unity-setup's pre-3.20 assumptions. the symlink must stay dangling
+      # or the action skips its own installer, and the shim drops an [install-state] line that
+      # breaks its strict `editors -i` parser. delete both on buildalon/unity-setup#57.
+      - name: Adapt Unity Hub 3.20.0 to what unity-setup expects
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo ln -sfn /usr/lib/unityhub /opt/unityhub
+          sudo mkdir -p /opt/hub-shim
+          sudo tee /opt/hub-shim/unity-hub >/dev/null <<'SH'
+          #!/bin/bash
+          "${UNITY_HUB_REAL:-/usr/bin/unity-hub}" "$@" | grep -v --line-buffered '^\[install-state\]'
+          exit "${PIPESTATUS[0]}"
+          SH
+          sudo chmod 755 /opt/hub-shim/unity-hub
+          echo /opt/hub-shim >> "$GITHUB_PATH"
+
+          printf '#!/bin/bash\necho "[install-state] pruned 3 rows"\necho "2022.3.35f1 installed at /tmp/u"\nexit 4\n' > /tmp/fake-hub
+          chmod 755 /tmp/fake-hub
+          rc=0
+          out=$(UNITY_HUB_REAL=/tmp/fake-hub /opt/hub-shim/unity-hub) || rc=$?
+          [ "$rc" = 4 ] || { echo "shim dropped the hub exit code, got $rc"; exit 1; }
+          [ "$out" = "2022.3.35f1 installed at /tmp/u" ] || { echo "shim filtered wrong, got: $out"; exit 1; }
+          echo "shim self-test ok"
+
+      - name: Verify the shim is intercepting unity-hub
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
+        run: |
+          resolved=$(command -v unity-hub || true)
+          [ "$resolved" = /opt/hub-shim/unity-hub ] || { echo "PATH resolved unity-hub to '$resolved'"; exit 1; }
+
       - uses: buildalon/unity-setup@v1
         if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         with:

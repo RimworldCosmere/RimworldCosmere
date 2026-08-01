@@ -23,16 +23,7 @@ public class ScenPart_NamedPawns : ScenPart {
         if (pawns.Count == 0) return;
 
         int index = ResolveTemplateIndex();
-        if (index < 0 || index >= pawns.Count) {
-            Logger.Verbose(
-                $"ScenPart_NamedPawns: no template for generated pawn - index {index} outside 0..{pawns.Count - 1}"
-            );
-            return;
-        }
-
-        Logger.Verbose(
-            $"ScenPart_NamedPawns: applying template {index} ({pawns[index].firstName}) to {pawn.Name}, redressed={redressed}"
-        );
+        if (index < 0 || index >= pawns.Count) return;
 
         ApplyTemplate(pawn, pawns[index]);
         generationCounter++;
@@ -179,13 +170,7 @@ public class ScenPart_NamedPawns : ScenPart {
             return;
         }
 
-        string before = pawn.genes?.Xenotype?.defName ?? "(none)";
         pawn.genes?.SetXenotype(xenotypeDef);
-        string after = pawn.genes?.Xenotype?.defName ?? "(none)";
-
-        Logger.Verbose(
-            $"ScenPart_NamedPawns: {template.firstName} xenotype {before} -> {after} (wanted {xenotypeDef.defName})"
-        );
     }
 
     private static void ApplyTraits(Pawn pawn, NamedPawnDef template) {

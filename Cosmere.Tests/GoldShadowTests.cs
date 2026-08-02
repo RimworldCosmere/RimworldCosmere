@@ -27,13 +27,16 @@ public class GoldShadowTests {
     private static string GoldShadowDefPath =>
         Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Allomancy", "Gold", "GoldShadow.xml");
 
+    private static string GoldAbilitySourcePath =>
+        Path.Combine(ScadrialSystemRoot, "Allomancy", "Ability", "GoldAbility.cs");
+
+    private static string ScadrialSystemRoot =>
+        Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
+
     [TestMethod]
     public void IllusoryPawnPathDoesNotUseFactionOfAncients() {
         string[] guarded = [
-            Path.Combine(
-                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial",
-                "Allomancy", "Ability", "GoldAbility.cs"
-            ),
+            GoldAbilitySourcePath,
             Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "Util", "IllusoryPawnUtility.cs"),
         ];
 
@@ -61,10 +64,7 @@ public class GoldShadowTests {
 
     [TestMethod]
     public void GoldAbilityDoesNotCallPawnGenerator() {
-        string path = Path.Combine(
-            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial",
-            "Allomancy", "Ability", "GoldAbility.cs"
-        );
+        string path = GoldAbilitySourcePath;
 
         Assert.IsTrue(File.Exists(path), $"Expected GoldAbility at {path}");
         Assert.IsFalse(

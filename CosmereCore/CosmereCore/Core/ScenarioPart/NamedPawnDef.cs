@@ -93,16 +93,13 @@ public class NamedPawnDef {
         }
     }
 
+    // Always a NameTriple, even with no surname. Vanilla's spouse-relation generator casts
+    // starting pawns' names to NameTriple without a null check, so a NameSingle here takes
+    // out map generation for the whole colony.
     public Name? GetName() {
-        if (firstName != null && lastName != null) {
-            return new NameTriple(firstName, nickName ?? firstName, lastName);
-        }
+        if (firstName == null) return null;
 
-        if (firstName != null) {
-            return new NameSingle(nickName != null ? $"{firstName} \"{nickName}\"" : firstName);
-        }
-
-        return null;
+        return new NameTriple(firstName, nickName ?? firstName, lastName ?? string.Empty);
     }
 
     public int GetChronologicalAge() {

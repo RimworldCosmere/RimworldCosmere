@@ -284,7 +284,7 @@ public sealed class RadialWindow : Verse.Window {
                 }
 
             case RadialStateKind.AbilityTier:
-                CommitAndClose(false);
+                CommitAndClose(ShiftHeld());
                 break;
         }
     }

@@ -36,7 +36,8 @@ public static class RadialCenterPreview {
         int titleLines = 1;
         bool canFlare = hoveredLeaf != null
             && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
-            && !hoveredLeaf.IsLocked;
+            && !hoveredLeaf.IsLocked
+            && hoveredLeaf.CanFlare;
 
         UIText.EllipsisLabel(ChordRow(center, BreadcrumbY, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
@@ -66,7 +67,7 @@ public static class RadialCenterPreview {
                 );
             }
         } else {
-            bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
+            bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked && hoveredLeaf.CanFlare;
             string title = flareArmed
                 ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
                 : hoveredLeaf.Label;

@@ -8,5 +8,6 @@ public sealed record InvestitureCell(
     Texture2D? Icon,
     ResourceBar Bar,
     bool IsActive,
-    bool IsFlaring
+    bool IsFlaring,
+    IReadOnlyList<InvestitureAbility> Abilities
 );

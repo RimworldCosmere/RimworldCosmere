@@ -82,6 +82,7 @@ public class SeverityCalculator<TGene> : HediffComp
         IAbility<TGene, IHediff<TGene>> sourceAbility
     ) {
         MarkSeverityDirty();
+        sourceAbility.OnStatusChangedEvent -= OnStatusChange;
         if (parent.SourceAbilities.Count == 0) {
             parent.OnSourceAdded -= OnSourceAdded;
             parent.OnSourceRemoved -= OnSourceRemoved;

@@ -3,6 +3,7 @@ using Cosmere.Core.Tab;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
+using Cosmere.Core.UI.Radial;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
@@ -22,15 +23,30 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private const float StripPadding = 7f;
     private const float ReserveBarHeight = 10f;
-    private const float StripButtonHeight = 24f;
 
     // BurnRate is charged once per rare tick, so it has to be divided back down to
     // read as a rate rather than as a number four seconds wide.
     private const float RareTicksPerSecond = GenTicks.TickRareInterval / 60f;
     private static readonly Color Accent = new Color(0.478f, 0.400f, 0.263f);
 
-    private static float BaseStripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + StripButtonHeight + 22f;
+    private static float ChromeHeight =>
+        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) + ReserveBarHeight + 22f;
+
+    private static float StripHeightFor(InvestitureCell? cell) {
+        if (cell == null) return 0f;
+
+        return ChromeHeight + AbilityRowLayout.HeightFor(RowsFor(cell));
+    }
+
+    private static List<AbilityRow> RowsFor(InvestitureCell cell) {
+        List<AbilityRow> rows = new List<AbilityRow>(cell.Abilities.Count);
+        for (int i = 0; i < cell.Abilities.Count; i++) {
+            InvestitureAbility a = cell.Abilities[i];
+            rows.Add(new AbilityRow(a.AbilityDefName, a.Label, a.IsTargeted, a.CanFlare));
+        }
+
+        return AbilityRowLayout.Ordered(rows);
+    }
 
     private readonly ScadrialCrest crest = new ScadrialCrest(false);
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
@@ -51,18 +67,27 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     // Idempotent, because height is asked for several times a frame. Reveal itself only
     // advances once per frame; this just re-reads where it got to.
-    private void StepReveal() {
-        // One panel at a time, in order: the open metal slides up, then the new one
-        // slides down. Swapping the contents mid-slide makes the panel jump rows while
-        // it is moving, which reads as a glitch rather than as an exchange.
+    private void StepReveal(float openHeight) {
+        // One panel at a time: the open metal finishes closing before the queued
+        // one opens, so mid-slide contents never jump rows.
         if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
             expandedMetal = pendingMetal;
             pendingMetal = null;
         }
 
-        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : BaseStripHeight);
+        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : openHeight);
         if (expandedMetal != null) revealedMetal = expandedMetal;
         else if (revealedHeight < 1f) revealedMetal = null;
+    }
+
+    private static InvestitureCell? CellFor(InvestitureSnapshot snapshot, string? subsystemId) {
+        if (subsystemId == null) return null;
+
+        for (int i = 0; i < snapshot.Cells.Count; i++) {
+            if (snapshot.Cells[i].SubsystemId == subsystemId) return snapshot.Cells[i];
+        }
+
+        return null;
     }
 
     // Clicking the open metal closes it; clicking a different one closes it first and
@@ -92,14 +117,17 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
-        StepReveal();
+        float revealTarget = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
+        StepReveal(revealTarget);
         return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
         crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
-        StepReveal();
+        float revealTarget = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
+        StepReveal(revealTarget);
+        float revealedStripHeight = StripHeightFor(CellFor(snapshot, revealedMetal));
 
         Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
@@ -108,7 +136,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             QuadHeader,
             revealedMetal,
             revealedHeight,
-            BaseStripHeight,
+            revealedStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
             (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
@@ -213,39 +241,97 @@ public sealed class AllomancyDockSection : DockSectionBase {
             MetalPalette.For(cell.SubsystemId)
         );
 
-        float buttonY = bar.yMax + 10f;
-        float buttonWidth = (inner.width - 6f) / 2f;
+        List<AbilityRow> rows = RowsFor(cell);
+        bool headers = AbilityRowLayout.ShowGroupHeaders(rows);
+        float y = bar.yMax + 10f;
+        bool drawnSustained = false;
+        bool drawnTargeted = false;
 
-        // Burning is the ordinary move and flaring the deliberate one, so they are
-        // not weighted the same. The primary flips to Stop rather than staying "Burn"
-        // while it burns.
-        string burnLabel = cell.IsActive
-            ? "CC_Dock_Allomancy_StopBurn".Translate()
-            : "CC_Dock_Allomancy_Burn".Translate();
-        Rect burnRect = new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight);
-        TooltipHandler.TipRegion(burnRect, "CC_Dock_Allomancy_BurnTip".Translate(MetalLabel(cell).Named("METAL")));
+        for (int i = 0; i < rows.Count; i++) {
+            AbilityRow row2 = rows[i];
+            if (headers && !row2.IsTargeted && !drawnSustained) {
+                DrawGroupHeader(
+                    new Rect(inner.x, y, inner.width, AbilityRowLayout.GroupHeaderHeight),
+                    "CC_Dock_Allomancy_GroupSustained".Translate()
+                );
+                y += AbilityRowLayout.GroupHeaderHeight;
+                drawnSustained = true;
+            }
+
+            if (headers && row2.IsTargeted && !drawnTargeted) {
+                DrawGroupHeader(
+                    new Rect(inner.x, y, inner.width, AbilityRowLayout.GroupHeaderHeight),
+                    "CC_Dock_Allomancy_GroupTargeted".Translate()
+                );
+                y += AbilityRowLayout.GroupHeaderHeight;
+                drawnTargeted = true;
+            }
+
+            InvestitureAbility ability = FindAbility(cell, row2.DefName);
+            DrawAbilityRow(new Rect(inner.x, y, inner.width, AbilityRowLayout.RowHeight), pawn, ability);
+            y += AbilityRowLayout.RowHeight + AbilityRowLayout.RowGap;
+        }
+    }
+
+    private static InvestitureAbility FindAbility(InvestitureCell cell, string defName) {
+        for (int i = 0; i < cell.Abilities.Count; i++) {
+            if (cell.Abilities[i].AbilityDefName == defName) return cell.Abilities[i];
+        }
+
+        return cell.Abilities[0];
+    }
+
+    private static void DrawGroupHeader(Rect rect, string label) {
+        UIText.EllipsisLabel(
+            rect,
+            label,
+            GameFont.Tiny,
+            TextAnchor.LowerLeft,
+            new Color(0.420f, 0.373f, 0.298f)
+        );
+    }
+
+    private void DrawAbilityRow(Rect rect, Pawn pawn, InvestitureAbility ability) {
+        float chipWidth = ability.CanFlare ? 44f : 0f;
+        float mainWidth = rect.width - (ability.CanFlare ? chipWidth + 4f : 0f);
+
+        string label = ability.IsActive
+            ? "CC_Dock_Allomancy_StopBurn".Translate() + " " + ability.Label
+            : ability.IsTargeted
+                ? "CC_Dock_Allomancy_Target".Translate() + " " + ability.Label
+                : "CC_Dock_Allomancy_Burn".Translate() + " " + ability.Label;
+
+        Rect mainRect = new Rect(rect.x, rect.y, mainWidth, rect.height);
+        TooltipHandler.TipRegion(
+            mainRect,
+            "CC_Dock_Allomancy_AbilityTip".Translate(
+                ability.Label.Named("ABILITY"),
+                (ability.Def.description ?? string.Empty).Named("DESC")
+            )
+        );
+
         if (DockButton.Draw(
-                burnRect,
-                burnLabel,
-                Accent,
-                kind: cell.IsActive ? DockButtonKind.Active : DockButtonKind.Primary
+                mainRect,
+                label,
+                ability.IsFlaring ? FlaringTint : Accent,
+                kind: ability.IsActive ? DockButtonKind.Active : DockButtonKind.Primary
             )) {
-            ToggleBurn(pawn, cell.SubsystemId, false);
+            if (ability.IsTargeted) RadialDispatcher.CastOrToggle(pawn, ability.Def);
+            else ToggleAbility(pawn, ability, false);
             Event.current?.Use();
         }
 
-        Rect flareRect = new Rect(inner.x + buttonWidth + 6f, buttonY, buttonWidth, StripButtonHeight);
-        string flareLabel = cell.IsFlaring
-            ? "CC_Dock_Allomancy_StopFlare".Translate()
-            : "CC_Dock_Allomancy_Flare".Translate();
-        TooltipHandler.TipRegion(flareRect, "CC_Dock_Allomancy_FlareTip".Translate(MetalLabel(cell).Named("METAL")));
+        if (!ability.CanFlare) return;
+
+        Rect chipRect = new Rect(rect.xMax - chipWidth, rect.y, chipWidth, rect.height);
+        TooltipHandler.TipRegion(chipRect, "CC_Dock_Allomancy_AbilityFlareTip".Translate(ability.Label.Named("ABILITY")));
         if (DockButton.Draw(
-                flareRect,
-                flareLabel,
-                cell.IsFlaring ? FlaringTint : Accent,
-                kind: cell.IsFlaring ? DockButtonKind.Active : DockButtonKind.Ghost
+                chipRect,
+                ability.IsFlaring ? "CC_Dock_Allomancy_StopFlare".Translate() : "CC_Dock_Allomancy_Flare".Translate(),
+                ability.IsFlaring ? FlaringTint : Accent,
+                kind: ability.IsFlaring ? DockButtonKind.Active : DockButtonKind.Ghost
             )) {
-            ToggleBurn(pawn, cell.SubsystemId, true);
+            ToggleAbility(pawn, ability, true);
             Event.current?.Use();
         }
     }
@@ -316,18 +402,15 @@ public sealed class AllomancyDockSection : DockSectionBase {
         return label;
     }
 
-    private static void ToggleBurn(Pawn pawn, string metalDefName, bool flare) {
+    // The flare rule lives in BurnToggle so the dock and the wheel cannot drift apart.
+    private static void ToggleAbility(Pawn pawn, InvestitureAbility ability, bool flare) {
         if (pawn.abilities == null) return;
+
         List<Ability> all = pawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is not AllomancyAbility a || a.metal.defName != metalDefName) continue;
+            if (all[i] is not AllomancyAbility a || a.def != ability.Def) continue;
 
-            Status next = flare
-                ? a.status.power > 1 ? BurningStatus.Burning : BurningStatus.Flaring
-                : a.atLeastBurning
-                    ? BurningStatus.Off
-                    : BurningStatus.Burning;
-            a.UpdateStatus(next);
+            a.UpdateStatus(BurnToggle.Next(a.status, flare));
             return;
         }
     }

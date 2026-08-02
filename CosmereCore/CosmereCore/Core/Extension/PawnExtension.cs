@@ -46,7 +46,7 @@ public static class PawnExtension {
     }
 
     public static List<IntVec3> GetCellsAround(this Pawn pawn, float radius, bool useCenter = false) {
-        float clampedRadius = Mathf.Round(Mathf.Min(GenRadial.MaxRadialPatternRadius - .01f, radius));
+        float clampedRadius = Mathf.Min(GenRadial.MaxRadialPatternRadius - .01f, Mathf.Round(radius));
         List<IntVec3> cells = new List<IntVec3>(GenRadial.NumCellsInRadius(clampedRadius));
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(pawn.Position, clampedRadius, useCenter)) {
             if (cell.InBounds(pawn.Map)) cells.Add(cell);

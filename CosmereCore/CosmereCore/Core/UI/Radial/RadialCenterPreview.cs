@@ -256,10 +256,9 @@ public static class RadialCenterPreview {
         Color prev = GUI.color;
         GUI.color = hovered ? Color.white : new Color(0.78f, 0.80f, 0.82f);
         if (mirrored) {
-            Matrix4x4 prevMatrix = GUI.matrix;
-            GUIUtility.ScaleAroundPivot(new Vector2(-1f, 1f), iconRect.center);
-            GUI.DrawTexture(iconRect, icon);
-            GUI.matrix = prevMatrix;
+            // Flipped through tex coords rather than ScaleAroundPivot: that pivot is in the
+            // wrong space at any UI scale above 1 and throws the icon clear of the wheel.
+            GUI.DrawTextureWithTexCoords(iconRect, icon, new Rect(1f, 0f, -1f, 1f));
         } else {
             GUI.DrawTexture(iconRect, icon);
         }

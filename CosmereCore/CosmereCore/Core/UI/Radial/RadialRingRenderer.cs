@@ -98,7 +98,6 @@ public static class RadialRingRenderer {
     ) {
         if (count <= 0) return;
 
-        Texture2D wedgeTex = RadialWedgeTex.Get(count);
         float arcDeg = 360f / count;
         float texDrawSize = RadialLayout.AbilityRingOuter * 2f;
         Rect texRect = new Rect(center.x - texDrawSize / 2f, center.y - texDrawSize / 2f, texDrawSize, texDrawSize);
@@ -138,8 +137,7 @@ public static class RadialRingRenderer {
                 );
             }
 
-            Matrix4x4 prevMatrix = GUI.matrix;
-            Verse.UI.RotateAroundPivot(i * arcDeg, center);
+            Texture2D wedgeTex = RadialWedgeTex.Get(count, i);
             Color prevColor = GUI.color;
             if (isFlaring) {
                 GUI.color = new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f);
@@ -154,27 +152,10 @@ public static class RadialRingRenderer {
 
             if (i == hoveredIndex && !disabled) {
                 GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.85f);
-                GUI.DrawTexture(texRect, RadialWedgeTex.InnerEdge(count));
+                GUI.DrawTexture(texRect, RadialWedgeTex.InnerEdge(count, i));
             }
 
             GUI.color = prevColor;
-            GUI.matrix = prevMatrix;
-
-            Matrix4x4 sepMatrix = GUI.matrix;
-            Verse.UI.RotateAroundPivot(i * arcDeg - arcDeg / 2f, center);
-            Color sepColor = GUI.color;
-            GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
-            GUI.DrawTexture(
-                new Rect(
-                    center.x - 0.5f,
-                    center.y - RadialLayout.AbilityRingOuter,
-                    1f,
-                    RadialLayout.AbilityRingOuter - RadialLayout.AbilityRingInner
-                ),
-                Verse.BaseContent.WhiteTex
-            );
-            GUI.color = sepColor;
-            GUI.matrix = sepMatrix;
 
             Vector2 iconMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.IconBandRadius, center);
             Rect iconRect = new Rect(iconMid.x - 16f, iconMid.y - 16f, 32f, 32f);
@@ -228,5 +209,11 @@ public static class RadialRingRenderer {
             // "Summon Sh..." tells the player nothing.
             UIText.WrappedLabel(labelMid, labelWidth, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
         }
+
+        // Every divider in one unrotated draw, laid over the fills.
+        Color sepPrev = GUI.color;
+        GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
+        GUI.DrawTexture(texRect, RadialWedgeTex.Separators(count));
+        GUI.color = sepPrev;
     }
 }

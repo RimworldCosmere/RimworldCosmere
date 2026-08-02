@@ -20,20 +20,12 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
 
         List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < abilities.Count; i++) {
-            if (abilities[i] is not AllomancyAbility a || a.metal.defName != subsystemId) continue;
-            Status next;
-            if (flareShift) {
-                // Steps down to Burning rather than Off, matching the dock. Dropping straight
-                // to Off pulls the aura hediff and kills the metal lines mid-flare.
-                next = a.status.power > 1 ? BurningStatus.Burning : BurningStatus.Flaring;
-            } else {
-                next = a.atLeastBurning ? BurningStatus.Off : BurningStatus.Burning;
-            }
+            if (abilities[i] is not AllomancyAbility a || a.def != leaf.AbilityDef) continue;
 
-            a.UpdateStatus(next);
+            a.UpdateStatus(BurnToggle.Next(a.status, flareShift));
             return;
         }
 
-        Logger.Verbose($"radial dispatch: allomancy metal {subsystemId} not on pawn");
+        Logger.Verbose($"radial dispatch: allomancy ability {leaf.LeafId} not on pawn");
     }
 }

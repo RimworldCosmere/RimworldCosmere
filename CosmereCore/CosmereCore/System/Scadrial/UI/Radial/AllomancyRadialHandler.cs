@@ -22,7 +22,7 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
         for (int i = 0; i < abilities.Count; i++) {
             if (abilities[i] is not AllomancyAbility a || a.def != leaf.AbilityDef) continue;
 
-            a.UpdateStatus(BurnToggle.Next(a.status, flareShift));
+            a.UpdateStatus(BurnToggle.Next(a.status, flareShift && a.def.maxPower > 1));
             return;
         }
 

@@ -12,7 +12,6 @@
   <CC_Radial_Verb_Release>Release</CC_Radial_Verb_Release>
   <CC_Radial_Hint_BurnFlare>{VERB}: Burn, Shift: Flare</CC_Radial_Hint_BurnFlare>
   <CC_Radial_Hint_FlareOnly>{VERB}: Flare</CC_Radial_Hint_FlareOnly>
-  <CC_Radial_Action_Burn>Burn {METAL}</CC_Radial_Action_Burn>
   <CC_Radial_Action_StopBurning>Stop burning {METAL}</CC_Radial_Action_StopBurning>
   <CC_Radial_Action_Flare>Flare {METAL}</CC_Radial_Action_Flare>
   <CC_Radial_Hint_Release>Release to cast</CC_Radial_Hint_Release>

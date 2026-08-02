@@ -8,8 +8,8 @@ namespace Cosmere.Tests;
 /// </summary>
 /// <remarks>
 ///     The radius is severity-driven, so a weak allomancer flaring lands it on exactly 3 and
-///     used to divide by zero. NaN reaches FadedMaterialPool as a fully transparent material,
-///     which is BetaHub issue 2 - lines vanish on flare but draw fine on a normal burn.
+///     used to divide by zero, handing FadedMaterialPool a fully transparent NaN alpha. That NaN
+///     contributed to BetaHub issue 2, whose real cause was abilities collapsing to the first match.
 /// </remarks>
 [TestClass]
 public class LineFadeMathTests {

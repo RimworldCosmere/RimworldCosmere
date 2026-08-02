@@ -131,6 +131,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
                         AbilityDef: ability.def,
                         IsActive: ability.atLeastBurning,
                         IsFlaring: ability.status.power > 1,
+                        CanFlare: ability.def.maxPower > 1,
                         IsSustained: ability.def.toggleable && ability.status.IsActive,
                         IsLocked: false,
                         LockReason: null,

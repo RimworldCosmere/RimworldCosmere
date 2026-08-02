@@ -111,6 +111,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
             AbilityDef: def,
             IsActive: isActive,
             IsFlaring: false,
+            CanFlare: false,
             IsSustained: isActive && def.cooldownTicksRange.max == 0,
             IsLocked: locked,
             LockReason: locked ? $"Requires Ideal {minIdeal}" : null,

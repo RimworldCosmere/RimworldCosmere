@@ -11,6 +11,7 @@ public sealed record RadialLeaf(
     AbilityDef? AbilityDef,
     bool IsActive,
     bool IsFlaring,
+    bool CanFlare,
     bool IsSustained,
     bool IsLocked,
     string? LockReason,

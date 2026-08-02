@@ -1,4 +1,5 @@
 using Cosmere.System.Scadrial.Allomancy.Ability;
+using Cosmere.System.Scadrial.Extension;
 using RimWorld;
 
 namespace Cosmere.System.Scadrial.Allomancy.Verb;
@@ -8,12 +9,14 @@ public class SteelJump : Verb_CastAbilityJump {
 
     public override float EffectiveRange {
         get {
-            float baseRange = base.EffectiveRange;
-            float strengthMultiplier = ability.GetStrength(ability.nextStatus);
+            int power = (ability.nextStatus ?? ability.status).power;
 
-            float normalizedMassFactor = caster.GetStatValue(RimWorld.StatDefOf.Mass) / 60;
-
-            return baseRange * strengthMultiplier / normalizedMassFactor;
+            return SteelJumpRange.For(
+                base.EffectiveRange,
+                power,
+                CasterPawn.GetRawAllomanticPower(ability.metal),
+                caster.GetStatValue(RimWorld.StatDefOf.Mass)
+            );
         }
     }
 

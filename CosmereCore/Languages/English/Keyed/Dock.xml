@@ -86,6 +86,10 @@
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>
   <CC_Dock_Allomancy_BurnTip>Burn {METAL} steadily, drawing on the reserve.</CC_Dock_Allomancy_BurnTip>
   <CC_Dock_Allomancy_FlareTip>Flare {METAL}, burning harder and faster for a stronger effect.</CC_Dock_Allomancy_FlareTip>
+  <CC_Dock_Allomancy_GroupSustained>Sustained</CC_Dock_Allomancy_GroupSustained>
+  <CC_Dock_Allomancy_GroupTargeted>Targeted</CC_Dock_Allomancy_GroupTargeted>
+  <CC_Dock_Allomancy_Target>Target</CC_Dock_Allomancy_Target>
+  <CC_Dock_Allomancy_AbilityTip>{ABILITY}\n\n{DESC}</CC_Dock_Allomancy_AbilityTip>
     <CC_Dock_Feruchemy_TargetLabel>{TARGET}</CC_Dock_Feruchemy_TargetLabel>
     <CC_Dock_Feruchemy_TargetAll>every metalmind ({COUNT})</CC_Dock_Feruchemy_TargetAll>
     <CC_Dock_Feruchemy_TargetInternal>every implanted metalmind ({COUNT})</CC_Dock_Feruchemy_TargetInternal>

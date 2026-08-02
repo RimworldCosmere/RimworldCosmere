@@ -23,7 +23,9 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
             if (abilities[i] is not AllomancyAbility a || a.metal.defName != subsystemId) continue;
             Status next;
             if (flareShift) {
-                next = a.status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring;
+                // Steps down to Burning rather than Off, matching the dock. Dropping straight
+                // to Off pulls the aura hediff and kills the metal lines mid-flare.
+                next = a.status.power > 1 ? BurningStatus.Burning : BurningStatus.Flaring;
             } else {
                 next = a.atLeastBurning ? BurningStatus.Off : BurningStatus.Burning;
             }

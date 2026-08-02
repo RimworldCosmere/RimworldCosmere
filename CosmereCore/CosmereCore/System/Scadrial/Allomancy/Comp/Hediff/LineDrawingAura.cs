@@ -50,6 +50,10 @@ public abstract class LineDrawingAura : HediffComp {
 
     protected abstract LineToRender GetLineToRender(Verse.Thing thing);
 
+    protected float FadeFor(float distance) {
+        return LineFade.For(radius, distance);
+    }
+
     public override void CompPostPostRemoved() {
         base.CompPostPostRemoved();
         LineRenderer.Remove(this);

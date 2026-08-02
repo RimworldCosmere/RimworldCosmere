@@ -56,7 +56,8 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
                     a.metal.allomancy?.invertedIcon,
                     bar,
                     burn?.atLeastBurning ?? a.Burning,
-                    burn != null && burn.status.power > 1
+                    burn != null && burn.status.power > 1,
+                    []
                 )
             );
         }

@@ -56,7 +56,8 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                     f.metal.feruchemy?.invertedIcon,
                     bar,
                     f.isTapping || f.isStoring,
-                    f.isCompounding
+                    f.isCompounding,
+                    []
                 )
             );
         }

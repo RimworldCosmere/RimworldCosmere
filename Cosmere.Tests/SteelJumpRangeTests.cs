@@ -16,6 +16,30 @@ public class SteelJumpRangeTests {
     private const float HumanMass = 60f;
 
     [TestMethod]
+    public void AnIdleAbilitySizesForANormalBurn() {
+        Assert.AreEqual(1, SteelJumpRange.PowerFor(null, 0));
+    }
+
+    [TestMethod]
+    public void AChosenPowerWins() {
+        Assert.AreEqual(2, SteelJumpRange.PowerFor(2, 0));
+        Assert.AreEqual(1, SteelJumpRange.PowerFor(1, 2));
+    }
+
+    [TestMethod]
+    public void AnAlreadyBurningAbilityKeepsItsPower() {
+        Assert.AreEqual(2, SteelJumpRange.PowerFor(null, 2));
+        Assert.AreEqual(10, SteelJumpRange.PowerFor(null, 10));
+    }
+
+    [TestMethod]
+    public void AnIdleAbilityNeverSizesToZeroRange() {
+        float range = SteelJumpRange.For(Base, SteelJumpRange.PowerFor(null, 0), 0.474f, HumanMass);
+
+        Assert.IsTrue(range > 5f, $"An idle ability sized the jump to {range} tiles, so it lands in place.");
+    }
+
+    [TestMethod]
     public void AFreshMistingClearsMoreThanTwoTiles() {
         float burning = SteelJumpRange.For(Base, 1, 0.1f, HumanMass);
         float flaring = SteelJumpRange.For(Base, 2, 0.1f, HumanMass);

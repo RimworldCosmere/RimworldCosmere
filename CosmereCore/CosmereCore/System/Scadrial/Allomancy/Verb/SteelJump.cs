@@ -9,7 +9,7 @@ public class SteelJump : Verb_CastAbilityJump {
 
     public override float EffectiveRange {
         get {
-            int power = (ability.nextStatus ?? ability.status).power;
+            int power = SteelJumpRange.PowerFor(ability.nextStatus?.power, ability.status.power);
 
             return SteelJumpRange.For(
                 base.EffectiveRange,

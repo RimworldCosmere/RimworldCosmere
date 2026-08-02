@@ -23,7 +23,6 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private const float StripPadding = 7f;
     private const float ReserveBarHeight = 10f;
-    private const float StripButtonHeight = 24f;
 
     // BurnRate is charged once per rare tick, so it has to be divided back down to
     // read as a rate rather than as a number four seconds wide.
@@ -69,6 +68,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
     // Idempotent, because height is asked for several times a frame. Reveal itself only
     // advances once per frame; this just re-reads where it got to.
     private void StepReveal(float openHeight) {
+        // One panel at a time: the open metal finishes closing before the queued
+        // one opens, so mid-slide contents never jump rows.
         if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
             expandedMetal = pendingMetal;
             pendingMetal = null;
@@ -116,16 +117,17 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
-        float openHeight = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
-        StepReveal(openHeight);
+        float revealTarget = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
+        StepReveal(revealTarget);
         return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
         crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
-        float openHeight = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
-        StepReveal(openHeight);
+        float revealTarget = StripHeightFor(CellFor(snapshot, expandedMetal ?? pendingMetal));
+        StepReveal(revealTarget);
+        float revealedStripHeight = StripHeightFor(CellFor(snapshot, revealedMetal));
 
         Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
@@ -134,7 +136,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             QuadHeader,
             revealedMetal,
             revealedHeight,
-            openHeight,
+            revealedStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
             (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
@@ -290,7 +292,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
     }
 
     private void DrawAbilityRow(Rect rect, Pawn pawn, InvestitureAbility ability) {
-        float chipWidth = ability.CanFlare ? 30f : 0f;
+        float chipWidth = ability.CanFlare ? 44f : 0f;
         float mainWidth = rect.width - (ability.CanFlare ? chipWidth + 4f : 0f);
 
         string label = ability.IsActive
@@ -322,7 +324,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         if (!ability.CanFlare) return;
 
         Rect chipRect = new Rect(rect.xMax - chipWidth, rect.y, chipWidth, rect.height);
-        TooltipHandler.TipRegion(chipRect, "CC_Dock_Allomancy_FlareTip".Translate(ability.Label.Named("METAL")));
+        TooltipHandler.TipRegion(chipRect, "CC_Dock_Allomancy_AbilityFlareTip".Translate(ability.Label.Named("ABILITY")));
         if (DockButton.Draw(
                 chipRect,
                 ability.IsFlaring ? "CC_Dock_Allomancy_StopFlare".Translate() : "CC_Dock_Allomancy_Flare".Translate(),

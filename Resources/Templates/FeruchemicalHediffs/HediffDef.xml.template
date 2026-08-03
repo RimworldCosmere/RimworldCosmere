@@ -11,13 +11,13 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>
                         <capacity>{{withoutRequire @key}}</capacity>
                         {{#if factor}}
-                        <postFactor>{{getStatForStage @time factor}}</postFactor>
+                        <postFactor>{{getFactorForStage @time factor}}</postFactor>
                         {{/if}}
                         {{#if offset}}<offset>{{getStatForStage @time offset}}</offset>{{/if}}
                     </li>
@@ -26,7 +26,7 @@
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
@@ -57,14 +57,14 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}
-                {{#if ../regeneration}}<regeneration>{{getStatForStage this ../regeneration}}</regeneration>{{/if}}{{#if ../capacityMods}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}
+                {{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>
                         <capacity>{{withoutRequire @key}}</capacity>
                         {{#if this.factor}}
-                        <postFactor>{{getStatForStage @time this.factor}}</postFactor>
+                        <postFactor>{{getFactorForStage @time this.factor}}</postFactor>
                         {{/if}}
                         {{#if this.offset}}<offset>{{getStatForStage @time this.offset}}</offset>{{/if}}
                     </li>
@@ -73,7 +73,7 @@
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
@@ -104,8 +104,8 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getCompoundedStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}
-                {{#if ../regeneration}}<regeneration>{{getCompoundedStatForStage this ../regeneration}}</regeneration>{{/if}}{{#if ../capacityMods}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getCompoundedStatForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}
+                {{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>

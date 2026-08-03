@@ -6,6 +6,8 @@ using HandlebarsDotNet;
 namespace Cosmere.Tools.Generation;
 
 public abstract class BaseGenerator : IGenerator {
+    private const double MinimumFactor = 0.001;
+
     protected readonly GeneratorOptions Options;
     protected readonly IFileSystem FileSystem;
     protected readonly IHandlebars Handlebars;
@@ -162,6 +164,26 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
+        // Factors multiply, so a linear step that lands on 0 switches the stat off
+        // entirely - Tin's top store stage would leave a pawn blind and deaf. Offsets
+        // keep using getStatForStage, where negatives are the whole point.
+        // Pass a third argument to override the floor; hunger wants a true 0.
+        Handlebars.RegisterHelper("getFactorForStage", (writer, context, parameters) => {
+            if (parameters.Length >= 2 &&
+                int.TryParse(parameters[0]?.ToString(), out var stage) &&
+                double.TryParse(parameters[1]?.ToString(), out var step)) {
+                var floor = MinimumFactor;
+                if (parameters.Length > 2 && double.TryParse(parameters[2]?.ToString(), out var given)) {
+                    floor = given;
+                }
+
+                var result = Math.Max(1 + step * (stage + 1), floor);
+
+                var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
+                writer.WriteSafeString(formatted);
+            }
+        });
+
         // Compounded charge pays out ten times harder. Naively scaling the step
         // drives "lower is better" stats negative - Gold's IncomingDamageFactor
         // would reach -8.6, i.e. damage that heals - so amplify the benefit each
@@ -171,6 +193,11 @@ public abstract class BaseGenerator : IGenerator {
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
                 double.TryParse(parameters[1]?.ToString(), out var step)) {
                 const double amplification = 10.0;
+                var floor = MinimumFactor;
+                if (parameters.Length > 2 && double.TryParse(parameters[2]?.ToString(), out var given)) {
+                    floor = given;
+                }
+
                 double result;
 
                 if (step >= 0) {
@@ -178,8 +205,10 @@ public abstract class BaseGenerator : IGenerator {
                 } else {
                     // Benefit of a sub-1 factor is (1/v - 1); scale that, then invert
                     // back. Stays positive and monotonic for every metal.
-                    var ordinary = Math.Max(1 + step * (stage + 1), 0.01);
-                    result = Math.Max(1.0 / (1.0 + amplification * (1.0 / ordinary - 1.0)), 0.001);
+                    var ordinary = 1 + step * (stage + 1);
+                    result = ordinary <= 0
+                        ? floor
+                        : Math.Max(1.0 / (1.0 + amplification * (1.0 / ordinary - 1.0)), floor);
                 }
 
                 var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');

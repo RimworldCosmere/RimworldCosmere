@@ -44,9 +44,8 @@
     },
     "tap": {
       "description": "This pawn is tapping a gold metalmind, accelerating their body’s natural healing to supernatural levels. Wounds close within hours, infections are purged, and the body fights off disease with startling speed. The effect can be life-saving, but drains reserves quickly.",
-      "regeneration": 1,
       "statFactors": {
-        "InjuryHealingFactor": 0.045,
+        "InjuryHealingFactor": 0.95,
         "ImmunityGainSpeed": 0.045,
         "PainShockThreshold": 0.045,
         "ToxicResistance": 0.045,

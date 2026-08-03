@@ -52,12 +52,19 @@ public static class ScadrialUIRegistration {
         NamedPawnApplierRegistry.Register(new ScadrialNamedPawnApplier());
         RadialActionRegistry.Register(new AllomancyRadialHandler());
         RadialActionRegistry.Register(new FeruchemyRadialHandler());
-        AutocastDefaults.Register("Cosmere_Scadrial_Ability_Pewter", [
-            new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 0f),
-        ]);
-        AutocastDefaults.Register("Cosmere_Scadrial_Ability_Tin", [
-            new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 0f),
-        ]);
+
+        // Drafted is the closest thing to "in combat" the trigger set has, so the burn stops
+        // again on undrafting rather than eating the reserve all day.
+        AutocastDefaults.Register(
+            "Cosmere_Scadrial_Ability_Pewter",
+            [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],
+            toggleOffWhenInactive: true
+        );
+        AutocastDefaults.Register(
+            "Cosmere_Scadrial_Ability_Tin",
+            [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],
+            toggleOffWhenInactive: true
+        );
     }
 
     private static MetallicArtsMetalDef? SteelIcon() {

@@ -1,5 +1,3 @@
-using UnityEngine;
-using Verse;
 using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Framework;
 using Cosmere.Core.Savant;
@@ -8,9 +6,11 @@ using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
-using Cosmere.System.Roshar.ScenarioPart;
 using Cosmere.System.Roshar.Savant;
+using Cosmere.System.Roshar.ScenarioPart;
 using Cosmere.System.Roshar.Surgebinding;
+using UnityEngine;
+using Verse;
 
 namespace Cosmere.System.Roshar.UI;
 
@@ -50,7 +50,6 @@ public static class RosharUIRegistration {
         ConnectionStealRegistry.Register(new SurgebinderConnectionStealHandler());
         SavantCandidateRegistry.Register(new RosharSavantCandidateProvider());
         InvestitureHealExclusionRegistry.Register("Cosmere_Roshar_Hediff_NW_");
-        InvestitureHealExclusionRegistry.Register("Cosmere_Scadrial_Hediff_");
         NamedPawnApplierRegistry.Register(new RosharNamedPawnApplier());
         AutocastDefaults.Register("Cosmere_Roshar_Ability_Heal", [
             new AutocastTrigger(AutocastTriggerKind.HealthPercent, AutocastComparison.LessThan, 0.6f),

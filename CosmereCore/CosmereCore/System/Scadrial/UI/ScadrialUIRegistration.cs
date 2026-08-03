@@ -20,6 +20,7 @@ namespace Cosmere.System.Scadrial.UI;
 public static class ScadrialUIRegistration {
     static ScadrialUIRegistration() {
         InvestitureBlockingHediffRegistry.Register(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab);
+        InvestitureHealExclusionRegistry.Register("Cosmere_Scadrial_Hediff_");
         InvestitureProviderRegistry.Register(new AllomancyInvestitureProvider());
         InvestitureProviderRegistry.Register(new FeruchemyInvestitureProvider());
         SavantCandidateRegistry.Register(new ScadrialSavantCandidateProvider());

@@ -1,0 +1,48 @@
+name: CI
+
+# The release workflow only runs on pushes to main/beta/alpha, so nothing built a pull request
+# before it landed. This is the gate that gives contributors a red X instead of a surprise.
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'alpha'
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Generated defs and BetaHubToken.generated.cs are gitignored, so a fresh checkout cannot
+      # compile without this. It tolerates the missing token that a fork PR will have.
+      - name: Run code generation
+        run: make generate
+
+      - name: Restore solution dependencies
+        run: dotnet restore Cosmere.slnx
+
+      - name: Build solution
+        run: dotnet build Cosmere.slnx --configuration Debug --no-restore
+
+      - name: Run tests
+        run: dotnet test Cosmere.slnx --configuration Debug --no-build

@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- The tree sits at zero warnings, so a new one is a regression. Failing here is what
+         stops style drift arriving through a pull request nobody built. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

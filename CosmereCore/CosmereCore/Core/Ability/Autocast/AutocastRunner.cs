@@ -53,20 +53,25 @@ public sealed class AutocastRunner : GameComponent {
 
             RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
             if (ability == null) continue;
-            if (ability.def.targetRequired) continue;
 
-            bool triggersPass = AllTriggersPass(pawn, rule);
+            IToggleableAbility? sustained = ability as IToggleableAbility;
+            AutocastAction action = AutocastDecision.For(
+                sustained?.IsToggleable ?? false,
+                sustained?.IsActive ?? false,
+                AllTriggersPass(pawn, rule),
+                rule.ToggleOffWhenInactive,
+                ability.def.targetRequired
+            );
 
-            // A sustained ability that is already running has nothing left to decide except whether
-            // to stop. Casting it again would queue a fresh job every pass for something already up,
-            // and turning it off deliberately skips the CanCast check below: that asks whether the
-            // reserve can pay to run it, which is nothing to do with switching it off.
-            if (ability is IToggleableAbility { IsToggleable: true, IsActive: true } sustained) {
-                if (!triggersPass && rule.ToggleOffWhenInactive) sustained.TurnOff();
+            if (action == AutocastAction.TurnOff) {
+                sustained!.TurnOff();
                 continue;
             }
 
-            if (!triggersPass) continue;
+            if (action != AutocastAction.Cast) continue;
+
+            // Asked only on the way to a cast: CanCast is about the reserve paying to run the
+            // ability, which has nothing to do with switching one off.
             if (!ability.CanCast) continue;
 
             ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);

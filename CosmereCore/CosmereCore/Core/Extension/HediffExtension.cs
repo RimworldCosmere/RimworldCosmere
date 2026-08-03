@@ -10,7 +10,10 @@ public static class HediffExtension {
     }
 
     public static bool CanBeHealedByInvestiture(this Verse.Hediff hediff) {
-        if (hediff is Hediff_MissingPart) return false;
+        if (hediff is Hediff_MissingPart missingPart) { // Allow healing missing parts if they've been missing for less than 90 days
+            if (missingPart.ageTicks < 5400000) return true; // 90 days = 90 * 60000 ticks = 5,400,000 ticks
+            return false;
+        }
         if (hediff is Hediff_Injury) return true;
         if (hediff.def.chronic) return false;
         if (InvestitureHealExclusionRegistry.IsExcluded(hediff)) return false;

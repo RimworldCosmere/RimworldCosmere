@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorkGiverDef>
+        <defName>Cosmere_Scadrial_WorkGiver_KeepVialInStock</defName>
+        <label>keep vials in stock</label>
+        <giverClass>Cosmere.System.Scadrial.WorkGiver.KeepVialInStock</giverClass>
+        <workType>BasicWorker</workType>
+        <verb>take</verb>
+        <gerund>taking</gerund>
+        <priorityInType>200</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+</Defs>

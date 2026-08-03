@@ -13,5 +13,10 @@
     <CC_Ordinal_4_Long>Fourth</CC_Ordinal_4_Long>
     <CC_Ordinal_5_Long>Fifth</CC_Ordinal_5_Long>
     <CC_Quickstart_Reload>Reloading quickstart</CC_Quickstart_Reload>
+    <CC_Quicktest_Title>Pick a quicktest</CC_Quicktest_Title>
+    <CC_Quicktest_Vanilla>Vanilla quicktest</CC_Quicktest_Vanilla>
+    <CC_Quicktest_Vanilla_Blurb>RimWorld's own Crashlanded quicktest, with Shards of your choosing</CC_Quicktest_Vanilla_Blurb>
+    <CC_Quicktest_Shards_Title>Which Shards should be active?</CC_Quicktest_Shards_Title>
+    <CC_Quicktest_Shards_Start>Start quicktest</CC_Quicktest_Shards_Start>
   <CC_Radial_CannotAfford>Cannot afford</CC_Radial_CannotAfford>
 </LanguageData>

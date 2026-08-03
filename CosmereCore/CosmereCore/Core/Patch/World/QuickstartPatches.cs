@@ -12,6 +12,7 @@ public abstract class QuickstartRootOnGUIPatch : Root {
     [Inject(At.Return, nameof(OnGUI))]
     private void AfterOnGUI() {
         Quickstarter.instance?.OnGUI();
+        VanillaQuicktest.ShowPickerIfPending();
     }
 }
 

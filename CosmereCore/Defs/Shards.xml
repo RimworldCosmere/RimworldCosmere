@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Def.ShardDef>
+        <defName>Autonomy</defName>
+        <label>autonomy</label>
+        <planet>Taldain</planet>
+        <description>Autonomy values independence above all else, both its own and that of the worlds it touches. Rather than rule in the open, it seeds avatars and lets each act under its own name, so its reach spreads far wider than any single presence could. On Scadrial it is known only as Trell, and those who serve it rarely learn there is a Shard behind the name.</description>
+    </Cosmere.Core.Def.ShardDef>
+</Defs>

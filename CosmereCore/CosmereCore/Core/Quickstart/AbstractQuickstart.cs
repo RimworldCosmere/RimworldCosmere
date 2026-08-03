@@ -21,6 +21,11 @@ public abstract class AbstractQuickstart {
 
     public virtual ScenarioDef scenario => ScenarioDefOf.Crashlanded;
 
+    // Def names rather than ShardDefs: a Scadrial quickstart routinely wants Honor so Radiant
+    // grants stop silently no-opping, and the Roshar ShardDefOf lives in a namespace Scadrial
+    // code must not import.
+    public virtual IReadOnlyList<string> shards => [];
+
     public virtual void PostStart() { }
 
     public virtual void PostLoaded() { }
@@ -52,6 +57,10 @@ public abstract class AbstractQuickstart {
         builder.AppendLine(
             "CC_Quickstart_PauseAfterLoad".Translate().Colorize(ColoredText.TipSectionTitleColor) +
             (pauseAfterLoad ? "Yes" : "No")
+        );
+        builder.AppendLine(
+            "CC_Quickstart_Shards".Translate().Colorize(ColoredText.TipSectionTitleColor) +
+            (shards.Count > 0 ? string.Join(", ", shards) : "None")
         );
         builder.AppendLine();
         builder.AppendLine(description.Resolve());

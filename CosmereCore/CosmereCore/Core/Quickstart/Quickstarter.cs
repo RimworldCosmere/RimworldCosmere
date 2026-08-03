@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Settings;
 using Cosmere.Core.Util;
 using RimWorld;
@@ -18,21 +19,16 @@ public class Quickstarter {
     private readonly StatusBox? statusBox;
 
     static Quickstarter() {
-        instance = new Quickstarter();
+        instance = new Quickstarter(ConfiguredQuickstart());
+
+        // A configured quickstart owns the launch, so the picker would be torn down a moment later.
+        if (instance.Quickstart == null) VanillaQuicktest.ClaimCommandLineArg();
     }
 
-    private Quickstarter() {
-        if (!Prefs.DevMode) return;
-        string? quickstartName = Mod.GetModSettings<CoreModSettings>().quickstartName;
-        if (quickstartName == null) return;
+    private Quickstarter(AbstractQuickstart? quickstart) {
+        Quickstart = quickstart;
+        if (quickstart == null) return;
 
-        Type? type = Type.GetType(quickstartName);
-        if (type == null) {
-            Logger.Error("Could not find the quickstart with type: " + quickstartName);
-            return;
-        }
-
-        Quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
         statusBox = new StatusBox(this);
 
         LongEventHandler.ExecuteWhenFinished(() => {
@@ -43,6 +39,21 @@ public class Quickstarter {
             Finished = true;
         }
         );
+    }
+
+    private static AbstractQuickstart? ConfiguredQuickstart() {
+        if (!Prefs.DevMode) return null;
+
+        string? quickstartName = Mod.GetModSettings<CoreModSettings>().quickstartName;
+        if (string.IsNullOrEmpty(quickstartName)) return null;
+
+        Type? type = Type.GetType(quickstartName);
+        if (type == null) {
+            Logger.Error("Could not find the quickstart with type: " + quickstartName);
+            return null;
+        }
+
+        return (AbstractQuickstart)Activator.CreateInstance(type);
     }
 
     private static string seed => GenText.RandomSeedString();
@@ -101,6 +112,26 @@ public class Quickstarter {
         Quickstart.PostApplyConfiguration();
 
         Find.Scenario.PostIdeoChosen();
+
+        // After PostIdeoChosen, not before: the scenario's own shard extension enables its set
+        // during PreConfigure without allowing conflicts, so a quickstart asking for both Ruin
+        // and Preservation would lose one of them if it ran first.
+        EnableShards();
+    }
+
+    private void EnableShards() {
+        IReadOnlyList<string> wanted = Quickstart!.shards;
+        if (wanted.Count == 0) return;
+
+        Shards? shards = Current.Game?.GetComponent<Shards>();
+        if (shards == null) {
+            Logger.Warning("Quickstart shards skipped: the game has no Shards component yet.");
+            return;
+        }
+
+        for (int i = 0; i < wanted.Count; i++) {
+            shards.EnableShard(wanted[i], true);
+        }
     }
 
     internal static void DrawDebugToolbarButton(WidgetRow widgets) {
@@ -111,12 +142,23 @@ public class Quickstarter {
     }
 
     public static void ReloadQuickstart() {
+        Restart(ConfiguredQuickstart());
+    }
+
+    /// <summary>
+    ///     Starts a quickstart the player picked by hand, ignoring whatever the settings say.
+    /// </summary>
+    public static void Launch(AbstractQuickstart quickstart) {
+        Restart(quickstart);
+    }
+
+    private static void Restart(AbstractQuickstart? quickstart) {
         LongEventHandler.QueueLongEvent(
             () => {
                 Current.ProgramState = ProgramState.Entry;
                 Current.Game = null;
                 Started = false;
-                instance = new Quickstarter();
+                instance = new Quickstarter(quickstart);
             },
             "CC_Quickstart_Reload",
             true,

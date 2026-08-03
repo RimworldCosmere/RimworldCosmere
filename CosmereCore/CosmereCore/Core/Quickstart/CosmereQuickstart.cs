@@ -1,5 +1,4 @@
 using Cosmere.Core;
-using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Quickstart;
 using RimWorld;
 using Verse;
@@ -14,6 +13,14 @@ public class CosmereQuickstart : AbstractQuickstart {
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
+
+    public override IReadOnlyList<string> shards => [
+        "Preservation",
+        "Ruin",
+        "Honor",
+        "Cultivation",
+        "Odium",
+    ];
 
     public override void PostApplyConfiguration() {
         Find.GameInitData.startingPawnCount = 16;
@@ -38,15 +45,6 @@ public class CosmereQuickstart : AbstractQuickstart {
 
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
-
-        Shards? shards = Current.Game?.GetComponent<Shards>();
-        if (shards != null) {
-            shards.EnableShard("Preservation", true);
-            shards.EnableShard("Ruin", true);
-            shards.EnableShard("Honor", true);
-            shards.EnableShard("Cultivation", true);
-            shards.EnableShard("Odium", true);
-        }
 
         BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
         BackstoryDef adult = DefDatabase<BackstoryDef>.GetNamed("CivilEngineer2");

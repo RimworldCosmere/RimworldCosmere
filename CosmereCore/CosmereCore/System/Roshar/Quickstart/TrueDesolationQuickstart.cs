@@ -1,4 +1,3 @@
-using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Def;
 using Cosmere.Core.Quickstart;
@@ -15,6 +14,8 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
+
+    public override IReadOnlyList<string> shards => ["Honor", "Cultivation", "Odium"];
 
     public override void PostApplyConfiguration() {
         Find.GameInitData.startingPawnCount = 5;
@@ -33,13 +34,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
-
-        Shards? shards = Current.Game?.GetComponent<Shards>();
-        if (shards != null) {
-            shards.EnableShard("Honor", true);
-            shards.EnableShard("Cultivation", true);
-            shards.EnableShard("Odium", true);
-        }
 
         BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
         BackstoryDef adult = DefDatabase<BackstoryDef>.GetNamed("CivilEngineer2");

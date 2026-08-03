@@ -43,6 +43,7 @@
     <CC_Quickstart_Difficulty>Difficulty: </CC_Quickstart_Difficulty>
     <CC_Quickstart_Scenario>Scenario: </CC_Quickstart_Scenario>
     <CC_Quickstart_PauseAfterLoad>Pause After Load: </CC_Quickstart_PauseAfterLoad>
+    <CC_Quickstart_Shards>Shards: </CC_Quickstart_Shards>
   <CC_Settings_RadialPause_Label>Pause on wheel</CC_Settings_RadialPause_Label>
   <CC_Settings_RadialPause_Description>Halt time while the ability wheel is open, and resume at the same speed when it closes. A game already paused stays paused.</CC_Settings_RadialPause_Description>
   <CC_Settings_Category_Interface>Interface</CC_Settings_Category_Interface>

@@ -19,19 +19,30 @@ public static class InsertShardSelectionPatch {
         }
     }
 
-    [Inject(At.Head, nameof(PageUtility.StitchedPages))]
-    private static void BeforeStitchedPages(IEnumerable<RimWorld.Page> pages) {
+    // Spliced into the stitched chain on the way out rather than into the page list on the way in:
+    // the target takes its pages by value, so reassigning the argument left the caller's original
+    // sequence untouched and the page never appeared.
+    [Inject(At.Return, nameof(PageUtility.StitchedPages))]
+    private static void AfterStitchedPages(ControlHandle<RimWorld.Page> ch) {
         if (!allowShardChange) {
             return;
         }
 
-        List<RimWorld.Page> list = pages.ToList();
-
-        if (list.Any(p => p is SelectShards)) {
+        RimWorld.Page? first = ch.ReturnValue;
+        if (first == null) {
             return;
         }
 
-        list.Insert(1, new SelectShards());
-        pages = list;
+        for (RimWorld.Page? page = first; page != null; page = page.next) {
+            if (page is SelectShards) return;
+        }
+
+        SelectShards inserted = new SelectShards();
+        RimWorld.Page? second = first.next;
+
+        first.next = inserted;
+        inserted.prev = first;
+        inserted.next = second;
+        if (second != null) second.prev = inserted;
     }
 }

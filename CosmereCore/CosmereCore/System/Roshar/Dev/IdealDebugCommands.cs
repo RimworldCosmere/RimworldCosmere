@@ -166,7 +166,7 @@ public static class IdealDebugCommands {
         actionType = DebugActionType.ToolMapForPawns,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
-    
+
     public static void SetFuryLevel(Pawn pawn) {
         Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Fury;
         if (fury == null) {
@@ -196,7 +196,7 @@ public static class IdealDebugCommands {
 
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
-    
+
     [DebugAction(
         "Cosmere/Roshar/Ideals",
         "Set Dead Honored",
@@ -214,6 +214,7 @@ public static class IdealDebugCommands {
                 Messages.Message($"Set Dead Honored to {value} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
             }));
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
@@ -234,6 +235,7 @@ public static class IdealDebugCommands {
                 Messages.Message($"Set Fury Mastered to {value} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
             }));
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 

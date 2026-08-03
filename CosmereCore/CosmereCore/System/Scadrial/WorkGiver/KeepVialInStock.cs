@@ -8,7 +8,7 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class KeepVialInStock : WorkGiver_Scanner {
-    static private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
+    private static ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => Verse.AI.PathEndMode.ClosestTouch;
 
@@ -20,52 +20,39 @@ public class KeepVialInStock : WorkGiver_Scanner {
 
     public override bool HasJobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
         if (pawn.Downed || pawn.IsAsleep()) return false;
-        if (pawn.genes == null) return false;
-        if (t is not Verse.Thing vial) return false;
+        if (!t.Spawned || t.IsForbidden(pawn)) return false;
+        if (GeneWanting(pawn, t) == null) return false;
 
-        bool needsVial = false;
-        Allomancer? neededGene = null;
-        
-        foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            int inStock = pawn.inventory.innerContainer.TotalStackCountOfDef(
-                vialDef,
-                gene.metal.Item
-            );
-            if (inStock < gene.RequestedVialStock) {
-                needsVial = true;
-                neededGene = gene;
-                break;
-            }
-        }
-
-        if (!needsVial) return false;
-        if (!vial.Spawned) return false;
-        if (vial.IsForbidden(pawn)) return false;
-        if (!vial.Stuff.Equals(neededGene!.metal.Item)) return false;
-
-        return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10, 1);
+        return pawn.CanReserveAndReach(t, PathEndMode.ClosestTouch, Danger.None, 10, 1);
     }
 
     public override Job? JobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
-        if (t is not Verse.Thing vial) return null;
+        Allomancer? gene = GeneWanting(pawn, t);
+        if (gene == null) return null;
 
-        // Find which gene needs vials
+        int inStock = StockOf(pawn, gene);
+        Job job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeInventory, t);
+        job.count = Math.Min(gene.RequestedVialStock - inStock, t.def.orderedTakeGroup.max - inStock);
+
+        return job;
+    }
+
+    // Keyed off the vial's own metal rather than the first gene short of stock, or a pawn short
+    // of two metals only ever restocks whichever gene the gene list happens to yield first.
+    private static Allomancer? GeneWanting(Pawn pawn, Verse.Thing vial) {
+        if (pawn.genes == null) return null;
+
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            int inStock = pawn.inventory.innerContainer.TotalStackCountOfDef(
-                vialDef,
-                gene.metal.Item
-            );
-            if (inStock >= gene.RequestedVialStock) continue;
-            if (!vial.Stuff.Equals(gene.metal.Item)) continue;
+            if (vial.Stuff != gene.metal.Item) continue;
+            if (StockOf(pawn, gene) >= gene.RequestedVialStock) continue;
 
-            int amountToTake = gene.RequestedVialStock - inStock;
-            
-            Job job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeInventory, vial);
-            job.count = Math.Min(amountToTake, vial.def.orderedTakeGroup.max - inStock);
-
-            return job;
+            return gene;
         }
 
         return null;
+    }
+
+    private static int StockOf(Pawn pawn, Allomancer gene) {
+        return pawn.inventory.innerContainer.TotalStackCountOfDef(vialDef, gene.metal.Item);
     }
 }

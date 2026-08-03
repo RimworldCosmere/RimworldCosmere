@@ -1,3 +1,4 @@
+using Cosmere.Core.Framework;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -141,6 +142,7 @@ public class Lifesurge : SurgebindingAbility {
             if (!hediff.def.isBad) continue;
             if (hediff is Hediff_MissingPart) continue;
             if (hediff is Hediff_Injury) continue;
+            if (InvestitureHealExclusionRegistry.IsExcluded(hediff)) continue;
 
             if (ideal >= 2 &&
                 RimWorld.HediffDefOf.WoundInfection != null &&

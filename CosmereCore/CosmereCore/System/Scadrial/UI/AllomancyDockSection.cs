@@ -1,4 +1,6 @@
 using Cosmere.Core.Ability;
+using Cosmere.Core.Gene;
+using Cosmere.Core.Investiture;
 using Cosmere.Core.Tab;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
@@ -24,9 +26,6 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private const float StripPadding = 7f;
     private const float ReserveBarHeight = 10f;
 
-    // BurnRate is charged once per rare tick, so it has to be divided back down to
-    // read as a rate rather than as a number four seconds wide.
-    private const float RareTicksPerSecond = GenTicks.TickRareInterval / 60f;
     private static readonly Color Accent = new Color(0.478f, 0.400f, 0.263f);
 
     private static float ChromeHeight =>
@@ -228,7 +227,9 @@ public sealed class AllomancyDockSection : DockSectionBase {
         // row change shape every time a metal lights, which reads as a glitch.
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            "CC_Dock_Feruchemy_Rate".Translate($"{BurnRatePerSecond(pawn, cell):+0.00;-0.00;0.00}".Named("RATE")),
+            "CC_Dock_Allomancy_BurnRate".Translate(
+                $"{BurnReservePercentPerSecond(pawn, cell):+0.00;-0.00;0.00}".Named("RATE")
+            ),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             cell.IsActive ? new Color(0.851f, 0.643f, 0.255f) : new Color(0.478f, 0.443f, 0.376f)
@@ -336,13 +337,17 @@ public sealed class AllomancyDockSection : DockSectionBase {
         }
     }
 
-    // Charged once per rare tick, so the raw figure is four seconds of burn. Shown
-    // negative because a reserve going down should read as going down.
-    private static float BurnRatePerSecond(Pawn pawn, InvestitureCell cell) {
+    // Shown negative because a reserve going down should read as going down.
+    private static float BurnReservePercentPerSecond(Pawn pawn, InvestitureCell cell) {
         Allomancer? gene = FindGene(pawn, cell.SubsystemId);
         if (gene == null) return 0f;
 
-        return -gene.BurnRate / RareTicksPerSecond;
+        return -UpkeepRate.ReservePercentPerSecond(
+            gene.BurnRate,
+            Invested.UpkeepTicks,
+            ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit,
+            gene.Max
+        );
     }
 
     private static Allomancer? FindGene(Pawn pawn, string metalDefName) {

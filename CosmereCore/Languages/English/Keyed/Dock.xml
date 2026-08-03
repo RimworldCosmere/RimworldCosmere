@@ -81,6 +81,7 @@
   <CC_Dock_Feruchemy_CompoundNoResearch>{RESEARCH} has not been researched.</CC_Dock_Feruchemy_CompoundNoResearch>
   <CC_Dock_Feruchemy_CompoundLowSkill>Compounding demands level {LEVEL} in both Allomancy and Feruchemy.</CC_Dock_Feruchemy_CompoundLowSkill>
   <CC_Dock_Allomancy_Burn>Burn</CC_Dock_Allomancy_Burn>
+  <CC_Dock_Allomancy_BurnRate>{RATE}%/s</CC_Dock_Allomancy_BurnRate>
   <CC_Dock_Allomancy_StopBurn>Stop</CC_Dock_Allomancy_StopBurn>
   <CC_Dock_Allomancy_Flare>Flare</CC_Dock_Allomancy_Flare>
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>

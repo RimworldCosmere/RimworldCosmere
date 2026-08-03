@@ -96,6 +96,10 @@ public class FeruchemyInfo {
     public FeruchemyAbilityInfo? Store { get; set; }
 
     public FeruchemyAbilityInfo? Tap { get; set; }
+
+    public float? StoreRateMultiplier { get; set; }
+
+    public float? TapRateMultiplier { get; set; }
 }
 
 public class FeruchemyAbilityInfo {

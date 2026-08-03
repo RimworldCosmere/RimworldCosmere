@@ -88,5 +88,10 @@ public class MetalFeruchemyDef {
     public FeruchemyGroup? group;
     public Texture2D icon = null!;
     public Texture2D invertedIcon = null!;
+
+    // Scale charge moved per second, per direction. Bendalloy sits far below 1 so a
+    // single band covers a whole day instead of 22 minutes.
+    public float storeRateMultiplier = 1f;
+    public float tapRateMultiplier = 1f;
     public string? userName;
 }

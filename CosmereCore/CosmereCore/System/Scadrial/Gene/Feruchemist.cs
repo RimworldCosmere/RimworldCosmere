@@ -358,6 +358,12 @@ public class Feruchemist : Metalborn {
     // ordinary and the compounded channel.
     public bool isStoringAny => isStoring || (compoundedTargetValue > IdleTarget && canStoreCompounded);
 
+    // Per-metal pacing, applied to every path that moves charge so the dial readout
+    // and the actual drain cannot drift apart.
+    public float StoreRateMultiplier => metal.feruchemy?.storeRateMultiplier ?? 1f;
+
+    public float TapRateMultiplier => metal.feruchemy?.tapRateMultiplier ?? 1f;
+
     // Charge moved per real second at the current dial setting, negative while
     // tapping. Zero when the dial sits in its dead band or the direction is shut.
     // What the compounded dial is moving, negative while tapping it and positive
@@ -368,10 +374,10 @@ public class Feruchemist : Metalborn {
             if (severity <= 0f) return 0f;
 
             if (compoundedTargetValue > IdleTarget) {
-                return canStoreCompounded ? AmountPerSecond * severity : 0f;
+                return canStoreCompounded ? AmountPerSecond * severity * StoreRateMultiplier : 0f;
             }
 
-            return canTapCompounded ? -AmountPerSecond * severity : 0f;
+            return canTapCompounded ? -AmountPerSecond * severity * TapRateMultiplier : 0f;
         }
     }
 
@@ -386,8 +392,8 @@ public class Feruchemist : Metalborn {
 
             float perSecond = AmountPerSecond * severity;
 
-            if (targetValue < IdleTarget) return canTap ? -perSecond : 0f;
-            return canStore ? perSecond : 0f;
+            if (targetValue < IdleTarget) return canTap ? -perSecond * TapRateMultiplier : 0f;
+            return canStore ? perSecond * StoreRateMultiplier : 0f;
         }
     }
 
@@ -538,8 +544,11 @@ public class Feruchemist : Metalborn {
         // back it would move ten times the charge as well.
         float ordinary = SeverityForTarget(targetValue);
         if (ordinary > 0f) {
-            if (targetValue > IdleTarget && canStore) AddToStore(AmountPerSecond * ordinary);
-            else if (targetValue < IdleTarget && canTap) RemoveFromStore(AmountPerSecond * ordinary);
+            if (targetValue > IdleTarget && canStore) {
+                AddToStore(AmountPerSecond * ordinary * StoreRateMultiplier);
+            } else if (targetValue < IdleTarget && canTap) {
+                RemoveFromStore(AmountPerSecond * ordinary * TapRateMultiplier);
+            }
         }
 
         // The compounded pool fills at the ordinary storing rate and costs the same
@@ -551,9 +560,9 @@ public class Feruchemist : Metalborn {
         if (compoundedTargetValue > IdleTarget) {
             // Filling is ordinary storing. Nothing about the charge is special; the
             // burn on the way out is what compounds it.
-            if (canStore) AddToStore(AmountPerSecond * compounded);
+            if (canStore) AddToStore(AmountPerSecond * compounded * StoreRateMultiplier);
         } else if (canTapCompounded) {
-            RemoveCompoundedFromStore(AmountPerSecond * compounded);
+            RemoveCompoundedFromStore(AmountPerSecond * compounded * TapRateMultiplier);
         }
     }
 

@@ -13,7 +13,9 @@
         <feruchemy>{{#if userName}}
             <userName>{{userName}}</userName>{{/if}}{{#if description}}
             <description>{{description}}</description>{{/if}}{{#if group}}
-            <group>{{capitalize group}}</group>{{/if}}
+            <group>{{capitalize group}}</group>{{/if}}{{#if storeRateMultiplier}}
+            <storeRateMultiplier>{{storeRateMultiplier}}</storeRateMultiplier>{{/if}}{{#if tapRateMultiplier}}
+            <tapRateMultiplier>{{tapRateMultiplier}}</tapRateMultiplier>{{/if}}
         </feruchemy>
         {{else}}{{/with}}
     </Cosmere.System.Scadrial.Def.MetallicArtsMetalDef>

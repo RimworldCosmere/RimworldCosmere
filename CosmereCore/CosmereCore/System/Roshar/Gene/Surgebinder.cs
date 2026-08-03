@@ -405,7 +405,7 @@ public class Surgebinder : Invested {
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        if (sources.Count > 0 && pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
+        if (sources.Count > 0 && pawn.IsHashIntervalTick(UpkeepTicks, delta)) {
             DrainStormlightForAbilities();
         }
 

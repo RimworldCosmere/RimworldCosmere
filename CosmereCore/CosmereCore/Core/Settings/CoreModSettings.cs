@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.BetaHub;
 using Cosmere.Core.Framework;
+using Cosmere.Core.Investiture;
 using Cosmere.Core.Quickstart;
 using Cosmere.Core.Settings.Model;
 using RimWorld;
@@ -48,6 +49,10 @@ public class CoreModSettings : CosmereModSettings {
     public bool showDormantConnection;
     public string? testScenarioDefName;
 
+    // How often a sustained ability is charged for its upkeep. Shared by every invested
+    // system, because they all spend off the one DrainSource list on Invested.
+    public UpkeepCadence upkeepCadence = UpkeepCadence.PerSecond;
+
     public bool showFeedbackButtons = true;
     public string? feedbackDiscordUsername;
 
@@ -68,6 +73,28 @@ public class CoreModSettings : CosmereModSettings {
                         new CheckboxControl(
                             () => showDormantConnection,
                             updated => showDormantConnection = updated,
+                            false
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
+                "investiture",
+                "CC_Settings_Category_Investiture",
+                [
+                    new SettingDescriptor(
+                        "upkeep-cadence",
+                        "CC_Settings_UpkeepCadence_Label",
+                        "CC_Settings_UpkeepCadence_Description",
+                        new ChoiceControl(
+                            () => upkeepCadence.ToString(),
+                            updated => upkeepCadence = Enum.Parse<UpkeepCadence>(updated!),
+                            nameof(UpkeepCadence.PerSecond),
+                            () => [
+                                new Choice(nameof(UpkeepCadence.PerTick), "CC_Settings_UpkeepCadence_PerTick"),
+                                new Choice(nameof(UpkeepCadence.PerSecond), "CC_Settings_UpkeepCadence_PerSecond"),
+                                new Choice(nameof(UpkeepCadence.PerRareTick), "CC_Settings_UpkeepCadence_PerRareTick"),
+                            ],
                             false
                         )
                     ),
@@ -336,5 +363,6 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref dockSectionMaxHeight, "dockSectionMaxHeight", DefaultDockSectionMaxHeight);
         Scribe_Values.Look(ref showFeedbackButtons, "showFeedbackButtons", true);
         Scribe_Values.Look(ref feedbackDiscordUsername, "feedbackDiscordUsername");
+        Scribe_Values.Look(ref upkeepCadence, "upkeepCadence", UpkeepCadence.PerSecond);
     }
 }

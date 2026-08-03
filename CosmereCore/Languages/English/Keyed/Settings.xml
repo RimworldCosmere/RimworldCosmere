@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+    <CC_Settings_Category_Investiture>Investiture</CC_Settings_Category_Investiture>
+    <CC_Settings_UpkeepCadence_Label>Ability Upkeep Cadence</CC_Settings_UpkeepCadence_Label>
+    <CC_Settings_UpkeepCadence_Description>How often a sustained ability charges its upkeep against the reserve it burns. Faster cadences drain reserves proportionally faster, so this changes how long a metal reserve or a gemheart lasts. Applies to every invested system.</CC_Settings_UpkeepCadence_Description>
+    <CC_Settings_UpkeepCadence_PerTick>Every tick (fastest drain)</CC_Settings_UpkeepCadence_PerTick>
+    <CC_Settings_UpkeepCadence_PerSecond>Every second (default)</CC_Settings_UpkeepCadence_PerSecond>
+    <CC_Settings_UpkeepCadence_PerRareTick>Every rare tick (slowest drain)</CC_Settings_UpkeepCadence_PerRareTick>
+
     <CC_Settings_Category_Connection>Connection</CC_Settings_Category_Connection>
     <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
     <CC_Settings_Connection_ShowDormantConnection_Description>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Description>

@@ -57,8 +57,8 @@ public class Allomancer : Metalborn {
 
     private int burnTickRate {
         get {
-            if (!timeDilationFactor.HasValue) return GenTicks.TickRareInterval;
-            return Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor.Value);
+            if (!timeDilationFactor.HasValue) return UpkeepTicks;
+            return Mathf.Max(1, Mathf.RoundToInt(UpkeepTicks / timeDilationFactor.Value));
         }
     }
 

@@ -1,5 +1,6 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Investiture;
+using Cosmere.Core.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,17 +12,24 @@ public abstract class Invested : Gene_Resource {
 
     public List<DrainSource> Sources => sources;
 
-    // What the reserve is losing per second right now. Ability upkeep is already
-    // charged once a second, so it reads straight; the holder's passive decay is
-    // charged once per rare tick and has to be divided back down, or it reports as a
-    // number four seconds wide. The holder stops decaying at the floor, and so does
-    // this - a reserve sitting at empty is not still draining.
+    // Every invested system spends off this one list, so the cadence they are charged on is
+    // one shared setting rather than a constant per system.
+    public static int UpkeepTicks =>
+        UpkeepRate.TicksFor(Mod.GetModSettings<CoreModSettings>().upkeepCadence);
+
+    // What the reserve is losing per second right now. Ability upkeep is charged on the
+    // configured cadence and has to be scaled back to seconds; the holder's passive decay is
+    // charged once per rare tick and has its own conversion, or it reports as a number four
+    // seconds wide. The holder stops decaying at the floor, and so does this - a reserve
+    // sitting at empty is not still draining.
     public float DrainPerSecond {
         get {
             float rate = 0f;
             for (int i = 0; i < sources.Count; i++) {
                 rate += sources[i].Rate;
             }
+
+            rate = UpkeepRate.PerSecond(rate, UpkeepTicks);
 
             if (Value > 1f) rate += investitureHolder.drainRate / (GenTicks.TickRareInterval / 60f);
 

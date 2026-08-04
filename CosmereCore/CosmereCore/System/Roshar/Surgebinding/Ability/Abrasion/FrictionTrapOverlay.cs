@@ -15,24 +15,30 @@ public static class FrictionTrapOverlayStateClearer {
 
 public static class FrictionTrapOverlay {
     private static readonly List<ZoneEntry> zones = [];
-    private static readonly List<IntVec3> cellBuffer = [];
     private static readonly Color BorderColor = new Color(0.4f, 0.75f, 0.95f, 0.6f);
     private static readonly Color FillColor = new Color(0.4f, 0.75f, 0.95f, 0.12f);
 
     public static void OnClearAllMapsAndWorld() {
         zones.Clear();
-        cellBuffer.Clear();
     }
 
     public static void Register(int id, IntVec3 center, float radius, Map map) {
+        ZoneEntry entry = new ZoneEntry {
+            id = id,
+            center = center,
+            radius = radius,
+            map = map,
+            cells = CellsFor(center, radius, map),
+        };
+
         for (int i = 0; i < zones.Count; i++) {
             if (zones[i].id == id) {
-                zones[i] = new ZoneEntry { id = id, center = center, radius = radius, map = map };
+                zones[i] = entry;
                 return;
             }
         }
 
-        zones.Add(new ZoneEntry { id = id, center = center, radius = radius, map = map });
+        zones.Add(entry);
     }
 
     public static void Unregister(int id) {
@@ -42,6 +48,23 @@ public static class FrictionTrapOverlay {
                 return;
             }
         }
+    }
+
+    // A zone never moves or resizes, so its cells are settled the moment it is registered. Draw
+    // runs every frame off MapInterfaceUpdate; rebuilding this there re-tested (2r+1)^2 cells a
+    // frame to get the same answer.
+    private static List<IntVec3> CellsFor(IntVec3 center, float radius, Map map) {
+        int radiusCeil = (int)radius + 1;
+        List<IntVec3> cells = new List<IntVec3>();
+        for (int dx = -radiusCeil; dx <= radiusCeil; dx++) {
+            for (int dz = -radiusCeil; dz <= radiusCeil; dz++) {
+                IntVec3 cell = new IntVec3(center.x + dx, 0, center.z + dz);
+                if (!cell.InBounds(map)) continue;
+                if (cell.DistanceTo(center) <= radius) cells.Add(cell);
+            }
+        }
+
+        return cells;
     }
 
     public static void Draw() {
@@ -56,24 +79,12 @@ public static class FrictionTrapOverlay {
             ZoneEntry zone = zones[i];
             if (zone.map != currentMap) continue;
 
-            cellBuffer.Clear();
-            int radiusCeil = (int)zone.radius + 1;
-            for (int dx = -radiusCeil; dx <= radiusCeil; dx++) {
-                for (int dz = -radiusCeil; dz <= radiusCeil; dz++) {
-                    IntVec3 cell = new IntVec3(zone.center.x + dx, 0, zone.center.z + dz);
-                    if (!cell.InBounds(currentMap)) continue;
-                    if (cell.DistanceTo(zone.center) <= zone.radius) {
-                        cellBuffer.Add(cell);
-                    }
-                }
-            }
-
-            for (int j = 0; j < cellBuffer.Count; j++) {
-                Vector3 pos = cellBuffer[j].ToVector3ShiftedWithAltitude(AltitudeLayer.MetaOverlays);
+            for (int j = 0; j < zone.cells.Count; j++) {
+                Vector3 pos = zone.cells[j].ToVector3ShiftedWithAltitude(AltitudeLayer.MetaOverlays);
                 Graphics.DrawMesh(MeshPool.plane10, pos, Quaternion.identity, fillMat, 0);
             }
 
-            GenDraw.DrawFieldEdges(cellBuffer, BorderColor);
+            GenDraw.DrawFieldEdges(zone.cells, BorderColor);
         }
     }
 
@@ -82,5 +93,6 @@ public static class FrictionTrapOverlay {
         public IntVec3 center;
         public float radius;
         public Map map;
+        public List<IntVec3> cells;
     }
 }

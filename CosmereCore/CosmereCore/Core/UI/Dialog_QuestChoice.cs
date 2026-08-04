@@ -18,6 +18,10 @@ public class Dialog_QuestChoice : Verse.Window {
     private const float AccentBarHeight = 3f;
     private const float DividerHeight = 1f;
 
+    // Wide enough for "300 silver" at GameFont.Tiny. The cost column and the label column are
+    // sized from this same figure, so they cannot drift apart.
+    private const float CostColumnUnits = 6f;
+
     private static readonly Color AccentColor = new Color(0.42f, 0.58f, 0.66f);
     private static readonly Color RowColor = new Color(0.16f, 0.16f, 0.19f, 0.65f);
     private static readonly Color DividerColor = new Color(0.35f, 0.35f, 0.4f);
@@ -87,16 +91,24 @@ public class Dialog_QuestChoice : Verse.Window {
 
             Rect inner = row.ContractedBy(Spacing.Get(0.5f));
             Rect labelRect = inner;
-            if (option.silverCost > 0) labelRect.width -= Spacing.Get(5f);
+            if (option.silverCost > 0) labelRect.width -= Spacing.Get(CostColumnUnits);
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, blocked ? BlurbColor : Color.white)) {
                 Widgets.Label(labelRect, ResolvedLabelKey(option).Translate());
             }
 
             if (option.silverCost > 0) {
-                Rect costRect = new Rect(inner.xMax - Spacing.Get(5f), inner.y, Spacing.Get(5f), inner.height);
+                Rect costRect = new Rect(
+                    inner.xMax - Spacing.Get(CostColumnUnits),
+                    inner.y,
+                    Spacing.Get(CostColumnUnits),
+                    inner.height
+                );
                 using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, CostColor)) {
-                    Widgets.Label(costRect, ((float)option.silverCost).ToStringMoney());
+                    Widgets.Label(
+                        costRect,
+                        "CC_Quest_Choice_SilverCost".Translate(option.silverCost.Named("COUNT")).Resolve()
+                    );
                 }
             }
 
@@ -142,14 +154,14 @@ public class Dialog_QuestChoice : Verse.Window {
 
         int shortfall = option.silverCost - totalSilver;
         string shortfallTip = "CC_Quest_Choice_InsufficientSilver_Tip"
-            .Translate(((float)shortfall).ToStringMoney().Named("COST"))
+            .Translate(shortfall.Named("COUNT"))
             .Resolve();
 
         return shortfallTip + "\n\n" + tip;
     }
 
     private static float RowHeight(QuestChoiceOption option, float rowWidth) {
-        float labelWidth = rowWidth - Spacing.Get() - (option.silverCost > 0 ? Spacing.Get(5f) : 0f);
+        float labelWidth = rowWidth - Spacing.Get() - (option.silverCost > 0 ? Spacing.Get(CostColumnUnits) : 0f);
         float textHeight = Text.CalcHeight(ResolvedLabelKey(option).Translate(), labelWidth);
         return Mathf.Max(textHeight + Spacing.Get(), Spacing.Get(3f));
     }

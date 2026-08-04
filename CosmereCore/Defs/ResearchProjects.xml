@@ -2,6 +2,7 @@
 <Defs>
 	<ResearchProjectDef>
 		<defName>Cosmere_Gem_Cutting</defName>
+		<tab>Cosmere</tab>
 		<label>gem cutting</label>
 		<description>Through careful study and refined technique, your colonists have learned to cut raw gemstones into precise, faceted forms. Cut gems fetch higher prices in trade and can be used in advanced crafting, ceremonial objects, or specialized fabrials on certain shardworlds.</description>
 		<baseCost>300</baseCost>
@@ -11,6 +12,7 @@
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Simple_Alloys</defName>
+		<tab>Cosmere</tab>
 		<label>simple alloys</label>
 		<description>Combining base metals to create stronger, more useful materials. Unlocks basic alloys like steel and bronze for construction, crafting, and equipment.</description>
 		<baseCost>300</baseCost>
@@ -20,6 +22,7 @@
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Complex_Alloys</defName>
+		<tab>Cosmere</tab>
 		<label>complex alloys</label>
 		<description>Advanced metallurgy techniques enable the forging of rare and potent alloys. Unlocks high-tier materials used in specialized tools, weapons, and metal refinement.</description>
 		<baseCost>1200</baseCost>
@@ -56,6 +59,7 @@
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Glass</defName>
+		<tab>Cosmere</tab>
 		<label>glass</label>
 		<description>A versatile material made from sand and heat. Unlocks glass production and allows construction of fragile but beautiful objects like windows, lenses, and decorative structures.</description>
 		<baseCost>1800</baseCost>

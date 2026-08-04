@@ -90,13 +90,29 @@ public class GameComponent_ScenarioProgression : GameComponent {
         for (int m = 0; m < maps.Count; m++) {
             List<Pawn> colonists = maps[m].mapPawns.FreeColonists;
             for (int i = 0; i < colonists.Count; i++) {
-                Pawn pawn = colonists[i];
-                if (pawn.Name is NameTriple triple && triple.First == firstName) return pawn;
-                if (pawn.Name is NameSingle single && single.Name.StartsWith(firstName)) return pawn;
+                if (NameMatches(colonists[i], firstName)) return colonists[i];
+            }
+        }
+
+        // Caravans too: a pawn who happens to be away on a trade run when a story beat lands is
+        // still one of yours, and a beat that skipped him for it would look like a bug.
+        List<RimWorld.Planet.Caravan> caravans = Find.WorldObjects.Caravans;
+        for (int c = 0; c < caravans.Count; c++) {
+            if (!caravans[c].IsPlayerControlled) continue;
+
+            List<Pawn> members = caravans[c].PawnsListForReading;
+            for (int i = 0; i < members.Count; i++) {
+                if (members[i].IsColonist && NameMatches(members[i], firstName)) return members[i];
             }
         }
 
         return null;
+    }
+
+    private static bool NameMatches(Pawn pawn, string firstName) {
+        if (pawn.Name is NameTriple triple) return triple.First == firstName;
+        if (pawn.Name is NameSingle single) return single.Name.StartsWith(firstName);
+        return false;
     }
 
     public bool HasEventFired(string eventKey) {

@@ -12,6 +12,8 @@ namespace Cosmere.Core.Quickstart;
 
 [StaticConstructorOnStartup]
 public class Quickstarter {
+    private const string CommandLineArg = "cosmerequickstart";
+
     private static bool Started;
     private static bool Finished;
     internal static Quickstarter? instance;
@@ -42,18 +44,47 @@ public class Quickstarter {
     }
 
     private static AbstractQuickstart? ConfiguredQuickstart() {
-        if (!Prefs.DevMode) return null;
+        if (!Prefs.DevMode) {
+            if (GenCommandLine.TryGetCommandLineArg(CommandLineArg, out string _)) {
+                Logger.Warning($"-{CommandLineArg} was passed, but dev mode is off, so no quickstart will run.");
+            }
 
+            return null;
+        }
+
+        // A name the arg cannot resolve stops the launch rather than falling back to the setting,
+        // which would quietly boot a different colony than the one that was asked for.
+        Type? type = GenCommandLine.TryGetCommandLineArg(CommandLineArg, out string value)
+            ? CommandLineQuickstart(value)
+            : SettingsQuickstart();
+
+        return type == null ? null : (AbstractQuickstart)Activator.CreateInstance(type);
+    }
+
+    private static Type? CommandLineQuickstart(string value) {
+        Type? type = QuickstartLookup.Resolve(
+            value,
+            typeof(AbstractQuickstart).AllSubclassesNonAbstract(),
+            out string? error
+        );
+        if (type == null) {
+            Logger.Error($"-{CommandLineArg}: {error}");
+            return null;
+        }
+
+        Logger.Important($"Command line picked the {type.Name} quickstart.");
+
+        return type;
+    }
+
+    private static Type? SettingsQuickstart() {
         string? quickstartName = Mod.GetModSettings<CoreModSettings>().quickstartName;
         if (string.IsNullOrEmpty(quickstartName)) return null;
 
         Type? type = Type.GetType(quickstartName);
-        if (type == null) {
-            Logger.Error("Could not find the quickstart with type: " + quickstartName);
-            return null;
-        }
+        if (type == null) Logger.Error("Could not find the quickstart with type: " + quickstartName);
 
-        return (AbstractQuickstart)Activator.CreateInstance(type);
+        return type;
     }
 
     private static string seed => GenText.RandomSeedString();

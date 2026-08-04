@@ -13,6 +13,11 @@ namespace Cosmere.Core.Dev;
 public static class TimeSkipUtility {
     private const int MaxSkipDays = 120;
 
+    // Dialog_Slider is a fixed 130f tall and pins its buttons to inRect.yMax - 30, but lays the
+    // slider out below the label at CalcHeight(text). Two lines of label push the slider onto
+    // the buttons, so buy the height back with the field vanilla provides for it.
+    private const float SliderExtraHeight = 40f;
+
     [DebugAction(
         "Cosmere/Core",
         "Skip forward N days...",
@@ -21,11 +26,13 @@ public static class TimeSkipUtility {
     public static void SkipDays() {
         Find.WindowStack.Add(
             new Dialog_Slider(
-                days => $"Skip forward {days} day{(days == 1 ? string.Empty : "s")}\n\nCurrently day {GenDate.DaysPassed}.",
+                days => $"Skip forward {days} day{(days == 1 ? string.Empty : "s")}\nCurrently day {GenDate.DaysPassed}",
                 1,
                 MaxSkipDays,
                 Skip
-            )
+            ) {
+                extraBottomSpace = SliderExtraHeight,
+            }
         );
     }
 

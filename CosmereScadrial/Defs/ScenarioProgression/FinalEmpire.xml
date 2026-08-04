@@ -17,6 +17,12 @@
             <text>Vin had always Pulled and Pushed without knowing what she did. Luck, she called it. Street instinct. But tonight Kelsier showed her the truth. The metals sang in her stomach, and the mists answered. She burned tin, and the world sharpened to a razor's edge. She burned pewter, and her body became a weapon. She is not merely a street urchin. She is Mistborn.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetSkillAction">
+            <pawnName>Vin</pawnName>
+            <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
+            <level>20</level>
+            <passion>Major</passion>
+          </li>
         </actions>
       </li>
       <li>
@@ -31,6 +37,13 @@
             <title>Marsh's Infiltration</title>
             <text>Marsh stands at the edge of camp, pack slung over one shoulder. "The Steel Ministry won't infiltrate itself," he says, his voice as flat as ever. Kelsier clasps his brother's arm. No words pass between them - none are needed. Marsh walks into the mists alone. His mission: to become an obligator, to learn the Ministry's secrets from within. It is the most dangerous part of the plan, and the one Marsh insisted on taking.</text>
             <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+            <pawnName>Marsh</pawnName>
+            <!-- leave, not vanish: he is inside the Ministry, not dead, so he stays a world
+                 pawn and can come back. -->
+            <method>leave</method>
+            <optional>true</optional>
           </li>
         </actions>
       </li>
@@ -50,23 +63,61 @@
             <text>Word has spread through the underground. Yeden's rebels grow bolder by the day, and Ham's training has turned frightened skaa into something resembling soldiers. They march in formation now. They hold their weapons with intent rather than desperation. The numbers are still thin, but the spirit is there - a fire that has not burned on Scadrial in a thousand years.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_SkaaRebels</faction>
+            <goodwill>75</goodwill>
+          </li>
         </actions>
       </li>
       <li>
         <key>kelsiers_sacrifice</key>
         <triggers>
+          <!-- Day only. ThreatsSurvivedTrigger reads StoryState.numThreatBigs, which
+               Notify_IncidentFired skips for any forced incident, so a dev-fired raid never
+               counted towards it and the beat was unreachable outside a full playthrough. -->
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>60</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
-            <minThreats>2</minThreats>
-          </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>I Am the One Thing You Can Never Kill</title>
-            <text>Kelsier stood before the Steel Inquisitor in the public square. The skaa watched from behind shuttered windows. He fought as only a Mistborn could - iron and steel screaming through the air, pewter fueling impossible strength. But the Inquisitor was stronger. The blow came. Kelsier fell. And then something extraordinary happened. The skaa did not cower. They did not flee. They looked at the body of the Survivor of Hathsin, and they remembered his smile. "I am hope," he had told them. And hope, it turns out, cannot be killed so easily.</text>
-            <letterDef>NeutralEvent</letterDef>
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <requiresPawn>Kelsier</requiresPawn>
+            <titleKey>CS_Progression_Kelsier_Title</titleKey>
+            <textKey>CS_Progression_Kelsier_Text</textKey>
+            <acceptKey>CS_Progression_Kelsier_Accept</acceptKey>
+            <declineKey>CS_Progression_Kelsier_Decline</declineKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>I Am the One Thing You Can Never Kill</title>
+                <text>Kelsier stood before the Steel Inquisitor in the public square. The skaa watched from behind shuttered windows. He fought as only a Mistborn could - iron and steel screaming through the air, pewter fueling impossible strength. But the Inquisitor was stronger. The blow came. Kelsier fell. And then something extraordinary happened. The skaa did not cower. They did not flee. They looked at the body of the Survivor of Hathsin, and they remembered his smile. "I am hope," he had told them. And hope, it turns out, cannot be killed so easily.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                <pawnName>Kelsier</pawnName>
+                <method>leave</method>
+                <!-- This branch also runs when he is already dead or gone. -->
+                <optional>true</optional>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_SkaaRebels</faction>
+                <goodwill>100</goodwill>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+                <thought>Cosmere_Scadrial_SurvivorFell</thought>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>There's Always Another Secret</title>
+                <text>Kelsier stopped at the door. Stood there a long moment with his hand on the frame, listening to the Inquisitor call his name across the square. Then he laughed, quietly, and turned back. "Not today," he said. The skaa will not have their martyr. They will have to make do with a living man, which is a harder thing to be.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+                <thought>Cosmere_Scadrial_EscapedDeath</thought>
+                <pawnName>Kelsier</pawnName>
+                <permanent>true</permanent>
+              </li>
+            </onDecline>
           </li>
         </actions>
       </li>

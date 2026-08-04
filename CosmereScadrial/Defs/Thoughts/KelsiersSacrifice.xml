@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_SurvivorFell</defName>
+    <label>the Survivor fell</label>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <durationDays>30</durationDays>
+    <stages>
+      <li>
+        <label>the Survivor fell</label>
+        <description>Kelsier walked into the square knowing what waited for him. Knowing it, and smiling. The crew is still here. He is not.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_EscapedDeath</defName>
+    <label>escaped death</label>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <!-- GiveThoughtAction sets Thought_Memory.permanent, which short-circuits ShouldDiscard
+         before this is ever read. Kept large so a memory made any other way still lasts. -->
+    <durationDays>999999</durationDays>
+    <stages>
+      <li>
+        <label>escaped death</label>
+        <description>The Inquisitor was waiting in the square, and I did not go. There is always another secret. There is always another day.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

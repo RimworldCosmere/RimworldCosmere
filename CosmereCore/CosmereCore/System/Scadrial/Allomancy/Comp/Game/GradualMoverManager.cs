@@ -25,6 +25,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
 
             if (movement.ticksElapsed >= movement.ticksTotal) {
                 movement.thing.Position = movement.end.ToIntVec3();
+                NotifyMoved(movement.thing);
                 activeMovements.RemoveAt(i);
                 DispatchPickupJob(movement, pawn);
             } else {
@@ -38,6 +39,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
         float easedPosition = EasingFunctions.EaseInOutQuint(Mathf.Clamp01(1f - t));
         m.thing.Position = Vector3.Lerp(m.end, m.start, easedPosition).ToIntVec3();
+        NotifyMoved(m.thing);
 
         foreach (Pawn pawn1 in m.thing.ThingsSharingPosition<Pawn>()) {
             if (pawn1.Equals(m.source) || pawn1.Equals(m.thing) || m.haveDamaged.Contains(pawn1)) continue;
@@ -45,6 +47,12 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
             ApplyDragDamage(pawn1, pawn);
             m.haveDamaged.Add(pawn1);
         }
+    }
+
+    // Setting Position behind the pather's back leaves it steering from the cell the pawn used to
+    // stand in, so the shove and the walk order fight and the pawn reads as stuck. Keep the job.
+    private static void NotifyMoved(Verse.Thing thing) {
+        if (thing is Pawn moved && moved.Spawned) moved.Notify_Teleported(false);
     }
 
     private static void TickRendering(MovementData m) {

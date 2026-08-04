@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
+using Cosmere.System.Scadrial.Allomancy;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Comp.Game;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
@@ -83,13 +84,22 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         }
 
         float forceMultiplier = ability.GetStrength();
-        float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass) * thing.stackCount;
         float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) +
                          MassUtility.GearAndInventoryMass(pawn) * forceMultiplier;
-        float massDifference = Mathf.Abs(pawnMass - mass);
-        if (mass > pawnMass && !movePawn) return;
 
-        (Verse.Thing, Verse.Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
+        // A spawned building is bolted to the map. Thing.Position on anything that affects regions
+        // is unsupported and leaves reachability stale, which is what stranded pawns after a shove.
+        bool anchored = thing.Spawned && thing.def.category == ThingCategory.Building;
+        float mass = AllomanticShove.EffectiveTargetMass(
+            thing.GetStatValue(RimWorld.StatDefOf.Mass) * thing.stackCount,
+            pawnMass,
+            anchored
+        );
+        float massDifference = Mathf.Abs(pawnMass - mass);
+        bool movesCaster = AllomanticShove.MovesCaster(mass, pawnMass);
+        if (movesCaster && !movePawn) return;
+
+        (Verse.Thing, Verse.Thing) things = movesCaster ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
         float distance = Mathf.Lerp(0, massDifference, .333333f) * forceMultiplier;
@@ -109,18 +119,23 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             break;
         }
 
-        int duration = Mathf.RoundToInt(
-            Mathf.Lerp(GenTicks.TicksPerRealSecond / 2f, massDifference, 30f / forceMultiplier / 100)
-        );
-        Current.Game.GetComponent<GradualMoverManager>()
-            .StartMovement(
-                polarity,
-                things.Item2,
-                things.Item1,
-                finalPos,
-                duration,
-                lineMaterial
+        // A shove that resolves back onto the caster's own cell is not a shove. Registering it just
+        // pins them under the mover for the duration while dust plays at their feet.
+        if (finalPos != things.Item1.Position) {
+            int duration = Mathf.RoundToInt(
+                Mathf.Lerp(GenTicks.TicksPerRealSecond / 2f, massDifference, 30f / forceMultiplier / 100)
             );
+            Current.Game.GetComponent<GradualMoverManager>()
+                .StartMovement(
+                    polarity,
+                    things.Item2,
+                    things.Item1,
+                    finalPos,
+                    duration,
+                    lineMaterial
+                );
+        }
+
         surge?.PostBurn();
     }
 

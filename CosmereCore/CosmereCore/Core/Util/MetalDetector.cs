@@ -109,8 +109,17 @@ public static class MetalDetector {
         return value;
     }
 
+    // ThingMaker logs an error for any madeFromStuff def handed no stuff, and both callers below
+    // walk arbitrary defs off cost lists and ingredient filters. Glass was the one that surfaced.
+    private static Verse.Thing MakeSample(ThingDef thingDef) {
+        return ThingMaker.MakeThing(
+            thingDef,
+            thingDef.MadeFromStuff ? RimWorld.GenStuff.DefaultStuffFor(thingDef) : null
+        );
+    }
+
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
-        Verse.Thing? item = ThingMaker.MakeThing(def.thingDef);
+        Verse.Thing? item = MakeSample(def.thingDef);
         float metalMass = GetMetalMass(item, depth + 1, allowAluminum);
         return metalMass * def.count;
     }
@@ -135,7 +144,7 @@ public static class MetalDetector {
         if (!Enumerable.Any(
                 recipe.ingredients,
                 ingredient => ingredient.filter.AllowedThingDefs.Any(thingDef =>
-                    GetMetalMass(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f
+                    GetMetalMass(MakeSample(thingDef), depth, allowAluminum) > 0f
                 )
             )) {
             MetalRecipeCache[recipe] = false;

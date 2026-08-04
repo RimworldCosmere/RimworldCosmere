@@ -16,14 +16,7 @@ public class QuestPart_CarryHome : QuestPart_CosmereActivable {
         ThingDef? thing = requiredThing;
         if (thing == null) return false;
 
-        List<Verse.Map> maps = Find.Maps;
-        for (int i = 0; i < maps.Count; i++) {
-            Verse.Map map = maps[i];
-            if (!map.IsPlayerHome) continue;
-            if (map.resourceCounter.GetCount(thing) >= requiredCount) return true;
-        }
-
-        return false;
+        return HomeStock.Count(thing) >= requiredCount;
     }
 
     public override string? ExtraInspectString(ISelectable target) {

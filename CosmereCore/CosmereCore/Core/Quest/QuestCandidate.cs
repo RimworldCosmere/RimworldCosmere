@@ -17,4 +17,7 @@ public class QuestCandidate {
     public List<string>? requiredFlags;
     public List<string>? requiredShards;
     public float selectionWeight = 1f;
+
+    /// <summary>The FactionDef the quest points its site and its enemies at, if any.</summary>
+    public string? targetFaction;
 }

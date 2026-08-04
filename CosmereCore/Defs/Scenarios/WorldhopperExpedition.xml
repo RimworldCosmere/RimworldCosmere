@@ -114,6 +114,13 @@
           <text>The perpendicularity stabilized long enough. Five of you stepped through, carrying the sum of two worlds' knowledge. The Cognitive Realm is behind you now. Ahead: uncharted land, unfamiliar skies, and the weight of everything you brought with you.</text>
           <closeSound>GameStartSting</closeSound>
         </li>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_SkaaRebels>0</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_FinalEmpireNPC>-80</Cosmere_Scadrial_Faction_FinalEmpireNPC>
+          </relations>
+        </li>
       </parts>
     </scenario>
     <modExtensions>
@@ -125,6 +132,9 @@
           <li>Cultivation</li>
         </shards>
         <allowChange>True</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
       </li>
     </modExtensions>
   </ScenarioDef>

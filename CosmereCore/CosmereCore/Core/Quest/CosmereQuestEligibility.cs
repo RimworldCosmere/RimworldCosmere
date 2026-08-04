@@ -27,6 +27,15 @@ public static class CosmereQuestEligibility {
         if (!HasAll(candidate.requiredShards, state.enabledShards)) return false;
         if (!HasAll(candidate.requiredFlags, state.flags)) return false;
 
+        // A quest whose targetFaction is absent still builds, but every part that reads it
+        // degrades: the site gets no owner and its garrison has nobody to draw from. Better to
+        // not offer it than to offer a hollow one.
+        string? targetFaction = candidate.targetFaction;
+        if (targetFaction != null && targetFaction.Length > 0
+            && !state.presentFactions.Contains(targetFaction)) {
+            return false;
+        }
+
         string? requiredCapstone = candidate.requiredCapstone;
         if (requiredCapstone != null && requiredCapstone.Length > 0
             && !state.completedCapstones.Contains(requiredCapstone)) {

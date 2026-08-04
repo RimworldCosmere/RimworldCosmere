@@ -198,6 +198,16 @@
           <progression>Cosmere_Scadrial_Progression_WellOfAscension</progression>
         </li>
 
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
+            <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_NobleHouses>-80</Cosmere_Scadrial_Faction_NobleHouses>
+            <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
+          </relations>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>The armies have been spotted. Straff Venture from the north. Ashweather Cett from the west. Koloss from the east. Luthadel's walls are thick, but your forces are thin. Vin watches from the rooftops. Elend reads another book on governance. Breeze pours himself a drink. The siege begins.</text>

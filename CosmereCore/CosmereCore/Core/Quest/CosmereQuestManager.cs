@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
@@ -73,6 +74,12 @@ public class CosmereQuestManager : GameComponent {
 
         state.freeColonistCount = colonistCount;
 
+        List<Faction> factions = Find.FactionManager.AllFactionsListForReading;
+        for (int i = 0; i < factions.Count; i++) {
+            FactionDef? def = factions[i].def;
+            if (def != null) state.presentFactions.Add(def.defName);
+        }
+
         return state;
     }
 
@@ -87,6 +94,8 @@ public class CosmereQuestManager : GameComponent {
 
         List<QuestCandidate> eligible = CosmereQuestEligibility.Filter(candidates, state);
         if (eligible.Count == 0) return null;
+
+        LogPool(candidates, eligible, state);
 
         float totalWeight = 0f;
         for (int i = 0; i < eligible.Count; i++) {
@@ -113,6 +122,35 @@ public class CosmereQuestManager : GameComponent {
         }
 
         return null;
+    }
+
+    /// <summary>
+    ///     Says which quests were in the pool and which were filtered out. Without this, a
+    ///     def-level gate like minDaysElapsed looks exactly like bad luck - the same quest keeps
+    ///     coming up and the other one appears to be broken.
+    /// </summary>
+    private static void LogPool(
+        List<QuestCandidate> candidates,
+        List<QuestCandidate> eligible,
+        QuestWorldState state
+    ) {
+        StringBuilder builder = new StringBuilder();
+        builder.Append($"Quest pool at day {state.daysElapsed}, era {state.era ?? "none"}: ");
+        for (int i = 0; i < candidates.Count; i++) {
+            QuestCandidate candidate = candidates[i];
+            bool passed = false;
+            for (int j = 0; j < eligible.Count; j++) {
+                if (eligible[j].defName == candidate.defName) {
+                    passed = true;
+                    break;
+                }
+            }
+
+            builder.Append(candidate.defName);
+            builder.Append(passed ? " [eligible] " : " [filtered] ");
+        }
+
+        Logger.Verbose(builder.ToString());
     }
 
     public bool TryStartCapstone(CosmereQuestDef def, Verse.Map map, Pawn? subject) {
@@ -222,6 +260,10 @@ public class CosmereQuestManager : GameComponent {
     }
 
     private static string? FindActiveEra() {
+        // A cross-shard quickstart declares its own era, because its scenario cannot.
+        string? forced = Quickstart.Quickstarter.instance?.Quickstart?.era;
+        if (forced != null && forced.Length > 0) return forced;
+
         string? scenarioName = Find.Scenario?.name;
         if (scenarioName == null || scenarioName.Length == 0) return null;
 

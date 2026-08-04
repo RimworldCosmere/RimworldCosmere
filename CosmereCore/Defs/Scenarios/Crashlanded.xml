@@ -100,6 +100,13 @@
           <text>The perpendicularity collapsed mid-transit. Your vessel - if it could be called that - is scattered across the landscape. Three of you survived. The Investiture in your veins still hums. This world is unfamiliar, but survival is a universal language.</text>
           <closeSound>GameStartSting</closeSound>
         </li>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_SkaaRebels>0</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_FinalEmpireNPC>-80</Cosmere_Scadrial_Faction_FinalEmpireNPC>
+          </relations>
+        </li>
       </parts>
     </scenario>
     <modExtensions>
@@ -111,6 +118,9 @@
           <li>Cultivation</li>
         </shards>
         <allowChange>True</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
       </li>
     </modExtensions>
   </ScenarioDef>

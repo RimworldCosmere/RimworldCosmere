@@ -18,6 +18,9 @@ public class QuestWorldState {
     public int freeColonistCount;
     public Dictionary<string, int> lastOfferedTick = new Dictionary<string, int>();
 
+    /// <summary>FactionDef names with a live faction in this world.</summary>
+    public HashSet<string> presentFactions = new HashSet<string>();
+
     public CapstoneState StateOf(string defName) {
         return capstoneStates.TryGetValue(defName, out CapstoneState state) ? state : CapstoneState.NotFired;
     }

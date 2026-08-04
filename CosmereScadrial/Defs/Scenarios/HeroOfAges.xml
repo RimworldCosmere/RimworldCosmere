@@ -166,6 +166,16 @@
           <progression>Cosmere_Scadrial_Progression_HeroOfAges</progression>
         </li>
 
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
+            <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_NobleHouses>-40</Cosmere_Scadrial_Faction_NobleHouses>
+            <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
+          </relations>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>The red sun hangs low. Ash drifts like snow, but there is no beauty in it. The koloss are loose, the Inquisitors hunt freely, and Ruin's influence grows. Your colony may be the last bastion of civilization left standing. Hold. Endure. And pray that someone, somewhere, finds the answer.</text>

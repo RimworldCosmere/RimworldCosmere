@@ -40,6 +40,29 @@ public class CosmereQuestEligibilityTests {
         Assert.IsTrue(CosmereQuestEligibility.IsEligible(Convoy(), BaseState()));
     }
 
+    /// <summary>
+    ///     The Pre-Catacendre scenario used to create no Final Empire, so Crystal in the Deep
+    ///     was offered anyway and generated a site with no owner and no garrison.
+    /// </summary>
+    [TestMethod]
+    public void MissingTargetFactionIsRejected() {
+        QuestCandidate candidate = Convoy();
+        candidate.targetFaction = "Cosmere_Scadrial_Faction_FinalEmpireNPC";
+
+        Assert.IsFalse(CosmereQuestEligibility.IsEligible(candidate, BaseState()));
+    }
+
+    [TestMethod]
+    public void PresentTargetFactionIsAccepted() {
+        QuestCandidate candidate = Convoy();
+        candidate.targetFaction = "Cosmere_Scadrial_Faction_FinalEmpireNPC";
+
+        QuestWorldState state = BaseState();
+        state.presentFactions.Add("Cosmere_Scadrial_Faction_FinalEmpireNPC");
+
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(candidate, state));
+    }
+
     [TestMethod]
     public void EraMismatchIsRejected() {
         QuestWorldState state = BaseState();

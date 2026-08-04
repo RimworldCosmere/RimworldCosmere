@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Cosmere.Core.Quest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,6 +75,73 @@ public class QuestDefValidationTests {
     }
 
     private static string ScenarioProgressionDirectory => Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "ScenarioProgression");
+
+    /// <summary>Every def of one XML element name across all three mods' Defs trees.</summary>
+    private static List<(string file, XElement def)> DefsOfType(string elementName) {
+        List<(string file, XElement def)> defs = new List<(string file, XElement def)>();
+        foreach (string mod in new[] { "CosmereCore", "CosmereScadrial", "CosmereRoshar" }) {
+            string dir = Path.Combine(RepoRoot, mod, "Defs");
+            if (!Directory.Exists(dir)) continue;
+
+            foreach (string path in Directory.GetFiles(dir, "*.xml", SearchOption.AllDirectories)) {
+                XElement? root = XDocument.Load(path).Root;
+                if (root == null) continue;
+                foreach (XElement def in root.Elements(elementName)) {
+                    defs.Add((path, def));
+                }
+            }
+        }
+
+        return defs;
+    }
+
+    private static HashSet<string> OurSitePartDefNames() {
+        HashSet<string> names = new HashSet<string>();
+        foreach ((string _, XElement def) in DefsOfType("SitePartDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) names.Add(name.Value);
+        }
+
+        return names;
+    }
+
+    private static List<(string file, XElement def)> ScenariosForEra(string era) {
+        List<(string file, XElement def)> matches = new List<(string file, XElement def)>();
+        foreach ((string file, XElement def) in DefsOfType("ScenarioDef")) {
+            foreach (XElement extension in def.Descendants("li")) {
+                if (!HasClass(extension, "ScenarioEra")) continue;
+                if (extension.Element("era")?.Value == era) {
+                    matches.Add((file, def));
+                    break;
+                }
+            }
+        }
+
+        return matches;
+    }
+
+    /// <summary>
+    ///     The player faction plus everything the scenario's ScenPart_FactionRelations names -
+    ///     that part creates any faction world generation did not already roll.
+    /// </summary>
+    private static HashSet<string> FactionsCreatedBy(XElement scenario) {
+        HashSet<string> factions = new HashSet<string>();
+
+        XElement? playerFaction = scenario.Descendants("factionDef").FirstOrDefault();
+        if (playerFaction != null) factions.Add(playerFaction.Value);
+
+        foreach (XElement part in scenario.Descendants("li")) {
+            if (!HasClass(part, "ScenPart_FactionRelations")) continue;
+
+            XElement? relations = part.Element("relations");
+            if (relations == null) continue;
+            foreach (XElement entry in relations.Elements()) {
+                factions.Add(entry.Name.LocalName);
+            }
+        }
+
+        return factions;
+    }
 
     private static HashSet<string> CapstonesReferencedByStartQuestAction() {
         HashSet<string> referenced = new HashSet<string>();
@@ -163,6 +231,261 @@ public class QuestDefValidationTests {
                     $"{name}: era '{era.Value}' does not resolve to a known EraDef."
                 );
             }
+        }
+    }
+
+    /// <summary>
+    ///     The Core scenarios are shard-agnostic and are what every quickstart falls back to
+    ///     (AbstractQuickstart.scenario defaults to Crashlanded). If one carries no ScenarioEra,
+    ///     FindActiveEra returns null, EraMatches rejects every era-gated quest, and the whole
+    ///     quest system goes silently unreachable with nothing logged. Shard scenarios are
+    ///     deliberately exempt - Roshar has no eras yet and should not offer Scadrial quests.
+    /// </summary>
+    [TestMethod]
+    public void EveryCoreScenarioDeclaresAnEra() {
+        string dir = Path.Combine(RepoRoot, "CosmereCore", "Defs", "Scenarios");
+        Assert.IsTrue(Directory.Exists(dir), $"Core scenario directory '{dir}' does not exist.");
+
+        string[] files = Directory.GetFiles(dir, "*.xml");
+        Assert.IsTrue(files.Length > 0, $"No scenario defs found under '{dir}'.");
+
+        foreach (string path in files) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            foreach (XElement def in root.Elements("ScenarioDef")) {
+                string name = def.Element("defName")?.Value ?? Path.GetFileName(path);
+
+                bool hasEra = false;
+                foreach (XElement li in def.Descendants("li")) {
+                    if ((string?)li.Attribute("Class") == "Cosmere.Core.DefModExtension.ScenarioEra") {
+                        hasEra = true;
+                        break;
+                    }
+                }
+
+                Assert.IsTrue(
+                    hasEra,
+                    $"{name}: Core scenario declares no ScenarioEra. Every era-gated quest would " +
+                    "be filtered out of this scenario with no log line."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Site.Label falls back to MainSitePartDef.label, so a TravelToSiteObjective without a
+    ///     siteLabelKey puts "manhunter pack" or "outpost" on the world map instead of the place
+    ///     the quest is about.
+    /// </summary>
+    [TestMethod]
+    public void EveryTravelObjectiveNamesItsSite() {
+        HashSet<string> keys = KnownTranslationKeys();
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            foreach (XElement objective in def.Descendants("objective")) {
+                string? cls = (string?)objective.Attribute("Class");
+                if (cls != "Cosmere.Core.Quest.Objective.TravelToSiteObjective") continue;
+
+                XElement? labelKey = objective.Element("siteLabelKey");
+                Assert.IsNotNull(
+                    labelKey,
+                    $"{name}: a TravelToSiteObjective has no siteLabelKey, so the world map would " +
+                    "show the raw SitePartDef label."
+                );
+
+                Assert.IsTrue(
+                    keys.Contains(labelKey!.Value),
+                    $"{name}: siteLabelKey '{labelKey.Value}' has no matching entry in any " +
+                    "Languages/English/Keyed folder."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Every base-building site part - Outpost and its relatives - reads RectOfInterest and
+    ///     then deliberately walls its settlement into a rect *beside* it, so the ground the
+    ///     quest is about generates empty. Extra site parts have to be ones we ship, which put
+    ///     their pawns on the rect instead.
+    /// </summary>
+    [TestMethod]
+    public void EveryExtraSitePartIsOneWeShip() {
+        HashSet<string> ours = OurSitePartDefNames();
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            foreach (XElement objective in def.Descendants("objective")) {
+                XElement? extras = objective.Element("extraSiteParts");
+                if (extras == null) continue;
+
+                foreach (XElement entry in extras.Elements("li")) {
+                    Assert.IsTrue(
+                        ours.Contains(entry.Value),
+                        $"{name}: extraSiteParts names '{entry.Value}', which is not a SitePartDef we " +
+                        "define. Vanilla base-building parts generate a fort next to the site's rect " +
+                        "of interest, not defenders on it."
+                    );
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     GenStep_PreciousLump sets RectOfInterest to the seam's bounds in ScatterAt, at order
+    ///     900. A garrison GenStep ordered before that reads an unset var and falls back to the
+    ///     map centre, which is how vanilla's Outpost ends up nowhere near the resource.
+    /// </summary>
+    [TestMethod]
+    public void EverySiteGarrisonGenStepRunsAfterThePreciousLump() {
+        const int preciousLumpOrder = 900;
+        int found = 0;
+
+        foreach ((string file, XElement def) in DefsOfType("GenStepDef")) {
+            XElement? genStep = def.Element("genStep");
+            string? cls = (string?)genStep?.Attribute("Class");
+            if (cls != "Cosmere.Core.Quest.GenStep_SiteGarrison") continue;
+
+            found++;
+            string name = RequireDefName(file, def);
+
+            XElement? order = def.Element("order");
+            Assert.IsNotNull(order, $"{name}: a GenStep_SiteGarrison def declares no order.");
+            Assert.IsTrue(
+                int.TryParse(order!.Value, out int value) && value > preciousLumpOrder,
+                $"{name}: order '{order.Value}' must be above {preciousLumpOrder}, or RectOfInterest " +
+                "is still unset when the garrison spawns."
+            );
+
+            XElement? link = def.Element("linkWithSite");
+            Assert.IsNotNull(link, $"{name}: a GenStep_SiteGarrison def has no linkWithSite, so it never runs.");
+        }
+
+        Assert.IsTrue(found > 0, "No GenStepDef wires up Cosmere.Core.Quest.GenStep_SiteGarrison.");
+    }
+
+    /// <summary>
+    ///     A quest's targetFaction has to exist in the world the quest can fire in, or the site
+    ///     generates with no owner and the garrison has nobody to draw from. Only
+    ///     ScenPart_FactionRelations creates a faction that world generation did not roll.
+    /// </summary>
+    [TestMethod]
+    public void EveryTargetFactionExistsInEveryScenarioTheQuestCanFireIn() {
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            string? faction = def.Element("targetFaction")?.Value;
+            if (faction == null) continue;
+
+            XElement? eras = def.Element("eras");
+            if (eras == null) continue;
+
+            foreach (XElement era in eras.Elements("li")) {
+                foreach ((string scenarioFile, XElement scenario) in ScenariosForEra(era.Value)) {
+                    HashSet<string> present = FactionsCreatedBy(scenario);
+                    if (present.Contains(faction)) continue;
+
+                    // The player-faction and NPC-faction defs for one power differ only by an
+                    // "NPC" suffix, and a scenario where you play that power has no business
+                    // spawning a rival copy of yourself.
+                    if (faction.EndsWith("NPC", StringComparison.Ordinal)
+                        && present.Contains(faction.Substring(0, faction.Length - 3))) {
+                        continue;
+                    }
+
+                    Assert.Fail(
+                        $"{name}: targetFaction '{faction}' is not created by " +
+                        $"{RequireDefName(scenarioFile, scenario)}, which shares era '{era.Value}'. " +
+                        "Add it to that scenario's ScenPart_FactionRelations."
+                    );
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     A stage or reward tagged for a branch that no option declares never runs, and
+    ///     nothing at runtime complains - the payout just silently never arrives.
+    /// </summary>
+    [TestMethod]
+    public void EveryAfterChoiceTagNamesARealOption() {
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            HashSet<string> optionKeys = new HashSet<string>();
+            foreach (XElement objective in def.Descendants("objective")) {
+                if ((string?)objective.Attribute("Class") != "Cosmere.Core.Quest.Objective.ChoiceObjective") {
+                    continue;
+                }
+
+                XElement? options = objective.Element("options");
+                if (options == null) continue;
+                foreach (XElement option in options.Elements("li")) {
+                    XElement? key = option.Element("key");
+                    if (key != null) optionKeys.Add(key.Value);
+                }
+            }
+
+            foreach (XElement tag in def.Descendants("afterChoice")) {
+                Assert.IsTrue(
+                    optionKeys.Contains(tag.Value),
+                    $"{name}: afterChoice '{tag.Value}' matches no ChoiceObjective option key. " +
+                    "That stage or reward would never run."
+                );
+            }
+        }
+    }
+
+    [TestMethod]
+    public void EveryStageHasADescriptionKeyThatResolves() {
+        HashSet<string> keys = KnownTranslationKeys();
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            XElement? stages = def.Element("stages");
+            if (stages == null) continue;
+
+            foreach (XElement stage in stages.Elements("li")) {
+                string stageKey = stage.Element("key")?.Value ?? "(unnamed)";
+
+                XElement? descriptionKey = stage.Element("descriptionKey");
+                Assert.IsNotNull(
+                    descriptionKey,
+                    $"{name}: stage '{stageKey}' has no descriptionKey, so the Quests tab " +
+                    "would show the player nothing about what to do."
+                );
+
+                Assert.IsTrue(
+                    keys.Contains(descriptionKey!.Value),
+                    $"{name}: stage '{stageKey}' descriptionKey '{descriptionKey.Value}' has no " +
+                    "matching entry in any Languages/English/Keyed folder. The player would see " +
+                    "the raw key."
+                );
+            }
+        }
+    }
+
+    [TestMethod]
+    public void OnlyCapstonesMayWaiveTheAcceptDeadline() {
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            XElement? expire = def.Element("expireAfterDays");
+            if (expire == null) continue;
+
+            if (!int.TryParse(expire.Value, out int days)) {
+                Assert.Fail($"{name}: expireAfterDays '{expire.Value}' is not an integer.");
+                continue;
+            }
+
+            if (days > 0) continue;
+
+            Assert.AreEqual(
+                "Capstone",
+                def.Element("kind")?.Value,
+                $"{name}: expireAfterDays {days} waives the accept deadline, which only capstones may do."
+            );
         }
     }
 

@@ -25,6 +25,9 @@ public class TimedWorkObjective : QuestObjective {
             requiredTicksOnSite = requiredDaysOnSite * GenDate.TicksPerDay,
             reinforcementIntervalTicks = reinforcementIntervalHours * GenDate.TicksPerHour,
             reinforcementIncident = reinforcementIncident,
+            reinforcementFaction = ctx.def.targetFaction == null
+                ? null
+                : Find.FactionManager.FirstFactionOfDef(ctx.def.targetFaction),
             inSignalEnable = inSignal,
             outSignalsCompleted = new List<string> { outSignal },
         };

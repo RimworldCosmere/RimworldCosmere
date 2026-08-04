@@ -14,7 +14,8 @@
         <giverFaction>Cosmere_Scadrial_Faction_SkaaRebels</giverFaction>
         <targetFaction>Cosmere_Scadrial_Faction_FinalEmpireNPC</targetFaction>
 
-        <expireAfterDays>20</expireAfterDays>
+        <!-- 0 means the offer never lapses. One bead per campaign, and BurnCapstone on failure. -->
+        <expireAfterDays>0</expireAfterDays>
         <cooldownDays>15</cooldownDays>
         <challengeRating>5</challengeRating>
         <minColonists>5</minColonists>
@@ -23,8 +24,10 @@
         <stages>
             <li>
                 <key>infiltrate</key>
+                <descriptionKey>CS_Quest_Lerasium_Stage_Infiltrate</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
                     <sitePart>Outpost</sitePart>
+                    <siteLabelKey>CS_Quest_Lerasium_Site</siteLabelKey>
                     <minTiles>8</minTiles>
                     <maxTiles>18</maxTiles>
                     <threatPoints>900</threatPoints>
@@ -32,10 +35,12 @@
             </li>
             <li>
                 <key>breach</key>
+                <descriptionKey>CS_Quest_Lerasium_Stage_Breach</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.ClearSiteObjective" />
             </li>
             <li>
                 <key>recover</key>
+                <descriptionKey>CS_Quest_Lerasium_Stage_Recover</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.SpawnThingObjective">
                     <thingDef>Lerasium</thingDef>
                     <count>1</count>
@@ -43,6 +48,7 @@
             </li>
             <li>
                 <key>carry</key>
+                <descriptionKey>CS_Quest_Lerasium_Stage_Carry</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.CarryHomeObjective">
                     <thingDef>Lerasium</thingDef>
                     <count>1</count>

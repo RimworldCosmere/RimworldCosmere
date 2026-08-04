@@ -6,6 +6,6 @@
     <category>Misc</category>
     <targetTags><li>Map_PlayerHome</li></targetTags>
     <workerClass>Cosmere.Core.Quest.IncidentWorker_CosmereQuest</workerClass>
-    <baseChance>1.4</baseChance>
+    <baseChance>2.8</baseChance>
   </IncidentDef>
 </Defs>

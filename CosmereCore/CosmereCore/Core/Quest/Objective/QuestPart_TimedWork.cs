@@ -12,6 +12,11 @@ namespace Cosmere.Core.Quest.Objective;
 /// </summary>
 public class QuestPart_TimedWork : QuestPart_CosmereActivable {
     private int nextReinforcementTick = -1;
+
+    // Preferred raider. Null lets the storyteller pick, which is the fallback when the quest's
+    // targetFaction is not present in this world.
+    public Faction? reinforcementFaction;
+
     public IncidentDef? reinforcementIncident;
     public int reinforcementIntervalTicks = 15000;
     public int requiredTicksOnSite = 180000;
@@ -50,7 +55,7 @@ public class QuestPart_TimedWork : QuestPart_CosmereActivable {
         Find.Storyteller.incidentQueue.Add(
             incident,
             now,
-            new IncidentParms { target = currentSite.Map, forced = true }
+            new IncidentParms { target = currentSite.Map, forced = true, faction = reinforcementFaction }
         );
     }
 
@@ -79,5 +84,6 @@ public class QuestPart_TimedWork : QuestPart_CosmereActivable {
         Scribe_Values.Look(ref reinforcementIntervalTicks, "reinforcementIntervalTicks", 15000);
         Scribe_Values.Look(ref ticksAccrued, "ticksAccrued");
         Scribe_Values.Look(ref nextReinforcementTick, "nextReinforcementTick", -1);
+        Scribe_References.Look(ref reinforcementFaction, "reinforcementFaction");
     }
 }

@@ -26,6 +26,10 @@ public abstract class AbstractQuickstart {
     // code must not import.
     public virtual IReadOnlyList<string> shards => [];
 
+    // Overrides whatever ScenarioEra the scenario declares. Null defers to the scenario, which
+    // is what every quickstart that isn't deliberately cross-shard wants.
+    public virtual string? era => null;
+
     public virtual void PostStart() { }
 
     public virtual void PostLoaded() { }

@@ -24,6 +24,7 @@
         <stages>
             <li>
                 <key>choice</key>
+                <descriptionKey>CS_Quest_AtiumCaravan_Stage_Choice</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.ChoiceObjective">
                     <options>
                         <li>
@@ -43,8 +44,14 @@
             </li>
             <li>
                 <key>travel</key>
+                <afterChoice>ambush</afterChoice>
+                <descriptionKey>CS_Quest_AtiumCaravan_Stage_Travel</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
                     <sitePart>Outpost</sitePart>
+                    <extraSiteParts>
+                        <li>Cosmere_Scadrial_SitePart_ConvoyAtium</li>
+                    </extraSiteParts>
+                    <siteLabelKey>CS_Quest_AtiumCaravan_Site</siteLabelKey>
                     <minTiles>3</minTiles>
                     <maxTiles>10</maxTiles>
                     <threatPoints>350</threatPoints>
@@ -52,15 +59,19 @@
             </li>
             <li>
                 <key>clear</key>
+                <afterChoice>ambush</afterChoice>
+                <descriptionKey>CS_Quest_AtiumCaravan_Stage_Clear</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.ClearSiteObjective" />
             </li>
         </stages>
 
         <rewards>
             <li Class="Cosmere.Core.Quest.Reward.GodMetalReward">
+                <afterChoice>bribe</afterChoice>
                 <metal>Atium</metal>
                 <countMin>2</countMin>
                 <countMax>4</countMax>
+                <nearColonist>true</nearColonist>
             </li>
             <li Class="Cosmere.Core.Quest.Reward.ThingReward">
                 <thingDef>Silver</thingDef>

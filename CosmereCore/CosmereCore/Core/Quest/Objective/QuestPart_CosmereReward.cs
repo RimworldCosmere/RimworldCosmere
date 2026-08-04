@@ -34,11 +34,15 @@ public class QuestPart_CosmereReward : QuestPart {
             rewardSeed = rewardSeed,
         };
 
+        int given = 0;
         for (int i = 0; i < rewards.Count; i++) {
+            if (!QuestBranch.Matches(rewards[i].afterChoice, quest)) continue;
+
             rewards[i].Give(ctx);
+            given++;
         }
 
-        Logger.Info($"{def.defName}: gave {rewards.Count} reward(s) on quest completion.");
+        Logger.Info($"{def.defName}: gave {given} reward(s) on quest completion.");
     }
 
     public override void ExposeData() {

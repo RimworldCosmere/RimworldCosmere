@@ -15,6 +15,12 @@ public class GodMetalReward : QuestReward {
     public int countMin = 1;
     public MetalDef? metal;
 
+    /// <summary>
+    ///     Places the metal beside a colonist instead of dropping it by pod at the trade spot.
+    ///     For a payout that was handed over quietly rather than shipped in.
+    /// </summary>
+    public bool nearColonist;
+
     public override void Give(QuestBuildContext ctx) {
         if (metal?.Item == null || ctx.map == null) {
             Logger.Error($"GodMetalReward on {ctx.def?.defName} could not resolve a metal thing.");
@@ -25,11 +31,21 @@ public class GodMetalReward : QuestReward {
         Verse.Thing stack = ThingMaker.MakeThing(metal.Item);
         stack.stackCount = count;
 
+        if (nearColonist && TryPlaceNearColonist(stack, ctx.map)) return;
+
         DropPodUtility.DropThingsNear(
             DropCellFinder.TradeDropSpot(ctx.map),
             ctx.map,
             new List<Verse.Thing> { stack }
         );
+    }
+
+    private static bool TryPlaceNearColonist(Verse.Thing stack, Verse.Map map) {
+        List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
+        if (colonists.Count == 0) return false;
+
+        Pawn holder = colonists[Rand.Range(0, colonists.Count)];
+        return GenPlace.TryPlaceThing(stack, holder.Position, map, ThingPlaceMode.Near);
     }
 
     public override string Describe() {

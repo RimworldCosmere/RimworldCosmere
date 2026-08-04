@@ -30,8 +30,15 @@ public static class CosmereQuestBuilder {
         built.name = def.LabelCap;
         built.description = def.description;
         built.challengeRating = def.challengeRating;
-        long expireOffsetTicks = global::System.Math.Min((long)def.expireAfterDays * GenDate.TicksPerDay, int.MaxValue - Find.TickManager.TicksGame);
-        built.acceptanceExpireTick = Find.TickManager.TicksGame + (int)expireOffsetTicks;
+
+        // -1 is vanilla's "never expires" sentinel, which Quest.TicksUntilExpiry checks for.
+        // Only capstones may declare this; CosmereQuestDef rejects it on repeatables.
+        if (def.expireAfterDays <= 0) {
+            built.acceptanceExpireTick = -1;
+        } else {
+            long expireOffsetTicks = global::System.Math.Min((long)def.expireAfterDays * GenDate.TicksPerDay, int.MaxValue - Find.TickManager.TicksGame);
+            built.acceptanceExpireTick = Find.TickManager.TicksGame + (int)expireOffsetTicks;
+        }
 
         try {
             BuildStages(built, def, map, subject);
@@ -69,7 +76,21 @@ public static class CosmereQuestBuilder {
             }
 
             string outSignal = SignalFor(quest, i);
+
+            // Added before the objective's own parts so the line is already on the quest when
+            // the stage's first poll runs. Vanilla resolves it on Enable and keeps it after.
+            string? descriptionKey = stage.descriptionKey;
+            if (descriptionKey != null && descriptionKey.Length > 0) {
+                quest.AddPart(new QuestPart_DescriptionPart {
+                    quest = quest,
+                    inSignalEnable = previousOutSignal,
+                    descriptionPart = descriptionKey.Translate().Resolve(),
+                });
+            }
+
+            int partsBefore = quest.PartsListForReading.Count;
             objective.AddParts(quest, previousOutSignal, outSignal, ctx);
+            TagBranch(quest, partsBefore, stage.afterChoice);
             previousOutSignal = outSignal;
         }
 
@@ -128,6 +149,20 @@ public static class CosmereQuestBuilder {
             playSound = true,
         };
         quest.AddPart(failEnd);
+    }
+
+    /// <summary>
+    ///     Marks every part an objective just added as belonging to one branch. Done here
+    ///     rather than in each objective's AddParts so no objective has to know branches exist
+    ///     - the builder is the only thing that reads the stage.
+    /// </summary>
+    private static void TagBranch(RimWorld.Quest quest, int firstNewPartIndex, string? afterChoice) {
+        if (afterChoice == null || afterChoice.Length == 0) return;
+
+        List<QuestPart> parts = quest.PartsListForReading;
+        for (int i = firstNewPartIndex; i < parts.Count; i++) {
+            if (parts[i] is QuestPart_CosmereActivable activable) activable.afterChoice = afterChoice;
+        }
     }
 
     /// <summary>

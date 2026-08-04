@@ -22,6 +22,7 @@ These lines shimmer with the tension of potential force, visible only to those b
         </cooldownTicksRange>
         <metal>Iron</metal>
         <verbProperties>
+            <verbClass>Cosmere.System.Scadrial.Allomancy.Verb.PhysicalAllomancy</verbClass>
             <requireLineOfSight>false</requireLineOfSight>
             <violent>false</violent>
             <noiseRadius>0</noiseRadius>

@@ -59,6 +59,7 @@
         </cooldownTicksRange>
         <metal>Steel</metal>
         <verbProperties>
+            <verbClass>Cosmere.System.Scadrial.Allomancy.Verb.PhysicalAllomancy</verbClass>
             <requireLineOfSight>false</requireLineOfSight>
             <defaultCooldownTime>.5</defaultCooldownTime>
             <violent>false</violent>

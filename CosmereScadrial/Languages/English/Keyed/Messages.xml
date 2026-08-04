@@ -2,6 +2,8 @@
 <LanguageData>
     <CS_IngestedThing>{PAWN} ingested some {THING}</CS_IngestedThing>
     <CS_IngestedVial>{PAWN} downed a vial containing {THING}</CS_IngestedVial>
+
+    <CS_NoMetalToGrasp>No line reaches there. There is no metal to grasp.</CS_NoMetalToGrasp>
     
     <CS_MistsRetreat>The mists retreat with the rising of the sun.</CS_MistsRetreat>
     <CS_MistsArriveTitle>The mists arrive</CS_MistsArriveTitle>

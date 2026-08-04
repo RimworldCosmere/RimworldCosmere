@@ -14,6 +14,25 @@ public class PhysicalExternalAuraProperties : LineDrawingAuraProperties {
 }
 
 public class PhysicalExternalAura : LineDrawingAura {
+    // The targeting preview builds its lines through here too, so a line previewed under the cursor
+    // is the same line the aura draws once the metal is lit.
+    public static LineToRender MetalLine(Pawn pawn, Verse.Thing thing, bool pulling, Material material, float radius) {
+        float distance = (thing.DrawPos - pawn.DrawPos).ToIntVec3().LengthHorizontal;
+        float mass = thing.GetMetalMass() * thing.stackCount;
+
+        // Thickness scales between 0.15 and 0.3 based on metal mass,
+        // with 10kg or more giving maximum thickness.
+        float thickness = Mathf.Lerp(0.15f, 0.3f, Mathf.Clamp01(mass / 10f));
+
+        return new LineToRender(
+            pulling ? pawn : thing,
+            pulling ? thing : pawn,
+            material,
+            LineFade.For(radius, distance),
+            thickness
+        );
+    }
+
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
         List<Verse.Thing> things = cell.GetThingList(map);
         for (int i = 0; i < things.Count; i++) {
@@ -22,21 +41,12 @@ public class PhysicalExternalAura : LineDrawingAura {
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {
-        float distance = (thing.DrawPos - parent.pawn.DrawPos).ToIntVec3().LengthHorizontal;
-        float mass = thing.GetMetalMass() * thing.stackCount;
-
-        float fade = FadeFor(distance);
-
-        // Thickness scales between 0.15 and 0.3 based on metal mass,
-        // with 10kg or more giving maximum thickness.
-        float thickness = Mathf.Lerp(0.15f, 0.3f, Mathf.Clamp01(mass / 10f));
-
-        return new LineToRender(
-            metal.allomancy!.polarity == AllomancyPolarity.Pulling ? parent.pawn : thing,
-            metal.allomancy.polarity == AllomancyPolarity.Pulling ? thing : parent.pawn,
+        return MetalLine(
+            parent.pawn,
+            thing,
+            metal.allomancy!.polarity == AllomancyPolarity.Pulling,
             cachedLineMaterial ??= props.lineMaterial,
-            fade,
-            thickness
+            radius
         );
     }
 }

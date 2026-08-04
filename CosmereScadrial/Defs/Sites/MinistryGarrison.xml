@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <SitePartDef>
+    <defName>Cosmere_Scadrial_SitePart_MinistryGarrison</defName>
+    <label>Ministry garrison</label>
+    <description>Soldiers of the Steel Ministry, posted to hold ground the obligators want kept.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Outpost</expandingIconTexture>
+    <showFactionInInspectString>true</showFactionInInspectString>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <minThreatPoints>200</minThreatPoints>
+    <arrivedLetter>The Ministry left men on the seam. They are dug in around the geode face and they have seen you.</arrivedLetter>
+    <arrivedLetterDef>NegativeEvent</arrivedLetterDef>
+    <tags>
+      <li>Cosmere_Garrison</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_MinistryGarrison</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_MinistryGarrison</linkWithSite>
+    <!-- After PreciousLump's 900: that GenStep is what sets RectOfInterest to the seam. -->
+    <order>950</order>
+    <genStep Class="Cosmere.Core.Quest.GenStep_SiteGarrison">
+      <defaultPoints>320</defaultPoints>
+      <defendRadius>16</defendRadius>
+      <spawnRadius>12</spawnRadius>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

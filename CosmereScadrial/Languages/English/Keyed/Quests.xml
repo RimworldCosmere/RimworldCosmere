@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CS_Quest_AtiumCaravan_Ambush_Label>Ambush the convoy</CS_Quest_AtiumCaravan_Ambush_Label>
-    <CS_Quest_AtiumCaravan_Ambush_Tip>Strike the wagons on the open road. The obligators will fight back, and the Ministry will not forget who struck first.</CS_Quest_AtiumCaravan_Ambush_Tip>
+    <CS_Quest_AtiumCaravan_Ambush_Tip>Strike the wagons on the open road. The escort carry the atium on their persons, a bead apiece, so nothing is yours until they are down. The Ministry will not forget who struck first.</CS_Quest_AtiumCaravan_Ambush_Tip>
 
     <CS_Quest_AtiumCaravan_Bribe_Label>Bribe the escort captain</CS_Quest_AtiumCaravan_Bribe_Label>
-    <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
+    <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. He brings the atium to you himself and the wagons roll on. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
 
     <CS_Quest_Reward_FirstBead>A single bead of Lerasium, if it survives the road</CS_Quest_Reward_FirstBead>
 
@@ -23,4 +23,23 @@
     <CS_Quest_Lerasium_Hide_Confirm>The bead stays hidden, tucked away for another day.</CS_Quest_Lerasium_Hide_Confirm>
 
     <CS_Quest_Lerasium_BeadMissing>The bead is gone. There is nothing left to spend.</CS_Quest_Lerasium_BeadMissing>
+
+    <CS_Quest_AtiumCaravan_Stage_Choice>Decide how the wagons will be taken.</CS_Quest_AtiumCaravan_Stage_Choice>
+    <CS_Quest_AtiumCaravan_Stage_Travel>Reach the transfer road before the convoy passes.</CS_Quest_AtiumCaravan_Stage_Travel>
+    <CS_Quest_AtiumCaravan_Stage_Clear>Put down the escort, then search them. Each carries a bead. Obligators do not surrender wagons.</CS_Quest_AtiumCaravan_Stage_Clear>
+
+    <CS_Quest_Hathsin_Stage_Travel>Follow the survivor's map to the Pits, past where the obligators cared to dig. Ministry soldiers hold the seam. Take it from them.</CS_Quest_Hathsin_Stage_Travel>
+    <CS_Quest_Hathsin_Stage_Carry>Cut geodes from the seam and bring at least twenty home. Leave whenever you like.</CS_Quest_Hathsin_Stage_Carry>
+
+    <CS_Quest_Lerasium_Stage_Infiltrate>Reach the vault the obligator named.</CS_Quest_Lerasium_Stage_Infiltrate>
+    <CS_Quest_Lerasium_Stage_Breach>Break the garrison holding the vault.</CS_Quest_Lerasium_Stage_Breach>
+    <CS_Quest_Lerasium_Stage_Recover>Take the bead.</CS_Quest_Lerasium_Stage_Recover>
+    <CS_Quest_Lerasium_Stage_Carry>Carry the bead home. Do not lose it on the road.</CS_Quest_Lerasium_Stage_Carry>
+
+    <CS_Quest_Hathsin_Site>The Pits of Hathsin</CS_Quest_Hathsin_Site>
+    <CS_Quest_AtiumCaravan_Site>Ministry transfer road</CS_Quest_AtiumCaravan_Site>
+    <CS_Quest_Lerasium_Site>Ministry vault</CS_Quest_Lerasium_Site>
+
+    <CS_Quest_Hathsin_GeodesCracked>{GEODES} geodes are split open. {BEADS} of them held atium.</CS_Quest_Hathsin_GeodesCracked>
+    <CS_Quest_Reward_GeodeConversion>Atium from every geode carried home</CS_Quest_Reward_GeodeConversion>
 </LanguageData>

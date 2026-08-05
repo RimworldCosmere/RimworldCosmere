@@ -481,10 +481,13 @@ public class QuestDefValidationTests {
 
             if (days > 0) continue;
 
-            Assert.AreEqual(
-                "Capstone",
-                def.Element("kind")?.Value,
-                $"{name}: expireAfterDays {days} waives the accept deadline, which only capstones may do."
+            // Only a quest the player is asked to accept can miss an acceptance deadline.
+            // Capstones and Threats are both handed to the player rather than offered.
+            string? kind = def.Element("kind")?.Value;
+            Assert.IsTrue(
+                kind == "Capstone" || kind == "Threat",
+                $"{name}: expireAfterDays {days} waives the accept deadline, but a {kind ?? "Repeatable"} " +
+                "quest is offered, so it needs a window to accept it in."
             );
         }
     }

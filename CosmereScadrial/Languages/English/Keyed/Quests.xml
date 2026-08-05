@@ -29,6 +29,14 @@
     <CS_Quest_AtiumCaravan_Stage_Clear>Put down the escort, then search them. Each carries a bead. Obligators do not surrender wagons.</CS_Quest_AtiumCaravan_Stage_Clear>
 
     <CS_Quest_Hathsin_Stage_Travel>Follow the survivor's map to the Pits, past where the obligators cared to dig. Ministry soldiers hold the seam. Take it from them.</CS_Quest_Hathsin_Stage_Travel>
+
+    <CS_Quest_Pits_Stage_Travel>Reach the Pits of Hathsin. Not the seam this time - the farm itself, and the garrison the Lord Ruler keeps on it.</CS_Quest_Pits_Stage_Travel>
+    <CS_Quest_Pits_Stage_Carry>Strip every crystal face in the basin. Come and go as you need - what you take does not grow back, and the Ministry will keep sending men while the ground is still worth holding.</CS_Quest_Pits_Stage_Carry>
+    <CS_Quest_Pits_Site>The Pits of Hathsin</CS_Quest_Pits_Site>
+
+    <CS_Quest_Inquisitor_Stage_Travel>Find the waypoint the Inquisitor has taken for itself, before it finishes working outward to you.</CS_Quest_Inquisitor_Stage_Travel>
+    <CS_Quest_Inquisitor_Stage_Clear>Put it down. Spikes through the eyes, and it still will not stop while it can stand.</CS_Quest_Inquisitor_Stage_Clear>
+    <CS_Quest_Inquisitor_Site>The Inquisitor's waypoint</CS_Quest_Inquisitor_Site>
     <CS_Quest_Hathsin_Stage_Carry>Cut geodes from the seam and bring at least twenty home. Leave whenever you like.</CS_Quest_Hathsin_Stage_Carry>
 
     <CS_Quest_Lerasium_Stage_Infiltrate>Reach the vault the obligator named.</CS_Quest_Lerasium_Stage_Infiltrate>

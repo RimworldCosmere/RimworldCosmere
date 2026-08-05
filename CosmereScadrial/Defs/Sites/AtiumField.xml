@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <SitePartDef>
+    <defName>Cosmere_Scadrial_SitePart_AtiumField</defName>
+    <label>atium crystal field</label>
+    <description>Crystal faces break the ground across the whole basin, not in one seam but in dozens. This is what a thousand years of forced digging looks like from above.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/PreciousLump</expandingIconTexture>
+    <tags>
+      <li>Cosmere_AtiumField</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_AtiumField</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_AtiumField</linkWithSite>
+    <!-- Before PreciousLump's 900, so its ScatterAt still has the last word on RectOfInterest
+         and the garrison anchors on the main seam rather than an outlying vein. -->
+    <order>880</order>
+    <genStep Class="GenStep_ScatterLumpsMineable">
+      <forcedDefToScatter>MineableAtium</forcedDefToScatter>
+      <!-- Nine here plus PreciousLump's one is ten. 170 cells matches what
+           GenStep_PreciousLump computes for atium: totalValue 3500-5000 over a
+           mineableYield of 1 and a geode market value of 25. -->
+      <count>9</count>
+      <forcedLumpSize>170</forcedLumpSize>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

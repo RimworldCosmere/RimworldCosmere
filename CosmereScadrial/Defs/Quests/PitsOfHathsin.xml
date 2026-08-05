@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Quest.CosmereQuestDef>
+        <defName>Cosmere_Scadrial_Quest_PitsOfHathsin</defName>
+        <label>The Pits Themselves</label>
+        <description>The survivor's seam was a splinter off something far larger. The Pits of Hathsin are not a mine. They are a farm, and the crop is atium, and the Lord Ruler has worked it with skaa for a thousand years because no one who goes in comes out to say otherwise.\n\nYou know where it is now. So does the Ministry, and they have never had to defend it before, because nobody has ever been mad enough to walk in.\n\nBreak the guard, and take what a thousand years of dying paid for.</description>
+
+        <kind>Capstone</kind>
+        <subject>Colony</subject>
+        <eras>
+            <li>Cosmere_Scadrial_Era_PreCatacendre</li>
+        </eras>
+
+        <giverFaction>Cosmere_Scadrial_Faction_SkaaRebels</giverFaction>
+        <targetFaction>Cosmere_Scadrial_Faction_FinalEmpireNPC</targetFaction>
+
+        <requiredFlags>
+            <li>HathsinLead</li>
+        </requiredFlags>
+
+        <!-- 0 means the offer never lapses. One farm, one campaign. -->
+        <expireAfterDays>0</expireAfterDays>
+        <cooldownDays>30</cooldownDays>
+        <challengeRating>5</challengeRating>
+        <minColonists>4</minColonists>
+
+        <stages>
+            <li>
+                <key>travel</key>
+                <descriptionKey>CS_Quest_Pits_Stage_Travel</descriptionKey>
+                <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
+                    <sitePart>PreciousLump</sitePart>
+                    <extraSiteParts>
+                        <li>Cosmere_Scadrial_SitePart_AtiumField</li>
+                        <li>Cosmere_Scadrial_SitePart_MinistryGarrison</li>
+                    </extraSiteParts>
+                    <preciousLumpResources>MineableAtium</preciousLumpResources>
+                    <siteLabelKey>CS_Quest_Pits_Site</siteLabelKey>
+                    <minTiles>14</minTiles>
+                    <maxTiles>28</maxTiles>
+                    <threatPoints>1400</threatPoints>
+                    <!-- The player is meant to shuttle loads home, so the site has to survive
+                         every departure and re-arm on the next visit. -->
+                    <persistent>true</persistent>
+                </objective>
+            </li>
+            <li>
+                <key>strip</key>
+                <descriptionKey>CS_Quest_Pits_Stage_Carry</descriptionKey>
+                <objective Class="Cosmere.Core.Quest.Objective.MineOutSiteObjective">
+                    <mineable>MineableAtium</mineable>
+                </objective>
+            </li>
+        </stages>
+
+        <rewards>
+            <li Class="Cosmere.System.Scadrial.Quest.GeodeConversionReward">
+                <geodeDef>Cosmere_Scadrial_Item_AtiumGeode</geodeDef>
+                <metalDef>Atium</metalDef>
+                <chancePerGeode>0.20</chancePerGeode>
+                <guaranteedPer>10</guaranteedPer>
+            </li>
+            <li Class="Cosmere.Core.Quest.Reward.FlagReward">
+                <flag>PitsBroken</flag>
+            </li>
+        </rewards>
+
+        <onFailure Class="Cosmere.Core.Quest.Outcome.NeverBurns" />
+    </Cosmere.Core.Quest.CosmereQuestDef>
+</Defs>

@@ -222,16 +222,16 @@ public class CosmereQuestEligibilityTests {
 
     [TestMethod]
     public void RequiredCapstoneMustBeCompleted() {
-        QuestCandidate firstBead = Convoy();
-        firstBead.kind = QuestKind.Capstone;
-        firstBead.defName = "Cosmere_Scadrial_Quest_FirstLerasium";
-        firstBead.requiredCapstone = "Cosmere_Scadrial_Quest_PitsOfHathsin";
+        QuestCandidate followUp = Convoy();
+        followUp.kind = QuestKind.Capstone;
+        followUp.defName = "Cosmere_Scadrial_Quest_FollowUpCapstone";
+        followUp.requiredCapstone = "Cosmere_Scadrial_Quest_PitsOfHathsin";
 
-        Assert.IsFalse(CosmereQuestEligibility.IsEligible(firstBead, BaseState()));
+        Assert.IsFalse(CosmereQuestEligibility.IsEligible(followUp, BaseState()));
 
         QuestWorldState done = BaseState();
         done.completedCapstones.Add("Cosmere_Scadrial_Quest_PitsOfHathsin");
-        Assert.IsTrue(CosmereQuestEligibility.IsEligible(firstBead, done));
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(followUp, done));
     }
 
     [TestMethod]

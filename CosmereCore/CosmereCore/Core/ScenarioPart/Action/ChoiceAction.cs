@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core.UI;
 using RimWorld;
 using Verse;
 
@@ -28,6 +29,15 @@ public class ChoiceAction : ProgressionAction {
     public string textKey = string.Empty;
     public string titleKey = string.Empty;
 
+    /// <summary>
+    ///     What each branch actually does, shown on hover. A fork that ends the campaign has to
+    ///     look different from one that does not before it is clicked, and a bare button cannot
+    ///     say so.
+    /// </summary>
+    public string acceptTipKey = string.Empty;
+
+    public string declineTipKey = string.Empty;
+
     public override void Execute(GameComponent_ScenarioProgression comp) {
         string? required = requiresPawn;
         if (required != null && required.Length > 0 && comp.FindPawnByName(required) == null) {
@@ -40,33 +50,27 @@ public class ChoiceAction : ProgressionAction {
             return;
         }
 
-        // Two explicit buttons rather than CreateConfirmation: that helper only takes a confirm
-        // callback, and this fork has to do something on both answers. forcePause and a null
-        // cancel keep the player from dismissing it without choosing.
-        Dialog_MessageBox dialog = new Dialog_MessageBox(
-            textKey.Translate(),
-            acceptKey.Translate(),
-            () => Run(onAccept, comp),
-            declineKey.Translate(),
-            () => Run(onDecline, comp),
-            titleKey.Translate(),
-            false,
-            null,
-            null,
-            WindowLayer.Dialog
-        ) {
-            forcePause = true,
-            closeOnClickedOutside = false,
-            closeOnCancel = false,
-            closeOnAccept = false,
-        };
-
-        Find.WindowStack.Add(dialog);
+        Find.WindowStack.Add(
+            new Dialog_ProgressionChoice(
+                titleKey.Translate(),
+                textKey.Translate(),
+                new List<ProgressionChoiceOption> {
+                    new ProgressionChoiceOption(
+                        acceptKey.Translate(),
+                        acceptTipKey.Length > 0 ? acceptTipKey.Translate().Resolve() : null,
+                        () => Run(onAccept, comp)
+                    ),
+                    new ProgressionChoiceOption(
+                        declineKey.Translate(),
+                        declineTipKey.Length > 0 ? declineTipKey.Translate().Resolve() : null,
+                        () => Run(onDecline, comp)
+                    ),
+                }
+            )
+        );
     }
 
     private static void Run(List<ProgressionAction> actions, GameComponent_ScenarioProgression comp) {
-        for (int i = 0; i < actions.Count; i++) {
-            actions[i].Execute(comp);
-        }
+        comp.RunActions(actions);
     }
 }

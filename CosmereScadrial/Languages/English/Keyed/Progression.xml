@@ -4,4 +4,52 @@
     <CS_Progression_Kelsier_Text>The Inquisitor is waiting, and it has said his name where the skaa can hear it. Kelsier has always known how this ends. A man who dies well in that square stops being a man and becomes something the Ministry cannot put a spike through.\n\nHe will go if you let him. He will stay if you ask.</CS_Progression_Kelsier_Text>
     <CS_Progression_Kelsier_Accept>Let him go</CS_Progression_Kelsier_Accept>
     <CS_Progression_Kelsier_Decline>Call him back</CS_Progression_Kelsier_Decline>
+
+    <CS_Progression_Well_Bead_Title>The Last Bead</CS_Progression_Well_Bead_Title>
+    <CS_Progression_Well_Bead_Text>Elend is dying, and the wound is past anything a surgeon can reach. There is one bead of lerasium in the crew's keeping and there has only ever been the one.\n\nSpend it and he lives, and burns sixteen metals for the rest of his life. Keep it and he does not see morning, but the bead stays yours to spend on someone else, or on nothing at all.</CS_Progression_Well_Bead_Text>
+    <CS_Progression_Well_Bead_Accept>Give him the bead</CS_Progression_Well_Bead_Accept>
+    <CS_Progression_Well_Bead_Decline>Keep it</CS_Progression_Well_Bead_Decline>
+
+    <CS_Progression_Well_Power_Title>The Well of Ascension</CS_Progression_Well_Power_Title>
+    <CS_Progression_Well_Power_Text>The power is there for the taking. Not borrowed, not channelled - held. Enough to put the ash back in the mountains and the sun back to yellow, and to keep it that way for as long as the will holds out.\n\nThe last person who took it built the Final Empire. He meant well too.\n\nRelease it and something older is waiting underneath, and it gets out. Take it and the story ends here, with the world remade and your hands on it.</CS_Progression_Well_Power_Text>
+    <CS_Progression_Well_Power_Accept>Take the power</CS_Progression_Well_Power_Accept>
+    <CS_Progression_Well_Power_Decline>Release it</CS_Progression_Well_Power_Decline>
+    <CS_Progression_Well_Power_Ending>She took it, and she held it.\n\nThe ash thinned within the year. The mists learned to keep their distance from the doorways of people who had asked them to. Crops came up green in ground that had grown nothing but tubers for a thousand years, and the sun over the fields was a colour that nobody living had a word for.\n\nIt held because she held it, and she did not put it down. Not when Ruin whispered that she should. Not when the whispering stopped, which was worse. The world she made is a good one and it is exactly as large as her attention, and she has not looked away yet.\n\nThe crew grew old in a green country and were buried in soil. Nobody had to be a martyr. There was no third book.\n\nThat is one way it could have gone.</CS_Progression_Well_Power_Ending>
+
+    <CS_Progression_Effect_Mistborn>{PAWN} becomes Mistborn</CS_Progression_Effect_Mistborn>
+
+    <CS_Progression_Army_Straff>Straff Venture's army</CS_Progression_Army_Straff>
+    <CS_Progression_Army_Cett>Ashweather Cett's army</CS_Progression_Army_Cett>
+
+    <CS_Progression_Army_Ruin>Ruin's army</CS_Progression_Army_Ruin>
+    <CS_Progression_Effect_Spike>{PAWN} is spiked with {METAL}</CS_Progression_Effect_Spike>
+    <CS_Progression_Effect_MistOdds>The mists now take one exposed colonist in {COUNT}</CS_Progression_Effect_MistOdds>
+
+    <CS_Progression_Cat_Stop_Title>The World Unmakes Itself</CS_Progression_Cat_Stop_Title>
+    <CS_Progression_Cat_Stop_Text>Both powers are loose at once and there is a man standing between them who knows how to hold them.\n\nThe world is going to be remade. You can watch it happen from here and let the story close on the Catacendre, or you can stay in it and find out what it costs.</CS_Progression_Cat_Stop_Text>
+    <CS_Progression_Cat_Stop_Accept>Let it end here</CS_Progression_Cat_Stop_Accept>
+    <CS_Progression_Cat_Stop_Decline>Stay and see it through</CS_Progression_Cat_Stop_Decline>
+
+    <CS_Progression_Cat_Price_Title>What It Costs</CS_Progression_Cat_Price_Title>
+    <CS_Progression_Cat_Price_Text>Somebody has to hold Preservation until the last moment, and somebody has to stand in front of Ruin's army while they do it, and neither of those people walks away.\n\nThat is how it was always going to go. It does not have to be.</CS_Progression_Cat_Price_Text>
+    <CS_Progression_Cat_Price_Accept>Let them pay it</CS_Progression_Cat_Price_Accept>
+    <CS_Progression_Cat_Price_Decline>Bring them home</CS_Progression_Cat_Price_Decline>
+
+    <CS_Progression_Cat_Ending>The ash stopped falling on a Tuesday.\n\nNobody noticed for most of the morning, which afterwards seemed like the truest thing about it - a thousand years of it coming down, and the end of it went unremarked until somebody looked up and could not think what was different.\n\nGreen came back to ground that had grown nothing but tubers since before anyone's grandfather. The sun over the fields was a colour nobody living had a word for, so they used the old one out of the songs and it turned out to fit.\n\nWhat it cost is written down elsewhere, by someone who was there and did not look away from any of it. This is only the part where it worked.</CS_Progression_Cat_Ending>
+
+    <CS_Progression_Effect_Savant>{PAWN} becomes a {METAL} savant</CS_Progression_Effect_Savant>
+    <CS_Progression_Effect_Shards>{SHARDS} now holds the world</CS_Progression_Effect_Shards>
+    <CS_Progression_Effect_Ascends>{PAWN} ascends to godhood</CS_Progression_Effect_Ascends>
+
+    <CS_Progression_Well_Bead_AcceptTip>Spends the bead. Elend survives the wound and becomes a full Mistborn. You will not have another bead from this source.</CS_Progression_Well_Bead_AcceptTip>
+    <CS_Progression_Well_Bead_DeclineTip>Elend dies. The bead drops into your stockpile, yours to spend on somebody else or on nothing.</CS_Progression_Well_Bead_DeclineTip>
+
+    <CS_Progression_Well_Power_AcceptTip>ENDS THE CAMPAIGN. Rolls the credits and returns you to the main menu. Hero of Ages, the Catacendre and everything after are never reached.</CS_Progression_Well_Power_AcceptTip>
+    <CS_Progression_Well_Power_DeclineTip>Frees Ruin and continues into Hero of Ages. Ruin's Own enters the world, led by Marsh, and starts sending armies.</CS_Progression_Well_Power_DeclineTip>
+
+    <CS_Progression_Cat_Stop_AcceptTip>ENDS THE CAMPAIGN. Rolls the credits on the Catacendre and returns you to the main menu. The colony is not played on.</CS_Progression_Cat_Stop_AcceptTip>
+    <CS_Progression_Cat_Stop_DeclineTip>Keeps playing. You choose what the Ascension costs, the era advances to Post-Catacendre, and the campaign continues into the Alloy of Law era.</CS_Progression_Cat_Stop_DeclineTip>
+
+    <CS_Progression_Cat_Price_AcceptTip>The canonical ending. Vin and Elend die. Sazed ascends to godhood, Preservation and Ruin end, and Harmony holds the world.</CS_Progression_Cat_Price_AcceptTip>
+    <CS_Progression_Cat_Price_DeclineTip>Everyone lives. Vin, Elend and Sazed all stay in the colony, and the whole colony gains a permanent memory of it.</CS_Progression_Cat_Price_DeclineTip>
 </LanguageData>

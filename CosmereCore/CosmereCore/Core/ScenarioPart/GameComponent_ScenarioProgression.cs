@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.ScenarioPart.Action;
 using Cosmere.Core.ScenarioPart.Parts;
 using RimWorld;
 using Verse;
@@ -8,9 +9,13 @@ namespace Cosmere.Core.ScenarioPart;
 public class GameComponent_ScenarioProgression : GameComponent {
     private const int CheckInterval = 250;
     private ScenarioProgressionDef? activeDef;
+    private ScenarioProgressionDef? handedOffDef;
     private HashSet<string> firedEvents = [];
     private int lastCheckTick = -1;
     private Dictionary<string, int> lastFireTicks = new Dictionary<string, int>();
+
+    /// <summary>When the running arc took over. Negative while the campaign is on its first.</summary>
+    private int arcStartTick = -1;
 
     public GameComponent_ScenarioProgression(Game game) { }
 
@@ -25,6 +30,13 @@ public class GameComponent_ScenarioProgression : GameComponent {
     }
 
     private void FindActiveProgression() {
+        // An arc the story handed off to wins over the scenario's own: a Final Empire campaign
+        // that lived through the Collapse is running the Well of Ascension's beats now.
+        if (handedOffDef != null) {
+            activeDef = handedOffDef;
+            return;
+        }
+
         Scenario? scenario = Find.Scenario;
         if (scenario == null) return;
 
@@ -33,6 +45,29 @@ public class GameComponent_ScenarioProgression : GameComponent {
                 activeDef = progressionPart.progression;
                 return;
             }
+        }
+    }
+
+    /// <summary>
+    ///     Hands the campaign over to the next arc. Fired events are kept: keys are unique per
+    ///     arc, and an EventOccurredTrigger in the new arc may want to ask about the old one.
+    /// </summary>
+    public void HandOffTo(ScenarioProgressionDef next) {
+        handedOffDef = next;
+        activeDef = next;
+        arcStartTick = Find.TickManager.TicksGame;
+        Logger.Important($"Scenario progression handed off to {next.defName} on day {GenDate.DaysPassed}.");
+    }
+
+    /// <summary>
+    ///     Days since the running arc took over, rather than since the campaign began. An arc
+    ///     entered part-way through a long game has every absolute day threshold already behind
+    ///     it, so without this its whole run of events fires in one tick.
+    /// </summary>
+    public int DaysInActiveArc {
+        get {
+            if (arcStartTick < 0) return GenDate.DaysPassed;
+            return (Find.TickManager.TicksGame - arcStartTick) / GenDate.TicksPerDay;
         }
     }
 
@@ -76,13 +111,42 @@ public class GameComponent_ScenarioProgression : GameComponent {
         firedEvents.Add(evt.key);
         lastFireTicks[evt.key] = Find.TickManager.TicksGame;
 
-        for (int i = 0; i < evt.actions.Count; i++) {
-            try {
-                evt.actions[i].Execute(this);
-            } catch (Exception ex) {
-                Logger.Warning($"ScenarioProgression: Failed to execute action for event '${evt.key}': {ex}");
+        RunActions(evt.actions);
+    }
+
+    /// <summary>
+    ///     Runs a block of actions with their combined effect summary available to any letter
+    ///     among them. Choice branches come through here too, so a card only ever lists the
+    ///     outcomes of the branch the player actually took.
+    /// </summary>
+    public void RunActions(List<ProgressionAction> actions) {
+        string? previous = PendingEffects;
+        PendingEffects = Summarise(actions);
+
+        try {
+            for (int i = 0; i < actions.Count; i++) {
+                try {
+                    actions[i].Execute(this);
+                } catch (Exception ex) {
+                    Logger.Warning($"ScenarioProgression: Failed to execute action: {ex}");
+                }
             }
+        } finally {
+            PendingEffects = previous;
         }
+    }
+
+    /// <summary>The mechanical outcomes of the block currently running, one per line.</summary>
+    public string? PendingEffects { get; private set; }
+
+    private static string? Summarise(List<ProgressionAction> actions) {
+        List<string> lines = new List<string>();
+        for (int i = 0; i < actions.Count; i++) {
+            string? line = actions[i].Describe();
+            if (line != null && line.Length > 0) lines.Add(line);
+        }
+
+        return lines.Count == 0 ? null : string.Join("\n", lines);
     }
 
     public Pawn? FindPawnByName(string firstName) {
@@ -109,9 +173,17 @@ public class GameComponent_ScenarioProgression : GameComponent {
         return null;
     }
 
-    private static bool NameMatches(Pawn pawn, string firstName) {
-        if (pawn.Name is NameTriple triple) return triple.First == firstName;
-        if (pawn.Name is NameSingle single) return single.Name.StartsWith(firstName);
+    /// <summary>
+    ///     Matches on the nickname as well as the first name. Story beats name people the way
+    ///     the books do - Spook, Ham, Breeze - while the pawn carries the real name underneath,
+    ///     and a beat written for Spook must still find Lestibournes.
+    /// </summary>
+    private static bool NameMatches(Pawn pawn, string name) {
+        if (pawn.Name is NameTriple triple) {
+            return triple.First == name || triple.Nick == name || triple.Last == name;
+        }
+
+        if (pawn.Name is NameSingle single) return single.Name.StartsWith(name);
         return false;
     }
 
@@ -121,6 +193,8 @@ public class GameComponent_ScenarioProgression : GameComponent {
 
     public override void ExposeData() {
         base.ExposeData();
+        Scribe_Defs.Look(ref handedOffDef, "handedOffDef");
+        Scribe_Values.Look(ref arcStartTick, "arcStartTick", -1);
         Scribe_Collections.Look(ref firedEvents, "firedEvents", LookMode.Value);
         Scribe_Collections.Look(ref lastFireTicks, "lastFireTicks", LookMode.Value, LookMode.Value);
         firedEvents ??= [];

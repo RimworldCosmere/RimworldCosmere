@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Roshar_Scenario_TheWeeping</defName>
-    <label>Roshar: The Weeping</label>
+    <label>Cosmere - Roshar - The Weeping</label>
     <description>The Weeping has come. Four weeks of steady rain without a single highstorm. The gemstones are dull, the Stormlight spent. Whatever powers you carried are silent now. You must survive on skill, steel, and stubbornness alone - until the storms return.</description>
     <scenario>
       <summary>Survive the Weeping with no Stormlight and no highstorms.</summary>

@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_Scenario_FinalEmpire</defName>
-    <label>Mistborn: The Final Empire</label>
+    <label>Cosmere - Scadrial - The Final Empire</label>
     <description>Kelsier has assembled his crew. Thieves, con artists, and half-bloods, every one of them. Their target: the Final Empire itself. The Lord Ruler has reigned for a thousand years. No one has challenged him and survived. But Kelsier smiles anyway.</description>
     <scenario>
       <summary>Kelsier's crew plots the fall of the Final Empire.</summary>
@@ -16,16 +16,27 @@
           <pawns>
             <li>
               <firstName>Kelsier</firstName>
-              <lastName>Survivor</lastName>
               <age>38</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_SurvivorOfHathsin</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_NobleHeritage</li>
+              </genes>
               <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
               <traits>
                 <li><def>Tough</def><degree>0</degree></li>
                 <li><def>NaturalMood</def><degree>2</degree></li>
               </traits>
               <skills>
+                <li><def>Cosmere_Scadrial_Skill_AllomanticPower</def><level>10</level><passion>Major</passion></li>
                 <li><def>Melee</def><level>14</level></li>
                 <li><def>Social</def><level>12</level></li>
                 <li><def>Shooting</def><level>8</level></li>
@@ -36,12 +47,24 @@
               <age>16</age>
               <gender>Female</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_CrewsLuck</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_NobleHeritage</li>
+              </genes>
               <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
               <traits>
                 <li><def>Nerves</def><degree>-1</degree></li>
                 <li><def>FastLearner</def><degree>0</degree></li>
               </traits>
               <skills>
+                <li><def>Cosmere_Scadrial_Skill_AllomanticPower</def><level>1</level><passion>Major</passion></li>
                 <li><def>Melee</def><level>10</level></li>
                 <li><def>Shooting</def><level>6</level></li>
                 <li><def>Social</def><level>4</level></li>
@@ -53,6 +76,8 @@
               <age>35</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Thug</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingPewter</li>
               </genes>
@@ -66,11 +91,14 @@
               </skills>
             </li>
             <li>
-              <firstName>Ladrian</firstName>
+              <firstName>Edgard</firstName>
+              <lastName>Ladrian</lastName>
               <nickName>Breeze</nickName>
               <age>40</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Noble_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Courtier</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingBrass</li>
               </genes>
@@ -84,10 +112,13 @@
               </skills>
             </li>
             <li>
-              <firstName>Clubs</firstName>
+              <firstName>Cladent</firstName>
+              <nickName>Clubs</nickName>
               <age>55</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_MasterCarpenter</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingCopper</li>
               </genes>
@@ -101,9 +132,12 @@
             </li>
             <li>
               <firstName>Dockson</firstName>
+              <nickName>Dox</nickName>
               <age>38</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Ledgerman</adulthood>
               <traits>
                 <li><def>Industriousness</def><degree>2</degree></li>
               </traits>
@@ -118,11 +152,14 @@
               <age>35</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Terris_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Keeper</adulthood>
               <fullFeruchemist>true</fullFeruchemist>
               <traits>
                 <li><def>Kind</def><degree>0</degree></li>
               </traits>
               <skills>
+                <li><def>Cosmere_Scadrial_Skill_FeruchemicPower</def><level>10</level><passion>Major</passion></li>
                 <li><def>Intellectual</def><level>16</level></li>
                 <li><def>Social</def><level>10</level></li>
               </skills>
@@ -132,7 +169,10 @@
               <age>40</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_RebellionOrganiser</adulthood>
               <genes>
+                <li>Cosmere_Scadrial_Gene_NobleHeritage</li>
                 <li>Cosmere_Scadrial_Gene_MistingBronze</li>
               </genes>
               <traits>
@@ -144,10 +184,13 @@
               </skills>
             </li>
             <li>
-              <firstName>Spook</firstName>
+              <firstName>Lestibournes</firstName>
+              <nickName>Spook</nickName>
               <age>16</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Sentry</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingTin</li>
               </genes>
@@ -158,32 +201,6 @@
               <skills>
                 <li><def>Shooting</def><level>6</level></li>
                 <li><def>Melee</def><level>4</level></li>
-              </skills>
-            </li>
-            <li>
-              <firstName>Yeden</firstName>
-              <age>40</age>
-              <gender>Male</gender>
-              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
-              <traits>
-                <li><def>Nerves</def><degree>-1</degree></li>
-              </traits>
-              <skills>
-                <li><def>Social</def><level>6</level></li>
-                <li><def>Melee</def><level>4</level></li>
-              </skills>
-            </li>
-            <li>
-              <firstName>Renoux</firstName>
-              <age>50</age>
-              <gender>Male</gender>
-              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
-              <traits>
-                <li><def>Nerves</def><degree>1</degree></li>
-              </traits>
-              <skills>
-                <li><def>Social</def><level>14</level></li>
-                <li><def>Intellectual</def><level>8</level></li>
               </skills>
             </li>
           </pawns>
@@ -241,7 +258,13 @@
           <relations>
             <Cosmere_Scadrial_Faction_Terris>80</Cosmere_Scadrial_Faction_Terris>
             <Cosmere_Scadrial_Faction_SkaaRebels>80</Cosmere_Scadrial_Faction_SkaaRebels>
-            <Cosmere_Scadrial_Faction_NobleHouses>-100</Cosmere_Scadrial_Faction_NobleHouses>
+            <Cosmere_Scadrial_Faction_HouseVenture>-100</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>-100</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-100</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseLekal>-100</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseTekiel>-100</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseRenoux>-100</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_HouseCett>-100</Cosmere_Scadrial_Faction_HouseCett>
             <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
           </relations>
         </li>

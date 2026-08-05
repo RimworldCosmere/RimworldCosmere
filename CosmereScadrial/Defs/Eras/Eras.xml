@@ -4,11 +4,13 @@
         <defName>Cosmere_Scadrial_Era_PreCatacendre</defName>
         <label>pre-Catacendre</label>
         <description>The age of the Lord Ruler and the Final Empire, before Ruin's escape reshaped Scadrial.</description>
+        <next>Cosmere_Scadrial_Era_PostCatacendre</next>
     </Cosmere.Core.Def.EraDef>
     <Cosmere.Core.Def.EraDef>
         <defName>Cosmere_Scadrial_Era_PostCatacendre</defName>
         <label>post-Catacendre</label>
         <description>The age after the Catacendre, when Harmony rose from the wreckage of Ruin and Preservation.</description>
+        <next>Cosmere_Scadrial_Era_AlloyOfLaw</next>
     </Cosmere.Core.Def.EraDef>
     <Cosmere.Core.Def.EraDef>
         <defName>Cosmere_Scadrial_Era_AlloyOfLaw</defName>

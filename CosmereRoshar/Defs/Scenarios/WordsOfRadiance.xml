@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Roshar_Scenario_WordsOfRadiance</defName>
-    <label>Stormlight: Words of Radiance</label>
+    <label>Cosmere - Roshar - Words of Radiance</label>
     <description>Dalinar gazes east, toward the center of the Shattered Plains. He has seen visions of the past - the Knights Radiant, the Desolations, the truth of what Roshar faces. The expedition to the center of the Plains will answer questions that have haunted him. Or it will kill them all.</description>
     <scenario>
       <summary>Dalinar's expedition to the center of the Shattered Plains.</summary>

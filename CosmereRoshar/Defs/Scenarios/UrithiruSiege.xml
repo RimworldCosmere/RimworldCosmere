@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Roshar_Scenario_UrithiruSiege</defName>
-    <label>Stormlight: Rhythm of War</label>
+    <label>Cosmere - Roshar - Rhythm of War</label>
     <description>The Sibling screams in silence. Urithiru's defenses have been corrupted, and a field of suppression drains Stormlight from every Radiant in the tower. The Fused walk freely where Knights once stood. Navani traces ancient schematics. Kaladin fights in corridors with flickering power. The tower of the Knights Radiant has fallen from within.</description>
     <scenario>
       <summary>Survive the occupation of Urithiru and restore the tower's defenses.</summary>

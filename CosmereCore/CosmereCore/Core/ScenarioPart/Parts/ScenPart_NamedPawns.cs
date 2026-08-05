@@ -14,7 +14,35 @@ public class ScenPart_NamedPawns : ScenPart {
         Find.GameInitData.startingPawnCount = pawns.Count;
         StartingPawnUtility.ClearAllStartingPawns();
         for (int i = 0; i < pawns.Count; i++) {
-            StartingPawnUtility.AddNewPawn();
+            NamedPawnDef template = pawns[i];
+
+            // Say what the pawn is before it is built rather than editing it afterwards. Gender,
+            // age and xenotype all decide body type, head, hair and beard during generation, so
+            // anything set in Notify_PawnGenerated flips the label and leaves the body it was
+            // given. AddNewPawn must be passed the index: with the default of -1 it generates
+            // from DefaultStartingPawnRequest and never reads what was set here.
+            PawnGenerationRequest request = StartingPawnUtility.GetGenerationRequest(i);
+
+            if (template.gender != Gender.None) request.FixedGender = template.gender;
+
+            if (template.age > 0) {
+                // The default starting-pawn request excludes a child age band. ValidateAndFix
+                // rejects a fixed age alongside any range, so both have to come off first.
+                request.ExcludeBiologicalAgeRange = null;
+                request.BiologicalAgeRange = null;
+                request.FixedBiologicalAge = template.age;
+                request.FixedChronologicalAge = template.GetChronologicalAge();
+            }
+
+            if (template.lastName != null) request.SetFixedLastName(template.lastName);
+
+            if (template.xenotype != null) {
+                XenotypeDef? xenotype = DefDatabase<XenotypeDef>.GetNamedSilentFail(template.xenotype);
+                if (xenotype != null) request.ForcedXenotype = xenotype;
+            }
+
+            StartingPawnUtility.SetGenerationRequest(i, request);
+            StartingPawnUtility.AddNewPawn(i);
         }
     }
 
@@ -78,6 +106,7 @@ public class ScenPart_NamedPawns : ScenPart {
         ApplyXenotype(pawn, template);
         ApplyTraits(pawn, template);
         ApplySkills(pawn, template);
+        ApplyApparel(pawn, template);
 
         RedressAfterAgeChange(pawn);
 
@@ -228,6 +257,28 @@ public class ScenPart_NamedPawns : ScenPart {
             if (pawn.genes != null && !pawn.genes.HasActiveGene(geneDef)) {
                 pawn.genes.AddGene(geneDef, true);
             }
+        }
+    }
+
+    /// <summary>Puts clothing on rather than in the pack, replacing whatever it conflicts with.</summary>
+    private static void ApplyApparel(Pawn pawn, NamedPawnDef template) {
+        if (template.apparel.Count == 0 || pawn.apparel == null) return;
+
+        for (int i = 0; i < template.apparel.Count; i++) {
+            NamedPawnInventoryEntry entry = template.apparel[i];
+            ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
+            if (thingDef == null) {
+                Logger.Warning($"ScenPart_NamedPawns: Apparel '{entry.thing}' not found, skipping");
+                continue;
+            }
+
+            ThingDef? stuffDef = entry.stuff == null
+                ? GenStuff.DefaultStuffFor(thingDef)
+                : DefDatabase<ThingDef>.GetNamedSilentFail(entry.stuff);
+
+            if (ThingMaker.MakeThing(thingDef, stuffDef) is not Apparel made) continue;
+
+            pawn.apparel.Wear(made, false);
         }
     }
 

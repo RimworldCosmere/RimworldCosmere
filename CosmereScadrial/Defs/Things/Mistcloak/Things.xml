@@ -40,9 +40,11 @@
             <layers>
                 <li>Shell</li>
             </layers>
+            <!-- No generic apparel tags on purpose. IndustrialBasic and Neolithic put the
+                 mistcloak in the pool every pawn rolls from at generation, so half the world
+                 turned up wearing one. Mistborn are given theirs explicitly. -->
             <tags>
-                <li>IndustrialBasic</li>
-                <li>Neolithic</li>
+                <li>Cosmere_Scadrial_Mistcloak</li>
             </tags>
             <defaultOutfitTags>
                 <li>Worker</li>

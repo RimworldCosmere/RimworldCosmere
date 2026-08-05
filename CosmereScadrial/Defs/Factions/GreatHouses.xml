@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- The great houses. Each is its own faction rather than instances of one def so a story beat
+       can name who is at the gates - the Well siege raids Venture and Cett by name. Every
+       scenario's ScenPart_FactionRelations lists all of them, which is what guarantees they
+       exist: FactionDef alone only makes a faction eligible for world generation, not certain. -->
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase" Name="Cosmere_Scadrial_GreatHouseBase" Abstract="True">
+    <pawnSingular>nobleman</pawnSingular>
+    <pawnsPlural>nobles</pawnsPlural>
+    <listOrderPriority>45</listOrderPriority>
+    <settlementGenerationWeight>1</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>High Lord</leaderTitle>
+    <leaderTitleFemale>High Lady</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <configurationListOrderPriority>45</configurationListOrderPriority>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.6</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.3</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>10</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Town_Trader>1</Town_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Alpaca>3</Alpaca>
+        </carriers>
+        <guards>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Elite>5</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseVenture</defName>
+    <label>House Venture</label>
+    <fixedName>House Venture</fixedName>
+    <description>The most powerful house in Luthadel, and the one least interested in pretending otherwise. Straff Venture keeps an army because the others keep armies, and keeps it larger because he intends to be the one still standing.</description>
+    <colorSpectrum>
+      <li>(0.55, 0.15, 0.15)</li>
+      <li>(0.75, 0.25, 0.25)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseElariel</defName>
+    <label>House Elariel</label>
+    <fixedName>House Elariel</fixedName>
+    <description>Old money and older grudges. Elariel plays the court rather than the field, and has never needed to raise a banner to ruin a rival house.</description>
+    <colorSpectrum>
+      <li>(0.30, 0.25, 0.55)</li>
+      <li>(0.45, 0.40, 0.75)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseHasting</defName>
+    <label>House Hasting</label>
+    <fixedName>House Hasting</fixedName>
+    <description>A house built on the canal trade, with a keep like a fortress because the family has always assumed it would one day need to be.</description>
+    <colorSpectrum>
+      <li>(0.20, 0.40, 0.45)</li>
+      <li>(0.30, 0.60, 0.65)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseLekal</defName>
+    <label>House Lekal</label>
+    <fixedName>House Lekal</fixedName>
+    <description>Lekal have spent three generations a rung below the great houses and every one of those generations resenting it. They ally readily and betray on schedule.</description>
+    <colorSpectrum>
+      <li>(0.45, 0.30, 0.20)</li>
+      <li>(0.65, 0.45, 0.30)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseTekiel</defName>
+    <label>House Tekiel</label>
+    <fixedName>House Tekiel</fixedName>
+    <description>Merchants first, nobles second, and quietly among the wealthiest in the city. Tekiel would rather buy a war than fight one.</description>
+    <colorSpectrum>
+      <li>(0.35, 0.45, 0.25)</li>
+      <li>(0.55, 0.65, 0.35)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseRenoux</defName>
+    <label>House Renoux</label>
+    <fixedName>House Renoux</fixedName>
+    <description>A canal house out of Fellise, respectable and unremarkable, which is exactly what makes it useful to people who need a respectable and unremarkable name to stand behind.</description>
+    <colorSpectrum>
+      <li>(0.40, 0.35, 0.30)</li>
+      <li>(0.60, 0.55, 0.45)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseCett</defName>
+    <label>House Cett</label>
+    <fixedName>House Cett</fixedName>
+    <description>Ashweather Cett rules a stretch of the Western Dominance through a mixture of taxation and menace, and sees no reason the arrangement should not extend to Luthadel.</description>
+    <colorSpectrum>
+      <li>(0.50, 0.40, 0.15)</li>
+      <li>(0.70, 0.55, 0.25)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <!-- What Ruin sends: koloss, Inquisitors, and anyone whose spikes it got to. Permanently
+       hostile because it does not negotiate and cannot be bought. Named by every scenario's
+       relations block so it is guaranteed to exist wherever a beat raids with it. -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Ruin</defName>
+    <label>Ruin's own</label>
+    <fixedName>Ruin's Own</fixedName>
+    <description>Koloss driven past their own hunger, Inquisitors who stopped pretending to serve the Ministry, and men and women with metal in them who answer something that is not their own thought. They do not raid for food or plunder. They arrive, and then they kill, and Ruin spends them without counting.</description>
+    <pawnSingular>thrall</pawnSingular>
+    <pawnsPlural>thralls</pawnsPlural>
+    <listOrderPriority>70</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <permanentEnemy>true</permanentEnemy>
+    <leaderTitle>Steel Inquisitor</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.25, 0.20, 0.20)</li>
+      <li>(0.45, 0.30, 0.28)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>70</configurationListOrderPriority>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Heavy>8</Mercenary_Heavy>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Pirate>10</Pirate>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+</Defs>

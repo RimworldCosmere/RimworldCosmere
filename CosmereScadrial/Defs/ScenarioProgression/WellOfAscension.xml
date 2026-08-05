@@ -4,17 +4,39 @@
     <defName>Cosmere_Scadrial_Progression_WellOfAscension</defName>
     <label>Well of Ascension Progression</label>
     <events>
+      <!-- Deliberately the same key as the Final Empire beat. firedEvents carries across a
+           handoff, so a campaign that came the long way skips this and a campaign that started
+           here gets him instead. Either way the_well's gate is satisfied. -->
+      <li>
+        <key>elend_joins</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>5</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
+            <pawnName>Elend</pawnName>
+            <alive>false</alive>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.TriggerIncidentAction">
+            <incident>Cosmere_Scadrial_Incident_ElendArrival</incident>
+          </li>
+        </actions>
+      </li>
       <li>
         <key>straffs_ultimatum</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Straff Venture's Ultimatum</title>
-            <text>A rider bearing the Venture banner arrives under flag of truce. The message is brief. Straff Venture, Elend's father, commands the largest army outside the walls. He offers terms: surrender the city, hand over the atium cache, and he will permit the garrison to leave alive. Elend reads the letter twice, folds it carefully, and sets it aside. "My father," he says quietly, "has never permitted anything in his life. He takes." The walls must hold.</text>
+            <text>A rider bearing the Venture banner arrives under flag of truce. The message is brief. Straff Venture commands the largest army outside the walls. He offers terms: surrender the city, hand over the atium cache, and he will permit the garrison to leave alive. There is no signature, only a seal. Straff has never permitted anything in his life. He takes.</text>
             <letterDef>ThreatBig</letterDef>
           </li>
         </actions>
@@ -24,6 +46,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>20</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -32,56 +55,130 @@
             <text>Dust rises from the western road. Ashweather Cett has brought his forces to Luthadel - not to ally with Straff, but to claim the prize for himself. Two armies now camp outside the walls, each watching the other as much as they watch the city. Breeze notes, with characteristic understatement, that at least the two of them might keep each other busy. Ham wonders aloud whether three-way sieges have any historical precedent. Nobody answers him.</text>
             <letterDef>ThreatBig</letterDef>
           </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGameConditionAction">
+            <gameCondition>Cosmere_Scadrial_Condition_ArmiesGathering</gameCondition>
+            <!-- Runs out the day the assault lands, so the readout is the real countdown. -->
+            <durationDays>40</durationDays>
+          </li>
         </actions>
       </li>
       <li>
         <key>koloss_march</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>40</days>
+            <days>60</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>The Koloss March</title>
-            <text>The reports come in fragments. Scouts, breathless and ash-covered, speak of a column stretching to the horizon. Koloss. Thousands of them, moving with terrible purpose toward Luthadel. They do not negotiate. They do not siege. They simply arrive, and then they kill. The walls that seemed thick enough to hold two noble armies now feel paper-thin. Sazed begins consulting his metalminds with renewed urgency. Time is running short.</text>
+            <title>Both Armies Move</title>
+            <text>The waiting ends the way everyone knew it would. Cett moved first, or Straff did - afterwards nobody agrees which, and it stops mattering within the hour.\n\nNeither of them can afford to let the other take the city intact, so neither of them waits any longer. Two assaults, opposite walls, the same night. Whatever they were watching each other for, they have stopped.</text>
             <letterDef>ThreatBig</letterDef>
           </li>
-        </actions>
-      </li>
-      <li>
-        <key>elends_transformation</key>
-        <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>50</days>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_HouseVenture</faction>
+            <armyNameKey>CS_Progression_Army_Straff</armyNameKey>
+            <edge>North</edge>
+            <pointsFactor>1.1</pointsFactor>
+            <minPoints>1200</minPoints>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
-            <minThreats>3</minThreats>
-          </li>
-        </triggers>
-        <actions>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>The Bead of Lerasium</title>
-            <text>The bead is small - barely larger than a pearl, pale and luminous in the mist-light. Elend holds it between his fingers. He knows what it is. What it means. The last gift of Preservation, the seed of Allomancy itself. He swallows it without ceremony. The metals ignite inside him like sixteen suns. The bookish king who could not swing a sword now carries the power of a full Mistborn. Vin watches him with something between pride and worry. The scholar has become a warrior. She hopes he remembers which one he was first.</text>
-            <letterDef>PositiveEvent</letterDef>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_HouseCett</faction>
+            <armyNameKey>CS_Progression_Army_Cett</armyNameKey>
+            <edge>South</edge>
+            <pointsFactor>0.9</pointsFactor>
+            <minPoints>1000</minPoints>
           </li>
         </actions>
       </li>
+
+      <!-- Two chained forks, in the order the story happens: Elend's wound resolves first,
+           because the second fork can end the campaign and would strand it. -->
       <li>
         <key>the_well</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>60</days>
+            <days>80</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
-            <eventKey>elends_transformation</eventKey>
+            <eventKey>elend_joins</eventKey>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Well of Ascension</title>
-            <text>Vin descends into the cavern beneath Luthadel. The Well pulses with liquid light - raw Preservation, pooled and waiting. A voice whispers: use it. Release the power. Save them all. She reaches into the light. For one breathless moment she holds the power of creation itself. And then she lets it go. The pool drains. Something shifts in the world's foundations - something ancient, patient, and terrible. Ruin is free. The ground trembles. Above, the mists thicken. Whatever comes next, there is no undoing what has been done.</text>
-            <letterDef>NeutralEvent</letterDef>
+            <text>They broke through at the eastern gate before dawn. Elend went out to meet them because somebody had to be seen doing it, and he came back carried. The wound is through the gut. He will not last the night, and everyone who has looked at it knows so and has stopped saying it aloud.\n\nBeneath the city, the Well is full. Raw Preservation, pooled and waiting, older than the Final Empire and patient as stone. Vin stands at its edge with the power of creation in reach and a dying man above her.\n\nThere is a bead of lerasium in the crew's keeping. There has only ever been the one.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <requiresPawn>Elend</requiresPawn>
+            <titleKey>CS_Progression_Well_Bead_Title</titleKey>
+            <textKey>CS_Progression_Well_Bead_Text</textKey>
+            <acceptKey>CS_Progression_Well_Bead_Accept</acceptKey>
+            <declineKey>CS_Progression_Well_Bead_Decline</declineKey>
+            <acceptTipKey>CS_Progression_Well_Bead_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_Well_Bead_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>He Swallowed It Without Ceremony</title>
+                <text>The bead is small - barely larger than a pearl, pale and luminous in the mist-light. Vin puts it between his teeth and makes him swallow, and for a long moment nothing happens at all.\n\nThen the metals ignite inside him like sixteen suns. Flesh closes over the wound from the inside out. The bookish king who could not swing a sword stands up carrying the power of a full Mistborn, and looks at his own hands as though they belong to someone he has not met.\n\nThe last gift of Preservation is spent. There will not be another.</text>
+                <letterDef>PositiveEvent</letterDef>
+              </li>
+              <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.MakeMistbornAction">
+                <pawnName>Elend</pawnName>
+                <cause>swallowed the last bead of lerasium</cause>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                <pawnName>Elend</pawnName>
+                <method>death</method>
+                <optional>true</optional>
+                <letterTitle>He Did Not Last the Night</letterTitle>
+                <letterText>He was lucid near the end, which was the cruelty of it. He wanted to talk about the treaty. Somebody held his hand and let him.\n\nThe bead stays in the crew's keeping, pale and warm and worth a kingdom. It bought nothing. That was the choice, and it was made with open eyes.</letterText>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SpawnItemAction">
+                <thing>Lerasium</thing>
+                <count>1</count>
+              </li>
+            </onDecline>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <titleKey>CS_Progression_Well_Power_Title</titleKey>
+            <textKey>CS_Progression_Well_Power_Text</textKey>
+            <acceptKey>CS_Progression_Well_Power_Accept</acceptKey>
+            <declineKey>CS_Progression_Well_Power_Decline</declineKey>
+            <acceptTipKey>CS_Progression_Well_Power_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_Well_Power_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.EndGameAction">
+                <textKey>CS_Progression_Well_Power_Ending</textKey>
+                <exitToMainMenu>true</exitToMainMenu>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>She Let It Go</title>
+                <text>She held the power of creation for one breathless moment, and then she opened her hands.\n\nThe pool drains. Something shifts in the world's foundations - something ancient, patient, and terrible, which has been waiting a very long time for exactly this. Ruin is free. The ground trembles. Above, the mists thicken and do not thin again.\n\nWhatever comes next, there is no undoing what has been done.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <!-- Ruin comes into the world here and not before. Marsh walked out of the
+                   colony in the Final Empire arc and was passed to the world rather than
+                   deleted, so this hands back the same man with something else behind his
+                   eyes. -->
+              <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+                <faction>Cosmere_Scadrial_Faction_Ruin</faction>
+                <goodwill>-100</goodwill>
+                <leaderPawnName>Marsh</leaderPawnName>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+                <progression>Cosmere_Scadrial_Progression_HeroOfAges</progression>
+              </li>
+            </onDecline>
           </li>
         </actions>
       </li>

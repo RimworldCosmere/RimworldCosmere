@@ -4,61 +4,170 @@
     <defName>Cosmere_Scadrial_Progression_HeroOfAges</defName>
     <label>Hero of Ages Progression</label>
     <events>
+
       <li>
         <key>mists_kill</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>5</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Mists Turn Hostile</title>
-            <text>It started quietly. A colonist left out past dusk, shivering in the mist. By morning they were bedridden - feverish, pale, gasping. The mists have changed. What was once a passive shroud now strikes at the living, leaving some untouched and others writhing in agony. Sazed records the symptoms in his journal with a hand that does not quite hold steady. The mists are not random. They are selecting.</text>
+            <text>It started quietly. A colonist left out past dusk, shivering in the mist. By morning they were bedridden - feverish, pale, gasping.\n\nThe mists have changed. What was once a passive shroud now strikes at the living, leaving some untouched and others writhing. Sazed records the symptoms with a hand that does not quite hold steady, and notes the thing nobody wants said aloud: the mists are not random. They are selecting. Some of those they take get back up changed.</text>
             <letterDef>NegativeEvent</letterDef>
+          </li>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetMistSnapOddsAction">
+            <!-- Baseline is one in sixteen per exposed hour. Ruin is pushing. -->
+            <oneIn>5</oneIn>
           </li>
         </actions>
       </li>
+
+      <li>
+        <key>docksons_coma</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>12</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
+            <pawnName>Dockson</pawnName>
+            <alive>true</alive>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Dockson Does Not Wake</title>
+            <text>He was crossing the yard after dark, which he had done ten thousand times, and the mists took him between one step and the next. They found him at first light with his eyes open and nobody behind them.\n\nHe breathes. He does not wake. Sazed says the mists have him and there is nothing to be done but wait and see what they give back.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.AddHediffAction">
+            <pawnName>Dockson</pawnName>
+            <hediff>Cosmere_Scadrial_Hediff_MistComa</hediff>
+            <severity>1.0</severity>
+            <optional>true</optional>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>docksons_waking</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>16</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>docksons_coma</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>What the Mists Gave Back</title>
+            <text>Dockson sat up on the fourth day and asked, quite reasonably, what he had missed.\n\nThen he flinched at something nobody else could see - a shape at the edge of the room, a step ahead of where anyone was standing. Electrum. He can see his own future, a heartbeat of it, over and over, and he says it is the most useless gift he has ever been handed and that he intends to make it earn its keep anyway.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RemoveHediffAction">
+            <pawnName>Dockson</pawnName>
+            <hediff>Cosmere_Scadrial_Hediff_MistComa</hediff>
+            <optional>true</optional>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.AddGeneAction">
+            <pawnName>Dockson</pawnName>
+            <gene>Cosmere_Scadrial_Gene_MistingElectrum</gene>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>spooks_enhancement</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>20</days>
+            <days>25</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Spook's Flaring</title>
+            <text>Spook has been burning tin constantly - not just burning it, flaring it, pushing his senses past anything a Tineye should survive. His skin blisters at the touch of cloth. Sound is agony. Light is a blade.\n\nBut in the dark, in the quiet between heartbeats, he hears everything. He has wrapped himself in bandages and gone back out. Whatever the tin has done to him, it is not going to undo itself. The boy who hid behind Kelsier's shadow is something else now.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetSkillAction">
+            <pawnName>Spook</pawnName>
+            <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
+            <level>20</level>
+          </li>
           <li Class="Cosmere.Core.ScenarioPart.Action.SetSkillAction">
             <pawnName>Spook</pawnName>
             <skill>Melee</skill>
-            <level>14</level>
+            <level>15</level>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>Spook's Flaring</title>
-            <text>Spook has been burning tin constantly - not just burning it, but flaring it, pushing his senses far beyond what any Tineye should endure. His skin blisters at the touch of cloth. Sound is agony. Light is a blade. But in the dark, in the quiet spaces between heartbeats, he sees everything. Hears everything. He wraps himself in bandages and keeps fighting. The boy who hid behind Kelsier's shadow has become something dangerous in his own right.</text>
-            <letterDef>PositiveEvent</letterDef>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.MakeSavantAction">
+            <pawnName>Spook</pawnName>
+            <metal>Tin</metal>
+            <stage>3</stage>
+            <optional>true</optional>
           </li>
         </actions>
       </li>
+
       <li>
         <key>ruin_speaks</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>30</days>
+            <days>35</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Ruin's Voice</title>
-            <text>The words appear scratched into metal - the only medium Ruin cannot alter. "I have watched you build. I have watched you plan. I have been patient." The message is unsigned, but everyone knows who wrote it. Ruin speaks now, openly, to those with hemalurgic spikes. Whispers that sound like reason. Suggestions that feel like your own thoughts. Marsh, wherever he is, has gone silent. Vin stares at the horizon and grips her vials tighter.</text>
+            <text>The words appear scratched into metal, the one medium Ruin cannot alter. "I have watched you build. I have watched you plan. I have been patient."\n\nIt speaks openly now, to anyone carrying a spike. Whispers that sound like reason. Suggestions that arrive already feeling like your own thoughts. Marsh, wherever he is, has gone silent.</text>
             <letterDef>NegativeEvent</letterDef>
+          </li>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.GiveSpikeAction">
+            <pawnName>Spook</pawnName>
+            <metal>Pewter</metal>
+            <stealType>PhysicalAllomancy</stealType>
+            <stolenDefName>Cosmere_Scadrial_Gene_MistingPewter</stolenDefName>
+            <optional>true</optional>
           </li>
         </actions>
       </li>
+
+      <li>
+        <key>ruins_army</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>45</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>It Sends the First of Them</title>
+            <text>They come up the road without formation and without hurry, and they do not stop when they are shouted at. Some of them are wearing what is left of Ministry uniforms.\n\nRuin does not need to raise an army. It only needs to reach the ones already carrying its metal, and there were always more of those than anyone counted.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_Ruin</faction>
+            <armyNameKey>CS_Progression_Army_Ruin</armyNameKey>
+            <pointsFactor>0.9</pointsFactor>
+            <minPoints>1000</minPoints>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>sazeds_revelation</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>60</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -69,16 +178,44 @@
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Sazed's Revelation</title>
-            <text>He has read every religion stored in his copperminds. Every doctrine, every creation myth, every promise of salvation. He rejected them all - too broken by grief, too hollowed by loss. But now, turning the pages one final time, Sazed sees what he missed. The faiths are not competitors. They are pieces. Fragments of a single truth, scattered across centuries by Preservation itself. The Hero of Ages is not a warrior. The Hero is the one who holds both forces in balance. Sazed sets down his coppermind and, for the first time in months, weeps - not from sorrow, but from understanding.</text>
+            <text>He has read every religion in his copperminds. Every doctrine, every creation myth, every promise of salvation, and he rejected all of them - too broken by grief to believe any of it.\n\nTurning the pages one final time, he sees what he missed. The faiths are not competitors. They are pieces, scattered on purpose, of one truth. The Hero of Ages is not a warrior. The Hero is whoever can hold both forces at once without letting go of either. Sazed sets down the coppermind and weeps, and it is not grief.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
         </actions>
       </li>
+
+      <li>
+        <key>ruins_assault</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>70</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>ruins_army</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Everything It Has Left</title>
+            <text>The ash falls thick enough to walk on. Whatever is coming up the road now is not a raiding party, and it is not going to be talked out of anything.\n\nThis is the last of it. Ruin is spending everything, because it has worked out that it does not need to survive what happens next.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_Ruin</faction>
+            <armyNameKey>CS_Progression_Army_Ruin</armyNameKey>
+            <pointsFactor>1.4</pointsFactor>
+            <minPoints>1800</minPoints>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>the_catacendre</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>75</days>
+            <days>85</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
             <eventKey>sazeds_revelation</eventKey>
@@ -87,11 +224,91 @@
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Catacendre</title>
-            <text>Vin holds Preservation's power. Elend stands against Ruin's army. They fight not to win - victory was never possible against a god. They fight to buy time. And in that purchased moment, Sazed takes up both powers. Ruin and Preservation, destruction and creation, held together in the hands of a Terris steward who once kept the faiths of a hundred dead religions. The world unmakes itself and is reborn. The ash clears. Green things grow. A new sun rises over a new Scadrial. Harmony looks down upon the world he has remade and knows the cost of what was given.</text>
-            <letterDef>PositiveEvent</letterDef>
+            <text>Vin holds Preservation. Elend stands against everything Ruin has left. Neither of them is fighting to win - that was never on offer against a god. They are buying a moment.\n\nAnd in that moment both powers come free at once, and there is somebody standing there who has spent his whole life learning how to hold two things that hate each other. The world unmakes itself.\n\nWhat it is remade into has not been decided yet.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <titleKey>CS_Progression_Cat_Stop_Title</titleKey>
+            <textKey>CS_Progression_Cat_Stop_Text</textKey>
+            <acceptKey>CS_Progression_Cat_Stop_Accept</acceptKey>
+            <declineKey>CS_Progression_Cat_Stop_Decline</declineKey>
+            <acceptTipKey>CS_Progression_Cat_Stop_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_Cat_Stop_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.EndGameAction">
+                <textKey>CS_Progression_Cat_Ending</textKey>
+                <exitToMainMenu>true</exitToMainMenu>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+                <titleKey>CS_Progression_Cat_Price_Title</titleKey>
+                <textKey>CS_Progression_Cat_Price_Text</textKey>
+                <acceptKey>CS_Progression_Cat_Price_Accept</acceptKey>
+                <declineKey>CS_Progression_Cat_Price_Decline</declineKey>
+            <acceptTipKey>CS_Progression_Cat_Price_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_Cat_Price_DeclineTip</declineTipKey>
+                <onAccept>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                    <title>The Price That Was Paid</title>
+                    <text>Vin and Elend did not come back. They were never going to; both of them had worked that out well before the end, and neither of them mentioned it to the other.\n\nSazed took up both powers and walked out of the world to go and rebuild it. He left a green country behind him and no forwarding address.\n\nThe ash stops. Things grow. It cost exactly what everyone knew it would cost.</text>
+                    <letterDef>NeutralEvent</letterDef>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                    <pawnName>Vin</pawnName>
+                    <method>death</method>
+                    <optional>true</optional>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                    <pawnName>Elend</pawnName>
+                    <method>death</method>
+                    <optional>true</optional>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                    <pawnName>Sazed</pawnName>
+                    <method>leave</method>
+                    <optional>true</optional>
+                    <describeKey>CS_Progression_Effect_Ascends</describeKey>
+                  </li>
+                </onAccept>
+                <onDecline>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                    <title>They All Came Back</title>
+                    <text>It should not have worked. Sazed said so himself, afterwards, at some length, to anyone who would sit still for it.\n\nBut the powers came apart cleanly, and Vin walked out of the cavern under her own power with Elend leaning on her, and the ash stopped falling on a world that still had all three of them in it. Sazed put the coppermind away and went to find something to eat.\n\nSomewhere, something that had been very patient for a very long time did not get what it wanted.</text>
+                    <letterDef>PositiveEvent</letterDef>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                    <title>Somebody Held Them</title>
+                    <text>The powers did not go back where they came from. They cannot; that is not how it works. Somebody took them up.\n\nNobody agrees who. There was a Terrisman on the road out of the city that week who nobody could name afterwards, and there was a keeper at the northern shelters who stopped being at the northern shelters, and there are four other stories and all of them are told by people who were not there.\n\nWhat is not in doubt is that the ash stopped, and that whoever is holding the world now is holding all of it at once, and has been careful with it.</text>
+                    <letterDef>NeutralEvent</letterDef>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+                    <thought>Cosmere_Scadrial_EscapedDeath</thought>
+                    <permanent>true</permanent>
+                  </li>
+                </onDecline>
+              </li>
+              <!-- Outside the inner fork on purpose. Preservation and Ruin end at the
+                   Catacendre whoever picks them up, so both endings arrive at Harmony. -->
+              <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetShardsAction">
+                <disable>
+                  <li>Preservation</li>
+                  <li>Ruin</li>
+                </disable>
+                <enable>
+                  <li>Harmony</li>
+                </enable>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
+              <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+                <progression>Cosmere_Scadrial_Progression_PostCatacendre</progression>
+              </li>
+            </onDecline>
           </li>
         </actions>
       </li>
+
     </events>
   </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
 </Defs>

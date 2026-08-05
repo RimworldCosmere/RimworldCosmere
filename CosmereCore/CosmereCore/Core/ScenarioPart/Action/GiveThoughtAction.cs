@@ -51,4 +51,15 @@ public class GiveThoughtAction : ProgressionAction {
         memory.permanent = permanent;
         memories.TryGainMemory(memory);
     }
+
+    public override string? Describe() {
+        ThoughtDef? def = DefDatabase<ThoughtDef>.GetNamedSilentFail(thought);
+        if (def?.stages == null || def.stages.Count == 0) return null;
+
+        string who = pawnName.Length > 0 ? pawnName : "CC_Progression_Effect_WholeColony".Translate().Resolve();
+        return "CC_Progression_Effect_Thought".Translate(
+            who.Named("PAWN"),
+            def.stages[0].label.Named("THOUGHT")
+        ).Resolve();
+    }
 }

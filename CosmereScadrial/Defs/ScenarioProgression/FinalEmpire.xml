@@ -9,6 +9,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>7</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -30,6 +31,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>25</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -52,6 +54,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>45</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnCountTrigger">
             <minCount>8</minCount>
@@ -77,6 +80,7 @@
                counted towards it and the beat was unreachable outside a full playthrough. -->
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>60</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -122,23 +126,19 @@
         </actions>
       </li>
       <li>
-        <key>obligators_confession</key>
+        <key>elend_joins</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>70</days>
+            <days>65</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
             <eventKey>kelsiers_sacrifice</eventKey>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>The Obligator's Confession</title>
-            <text>A contact within the rebellion brings word from a dying man. An obligator, caught skimming from the Ministry's own coffers, traded his life for a confession before the end. He spoke of a vault sealed since the Ascension - one that holds a single bead of lerasium, the metal the Lord Ruler himself was made from. The Ministry does not admit the vault exists. The obligator is already dead. The vault is not.</text>
-            <letterDef>NeutralEvent</letterDef>
-          </li>
-          <li Class="Cosmere.Core.ScenarioPart.Action.StartQuestAction">
-            <questDef>Cosmere_Scadrial_Quest_FirstLerasium</questDef>
+          <li Class="Cosmere.Core.ScenarioPart.Action.TriggerIncidentAction">
+            <incident>Cosmere_Scadrial_Incident_ElendArrival</incident>
           </li>
         </actions>
       </li>
@@ -147,6 +147,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>75</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
             <eventKey>kelsiers_sacrifice</eventKey>
@@ -158,8 +159,30 @@
             <text>The Lord Ruler is dead. Vin stood before him - a girl of sixteen, ash-stained and bleeding - and she pulled free the bracelets at his wrists. A thousand years of tyranny ended in a single moment. The skaa pour into the streets. Noble keeps burn. The Steel Ministry fractures. The Final Empire, that monolith of ash and oppression, crumbles at last. But as the mists settle over a world without its god, a new question rises: what comes next?</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_WellOfAscension</progression>
+          </li>
+</actions>
+      </li>
+      <li>
+        <key>the_farm</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.FlagTrigger">
+            <flag>HathsinLead</flag>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>The Seam Was a Splinter</title>
+            <text>The survivor talks more freely now that there is atium on the table and none of it went to an obligator. The seam he sent you to was nothing, he says. A crack. The Pits themselves are half a day further in and they are not a mine at all - they are worked, by skaa, under guard, and have been since before anyone's grandfather. That is where the Lord Ruler's atium comes from. All of it.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.StartQuestAction">
+            <questDef>Cosmere_Scadrial_Quest_PitsOfHathsin</questDef>
+          </li>
         </actions>
       </li>
+
     </events>
   </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
 </Defs>

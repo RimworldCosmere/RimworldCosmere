@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scenario_WorldhopperExpedition</defName>
-    <label>Cosmere: Worldhopper Expedition</label>
+    <label>Cosmere - Worldhopper Expedition</label>
     <description>A deliberate expedition through the Cognitive Realm. Worldhoppers from Roshar, Scadrial, and beyond - each carrying the Investiture of their homeworld. Their mission: establish a foothold on an uncharted world. Their challenge: making incompatible traditions cooperate.</description>
     <scenario>
       <summary>Worldhoppers from multiple Shardworlds, diverse powers.</summary>

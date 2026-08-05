@@ -23,4 +23,14 @@ public class AddTraitAction : ProgressionAction {
 
         pawn.story?.traits?.GainTrait(new Trait(traitDef, degree));
     }
+
+    public override string? Describe() {
+        TraitDef? def = DefDatabase<TraitDef>.GetNamedSilentFail(trait);
+        if (def == null) return null;
+
+        return "CC_Progression_Effect_Trait".Translate(
+            pawnName.Named("PAWN"),
+            def.DataAtDegree(degree).label.Named("TRAIT")
+        ).Resolve();
+    }
 }

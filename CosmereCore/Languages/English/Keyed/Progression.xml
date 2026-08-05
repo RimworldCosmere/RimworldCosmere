@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <CC_Progression_Effects_Header>What this changes:</CC_Progression_Effects_Header>
+  <CC_Progression_Effect_SkillGain>{PAWN} gains {COUNT} levels in {SKILL}</CC_Progression_Effect_SkillGain>
+  <CC_Progression_Effect_SkillSet>{PAWN}'s {SKILL} is now {COUNT}</CC_Progression_Effect_SkillSet>
+  <CC_Progression_Effect_Goodwill>{FACTION} goodwill is now {AMOUNT}</CC_Progression_Effect_Goodwill>
+  <CC_Progression_Effect_Item>{COUNT}x {THING} arrives</CC_Progression_Effect_Item>
+  <CC_Progression_Effect_PawnDies>{PAWN} dies</CC_Progression_Effect_PawnDies>
+  <CC_Progression_Effect_PawnLeaves>{PAWN} leaves the colony</CC_Progression_Effect_PawnLeaves>
+  <CC_Progression_Effect_Trait>{PAWN} gains the {TRAIT} trait</CC_Progression_Effect_Trait>
+  <CC_Progression_Effect_Thought>{PAWN} remembers: {THOUGHT}</CC_Progression_Effect_Thought>
+  <CC_Progression_Effect_WholeColony>The colony</CC_Progression_Effect_WholeColony>
+  <CC_Progression_Effect_Gene>{PAWN} gains {GENE}</CC_Progression_Effect_Gene>
+  <CC_Progression_Effect_Quest>New quest: {QUEST}</CC_Progression_Effect_Quest>
+  <CC_Progression_Effect_Raid>{ARMY} attacks the colony</CC_Progression_Effect_Raid>
+  <CC_Progression_Effect_Hediff>{PAWN}: {HEDIFF}</CC_Progression_Effect_Hediff>
+  <CC_Progression_Effect_Faction>{FACTION} enters the world</CC_Progression_Effect_Faction>
+</LanguageData>

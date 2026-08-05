@@ -305,6 +305,286 @@ public class QuestDefValidationTests {
     }
 
     /// <summary>
+    ///     A FactionDef only makes a faction eligible for world generation, not certain -
+    ///     canMakeRandomly is a roll. A raid whose faction is absent sends nobody, so every
+    ///     RaidAction faction has to be nailed down one of two ways: named in every scenario's
+    ///     relations block, which creates it at game start, or created by a CreateFactionAction
+    ///     when the story says it comes into being.
+    /// </summary>
+    [TestMethod]
+    public void EveryRaidFactionIsGuaranteedByTheScenarios() {
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return;
+
+        HashSet<string> raidFactions = new HashSet<string>();
+        HashSet<string> createdByProgression = new HashSet<string>();
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            foreach (XElement action in root.Descendants("li")) {
+                string? cls = (string?)action.Attribute("Class");
+                if (cls == null) continue;
+
+                XElement? faction = action.Element("faction");
+                if (faction == null) continue;
+
+                if (cls.EndsWith("RaidAction", StringComparison.Ordinal)) raidFactions.Add(faction.Value);
+                if (cls.EndsWith("CreateFactionAction", StringComparison.Ordinal)) {
+                    createdByProgression.Add(faction.Value);
+                }
+            }
+        }
+
+        raidFactions.ExceptWith(createdByProgression);
+        if (raidFactions.Count == 0) return;
+
+        string scenarioDir = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Scenarios");
+        if (!Directory.Exists(scenarioDir)) return;
+
+        foreach (string path in Directory.GetFiles(scenarioDir, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            XElement? relations = root.Descendants("relations").FirstOrDefault();
+            if (relations == null) continue;
+
+            HashSet<string> guaranteed = new HashSet<string>();
+            foreach (XElement entry in relations.Elements()) {
+                guaranteed.Add(entry.Name.LocalName);
+            }
+
+            foreach (string faction in raidFactions) {
+                Assert.IsTrue(
+                    guaranteed.Contains(faction),
+                    $"{Path.GetFileName(path)}: a RaidAction attacks with '{faction}', but this " +
+                    "scenario's faction relations do not name it and no CreateFactionAction " +
+                    "brings it into being, so the raid would send nobody."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     DaysPassedTrigger reads absolute game days unless told otherwise, and CheckProgression
+    ///     fires every event whose triggers are met in a single pass. An arc reached by a handoff
+    ///     part-way through a campaign has already passed all its thresholds, so without
+    ///     sinceArcStart its whole run of events dumps in one tick.
+    /// </summary>
+    [TestMethod]
+    public void HandedOffArcsCountDaysFromTheirOwnStart() {
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return;
+
+        HashSet<string> handoffTargets = new HashSet<string>();
+        Dictionary<string, (string file, XElement def)> byName =
+            new Dictionary<string, (string, XElement)>();
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            foreach (XElement def in root.Elements()) {
+                XElement? name = def.Element("defName");
+                if (name != null) byName[name.Value] = (Path.GetFileName(path), def);
+            }
+
+            foreach (XElement action in root.Descendants("li")) {
+                string? cls = (string?)action.Attribute("Class");
+                if (cls == null || !cls.EndsWith("HandOffProgressionAction", StringComparison.Ordinal)) continue;
+
+                XElement? target = action.Element("progression");
+                if (target != null) handoffTargets.Add(target.Value);
+            }
+        }
+
+        foreach (string target in handoffTargets) {
+            Assert.IsTrue(
+                byName.ContainsKey(target),
+                $"A HandOffProgressionAction names progression '{target}', which we do not ship."
+            );
+
+            (string file, XElement def) = byName[target];
+            foreach (XElement trigger in def.Descendants("li")) {
+                string? cls = (string?)trigger.Attribute("Class");
+                if (cls == null || !cls.EndsWith("DaysPassedTrigger", StringComparison.Ordinal)) continue;
+
+                Assert.AreEqual(
+                    "true",
+                    trigger.Element("sinceArcStart")?.Value.ToLowerInvariant(),
+                    $"{file}: '{target}' is reached by a handoff, so its DaysPassedTrigger for " +
+                    $"day {trigger.Element("days")?.Value} must set sinceArcStart. Absolute days " +
+                    "would already be behind the campaign and the whole arc fires at once."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     A progression choice that names a key with no entry behind it renders the raw key
+    ///     string as the dialog's title and buttons. Nothing errors, and the branch it sits on
+    ///     may be sixty in-game days from where anyone would look.
+    /// </summary>
+    [TestMethod]
+    public void EveryProgressionChoiceKeyResolves() {
+        HashSet<string> keys = KnownTranslationKeys();
+        string[] keyFields = ["titleKey", "textKey", "acceptKey", "declineKey"];
+
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return;
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            string file = Path.GetFileName(path);
+            foreach (XElement action in root.Descendants("li")) {
+                string? cls = (string?)action.Attribute("Class");
+                if (cls == null) continue;
+                if (!cls.EndsWith("ChoiceAction", StringComparison.Ordinal)
+                    && !cls.EndsWith("EndGameAction", StringComparison.Ordinal)) {
+                    continue;
+                }
+
+                foreach (string field in keyFields) {
+                    XElement? key = action.Element(field);
+                    if (key == null || key.Value.Length == 0) continue;
+
+                    Assert.IsTrue(
+                        keys.Contains(key.Value),
+                        $"{file}: {cls} names {field} '{key.Value}', which has no entry in any " +
+                        "Languages/English/Keyed folder."
+                    );
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     A TriggerIncidentAction resolves its incident by name at runtime and only warns when
+    ///     the lookup misses, so a typo turns the beat into a letter that never arrives.
+    /// </summary>
+    [TestMethod]
+    public void EveryTriggeredIncidentIsOneWeShip() {
+        HashSet<string> incidents = new HashSet<string>();
+        foreach ((string _, XElement def) in DefsOfType("IncidentDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) incidents.Add(name.Value);
+        }
+
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return;
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            string file = Path.GetFileName(path);
+            foreach (XElement action in root.Descendants("li")) {
+                string? cls = (string?)action.Attribute("Class");
+                if (cls == null || !cls.EndsWith("TriggerIncidentAction", StringComparison.Ordinal)) continue;
+
+                XElement? incident = action.Element("incident");
+                if (incident == null) continue;
+
+                Assert.IsTrue(
+                    incidents.Contains(incident.Value),
+                    $"{file}: TriggerIncidentAction names incident '{incident.Value}', which is " +
+                    "not an IncidentDef we ship."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     A mine-out objective reads what is standing on the site's map. A site that is not
+    ///     persistent tears its map down when the last colonist leaves and regenerates the ore
+    ///     on the next visit, so the count can never fall - the quest just never completes, with
+    ///     no error to say why.
+    /// </summary>
+    [TestMethod]
+    public void EveryMineOutObjectiveSitsOnAPersistentSite() {
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            bool minesOut = false;
+            foreach (XElement objective in def.Descendants("objective")) {
+                string? cls = (string?)objective.Attribute("Class");
+                if (cls != "Cosmere.Core.Quest.Objective.MineOutSiteObjective") continue;
+
+                minesOut = true;
+
+                XElement? fraction = objective.Element("fraction");
+                if (fraction == null) continue;
+
+                Assert.IsTrue(
+                    float.TryParse(fraction.Value, out float parsed) && parsed > 0f && parsed <= 1f,
+                    $"{name}: MineOutSiteObjective fraction '{fraction.Value}' must be above 0 and at most 1."
+                );
+            }
+
+            if (!minesOut) continue;
+
+            bool persistent = false;
+            foreach (XElement objective in def.Descendants("objective")) {
+                string? cls = (string?)objective.Attribute("Class");
+                if (cls != "Cosmere.Core.Quest.Objective.TravelToSiteObjective") continue;
+                if (objective.Element("persistent")?.Value.ToLowerInvariant() == "true") persistent = true;
+            }
+
+            Assert.IsTrue(
+                persistent,
+                $"{name}: has a MineOutSiteObjective but its TravelToSiteObjective is not persistent, " +
+                "so the site regenerates its ore on every visit and the stage can never complete."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     MapParent.MapGeneratorDef falls back to Encounter when def.mapGenerator is null, so a
+    ///     misspelt worldObject or mapGenerator does not error - the site just quietly generates
+    ///     with ancient ruins scattered over it again.
+    /// </summary>
+    [TestMethod]
+    public void EveryWorldObjectOverrideResolves() {
+        Dictionary<string, XElement> worldObjects = new Dictionary<string, XElement>();
+        foreach ((string _, XElement def) in DefsOfType("WorldObjectDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) worldObjects[name.Value] = def;
+        }
+
+        HashSet<string> generators = new HashSet<string>();
+        foreach ((string _, XElement def) in DefsOfType("MapGeneratorDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) generators.Add(name.Value);
+        }
+
+        foreach ((string file, XElement def) in QuestDefs()) {
+            string name = RequireDefName(file, def);
+
+            foreach (XElement objective in def.Descendants("objective")) {
+                XElement? worldObject = objective.Element("worldObject");
+                if (worldObject == null) continue;
+
+                Assert.IsTrue(
+                    worldObjects.TryGetValue(worldObject.Value, out XElement? shipped),
+                    $"{name}: worldObject '{worldObject.Value}' is not a WorldObjectDef we ship."
+                );
+
+                XElement? generator = shipped!.Element("mapGenerator");
+                Assert.IsNotNull(
+                    generator,
+                    $"{name}: worldObject '{worldObject.Value}' sets no mapGenerator, so the site " +
+                    "would fall back to Encounter and there was no point overriding it."
+                );
+
+                Assert.IsTrue(
+                    generators.Contains(generator!.Value),
+                    $"{name}: worldObject '{worldObject.Value}' names mapGenerator " +
+                    $"'{generator.Value}', which is not a MapGeneratorDef we ship."
+                );
+            }
+        }
+    }
+
+    /// <summary>
     ///     Every base-building site part - Outpost and its relatives - reads RectOfInterest and
     ///     then deliberately walls its settlement into a rect *beside* it, so the ground the
     ///     quest is about generates empty. Extra site parts have to be ones we ship, which put
@@ -321,11 +601,21 @@ public class QuestDefValidationTests {
                 if (extras == null) continue;
 
                 foreach (XElement entry in extras.Elements("li")) {
+                    if (ours.Contains(entry.Value)) continue;
+
+                    // A vanilla base-building part walls its base into a rect BESIDE the site's
+                    // rect of interest, so it can never guard the objective itself. That is
+                    // allowed only when the quest also ships a garrison part, which does.
+                    bool guarded = false;
+                    foreach (XElement other in extras.Elements("li")) {
+                        if (ours.Contains(other.Value) && other.Value.Contains("Garrison")) guarded = true;
+                    }
+
                     Assert.IsTrue(
-                        ours.Contains(entry.Value),
-                        $"{name}: extraSiteParts names '{entry.Value}', which is not a SitePartDef we " +
-                        "define. Vanilla base-building parts generate a fort next to the site's rect " +
-                        "of interest, not defenders on it."
+                        guarded,
+                        $"{name}: extraSiteParts names '{entry.Value}', a vanilla base-building part, " +
+                        "with no garrison part alongside it. It would build a fort next to the " +
+                        "objective and leave the objective itself undefended."
                     );
                 }
             }
@@ -432,6 +722,37 @@ public class QuestDefValidationTests {
                     optionKeys.Contains(tag.Value),
                     $"{name}: afterChoice '{tag.Value}' matches no ChoiceObjective option key. " +
                     "That stage or reward would never run."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     A hand-off naming a progression that does not exist stops the Scadrial timeline dead
+    ///     at that arc, and nothing complains - the campaign just quietly runs out of story.
+    /// </summary>
+    [TestMethod]
+    public void EveryProgressionHandOffNamesARealArc() {
+        HashSet<string> arcs = new HashSet<string>();
+        foreach ((string _, XElement def) in DefsOfType("Cosmere.Core.ScenarioPart.ScenarioProgressionDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) arcs.Add(name.Value);
+        }
+
+        Assert.IsTrue(arcs.Count > 0, "No ScenarioProgressionDefs were found at all.");
+
+        foreach ((string file, XElement def) in DefsOfType("Cosmere.Core.ScenarioPart.ScenarioProgressionDef")) {
+            string name = RequireDefName(file, def);
+
+            foreach (XElement action in def.Descendants("li")) {
+                if (!HasClass(action, "HandOffProgressionAction")) continue;
+
+                XElement? target = action.Element("progression");
+                Assert.IsNotNull(target, $"{name}: a HandOffProgressionAction names no progression.");
+                Assert.IsTrue(
+                    arcs.Contains(target!.Value),
+                    $"{name}: hands off to '{target.Value}', which is not a ScenarioProgressionDef. " +
+                    "The timeline would stop here."
                 );
             }
         }

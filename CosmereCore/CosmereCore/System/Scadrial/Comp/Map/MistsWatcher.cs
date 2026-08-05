@@ -8,6 +8,13 @@ using Verse;
 namespace Cosmere.System.Scadrial.Comp.Map;
 
 public class MistsWatcher(Verse.Map map) : MapComponent(map) {
+    /// <summary>
+    ///     One-in-N chance per exposed hour that the mists snap someone. Static because the
+    ///     pressure is Ruin's, not any one map's - a progression beat turns it up for the whole
+    ///     world. Reset on load so it never carries between saves.
+    /// </summary>
+    public static int SnapOneIn = 16;
+
     private const int BaseHour = 19; // 7 PM
 
     private bool? cachedEnabled;
@@ -60,7 +67,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
                     continue;
                 }
 
-                if (!Rand.Chance(1f / 16f)) continue;
+                if (!Rand.Chance(1f / SnapOneIn)) continue;
 
                 SnapUtility.Snap(pawn, "the mists");
                 pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_MistComa).Severity = 1.0f;

@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scenario_Crashlanded</defName>
-    <label>Cosmere: Crashlanded</label>
+    <label>Cosmere - Crashlanded</label>
     <description>Three travelers from across the Cosmere - their vessel torn apart in transit through the Cognitive Realm. They carry fragments of knowledge from different worlds, different Investitures. What they build here will be shaped by every tradition they carry.</description>
     <scenario>
       <summary>Cosmere survivors, mixed origins, standard start.</summary>

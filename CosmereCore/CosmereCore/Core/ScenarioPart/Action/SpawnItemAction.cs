@@ -40,4 +40,14 @@ public class SpawnItemAction : ProgressionAction {
             );
         }
     }
+
+    public override string? Describe() {
+        ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thing);
+        if (thingDef == null) return null;
+
+        return "CC_Progression_Effect_Item".Translate(
+            count.Named("COUNT"),
+            thingDef.label.Named("THING")
+        ).Resolve();
+    }
 }

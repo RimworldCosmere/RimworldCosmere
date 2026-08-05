@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Fired by the Well of Ascension progression, never by the storyteller, so baseChance is 0. -->
+  <IncidentDef>
+    <defName>Cosmere_Scadrial_Incident_ElendArrival</defName>
+    <label>Elend Venture arrives</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.Core.Incident.Worker.IncidentWorker_NamedPawnArrival</workerClass>
+    <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
+    <baseChance>0</baseChance>
+    <letterDef>PositiveEvent</letterDef>
+    <letterLabel>Elend Venture</letterLabel>
+    <letterText>He arrives on foot, without escort, carrying a satchel of books and no weapon worth the name. The heir to House Venture has spent his inheritance on an argument nobody in Luthadel wanted to hear: that a city can be governed by something other than fear. His father has armies. Elend has a theory of government and a habit of reading through meetings.\n\nHe asks whether he might stay. He does not mention that staying will make his father your enemy.</letterText>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.NamedPawnIncidentConfig">
+        <pawn>
+          <firstName>Elend</firstName>
+          <lastName>Venture</lastName>
+          <gender>Male</gender>
+          <age>24</age>
+          <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+          <noRandomTraits>true</noRandomTraits>
+          <!-- Not Mistborn. The bead at the Well is what does that, and only if the player
+               spends it on him. -->
+          <traits>
+            <li>
+              <def>Kind</def>
+            </li>
+            <li>
+              <def>NaturalMood</def>
+              <degree>1</degree>
+            </li>
+          </traits>
+          <skills>
+            <li>
+              <def>Intellectual</def>
+              <level>12</level>
+              <passion>Major</passion>
+            </li>
+            <li>
+              <def>Social</def>
+              <level>10</level>
+              <passion>Major</passion>
+            </li>
+            <li>
+              <def>Melee</def>
+              <level>2</level>
+            </li>
+            <li>
+              <def>Shooting</def>
+              <level>3</level>
+            </li>
+          </skills>
+        </pawn>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <!-- The only remaining source of lerasium outside the Well. Deliberately close to never. -->
+  <IncidentDef>
+    <defName>Cosmere_Scadrial_Incident_PreservationBead</defName>
+    <label>a bead in the mists</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.System.Scadrial.Incident.Worker.IncidentWorker_PreservationBead</workerClass>
+    <baseChance>0.03</baseChance>
+    <letterDef>PositiveEvent</letterDef>
+    <letterLabel>A Bead in the Mists</letterLabel>
+    <letterText>The mists came in thicker than they should have, and they did not move the way mist moves. They gathered. Someone watching from the doorway said afterwards that it looked less like weather and more like a hand closing.\n\nWhen they thinned there was a bead lying on the ground, pale and faintly luminous, warm to the touch in a way nothing that small should be. Lerasium. The metal the Lord Ruler was made from, and there is no vault within a thousand miles that could have lost it.\n\nSomething is still awake out there, and it has decided you should have this.</letterText>
+  </IncidentDef>
+
+</Defs>

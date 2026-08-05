@@ -14,6 +14,7 @@ public class NamedPawnDef {
     public Gender gender = Gender.None;
     public List<string> genes = [];
     public int idealLevel;
+    public List<NamedPawnInventoryEntry> apparel = [];
     public List<NamedPawnInventoryEntry> inventory = [];
     public string? lastName;
     public bool mistborn;
@@ -88,6 +89,9 @@ public class NamedPawnDef {
                     break;
                 case "inventory":
                     inventory = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
+                    break;
+                case "apparel":
+                    apparel = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
                     break;
             }
         }

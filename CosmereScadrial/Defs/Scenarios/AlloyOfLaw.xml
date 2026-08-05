@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_Scenario_AlloyOfLaw</defName>
-    <label>Mistborn: The Alloy of Law</label>
+    <label>Cosmere - Scadrial - The Alloy of Law</label>
     <description>Three hundred years after the Catacendre. Waxillium Ladrian left the Roughs to reclaim his noble house, but civilization's comforts cannot dull the instincts of a lawman. When the Vanishers begin their campaign of theft and kidnapping, Wax picks up his guns again.</description>
     <scenario>
       <summary>Wax and Wayne take on the Vanishers in the post-Catacendre Roughs.</summary>

@@ -33,4 +33,10 @@ public class StartQuestAction : ProgressionAction {
 
         manager.TryStartCapstone(questDef, map, null);
     }
+
+    public override string? Describe() {
+        return questDef == null
+            ? null
+            : "CC_Progression_Effect_Quest".Translate(questDef.label.Named("QUEST")).Resolve();
+    }
 }

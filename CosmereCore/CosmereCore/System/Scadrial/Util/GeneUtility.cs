@@ -48,15 +48,16 @@ public static class GeneUtility {
         string roll;
         bool success;
         if (isPreservation) {
+            float preservation = ConnectionFactor(pawn, ShardDefOf.Preservation);
             if (isNoble) {
-                success = RollChance(128, out roll);
+                success = RollChance(Eased(128, preservation), out roll);
                 Logger.Verbose(
                     $"Trying for Mistborn. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
                 );
                 if (success) {
                     AddMistborn(pawn);
                 } else {
-                    success = RollChance(16, out roll);
+                    success = RollChance(Eased(16, preservation), out roll);
                     Logger.Verbose(
                         $"Trying for Misting. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
                     );
@@ -90,7 +91,7 @@ public static class GeneUtility {
         // Harmony system: no nobles, no block, no mistborn/full feruchemists
         if (!isHarmony) return;
 
-        success = RollChance(16, out roll);
+        success = RollChance(Eased(16, ConnectionFactor(pawn, ShardDefOf.Harmony)), out roll);
         Logger.Verbose(
             $"Trying for random misting. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
         );
@@ -234,6 +235,21 @@ public static class GeneUtility {
 
     private static bool RollChance(int oneIn) {
         return RollChance(oneIn, out _);
+    }
+
+    /// <summary>
+    ///     The colony's tie to a Shard, or 1.0 for anyone who is not the player's. Raiders and
+    ///     world pawns generate through the same path, and a colony boon should not be handing
+    ///     the Final Empire more Mistings.
+    /// </summary>
+    private static float ConnectionFactor(Pawn pawn, Core.Def.ShardDef shard) {
+        if (pawn.Faction?.IsPlayer != true) return 1f;
+        return Current.Game?.GetComponent<Core.Comp.Game.ShardConnections>()?.Get(shard) ?? 1f;
+    }
+
+    /// <summary>Shortens a one-in-N roll by the connection factor. Never below one-in-one.</summary>
+    private static int Eased(int oneIn, float factor) {
+        return factor <= 1f ? oneIn : Mathf.Max(1, Mathf.RoundToInt(oneIn / factor));
     }
 
     private static bool RollChance(int oneIn, out string rollString) {

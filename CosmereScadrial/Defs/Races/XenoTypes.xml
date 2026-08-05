@@ -59,6 +59,9 @@
         <iconPath>UI/Icons/Xenotype/Terris</iconPath>
         <genes>
             <li>Cosmere_Scadrial_Gene_TerrisHeritage</li>
+            <!-- The Terris are a dark-skinned people. Set on the xenotype rather than per pawn
+                 so Sazed, Tindwyl and every generated Terris agree. -->
+            <li>Skin_Melanin8</li>
             <li>Cosmere_Scadrial_Gene_TerrisDeepMemory</li>
             <li>Cosmere_Scadrial_Gene_TerrisPeaceful</li>
             <li>Cosmere_Scadrial_Gene_TerrisStability</li>

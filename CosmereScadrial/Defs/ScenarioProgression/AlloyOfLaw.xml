@@ -9,6 +9,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -24,6 +25,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>25</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>
@@ -39,6 +41,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>30</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
             <pawnName>Waxillium</pawnName>
@@ -62,6 +65,7 @@
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>40</days>
+            <sinceArcStart>true</sinceArcStart>
           </li>
         </triggers>
         <actions>

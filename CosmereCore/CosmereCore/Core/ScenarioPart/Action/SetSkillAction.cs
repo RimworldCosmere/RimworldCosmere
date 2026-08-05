@@ -49,4 +49,27 @@ public class SetSkillAction : ProgressionAction {
             record.passion = (Passion)stepped;
         }
     }
+
+    public override string? Describe() {
+        SkillDef? skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(skill);
+        if (skillDef == null) return null;
+
+        if (levelOffset != 0) {
+            return "CC_Progression_Effect_SkillGain".Translate(
+                pawnName.Named("PAWN"),
+                levelOffset.Named("COUNT"),
+                skillDef.label.Named("SKILL")
+            ).Resolve();
+        }
+
+        if (level >= 0) {
+            return "CC_Progression_Effect_SkillSet".Translate(
+                pawnName.Named("PAWN"),
+                skillDef.label.Named("SKILL"),
+                level.Named("COUNT")
+            ).Resolve();
+        }
+
+        return null;
+    }
 }

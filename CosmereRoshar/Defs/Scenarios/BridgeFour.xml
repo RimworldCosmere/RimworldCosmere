@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Roshar_Scenario_BridgeFour</defName>
-    <label>Stormlight: The Way of Kings</label>
+    <label>Cosmere - Roshar - The Way of Kings</label>
     <description>Bridge Four has the worst survival rate in the warcamps. The men are broken, hollow, waiting to die. But there is a new bridgeleader - a man with dark eyes and darker history. He looks at the bridgemen, and he refuses to let them give up.</description>
     <scenario>
       <summary>Bridge Four rises from slavery under Kaladin's leadership.</summary>

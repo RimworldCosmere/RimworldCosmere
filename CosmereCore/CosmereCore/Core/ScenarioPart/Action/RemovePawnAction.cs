@@ -18,6 +18,12 @@ public class RemovePawnAction : ProgressionAction {
 
     public string pawnName = string.Empty;
 
+    /// <summary>
+    ///     Overrides the effects line. "Leaves the colony" is accurate for a man walking out and
+    ///     wrong for one taking up two Shards.
+    /// </summary>
+    public string? describeKey;
+
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
@@ -52,5 +58,13 @@ public class RemovePawnAction : ProgressionAction {
                 Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
                 break;
         }
+    }
+
+    public override string? Describe() {
+        string key = describeKey ?? (method == "death"
+            ? "CC_Progression_Effect_PawnDies"
+            : "CC_Progression_Effect_PawnLeaves");
+
+        return key.Translate(pawnName.Named("PAWN")).Resolve();
     }
 }

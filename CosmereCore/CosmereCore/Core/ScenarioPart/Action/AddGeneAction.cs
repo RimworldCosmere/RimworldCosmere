@@ -24,4 +24,14 @@ public class AddGeneAction : ProgressionAction {
             pawn.genes.AddGene(geneDef, xenogene);
         }
     }
+
+    public override string? Describe() {
+        GeneDef? def = DefDatabase<GeneDef>.GetNamedSilentFail(gene);
+        if (def == null) return null;
+
+        return "CC_Progression_Effect_Gene".Translate(
+            pawnName.Named("PAWN"),
+            def.label.Named("GENE")
+        ).Resolve();
+    }
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_PostCatacendre</defName>
+    <label>Post-catacendre Progression</label>
+    <events>
+
+      <li>
+        <key>ash_stops</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>10</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>The Ash Has Stopped</title>
+            <text>Someone noticed at midday and could not say it out loud for a while. Nothing is falling. The sky over the basin is a colour none of the older ones have a word for, and the ground is going to have to learn what to do with light. Harmony has set the world down gently, and now everybody has to live in it.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>first_harvest</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>30</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnCountTrigger">
+            <minCount>5</minCount>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>What Was Planted Came Up</title>
+            <text>Crops that would have choked inside a week under the old sky have come in whole. There is more food in the stores than anyone here has held at once, and a quiet argument going on about whether to eat it or plant it. That is a new kind of argument, and it is a better one.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_roughs</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>60</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>first_harvest</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Roads, and What Comes Down Them</title>
+            <text>Traders came through with news instead of goods. There are cities out east now with law in them, and out here there is not, and the gap between those two facts is where everyone in this basin is going to be living for the next several generations. They are calling it the Roughs. It is not an insult yet.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
+          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_AlloyOfLaw</progression>
+          </li>
+        </actions>
+      </li>
+
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

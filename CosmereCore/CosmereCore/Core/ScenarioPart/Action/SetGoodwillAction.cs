@@ -34,4 +34,14 @@ public class SetGoodwillAction : ProgressionAction {
 
         player.TryAffectGoodwillWith(other, delta, sendMessage, false);
     }
+
+    public override string? Describe() {
+        FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(faction);
+        if (def == null) return null;
+
+        return "CC_Progression_Effect_Goodwill".Translate(
+            def.label.Named("FACTION"),
+            goodwill.Named("AMOUNT")
+        ).Resolve();
+    }
 }

@@ -84,4 +84,160 @@
     </skillGains>
   </BackstoryDef>
 
+  <!-- Crew backstories. bodyTypeGlobal is doing real work here: it pins the body so a named
+       character cannot come out shaped like somebody else. -->
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_StreetUrchin</defName>
+    <slot>Childhood</slot>
+    <title>street urchin</title>
+    <titleShort>urchin</titleShort>
+    <description>[PAWN_nameDef] grew up in skaa crews on the streets of Luthadel, passed between thieving gangs and taught one rule above all others: anyone who says they will protect you wants something. [PAWN_pronoun] learned to be small, quiet and unnoticed, and learned it well enough to still be alive.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Melee>3</Melee>
+      <Social>2</Social>
+    </skillGains>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_CrewsLuck</defName>
+    <slot>Adulthood</slot>
+    <title>crew's luck</title>
+    <titleShort>luck</titleShort>
+    <description>[PAWN_nameDef] was passed between thieving crews like a tool, kept on because jobs went better with [PAWN_objective] in the room and nobody could say why. Fed last, blamed first, and never once told what [PAWN_pronoun] was actually for.
+
+[PAWN_pronoun] learned to sit in corners, watch the doors, say nothing and believe less. Anyone who offers to protect you wants something, and the only question worth asking is what.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Melee>4</Melee>
+      <Social>3</Social>
+    </skillGains>
+    <bodyTypeGlobal>Thin</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Ledgerman</defName>
+    <slot>Adulthood</slot>
+    <title>ledgerman</title>
+    <titleShort>ledgerman</titleShort>
+    <description>Somebody has to know where the food is coming from, who is owed what, and which of the safe houses is one careless word from being raided. [PAWN_nameDef] kept the books that kept everyone else alive, and never once got the credit for it.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Intellectual>5</Intellectual>
+      <Social>4</Social>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Thug</defName>
+    <slot>Adulthood</slot>
+    <title>thug</title>
+    <titleShort>thug</titleShort>
+    <description>[PAWN_nameDef] is the one who walks in first. It is not complicated work and [PAWN_pronoun] is unreasonably cheerful about it, which unsettles people considerably more than the violence does.
+
+Given half a chance [PAWN_pronoun] would rather sit down and argue philosophy at you for an hour, and will, at length, whether or not anyone agreed to it.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Melee>7</Melee>
+      <Construction>2</Construction>
+    </skillGains>
+    <bodyTypeGlobal>Hulk</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_MasterCarpenter</defName>
+    <slot>Adulthood</slot>
+    <title>master carpenter</title>
+    <titleShort>carpenter</titleShort>
+    <description>[PAWN_nameDef] has run a carpentry shop for most of a working life, and is good enough at it that the work would stand on its own in any city in the Final Empire.
+
+Grim, limping and permanently irritated, with a low opinion of anyone who has not put in the hours. The joinery is flawless. The conversation is not.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Construction>8</Construction>
+      <Crafting>5</Crafting>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Sentry</defName>
+    <slot>Adulthood</slot>
+    <title>sentry</title>
+    <titleShort>sentry</titleShort>
+    <description>[PAWN_nameDef] kept watch. Rooftops, alley mouths, the long hours between midnight and the changing of a patrol - [PAWN_pronoun] learned which sounds mattered and which did not, and could tell a crew that trouble was coming long before it arrived.
+
+Young, jumpy, and inclined to speak in a street dialect nobody outside the eastern quarter can follow, which [PAWN_pronoun] has decided is everyone else's problem.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Shooting>4</Shooting>
+      <Melee>3</Melee>
+    </skillGains>
+    <bodyTypeGlobal>Thin</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Keeper</defName>
+    <slot>Adulthood</slot>
+    <title>Keeper of Terris</title>
+    <titleShort>keeper</titleShort>
+    <description>[PAWN_nameDef] carries the religions of a thousand dead peoples in metalminds, memorised against the day someone wants them back. A scholar and a steward, unfailingly courteous, and quietly certain that knowledge outlasts empires.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Intellectual>8</Intellectual>
+      <Social>5</Social>
+      <Medicine>3</Medicine>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_RebellionOrganiser</defName>
+    <slot>Adulthood</slot>
+    <title>rebellion organiser</title>
+    <titleShort>organiser</titleShort>
+    <description>[PAWN_nameDef] spent years running the skaa rebellion out of cellars and back rooms: counting heads, moving caches, arguing budgets with men who wanted to talk about glory instead. It was tedious, thankless, and it kept an underground army fed.
+
+[PAWN_pronoun] watched it accomplish nothing at all for a very long time, and grew hard about it in a way that never entirely wore off.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Social>5</Social>
+      <Intellectual>4</Intellectual>
+      <Melee>3</Melee>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_NobleScholar</defName>
+    <slot>Adulthood</slot>
+    <title>noble scholar</title>
+    <titleShort>scholar</titleShort>
+    <description>[PAWN_nameDef] was born to a great house and spent the inheritance on books arguing that a city might be governed by something other than fear. The house did not approve. [PAWN_pronoun] read through the disapproval and kept the books.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Intellectual>7</Intellectual>
+      <Social>5</Social>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Courtier</defName>
+    <slot>Adulthood</slot>
+    <title>courtier</title>
+    <titleShort>courtier</titleShort>
+    <description>[PAWN_nameDef] has spent a lifetime at parties working out what people want to hear and then saying it to them, warmly, at exactly the right moment. Half the room leaves having agreed to something they cannot afterwards explain.
+
+Fond of good wine, comfortable chairs and being underestimated, in roughly that order.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Social>8</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <bodyTypeGlobal>Fat</bodyTypeGlobal>
+  </BackstoryDef>
+
 </Defs>

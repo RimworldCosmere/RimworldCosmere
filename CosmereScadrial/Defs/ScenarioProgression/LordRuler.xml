@@ -83,7 +83,10 @@
             <text>A Mistborn. A full Mistborn, risen from the skaa - from the Pits of Hathsin, of all places. He fights with iron and steel, with pewter and tin, and he smiles while he does it. The reports are alarming not for the damage he causes, but for what he represents. You have spent a millennium ensuring that no skaa Mistborn could exist. Yet here he stands. Kelsier, they call him. The Survivor. He has assembled a crew, and he is coming for your empire. You have crushed a thousand rebellions. But none of them were led by a man who had already died once and refused to stay dead.</text>
             <letterDef>ThreatBig</letterDef>
           </li>
-        </actions>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_FinalEmpire</progression>
+          </li>
+</actions>
       </li>
     </events>
   </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>

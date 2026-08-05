@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_Scenario_HeroOfAges</defName>
-    <label>Mistborn: Hero of Ages</label>
+    <label>Cosmere - Scadrial - Hero of Ages</label>
     <description>Ruin is free. The ash falls heavier each day, smothering crops and choking rivers. The mists linger past dawn, killing those they touch. Elend and Vin lead what remains of civilization while Sazed searches for an answer he no longer believes exists.</description>
     <scenario>
       <summary>Survive the end of the world as Ruin's power grows unchecked.</summary>
@@ -20,7 +20,15 @@
               <age>23</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Noble_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_NobleScholar</adulthood>
               <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
               <traits>
                 <li><def>Kind</def><degree>0</degree></li>
                 <li><def>Tough</def><degree>0</degree></li>
@@ -36,11 +44,23 @@
               <age>18</age>
               <gender>Female</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_CrewsLuck</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_NobleHeritage</li>
+              </genes>
               <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
               <traits>
                 <li><def>Tough</def><degree>0</degree></li>
               </traits>
               <skills>
+                <li><def>Cosmere_Scadrial_Skill_AllomanticPower</def><level>1</level><passion>Major</passion></li>
                 <li><def>Melee</def><level>18</level></li>
                 <li><def>Shooting</def><level>12</level></li>
               </skills>
@@ -50,19 +70,25 @@
               <age>37</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Terris_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Keeper</adulthood>
               <fullFeruchemist>true</fullFeruchemist>
               <traits>
                 <li><def>NaturalMood</def><degree>-2</degree></li>
               </traits>
               <skills>
+                <li><def>Cosmere_Scadrial_Skill_FeruchemicPower</def><level>10</level><passion>Major</passion></li>
                 <li><def>Intellectual</def><level>16</level></li>
               </skills>
             </li>
             <li>
-              <firstName>Spook</firstName>
+              <firstName>Lestibournes</firstName>
+              <nickName>Spook</nickName>
               <age>18</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Sentry</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingTin</li>
               </genes>
@@ -76,11 +102,14 @@
               </skills>
             </li>
             <li>
-              <firstName>Ladrian</firstName>
+              <firstName>Edgard</firstName>
+              <lastName>Ladrian</lastName>
               <nickName>Breeze</nickName>
               <age>42</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Noble_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Courtier</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingBrass</li>
               </genes>
@@ -97,6 +126,8 @@
               <age>37</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Thug</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingPewter</li>
               </genes>
@@ -113,6 +144,8 @@
               <age>26</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Thug</adulthood>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingPewter</li>
               </genes>
@@ -171,7 +204,13 @@
           <relations>
             <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
             <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
-            <Cosmere_Scadrial_Faction_NobleHouses>-40</Cosmere_Scadrial_Faction_NobleHouses>
+            <Cosmere_Scadrial_Faction_HouseVenture>-40</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>-40</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-40</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseLekal>-40</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseTekiel>-40</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseRenoux>-40</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_HouseCett>-40</Cosmere_Scadrial_Faction_HouseCett>
             <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
           </relations>
         </li>

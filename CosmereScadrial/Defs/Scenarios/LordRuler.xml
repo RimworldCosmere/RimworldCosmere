@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_Scenario_LordRuler</defName>
-    <label>Mistborn: The Lord Ruler</label>
+    <label>Cosmere - Scadrial - The Lord Ruler</label>
     <description>You are Rashek. You held the power of Preservation at the Well of Ascension and used it to reshape the world. You moved the planet, raised the ashmounts, and transformed the Terris people. Now the power fades, but you remain - Mistborn and Feruchemist both, immortal and unyielding. A thousand years of rule begins with a single settlement.</description>
     <scenario>
       <summary>Build an empire as the immortal Lord Ruler.</summary>
@@ -106,7 +106,13 @@
         <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
           <def>Cosmere_ScenPart_FactionRelations</def>
           <relations>
-            <Cosmere_Scadrial_Faction_NobleHouses>80</Cosmere_Scadrial_Faction_NobleHouses>
+            <Cosmere_Scadrial_Faction_HouseVenture>80</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>80</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseHasting>80</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseLekal>80</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseTekiel>80</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseRenoux>80</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_HouseCett>80</Cosmere_Scadrial_Faction_HouseCett>
             <Cosmere_Scadrial_Faction_SkaaRebels>-100</Cosmere_Scadrial_Faction_SkaaRebels>
             <Cosmere_Scadrial_Faction_Terris>-100</Cosmere_Scadrial_Faction_Terris>
           </relations>

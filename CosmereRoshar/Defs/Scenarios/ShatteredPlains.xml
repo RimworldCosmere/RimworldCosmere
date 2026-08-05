@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef ParentName="ScenarioBase">
     <defName>Cosmere_Roshar_Scenario_ShatteredPlains</defName>
-    <label>Roshar: Shattered Plains</label>
+    <label>Cosmere - Roshar - Shattered Plains</label>
     <description>The Shattered Plains. A fractured wasteland of chasms and plateaus where warcamps wage an endless war of attrition for gemhearts. Bridge crews die by the dozen. Soldiers fight and bleed for stones. Somewhere in the chasms, something ancient waits.</description>
     <scenario>
       <summary>Run a warcamp on the Shattered Plains, hunting gemhearts.</summary>

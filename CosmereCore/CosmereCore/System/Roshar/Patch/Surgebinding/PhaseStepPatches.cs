@@ -57,41 +57,56 @@ public static class FlyingReachabilityPatch {
     }
 }
 
+/// <summary>
+///     Lets a lashed pawn path as though walls and doors were not there.
+///     <para>
+///         Deliberately At.Head rather than At.Around. Reachability.CanReach calls itself once
+///         for the PassAllDestroyable* modes, and an Around handler's original.Invoke re-enters
+///         the handler instead of the copied body, so the mode never downgrades and the call
+///         recurses until the stack goes. It took out GenStep_Outpost on quest site maps, which
+///         is one of the few callers that asks for PassAllDestroyableThings.
+///     </para>
+/// </summary>
 [Patch]
 public abstract class FlyingReachabilityDirectPatch : Reachability {
+    // Set across our own re-entrant call so the nested injection stands aside and lets the real
+    // body run. Vanilla's own PassAllDestroyableThings self-call lands here too and is fine:
+    // it just passes straight through to the body it was always meant to reach.
     [ThreadStatic]
-    private static bool patching;
+    private static bool passingThrough;
 
     protected FlyingReachabilityDirectPatch(Verse.Map map) : base(map) { }
 
     [Inject(
-        At.Around,
+        At.Head,
         nameof(CanReach),
         parameterTypes: [typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms)]
     )]
-    private bool AroundCanReach(
+    private Control BeforeCanReach(
         IntVec3 start,
         LocalTargetInfo dest,
         PathEndMode peMode,
         TraverseParms traverseParams,
-        Operation<IntVec3, LocalTargetInfo, PathEndMode, TraverseParms, bool> original
+        ControlHandle<bool> ch
     ) {
-        if (patching) return original.Invoke(start, dest, peMode, traverseParams);
+        if (passingThrough) return Control.Continue;
 
         Pawn? pawn = traverseParams.pawn;
-        if (pawn == null) return original.Invoke(start, dest, peMode, traverseParams);
-        if (!BasicLashing.FlyingPawns.Contains(pawn)) return original.Invoke(start, dest, peMode, traverseParams);
+        if (pawn == null) return Control.Continue;
+        if (!BasicLashing.FlyingPawns.Contains(pawn)) return Control.Continue;
 
         traverseParams.mode = TraverseMode.PassAllDestroyableThings;
         traverseParams.canBashDoors = true;
         traverseParams.canBashFences = true;
 
-        patching = true;
+        passingThrough = true;
         try {
-            return original.Invoke(start, dest, peMode, traverseParams);
+            ch.ReturnValue = CanReach(start, dest, peMode, traverseParams);
         } finally {
-            patching = false;
+            passingThrough = false;
         }
+
+        return Control.Cancel;
     }
 }
 

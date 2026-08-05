@@ -27,7 +27,20 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    public int TicksUntilNextStorm => nextHighstormTick - Find.TickManager.TicksGame;
+    /// <summary>
+    ///     Whether storms are running at all on this map. False on a world with no Honor, or
+    ///     with highstorms switched off in settings.
+    /// </summary>
+    public bool IsScheduling => enabled;
+
+    /// <summary>
+    ///     Never negative. With no storm scheduled - which is every map on a world without
+    ///     Honor - this is "not any time soon" rather than a countdown that has already run out,
+    ///     because a raw nextHighstormTick of -1 reads as overdue to anything comparing against
+    ///     a warning threshold.
+    /// </summary>
+    public int TicksUntilNextStorm =>
+        !enabled || nextHighstormTick < 0 ? int.MaxValue : nextHighstormTick - Find.TickManager.TicksGame;
 
     public bool IsStormActive => stormActive;
 

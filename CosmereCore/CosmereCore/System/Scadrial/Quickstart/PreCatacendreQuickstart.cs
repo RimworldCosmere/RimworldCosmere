@@ -20,11 +20,11 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
     public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre;
 
-    // The PreCatacendre scenario already enables Ruin and Preservation, so Allomancy works out of
-    // the box. Honor, Cultivation and Odium are added here rather than in the scenario so this
-    // quickstart can also exercise Roshar content - every Radiant grant silently no-ops without
-    // Honor.
-    public override IReadOnlyList<string> shards => ["Honor", "Cultivation", "Odium"];
+    // Nothing beyond what the scenario itself sets, which is Ruin and Preservation. Adding Honor,
+    // Cultivation and Odium here turned a Mistborn colony into one with highstorms scheduled and
+    // Rosharan genes rolling on every pawn. The All-Stars quickstart is where Roshar content gets
+    // exercised.
+    public override IReadOnlyList<string> shards => [];
 
     public override void PostStart() {
         DebugSettings.godMode = true;

@@ -14,7 +14,7 @@ namespace Cosmere.Core.Quest.Objective;
 /// </summary>
 public class QuestPart_PersistentSite : QuestPart_CosmereActivable {
     /// <summary>Ticks between assaults while the player is working the site. 60000 is one day.</summary>
-    public int raidIntervalTicks = 90000;
+    public int raidIntervalTicks = 60000;
 
     public FactionDef? factionDef;
     public int lastRaidTick = -1;
@@ -34,12 +34,13 @@ public class QuestPart_PersistentSite : QuestPart_CosmereActivable {
 
         bool present = map.mapPawns.FreeColonistsSpawnedCount > 0;
 
-        // Arriving after an absence buys a fresh response: the map itself is never regenerated,
-        // so without this the Ministry would only ever defend the place once.
+        // Arriving starts the clock rather than triggering an assault. Landing straight into a
+        // raid gives the player no chance to unload a caravan, and the Ministry noticing takes
+        // longer than the walk from the map edge.
         if (present && !playerWasPresent) {
-            Assault(map, "returned to");
-        } else if (present && (lastRaidTick < 0 || Find.TickManager.TicksGame - lastRaidTick > raidIntervalTicks)) {
-            Assault(map, "is still working");
+            if (lastRaidTick < 0) lastRaidTick = Find.TickManager.TicksGame;
+        } else if (present && Find.TickManager.TicksGame - lastRaidTick > raidIntervalTicks) {
+            Assault(map, "is working");
         }
 
         playerWasPresent = present;

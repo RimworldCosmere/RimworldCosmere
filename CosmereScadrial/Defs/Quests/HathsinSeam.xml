@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <Cosmere.Core.Quest.CosmereQuestDef>
-        <defName>Cosmere_Scadrial_Quest_HathsinGeodeRun</defName>
+        <defName>Cosmere_Scadrial_Quest_HathsinSeam</defName>
         <label>Crystal in the Deep</label>
-        <description>A survivor of the Pits of Hathsin has come to the colony, palms scarred through to bone from years spent breaking geodes free of the stone. He remembers a seam the Ministry never found, buried past where the obligators cared to dig. He has marked it on a map and asks nothing for it.\n\nHe was wrong about one thing. The Ministry found it, and left men on it.\n\nTake the seam, cut geodes from it, and bring at least twenty home. Stay as long or as little as you like - only what reaches the colony counts.\n\nMost geodes are hollow. The ones that are not give up their atium once the haul is sorted at the colony - at least one bead for every twenty carried back.</description>
+        <description>A survivor of the Pits of Hathsin has come to the colony, palms scarred through to bone from years spent breaking crystal free of the stone. He remembers a seam the Ministry never found, buried past where the obligators cared to dig. He has marked it on a map and asks nothing for it.\n\nHe was wrong about one thing. The Ministry found it, and left men on it.\n\nTake the seam and cut it out. Roughly one cut in ten frees a bead; the rest is worthless crystal. Work it until there is nothing left worth swinging a pick at, and what you carry out is yours.</description>
 
         <kind>Repeatable</kind>
         <subject>Colony</subject>
@@ -33,24 +33,27 @@
                     <minTiles>10</minTiles>
                     <maxTiles>22</maxTiles>
                     <threatPoints>320</threatPoints>
+                    <!-- A mine-out objective can never finish on a site whose map regenerates,
+                         because leaving puts the ore back. -->
+                    <persistent>true</persistent>
                 </objective>
             </li>
             <li>
                 <key>carry</key>
                 <descriptionKey>CS_Quest_Hathsin_Stage_Carry</descriptionKey>
-                <objective Class="Cosmere.Core.Quest.Objective.CarryHomeObjective">
-                    <thingDef>Cosmere_Scadrial_Item_AtiumGeode</thingDef>
-                    <count>20</count>
+                <objective Class="Cosmere.Core.Quest.Objective.MineOutSiteObjective">
+                    <mineable>MineableAtium</mineable>
+                    <fraction>0.85</fraction>
                 </objective>
             </li>
         </stages>
 
         <rewards>
-            <li Class="Cosmere.System.Scadrial.Quest.GeodeConversionReward">
-                <geodeDef>Cosmere_Scadrial_Item_AtiumGeode</geodeDef>
-                <metalDef>Atium</metalDef>
-                <chancePerGeode>0.08</chancePerGeode>
-                <guaranteedPer>20</guaranteedPer>
+            <li Class="Cosmere.Core.Quest.Reward.GodMetalReward">
+                <metal>Atium</metal>
+                <countMin>2</countMin>
+                <countMax>8</countMax>
+                <nearColonist>true</nearColonist>
             </li>
             <li Class="Cosmere.Core.Quest.Reward.FlagReward">
                 <flag>HathsinLead</flag>

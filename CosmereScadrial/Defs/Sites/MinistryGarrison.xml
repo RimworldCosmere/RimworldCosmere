@@ -10,7 +10,7 @@
     <showFactionInInspectString>true</showFactionInInspectString>
     <wantsThreatPoints>true</wantsThreatPoints>
     <minThreatPoints>200</minThreatPoints>
-    <arrivedLetter>The Ministry left men on the seam. They are dug in around the geode face and they have seen you.</arrivedLetter>
+    <arrivedLetter>The Ministry left men on the seam. They are dug in around the crystal and they have seen you.</arrivedLetter>
     <arrivedLetterDef>NegativeEvent</arrivedLetterDef>
     <tags>
       <li>Cosmere_Garrison</li>

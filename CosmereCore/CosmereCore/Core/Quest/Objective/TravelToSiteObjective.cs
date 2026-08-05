@@ -15,6 +15,12 @@ public class TravelToSiteObjective : QuestObjective {
     // so garrisoning it means pairing it with something that wants threat points.
     public List<SitePartDef>? extraSiteParts;
 
+    /// <summary>Restricts the site to these biomes. Null means any biome will do.</summary>
+    public List<BiomeDef>? allowedBiomes;
+
+    /// <summary>Restricts the site to these terrain roughnesses. Null means any.</summary>
+    public List<Hilliness>? allowedHilliness;
+
     public int maxTiles = 27;
     public int minTiles = 7;
 
@@ -34,6 +40,13 @@ public class TravelToSiteObjective : QuestObjective {
     public bool persistent;
 
     public float threatPoints = 300f;
+
+    /// <summary>
+    ///     Which world object the site is built as. The map generator hangs off this def, so a
+    ///     quest that wants something other than vanilla's ruin-strewn Encounter map names its
+    ///     own here. Null means vanilla's Site.
+    /// </summary>
+    public WorldObjectDef? worldObject;
 
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         if (!TryFindTile(ctx, out PlanetTile tile)) {
@@ -77,7 +90,7 @@ public class TravelToSiteObjective : QuestObjective {
             faction,
             true,
             threatPoints,
-            WorldObjectDefOf.Site
+            worldObject ?? WorldObjectDefOf.Site
         );
 
         if (site == null) {
@@ -126,7 +139,38 @@ public class TravelToSiteObjective : QuestObjective {
     }
 
     private bool TryFindTile(QuestBuildContext ctx, out PlanetTile tile) {
-        return TileFinder.TryFindNewSiteTile(out tile, minTiles, maxTiles);
+        if (allowedBiomes == null && allowedHilliness == null) {
+            return TileFinder.TryFindNewSiteTile(out tile, minTiles, maxTiles);
+        }
+
+        return TileFinder.TryFindNewSiteTile(
+            out tile,
+            minTiles,
+            maxTiles,
+            true,
+            null,
+            0f,
+            false,
+            TileFinderMode.Near,
+            false,
+            false,
+            null,
+            TileSuits
+        );
+    }
+
+    /// <summary>
+    ///     Keeps a quest off tiles its content cannot survive. A crystal field on an atoll has
+    ///     nowhere to grow, and deep water tiles read as open sea rather than a mining basin.
+    /// </summary>
+    private bool TileSuits(PlanetTile candidate) {
+        RimWorld.Planet.Tile tile = candidate.Tile;
+        if (tile == null) return false;
+
+        if (allowedBiomes != null && !allowedBiomes.Contains(tile.PrimaryBiome)) return false;
+        if (allowedHilliness != null && !allowedHilliness.Contains(tile.hilliness)) return false;
+
+        return true;
     }
 
     public override string? ConfigError() {

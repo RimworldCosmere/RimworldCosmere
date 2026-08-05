@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="RockBase">
+        <defName>MineableAtium</defName>
+        <label>atium seam</label>
+        <description>Crystal grown through dark stone, the way it does only in the Pits of Hathsin. Most of it is worthless. Roughly one cut in ten frees a bead of atium from the heart of the crystal, and that is why the Lord Ruler keeps the Pits.</description>
+
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(207, 226, 235)</color>
+            <colorTwo>(38, 34, 45)</colorTwo>
+        </graphicData>
+
+        <statBases>
+            <MaxHitPoints>1600</MaxHitPoints>
+        </statBases>
+
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
+            <mineableThing>Atium</mineableThing>
+            <mineableYield>1</mineableYield>
+            <mineableDropChance>0.10</mineableDropChance>
+            <!-- Zero so it never scatters in ordinary world gen. The Pits quest places it. -->
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+        </building>
+    </ThingDef>
+</Defs>

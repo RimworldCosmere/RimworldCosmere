@@ -5,7 +5,7 @@ using Verse;
 namespace Cosmere.Core.Quest;
 
 /// <summary>
-///     Counts and consumes an item across the colony's home maps, inventories included. A
+///     Counts an item across the colony's home maps, inventories included. A
 ///     caravan hands its cargo over inside its pawns and they unload it over the following
 ///     while, so anything reading only map.listerThings sees whatever hauling has caught up
 ///     with rather than what actually came home.
@@ -21,23 +21,6 @@ public static class HomeStock {
         }
 
         return count;
-    }
-
-    /// <summary>Destroys every one of them and returns how many were destroyed.</summary>
-    public static int ConsumeAll(ThingDef? def) {
-        List<Verse.Thing> found = new List<Verse.Thing>();
-        Collect(def, found);
-
-        int consumed = 0;
-        for (int i = 0; i < found.Count; i++) {
-            Verse.Thing thing = found[i];
-            if (thing.Destroyed) continue;
-
-            consumed += thing.stackCount;
-            thing.Destroy();
-        }
-
-        return consumed;
     }
 
     private static void Collect(ThingDef? def, List<Verse.Thing> outThings) {

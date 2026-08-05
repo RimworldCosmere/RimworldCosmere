@@ -18,13 +18,30 @@
     <!-- Before PreciousLump's 900, so its ScatterAt still has the last word on RectOfInterest
          and the garrison anchors on the main seam rather than an outlying vein. -->
     <order>880</order>
-    <genStep Class="GenStep_ScatterLumpsMineable">
+    <genStep Class="Cosmere.Core.Quest.GenStep_ScatterCrystalVeins">
       <forcedDefToScatter>MineableAtium</forcedDefToScatter>
-      <!-- Nine here plus PreciousLump's one is ten. 170 cells matches what
-           GenStep_PreciousLump computes for atium: totalValue 3500-5000 over a
-           mineableYield of 1 and a geode market value of 25. -->
-      <count>9</count>
-      <forcedLumpSize>170</forcedLumpSize>
+      <!-- One origin, not ten. Every branch grows from its parent's tip, so the whole thing is
+           one connected crystal; it only breaks where a branch runs into non-rock.
+           branchLength sets how far the mass sprawls - five generations of 11 plus the trunk
+           radius puts the outer edge at most 60 cells out, which on a 200-cell map leaves a
+           39-cell band for the Ministry to wall its 33-cell fort into. Push it past 12 and
+           GenStep_Outpost runs out of room beside the ore and drops the fort on top of it. -->
+      <count>1</count>
+      <forcedLumpSize>3570</forcedLumpSize>
+      <trunkRadius>5</trunkRadius>
+      <branchLength>11</branchLength>
+      <maxDepth>4</maxDepth>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_AtiumOnly</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_AtiumField</linkWithSite>
+    <!-- After every scatter step, including PreciousLump at 900 and the dendrites at 880, so
+         it sweeps up whatever the base generator seeded the rock with. -->
+    <order>970</order>
+    <genStep Class="Cosmere.Core.Quest.GenStep_ClearOtherOres">
+      <keep>MineableAtium</keep>
     </genStep>
   </GenStepDef>
 

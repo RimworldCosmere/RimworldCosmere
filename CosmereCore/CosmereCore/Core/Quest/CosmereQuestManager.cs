@@ -16,6 +16,12 @@ public class CosmereQuestManager : GameComponent {
     private Dictionary<string, CapstoneState> capstoneStates = new Dictionary<string, CapstoneState>();
     private Dictionary<string, HashSet<int>> pawnBurns = new Dictionary<string, HashSet<int>>();
     private HashSet<string> flags = new HashSet<string>();
+
+    /// <summary>
+    ///     The era the campaign has reached, once the story has moved it on. Null until then,
+    ///     when the scenario's own declared era stands.
+    /// </summary>
+    public string? currentEra;
     private Dictionary<string, int> lastOfferedTick = new Dictionary<string, int>();
 
     /// <summary>
@@ -270,8 +276,32 @@ public class CosmereQuestManager : GameComponent {
         lastOfferedTick[defName] = Find.TickManager.TicksGame;
     }
 
+    /// <summary>
+    ///     Moves the campaign into the era that follows the one it is in. Returns false at the
+    ///     end of a shardworld's timeline, where the current era declares no successor.
+    /// </summary>
+    public bool AdvanceEra() {
+        string? active = FindActiveEra();
+        if (active == null || active.Length == 0) {
+            Logger.Warning("AdvanceEra: this campaign has no era to advance from.");
+            return false;
+        }
+
+        Cosmere.Core.Def.EraDef? era = DefDatabase<Cosmere.Core.Def.EraDef>.GetNamedSilentFail(active);
+        if (era?.next == null) {
+            Logger.Info($"AdvanceEra: '{active}' is the last era of its timeline, staying put.");
+            return false;
+        }
+
+        currentEra = era.next.defName;
+        Logger.Important($"The campaign has moved from the {era.label} into the {era.next.label}.");
+        return true;
+    }
+
     public override void ExposeData() {
         base.ExposeData();
+
+        Scribe_Values.Look(ref currentEra, "currentEra");
 
         Scribe_Collections.Look(ref capstoneStates, "capstoneStates", LookMode.Value, LookMode.Value);
         capstoneStates ??= new Dictionary<string, CapstoneState>();
@@ -314,6 +344,12 @@ public class CosmereQuestManager : GameComponent {
     }
 
     private static string? FindActiveEra() {
+        // An era the story has advanced into wins over everything: a campaign that lived
+        // through the Catacendre is not in the age its scenario was written for any more.
+        CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();
+        string? reached = manager?.currentEra;
+        if (reached != null && reached.Length > 0) return reached;
+
         // A cross-shard quickstart declares its own era, because its scenario cannot.
         string? forced = Quickstart.Quickstarter.instance?.Quickstart?.era;
         if (forced != null && forced.Length > 0) return forced;

@@ -3,7 +3,7 @@
     <Cosmere.Core.Quest.CosmereQuestDef>
         <defName>Cosmere_Scadrial_Quest_PitsOfHathsin</defName>
         <label>The Pits Themselves</label>
-        <description>The survivor's seam was a splinter off something far larger. The Pits of Hathsin are not a mine. They are a farm, and the crop is atium, and the Lord Ruler has worked it with skaa for a thousand years because no one who goes in comes out to say otherwise.\n\nYou know where it is now. So does the Ministry, and they have never had to defend it before, because nobody has ever been mad enough to walk in.\n\nBreak the guard, and take what a thousand years of dying paid for.</description>
+        <description>The survivor's seam was a splinter off something far larger. The Pits of Hathsin are not a mine. They are a farm, and the crop is atium, and the Lord Ruler has worked it with skaa for a thousand years because no one who goes in comes out to say otherwise.\n\nYou know where it is now. So does the Ministry, and they have never had to defend it before, because nobody has ever been mad enough to walk in.\n\nBreak the guard and work the basin out. The atium is yours as you cut it. What you take from him is worth more than what you carry away.</description>
 
         <kind>Capstone</kind>
         <subject>Colony</subject>
@@ -29,13 +29,32 @@
                 <key>travel</key>
                 <descriptionKey>CS_Quest_Pits_Stage_Travel</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
-                    <sitePart>PreciousLump</sitePart>
+                    <!-- The crystal is the site. PreciousLump would drop a second, unconnected
+                         blob of its own, and the dendrite publishes RectOfInterest itself. -->
+                    <sitePart>Cosmere_Scadrial_SitePart_AtiumField</sitePart>
                     <extraSiteParts>
-                        <li>Cosmere_Scadrial_SitePart_AtiumField</li>
                         <li>Cosmere_Scadrial_SitePart_MinistryGarrison</li>
+                        <!-- Our own outpost part rather than vanilla's: it generates after the
+                             dendrite so GenStep_Outpost sees RectOfInterest and walls the fort
+                             in BESIDE the ore instead of on top of it. -->
+                        <li>Cosmere_Scadrial_SitePart_MinistryOutpost</li>
                     </extraSiteParts>
-                    <preciousLumpResources>MineableAtium</preciousLumpResources>
                     <siteLabelKey>CS_Quest_Pits_Site</siteLabelKey>
+                    <!-- Encounter scatters ancient ruins over the whole map. Next to a crystal
+                         field this size they are just clutter with better prefabs. -->
+                    <worldObject>Cosmere_WorldObject_QuestSite</worldObject>
+                    <!-- The crystal needs open, diggable ground. An atoll or an ice sheet has
+                         nowhere for it to grow, and deep water tiles read as open sea. -->
+                    <allowedBiomes>
+                        <li>TemperateForest</li>
+                        <li>AridShrubland</li>
+                        <li>Desert</li>
+                        <li>BorealForest</li>
+                    </allowedBiomes>
+                    <allowedHilliness>
+                        <li>SmallHills</li>
+                        <li>LargeHills</li>
+                    </allowedHilliness>
                     <minTiles>14</minTiles>
                     <maxTiles>28</maxTiles>
                     <threatPoints>1400</threatPoints>
@@ -49,16 +68,27 @@
                 <descriptionKey>CS_Quest_Pits_Stage_Carry</descriptionKey>
                 <objective Class="Cosmere.Core.Quest.Objective.MineOutSiteObjective">
                     <mineable>MineableAtium</mineable>
+                    <fraction>0.85</fraction>
                 </objective>
             </li>
         </stages>
 
         <rewards>
-            <li Class="Cosmere.System.Scadrial.Quest.GeodeConversionReward">
-                <geodeDef>Cosmere_Scadrial_Item_AtiumGeode</geodeDef>
-                <metalDef>Atium</metalDef>
-                <chancePerGeode>0.20</chancePerGeode>
-                <guaranteedPer>10</guaranteedPer>
+            <!-- No atium here on purpose. The field itself pays that out as it is cut, and by
+                 the time the Pits fall the colony is not short of it. What it has not had is
+                 any reason to believe the Lord Ruler can be taken from. -->
+            <li Class="Cosmere.Core.Quest.Reward.ColonyThoughtReward">
+                <thought>Cosmere_Scadrial_PitsBroken</thought>
+            </li>
+            <li Class="Cosmere.Core.Quest.Reward.GoodwillReward">
+                <faction>Cosmere_Scadrial_Faction_SkaaRebels</faction>
+                <goodwill>60</goodwill>
+            </li>
+            <li Class="Cosmere.System.Scadrial.Quest.AwakenConnectionReward">
+                <shard>Preservation</shard>
+                <countMin>1</countMin>
+                <countMax>2</countMax>
+                <connectionGain>1.0</connectionGain>
             </li>
             <li Class="Cosmere.Core.Quest.Reward.FlagReward">
                 <flag>PitsBroken</flag>

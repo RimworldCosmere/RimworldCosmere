@@ -6,23 +6,11 @@
     <CS_Quest_AtiumCaravan_Bribe_Label>Bribe the escort captain</CS_Quest_AtiumCaravan_Bribe_Label>
     <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. He brings the atium to you himself and the wagons roll on. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
 
-    <CS_Quest_Reward_FirstBead>A single bead of Lerasium, if it survives the road</CS_Quest_Reward_FirstBead>
 
-    <CS_Quest_Lerasium_Title>One bead, and three ways to spend it</CS_Quest_Lerasium_Title>
-    <CS_Quest_Lerasium_Blurb>The bead is warm from the road, no larger than a fingertip. Choose. There will not be another.</CS_Quest_Lerasium_Blurb>
 
-    <CS_Quest_Lerasium_Drink>Drink it</CS_Quest_Lerasium_Drink>
-    <CS_Quest_Lerasium_Drink_Tip>One colonist becomes Mistborn. There is no second bead.</CS_Quest_Lerasium_Drink_Tip>
-    <CS_Quest_Lerasium_Drink_Blocked>No colonist stands free to take the bead.</CS_Quest_Lerasium_Drink_Blocked>
 
-    <CS_Quest_Lerasium_Give>Give it away</CS_Quest_Lerasium_Give>
-    <CS_Quest_Lerasium_Give_Tip>A permanent ally, and a Mistborn of theirs who comes when you are pressed.</CS_Quest_Lerasium_Give_Tip>
 
-    <CS_Quest_Lerasium_Hide>Hide it</CS_Quest_Lerasium_Hide>
-    <CS_Quest_Lerasium_Hide_Tip>Keep the bead. Decide later. Understand that others will come looking.</CS_Quest_Lerasium_Hide_Tip>
-    <CS_Quest_Lerasium_Hide_Confirm>The bead stays hidden, tucked away for another day.</CS_Quest_Lerasium_Hide_Confirm>
 
-    <CS_Quest_Lerasium_BeadMissing>The bead is gone. There is nothing left to spend.</CS_Quest_Lerasium_BeadMissing>
 
     <CS_Quest_AtiumCaravan_Stage_Choice>Decide how the wagons will be taken.</CS_Quest_AtiumCaravan_Stage_Choice>
     <CS_Quest_AtiumCaravan_Stage_Travel>Reach the transfer road before the convoy passes.</CS_Quest_AtiumCaravan_Stage_Travel>
@@ -31,23 +19,18 @@
     <CS_Quest_Hathsin_Stage_Travel>Follow the survivor's map to the Pits, past where the obligators cared to dig. Ministry soldiers hold the seam. Take it from them.</CS_Quest_Hathsin_Stage_Travel>
 
     <CS_Quest_Pits_Stage_Travel>Reach the Pits of Hathsin. Not the seam this time - the farm itself, and the garrison the Lord Ruler keeps on it.</CS_Quest_Pits_Stage_Travel>
-    <CS_Quest_Pits_Stage_Carry>Strip every crystal face in the basin. Come and go as you need - what you take does not grow back, and the Ministry will keep sending men while the ground is still worth holding.</CS_Quest_Pits_Stage_Carry>
+    <CS_Quest_Pits_Stage_Carry>Work the basin out. Leave the last scraps if you like - what matters is that the crop is gone. Come and go as you need; what you take does not grow back, and the Ministry will keep sending men while the ground is still worth holding.</CS_Quest_Pits_Stage_Carry>
     <CS_Quest_Pits_Site>The Pits of Hathsin</CS_Quest_Pits_Site>
 
     <CS_Quest_Inquisitor_Stage_Travel>Find the waypoint the Inquisitor has taken for itself, before it finishes working outward to you.</CS_Quest_Inquisitor_Stage_Travel>
     <CS_Quest_Inquisitor_Stage_Clear>Put it down. Spikes through the eyes, and it still will not stop while it can stand.</CS_Quest_Inquisitor_Stage_Clear>
     <CS_Quest_Inquisitor_Site>The Inquisitor's waypoint</CS_Quest_Inquisitor_Site>
-    <CS_Quest_Hathsin_Stage_Carry>Cut geodes from the seam and bring at least twenty home. Leave whenever you like.</CS_Quest_Hathsin_Stage_Carry>
+    <CS_Quest_Hathsin_Stage_Carry>Cut the seam out. Roughly one cut in ten frees a bead. Work it until there is nothing left worth a pick.</CS_Quest_Hathsin_Stage_Carry>
 
-    <CS_Quest_Lerasium_Stage_Infiltrate>Reach the vault the obligator named.</CS_Quest_Lerasium_Stage_Infiltrate>
-    <CS_Quest_Lerasium_Stage_Breach>Break the garrison holding the vault.</CS_Quest_Lerasium_Stage_Breach>
-    <CS_Quest_Lerasium_Stage_Recover>Take the bead.</CS_Quest_Lerasium_Stage_Recover>
-    <CS_Quest_Lerasium_Stage_Carry>Carry the bead home. Do not lose it on the road.</CS_Quest_Lerasium_Stage_Carry>
 
     <CS_Quest_Hathsin_Site>The Pits of Hathsin</CS_Quest_Hathsin_Site>
     <CS_Quest_AtiumCaravan_Site>Ministry transfer road</CS_Quest_AtiumCaravan_Site>
-    <CS_Quest_Lerasium_Site>Ministry vault</CS_Quest_Lerasium_Site>
 
-    <CS_Quest_Hathsin_GeodesCracked>{GEODES} geodes are split open. {BEADS} of them held atium.</CS_Quest_Hathsin_GeodesCracked>
-    <CS_Quest_Reward_GeodeConversion>Atium from every geode carried home</CS_Quest_Reward_GeodeConversion>
+    <CS_Quest_Reward_Connection>The colony drawn closer to Preservation</CS_Quest_Reward_Connection>
+    <CS_Quest_Reward_Awakened>The Pits woke something. {COUNT} of the crew burn metal now who did not before.</CS_Quest_Reward_Awakened>
 </LanguageData>

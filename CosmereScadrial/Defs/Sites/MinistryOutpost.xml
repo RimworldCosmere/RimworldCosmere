@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Vanilla's Outpost part with two changes: a bigger fort, and one that generates after the
+       crystal instead of before it. GenStep_Outpost walls its base into a rect BESIDE
+       RectOfInterest when that var exists, and falls back to "nearest clear rect to map centre"
+       when it does not - which is the same place the crystal grows from, so at vanilla's order
+       of 400 the Ministry ends up sitting in the middle of the ore. -->
+  <SitePartDef>
+    <defName>Cosmere_Scadrial_SitePart_MinistryOutpost</defName>
+    <label>Ministry outpost</label>
+    <description>A walled post of the Steel Ministry, set on the lip of the basin where the overseers can watch the whole working at once.</description>
+    <workerClass>SitePartWorker_Outpost</workerClass>
+    <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Outpost</expandingIconTexture>
+    <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
+    <showFactionInInspectString>true</showFactionInInspectString>
+    <requiresFaction>true</requiresFaction>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <minThreatPoints>300</minThreatPoints>
+    <tags>
+      <li>Cosmere_MinistryOutpost</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_MinistryOutpost</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_MinistryOutpost</linkWithSite>
+    <!-- After the dendrite's 880, which is what publishes RectOfInterest, and before the
+         garrison's 950 so the garrison still anchors on the ore rather than on the fort. -->
+    <order>890</order>
+    <genStep Class="GenStep_Outpost">
+      <size>33</size>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_MinistryOutpostPower</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_MinistryOutpost</linkWithSite>
+    <order>891</order>
+    <genStep Class="GenStep_Power" />
+  </GenStepDef>
+
+</Defs>

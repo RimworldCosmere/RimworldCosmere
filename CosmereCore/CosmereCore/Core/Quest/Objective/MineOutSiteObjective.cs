@@ -15,6 +15,13 @@ namespace Cosmere.Core.Quest.Objective;
 public class MineOutSiteObjective : QuestObjective {
     public ThingDef? mineable;
 
+    /// <summary>
+    ///     How much of what generated has to come out before the dig counts as done. Short of
+    ///     1.0 on purpose: the last few cells of a large field are usually one awkward vein
+    ///     behind a wall, and hunting them down is not what the quest is about.
+    /// </summary>
+    public float fraction = 0.85f;
+
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         QuestPart_ArrivedAtSite? arrival = quest.GetFirstPartOfType<QuestPart_ArrivedAtSite>();
         if (arrival?.site == null) {
@@ -25,6 +32,7 @@ public class MineOutSiteObjective : QuestObjective {
             quest = quest,
             site = arrival.site,
             mineable = mineable,
+            fraction = fraction,
             inSignalEnable = inSignal,
             outSignalsCompleted = new List<string> { outSignal },
         };
@@ -32,6 +40,8 @@ public class MineOutSiteObjective : QuestObjective {
     }
 
     public override string? ConfigError() {
-        return mineable == null ? "MineOutSiteObjective has no mineable." : null;
+        if (mineable == null) return "MineOutSiteObjective has no mineable.";
+        if (fraction <= 0f || fraction > 1f) return "MineOutSiteObjective fraction must be above 0 and at most 1.";
+        return null;
     }
 }

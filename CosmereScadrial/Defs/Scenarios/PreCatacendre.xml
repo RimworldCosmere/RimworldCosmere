@@ -237,6 +237,11 @@
           <count>500</count>
         </li>
 
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_PreCatacendre</progression>
+        </li>
+
         <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
           <def>Cosmere_ScenPart_FactionRelations</def>
           <relations>

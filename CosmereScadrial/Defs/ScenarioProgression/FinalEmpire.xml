@@ -14,14 +14,14 @@
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Vin's Awakening</title>
-            <text>Vin had always Pulled and Pushed without knowing what she did. Luck, she called it. Street instinct. But tonight Kelsier showed her the truth. The metals sang in her stomach, and the mists answered. She burned tin, and the world sharpened to a razor's edge. She burned pewter, and her body became a weapon. She is not merely a street urchin. She is Mistborn.</text>
+            <text>Vin has taken to standing out in it. Not sheltering, not hurrying through - standing, with her arms loose at her sides, letting the mist curl around her until the others stop watching from the doorway and go back to bed. She says it feels like being poured into. Whatever the mists are doing to her, she comes back in steadier than she went out, and the metals answer her faster than they did a week ago.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Action.SetSkillAction">
             <pawnName>Vin</pawnName>
             <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
-            <level>20</level>
-            <passion>Major</passion>
+            <levelOffset>10</levelOffset>
+            <passionOffset>1</passionOffset>
           </li>
         </actions>
       </li>

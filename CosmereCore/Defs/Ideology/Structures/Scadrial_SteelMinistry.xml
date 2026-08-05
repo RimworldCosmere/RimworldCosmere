@@ -58,6 +58,9 @@
                 <li><key>structure_cosmere_steelministry</key><value>true</value></li>
             </constants>
         </descriptionMaker>
+        <!-- deityCount is 2, so this needs more than two entries to draw from. With exactly
+             two, the unique-pair picker retries and gives up with "Could not get a unique fixed
+             deity name and type after a reasonable number of tries." -->
         <fixedDeityNameTypes>
             <li>
                 <name>Ruin</name>
@@ -66,6 +69,18 @@
             <li>
                 <name>Preservation</name>
                 <type>Shard of Adonalsium</type>
+            </li>
+            <li>
+                <name>the Lord Ruler</name>
+                <type>Sliver of Infinity</type>
+            </li>
+            <li>
+                <name>Rashek</name>
+                <type>Hero of Ages</type>
+            </li>
+            <li>
+                <name>the Father</name>
+                <type>God of the Final Empire</type>
             </li>
         </fixedDeityNameTypes>
         <symbolPacks>

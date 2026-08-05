@@ -1,7 +1,7 @@
 namespace Cosmere.Core.Framework;
 
 public static class BuildInfo {
-    public const string Revision = "2.0.0-beta.39";
+    public const string Revision = "2.0.0-beta.40";
 
-    public const string BuildTime = "2026-08-04T21:40:20.492Z";
+    public const string BuildTime = "2026-08-05T04:05:51.346Z";
 }

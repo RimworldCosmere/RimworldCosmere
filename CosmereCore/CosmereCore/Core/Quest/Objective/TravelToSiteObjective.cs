@@ -26,6 +26,13 @@ public class TravelToSiteObjective : QuestObjective {
     // "manhunter pack" instead of the place the quest is actually about.
     public string? siteLabelKey;
     public SitePartDef? sitePart;
+
+    /// <summary>
+    ///     Keeps the site on the world map for the life of the quest, re-posting it whenever
+    ///     vanilla tears it down on departure. For objectives the player is meant to return to.
+    /// </summary>
+    public bool persistent;
+
     public float threatPoints = 300f;
 
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
@@ -40,6 +47,10 @@ public class TravelToSiteObjective : QuestObjective {
 
         List<SitePartDef> siteParts = new List<SitePartDef>();
         if (sitePart != null) siteParts.Add(sitePart);
+
+        // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the
+        // quest layers on.
+        if (persistent) siteParts.Add(SitePartDefOf.Cosmere_SitePart_Persistent);
         if (extraSiteParts != null) {
             for (int i = 0; i < extraSiteParts.Count; i++) {
                 SitePartDef? extra = extraSiteParts[i];
@@ -98,6 +109,20 @@ public class TravelToSiteObjective : QuestObjective {
             outSignalsCompleted = new List<string> { outSignal },
         };
         quest.AddPart(arrived);
+
+        if (!persistent) return;
+
+        // Enabled on the same signal as the arrival check and never completes, so it outlives
+        // every later stage and can keep the site defended and tidy it up at the end.
+        QuestPart_PersistentSite keeper = new QuestPart_PersistentSite {
+            quest = quest,
+            site = site,
+            factionDef = faction?.def,
+            threatPoints = threatPoints,
+            inSignalEnable = inSignal,
+        };
+        quest.AddPart(keeper);
+        arrived.keeper = keeper;
     }
 
     private bool TryFindTile(QuestBuildContext ctx, out PlanetTile tile) {

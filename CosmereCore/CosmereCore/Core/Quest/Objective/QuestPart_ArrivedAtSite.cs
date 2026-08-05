@@ -18,11 +18,19 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
     /// </summary>
     public string? arrivalSignal;
 
+    /// <summary>
+    ///     Set when the site is persistent. The keeper re-posts the site as a new object, so
+    ///     this part has to read the live one rather than the reference it was built with.
+    /// </summary>
+    public QuestPart_PersistentSite? keeper;
+
     private bool sawMap;
     public Site? site;
 
+    private Site? CurrentSite => keeper != null ? keeper.site : site;
+
     protected override bool IsSatisfied() {
-        Site? current = site;
+        Site? current = CurrentSite;
         if (current == null) {
             Logger.Warning("QuestPart_ArrivedAtSite: lost its site reference. Opening the stage.");
             return true;
@@ -54,7 +62,8 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
     /// </summary>
     protected override void OnSkipped() {
         base.OnSkipped();
-        if (site != null && !site.Destroyed && !site.HasMap) site.Destroy();
+        Site? current = CurrentSite;
+        if (current != null && !current.Destroyed && !current.HasMap) current.Destroy();
     }
 
     protected override void ProcessQuestSignal(Signal signal) {
@@ -75,7 +84,8 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
                 yield return target;
             }
 
-            if (site != null) yield return site;
+            Site? current = CurrentSite;
+            if (current != null && !current.Destroyed) yield return current;
         }
     }
 
@@ -88,12 +98,16 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
     /// </summary>
     public override void Cleanup() {
         base.Cleanup();
+
+        // A persistent site belongs to the keeper, which cleans it up itself.
+        if (keeper != null) return;
         if (site != null && !site.Destroyed && !site.HasMap) site.Destroy();
     }
 
     public override void ExposeData() {
         base.ExposeData();
         Scribe_References.Look(ref site, "site");
+        Scribe_References.Look(ref keeper, "keeper");
         Scribe_Values.Look(ref arrivalSignal, "arrivalSignal");
         Scribe_Values.Look(ref sawMap, "sawMap");
     }

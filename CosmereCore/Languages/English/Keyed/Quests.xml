@@ -13,4 +13,5 @@
   <CC_Quest_Choice_InsufficientSilver>You do not have enough silver to choose this path.</CC_Quest_Choice_InsufficientSilver>
   <CC_Quest_Choice_InsufficientSilver_Tip>You need {COUNT} more silver for this.</CC_Quest_Choice_InsufficientSilver_Tip>
   <CC_Quest_Choice_SilverCost>{COUNT} silver</CC_Quest_Choice_SilverCost>
+  <CC_Quest_MinedOut_Remaining>{COUNT} crystal faces still standing</CC_Quest_MinedOut_Remaining>
 </LanguageData>

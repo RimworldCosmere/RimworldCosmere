@@ -83,6 +83,36 @@ public class CosmereQuestManager : GameComponent {
         return state;
     }
 
+    /// <summary>
+    ///     Picks a Threat that may arrive right now, weighted like the offer pool. Separate from
+    ///     PickWeighted because Threats are excluded from the storyteller's offers by design.
+    /// </summary>
+    public CosmereQuestDef? PickThreat(Verse.Map map) {
+        QuestWorldState state = BuildWorldState();
+
+        List<CosmereQuestDef> defs = DefDatabase<CosmereQuestDef>.AllDefsListForReading;
+        List<CosmereQuestDef> eligible = new List<CosmereQuestDef>();
+        float totalWeight = 0f;
+        for (int i = 0; i < defs.Count; i++) {
+            QuestCandidate candidate = defs[i].ToCandidate();
+            if (!CosmereQuestEligibility.IsDeliverableAsThreat(candidate, state)) continue;
+
+            eligible.Add(defs[i]);
+            totalWeight += CosmereQuestEligibility.WeightOf(candidate);
+        }
+
+        if (eligible.Count == 0 || totalWeight <= 0f) return null;
+
+        float roll = Rand.Range(0f, totalWeight);
+        float cumulative = 0f;
+        for (int i = 0; i < eligible.Count; i++) {
+            cumulative += CosmereQuestEligibility.WeightOf(eligible[i].ToCandidate());
+            if (roll <= cumulative) return eligible[i];
+        }
+
+        return eligible[eligible.Count - 1];
+    }
+
     public CosmereQuestDef? PickWeighted(Verse.Map map) {
         QuestWorldState state = BuildWorldState();
 
@@ -170,6 +200,30 @@ public class CosmereQuestManager : GameComponent {
         QuestUtility.SendLetterQuestAvailable(quest);
         RecordOffered(def.defName);
         capstoneStates[def.defName] = CapstoneState.Offered;
+        return true;
+    }
+
+    /// <summary>
+    ///     Starts a Threat quest already accepted. A Threat is not an offer - it arrives and the
+    ///     player deals with it - so there is no accept/dec‍line letter and no acceptance deadline.
+    /// </summary>
+    public bool TryStartThreat(CosmereQuestDef def, Verse.Map map, Pawn? subject) {
+        if (def.kind != QuestKind.Threat) {
+            Logger.Error($"{def.defName}: TryStartThreat called on a {def.kind} quest.");
+            return false;
+        }
+
+        if (!CosmereQuestBuilder.TryBuild(def, map, subject, out RimWorld.Quest? quest) || quest == null) {
+            return false;
+        }
+
+        // Before Add: QuestManager.Add calls Initiate() for an already-accepted quest, which is
+        // what enables the first stage's parts. Accepting afterwards would leave them dormant.
+        quest.SetInitiallyAccepted();
+
+        Find.QuestManager.Add(quest);
+        QuestUtility.SendLetterQuestAvailable(quest);
+        RecordOffered(def.defName);
         return true;
     }
 

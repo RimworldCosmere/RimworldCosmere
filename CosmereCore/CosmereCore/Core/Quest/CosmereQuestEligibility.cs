@@ -62,6 +62,17 @@ public static class CosmereQuestEligibility {
     }
 
     /// <summary>
+    ///     Whether this quest may arrive as a Threat. Threats bypass the storyteller's offer
+    ///     pool entirely - they are not chosen from, they happen - so they need their own
+    ///     predicate rather than sharing the Repeatable one.
+    /// </summary>
+    public static bool IsDeliverableAsThreat(QuestCandidate? candidate, QuestWorldState? state) {
+        if (candidate == null) return false;
+        if (candidate.kind != QuestKind.Threat) return false;
+        return IsEligible(candidate, state);
+    }
+
+    /// <summary>
     ///     Narrows candidates to the storyteller's random-offer pool. This is the storyteller path
     ///     only - CosmereQuestManager.PickWeighted is its sole caller - so it excludes Capstone and
     ///     Threat kinds via IsOfferableByStoryteller even when IsEligible would allow them. Callers

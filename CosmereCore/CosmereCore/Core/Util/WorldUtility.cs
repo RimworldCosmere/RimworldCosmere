@@ -90,6 +90,30 @@ public static class WorldUtility {
     }
 
     /// <summary>
+    ///     The world a faction belongs to. Null for vanilla and DLC factions, which belong to no
+    ///     shardworld.
+    /// </summary>
+    /// <remarks>
+    ///     Read off the defName, because every Cosmere faction is named
+    ///     Cosmere_&lt;World&gt;_Faction_* and the world's own defName is that middle token. A
+    ///     hand-kept list on the def would be 25-odd entries whose failure mode is silent: miss
+    ///     one and that faction vanishes from its own world's scenarios with no error. The
+    ///     convention is covered by a test instead.
+    /// </remarks>
+    public static CosmereWorldDef? WorldForFaction(FactionDef? faction) {
+        string? defName = faction?.defName;
+        if (string.IsNullOrEmpty(defName)) return null;
+
+        List<CosmereWorldDef> worlds = DefDatabase<CosmereWorldDef>.AllDefsListForReading;
+        for (int i = 0; i < worlds.Count; i++) {
+            if (worlds[i].crossWorld) continue;
+            if (defName!.Contains(worlds[i].defName)) return worlds[i];
+        }
+
+        return null;
+    }
+
+    /// <summary>
     ///     The Shards a pawn born to this save gets an ancestry floor for. A cross-world save
     ///     gathers from every loaded world rather than listing them, so it does not dangle when
     ///     a shard mod is absent.

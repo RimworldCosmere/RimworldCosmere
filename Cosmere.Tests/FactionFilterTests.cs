@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cosmere.Tests;
@@ -107,10 +109,150 @@ public class FactionFilterTests {
         );
 
         int concealCheck = source.IndexOf("IsWarnedAboutWhenMissing(faction)", StringComparison.Ordinal);
-        int yieldAfter = source.IndexOf("yield return faction;", concealCheck, StringComparison.Ordinal);
+        int yieldAfter = concealCheck < 0
+            ? -1
+            : source.IndexOf("yield return faction;", concealCheck, StringComparison.Ordinal);
+
         Assert.IsTrue(
             concealCheck >= 0 && yieldAfter >= 0,
             "A concealed faction still has to be yielded, or it leaves the list and vanilla warns anyway."
+        );
+    }
+
+    /// <summary>
+    ///     The predicate used to ask whether the scenario name started with "Stormlight:",
+    ///     "Roshar:" or "Cosmere:". ScenarioDef.PostLoad copies label into scenario.name, and
+    ///     every shipped label reads "Cosmere - Scadrial - The Final Empire", so none of the three
+    ///     ever matched. All seven Roshar scenarios got no filtering at all, and only Scadrial
+    ///     worked - by the accident of a Contains("Scadrial") sitting next to them.
+    /// </summary>
+    [TestMethod]
+    public void ScenarioRecognitionDoesNotGuessAtLabels() {
+        string source = PatchSource;
+
+        foreach (string prefix in new[] { "Stormlight:", "Roshar:", "Cosmere:", "Mistborn:" }) {
+            Assert.IsFalse(
+                source.Contains(prefix, StringComparison.Ordinal),
+                $"\"{prefix}\" is not how any shipped scenario is labelled - the match can never fire."
+            );
+        }
+
+        Assert.IsTrue(
+            source.Contains("ScenarioDefUtility.IsCosmere", StringComparison.Ordinal),
+            "Whether a scenario is ours comes from the mod that declares it, not from its label."
+        );
+    }
+
+    /// <summary>
+    ///     Every Cosmere faction is named Cosmere_&lt;World&gt;_Faction_*, and WorldForFaction reads
+    ///     the world out of that. One badly named faction resolves to no world and disappears from
+    ///     its own world's scenarios, with nothing logged.
+    /// </summary>
+    [TestMethod]
+    public void EveryCosmereFactionNamesItsWorld() {
+        List<string> worlds = [];
+        List<string> factions = [];
+
+        foreach (string mod in new[] { "CosmereCore", "CosmereScadrial", "CosmereRoshar" }) {
+            string dir = Path.Combine(RepoRoot, mod, "Defs");
+            if (!Directory.Exists(dir)) continue;
+
+            foreach (string path in Directory.GetFiles(dir, "*.xml", SearchOption.AllDirectories)) {
+                XElement? root = XDocument.Load(path).Root;
+                if (root == null) continue;
+
+                foreach (XElement world in root.Descendants("Cosmere.Core.Def.CosmereWorldDef")) {
+                    // The cross-world sentinel is nobody's home, so it is not a token.
+                    if (world.Element("crossWorld")?.Value.Trim() == "true") continue;
+
+                    string? name = world.Element("defName")?.Value.Trim();
+                    if (!string.IsNullOrEmpty(name)) worlds.Add(name!);
+                }
+
+                foreach (XElement faction in root.Descendants("FactionDef")) {
+                    string? name = faction.Element("defName")?.Value.Trim();
+                    if (!string.IsNullOrEmpty(name)) factions.Add(name!);
+                }
+            }
+        }
+
+        Assert.IsTrue(worlds.Count > 0, "Found no world defs - the walk is wrong, not the data.");
+        Assert.IsTrue(factions.Count > 0, "Found no faction defs - the walk is wrong, not the data.");
+
+        List<string> offenders = [];
+        foreach (string faction in factions) {
+            int matches = 0;
+            foreach (string world in worlds) {
+                if (faction.Contains(world, StringComparison.Ordinal)) matches++;
+            }
+
+            if (matches != 1) offenders.Add($"{faction} matches {matches} worlds");
+        }
+
+        Assert.AreEqual(
+            0,
+            offenders.Count,
+            "Each faction has to name exactly one world: " + string.Join("; ", offenders)
+        );
+    }
+
+    /// <summary>
+    ///     CreateFactionAndAddToManager is not only worldgen's funnel - the single-argument
+    ///     overload forwards to it, and ScenPart_FactionRelations, CreateFactionAction and
+    ///     RaidAction all call that. An unconditional cancel makes a scripted story faction fail
+    ///     to arrive with nothing logged.
+    ///     <para>
+    ///         The exemption is opt-in from our own callers rather than a flag set around world
+    ///         generation. If a worldgen flag ever failed to attach, the gate would silently stop
+    ///         filtering anything - the more expensive way to be wrong.
+    ///     </para>
+    /// </summary>
+    [TestMethod]
+    public void OnlyScriptedCreationBypassesTheWorldGate() {
+        string source = PatchSource;
+
+        Assert.IsTrue(
+            source.Contains("IsScriptedCreation", StringComparison.Ordinal),
+            "Expected scripted creation to be distinguishable from world generation."
+        );
+
+        int guard = source.IndexOf(
+            "if (FactionGeneratorPatch.IsScriptedCreation) return Control.Continue;",
+            StringComparison.Ordinal
+        );
+        int cancel = source.IndexOf("Control.Cancel", StringComparison.Ordinal);
+        Assert.IsTrue(
+            guard >= 0 && cancel > guard,
+            "The scripted check has to run before the cancel, or story beats are still swallowed."
+        );
+    }
+
+    /// <summary>
+    ///     Every scripted beat has to go through CreateScripted. A direct FactionGenerator call
+    ///     lands on the gate and the faction never arrives.
+    /// </summary>
+    [TestMethod]
+    public void NoScriptedBeatCallsFactionGeneratorDirectly() {
+        string coreDir = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore");
+        string gate = Path.Combine("Core", "Patch", "World", "FactionGeneratorPatches.cs");
+
+        List<string> offenders = [];
+        foreach (string path in Directory.GetFiles(coreDir, "*.cs", SearchOption.AllDirectories)) {
+            string relative = Path.GetRelativePath(coreDir, path);
+
+            // The gate itself is the one legitimate caller - CreateScripted wraps it.
+            if (relative == gate) continue;
+
+            if (File.ReadAllText(path)
+                .Contains("FactionGenerator.CreateFactionAndAddToManager", StringComparison.Ordinal)) {
+                offenders.Add(relative);
+            }
+        }
+
+        Assert.AreEqual(
+            0,
+            offenders.Count,
+            "These call FactionGenerator directly and will be filtered out: " + string.Join(", ", offenders)
         );
     }
 }

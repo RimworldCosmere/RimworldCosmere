@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using Cosmere.Core.Patch;
 using RimWorld;
 using Verse;
 
@@ -65,7 +66,7 @@ public class ScenPart_FactionRelations : ScenPart {
         if (faction != null) return faction;
 
         try {
-            FactionGenerator.CreateFactionAndAddToManager(def);
+            FactionGeneratorPatch.CreateScripted(def);
         } catch (Exception ex) {
             Logger.Warning($"ScenPart_FactionRelations: Failed to create faction '{defName}': {ex}");
             return null;

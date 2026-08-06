@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Patch;
 using RimWorld;
 using Verse;
 
@@ -58,7 +59,7 @@ public class RaidAction : ProgressionAction {
         Faction? attacker = Find.FactionManager.FirstFactionOfDef(def);
         if (attacker == null) {
             try {
-                FactionGenerator.CreateFactionAndAddToManager(def);
+                FactionGeneratorPatch.CreateScripted(def);
             } catch (Exception ex) {
                 Logger.Warning($"ScenarioProgression: could not create faction '{faction}': {ex}");
                 return;

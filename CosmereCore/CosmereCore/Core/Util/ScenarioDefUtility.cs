@@ -31,6 +31,24 @@ public static class ScenarioDefUtility {
         }
     }
 
+    /// <summary>
+    ///     Whether the running scenario is one we ship, by the mod that declares it.
+    /// </summary>
+    /// <remarks>
+    ///     This used to be a set of label prefixes - StartsWith("Stormlight:"), ("Roshar:"),
+    ///     ("Cosmere:") - and not one of them matched a shipped label, which is
+    ///     "Cosmere - Scadrial - The Final Empire". Only Scadrial filtered, and only by the
+    ///     accident of a Contains("Scadrial") sitting alongside them. Asking the mod is not
+    ///     guessable wrong.
+    /// </remarks>
+    public static bool IsCosmere {
+        get {
+            string? packageId = Current?.modContentPack?.PackageId;
+            return packageId != null &&
+                packageId.StartsWith("cosmere.", global::System.StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
     /// <summary>The era the running scenario starts in, or null when it names none.</summary>
     public static EraDef? CurrentEra => Current?.GetModExtension<ScenarioEra>()?.era;
 

@@ -343,7 +343,7 @@ public class CosmereQuestManager : GameComponent {
         }
     }
 
-    private static string? FindActiveEra() {
+    public static string? FindActiveEra() {
         // An era the story has advanced into wins over everything: a campaign that lived
         // through the Catacendre is not in the age its scenario was written for any more.
         CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();

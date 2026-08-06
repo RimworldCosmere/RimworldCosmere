@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Scadrial_Thing_Ash</defName>
+        <label>ash</label>
+        <description>Ash swept up off the ground. The Ashmounts put out more of it every day than a colony can carry, and it has to go somewhere. Coarse, dry and faintly warm, it packs well and burns not at all.</description>
+        <graphicData>
+            <texPath>Things/Item/AshPile</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <soundInteract>Standard_Drop</soundInteract>
+        <soundDrop>Standard_Drop</soundDrop>
+        <stackLimit>150</stackLimit>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <statBases>
+            <MarketValue>0.15</MarketValue>
+            <Mass>0.02</Mass>
+            <Flammability>0</Flammability>
+            <DeteriorationRate>0</DeteriorationRate>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Comp.Thing.AshWashesAwayProperties">
+                <rainRateThreshold>0.4</rainRateThreshold>
+                <washPerRareTick>2</washPerRareTick>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <JobDef>
+        <defName>Cosmere_Scadrial_Job_ClearAsh</defName>
+        <driverClass>Cosmere.System.Scadrial.JobDriver.ClearAsh</driverClass>
+        <reportString>clearing ash.</reportString>
+    </JobDef>
+
+    <WorkGiverDef>
+        <defName>Cosmere_Scadrial_WorkGiver_ClearAsh</defName>
+        <label>clear ash</label>
+        <giverClass>Cosmere.System.Scadrial.WorkGiver.ClearAsh</giverClass>
+        <workType>Cleaning</workType>
+        <verb>clear</verb>
+        <gerund>clearing ash</gerund>
+        <priorityInType>11</priorityInType>
+        <scanThings>false</scanThings>
+        <scanCells>true</scanCells>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+
+    <WorkGiverDef>
+        <defName>Cosmere_Scadrial_WorkGiver_ClearAshGrowing</defName>
+        <label>clear ash from growing zones</label>
+        <giverClass>Cosmere.System.Scadrial.WorkGiver.ClearAshForGrowing</giverClass>
+        <workType>Growing</workType>
+        <verb>clear</verb>
+        <gerund>clearing ash</gerund>
+        <priorityInType>90</priorityInType>
+        <scanThings>false</scanThings>
+        <scanCells>true</scanCells>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+    </WorkGiverDef>
+
+</Defs>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- The vanilla removal zone clears ash too, so its label should say so. -->
+    <SnowClear>Snow, Sand, and Ash Removal</SnowClear>
+    <SnowAndSandClear>Snow, Sand, and Ash Removal</SnowAndSandClear>
+</LanguageData>

@@ -13,6 +13,7 @@ public enum MistsFrequency {
 
 public class ScadrialModSettings : CosmereModSettings {
     public bool alwaysShowAllomanticAuras;
+    public bool enableAshfall = true;
     public bool enableMists = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
@@ -28,6 +29,16 @@ public class ScadrialModSettings : CosmereModSettings {
                 "incidents",
                 "CS_Settings_Category_Incidents",
                 [
+                    new SettingDescriptor(
+                        "enable-ashfall",
+                        "CS_Settings_AshfallEnabled_Label",
+                        "CS_Settings_AshfallEnabled_Tooltip",
+                        new CheckboxControl(
+                            () => enableAshfall,
+                            updated => enableAshfall = updated,
+                            true
+                        )
+                    ),
                     new SettingDescriptor(
                         "enable-mists",
                         "CS_Settings_MistsEnabled_Label",

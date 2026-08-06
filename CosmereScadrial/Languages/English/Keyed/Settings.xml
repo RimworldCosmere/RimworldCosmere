@@ -2,6 +2,8 @@
 <LanguageData>
     <CS_Settings_Category_Incidents>Incident Settings</CS_Settings_Category_Incidents>
     
+    <CS_Settings_AshfallEnabled_Label>Enable Ashfall</CS_Settings_AshfallEnabled_Label>
+    <CS_Settings_AshfallEnabled_Tooltip>Whether the Ashmounts blanket the land during the Final Empire. When disabled, no ash falls and none settles.</CS_Settings_AshfallEnabled_Tooltip>
     <CS_Settings_MistsEnabled_Label>Enable Mists</CS_Settings_MistsEnabled_Label>
     <CS_Settings_MistsEnabled_Tooltip>Whether the mists rise at night. When disabled, the mists will not appear.</CS_Settings_MistsEnabled_Tooltip>
     <CS_Settings_MistsFrequency_Label>Mists Frequency</CS_Settings_MistsFrequency_Label>

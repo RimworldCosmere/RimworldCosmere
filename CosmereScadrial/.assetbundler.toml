@@ -9,3 +9,14 @@ output_directory = "./AssetBundles"
 bundle_name = "cosmere.scadrial"
 filename = "resource_[bundle_name]"
 include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]
+
+# Cosmere.Scadrial Shaders
+[bundles.scadrial_shaders]
+description = "Cosmere.Scadrial Shaders"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_name = "cosmere.scadrial_shaders"
+bundle_path = "cosmere.scadrial"
+filename = "resource_[bundle_name]_shaders_[target]"
+include_patterns = ["*.shader"]
+targetless = false

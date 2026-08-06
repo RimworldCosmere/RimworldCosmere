@@ -4,6 +4,8 @@
     <CS_Progression_Kelsier_Text>The Inquisitor is waiting, and it has said his name where the skaa can hear it. Kelsier has always known how this ends. A man who dies well in that square stops being a man and becomes something the Ministry cannot put a spike through.\n\nHe will go if you let him. He will stay if you ask.</CS_Progression_Kelsier_Text>
     <CS_Progression_Kelsier_Accept>Let him go</CS_Progression_Kelsier_Accept>
     <CS_Progression_Kelsier_Decline>Call him back</CS_Progression_Kelsier_Decline>
+    <CS_Progression_Kelsier_AcceptTip>Kelsier dies in the square and leaves your colony for good. The skaa rise for him, and the rebellion turns from a rumour into an army.</CS_Progression_Kelsier_AcceptTip>
+    <CS_Progression_Kelsier_DeclineTip>Kelsier stays alive and stays yours. The square goes quiet, the skaa keep their heads down, and the rebellion is a great deal slower to come.</CS_Progression_Kelsier_DeclineTip>
 
     <CS_Progression_Well_Bead_Title>The Last Bead</CS_Progression_Well_Bead_Title>
     <CS_Progression_Well_Bead_Text>Elend is dying, and the wound is past anything a surgeon can reach. There is one bead of lerasium in the crew's keeping and there has only ever been the one.\n\nSpend it and he lives, and burns sixteen metals for the rest of his life. Keep it and he does not see morning, but the bead stays yours to spend on someone else, or on nothing at all.</CS_Progression_Well_Bead_Text>
@@ -24,6 +26,8 @@
     <CS_Progression_Army_Ruin>Ruin's army</CS_Progression_Army_Ruin>
     <CS_Progression_Effect_Spike>{PAWN} is spiked with {METAL}</CS_Progression_Effect_Spike>
     <CS_Progression_Effect_MistOdds>The mists now take one exposed colonist in {COUNT}</CS_Progression_Effect_MistOdds>
+    <CS_Progression_Effect_Ashfall>The ashfall climbs towards {PERCENT}% of its full weight</CS_Progression_Effect_Ashfall>
+    <CS_Progression_Effect_AshfallEnds>The ashfall stops, and what is down begins to thin</CS_Progression_Effect_AshfallEnds>
 
     <CS_Progression_Cat_Stop_Title>The World Unmakes Itself</CS_Progression_Cat_Stop_Title>
     <CS_Progression_Cat_Stop_Text>Both powers are loose at once and there is a man standing between them who knows how to hold them.\n\nThe world is going to be remade. You can watch it happen from here and let the story close on the Catacendre, or you can stay in it and find out what it costs.</CS_Progression_Cat_Stop_Text>
@@ -48,8 +52,42 @@
     <CS_Progression_Well_Power_DeclineTip>Frees Ruin and continues into Hero of Ages. Ruin's Own enters the world, led by Marsh, and starts sending armies.</CS_Progression_Well_Power_DeclineTip>
 
     <CS_Progression_Cat_Stop_AcceptTip>ENDS THE CAMPAIGN. Rolls the credits on the Catacendre and returns you to the main menu. The colony is not played on.</CS_Progression_Cat_Stop_AcceptTip>
-    <CS_Progression_Cat_Stop_DeclineTip>Keeps playing. You choose what the Ascension costs, the era advances to Post-Catacendre, and the campaign continues into the Alloy of Law era.</CS_Progression_Cat_Stop_DeclineTip>
+    <CS_Progression_Cat_Stop_DeclineTip>Keeps playing. You choose what the Ascension costs, and the era advances to Post-Catacendre.</CS_Progression_Cat_Stop_DeclineTip>
 
     <CS_Progression_Cat_Price_AcceptTip>The canonical ending. Vin and Elend die. Sazed ascends to godhood, Preservation and Ruin end, and Harmony holds the world.</CS_Progression_Cat_Price_AcceptTip>
     <CS_Progression_Cat_Price_DeclineTip>Everyone lives. Vin, Elend and Sazed all stay in the colony, and the whole colony gains a permanent memory of it.</CS_Progression_Cat_Price_DeclineTip>
+
+    <CS_Progression_Army_Roughs>Roughs outlaws</CS_Progression_Army_Roughs>
+    <CS_Progression_Army_Vanishers>the Vanishers</CS_Progression_Army_Vanishers>
+
+    <CS_Progression_Army_Rioters>the rioters</CS_Progression_Army_Rioters>
+    <CS_Progression_Army_Set>the Set</CS_Progression_Army_Set>
+
+    <CS_Progression_SoS_Title>A Thing Harmony Cannot See</CS_Progression_SoS_Title>
+    <CS_Progression_SoS_Text>It hunts by being unremarkable. It wears people you know, accurately enough that their own families do not notice, and a god cannot look at it.\n\nTell the city and it loses the only advantage it has - but a city told that its neighbours might not be its neighbours does not go quietly back to work. Handle it in the dark and Elendel never has to know, and somebody pays for that privately.</CS_Progression_SoS_Text>
+    <CS_Progression_SoS_Accept>Print it</CS_Progression_SoS_Accept>
+    <CS_Progression_SoS_Decline>Handle it quietly</CS_Progression_SoS_Decline>
+    <CS_Progression_SoS_AcceptTip>The city panics and Elendel goodwill drops hard, but the impostor loses its cover and can no longer move freely.</CS_Progression_SoS_AcceptTip>
+    <CS_Progression_SoS_DeclineTip>Elendel never learns and is grateful for a threat it did not see - large goodwill gain, and the colony carries the memory of it.</CS_Progression_SoS_DeclineTip>
+
+    <CS_Progression_BoM_Title>The Bands of Mourning</CS_Progression_BoM_Title>
+    <CS_Progression_BoM_Text>The Lord Ruler wore these for a thousand years, and everything he did with them is on record.\n\nThe Malwish have asked for them back. They have a better claim than anyone in the Basin does, and they are the only people on the planet currently in a position to make the request politely.</CS_Progression_BoM_Text>
+    <CS_Progression_BoM_Accept>Keep them</CS_Progression_BoM_Accept>
+    <CS_Progression_BoM_Decline>Give them back</CS_Progression_BoM_Decline>
+    <CS_Progression_BoM_AcceptTip>The Bands arrive in your colony as an item. The Malwish take it badly - large goodwill loss with the only people ahead of you technologically.</CS_Progression_BoM_AcceptTip>
+    <CS_Progression_BoM_DeclineTip>No item. The Malwish open relations instead - large goodwill gain, medallions and schematics, and a standing offer to talk.</CS_Progression_BoM_DeclineTip>
+
+    <CS_Progression_LM_Title>Hours, Not Days</CS_Progression_LM_Title>
+    <CS_Progression_LM_Text>What is under Elendel does not detonate so much as let go, and there is a number of hours on it.\n\nIt can be stopped. Somebody has to be standing next to it when it is, and the arithmetic on that has already been done by everyone who understands it, quietly, without saying so.</CS_Progression_LM_Text>
+    <CS_Progression_LM_Accept>Let the story end here</CS_Progression_LM_Accept>
+    <CS_Progression_LM_Decline>Stop it and keep going</CS_Progression_LM_Decline>
+    <CS_Progression_LM_AcceptTip>ENDS THE CAMPAIGN. Rolls the credits on the Lost Metal and returns you to the main menu.</CS_Progression_LM_AcceptTip>
+    <CS_Progression_LM_DeclineTip>The city stands. Large Elendel goodwill gain and a permanent memory for the colony, and the campaign continues past the end of the books.</CS_Progression_LM_DeclineTip>
+    <CS_Progression_LM_Ending>Almost nobody ever found out.\n\nThat was the point, in the end - not the saving of it, which was loud and brief and mostly luck, but the morning afterwards, when Elendel woke up and argued about freight rates. A city that does not know how close it came is a city that gets to keep being ordinary, and ordinary is the thing nobody on Scadrial had for a thousand years.\n\nThe broadsheets ran a piece about a rail dispute. Somewhere a long way from here, something patient noted the result, adjusted its estimate, and started again - because that is what it does, and because it has time.\n\nBut not today, and not to this city, and the people who paid for that would have called it a fair price. Several of them said so, which is how anyone knows.</CS_Progression_LM_Ending>
+
+    <CS_Progression_Army_Ministry>the Steel Ministry</CS_Progression_Army_Ministry>
+    <CS_Progression_Army_Rebellion>the skaa rebellion</CS_Progression_Army_Rebellion>
+    <CS_Progression_Effect_VinLeaves>{PAWN} leaves to face the Lord Ruler</CS_Progression_Effect_VinLeaves>
+
+    <CS_Progression_Army_Miles>Miles Hundredlives and the Vanishers</CS_Progression_Army_Miles>
 </LanguageData>

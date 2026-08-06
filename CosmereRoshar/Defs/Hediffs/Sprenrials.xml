@@ -2,7 +2,7 @@
 <Defs>
     <HediffDef>
         <defName>Cosmere_Roshar_Painrial_Augment</defName>
-        <label>painrial nearby</label>
+        <label>painrial relief</label>
         <labelNoun>PainrialAugmenter</labelNoun>
         <description>Pawn is close to painrial augmenter.</description>
         <isBad>true</isBad>
@@ -22,7 +22,7 @@
     </HediffDef>
     <HediffDef>
         <defName>Cosmere_Roshar_Painrial_Diminisher</defName>
-        <label>painrial nearby</label>
+        <label>painrial affliction</label>
         <labelNoun>PainrialDiminisher</labelNoun>
         <description>Pawn is close to painrial diminisher.</description>
         <isBad>false</isBad>
@@ -60,7 +60,7 @@
     </HediffDef>
     <HediffDef>
         <defName>Cosmere_Roshar_Logirial_Augment</defName>
-        <label>logirial nearby</label>
+        <label>logirial encouragement</label>
         <labelNoun>LogirialAugmenter</labelNoun>
         <description>Pawn is close to logirial augmenter.</description>
         <isBad>false</isBad>
@@ -82,7 +82,7 @@
     </HediffDef>
         <HediffDef>
         <defName>Cosmere_Roshar_Logirial_Diminisher</defName>
-        <label>logirial nearby</label>
+        <label>logirial discouragement</label>
         <labelNoun>LogirialDiminisher</labelNoun>
         <description>Pawn is close to logirial diminisher.</description>
         <isBad>false</isBad>

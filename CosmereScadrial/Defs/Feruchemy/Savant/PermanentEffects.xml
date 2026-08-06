@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef Name="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract" Abstract="True">
-        <hediffClass>HediffWithComps</hediffClass>
+        <hediffClass>Cosmere.Core.Hediff.PawnDescribedHediff</hediffClass>
         <defaultLabelColor>(0.3, 0.75, 0.9)</defaultLabelColor>
         <isBad>false</isBad>
         <makesSickThought>false</makesSickThought>
@@ -13,7 +13,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Tin</defName>
-        <label>tin savant physiology</label>
+        <label>feruchemical tin physiology</label>
         <description>{PAWN_nameDef}'s spirit web has been permanently reshaped by tin. Years of storing and tapping senses have left {PAWN_possessive} sight and hearing operating at a heightened baseline even without a tinmind, a gift carved into the very fabric of who {PAWN_pronoun} is.</description>
         <stages>
             <li>
@@ -33,7 +33,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Pewter</defName>
-        <label>pewter savant physiology</label>
+        <label>feruchemical pewter physiology</label>
         <description>{PAWN_nameDef}'s body has been permanently altered by a lifetime of storing and tapping strength. {PAWN_possessive} muscles carry a residual density and {PAWN_possessive} reflexes a sharpness that no ordinary person can match, even when no pewtermind is in use.</description>
         <stages>
             <li>
@@ -47,7 +47,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Brass</defName>
-        <label>brass savant physiology</label>
+        <label>feruchemical brass physiology</label>
         <description>{PAWN_nameDef}'s body has permanently adapted to extremes of temperature from years of storing and releasing warmth. {PAWN_possessive} comfortable range has expanded in both directions, a testament to how deeply brass has reshaped {PAWN_possessive} physiology.</description>
         <stages>
             <li>
@@ -61,7 +61,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Zinc</defName>
-        <label>zinc savant physiology</label>
+        <label>feruchemical zinc physiology</label>
         <description>{PAWN_nameDef}'s mind has been permanently sharpened by years of storing and tapping mental speed. Even without a zincmind, {PAWN_possessive} thoughts move faster than average, connecting ideas and absorbing knowledge with an efficiency that borders on the uncanny.</description>
         <stages>
             <li>
@@ -75,7 +75,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Copper</defName>
-        <label>copper savant physiology</label>
+        <label>feruchemical copper physiology</label>
         <description>{PAWN_nameDef}'s relationship with memory has been permanently altered by copper. The act of storing memories so deeply has made {PAWN_possessive} recall exceptional, but the habit of offloading experience into metalminds has left {PAWN_possessive} moment-to-moment awareness slightly dulled.</description>
         <stages>
             <li>
@@ -94,7 +94,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Bronze</defName>
-        <label>bronze savant physiology</label>
+        <label>feruchemical bronze physiology</label>
         <description>{PAWN_nameDef}'s body has been permanently attuned to the rhythms of rest and wakefulness by years of bronze Feruchemy. {PAWN_pronoun} sleeps more efficiently than any ordinary person and {PAWN_possessive} body conserves the energy it has been trained to store.</description>
         <stages>
             <li>
@@ -108,7 +108,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Steel</defName>
-        <label>steel savant physiology</label>
+        <label>feruchemical steel physiology</label>
         <description>{PAWN_nameDef}'s body has been permanently reshaped by speed. The muscles and reflexes that powered countless steel taps have left a lasting imprint, and {PAWN_pronoun} moves faster than any ordinary person even without drawing on a steelmind. The cost is a body that struggles to work at a careful, measured pace.</description>
         <stages>
             <li>
@@ -122,7 +122,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Iron</defName>
-        <label>iron savant physiology</label>
+        <label>feruchemical iron physiology</label>
         <description>{PAWN_nameDef}'s body has settled into a permanently heavier state from years of iron Feruchemy. {PAWN_possessive} frame carries more mass than it should, making {PAWN_objectPronoun} harder to move and sharpening {PAWN_possessive} combat rhythm through a lifetime of fighting at varying weights.</description>
         <stages>
             <li>
@@ -136,7 +136,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Gold</defName>
-        <label>gold savant physiology</label>
+        <label>feruchemical gold physiology</label>
         <description>{PAWN_nameDef}'s body has been permanently invigorated by years of tapping stored health. {PAWN_possessive} immune response and natural healing operate above the human baseline, a residual gift from the vitality {PAWN_pronoun} has poured into and drawn from gold over the years.</description>
         <stages>
             <li>
@@ -150,7 +150,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Electrum</defName>
-        <label>electrum savant physiology</label>
+        <label>feruchemical electrum physiology</label>
         <description>{PAWN_nameDef}'s willpower has been permanently fortified by years of storing and tapping determination. {PAWN_possessive} mind resists breaking where others would shatter, and {PAWN_possessive} capacity to endure pain and hardship has been carved into {PAWN_possessive} spirit web by electrum.</description>
         <stages>
             <li>
@@ -164,7 +164,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Atium</defName>
-        <label>atium savant physiology</label>
+        <label>feruchemical atium physiology</label>
         <description>{PAWN_nameDef}'s spirit web bears the marks of a lifetime spent trading years back and forth with atium. Aging has slowed noticeably, but the mental sensitivity from touching temporal Investiture so deeply has left {PAWN_objectPronoun} prone to confusion and mood swings.</description>
         <stages>
             <li>
@@ -177,7 +177,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Cadmium</defName>
-        <label>cadmium savant physiology</label>
+        <label>feruchemical cadmium physiology</label>
         <description>{PAWN_nameDef}'s respiratory system has been permanently altered by cadmium Feruchemy. The breath {PAWN_pronoun} has stored and retrieved over the years has left {PAWN_possessive} lungs operating at a heightened baseline, granting sharpened awareness.</description>
         <stages>
             <li>
@@ -197,7 +197,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Bendalloy</defName>
-        <label>bendalloy savant physiology</label>
+        <label>feruchemical bendalloy physiology</label>
         <description>{PAWN_nameDef}'s metabolism has been permanently recalibrated by years of storing and tapping energy. {PAWN_possessive} body makes efficient use of the nutrition it receives and can sustain more activity on less fuel, a lasting benefit from a life spent managing energy reserves in bendalloy.</description>
         <stages>
             <li>
@@ -211,7 +211,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Aluminum</defName>
-        <label>aluminum savant physiology</label>
+        <label>feruchemical aluminum physiology</label>
         <description>{PAWN_nameDef}'s sense of self has been permanently fortified by years of storing identity in aluminum. {PAWN_possessive} identity is so rigid and well-defined that Investiture slides off {PAWN_objectPronoun}, but the inflexibility makes it harder to connect with others.</description>
         <stages>
             <li>
@@ -225,7 +225,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Duralumin</defName>
-        <label>duralumin savant physiology</label>
+        <label>feruchemical duralumin physiology</label>
         <description>{PAWN_nameDef}'s capacity for Connection has been permanently expanded by years of duralumin Feruchemy. {PAWN_pronoun} forges bonds and navigates social currents with an ease that comes from having stored and restored Connection more times than most people experience in a lifetime.</description>
         <stages>
             <li>
@@ -239,7 +239,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Chromium</defName>
-        <label>chromium savant physiology</label>
+        <label>feruchemical chromium physiology</label>
         <description>{PAWN_nameDef}'s fortune has been permanently shaped by years of storing and tapping luck in chromium. {PAWN_possessive} relationship with chance itself has been altered - subtle but broad improvements in precision and timing touch everything {PAWN_pronoun} does.</description>
         <stages>
             <li>
@@ -254,7 +254,7 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_Nicrosil</defName>
-        <label>nicrosil savant physiology</label>
+        <label>feruchemical nicrosil physiology</label>
         <description>{PAWN_nameDef}'s spirit web has been permanently altered by years of storing Investiture in nicrosil. The pathways through which {PAWN_possessive} power flows have been widened, boosting {PAWN_possessive} investiture capacity but leaving {PAWN_possessive} reserves less efficient.</description>
         <stages>
             <li>

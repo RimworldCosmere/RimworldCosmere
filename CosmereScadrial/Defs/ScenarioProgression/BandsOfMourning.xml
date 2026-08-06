@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_BandsOfMourning</defName>
+    <label>Bands of Mourning Progression</label>
+    <events>
+
+      <li>
+        <key>a_picture_from_the_south</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>8</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>A Picture From the South</title>
+            <text>A kandra came back from beyond the mountains with a photograph and then stopped reporting in.\n\nThe image is of a wall carving, and the carving is of a man wearing bracers on both forearms. It is not a good photograph. It does not need to be. Everyone who has read the histories knows what those are supposed to be, and everyone who has read the histories also knows they are supposed to be a story.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_TheSet</faction>
+            <goodwill>-100</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_malwish</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>20</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>They Came In Something That Drives Itself</title>
+            <text>The Southern Scadrians arrive without ceremony, in a vehicle that runs on nothing anyone here can identify, and are unfailingly polite about how far ahead of us they are.\n\nThey never had Allomancy worth the name. So they built their way past needing it - medallions that hand a borrowed talent to whoever is holding one, and machines that do the rest. Everything the Basin is proud of, they solved a different way and did not mention.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_Malwish</faction>
+            <goodwill>10</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_temple</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>38</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>a_picture_from_the_south</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>A Building Nobody Built</title>
+            <text>It is under the ice, and it is not a ruin. Ruins fall down. This has been sitting there since before the Ascension with its doors shut, waiting for somebody to work out the trick of them.\n\nWhat is inside was left on purpose, by someone who knew exactly what came next and wanted the people on the other side of it to have a chance.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_TheSet</faction>
+            <armyNameKey>CS_Progression_Army_Set</armyNameKey>
+            <pointsFactor>1.0</pointsFactor>
+            <minPoints>1000</minPoints>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_bands</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>55</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_temple</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>The Bands of Mourning</title>
+            <text>They are real, and they are here, and they are heavier than they look.\n\nThe Lord Ruler wore these for a thousand years and everything he did with them is on record. That is the problem with holding them: there is no version of this where the person wearing them is not, for a while, the most dangerous thing on the planet.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <titleKey>CS_Progression_BoM_Title</titleKey>
+            <textKey>CS_Progression_BoM_Text</textKey>
+            <acceptKey>CS_Progression_BoM_Accept</acceptKey>
+            <declineKey>CS_Progression_BoM_Decline</declineKey>
+            <acceptTipKey>CS_Progression_BoM_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_BoM_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>Kept</title>
+                <text>They go in a vault the colony builds specifically for them, and there is an argument about the vault that lasts three days and never really ends.\n\nWhat the Bands are worth is not the point. The point is that everybody now knows the colony has them, and there is no unringing that bell.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SpawnItemAction">
+                <thing>Cosmere_Scadrial_Item_MetalmindDuralumin</thing>
+                <count>1</count>
+                <letterTitle>The Bands</letterTitle>
+                <letterText>Heavier than they look, and warm.</letterText>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_Malwish</faction>
+                <goodwill>-70</goodwill>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>Given Back</title>
+                <text>The Malwish take them south, and are visibly startled to have been handed them rather than fought for them.\n\nWhat comes back the other way is not a favour so much as an account opened: medallions, schematics, and a standing offer to talk. A people who spent centuries assuming the Basin would take what it could reach have just had that assumption disturbed.</text>
+                <letterDef>PositiveEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_Malwish</faction>
+                <goodwill>100</goodwill>
+              </li>
+            </onDecline>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
+          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_LostMetal</progression>
+          </li>
+        </actions>
+      </li>
+
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_LostMetal</defName>
+    <label>Lost Metal Progression</label>
+    <events>
+
+      <li>
+        <key>the_set_surfaces</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>10</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>They Have Stopped Hiding</title>
+            <text>For years every thread anyone pulled came apart in their hands. Now one holds, and what is on the end of it is not a smuggling ring.\n\nFactories nobody can find the owner of. Bloodlines tracked across four generations in a ledger. A recruitment programme with a curriculum. The Set were never criminals - they were a project, and they have decided they are far enough along that being seen no longer costs them anything.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_TheSet</faction>
+            <goodwill>-100</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>airships</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>25</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Something Over Elendel</title>
+            <text>It came in low over the eastern districts at dusk and did not hurry, and half the city stood in the street to watch it go.\n\nThe Basin has spent three hundred years assuming it was the most advanced thing on the planet. That assumption ended at about six in the evening, in front of witnesses, and the broadsheets have not worked out what to print yet.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_Malwish</faction>
+            <goodwill>30</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>autonomy</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>40</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_set_surfaces</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Somebody Else's God</title>
+            <text>The Set are not working for themselves and never were. There is something behind them that has never set foot on Scadrial and does not intend to, and it has been arranging this the way you arrange a chessboard - patiently, from outside the room.\n\nHarmony has gone quiet about it. Not evasive. Quiet, in the way of someone who has already run the position out and does not want to say what he found.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_TheSet</faction>
+            <armyNameKey>CS_Progression_Army_Set</armyNameKey>
+            <pointsFactor>1.2</pointsFactor>
+            <minPoints>1400</minPoints>
+            <edge>North</edge>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_bomb</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>60</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>autonomy</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>What They Built Under the City</title>
+            <text>It is not a weapon in any sense the Basin has a word for. It is a way of taking the thing that holds a city together and letting go of it all at once, and it is sitting under Elendel with a number of hours on it.\n\nThere is no version of the next day where everybody involved walks away from this.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_TheSet</faction>
+            <armyNameKey>CS_Progression_Army_Set</armyNameKey>
+            <pointsFactor>1.5</pointsFactor>
+            <minPoints>2000</minPoints>
+            <edge>South</edge>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <titleKey>CS_Progression_LM_Title</titleKey>
+            <textKey>CS_Progression_LM_Text</textKey>
+            <acceptKey>CS_Progression_LM_Accept</acceptKey>
+            <declineKey>CS_Progression_LM_Decline</declineKey>
+            <acceptTipKey>CS_Progression_LM_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_LM_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.EndGameAction">
+                <textKey>CS_Progression_LM_Ending</textKey>
+                <exitToMainMenu>true</exitToMainMenu>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>The City Stands</title>
+                <text>It is stopped with hours to spare, by people who will be arguing about the order of events for the rest of their lives.\n\nElendel wakes up the next morning to broadsheets about a rail dispute. Almost nobody ever finds out. The ones who do find out mostly wish they had not, and go to work anyway.\n\nSomething a very long way from here notes the outcome, adjusts, and begins again.</text>
+                <letterDef>PositiveEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+                <goodwill>100</goodwill>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+                <thought>Cosmere_Scadrial_EscapedDeath</thought>
+                <permanent>true</permanent>
+              </li>
+            </onDecline>
+          </li>
+        </actions>
+      </li>
+
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

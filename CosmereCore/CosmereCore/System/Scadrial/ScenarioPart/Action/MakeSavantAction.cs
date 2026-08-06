@@ -2,6 +2,7 @@ using Cosmere.Core.Def;
 using Cosmere.Core.Savant;
 using Cosmere.Core.ScenarioPart;
 using Cosmere.Core.ScenarioPart.Action;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using Verse;
@@ -51,14 +52,15 @@ public class MakeSavantAction : ProgressionAction {
             _ => profile.Stage3Ticks,
         };
 
-        // Records only take additions, so top up the shortfall. Never lowers somebody who
+        // Burn/store time is a Time record, which AddTo refuses. Never lowers somebody who
         // already burned their way past this on their own.
         RecordDef record = feruchemy
             ? RecordDefOf.GetTimeSpentStoringForMetal(metalDef)
             : RecordDefOf.GetTimeSpentBurningForMetal(metalDef);
 
-        float have = pawn.records.GetValue(record);
-        if (ticks > have) pawn.records.AddTo(record, ticks - have);
+        if (!RecordUtility.RaiseTo(pawn, record, ticks)) {
+            Logger.Warning($"ScenarioProgression: could not write record '{record.defName}' for {pawnName}.");
+        }
 
         HediffDef? savant = feruchemy
             ? ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(metalDef)

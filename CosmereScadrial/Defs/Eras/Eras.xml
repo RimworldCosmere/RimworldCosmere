@@ -16,5 +16,23 @@
         <defName>Cosmere_Scadrial_Era_AlloyOfLaw</defName>
         <label>Alloy of Law era</label>
         <description>Three hundred years after the Catacendre, when the Roughs have given way to railroads and revolvers.</description>
+        <next>Cosmere_Scadrial_Era_ShadowsOfSelf</next>
+    </Cosmere.Core.Def.EraDef>
+    <Cosmere.Core.Def.EraDef>
+        <defName>Cosmere_Scadrial_Era_ShadowsOfSelf</defName>
+        <label>Shadows of Self era</label>
+        <description>Elendel is a city of broadsheets and unions and men who own both. Something is wearing other people's faces in the streets, and Harmony will not say why he cannot simply stop it.</description>
+        <next>Cosmere_Scadrial_Era_BandsOfMourning</next>
+    </Cosmere.Core.Def.EraDef>
+    <Cosmere.Core.Def.EraDef>
+        <defName>Cosmere_Scadrial_Era_BandsOfMourning</defName>
+        <label>Bands of Mourning era</label>
+        <description>A kandra returns from the south with pictures of a machine that should not exist, and word of a people who never needed Allomancy because they built their way past it.</description>
+        <next>Cosmere_Scadrial_Era_LostMetal</next>
+    </Cosmere.Core.Def.EraDef>
+    <Cosmere.Core.Def.EraDef>
+        <defName>Cosmere_Scadrial_Era_LostMetal</defName>
+        <label>Lost Metal era</label>
+        <description>Airships over Elendel and a war being arranged by people who have never set foot on Scadrial. The Set have stopped hiding, and what they are building does not care how many Ascensions came before it.</description>
     </Cosmere.Core.Def.EraDef>
 </Defs>

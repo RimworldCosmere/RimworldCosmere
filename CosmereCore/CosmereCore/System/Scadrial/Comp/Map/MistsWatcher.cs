@@ -83,12 +83,15 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         map.weatherManager.TransitionTo(WeatherDefOf.Cosmere_Scadrial_Weather_MistsWeather);
 
-        Find.LetterStack.ReceiveLetter(
-            "CS_MistsArriveTitle".Translate(),
-            "CS_MistsArriveMessage".Translate(),
-            LetterDefOf.ThreatSmall,
-            TargetInfo.Invalid
-        );
+        // Nightly by default, which is a lot of letters once the mists are routine.
+        if (Mod.Settings.mistsArrivalLetter) {
+            Find.LetterStack.ReceiveLetter(
+                "CS_MistsArriveTitle".Translate(),
+                "CS_MistsArriveMessage".Translate(),
+                LetterDefOf.ThreatSmall,
+                TargetInfo.Invalid
+            );
+        }
     }
 
     private void ScheduleNextMists() {

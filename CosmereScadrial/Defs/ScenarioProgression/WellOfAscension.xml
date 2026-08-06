@@ -4,6 +4,50 @@
     <defName>Cosmere_Scadrial_Progression_WellOfAscension</defName>
     <label>Well of Ascension Progression</label>
     <events>
+      <!-- Ash beats carry no letter. The player reads them off the sky and the drifts, not off a
+           card. Severity only ever moves at a per-day cap, so each of these lands over days. -->
+      <li>
+        <key>ashfall_siege_opens</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>0</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.35</severity>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ashfall_siege_deepens</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>30</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.45</severity>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ashfall_siege_chokes</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>55</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.55</severity>
+          </li>
+        </actions>
+      </li>
       <!-- Deliberately the same key as the Final Empire beat. firedEvents carries across a
            handoff, so a campaign that came the long way skips this and a campaign that started
            here gets him instead. Either way the_well's gate is satisfied. -->
@@ -113,40 +157,9 @@
             <letterDef>ThreatBig</letterDef>
           </li>
 
-          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
-            <requiresPawn>Elend</requiresPawn>
-            <titleKey>CS_Progression_Well_Bead_Title</titleKey>
-            <textKey>CS_Progression_Well_Bead_Text</textKey>
-            <acceptKey>CS_Progression_Well_Bead_Accept</acceptKey>
-            <declineKey>CS_Progression_Well_Bead_Decline</declineKey>
-            <acceptTipKey>CS_Progression_Well_Bead_AcceptTip</acceptTipKey>
-            <declineTipKey>CS_Progression_Well_Bead_DeclineTip</declineTipKey>
-            <onAccept>
-              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-                <title>He Swallowed It Without Ceremony</title>
-                <text>The bead is small - barely larger than a pearl, pale and luminous in the mist-light. Vin puts it between his teeth and makes him swallow, and for a long moment nothing happens at all.\n\nThen the metals ignite inside him like sixteen suns. Flesh closes over the wound from the inside out. The bookish king who could not swing a sword stands up carrying the power of a full Mistborn, and looks at his own hands as though they belong to someone he has not met.\n\nThe last gift of Preservation is spent. There will not be another.</text>
-                <letterDef>PositiveEvent</letterDef>
-              </li>
-              <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.MakeMistbornAction">
-                <pawnName>Elend</pawnName>
-                <cause>swallowed the last bead of lerasium</cause>
-              </li>
-            </onAccept>
-            <onDecline>
-              <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
-                <pawnName>Elend</pawnName>
-                <method>death</method>
-                <optional>true</optional>
-                <letterTitle>He Did Not Last the Night</letterTitle>
-                <letterText>He was lucid near the end, which was the cruelty of it. He wanted to talk about the treaty. Somebody held his hand and let him.\n\nThe bead stays in the crew's keeping, pale and warm and worth a kingdom. It bought nothing. That was the choice, and it was made with open eyes.</letterText>
-              </li>
-              <li Class="Cosmere.Core.ScenarioPart.Action.SpawnItemAction">
-                <thing>Lerasium</thing>
-                <count>1</count>
-              </li>
-            </onDecline>
-          </li>
-
+          <!-- The power comes first: taking it ends the campaign, so nothing after it would
+               ever be reached. The bead only becomes a question on the branch where the world
+               keeps going, which is why it is nested rather than a sibling. -->
           <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
             <titleKey>CS_Progression_Well_Power_Title</titleKey>
             <textKey>CS_Progression_Well_Power_Text</textKey>
@@ -166,6 +179,41 @@
                 <text>She held the power of creation for one breathless moment, and then she opened her hands.\n\nThe pool drains. Something shifts in the world's foundations - something ancient, patient, and terrible, which has been waiting a very long time for exactly this. Ruin is free. The ground trembles. Above, the mists thicken and do not thin again.\n\nWhatever comes next, there is no undoing what has been done.</text>
                 <letterDef>NeutralEvent</letterDef>
               </li>
+
+              <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+                <requiresPawn>Elend</requiresPawn>
+                <titleKey>CS_Progression_Well_Bead_Title</titleKey>
+                <textKey>CS_Progression_Well_Bead_Text</textKey>
+                <acceptKey>CS_Progression_Well_Bead_Accept</acceptKey>
+                <declineKey>CS_Progression_Well_Bead_Decline</declineKey>
+                <acceptTipKey>CS_Progression_Well_Bead_AcceptTip</acceptTipKey>
+                <declineTipKey>CS_Progression_Well_Bead_DeclineTip</declineTipKey>
+                <onAccept>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                    <title>He Swallowed It Without Ceremony</title>
+                    <text>The bead is small - barely larger than a pearl, pale and luminous in the mist-light. Vin puts it between his teeth and makes him swallow, and for a long moment nothing happens at all.\n\nThen the metals ignite inside him like sixteen suns. Flesh closes over the wound from the inside out. The bookish king who could not swing a sword stands up carrying the power of a full Mistborn, and looks at his own hands as though they belong to someone he has not met.\n\nThe last gift of Preservation is spent. There will not be another.</text>
+                    <letterDef>PositiveEvent</letterDef>
+                  </li>
+                  <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.MakeMistbornAction">
+                    <pawnName>Elend</pawnName>
+                    <cause>swallowed the last bead of lerasium</cause>
+                  </li>
+                </onAccept>
+                <onDecline>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+                    <pawnName>Elend</pawnName>
+                    <method>death</method>
+                    <optional>true</optional>
+                    <letterTitle>He Did Not Last the Night</letterTitle>
+                    <letterText>He was lucid near the end, which was the cruelty of it. He wanted to talk about the treaty. Somebody held his hand and let him.\n\nThe bead stays in the crew's keeping, pale and warm and worth a kingdom. It bought nothing. That was the choice, and it was made with open eyes.</letterText>
+                  </li>
+                  <li Class="Cosmere.Core.ScenarioPart.Action.SpawnItemAction">
+                    <thing>Lerasium</thing>
+                    <count>1</count>
+                  </li>
+                </onDecline>
+              </li>
+
               <!-- Ruin comes into the world here and not before. Marsh walked out of the
                    colony in the Final Empire arc and was passed to the world rather than
                    deleted, so this hands back the same man with something else behind his

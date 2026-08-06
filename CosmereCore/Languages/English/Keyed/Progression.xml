@@ -15,4 +15,7 @@
   <CC_Progression_Effect_Raid>{ARMY} attacks the colony</CC_Progression_Effect_Raid>
   <CC_Progression_Effect_Hediff>{PAWN}: {HEDIFF}</CC_Progression_Effect_Hediff>
   <CC_Progression_Effect_Faction>{FACTION} enters the world</CC_Progression_Effect_Faction>
+  <CC_Progression_Effect_Allies>{ARMY} arrives to help</CC_Progression_Effect_Allies>
+  <CC_Progression_Effect_Recall>{PAWN} returns to the colony</CC_Progression_Effect_Recall>
+  <CC_Progression_Effect_FactionsGone>{FACTIONS} no longer exist</CC_Progression_Effect_FactionsGone>
 </LanguageData>

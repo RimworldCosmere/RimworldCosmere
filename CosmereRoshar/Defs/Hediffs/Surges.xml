@@ -7,7 +7,7 @@
         <description>{PAWN_nameDef} is using abrasion.</description>
         <isBad>false</isBad>
         <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
-        <hediffClass>HediffWithComps</hediffClass>
+        <hediffClass>Cosmere.Core.Hediff.PawnDescribedHediff</hediffClass>
         <stages>
             <li>
                 <label>Abrasion</label>

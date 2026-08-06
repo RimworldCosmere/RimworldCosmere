@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef Name="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract" Abstract="True">
-        <hediffClass>HediffWithComps</hediffClass>
+        <hediffClass>Cosmere.Core.Hediff.PawnDescribedHediff</hediffClass>
         <defaultLabelColor>(0.3, 0.75, 0.9)</defaultLabelColor>
         <isBad>false</isBad>
         <makesSickThought>false</makesSickThought>
@@ -27,103 +27,103 @@
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Tin</defName>
-        <label>tin savant</label>
+        <label>feruchemical tin savant</label>
         <description>{PAWN_nameDef} has stored and tapped tin so extensively that {PAWN_possessive} senses have become permanently entangled with the metal. {PAWN_pronoun} perceives the world with unnatural acuity, but {PAWN_possessive} senses feel muted and wrong without a tinmind nearby to draw from.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Pewter</defName>
-        <label>pewter savant</label>
+        <label>feruchemical pewter savant</label>
         <description>{PAWN_nameDef} has stored and tapped pewter so relentlessly that {PAWN_possessive} body has become dependent on the metal's strength. Without access to a pewtermind, {PAWN_possessive} muscles feel hollow and {PAWN_possessive} limbs betray {PAWN_objectPronoun} at every effort.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Brass</defName>
-        <label>brass savant</label>
+        <label>feruchemical brass savant</label>
         <description>{PAWN_nameDef} has stored warmth in brassmind after brassmind until {PAWN_possessive} body's thermal regulation has grown entangled with the metal. {PAWN_pronoun} can endure extremes that would fell others, but the cold bites deeper when {PAWN_pronoun} has no brassmind to draw from.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Zinc</defName>
-        <label>zinc savant</label>
+        <label>feruchemical zinc savant</label>
         <description>{PAWN_nameDef} has stored and tapped mental speed so many times that ordinary thought feels sluggish. Without a zincmind, {PAWN_possessive} mind crawls through problems that once felt trivial, and the silence where quick thinking used to live is maddening.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Copper</defName>
-        <label>copper savant</label>
+        <label>feruchemical copper savant</label>
         <description>{PAWN_nameDef} has poured so many memories into coppermind after coppermind that the boundary between stored and lived experience has blurred. Faces and events swim through {PAWN_possessive} mind unbidden, and {PAWN_pronoun} sometimes cannot tell which memories are truly {PAWN_possessive} own.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Bronze</defName>
-        <label>bronze savant</label>
+        <label>feruchemical bronze savant</label>
         <description>{PAWN_nameDef} has stored and tapped wakefulness so thoroughly that {PAWN_possessive} sleep cycles have permanently shifted. When tapping a bronzemind {PAWN_pronoun} barely needs rest, but when storing, the weight of accumulated fatigue threatens to pull {PAWN_objectPronoun} under entirely.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Steel</defName>
-        <label>steel savant</label>
+        <label>feruchemical steel savant</label>
         <description>{PAWN_nameDef} has tapped steelmind after steelmind until speed has become a part of {PAWN_possessive} identity. Moving at a normal pace feels like wading through ash. {PAWN_possessive} legs forget how to walk when no steelmind is available to draw from.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Iron</defName>
-        <label>iron savant</label>
+        <label>feruchemical iron savant</label>
         <description>{PAWN_nameDef} has shifted {PAWN_possessive} weight in and out of ironminds so many times that {PAWN_possessive} body no longer knows its natural mass. {PAWN_pronoun} feels unmoored without an ironmind, as if {PAWN_possessive} very substance is uncertain.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Gold</defName>
-        <label>gold savant</label>
+        <label>feruchemical gold savant</label>
         <description>{PAWN_nameDef} has stored and tapped health so many times that {PAWN_possessive} spirit web has grown entangled with {PAWN_possessive} goldmind. When tapping, {PAWN_pronoun} heals with startling speed. When storing, old wounds ache and {PAWN_possessive} body struggles to mend itself.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Electrum</defName>
-        <label>electrum savant</label>
+        <label>feruchemical electrum savant</label>
         <description>{PAWN_nameDef} has stored determination so deeply into electrumminds that {PAWN_possessive} willpower has become bound to the metal. Without an electrummind, {PAWN_possessive} resolve wavers at the first sign of adversity, and the steady certainty {PAWN_pronoun} once took for granted feels impossibly distant.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Atium</defName>
-        <label>atium savant</label>
+        <label>feruchemical atium savant</label>
         <description>{PAWN_nameDef} has stored youth in atiummind after atiummind until the passage of time has become a tangible thing {PAWN_pronoun} can almost hold. The years {PAWN_pronoun} carries in those metal minds weigh on {PAWN_possessive} spirit web in ways that others cannot perceive.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Cadmium</defName>
-        <label>cadmium savant</label>
+        <label>feruchemical cadmium savant</label>
         <description>{PAWN_nameDef} has stored breath in cadmiummind after cadmiummind until {PAWN_possessive} lungs have grown accustomed to operating on far less. When no cadmiummind is available, {PAWN_possessive} breathing feels labored and shallow, as if {PAWN_possessive} body has forgotten how to breathe fully on its own.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Bendalloy</defName>
-        <label>bendalloy savant</label>
+        <label>feruchemical bendalloy savant</label>
         <description>{PAWN_nameDef} has stored energy in bendalloyminds so frequently that {PAWN_possessive} metabolism has grown unstable. Without stored nutrition to tap, {PAWN_possessive} body burns through what little it has with alarming speed, as if it cannot remember how to pace itself.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Aluminum</defName>
-        <label>aluminum savant</label>
+        <label>feruchemical aluminum savant</label>
         <description>{PAWN_nameDef} has stored {PAWN_possessive} sense of self in aluminummind after aluminummind until {PAWN_possessive} identity has grown thin and uncertain. Without an aluminummind full of {PAWN_possessive} own self to draw from, {PAWN_pronoun} drifts, unsure where {PAWN_pronoun} ends and the world begins.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Duralumin</defName>
-        <label>duralumin savant</label>
+        <label>feruchemical duralumin savant</label>
         <description>{PAWN_nameDef} has stored Connection so many times that {PAWN_possessive} bonds to people and places have grown fragile at the roots. When tapping a duralumin mind, {PAWN_pronoun} forges relationships with uncanny ease, but without one, {PAWN_pronoun} feels severed from the world around {PAWN_objectPronoun}.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Chromium</defName>
-        <label>chromium savant</label>
+        <label>feruchemical chromium savant</label>
         <description>{PAWN_nameDef} has stored fortune so often that luck itself seems to ebb and flow around {PAWN_objectPronoun}. When tapping a chromiummind, coincidence bends {PAWN_possessive} way with suspicious regularity. When storing, misfortune dogs {PAWN_possessive} every step with an almost personal cruelty.</description>
     </HediffDef>
 
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemicalSavant_Abstract">
         <defName>Cosmere_Scadrial_Hediff_FeruchemicalSavant_Nicrosil</defName>
-        <label>nicrosil savant</label>
+        <label>feruchemical nicrosil savant</label>
         <description>{PAWN_nameDef} has stored Investiture in nicrosilmind after nicrosilmind until {PAWN_possessive} spirit web has grown accustomed to running lean. Without a nicrosilmind to draw from, {PAWN_possessive} Investiture feels dull and sluggish, as if the well of power has been scraped dry.</description>
     </HediffDef>
 </Defs>

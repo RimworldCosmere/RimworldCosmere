@@ -240,4 +240,35 @@ Fond of good wine, comfortable chairs and being underestimated, in roughly that 
     <bodyTypeGlobal>Fat</bodyTypeGlobal>
   </BackstoryDef>
 
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Kandra_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>kandra youth</title>
+    <titleShort>kandra</titleShort>
+    <description>[PAWN_nameDef] spent [PAWN_possessive] first century in the Homeland being told what the Contract permitted, by people who had been saying it for eight hundred years and saw no reason to stop.
+
+[PAWN_pronoun] left. The bodies [PAWN_pronoun] has worn since have all been somebody else's, and [PAWN_pronoun] has never once found that strange.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Social>4</Social>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Kandra_Adulthood</defName>
+    <slot>Adulthood</slot>
+    <title>many faces</title>
+    <titleShort>many faces</titleShort>
+    <description>[PAWN_nameDef] has been other people for a living, accurately enough that their own families did not notice, and has opinions about which of them were worth the effort.
+
+It is not deception exactly. The bones are borrowed and everybody involved knows it. That does not make [PAWN_objective] easier to lie to.</description>
+    <spawnCategories><li>Offworld</li></spawnCategories>
+    <skillGains>
+      <Social>7</Social>
+      <Melee>4</Melee>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+  </BackstoryDef>
+
 </Defs>

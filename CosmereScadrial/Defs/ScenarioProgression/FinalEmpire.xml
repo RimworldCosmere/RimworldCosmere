@@ -4,6 +4,23 @@
     <defName>Cosmere_Scadrial_Progression_FinalEmpire</defName>
     <label>The Final Empire Progression</label>
     <events>
+      <!-- Silent on purpose: no letter. The Final Empire is already under ash when the colony
+           lands, and the tracker starts here too. Stated in the def as well so a campaign that
+           hands off into this arc from somewhere heavier comes back down to it. -->
+      <li>
+        <key>ashfall_baseline</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>0</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.15</severity>
+          </li>
+        </actions>
+      </li>
       <li>
         <key>vins_awakening</key>
         <triggers>
@@ -90,6 +107,8 @@
             <textKey>CS_Progression_Kelsier_Text</textKey>
             <acceptKey>CS_Progression_Kelsier_Accept</acceptKey>
             <declineKey>CS_Progression_Kelsier_Decline</declineKey>
+            <acceptTipKey>CS_Progression_Kelsier_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_Kelsier_DeclineTip</declineTipKey>
             <onAccept>
               <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
                 <title>I Am the One Thing You Can Never Kill</title>
@@ -142,6 +161,10 @@
           </li>
         </actions>
       </li>
+      <!-- The loudest beat in the arc. The Ministry comes for the colony in force while Vin
+           goes for the Lord Ruler, so the player fights the empire's soldiers on the same night
+           somebody else kills its god. The rebellion turns up because they were always going to
+           once somebody made the first move. -->
       <li>
         <key>the_collapse</key>
         <triggers>
@@ -156,14 +179,80 @@
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Collapse</title>
-            <text>The Lord Ruler is dead. Vin stood before him - a girl of sixteen, ash-stained and bleeding - and she pulled free the bracelets at his wrists. A thousand years of tyranny ended in a single moment. The skaa pour into the streets. Noble keeps burn. The Steel Ministry fractures. The Final Empire, that monolith of ash and oppression, crumbles at last. But as the mists settle over a world without its god, a new question rises: what comes next?</text>
+            <text>Vin left before dawn without telling anyone where she was going, which is how everybody knew exactly where she was going.\n\nThe Ministry worked it out too, and they are not chasing her. They are coming here, in strength, to make an example of the place that sheltered the crew - and they have brought everything they had left to bring.\n\nHold the colony. The skaa have been waiting a thousand years for somebody to go first, and word travels faster than soldiers do.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.RemovePawnAction">
+            <pawnName>Vin</pawnName>
+            <method>leave</method>
+            <optional>true</optional>
+            <describeKey>CS_Progression_Effect_VinLeaves</describeKey>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_FinalEmpireNPC</faction>
+            <armyNameKey>CS_Progression_Army_Ministry</armyNameKey>
+            <pointsFactor>1.6</pointsFactor>
+            <minPoints>2200</minPoints>
+            <edge>North</edge>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_SkaaRebels</faction>
+            <armyNameKey>CS_Progression_Army_Rebellion</armyNameKey>
+            <friendly>true</friendly>
+            <pointsFactor>1.4</pointsFactor>
+            <minPoints>1800</minPoints>
+            <edge>South</edge>
+          </li>
+        </actions>
+      </li>
+
+      <!-- The morning after. Vin comes back the same pawn who left, because RemovePawnAction
+           with "leave" passed her to the world rather than discarding her. -->
+      <li>
+        <key>the_lord_ruler_falls</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>77</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_collapse</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>He Was Not Immortal After All</title>
+            <text>A girl of sixteen, ash-stained and bleeding, pulled the bracers off his arms and he came apart like anybody else.\n\nA thousand years ended in a corridor with nobody watching. By morning the keeps are burning, the Ministry has stopped issuing orders because there is nobody left to issue them, and the skaa are in the streets doing what people do when the thing they were afraid of turns out to have been a man.\n\nWhat comes next has not been decided by anyone, which is the first time that has been true in a thousand years.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
-                  <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.RecallPawnAction">
+            <pawnName>Vin</pawnName>
+            <letterTitle>She Came Back</letterTitle>
+            <letterText>Walked in on her own feet, would not say much, and slept for a day and a half.</letterText>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_SkaaRebels</faction>
+            <goodwill>100</goodwill>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+            <thought>Cosmere_Scadrial_EscapedDeath</thought>
+          </li>
+          <!-- Both of these end with the empire. The Ministry has nobody left to issue its
+               orders, and a rebellion that has won is just people again. -->
+          <li Class="Cosmere.Core.ScenarioPart.Action.RemoveFactionAction">
+            <factions>
+              <li>Cosmere_Scadrial_Faction_FinalEmpireNPC</li>
+              <li>Cosmere_Scadrial_Faction_SkaaRebels</li>
+            </factions>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
             <progression>Cosmere_Scadrial_Progression_WellOfAscension</progression>
           </li>
-</actions>
+        </actions>
       </li>
+
       <li>
         <key>the_farm</key>
         <triggers>

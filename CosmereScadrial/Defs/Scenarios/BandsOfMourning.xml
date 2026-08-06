@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_BandsOfMourning</defName>
+    <label>Cosmere - Scadrial - The Bands of Mourning</label>
+    <description>A kandra came back from beyond the southern mountains with a photograph of a carving, and then stopped reporting in. The carving shows a man wearing bracers on both forearms. Everyone who has read the histories knows what those are meant to be, and knows they are meant to be a story.</description>
+    <scenario>
+      <summary>South past the mountains, after something the histories call a myth.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_HouseLadrian</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Waxillium</firstName>
+              <nickName>Wax</nickName>
+              <lastName>Ladrian</lastName>
+              <age>44</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <relations>
+                <li><def>Spouse</def><to>Steris</to></li>
+              </relations>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingSteel</li>
+                <li>Cosmere_Scadrial_Gene_FerringIron</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>18</level></li>
+                <li><def>Melee</def><level>11</level></li>
+                <li><def>Intellectual</def><level>11</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Wayne</firstName>
+              <age>32</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBendalloy</li>
+                <li>Cosmere_Scadrial_Gene_FerringGold</li>
+              </genes>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>13</level></li>
+                <li><def>Social</def><level>16</level></li>
+                <li><def>Crafting</def><level>9</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marasi</firstName>
+              <lastName>Colms</lastName>
+              <age>27</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCadmium</li>
+              </genes>
+              <skills>
+                <li><def>Intellectual</def><level>16</level></li>
+                <li><def>Shooting</def><level>11</level></li>
+                <li><def>Social</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Steris</firstName>
+              <lastName>Harms</lastName>
+              <age>30</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Crafting</def><level>9</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>MeLaan</firstName>
+              <age>24</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
+            </li>
+            <!-- Southern Scadrian. No Allomancy to speak of and no apparent need of it, which
+                 he is too polite to point out more than once a day. -->
+            <li>
+              <firstName>Allik</firstName>
+              <lastName>Neverfar</lastName>
+              <age>29</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <skills>
+                <li><def>Crafting</def><level>15</level></li>
+                <li><def>Intellectual</def><level>13</level></li>
+                <li><def>Construction</def><level>11</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>70</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_BoltActionRifle</thingDef>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>700</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_BandsOfMourning</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Elendel>40</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_Malwish>10</Cosmere_Scadrial_Faction_Malwish>
+            <Cosmere_Scadrial_Faction_TheSet>-100</Cosmere_Scadrial_Faction_TheSet>
+            <Cosmere_Scadrial_Faction_HouseHasting>-20</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>0</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>-20</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseDemoux>40</Cosmere_Scadrial_Faction_HouseDemoux>
+            <Cosmere_Scadrial_Faction_HouseHammondess>40</Cosmere_Scadrial_Faction_HouseHammondess>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The photograph is bad. It does not need to be good.\n\nSouth past the mountains there is a building that has been sitting with its doors shut since before the Ascension, and inside it is something left on purpose by someone who knew exactly what was coming. Steris has packed for eleven contingencies. Wayne has packed a hat. Allik keeps trying to explain that his people solved all of this a long time ago, and keeps being too polite to finish the sentence.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Harmony</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_BandsOfMourning</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

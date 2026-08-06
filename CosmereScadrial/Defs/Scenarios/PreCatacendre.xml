@@ -273,6 +273,48 @@
             <Cosmere_Scadrial_Faction_HouseCett>-60</Cosmere_Scadrial_Faction_HouseCett>
             <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
           </relations>
+        <between>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_FinalEmpireNPC</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseCett</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseElariel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseHasting</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseLekal</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseRenoux</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseTekiel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseVenture</b>
+            <goodwill>-100</goodwill>
+          </li>
+        </between>
         </li>
 
         <li Class="ScenPart_GameStartDialog">

@@ -174,6 +174,9 @@
     <canStageAttacks>true</canStageAttacks>
     <permanentEnemy>true</permanentEnemy>
     <leaderTitle>Steel Inquisitor</leaderTitle>
+    <fixedLeaderKinds>
+      <li>PirateBoss</li>
+    </fixedLeaderKinds>
     <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
     <colorSpectrum>
       <li>(0.25, 0.20, 0.20)</li>
@@ -192,6 +195,54 @@
       </li>
     </pawnGroupMakers>
     <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Houses that come out the other side of the Catacendre. Two of them are the crew's own
+       descendants, which is the joke and also the point: the people who broke the empire ended
+       up with the thing they broke it over. -->
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseErikell</defName>
+    <label>House Erikell</label>
+    <fixedName>House Erikell</fixedName>
+    <description>Survived the Collapse by being useful to whoever was winning and by never being important enough to burn. Three hundred years later that is still the house strategy, and it is still working.</description>
+    <colorSpectrum>
+      <li>(0.40, 0.45, 0.25)</li>
+      <li>(0.58, 0.65, 0.38)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseInnate</defName>
+    <label>House Innate</label>
+    <fixedName>House Innate</fixedName>
+    <description>Politics rather than plantations. Innate went into the governance of the Basin early and has stayed there, and when Elendel needs somebody to stand up and be reasonable about a crisis it is usually an Innate doing the standing.</description>
+    <colorSpectrum>
+      <li>(0.28, 0.38, 0.52)</li>
+      <li>(0.42, 0.56, 0.72)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseDemoux</defName>
+    <label>House Demoux</label>
+    <fixedName>House Demoux</fixedName>
+    <description>Descended from a skaa soldier who followed the Survivor and then followed the Ascendant Warrior, and was written down doing it. Being founded by somebody the histories are unambiguous about has been worth more to this house than land ever was.</description>
+    <colorSpectrum>
+      <li>(0.45, 0.32, 0.28)</li>
+      <li>(0.65, 0.48, 0.40)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseHammondess</defName>
+    <label>House Hammondess</label>
+    <fixedName>House Hammondess</fixedName>
+    <description>The line of a thug who liked arguing philosophy more than hitting people, and who lived long enough to do both at length. His descendants have kept the arguing and mostly given up the other thing.</description>
+    <colorSpectrum>
+      <li>(0.50, 0.42, 0.22)</li>
+      <li>(0.70, 0.60, 0.34)</li>
+    </colorSpectrum>
   </FactionDef>
 
 </Defs>

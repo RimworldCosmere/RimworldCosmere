@@ -21,6 +21,9 @@
               <age>42</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <relations>
+                <li><def>Spouse</def><to>Steris</to></li>
+              </relations>
               <genes>
                 <li>Cosmere_Scadrial_Gene_MistingSteel</li>
                 <li>Cosmere_Scadrial_Gene_FerringIron</li>
@@ -149,6 +152,23 @@
         <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
           <def>Cosmere_ScenPart_ScenarioProgression</def>
           <progression>Cosmere_Scadrial_Progression_AlloyOfLaw</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <!-- Three hundred years on, only the houses that survived the Catacendre are still
+                 answering to their names. Demoux and Hammondess descend from the crew. -->
+            <Cosmere_Scadrial_Faction_Elendel>20</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-20</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>0</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>-20</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseDemoux>40</Cosmere_Scadrial_Faction_HouseDemoux>
+            <Cosmere_Scadrial_Faction_HouseHammondess>40</Cosmere_Scadrial_Faction_HouseHammondess>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
         </li>
 
         <li Class="ScenPart_GameStartDialog">

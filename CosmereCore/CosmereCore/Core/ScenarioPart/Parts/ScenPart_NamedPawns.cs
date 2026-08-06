@@ -46,6 +46,71 @@ public class ScenPart_NamedPawns : ScenPart {
         }
     }
 
+    /// <summary>
+    ///     Wires the named pawns to each other once they all exist. Anything the generator
+    ///     invented in the meantime - a spouse it picked at random - is cleared first, so a
+    ///     scenario that says two people are married does not leave them married to strangers.
+    /// </summary>
+    private void ApplyRelations() {
+        for (int i = 0; i < pawns.Count; i++) {
+            NamedPawnDef template = pawns[i];
+            if (template.relations.Count == 0 || template.firstName == null) continue;
+
+            Pawn? self = FindNamed(template.firstName);
+            if (self?.relations == null) continue;
+
+            for (int r = 0; r < template.relations.Count; r++) {
+                NamedPawnRelationEntry entry = template.relations[r];
+                if (entry.def == null || entry.to == null) continue;
+
+                PawnRelationDef? def = DefDatabase<PawnRelationDef>.GetNamedSilentFail(entry.def);
+                if (def == null) {
+                    Logger.Warning($"ScenPart_NamedPawns: PawnRelationDef '{entry.def}' not found");
+                    continue;
+                }
+
+                Pawn? other = FindNamed(entry.to);
+                if (other == null || other == self) continue;
+                if (self.relations.DirectRelationExists(def, other)) continue;
+
+                if (def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
+                    def == PawnRelationDefOf.Fiance) {
+                    ClearRomance(self);
+                    ClearRomance(other);
+                }
+
+                self.relations.AddDirectRelation(def, other);
+                Logger.Info($"ScenPart_NamedPawns: {template.firstName} is {def.defName} to {entry.to}.");
+            }
+        }
+    }
+
+    private static void ClearRomance(Pawn pawn) {
+        if (pawn.relations == null) return;
+
+        List<DirectPawnRelation> existing = new List<DirectPawnRelation>(pawn.relations.DirectRelations);
+        for (int i = 0; i < existing.Count; i++) {
+            PawnRelationDef def = existing[i].def;
+            if (def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
+                def == PawnRelationDefOf.Fiance) {
+                pawn.relations.RemoveDirectRelation(existing[i]);
+            }
+        }
+    }
+
+    private static Pawn? FindNamed(string firstName) {
+        List<Map> maps = Find.Maps;
+        for (int m = 0; m < maps.Count; m++) {
+            List<Pawn> colonists = maps[m].mapPawns.FreeColonists;
+            for (int i = 0; i < colonists.Count; i++) {
+                Pawn pawn = colonists[i];
+                if (pawn.Name is NameTriple t && (t.First == firstName || t.Nick == firstName)) return pawn;
+            }
+        }
+
+        return null;
+    }
+
     public override void Notify_PawnGenerated(Pawn pawn, PawnGenerationContext context, bool redressed) {
         if (context != PawnGenerationContext.PlayerStarter) return;
         if (pawns.Count == 0) return;
@@ -80,6 +145,7 @@ public class ScenPart_NamedPawns : ScenPart {
     public override void PostGameStart() {
         base.PostGameStart();
         ApplyPostStartEffects();
+        ApplyRelations();
     }
 
     public override string Summary(Scenario scen) {

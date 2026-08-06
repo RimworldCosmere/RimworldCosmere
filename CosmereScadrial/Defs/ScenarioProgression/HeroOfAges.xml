@@ -5,6 +5,65 @@
     <label>Hero of Ages Progression</label>
     <events>
 
+      <!-- Ruin leaning on the Ashmounts. No letters: the player reads this off the sky. The last
+           step lands on ruins_assault at day 70, so the map is at full weight for the fight. -->
+      <li>
+        <key>ashfall_ruin_opens</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>0</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.70</severity>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ashfall_ruin_presses</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>25</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.80</severity>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ashfall_ruin_buries</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>45</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>0.90</severity>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ashfall_ruin_full</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>70</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.SetAshfallIntensityAction">
+            <severity>1.00</severity>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>mists_kill</key>
         <triggers>
@@ -299,6 +358,13 @@
                 <enable>
                   <li>Harmony</li>
                 </enable>
+              </li>
+              <!-- Whoever is holding Ruin now is holding it. The things it was driving stop
+                   being driven. -->
+              <li Class="Cosmere.Core.ScenarioPart.Action.RemoveFactionAction">
+                <factions>
+                  <li>Cosmere_Scadrial_Faction_Ruin</li>
+                </factions>
               </li>
               <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
               <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">

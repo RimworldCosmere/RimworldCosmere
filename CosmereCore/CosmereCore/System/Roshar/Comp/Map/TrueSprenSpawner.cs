@@ -1,4 +1,6 @@
-﻿using Cosmere.System.Roshar.Comp.Thing;
+﻿using Cosmere.Core.Def;
+using Cosmere.Core.Util;
+using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Thing.Pawn.Animal;
 using RimWorld;
@@ -31,6 +33,9 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         1 / Mod.Settings.nahelSprenSpawnAverageIntervalTicks * Current.Game.storyteller.difficulty.threatScale;
 
     public override void MapComponentTick() {
+        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
+        // growing them, and the particle systems are expensive to keep warm besides.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
         if (baseSpawnChance == 0) return;
 
         base.MapComponentTick();

@@ -4,6 +4,27 @@
     <defName>Cosmere_Scadrial_Progression_AlloyOfLaw</defName>
     <label>Alloy of Law Progression</label>
     <events>
+
+      <!-- Only for a campaign that starts here. Post-Catacendre does not hand off into this
+           arc - three hundred years separate them - so anyone arriving is arriving cold. -->
+      <li>
+        <key>three_hundred_years</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>1</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Three Hundred Years</title>
+            <text>The world ended and then it did not. That is the short version, and most people out here have never heard a longer one.\n\nA thousand years of ash came down on an empire run by a man who had made himself a god, and it stopped inside a single day. The histories say two people died holding the pieces apart long enough for a third to catch them, and that the third is still holding them, and answers to Harmony. The Ministry is gone. The Lord Ruler is a thing schoolchildren argue about. Ash is a word for something that used to fall.\n\nThree hundred years is long enough to rebuild, and long enough to forget you were rebuilding. Elendel has banks and broadsheets and a governor, and railroads pushing west. Past the last of them the law is whoever rode out to enforce it and how long they intend to stay.\n\nThis is the Roughs. Harmony is real, He is listening, and He is a very long way away.</text>
+            <letterDef>NeutralEvent</letterDef>
+            <listEffects>false</listEffects>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>bandit_activity</key>
         <triggers>
@@ -14,68 +35,145 @@
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>Bandit Activity</title>
-            <text>Reports trickle in from the outermost settlements. Caravans robbed. Supply wagons overturned and stripped clean. The bandits are organized - not the usual Roughs rabble scraping for survival, but coordinated teams hitting specific targets. Wax studies the pattern on a map and frowns. The robberies form a ring, tightening around your position. Someone is probing your defenses.</text>
-            <letterDef>NegativeEvent</letterDef>
+            <title>The Roughs Have Teeth</title>
+            <text>Two claim camps burned this month and a rail crew walked back forty miles because their handcar did not. Whoever is doing it is organised, and getting bolder about being seen.\n\nThey are riding this way. There is a gang out there now with a name and a territory, and the colony is inside it.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <goodwill>-100</goodwill>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Roughs</armyNameKey>
+            <pointsFactor>0.8</pointsFactor>
+            <minPoints>700</minPoints>
           </li>
         </actions>
       </li>
+
       <li>
-        <key>letter_from_elendel</key>
-        <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>25</days>
-            <sinceArcStart>true</sinceArcStart>
-          </li>
-        </triggers>
-        <actions>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>Letter from Elendel</title>
-            <text>The letter bears the seal of House Ladrian. Wax's uncle writes with thinly veiled urgency: the house finances are in disarray, social obligations pile up, and several lords are circling like vultures waiting for the noble house to collapse. Between the lines, another message: come home. But the Roughs have their own demands, and Wax has never been good at choosing the easy path. He folds the letter and tucks it into his coat. Wayne eyes him. "Bad news?" "Family," Wax says, which amounts to the same thing.</text>
-            <letterDef>NeutralEvent</letterDef>
-          </li>
-        </actions>
-      </li>
-      <li>
-        <key>wax_and_steris</key>
+        <key>the_vanishers</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>30</days>
             <sinceArcStart>true</sinceArcStart>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
-            <pawnName>Waxillium</pawnName>
-            <alive>true</alive>
-          </li>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
-            <pawnName>Steris</pawnName>
-            <alive>true</alive>
-          </li>
-        </triggers>
-        <actions>
-          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>An Arrangement of Practical Benefit</title>
-            <text>Steris presents the document over breakfast, organized into fourteen subsections with two appendices. "A formal alliance," she explains, adjusting her spectacles, "delineating mutual obligations, resource-sharing protocols, and contingency procedures for no fewer than thirty-one categories of emergency." Wax reads it. It is, he has to admit, remarkably thorough. "You included a provision for koloss attack." "Subsection 7.3. I also included one for earthquake, flooding, and spontaneous Allomantic manifestation in livestock." For the first time in a long while, Wax genuinely smiles.</text>
-            <letterDef>PositiveEvent</letterDef>
-          </li>
-        </actions>
-      </li>
-      <li>
-        <key>the_vanishers</key>
-        <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>40</days>
-            <sinceArcStart>true</sinceArcStart>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>bandit_activity</eventKey>
           </li>
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Vanishers</title>
-            <text>They call themselves the Vanishers, and the name is earned. An entire rail shipment - cargo, passengers, and all - gone without a trace. No wreckage. No bodies. The constables are baffled. Marasi's research suggests Allomantic involvement: speed bubbles to isolate targets, Pushes and Pulls to redirect rolling stock. These are not common criminals. They are Metalborn, well-funded and well-trained. Wax checks his ammunition. Wayne starts looking for a good hat to wear to a fight. The hunt begins.</text>
+            <text>An entire rail shipment - cargo, passengers, rolling stock - gone between one station and the next. No wreckage and no bodies, which is not how robbery works.\n\nThey are Metalborn, they are funded, and they are not going to stay on the rail line. The next thing that comes at the colony will be better armed than the last.</text>
             <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Vanishers</armyNameKey>
+            <pointsFactor>1.1</pointsFactor>
+            <minPoints>1100</minPoints>
+            <edge>East</edge>
           </li>
         </actions>
       </li>
+
+      <!-- The Sanderlanche. Miles heals faster than anyone can put him down, so the fight is
+           three waves rather than one raid: he is beaten, he gets back up, and the third time
+           is the one that takes. -->
+      <li>
+        <key>miles_hundredlives</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>45</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_vanishers</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Miles Hundredlives</title>
+            <text>The man running the Vanishers used to be a lawman. Twenty years in the Roughs, a good one, and somewhere in there he decided the law was a thing the Basin used on people like him and stopped pretending otherwise.\n\nThey call him Hundredlives because that is roughly how many times somebody has watched him die. He heals. Shoot him and the hole closes; the only thing that has ever worked is doing it faster than he can mend.\n\nHe is coming here, and he is not in a hurry, because he has never had a reason to be.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Miles</armyNameKey>
+            <pointsFactor>1.3</pointsFactor>
+            <minPoints>1400</minPoints>
+            <edge>East</edge>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>he_got_back_up</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>48</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>miles_hundredlives</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>He Got Back Up</title>
+            <text>Somebody counted the hits. Somebody else confirmed the count. It did not matter.\n\nHe walked out of the treeline three days later with the same coat and the same unhurried expression, and the people who had watched him go down are having difficulty with it in a way that is starting to affect how they hold a rifle.\n\nHe is not going to stop coming. The only question is what runs out first.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Miles</armyNameKey>
+            <pointsFactor>1.5</pointsFactor>
+            <minPoints>1800</minPoints>
+            <edge>West</edge>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>theyre_coming</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>53</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>he_got_back_up</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>They're Coming</title>
+            <text>The third time took. Whatever he had stored ran out somewhere in the middle of it, and the wound stayed a wound, and he seemed almost interested in that.\n\nHe was still talking at the end. Not pleading - he had never done that - but explaining, in the tone of a man laying out the part everyone else has missed. He said they were coming. He said he had only ever been early.\n\nHe did not say who, and there was not time to make him. The Vanishers scatter without him. Whatever he was working for does not.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Miles</armyNameKey>
+            <pointsFactor>1.8</pointsFactor>
+            <minPoints>2200</minPoints>
+            <edge>North</edge>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+            <goodwill>60</goodwill>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+            <thought>Cosmere_Scadrial_EscapedDeath</thought>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
+          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_ShadowsOfSelf</progression>
+          </li>
+        </actions>
+      </li>
+
     </events>
   </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
 </Defs>

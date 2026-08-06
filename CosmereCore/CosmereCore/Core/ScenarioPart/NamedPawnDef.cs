@@ -15,6 +15,13 @@ public class NamedPawnDef {
     public List<string> genes = [];
     public int idealLevel;
     public List<NamedPawnInventoryEntry> apparel = [];
+
+    /// <summary>
+    ///     Ties to other named pawns in the same scenario, by their first name. Applied once
+    ///     every starting pawn exists, because the other half of a relationship is usually not
+    ///     built yet when this one is.
+    /// </summary>
+    public List<NamedPawnRelationEntry> relations = [];
     public List<NamedPawnInventoryEntry> inventory = [];
     public string? lastName;
     public bool mistborn;
@@ -92,6 +99,9 @@ public class NamedPawnDef {
                     break;
                 case "apparel":
                     apparel = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
+                    break;
+                case "relations":
+                    relations = DirectXmlToObject.ObjectFromXml<List<NamedPawnRelationEntry>>(node, false);
                     break;
             }
         }
@@ -176,6 +186,29 @@ public class NamedPawnInventoryEntry {
                 case "count":
                     if (!int.TryParse(node.InnerText, out count))
                         Logger.Warning($"NamedPawnInventoryEntry: invalid count value '{node.InnerText}'");
+                    break;
+            }
+        }
+    }
+}
+
+public class NamedPawnRelationEntry {
+    /// <summary>A PawnRelationDef name - Spouse, Lover, Fiance, Sibling, Parent, Child.</summary>
+    public string? def;
+
+    /// <summary>The other pawn's first name.</summary>
+    public string? to;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "def":
+                    def = node.InnerText;
+                    break;
+                case "to":
+                    to = node.InnerText;
                     break;
             }
         }

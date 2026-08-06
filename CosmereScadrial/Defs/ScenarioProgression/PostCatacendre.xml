@@ -5,6 +5,22 @@
     <label>Post-catacendre Progression</label>
     <events>
 
+      <!-- Day zero, before ash_stops has its say. The letter at day 10 is the colony noticing;
+           this is the world actually stopping. What is on the ground drains from here, a stripe
+           at a time, and the deep-ash terrain unwinds off that drain rather than off the era. -->
+      <li>
+        <key>ashfall_ends</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>0</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.System.Scadrial.ScenarioPart.Action.EndAshfallAction" />
+        </actions>
+      </li>
+
       <li>
         <key>ash_stops</key>
         <triggers>
@@ -18,6 +34,48 @@
             <title>The Ash Has Stopped</title>
             <text>Someone noticed at midday and could not say it out loud for a while. Nothing is falling. The sky over the basin is a colour none of the older ones have a word for, and the ground is going to have to learn what to do with light. Harmony has set the world down gently, and now everybody has to live in it.</text>
             <letterDef>PositiveEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+            <thought>Cosmere_Scadrial_NewSky</thought>
+          </li>
+        </actions>
+      </li>
+
+      <!-- The Collapse and the siege years did for most of the great houses; the Catacendre is
+           simply when somebody finally sits down and counts. Four survive here because their
+           names are still being used three hundred years later. -->
+      <li>
+        <key>the_houses_that_did_not_last</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>20</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>ash_stops</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Names That Stopped Being Answered To</title>
+            <text>Somebody has been keeping a ledger, and has finished it.\n\nVenture held the throne for a year and then held nothing. Elariel spent the siege buying its way to a seat that no longer existed by the time it got there. Lekal broke over the succession and never came back together. Renoux was never a house at all, and the kandra who wore it has gone home.\n\nWhat is left is Hasting, Tekiel, Cett and Ladrian, plus whatever the survivors of the crew end up being called. Four families and some skaa with good stories are going to be the aristocracy of whatever comes next, and none of them are ready for it.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RemoveFactionAction">
+            <factions>
+              <li>Cosmere_Scadrial_Faction_HouseVenture</li>
+              <li>Cosmere_Scadrial_Faction_HouseElariel</li>
+              <li>Cosmere_Scadrial_Faction_HouseLekal</li>
+              <li>Cosmere_Scadrial_Faction_HouseRenoux</li>
+            </factions>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_HouseDemoux</faction>
+            <goodwill>60</goodwill>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_HouseHammondess</faction>
+            <goodwill>60</goodwill>
           </li>
         </actions>
       </li>
@@ -39,14 +97,18 @@
             <text>Crops that would have choked inside a week under the old sky have come in whole. There is more food in the stores than anyone here has held at once, and a quiet argument going on about whether to eat it or plant it. That is a new kind of argument, and it is a better one.</text>
             <letterDef>PositiveEvent</letterDef>
           </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+            <goodwill>40</goodwill>
+          </li>
         </actions>
       </li>
 
       <li>
-        <key>the_roughs</key>
+        <key>harmony_speaks</key>
         <triggers>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
-            <days>60</days>
+            <days>45</days>
             <sinceArcStart>true</sinceArcStart>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
@@ -55,14 +117,45 @@
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>A God Who Answers</title>
+            <text>It is not a voice. People describe it afterwards as having remembered something nobody ever told them.\n\nWhat comes through is careful, and apologetic, and very tired. Harmony holds two things that spent an age trying to unmake each other, and he can only lean on the world so hard before one of them leans back. So he asks. Nobody living has been asked by a god before, and the colony does not entirely know what to do about it.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+            <thought>Cosmere_Scadrial_HarmonyAsked</thought>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_roughs</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>70</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>harmony_speaks</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Roads, and What Comes Down Them</title>
             <text>Traders came through with news instead of goods. There are cities out east now with law in them, and out here there is not, and the gap between those two facts is where everyone in this basin is going to be living for the next several generations. They are calling it the Roughs. It is not an insult yet.</text>
             <letterDef>NeutralEvent</letterDef>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
-          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
-            <progression>Cosmere_Scadrial_Progression_AlloyOfLaw</progression>
+          <li Class="Cosmere.Core.ScenarioPart.Action.CreateFactionAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <goodwill>-100</goodwill>
           </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Roughs</armyNameKey>
+            <pointsFactor>0.7</pointsFactor>
+            <minPoints>600</minPoints>
+          </li>
+          <!-- No handoff. Three hundred years separate this from the Alloy of Law, and a
+               colony does not play through them - that era is its own starting scenario. -->
         </actions>
       </li>
 

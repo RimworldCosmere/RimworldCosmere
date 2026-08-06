@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_ShadowsOfSelf</defName>
+    <label>Cosmere - Scadrial - Shadows of Self</label>
+    <description>A year after the Vanishers. Elendel runs on broadsheets and union charters now, and something has started wearing the faces of people the city trusts. Harmony cannot see it. Wax can, if he is willing to look at what that means about the people around him.</description>
+    <scenario>
+      <summary>Something is wearing the city's faces, and a god cannot see it.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_HouseLadrian</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Waxillium</firstName>
+              <nickName>Wax</nickName>
+              <lastName>Ladrian</lastName>
+              <age>43</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <relations>
+                <li><def>Spouse</def><to>Steris</to></li>
+              </relations>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingSteel</li>
+                <li>Cosmere_Scadrial_Gene_FerringIron</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>17</level></li>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Intellectual</def><level>11</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Wayne</firstName>
+              <age>31</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBendalloy</li>
+                <li>Cosmere_Scadrial_Gene_FerringGold</li>
+              </genes>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>13</level></li>
+                <li><def>Social</def><level>15</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marasi</firstName>
+              <lastName>Colms</lastName>
+              <age>26</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCadmium</li>
+              </genes>
+              <skills>
+                <li><def>Intellectual</def><level>15</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+                <li><def>Social</def><level>9</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Steris</firstName>
+              <lastName>Harms</lastName>
+              <age>29</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>13</level></li>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <!-- MeLaan is kandra. The body is borrowed and she is unembarrassed about saying so. -->
+            <li>
+              <firstName>MeLaan</firstName>
+              <age>24</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>60</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_BoltActionRifle</thingDef>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>600</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_ShadowsOfSelf</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Elendel>40</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-20</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>0</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>-40</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseDemoux>40</Cosmere_Scadrial_Faction_HouseDemoux>
+            <Cosmere_Scadrial_Faction_HouseHammondess>40</Cosmere_Scadrial_Faction_HouseHammondess>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>A witness gives a description, and the man she describes turns up three hundred miles away swearing he was never there. Both accounts hold up. Elendel would rather this were somebody else's problem.\n\nWax has read the reports twice. Marasi has read them four times and made a list. Wayne is wearing somebody else's hat and will not say whose. MeLaan, who knows exactly what is doing this because she used to be one of them, is not saying much at all.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Harmony</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_ShadowsOfSelf</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

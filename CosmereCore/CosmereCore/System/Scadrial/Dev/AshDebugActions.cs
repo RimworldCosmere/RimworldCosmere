@@ -1,6 +1,7 @@
 using Cosmere.System.Scadrial.Comp.Map;
 using Cosmere.System.Scadrial.Grid;
 using LudeonTK;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Dev;
@@ -36,6 +37,18 @@ public static class AshDebugActions {
     [DebugAction("Cosmere", "Ash: severity to baseline", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     private static void BaselineSeverity() {
         Find.CurrentMap?.GetComponent<AshDepthTracker>()?.SetSeverityNow(AshDepthTracker.BaselineSeverity);
+    }
+
+    [DebugAction("Cosmere", "Ash: settle terrain now", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    private static void SettleTerrain() {
+        Verse.Map map = Find.CurrentMap;
+        AshDepthTracker? tracker = map?.GetComponent<AshDepthTracker>();
+        if (tracker == null) return;
+
+        // The live sweep rations itself to eight changes a tick, which is minutes of watching on
+        // a full map. This runs the same pass with the ration off.
+        int swapped = tracker.RunTerrainSweepNow();
+        Messages.Message($"{swapped} cells standing as deep ash.", MessageTypeDefOf.NeutralEvent, false);
     }
 
     private static void AddAsh(int millimetres) {

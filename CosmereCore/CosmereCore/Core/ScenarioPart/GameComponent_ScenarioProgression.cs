@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.ScenarioPart.Action;
 using Cosmere.Core.ScenarioPart.Parts;
+using Cosmere.Core.UI;
 using RimWorld;
 using Verse;
 
@@ -16,6 +17,9 @@ public class GameComponent_ScenarioProgression : GameComponent {
 
     /// <summary>When the running arc took over. Negative while the campaign is on its first.</summary>
     private int arcStartTick = -1;
+
+    /// <summary>Rebuilds the open fork. Non-null means the campaign is waiting on an answer.</summary>
+    private Func<Dialog_ProgressionChoice>? pendingChoice;
 
     public GameComponent_ScenarioProgression(Game game) { }
 
@@ -73,6 +77,17 @@ public class GameComponent_ScenarioProgression : GameComponent {
 
     public override void GameComponentTick() {
         base.GameComponentTick();
+
+        // A story fork the player has not answered outranks everything else. The window pauses
+        // the game while it is up; if anything closes it without a pick, put it straight back.
+        if (pendingChoice != null) {
+            if (!Find.WindowStack.IsOpen<Dialog_ProgressionChoice>()) {
+                Find.WindowStack.Add(pendingChoice());
+            }
+
+            return;
+        }
+
         if (activeDef == null) return;
 
         int ticksGame = Find.TickManager.TicksGame;
@@ -80,6 +95,20 @@ public class GameComponent_ScenarioProgression : GameComponent {
         lastCheckTick = ticksGame;
 
         CheckProgression();
+    }
+
+    /// <summary>
+    ///     Puts a fork on screen and holds the campaign there. Nothing else in the arc advances
+    ///     until <see cref="ChoiceAnswered" /> is called.
+    /// </summary>
+    public void AskChoice(Func<Dialog_ProgressionChoice> factory) {
+        pendingChoice = factory;
+        Find.WindowStack.Add(factory());
+    }
+
+    /// <summary>Releases the campaign once a branch has been taken.</summary>
+    public void ChoiceAnswered() {
+        pendingChoice = null;
     }
 
     private void CheckProgression() {
@@ -125,6 +154,24 @@ public class GameComponent_ScenarioProgression : GameComponent {
 
         try {
             for (int i = 0; i < actions.Count; i++) {
+                // A fork stops the block. Era advances and handoffs sitting after it must not
+                // run while the question is still open, or the campaign moves to the next arc
+                // with the choice unanswered - which is exactly how the Well got skipped.
+                if (actions[i] is ChoiceAction choice) {
+                    List<ProgressionAction> tail = actions.GetRange(i + 1, actions.Count - i - 1);
+                    string? outer = PendingEffects;
+                    choice.Execute(this, tail.Count == 0 ? null : () => {
+                        string? saved = PendingEffects;
+                        PendingEffects = outer;
+                        try {
+                            RunActions(tail);
+                        } finally {
+                            PendingEffects = saved;
+                        }
+                    });
+                    return;
+                }
+
                 try {
                     actions[i].Execute(this);
                 } catch (Exception ex) {

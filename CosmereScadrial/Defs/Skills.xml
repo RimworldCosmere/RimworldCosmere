@@ -12,6 +12,20 @@
                 <requiresInvestitureSystem>Allomancy</requiresInvestitureSystem>
             </li>
         </modExtensions>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Allomancy</li>
+          <li>subject-&gt;metal burning</li>
+          <li>subject-&gt;the pushes and pulls</li>
+          <li>subject-&gt;Mistborn practice</li>
+          <li>subject-&gt;steelpushing</li>
+          <li>subject-&gt;ironpulling</li>
+          <li>subject-&gt;the burnable metals</li>
+          <li>subject-&gt;Misting training</li>
+          <li>subject-&gt;allomantic control</li>
+          <li>subject-&gt;flaring metals</li>
+        </rulesStrings>
+      </generalRules>
     </SkillDef>
     <SkillDef>
         <defName>Cosmere_Scadrial_Skill_FeruchemicPower</defName>
@@ -25,5 +39,19 @@
                 <requiresInvestitureSystem>Feruchemy</requiresInvestitureSystem>
             </li>
         </modExtensions>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Feruchemy</li>
+          <li>subject-&gt;metalminds</li>
+          <li>subject-&gt;storing and tapping</li>
+          <li>subject-&gt;the Feruchemical balance</li>
+          <li>subject-&gt;coppermind keeping</li>
+          <li>subject-&gt;Terris practice</li>
+          <li>subject-&gt;attribute storage</li>
+          <li>subject-&gt;feruchemical charging</li>
+          <li>subject-&gt;the storage metals</li>
+          <li>subject-&gt;metalmind discipline</li>
+        </rulesStrings>
+      </generalRules>
     </SkillDef>
 </Defs>

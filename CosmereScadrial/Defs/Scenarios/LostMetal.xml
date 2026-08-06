@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_LostMetal</defName>
+    <label>Cosmere - Scadrial - The Lost Metal</label>
+    <description>Six years on. The Set have stopped hiding, because they are far enough along that being seen no longer costs them anything, and they were never working for themselves. There is something behind them that has never set foot on Scadrial and does not intend to.</description>
+    <scenario>
+      <summary>The Set stop hiding, and Harmony goes quiet about why.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_HouseLadrian</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Waxillium</firstName>
+              <nickName>Wax</nickName>
+              <lastName>Ladrian</lastName>
+              <age>50</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <relations>
+                <li><def>Spouse</def><to>Steris</to></li>
+              </relations>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingSteel</li>
+                <li>Cosmere_Scadrial_Gene_FerringIron</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>20</level></li>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Intellectual</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Wayne</firstName>
+              <age>38</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBendalloy</li>
+                <li>Cosmere_Scadrial_Gene_FerringGold</li>
+              </genes>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>18</level></li>
+                <li><def>Crafting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marasi</firstName>
+              <lastName>Colms</lastName>
+              <age>33</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCadmium</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>18</level></li>
+                <li><def>Shooting</def><level>13</level></li>
+                <li><def>Social</def><level>13</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Steris</firstName>
+              <lastName>Harms</lastName>
+              <age>36</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>16</level></li>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Crafting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>MeLaan</firstName>
+              <age>24</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>15</level></li>
+                <li><def>Social</def><level>13</level></li>
+                <li><def>Intellectual</def><level>11</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>80</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_BoltActionRifle</thingDef>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>800</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_LostMetal</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Elendel>60</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_Malwish>30</Cosmere_Scadrial_Faction_Malwish>
+            <Cosmere_Scadrial_Faction_TheSet>-100</Cosmere_Scadrial_Faction_TheSet>
+            <Cosmere_Scadrial_Faction_HouseHasting>-20</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>0</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>-40</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseDemoux>40</Cosmere_Scadrial_Faction_HouseDemoux>
+            <Cosmere_Scadrial_Faction_HouseHammondess>40</Cosmere_Scadrial_Faction_HouseHammondess>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>For years every thread anyone pulled came apart in their hands. This one holds, and what is on the end of it is not a smuggling ring. Factories with no owner. Bloodlines tracked across four generations in a ledger. A recruitment programme with a curriculum.\n\nHarmony has gone quiet about it. Not evasive - quiet, in the way of someone who has already run the position out and does not want to say what he found.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Harmony</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_LostMetal</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

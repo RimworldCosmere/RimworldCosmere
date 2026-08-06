@@ -8,6 +8,13 @@ namespace Cosmere.Core.ScenarioPart.Parts;
 public class ScenPart_FactionRelations : ScenPart {
     public List<FactionRelationEntry> relations = [];
 
+    /// <summary>
+    ///     Goodwill between two factions that are not the player. Without this everyone the
+    ///     scenario creates starts neutral to everyone else, so the skaa and the empire sit out
+    ///     the Collapse being polite to each other.
+    /// </summary>
+    public List<FactionPairEntry> between = [];
+
     public override void PostGameStart() {
         base.PostGameStart();
 
@@ -20,39 +27,51 @@ public class ScenPart_FactionRelations : ScenPart {
         for (int i = 0; i < relations.Count; i++) {
             FactionRelationEntry entry = relations[i];
 
-            FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(entry.faction);
-            if (def == null) {
-                Logger.Warning($"ScenPart_FactionRelations: FactionDef '{entry.faction}' not found");
-                continue;
-            }
+            Faction? other = ResolveOrCreate(entry.faction);
+            if (other == null) continue;
 
-            Faction? other = Find.FactionManager.FirstFactionOfDef(def);
-            if (other == null) {
-                try {
-                    FactionGenerator.CreateFactionAndAddToManager(def);
-                } catch (Exception ex) {
-                    Logger.Warning(
-                        $"ScenPart_FactionRelations: Failed to create faction '{entry.faction}': {ex}"
-                    );
-                    continue;
-                }
-
-                other = Find.FactionManager.FirstFactionOfDef(def);
-                if (other == null) {
-                    Logger.Warning(
-                        $"ScenPart_FactionRelations: Still no faction instance for '{entry.faction}' after creation attempt"
-                    );
-                    continue;
-                }
-            }
-
-            int current = player.GoodwillWith(other);
-            int delta = entry.goodwill - current;
-
-            if (delta != 0) {
-                player.TryAffectGoodwillWith(other, delta, false, false);
-            }
+            int delta = entry.goodwill - player.GoodwillWith(other);
+            if (delta != 0) player.TryAffectGoodwillWith(other, delta, false, false);
         }
+
+        for (int i = 0; i < between.Count; i++) {
+            FactionPairEntry pair = between[i];
+
+            Faction? a = ResolveOrCreate(pair.a);
+            Faction? b = ResolveOrCreate(pair.b);
+            if (a == null || b == null || a == b) continue;
+
+            int delta = pair.goodwill - a.GoodwillWith(b);
+            if (delta == 0) continue;
+
+            // SetRelationDirect refuses a pair that both use goodwill, and these all do, so the
+            // relation kind has to come out of the goodwill number.
+            a.TryAffectGoodwillWith(b, delta, false, false);
+        }
+    }
+
+    /// <summary>
+    ///     The faction for a def, creating it if world generation did not roll one. A scenario
+    ///     naming a faction is what guarantees it exists.
+    /// </summary>
+    private static Faction? ResolveOrCreate(string defName) {
+        FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(defName);
+        if (def == null) {
+            Logger.Warning($"ScenPart_FactionRelations: FactionDef '{defName}' not found");
+            return null;
+        }
+
+        Faction? faction = Find.FactionManager.FirstFactionOfDef(def);
+        if (faction != null) return faction;
+
+        try {
+            FactionGenerator.CreateFactionAndAddToManager(def);
+        } catch (Exception ex) {
+            Logger.Warning($"ScenPart_FactionRelations: Failed to create faction '{defName}': {ex}");
+            return null;
+        }
+
+        return Find.FactionManager.FirstFactionOfDef(def);
     }
 
     public override string Summary(Scenario scen) {
@@ -69,6 +88,20 @@ public class ScenPart_FactionRelations : ScenPart {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Collections.Look(ref relations, "relations", LookMode.Deep);
+        Scribe_Collections.Look(ref between, "between", LookMode.Deep);
+    }
+}
+
+/// <summary>Goodwill between two factions, neither of which is the player.</summary>
+public class FactionPairEntry : IExposable {
+    public string a = string.Empty;
+    public string b = string.Empty;
+    public int goodwill;
+
+    public void ExposeData() {
+        Scribe_Values.Look(ref a, "a", string.Empty);
+        Scribe_Values.Look(ref b, "b", string.Empty);
+        Scribe_Values.Look(ref goodwill, "goodwill");
     }
 }
 

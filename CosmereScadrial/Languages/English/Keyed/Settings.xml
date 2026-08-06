@@ -6,6 +6,8 @@
     <CS_Settings_AshfallEnabled_Tooltip>Whether the Ashmounts blanket the land during the Final Empire. When disabled, no ash falls and none settles.</CS_Settings_AshfallEnabled_Tooltip>
     <CS_Settings_MistsEnabled_Label>Enable Mists</CS_Settings_MistsEnabled_Label>
     <CS_Settings_MistsEnabled_Tooltip>Whether the mists rise at night. When disabled, the mists will not appear.</CS_Settings_MistsEnabled_Tooltip>
+    <CS_Settings_MistsLetter_Label>Announce the mists</CS_Settings_MistsLetter_Label>
+    <CS_Settings_MistsLetter_Tooltip>Whether a letter arrives each time the mists settle. The mists behave the same either way - this only controls the notification, which becomes repetitive once they are a nightly fact of life.</CS_Settings_MistsLetter_Tooltip>
     <CS_Settings_MistsFrequency_Label>Mists Frequency</CS_Settings_MistsFrequency_Label>
     <CS_Settings_MistsFrequency_Tooltip>How often will the mists come at night</CS_Settings_MistsFrequency_Tooltip>
     <CS_Settings_MistsFrequency_Daily>Daily</CS_Settings_MistsFrequency_Daily>

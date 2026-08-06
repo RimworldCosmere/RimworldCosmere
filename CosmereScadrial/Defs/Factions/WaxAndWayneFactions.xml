@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Powers of the Wax and Wayne era. Each is named by the relations block of every scenario
+       that can reach it, which is what guarantees it exists - a FactionDef alone only makes a
+       faction eligible for world generation, never certain. -->
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Elendel</defName>
+    <label>Elendel Basin</label>
+    <fixedName>The Elendel Basin</fixedName>
+    <description>The city Harmony built the world around, and the bureaucracy that grew over it afterwards. Elendel writes the laws, sets the freight rates, and is quietly certain the Roughs would starve without it. The Roughs are quietly certain of the opposite.</description>
+    <pawnSingular>citizen</pawnSingular>
+    <pawnsPlural>citizens</pawnsPlural>
+    <listOrderPriority>40</listOrderPriority>
+    <settlementGenerationWeight>1.2</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Governor</leaderTitle>
+    <fixedLeaderKinds>
+      <li>Town_Councilman</li>
+    </fixedLeaderKinds>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.30, 0.45, 0.55)</li>
+      <li>(0.45, 0.65, 0.75)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>40</configurationListOrderPriority>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds><li>Visitor_Outlander_Standard</li></visitorTraderKinds>
+    <baseTraderKinds><li>Base_Outlander_Standard</li></baseTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>12</Town_Guard>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Elite>6</Mercenary_Elite>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders><Town_Trader>1</Town_Trader></traders>
+        <carriers><Muffalo>6</Muffalo><Alpaca>3</Alpaca></carriers>
+        <guards><Town_Guard>10</Town_Guard><Mercenary_Gunner>8</Mercenary_Gunner></guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options><Villager>15</Villager><Town_Guard>10</Town_Guard><Town_Councilman>5</Town_Councilman></options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_RoughsOutlaws</defName>
+    <label>Roughs outlaws</label>
+    <fixedName>The Roughs</fixedName>
+    <description>Out past the last rail line, where the law is whoever rode out to enforce it and how long they intend to stay. Rail crews, claim jumpers and men who left the Basin one step ahead of a warrant, all of them well armed and none of them expecting help.</description>
+    <pawnSingular>outlaw</pawnSingular>
+    <pawnsPlural>outlaws</pawnsPlural>
+    <listOrderPriority>55</listOrderPriority>
+    <settlementGenerationWeight>0.8</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <permanentEnemy>true</permanentEnemy>
+    <leaderTitle>Boss</leaderTitle>
+    <fixedLeaderKinds>
+      <li>PirateBoss</li>
+    </fixedLeaderKinds>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.45, 0.35, 0.20)</li>
+      <li>(0.65, 0.50, 0.30)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>55</configurationListOrderPriority>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Pirate>12</Pirate>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_TheSet</defName>
+    <label>the Set</label>
+    <fixedName>The Set</fixedName>
+    <description>They do not raid, exactly. They acquire: people with the right blood, records nobody thought worth guarding, whole industries bought through four intermediaries. Every time somebody pulls a thread it comes apart in their hands, and the Set have already moved.</description>
+    <pawnSingular>agent</pawnSingular>
+    <pawnsPlural>agents</pawnsPlural>
+    <listOrderPriority>75</listOrderPriority>
+    <!-- No settlements. They are inside the cities that already exist. -->
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <permanentEnemy>true</permanentEnemy>
+    <leaderTitle>Sequence</leaderTitle>
+    <fixedLeaderKinds>
+      <li>Town_Councilman</li>
+    </fixedLeaderKinds>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.20, 0.20, 0.26)</li>
+      <li>(0.35, 0.32, 0.42)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>75</configurationListOrderPriority>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Mercenary_Elite>12</Mercenary_Elite>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Heavy>6</Mercenary_Heavy>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Malwish</defName>
+    <label>Malwish</label>
+    <fixedName>The Malwish</fixedName>
+    <description>Southern Scadrians, who had no Allomancy worth the name and built their way past needing it. They arrive in vehicles that run without animals, carrying medallions that hand a borrowed talent to anyone holding one, and are unfailingly polite about how far ahead they are.</description>
+    <pawnSingular>Malwish</pawnSingular>
+    <pawnsPlural>Malwish</pawnsPlural>
+    <techLevel>Spacer</techLevel>
+    <listOrderPriority>50</listOrderPriority>
+    <settlementGenerationWeight>0.5</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Speaker</leaderTitle>
+    <fixedLeaderKinds>
+      <li>Town_Councilman</li>
+    </fixedLeaderKinds>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.20, 0.45, 0.40)</li>
+      <li>(0.35, 0.65, 0.58)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <caravanTraderKinds><li>Caravan_Outlander_Exotic</li></caravanTraderKinds>
+    <visitorTraderKinds><li>Visitor_Outlander_Standard</li></visitorTraderKinds>
+    <baseTraderKinds><li>Base_Outlander_Standard</li></baseTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Mercenary_Elite>12</Mercenary_Elite>
+          <Mercenary_Heavy>8</Mercenary_Heavy>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders><Town_Trader>1</Town_Trader></traders>
+        <carriers><Muffalo>6</Muffalo></carriers>
+        <guards><Mercenary_Elite>10</Mercenary_Elite></guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options><Villager>12</Villager><Mercenary_Elite>8</Mercenary_Elite></options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+</Defs>

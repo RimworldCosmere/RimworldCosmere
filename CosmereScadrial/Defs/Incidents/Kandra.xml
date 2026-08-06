@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Fired by the Shadows of Self progression, never by the storyteller. -->
+  <IncidentDef>
+    <defName>Cosmere_Scadrial_Incident_KandraArrival</defName>
+    <label>a kandra calls</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.Core.Incident.Worker.IncidentWorker_NamedPawnArrival</workerClass>
+    <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
+    <baseChance>0</baseChance>
+    <letterDef>PositiveEvent</letterDef>
+    <letterLabel>A Kandra Calls</letterLabel>
+    <letterText>She arrives wearing a body she is visibly pleased with and introduces herself twice, once with the name she is using and once with the number she was issued several centuries ago.\n\nHarmony sent her. She is not especially deferential about it. Kandra have spent a very long time being other people on somebody else's instruction, and this one has opinions about the arrangement and is happy to share them at length.</letterText>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.NamedPawnIncidentConfig">
+        <pawn>
+          <firstName>MeLaan</firstName>
+          <gender>Female</gender>
+          <age>28</age>
+          <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+          <childhood>Cosmere_Scadrial_Backstory_Kandra_Childhood</childhood>
+          <adulthood>Cosmere_Scadrial_Backstory_Kandra_Adulthood</adulthood>
+          <noRandomTraits>true</noRandomTraits>
+          <traits>
+            <li><def>Nerves</def><degree>1</degree></li>
+          </traits>
+          <skills>
+            <li><def>Social</def><level>12</level><passion>Major</passion></li>
+            <li><def>Melee</def><level>10</level></li>
+            <li><def>Intellectual</def><level>8</level></li>
+          </skills>
+        </pawn>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

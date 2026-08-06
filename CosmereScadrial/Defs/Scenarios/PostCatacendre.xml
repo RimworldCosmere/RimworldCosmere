@@ -82,6 +82,28 @@
           <progression>Cosmere_Scadrial_Progression_PostCatacendre</progression>
         </li>
 
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <!-- The houses that came through. The four that did not are still here at world
+                 generation and get retired twenty days in, once the ledger is finished. -->
+            <Cosmere_Scadrial_Faction_HouseLadrian>20</Cosmere_Scadrial_Faction_HouseLadrian>
+            <Cosmere_Scadrial_Faction_HouseHasting>0</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>20</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>0</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseVenture>-40</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>-40</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseLekal>-40</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseRenoux>0</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
+            <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_Elendel>40</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>

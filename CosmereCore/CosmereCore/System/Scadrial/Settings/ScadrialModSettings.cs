@@ -15,6 +15,7 @@ public class ScadrialModSettings : CosmereModSettings {
     public bool alwaysShowAllomanticAuras;
     public bool enableAshfall = true;
     public bool enableMists = true;
+    public bool mistsArrivalLetter = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
     public bool pawnsKeepVialsWhenDowned;
@@ -46,6 +47,16 @@ public class ScadrialModSettings : CosmereModSettings {
                         new CheckboxControl(
                             () => enableMists,
                             updated => enableMists = updated,
+                            true
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "mists-arrival-letter",
+                        "CS_Settings_MistsLetter_Label",
+                        "CS_Settings_MistsLetter_Tooltip",
+                        new CheckboxControl(
+                            () => mistsArrivalLetter,
+                            updated => mistsArrivalLetter = updated,
                             true
                         )
                     ),

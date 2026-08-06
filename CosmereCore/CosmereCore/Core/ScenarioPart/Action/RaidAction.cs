@@ -22,6 +22,13 @@ public class RaidAction : ProgressionAction {
     /// <summary>Multiplier on the storyteller's current threat points.</summary>
     public float pointsFactor = 1f;
 
+    /// <summary>
+    ///     Allies arriving to help rather than an army arriving to kill you. Uses vanilla's
+    ///     friendly raid, and never touches goodwill - a faction sending help is not a faction
+    ///     you want turned hostile on the way in.
+    /// </summary>
+    public bool friendly;
+
     /// <summary>Shown in the letter's effects list. Straff's army reads better than "a raid".</summary>
     public string? armyNameKey;
 
@@ -69,7 +76,11 @@ public class RaidAction : ProgressionAction {
         Map? map = Find.CurrentMap;
         if (map == null) return;
 
-        IncidentParms parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, map);
+        // Take the category off the incident itself rather than naming one - friendly raids
+        // are not a threat category and there is no DefOf constant for what they are.
+        IncidentDef incident = friendly ? IncidentDefOf.RaidFriendly : IncidentDefOf.RaidEnemy;
+
+        IncidentParms parms = StorytellerUtility.DefaultParmsNow(incident.category, map);
         parms.forced = true;
         parms.faction = attacker;
 
@@ -95,14 +106,14 @@ public class RaidAction : ProgressionAction {
             }
         }
 
-        // A story beat that says an army arrives has to produce one. Goodwill is set hostile
-        // first because RaidEnemy refuses a faction that is not.
-        if (!attacker.HostileTo(Faction.OfPlayer)) {
+        // A story beat that says an army arrives has to produce one. An enemy raid is refused
+        // outright for a faction that is not hostile, so hostility is forced first.
+        if (!friendly && !attacker.HostileTo(Faction.OfPlayer)) {
             attacker.TryAffectGoodwillWith(Faction.OfPlayer, -200, false, false);
         }
 
-        if (!IncidentDefOf.RaidEnemy.Worker.TryExecute(parms)) {
-            Logger.Warning($"ScenarioProgression: RaidEnemy refused to fire for '{faction}'.");
+        if (!incident.Worker.TryExecute(parms)) {
+            Logger.Warning($"ScenarioProgression: {incident.defName} refused to fire for '{faction}'.");
             return;
         }
 
@@ -117,6 +128,7 @@ public class RaidAction : ProgressionAction {
             ? armyNameKey.Translate().Resolve()
             : def.label;
 
-        return "CC_Progression_Effect_Raid".Translate(army.Named("ARMY")).Resolve();
+        return (friendly ? "CC_Progression_Effect_Allies" : "CC_Progression_Effect_Raid")
+            .Translate(army.Named("ARMY")).Resolve();
     }
 }

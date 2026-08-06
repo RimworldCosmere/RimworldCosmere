@@ -326,7 +326,7 @@
         <defName>Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse</defName>
         <label>sudden collapse</label>
         <description>Darkness took {PAWN_nameDef} without warning. One moment {PAWN_pronoun} was standing. The next, nothing.</description>
-        <hediffClass>HediffWithComps</hediffClass>
+        <hediffClass>Cosmere.Core.Hediff.PawnDescribedHediff</hediffClass>
         <defaultLabelColor>(0.7, 0.3, 0.9)</defaultLabelColor>
         <isBad>true</isBad>
         <scenarioCanAdd>false</scenarioCanAdd>

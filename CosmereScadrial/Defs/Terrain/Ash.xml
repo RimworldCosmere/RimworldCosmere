@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- What a cell becomes past AshDepthMath.TerrainSwapMm. Only natural ground is ever swapped,
+         and AshTerrainMemory holds the original so the Catacendre can hand it back. -->
+    <TerrainDef ParentName="NaturalTerrainBase">
+        <defName>Cosmere_Scadrial_Terrain_Ash</defName>
+        <label>deep ash</label>
+        <description>Ash packed deep enough that the ground beneath it no longer matters. It gives underfoot, then holds, and crossing it is closer to wading than to walking. Nothing roots in it. Nothing grows.</description>
+        <texturePath>Terrain/AshDeep</texturePath>
+        <edgeType>FadeRough</edgeType>
+        <categoryType>Soil</categoryType>
+        <renderPrecedence>340</renderPrecedence>
+        <pathCost>18</pathCost>
+        <fertility>0</fertility>
+        <statBases>
+            <Beauty>-5</Beauty>
+            <BeautyOutdoors>-2</BeautyOutdoors>
+            <Cleanliness>-3</Cleanliness>
+        </statBases>
+        <affordances>
+            <li>Light</li>
+            <li>Diggable</li>
+        </affordances>
+        <takeFootprints>true</takeFootprints>
+        <!-- Never layerable. The restore map owns the original, and a removable ash floor would
+             hand the player a deconstruct order on a metre of drift. -->
+        <layerable>false</layerable>
+        <changeable>false</changeable>
+        <canEverTerraform>false</canEverTerraform>
+        <supportsRock>false</supportsRock>
+        <color>(0.62, 0.60, 0.58)</color>
+        <tags>
+            <li>Cosmere_Ash</li>
+        </tags>
+    </TerrainDef>
+
+</Defs>

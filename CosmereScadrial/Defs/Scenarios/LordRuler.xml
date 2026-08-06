@@ -98,10 +98,10 @@
           <count>200</count>
         </li>
 
-        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
-          <def>Cosmere_ScenPart_ScenarioProgression</def>
-          <progression>Cosmere_Scadrial_Progression_LordRuler</progression>
-        </li>
+        <!-- No progression on purpose. This is a sandbox: you are Rashek at the Ascension,
+             a thousand years before anything in the books, and there is no script to follow.
+             It previously ran a scripted arc that handed off into the Final Empire, which
+             dropped a one-pawn Ascension colony into Kelsier's crew story. -->
 
         <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
           <def>Cosmere_ScenPart_FactionRelations</def>
@@ -116,6 +116,43 @@
             <Cosmere_Scadrial_Faction_SkaaRebels>-100</Cosmere_Scadrial_Faction_SkaaRebels>
             <Cosmere_Scadrial_Faction_Terris>-100</Cosmere_Scadrial_Faction_Terris>
           </relations>
+        <between>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseCett</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseElariel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseHasting</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseLekal</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseRenoux</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseTekiel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseVenture</b>
+            <goodwill>-100</goodwill>
+          </li>
+        </between>
         </li>
 
         <li Class="ScenPart_GameStartDialog">

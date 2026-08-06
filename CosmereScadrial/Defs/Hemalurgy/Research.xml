@@ -12,6 +12,15 @@
 		<prerequisites>
 			<li>Cosmere_Scadrial_Hemalurgy</li>
 		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;hemalurgic precision</li>
+	      <li>subject_story-&gt;mapped where a spike must land and how little that mercy is worth</li>
+	      <li>subject_story-&gt;reduced the loss from a spiking and was not thanked for it</li>
+	      <li>subject_story-&gt;made a terrible thing accurate, which is not the same as making it better</li>
+	      <li>subject_gerund-&gt;placing spikes precisely</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Scadrial_HemalurgicMastery</defName>
@@ -25,5 +34,14 @@
 		<prerequisites>
 			<li>Cosmere_Scadrial_HemalurgicPrecision</li>
 		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;hemalurgic mastery</li>
+	      <li>subject_story-&gt;understood the whole of the third Art and stopped sleeping well</li>
+	      <li>subject_story-&gt;worked out what the Lord Ruler had known, and why he kept it quiet</li>
+	      <li>subject_story-&gt;reached the end of the subject and wished the subject had been shorter</li>
+	      <li>subject_gerund-&gt;mastering Hemalurgy</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 </Defs>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using Concord;
+using Cosmere.Core.Def;
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Dev;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
@@ -34,6 +36,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentDraw() {
+        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
+        // growing them, and the particle systems are expensive to keep warm besides.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
         SprenDebugOverlay.DrawOverlay();
 
         // Process pending initializations on main thread before checking initialized -
@@ -59,6 +64,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentUpdate() {
+        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
+        // growing them, and the particle systems are expensive to keep warm besides.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
         base.MapComponentUpdate();
 
         bool onWorldMap = WorldRendererUtility.WorldRendered;
@@ -68,6 +76,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentTick() {
+        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
+        // growing them, and the particle systems are expensive to keep warm besides.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
         base.MapComponentTick();
 
         if (!initialized) return;
@@ -112,6 +123,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapGenerated() {
+        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
+        // growing them, and the particle systems are expensive to keep warm besides.
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
         base.MapGenerated();
 
         mapID = map.GetHashCode();

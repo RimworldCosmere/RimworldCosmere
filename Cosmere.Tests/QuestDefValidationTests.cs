@@ -306,38 +306,51 @@ public class QuestDefValidationTests {
 
     /// <summary>
     ///     A FactionDef only makes a faction eligible for world generation, not certain -
-    ///     canMakeRandomly is a roll. A raid whose faction is absent sends nobody, so every
-    ///     RaidAction faction has to be nailed down one of two ways: named in every scenario's
-    ///     relations block, which creates it at game start, or created by a CreateFactionAction
-    ///     when the story says it comes into being.
+    ///     canMakeRandomly is a roll. A raid whose faction is absent sends nobody. So every
+    ///     faction raided by an arc a scenario can actually reach must be nailed down: named in
+    ///     that scenario's relations block, or created by a CreateFactionAction along the way.
+    ///     <para>
+    ///         Reachability follows the handoff graph. The Alloy of Law cannot reach the Final
+    ///         Empire's beats and has no business guaranteeing the factions they raid with.
+    ///     </para>
     /// </summary>
     [TestMethod]
     public void EveryRaidFactionIsGuaranteedByTheScenarios() {
         if (!Directory.Exists(ScenarioProgressionDirectory)) return;
 
-        HashSet<string> raidFactions = new HashSet<string>();
-        HashSet<string> createdByProgression = new HashSet<string>();
+        Dictionary<string, HashSet<string>> raidsIn = new Dictionary<string, HashSet<string>>();
+        Dictionary<string, HashSet<string>> createsIn = new Dictionary<string, HashSet<string>>();
+        Dictionary<string, HashSet<string>> handsOffTo = new Dictionary<string, HashSet<string>>();
 
         foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
             XElement? root = XDocument.Load(path).Root;
             if (root == null) continue;
 
-            foreach (XElement action in root.Descendants("li")) {
-                string? cls = (string?)action.Attribute("Class");
-                if (cls == null) continue;
+            foreach (XElement def in root.Elements()) {
+                string name = def.Element("defName")?.Value ?? string.Empty;
+                if (name.Length == 0) continue;
 
-                XElement? faction = action.Element("faction");
-                if (faction == null) continue;
+                raidsIn[name] = new HashSet<string>();
+                createsIn[name] = new HashSet<string>();
+                handsOffTo[name] = new HashSet<string>();
 
-                if (cls.EndsWith("RaidAction", StringComparison.Ordinal)) raidFactions.Add(faction.Value);
-                if (cls.EndsWith("CreateFactionAction", StringComparison.Ordinal)) {
-                    createdByProgression.Add(faction.Value);
+                foreach (XElement action in def.Descendants("li")) {
+                    string? cls = (string?)action.Attribute("Class");
+                    if (cls == null) continue;
+
+                    if (cls.EndsWith("RaidAction", StringComparison.Ordinal)) {
+                        string? f = action.Element("faction")?.Value;
+                        if (f != null) raidsIn[name].Add(f);
+                    } else if (cls.EndsWith("CreateFactionAction", StringComparison.Ordinal)) {
+                        string? f = action.Element("faction")?.Value;
+                        if (f != null) createsIn[name].Add(f);
+                    } else if (cls.EndsWith("HandOffProgressionAction", StringComparison.Ordinal)) {
+                        string? p2 = action.Element("progression")?.Value;
+                        if (p2 != null) handsOffTo[name].Add(p2);
+                    }
                 }
             }
         }
-
-        raidFactions.ExceptWith(createdByProgression);
-        if (raidFactions.Count == 0) return;
 
         string scenarioDir = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Scenarios");
         if (!Directory.Exists(scenarioDir)) return;
@@ -346,21 +359,61 @@ public class QuestDefValidationTests {
             XElement? root = XDocument.Load(path).Root;
             if (root == null) continue;
 
-            XElement? relations = root.Descendants("relations").FirstOrDefault();
-            if (relations == null) continue;
-
-            HashSet<string> guaranteed = new HashSet<string>();
-            foreach (XElement entry in relations.Elements()) {
-                guaranteed.Add(entry.Name.LocalName);
+            string? startArc = null;
+            foreach (XElement part in root.Descendants("li")) {
+                string? cls = (string?)part.Attribute("Class");
+                if (cls != null && cls.EndsWith("ScenPart_ScenarioProgression", StringComparison.Ordinal)) {
+                    startArc = part.Element("progression")?.Value;
+                    break;
+                }
             }
 
-            foreach (string faction in raidFactions) {
-                Assert.IsTrue(
-                    guaranteed.Contains(faction),
-                    $"{Path.GetFileName(path)}: a RaidAction attacks with '{faction}', but this " +
-                    "scenario's faction relations do not name it and no CreateFactionAction " +
-                    "brings it into being, so the raid would send nobody."
-                );
+            // No progression means no arc, so no raid can ever fire from this scenario.
+            if (startArc == null || !raidsIn.ContainsKey(startArc)) continue;
+
+            // Must be the faction ScenPart's relations, not a named pawn's - those share a
+            // tag name and the pawn block comes first in the file.
+            XElement? relations = null;
+            foreach (XElement part in root.Descendants("li")) {
+                string? cls = (string?)part.Attribute("Class");
+                if (cls != null && cls.EndsWith("ScenPart_FactionRelations", StringComparison.Ordinal)) {
+                    relations = part.Element("relations");
+                    break;
+                }
+            }
+
+            HashSet<string> guaranteed = new HashSet<string>();
+            if (relations != null) {
+                foreach (XElement entry in relations.Elements()) guaranteed.Add(entry.Name.LocalName);
+            }
+
+            // Walk the handoff graph from where this scenario starts.
+            HashSet<string> reachable = new HashSet<string>();
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue(startArc);
+            while (queue.Count > 0) {
+                string arc = queue.Dequeue();
+                if (!reachable.Add(arc) || !handsOffTo.ContainsKey(arc)) continue;
+                foreach (string next in handsOffTo[arc]) queue.Enqueue(next);
+            }
+
+            foreach (string arc in reachable) {
+                foreach (string faction in raidsIn[arc]) {
+                    bool created = false;
+                    foreach (string a in reachable) {
+                        if (createsIn[a].Contains(faction)) {
+                            created = true;
+                            break;
+                        }
+                    }
+
+                    Assert.IsTrue(
+                        created || guaranteed.Contains(faction),
+                        $"{Path.GetFileName(path)}: reaches '{arc}', which raids with '{faction}', " +
+                        "but this scenario neither names it in faction relations nor creates it " +
+                        "with a CreateFactionAction on the way, so the raid would send nobody."
+                    );
+                }
             }
         }
     }
@@ -489,6 +542,43 @@ public class QuestDefValidationTests {
                     $"{file}: TriggerIncidentAction names incident '{incident.Value}', which is " +
                     "not an IncidentDef we ship."
                 );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     RemoveFactionAction looks its factions up by name and only warns on a miss, so a typo
+    ///     silently leaves a house in a world the arc has just told the player it left.
+    /// </summary>
+    [TestMethod]
+    public void EveryRetiredFactionIsOneWeShip() {
+        HashSet<string> factions = new HashSet<string>();
+        foreach ((string _, XElement def) in DefsOfType("FactionDef")) {
+            XElement? name = def.Element("defName");
+            if (name != null) factions.Add(name.Value);
+        }
+
+        if (!Directory.Exists(ScenarioProgressionDirectory)) return;
+
+        foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
+            XElement? root = XDocument.Load(path).Root;
+            if (root == null) continue;
+
+            string file = Path.GetFileName(path);
+            foreach (XElement action in root.Descendants("li")) {
+                string? cls = (string?)action.Attribute("Class");
+                if (cls == null || !cls.EndsWith("RemoveFactionAction", StringComparison.Ordinal)) continue;
+
+                XElement? list = action.Element("factions");
+                Assert.IsNotNull(list, $"{file}: RemoveFactionAction has no <factions> list, so it removes nothing.");
+
+                foreach (XElement entry in list.Elements("li")) {
+                    Assert.IsTrue(
+                        factions.Contains(entry.Value),
+                        $"{file}: RemoveFactionAction names faction '{entry.Value}', which is not " +
+                        "a FactionDef we ship."
+                    );
+                }
             }
         }
     }

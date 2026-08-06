@@ -39,35 +39,57 @@ public class ChoiceAction : ProgressionAction {
     public string declineTipKey = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
+        Execute(comp, null);
+    }
+
+    /// <summary>
+    ///     Asks the fork, then runs <paramref name="continuation" /> once a branch has been
+    ///     taken. The continuation is the rest of the event - era advances, handoffs - which must
+    ///     not run while the question is still on screen.
+    /// </summary>
+    public void Execute(GameComponent_ScenarioProgression comp, global::System.Action? continuation) {
         string? required = requiresPawn;
         if (required != null && required.Length > 0 && comp.FindPawnByName(required) == null) {
             bool explicitPath = onMissing.Count > 0;
-            Logger.Info(
+            Logger.Important(
                 $"ScenarioProgression: '{required}' is gone, taking the " +
-                (explicitPath ? "onMissing" : "onAccept") + " path."
+                (explicitPath ? "onMissing" : "onAccept") + " path without asking."
             );
             Run(explicitPath ? onMissing : onAccept, comp);
+            continuation?.Invoke();
             return;
         }
 
-        Find.WindowStack.Add(
-            new Dialog_ProgressionChoice(
-                titleKey.Translate(),
-                textKey.Translate(),
-                new List<ProgressionChoiceOption> {
-                    new ProgressionChoiceOption(
-                        acceptKey.Translate(),
-                        acceptTipKey.Length > 0 ? acceptTipKey.Translate().Resolve() : null,
-                        () => Run(onAccept, comp)
-                    ),
-                    new ProgressionChoiceOption(
-                        declineKey.Translate(),
-                        declineTipKey.Length > 0 ? declineTipKey.Translate().Resolve() : null,
-                        () => Run(onDecline, comp)
-                    ),
-                }
-            )
-        );
+        Logger.Important($"ScenarioProgression: asking '{titleKey}' - the campaign waits on it.");
+
+        comp.AskChoice(() => new Dialog_ProgressionChoice(
+            titleKey.Translate(),
+            textKey.Translate(),
+            new List<ProgressionChoiceOption> {
+                new ProgressionChoiceOption(
+                    acceptKey.Translate(),
+                    acceptTipKey.Length > 0 ? acceptTipKey.Translate().Resolve() : null,
+                    () => Resolve(onAccept, comp, continuation, acceptKey)
+                ),
+                new ProgressionChoiceOption(
+                    declineKey.Translate(),
+                    declineTipKey.Length > 0 ? declineTipKey.Translate().Resolve() : null,
+                    () => Resolve(onDecline, comp, continuation, declineKey)
+                ),
+            }
+        ));
+    }
+
+    private static void Resolve(
+        List<ProgressionAction> branch,
+        GameComponent_ScenarioProgression comp,
+        global::System.Action? continuation,
+        string chosenKey
+    ) {
+        Logger.Important($"ScenarioProgression: '{chosenKey}' chosen.");
+        comp.ChoiceAnswered();
+        Run(branch, comp);
+        continuation?.Invoke();
     }
 
     private static void Run(List<ProgressionAction> actions, GameComponent_ScenarioProgression comp) {

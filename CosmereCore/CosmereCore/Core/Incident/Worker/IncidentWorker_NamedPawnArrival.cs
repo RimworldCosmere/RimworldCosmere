@@ -20,13 +20,33 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         NamedPawnDef template = config.pawn;
 
         PawnKindDef pawnKind = def.pawnKind ?? PawnKindDefOf.Colonist;
-        Pawn pawn = PawnGenerator.GeneratePawn(
-            new PawnGenerationRequest(
-                pawnKind,
-                Faction.OfPlayer,
-                forceGenerateNewPawn: true
-            )
+
+        // Gender and age have to go into the request. Body type, head and hair are all chosen
+        // from them during generation, so setting pawn.gender afterwards leaves a man wearing a
+        // woman's body.
+        PawnGenerationRequest request = new PawnGenerationRequest(
+            pawnKind,
+            Faction.OfPlayer,
+            forceGenerateNewPawn: true
         );
+
+        if (template.gender != Gender.None) request.FixedGender = template.gender;
+
+        if (template.age > 0) {
+            request.ExcludeBiologicalAgeRange = null;
+            request.BiologicalAgeRange = null;
+            request.FixedBiologicalAge = template.age;
+            request.FixedChronologicalAge = template.GetChronologicalAge();
+        }
+
+        if (template.lastName != null) request.SetFixedLastName(template.lastName);
+
+        if (template.xenotype != null) {
+            XenotypeDef? forced = DefDatabase<XenotypeDef>.GetNamedSilentFail(template.xenotype);
+            if (forced != null) request.ForcedXenotype = forced;
+        }
+
+        Pawn pawn = PawnGenerator.GeneratePawn(request);
 
         ApplyTemplate(pawn, template);
 
@@ -52,6 +72,8 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         Name? name = template.GetName();
         if (name != null) pawn.Name = name;
 
+        // The request already fixed these, but a template applied to an existing pawn (or a
+        // kind that overrode the request) still needs them straightened out.
         if (template.gender != Gender.None) pawn.gender = template.gender;
 
         if (template.age > 0) {
@@ -63,6 +85,8 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
             XenotypeDef? xenotypeDef = DefDatabase<XenotypeDef>.GetNamedSilentFail(template.xenotype);
             if (xenotypeDef != null) pawn.genes?.SetXenotype(xenotypeDef);
         }
+
+        ApplyBackstories(pawn, template);
 
         for (int i = 0; i < template.traits.Count; i++) {
             NamedPawnTraitEntry entry = template.traits[i];
@@ -92,6 +116,20 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
 
         NamedPawnApplierRegistry.ApplyAll(pawn, template);
 
+        for (int i = 0; i < template.apparel.Count; i++) {
+            NamedPawnInventoryEntry entry = template.apparel[i];
+            if (entry.thing == null) continue;
+            ThingDef? apparelDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
+            if (apparelDef == null) continue;
+
+            ThingDef? apparelStuff = null;
+            if (entry.stuff != null) apparelStuff = DefDatabase<ThingDef>.GetNamedSilentFail(entry.stuff);
+
+            if (ThingMaker.MakeThing(apparelDef, apparelStuff) is Apparel worn) {
+                pawn.apparel?.Wear(worn, false);
+            }
+        }
+
         for (int i = 0; i < template.inventory.Count; i++) {
             NamedPawnInventoryEntry entry = template.inventory[i];
             if (entry.thing == null) continue;
@@ -105,5 +143,32 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
             thing.stackCount = entry.count;
             pawn.inventory?.innerContainer.TryAdd(thing);
         }
+    }
+
+    // A named pawn is written to be someone in particular, so their story has to stick. Left to
+    // generation they take a random pair, which is off-character and is how they end up
+    // incapable of work the incident never meant to bar them from.
+    private static void ApplyBackstories(Pawn pawn, NamedPawnDef template) {
+        if (pawn.story == null) return;
+
+        if (template.childhood != null) {
+            BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.childhood);
+            if (story == null) {
+                Logger.Warning($"NamedPawnArrival: Childhood '{template.childhood}' not found, skipping");
+            } else {
+                pawn.story.Childhood = story;
+            }
+        }
+
+        if (template.adulthood != null) {
+            BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.adulthood);
+            if (story == null) {
+                Logger.Warning($"NamedPawnArrival: Adulthood '{template.adulthood}' not found, skipping");
+            } else {
+                pawn.story.Adulthood = story;
+            }
+        }
+
+        pawn.Notify_DisabledWorkTypesChanged();
     }
 }

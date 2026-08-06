@@ -32,6 +32,15 @@
         <techLevel>Industrial</techLevel>
         <researchViewX>0.00</researchViewX>
         <researchViewY>4.50</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;sphere lamps</li>
+          <li>subject_story-&gt;built a lamp that burned Stormlight slowly enough to last a week</li>
+          <li>subject_story-&gt;lit a warcamp on spheres and worked out the cost afterwards</li>
+          <li>subject_story-&gt;argued that light should not be a luxury and then made it cheaper</li>
+          <li>subject_gerund-&gt;building sphere lamps</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 
     <!-- SPRENOLOGY -->
@@ -47,6 +56,15 @@
         </prerequisites>
         <researchViewX>4.00</researchViewX>
         <researchViewY>5.20</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;spren trapping</li>
+          <li>subject_story-&gt;learned which spren come when called and which only come when ignored</li>
+          <li>subject_story-&gt;trapped a flamespren in a gem and felt guilty about it for years</li>
+          <li>subject_story-&gt;kept notes on spren behaviour that scholars still argue with</li>
+          <li>subject_gerund-&gt;trapping spren</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 
     <!-- ARTIFABRIALS -->
@@ -63,6 +81,15 @@
         </prerequisites>
         <researchViewX>5.00</researchViewX>
         <researchViewY>5.20</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;artifabrian work</li>
+          <li>subject_story-&gt;wired their first fabrial badly and had the scars to prove it</li>
+          <li>subject_story-&gt;took apart a heating fabrial to see what the guild was hiding</li>
+          <li>subject_story-&gt;learned the craft from a guild that did not want them learning it</li>
+          <li>subject_gerund-&gt;making fabrials</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 
     <ResearchProjectDef>
@@ -77,5 +104,14 @@
         </prerequisites>
         <researchViewX>6.00</researchViewX>
         <researchViewY>5.20</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;advanced fabrials</li>
+          <li>subject_story-&gt;built a conjoiner pair that worked across a distance nobody thought possible</li>
+          <li>subject_story-&gt;spent a career on the half of fabrial science the guilds will not publish</li>
+          <li>subject_story-&gt;made a fabrial elegant enough that a rival admitted it out loud</li>
+          <li>subject_gerund-&gt;designing complex fabrials</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 </Defs>

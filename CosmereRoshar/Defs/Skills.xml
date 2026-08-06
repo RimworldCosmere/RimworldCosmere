@@ -12,5 +12,19 @@
                 <requiresInvestitureSystem>Surgebinding</requiresInvestitureSystem>
             </li>
         </modExtensions>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Surgebinding</li>
+          <li>subject-&gt;the Surges</li>
+          <li>subject-&gt;Stormlight</li>
+          <li>subject-&gt;the Nahel bond</li>
+          <li>subject-&gt;spren bonding</li>
+          <li>subject-&gt;Radiant practice</li>
+          <li>subject-&gt;Lashings</li>
+          <li>subject-&gt;the Ideals</li>
+          <li>subject-&gt;Windrunning</li>
+          <li>subject-&gt;Soulcasting</li>
+        </rulesStrings>
+      </generalRules>
     </SkillDef>
 </Defs>

@@ -9,6 +9,15 @@
 		<techLevel>Medieval</techLevel>
 		<researchViewX>3.00</researchViewX>
 		<researchViewY>3.50</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;gemcutting</li>
+	      <li>subject_story-&gt;spent a decade learning which flaw in a stone is the one that matters</li>
+	      <li>subject_story-&gt;cut a gem badly enough that the owner never spoke to them again</li>
+	      <li>subject_story-&gt;ground facets by lamplight until the shapes stopped needing to be measured</li>
+	      <li>subject_gerund-&gt;cutting gemstones</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Simple_Alloys</defName>
@@ -19,6 +28,15 @@
 		<techLevel>Medieval</techLevel>
 		<researchViewX>1.00</researchViewX>
 		<researchViewY>3.50</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;alloying</li>
+	      <li>subject_story-&gt;learned by ruining enough batches that the ratios stopped being numbers</li>
+	      <li>subject_story-&gt;kept a foundry ledger nobody else could read and never got a mix wrong</li>
+	      <li>subject_story-&gt;argued with a smith about tin content for eleven years</li>
+	      <li>subject_gerund-&gt;mixing metals</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Complex_Alloys</defName>
@@ -32,6 +50,15 @@
 		<prerequisites>
 			<li>Cosmere_Simple_Alloys</li>
 		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;advanced alloying</li>
+	      <li>subject_story-&gt;worked out why two metals that should have bonded refused to</li>
+	      <li>subject_story-&gt;built a furnace that held a temperature nobody believed it could hold</li>
+	      <li>subject_story-&gt;spent a career on the four alloys everyone else called impossible</li>
+	      <li>subject_gerund-&gt;working difficult alloys</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_God_Metals</defName>
@@ -42,6 +69,15 @@
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>1.00</researchViewX>
 		<researchViewY>2.50</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;the god metals</li>
+	      <li>subject_story-&gt;held a bead of something that had been a god and wrote down what it felt like</li>
+	      <li>subject_story-&gt;catalogued every account of the god metals and found most of them lying</li>
+	      <li>subject_story-&gt;was permitted, once, to examine a sample, and never stopped thinking about it</li>
+	      <li>subject_gerund-&gt;studying the god metals</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_God_Metal_Alloys</defName>
@@ -56,6 +92,15 @@
 			<li>Cosmere_Simple_Alloys</li>
 			<li>Cosmere_God_Metals</li>
 		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;god metal alloys</li>
+	      <li>subject_story-&gt;alloyed a god metal and lived, which was not the expected outcome</li>
+	      <li>subject_story-&gt;worked out the ratios from three surviving pages and a great deal of nerve</li>
+	      <li>subject_story-&gt;proved that the divine can be measured, then had to defend saying so</li>
+	      <li>subject_gerund-&gt;alloying god metals</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Glass</defName>
@@ -66,5 +111,14 @@
 		<techLevel>Medieval</techLevel>
 		<researchViewX>0.00</researchViewX>
 		<researchViewY>3.50</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;glassworking</li>
+	      <li>subject_story-&gt;learned to read a melt by its colour and never once used a thermometer</li>
+	      <li>subject_story-&gt;blew glass for forty years and complained about the sand for all of them</li>
+	      <li>subject_story-&gt;made a pane clear enough that a visitor walked into it</li>
+	      <li>subject_gerund-&gt;working glass</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 </Defs>

@@ -205,6 +205,9 @@
             <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
             <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
             <Cosmere_Scadrial_Faction_HouseVenture>-40</Cosmere_Scadrial_Faction_HouseVenture>
+            <!-- Ruin is already loose when this scenario starts; that is its premise. Every
+                 other path creates it at the Well, which a start here never reaches. -->
+            <Cosmere_Scadrial_Faction_Ruin>-100</Cosmere_Scadrial_Faction_Ruin>
             <Cosmere_Scadrial_Faction_HouseElariel>-40</Cosmere_Scadrial_Faction_HouseElariel>
             <Cosmere_Scadrial_Faction_HouseHasting>-40</Cosmere_Scadrial_Faction_HouseHasting>
             <Cosmere_Scadrial_Faction_HouseLekal>-40</Cosmere_Scadrial_Faction_HouseLekal>
@@ -213,6 +216,48 @@
             <Cosmere_Scadrial_Faction_HouseCett>-40</Cosmere_Scadrial_Faction_HouseCett>
             <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
           </relations>
+        <between>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_FinalEmpireNPC</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseCett</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseElariel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseHasting</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseLekal</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseRenoux</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseTekiel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseVenture</b>
+            <goodwill>-100</goodwill>
+          </li>
+        </between>
         </li>
 
         <li Class="ScenPart_GameStartDialog">

@@ -342,6 +342,15 @@
         <tab>Cosmere</tab>
         <researchViewX>4.00</researchViewX>
         <researchViewY>3.50</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Stormlight infrastructure</li>
+          <li>subject_story-&gt;worked out how to store a highstorm and spend it slowly</li>
+          <li>subject_story-&gt;built the gem racks that kept a city lit through the Weeping</li>
+          <li>subject_story-&gt;treated Stormlight as plumbing, which offended a great many people</li>
+          <li>subject_gerund-&gt;building Stormlight systems</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 
     <ResearchProjectDef>
@@ -356,6 +365,15 @@
         <tab>Cosmere</tab>
         <researchViewX>5.00</researchViewX>
         <researchViewY>3.50</researchViewY>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;stormward construction</li>
+          <li>subject_story-&gt;designed a wall the highstorms stopped taking down</li>
+          <li>subject_story-&gt;survived four storms in the open and spent the rest of a life on shelters</li>
+          <li>subject_story-&gt;measured what a stormwall does to stone and built accordingly</li>
+          <li>subject_gerund-&gt;building against highstorms</li>
+        </rulesStrings>
+      </generalRules>
     </ResearchProjectDef>
 
 </Defs>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_ShadowsOfSelf</defName>
+    <label>Shadows of Self Progression</label>
+    <events>
+
+      <!-- Moved here from the Alloy of Law, where it was foreshadowing the wrong arc's
+           ending. It is the first sign of Bleeder, so it belongs at the front of this one. -->
+      <li>
+        <key>faces_in_the_crowd</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>3</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>Somebody Who Was Not There</title>
+            <text>A witness gives a description. Two days later the man she described walks into a constabulary office three hundred miles away and gives a statement about somewhere he has never been, and both accounts hold up.\n\nElendel would rather this were somebody else's problem, and is cooling towards anyone who makes it theirs. Whatever is doing it has not finished.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+            <goodwill>-20</goodwill>
+          </li>
+        </actions>
+      </li>
+
+
+      <li>
+        <key>the_governors_city</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>8</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>The Governor's City</title>
+            <text>Elendel runs on paper now. Broadsheets, union charters, freight schedules, and a governor who has to be seen agreeing with all of them at once.\n\nThe unions are talking about a strike. The constabulary is talking about what it will do if there is one. Everybody involved is reasonable, and that is somehow worse - reasonable people talk themselves into things a mob would think twice about.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+            <goodwill>20</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>a_kandra_calls</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>18</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.TriggerIncidentAction">
+            <incident>Cosmere_Scadrial_Incident_KandraArrival</incident>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>the_riots</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>32</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_governors_city</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>It Only Took One Speech</title>
+            <text>Somebody stood up at a union meeting and said the thing everyone had been circling for a month, said it well, and left before anyone got a good look at them. By nightfall three districts were burning.\n\nThe constables who went in did not come back out with a story that matches anyone else's. Half of them are certain they saw a man they have known for years standing in the middle of it, and he was at home.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_RoughsOutlaws</faction>
+            <armyNameKey>CS_Progression_Army_Rioters</armyNameKey>
+            <pointsFactor>0.9</pointsFactor>
+            <minPoints>900</minPoints>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+            <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+            <goodwill>-40</goodwill>
+          </li>
+        </actions>
+      </li>
+
+      <li>
+        <key>bleeder</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>50</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
+            <eventKey>the_riots</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+            <title>It Has a Name</title>
+            <text>A kandra, and an old one. It pulled its own spikes out - the ones that let Harmony reach it - and it has been walking around inside other people's lives ever since, wearing them accurately enough that their families did not notice.\n\nHarmony cannot see it. That is the part nobody wants to sit with. There is a thing in the world that a god is not able to look at, and it has been choosing whose face to wear for months.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.ChoiceAction">
+            <titleKey>CS_Progression_SoS_Title</titleKey>
+            <textKey>CS_Progression_SoS_Text</textKey>
+            <acceptKey>CS_Progression_SoS_Accept</acceptKey>
+            <declineKey>CS_Progression_SoS_Decline</declineKey>
+            <acceptTipKey>CS_Progression_SoS_AcceptTip</acceptTipKey>
+            <declineTipKey>CS_Progression_SoS_DeclineTip</declineTipKey>
+            <onAccept>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>The City Is Told</title>
+                <text>It goes in the broadsheets, in plain language, over the governor's objection: something is wearing your neighbours and we cannot yet tell you which ones.\n\nThe panic is immediate and it is expensive. It also works. A thing that hunts by being unremarkable cannot operate in a city where everybody is looking twice, and within the week it stops being able to move freely.\n\nElendel will not forgive whoever made that call for a long while.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+                <goodwill>-60</goodwill>
+              </li>
+            </onAccept>
+            <onDecline>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
+                <title>Handled Quietly</title>
+                <text>It is dealt with the way these things are dealt with: in the dark, by people who will not be thanked, and at a price that gets paid by somebody who was not asked.\n\nThe city never learns how close it came. The governor's office is warmly grateful and says so in writing. Whoever went in after it came back changed, and does not talk about the part where it stopped wearing a stranger's face and started wearing one they knew.</text>
+                <letterDef>NeutralEvent</letterDef>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.SetGoodwillAction">
+                <faction>Cosmere_Scadrial_Faction_Elendel</faction>
+                <goodwill>70</goodwill>
+              </li>
+              <li Class="Cosmere.Core.ScenarioPart.Action.GiveThoughtAction">
+                <thought>Cosmere_Scadrial_HarmonyAsked</thought>
+              </li>
+            </onDecline>
+          </li>
+
+          <li Class="Cosmere.Core.ScenarioPart.Action.AdvanceEraAction" />
+          <li Class="Cosmere.Core.ScenarioPart.Action.HandOffProgressionAction">
+            <progression>Cosmere_Scadrial_Progression_BandsOfMourning</progression>
+          </li>
+        </actions>
+      </li>
+
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

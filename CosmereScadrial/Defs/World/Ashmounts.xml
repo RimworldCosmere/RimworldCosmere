@@ -19,7 +19,7 @@
 
     <WorldGenStepDef>
         <defName>Cosmere_Scadrial_WorldGenStep_Ashmounts</defName>
-        <order>450</order>
+        <order>350</order>
         <worldGenStep Class="Cosmere.System.Scadrial.World.WorldGenStep_Ashmounts" />
     </WorldGenStepDef>
 

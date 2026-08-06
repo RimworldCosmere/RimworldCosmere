@@ -26,8 +26,15 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
     public override void GenerateFresh(string seed, PlanetLayer layer) {
         // WorldBeforeGenerationPatch guarantees Primary is set before GenerateWorld runs, so
         // this cannot see the null-permissive fallback inside IsActive.
-        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) return;
-        if (!layer.IsRootSurface) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) {
+            AshmountExposureCache.Set(new Dictionary<int, float>());
+            return;
+        }
+
+        if (!layer.IsRootSurface) {
+            AshmountExposureCache.Set(new Dictionary<int, float>());
+            return;
+        }
 
         int tileCount = layer.TilesCount;
         if (tileCount <= 0) return;
@@ -67,7 +74,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
             wanted,
             MinSpacingTiles,
             (a, b) => layer.ApproxDistanceInTiles(a, b),
-            Gen.HashCombineInt(seed.GetHashCode(), SeedPart)
+            Gen.HashCombineInt(GenText.StableStringHash(seed), SeedPart)
         );
 
         WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamed("Cosmere_Scadrial_WorldObject_Ashmount");
@@ -93,11 +100,10 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         List<float> distances = new List<float>();
 
         for (int i = 0; i < tileCount; i++) {
-            PlanetTile tile = new PlanetTile(i, layer);
             distances.Clear();
 
             for (int m = 0; m < mounts.Count; m++) {
-                float d = layer.ApproxDistanceInTiles(tile, new PlanetTile(mounts[m], layer));
+                float d = layer.ApproxDistanceInTiles(i, mounts[m]);
                 if (d < AshmountExposure.RangeTiles) distances.Add(d);
             }
 

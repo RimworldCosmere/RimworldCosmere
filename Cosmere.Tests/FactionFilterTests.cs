@@ -57,4 +57,60 @@ public class FactionFilterTests {
             "The hidden bypass has to come after the settings toggles, or it overrides the player's choice."
         );
     }
+
+    /// <summary>
+    ///     The Odyssey toggle spent its whole life comparing against "MechanoidHive" and
+    ///     "InsectGeneline". Those are the labels. The defNames are "Mechanoid" and "Insect", so
+    ///     the setting matched nothing and both factions turned up in every Cosmere scenario.
+    /// </summary>
+    [TestMethod]
+    public void SettingsMatchFactionDefNamesNotLabels() {
+        string source = PatchSource;
+
+        foreach (string label in new[] { "MechanoidHive", "InsectGeneline", "ShatteredEmpire" }) {
+            Assert.IsFalse(
+                source.Contains($"\"{label}\"", StringComparison.Ordinal),
+                $"\"{label}\" is a faction label, not a defName - the comparison can never match."
+            );
+        }
+
+        foreach (string defName in new[] { "Mechanoid", "Insect", "Empire" }) {
+            Assert.IsTrue(
+                source.Contains($"\"{defName}\"", StringComparison.Ordinal),
+                $"Expected the filter to name the {defName} faction by its defName."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     Vanilla shouts in yellow when Empire, Mechanoid or Insect are missing from the worldgen
+    ///     faction list. Those three get concealed rather than dropped so the page stays quiet,
+    ///     and the create-faction gate is what actually keeps them out of the world.
+    /// </summary>
+    [TestMethod]
+    public void WarnedAboutFactionsAreConcealedNotDropped() {
+        string source = PatchSource;
+
+        Assert.IsTrue(
+            source.Contains("IsWarnedAboutWhenMissing", StringComparison.Ordinal),
+            "Expected the filter to know which factions vanilla warns about losing."
+        );
+
+        Assert.IsTrue(
+            source.Contains("displayInFactionSelection = false", StringComparison.Ordinal),
+            "Concealing means clearing displayInFactionSelection, so the row and the Add entry go away."
+        );
+
+        Assert.IsTrue(
+            source.Contains("displayInFactionSelection = true", StringComparison.Ordinal),
+            "A concealed faction has to be revealed again, or a later vanilla scenario keeps the hidden row."
+        );
+
+        int concealCheck = source.IndexOf("IsWarnedAboutWhenMissing(faction)", StringComparison.Ordinal);
+        int yieldAfter = source.IndexOf("yield return faction;", concealCheck, StringComparison.Ordinal);
+        Assert.IsTrue(
+            concealCheck >= 0 && yieldAfter >= 0,
+            "A concealed faction still has to be yielded, or it leaves the list and vanilla warns anyway."
+        );
+    }
 }

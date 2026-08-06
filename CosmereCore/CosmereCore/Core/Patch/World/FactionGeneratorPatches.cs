@@ -51,8 +51,10 @@ public static class FactionGeneratorPatch {
             return false;
         }
 
+        // Mechanoid and Insect, not MechanoidHive and InsectGeneline - those are the labels.
+        // The setting had never removed anything.
         if (settings.disableOdysseyFactionsInCosmereScenarios &&
-            (defName == "MechanoidHive" || defName == "InsectGeneline")) {
+            (defName == "Mechanoid" || defName == "Insect")) {
             return false;
         }
 
@@ -78,10 +80,27 @@ public static class FactionGeneratorPatch {
 
         return isRosharFaction;
     }
+
+    /// <summary>
+    ///     The three factions Page_CreateWorldParams prints a yellow warning about when they are
+    ///     missing - broken Royalty quests, no mech clusters, no infestations. Sound advice in a
+    ///     vanilla game and noise in a Cosmere one, where their absence is the premise.
+    /// </summary>
+    public static bool IsWarnedAboutWhenMissing(FactionDef faction) {
+        string defName = faction.defName ?? string.Empty;
+        return defName == "Empire" || defName == "Mechanoid" || defName == "Insect";
+    }
 }
 
 [Patch(typeof(FactionGenerator))]
 public static class FactionGeneratorConfigurableFactionsPatch {
+    /// <summary>
+    ///     Factions we cleared displayInFactionSelection on, so it can be put back. The field has
+    ///     exactly one reader in the whole game - WorldFactionsUIUtility.DoWindowContents, which
+    ///     uses it for the row loop and the Add menu - so writing it here reaches nothing else.
+    /// </summary>
+    private static readonly HashSet<FactionDef> concealed = [];
+
     // ConfigurableFactions is a yield-return iterator. PatchBody.Declared (the default) attaches to
     // the method as written, which hands back the IEnumerable this replaces.
     [Inject(At.Return, "get_" + nameof(FactionGenerator.ConfigurableFactions))]
@@ -95,11 +114,34 @@ public static class FactionGeneratorConfigurableFactionsPatch {
     private static IEnumerable<FactionDef> FilterFactions(IEnumerable<FactionDef> factions) {
         foreach (FactionDef faction in factions) {
             bool allowed = FactionGeneratorPatch.IsFactionAllowedForScenario(faction);
+
+            // Dropping one of the warned-about three outright makes the worldgen page print a wall
+            // of yellow about content this scenario never had. Leave it in the list with its row
+            // hidden instead: vanilla sees it present and stays quiet, and
+            // CreateFactionAndAddToManager still refuses to build it, so it never reaches the world.
+            if (!allowed && FactionGeneratorPatch.IsWarnedAboutWhenMissing(faction)) {
+                Conceal(faction);
+                Logger.Verbose($"FactionGeneratorPatch: {faction.defName} -> concealed");
+                yield return faction;
+                continue;
+            }
+
+            Reveal(faction);
             Logger.Verbose($"FactionGeneratorPatch: {faction.defName} -> {(allowed ? "allowed" : "filtered")}");
             if (allowed) {
                 yield return faction;
             }
         }
+    }
+
+    private static void Conceal(FactionDef faction) {
+        if (!faction.displayInFactionSelection) return;
+        faction.displayInFactionSelection = false;
+        concealed.Add(faction);
+    }
+
+    private static void Reveal(FactionDef faction) {
+        if (concealed.Remove(faction)) faction.displayInFactionSelection = true;
     }
 }
 

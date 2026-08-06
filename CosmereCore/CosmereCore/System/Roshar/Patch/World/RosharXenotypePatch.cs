@@ -25,7 +25,9 @@ public static class RosharXenotypePatch {
         // monolith among them - breaks generation further down.
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium)) return;
+        // Not IsActive: on the cross-world sentinel every world is active at once, and two
+        // patches writing the same return value let composition order pick the xenotype.
+        if (!XenotypeArbiter.MayAnswer(WorldDefOf.Roshar)) return;
 
         // 70% darkeyes, 30% lighteyes - reflecting Rosharan demographics
         ch.ReturnValue = Rand.Value < 0.7f

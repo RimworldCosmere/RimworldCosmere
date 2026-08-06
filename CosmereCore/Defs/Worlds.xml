@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- For scenarios that are not set on one world. Deliberately lists no shards or xenotypes:
+       it gathers them from whatever worlds are actually loaded, so it does not dangle when a
+       shard mod is absent, and a pawn born here gets the ancestry floor for all of them. -->
+  <Cosmere.Core.Def.CosmereWorldDef>
+    <defName>UnnamedPlanet</defName>
+    <label>unnamed planet</label>
+    <description>Somewhere nobody has named yet. Worldhoppers, crashed vessels and people who arrived by a route that has not been written down, on ground that belongs to none of them.</description>
+    <listOrder>99</listOrder>
+    <crossWorld>true</crossWorld>
+  </Cosmere.Core.Def.CosmereWorldDef>
+
+</Defs>

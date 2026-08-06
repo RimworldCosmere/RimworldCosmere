@@ -10,7 +10,6 @@ namespace Cosmere.System.Scadrial.Comp.Map;
 public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     private const int BaseHour = 19; // 7 PM
 
-    private bool? cachedEnabled;
     private int lastMistsStartTick = -1;
     private bool mistsActive;
     private int mistsEndTick;
@@ -20,12 +19,11 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     private bool enabled {
         get {
             if (!Mod.enableMists) return false;
-            return ShardUtility.CachedAreAnyEnabled(
-                ref cachedEnabled,
-                ShardDefOf.Ruin,
-                ShardDefOf.Preservation,
-                ShardDefOf.Harmony
-            );
+
+            // No cache: the world cannot change mid-save, and the cached shard check never
+            // invalidated - this component used to read it cached in one place and uncached in
+            // another, so it could disagree with itself.
+            return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Mists);
         }
     }
 
@@ -95,7 +93,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     }
 
     private void ScheduleNextMists() {
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony)) {
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Mists)) {
             return;
         }
 

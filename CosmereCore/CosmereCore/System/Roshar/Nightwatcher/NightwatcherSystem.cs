@@ -18,7 +18,7 @@ public static class NightwatcherSystem {
         NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
         if (comp == null || comp.HasVisited) return false;
         return ShardDefOf.Cultivation != null &&
-               ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation);
+               FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher);
     }
 
     public static void InitiateSeek(Pawn pawn) {

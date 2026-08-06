@@ -11,7 +11,7 @@ namespace Cosmere.System.Scadrial.Incident.Worker;
 /// </summary>
 public class IncidentWorker_PreservationBead : IncidentWorker {
     protected override bool CanFireNowSub(IncidentParms parms) {
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation)) return false;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_PreservationBead)) return false;
         return base.CanFireNowSub(parms);
     }
 

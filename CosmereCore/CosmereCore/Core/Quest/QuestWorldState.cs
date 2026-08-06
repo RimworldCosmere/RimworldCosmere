@@ -21,6 +21,14 @@ public class QuestWorldState {
     /// <summary>FactionDef names with a live faction in this world.</summary>
     public HashSet<string> presentFactions = new HashSet<string>();
 
+    /// <summary>The CosmereWorldDef this save runs on, or null before one is chosen.</summary>
+    public string? world;
+
+    /// <summary>
+    ///     True on the cross-world sentinel, where every shardworld's content is in play.
+    /// </summary>
+    public bool crossWorld;
+
     public CapstoneState StateOf(string defName) {
         return capstoneStates.TryGetValue(defName, out CapstoneState state) ? state : CapstoneState.NotFired;
     }

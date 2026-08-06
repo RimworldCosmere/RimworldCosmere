@@ -44,10 +44,14 @@ public class CosmereQuestManager : GameComponent {
     }
 
     public QuestWorldState BuildWorldState() {
+        Cosmere.Core.Def.CosmereWorldDef? world = WorldUtility.Primary;
+
         QuestWorldState state = new QuestWorldState {
             currentTick = Find.TickManager.TicksGame,
             daysElapsed = GenDate.DaysPassed,
             era = FindActiveEra(),
+            world = world?.defName,
+            crossWorld = world?.crossWorld ?? false,
         };
 
         foreach (KeyValuePair<string, CapstoneState> pair in capstoneStates) {

@@ -11,7 +11,6 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private const int WeepingStartDay = 46;
     private const int DaysPerYear = 60;
 
-    private bool? cachedEnabled;
     private int lastHighstormTick = -1;
 
     private int nextHighstormTick = -1;
@@ -23,7 +22,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private bool enabled {
         get {
             if (!Mod.enableHighstorms) return false;
-            return ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor);
+            return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Highstorms);
         }
     }
 

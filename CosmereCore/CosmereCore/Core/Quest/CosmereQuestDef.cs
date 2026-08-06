@@ -46,6 +46,7 @@ public class CosmereQuestDef : Verse.Def {
             cooldownDays = cooldownDays,
             selectionWeight = selectionWeight,
             targetFaction = targetFaction?.defName,
+            world = Util.WorldUtility.WorldForDefName(defName)?.defName,
         };
     }
 

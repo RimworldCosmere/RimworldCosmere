@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cosmere.Core.Patch;
 using RimWorld;
 using Verse;
 
@@ -33,7 +34,7 @@ public class CreateFactionAction : ProgressionAction {
         Faction? made = Find.FactionManager.FirstFactionOfDef(def);
         if (made == null) {
             try {
-                FactionGenerator.CreateFactionAndAddToManager(def);
+                FactionGeneratorPatch.CreateScripted(def);
             } catch (Exception ex) {
                 Logger.Warning($"ScenarioProgression: could not create faction '{faction}': {ex}");
                 return;

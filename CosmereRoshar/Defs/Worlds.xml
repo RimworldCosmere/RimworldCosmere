@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <Cosmere.Core.Def.CosmereWorldDef>
+    <defName>Roshar</defName>
+    <label>Roshar</label>
+    <description>Stone and stormlight. The highstorms come from the east and everything that lives here has arranged itself around that fact, from the shape of a rockbud to the placement of a city.</description>
+    <skinId>Surgebinding</skinId>
+    <listOrder>20</listOrder>
+    <nativeShards>
+      <li>Honor</li>
+      <li>Cultivation</li>
+      <li>Odium</li>
+      <li>Retribution</li>
+    </nativeShards>
+    <!-- No EraDefs exist for Roshar yet, so the fallback carries every scenario. Retribution is
+         mutuallyExclusiveWith Honor and Odium and so is never a default. -->
+    <fallbackShards>
+      <li>Honor</li>
+      <li>Cultivation</li>
+    </fallbackShards>
+    <xenotypes>
+      <li>Cosmere_Roshar_Xenotype_Darkeyes</li>
+      <li>Cosmere_Roshar_Xenotype_Lighteyes</li>
+    </xenotypes>
+  </Cosmere.Core.Def.CosmereWorldDef>
+
+</Defs>

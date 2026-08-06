@@ -35,7 +35,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     public override void MapComponentTick() {
         // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
         // growing them, and the particle systems are expensive to keep warm besides.
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         if (baseSpawnChance == 0) return;
 
         base.MapComponentTick();

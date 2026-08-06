@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <Cosmere.Core.Def.CosmereWorldDef>
+    <defName>Scadrial</defName>
+    <label>Scadrial</label>
+    <description>A world of ash and mist, made and remade twice over. Rashek moved it too close to the sun and raised the Ashmounts to cool what he had broken; Harmony set it down again afterwards and let things grow.</description>
+    <skinId>Allomancy</skinId>
+    <listOrder>10</listOrder>
+    <nativeShards>
+      <li>Ruin</li>
+      <li>Preservation</li>
+      <li>Harmony</li>
+    </nativeShards>
+    <!-- Harmony is mutuallyExclusiveWith Ruin and Preservation, so no era may list more than
+         one side of the Catacendre. ConfigErrors enforces it. -->
+    <defaultShardsByEra>
+      <li>
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
+        <shards><li>Ruin</li><li>Preservation</li></shards>
+      </li>
+      <li>
+        <era>Cosmere_Scadrial_Era_PostCatacendre</era>
+        <shards><li>Harmony</li></shards>
+      </li>
+      <li>
+        <era>Cosmere_Scadrial_Era_AlloyOfLaw</era>
+        <shards><li>Harmony</li></shards>
+      </li>
+      <li>
+        <era>Cosmere_Scadrial_Era_ShadowsOfSelf</era>
+        <shards><li>Harmony</li></shards>
+      </li>
+      <li>
+        <era>Cosmere_Scadrial_Era_BandsOfMourning</era>
+        <shards><li>Harmony</li></shards>
+      </li>
+      <li>
+        <era>Cosmere_Scadrial_Era_LostMetal</era>
+        <shards><li>Harmony</li></shards>
+      </li>
+    </defaultShardsByEra>
+    <fallbackShards>
+      <li>Ruin</li>
+      <li>Preservation</li>
+    </fallbackShards>
+    <xenotypes>
+      <li>Cosmere_Scadrial_Xenotype_Scadrian</li>
+      <li>Cosmere_Scadrial_Xenotype_Skaa</li>
+      <li>Cosmere_Scadrial_Xenotype_Noble</li>
+      <li>Cosmere_Scadrial_Xenotype_Terris</li>
+    </xenotypes>
+    <climateProfile>Scadrial_PreCatacendre</climateProfile>
+  </Cosmere.Core.Def.CosmereWorldDef>
+
+</Defs>

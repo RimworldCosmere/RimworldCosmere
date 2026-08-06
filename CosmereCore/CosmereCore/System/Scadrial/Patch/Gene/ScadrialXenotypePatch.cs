@@ -25,7 +25,9 @@ public static class ScadrialXenotypePatch {
         // monolith among them - breaks generation further down.
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony)) return;
+        // Not IsActive: on the cross-world sentinel every world is active at once, and two
+        // patches writing the same return value let composition order pick the xenotype.
+        if (!XenotypeArbiter.MayAnswer(WorldDefOf.Scadrial)) return;
 
         bool preCatacendre = ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation);
 

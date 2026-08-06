@@ -376,4 +376,82 @@ public class CosmereQuestEligibilityTests {
         after.daysElapsed = 101;
         Assert.IsTrue(prereq.IsMet(after));
     }
+
+    /// <summary>
+    ///     The quest pool had no world dimension, so every Scadrial quest was offerable on a
+    ///     Roshar save. Era filtering hid most of it - Roshar ships no EraDefs - but a quest
+    ///     naming no era came through.
+    /// </summary>
+    [TestMethod]
+    public void AQuestDoesNotOfferOnAnotherWorld() {
+        QuestCandidate quest = Convoy();
+        quest.world = "Scadrial";
+
+        QuestWorldState scadrial = BaseState();
+        scadrial.world = "Scadrial";
+        Assert.IsTrue(CosmereQuestEligibility.IsEligible(quest, scadrial));
+
+        QuestWorldState roshar = BaseState();
+        roshar.world = "Roshar";
+        Assert.IsFalse(
+            CosmereQuestEligibility.IsEligible(quest, roshar),
+            "A Scadrial quest must not be offered on a Roshar save."
+        );
+    }
+
+    /// <summary>
+    ///     Three unknowns all mean "do not narrow": a quest naming no world belongs to every
+    ///     world, the cross-world sentinel reaches every shardworld, and a save that has not
+    ///     chosen a world yet would otherwise get an empty pool.
+    /// </summary>
+    [TestMethod]
+    public void TheWorldGateOnlyTurnsAwayAGenuineMismatch() {
+        QuestWorldState roshar = BaseState();
+        roshar.world = "Roshar";
+
+        QuestCandidate worldless = Convoy();
+        worldless.world = null;
+        Assert.IsTrue(
+            CosmereQuestEligibility.IsEligible(worldless, roshar),
+            "A quest that names no world belongs to all of them."
+        );
+
+        QuestCandidate scadrialQuest = Convoy();
+        scadrialQuest.world = "Scadrial";
+
+        QuestWorldState sentinel = BaseState();
+        sentinel.world = "UnnamedPlanet";
+        sentinel.crossWorld = true;
+        Assert.IsTrue(
+            CosmereQuestEligibility.IsEligible(scadrialQuest, sentinel),
+            "A cross-world save reaches every shardworld's quests."
+        );
+
+        QuestWorldState unchosen = BaseState();
+        unchosen.world = null;
+        Assert.IsTrue(
+            CosmereQuestEligibility.IsEligible(scadrialQuest, unchosen),
+            "Before a world is chosen, narrowing would silently empty the pool."
+        );
+    }
+
+    /// <summary>
+    ///     The Threat path has its own predicate and reaches IsEligible by a different route, so
+    ///     the world gate has to hold there too.
+    /// </summary>
+    [TestMethod]
+    public void ThreatsRespectTheWorldGate() {
+        QuestCandidate threat = Convoy();
+        threat.kind = QuestKind.Threat;
+        threat.world = "Scadrial";
+
+        QuestWorldState roshar = BaseState();
+        roshar.world = "Roshar";
+
+        Assert.IsFalse(CosmereQuestEligibility.IsDeliverableAsThreat(threat, roshar));
+
+        QuestWorldState scadrial = BaseState();
+        scadrial.world = "Scadrial";
+        Assert.IsTrue(CosmereQuestEligibility.IsDeliverableAsThreat(threat, scadrial));
+    }
 }

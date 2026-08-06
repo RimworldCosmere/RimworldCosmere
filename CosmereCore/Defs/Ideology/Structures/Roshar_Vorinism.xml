@@ -57,6 +57,47 @@
                 <name>He of the Oathpact</name>
                 <type>binder of Heralds</type>
             </li>
+            <li>
+                <name>Jezerezeh</name>
+                <type>Herald of Kings</type>
+            </li>
+            <li>
+                <name>Nalan</name>
+                <type>Herald of Justice</type>
+            </li>
+            <li>
+                <name>Chanarach</name>
+                <type>Herald of Fire</type>
+            </li>
+            <li>
+                <name>Vedeledev</name>
+                <type>Herald of Healing</type>
+            </li>
+            <li>
+                <name>Pailiah</name>
+                <type>Herald of Learning</type>
+            </li>
+            <li>
+                <name>Shalash</name>
+                <type>Herald of Beauty</type>
+            </li>
+            <li>
+                <name>Battah</name>
+                <type>Herald of Wisdom</type>
+            </li>
+            <li>
+                <name>Kelek</name>
+                <type>Herald of Storms</type>
+            </li>
+            <li>
+                <name>Talenelat</name>
+                <type>Herald of War</type>
+            </li>
+            <li>
+                <name>Ishi</name>
+                <type>Herald of Luck</type>
+            </li>
+            <!-- Every deity name has to be unique across every ideo in the world, and five Vorin kingdoms each want one. The Heralds are venerated by name in Vorinism anyway. -->
         </fixedDeityNameTypes>
         <symbolPacks>
             <li>

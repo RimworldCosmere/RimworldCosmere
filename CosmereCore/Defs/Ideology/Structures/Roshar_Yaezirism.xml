@@ -61,6 +61,23 @@
                 <name>The Hundred Deaths</name>
                 <type>that which was endured</type>
             </li>
+            <li>
+                <name>Vedeledev</name>
+                <type>keeper of the ledger</type>
+            </li>
+            <li>
+                <name>Chach</name>
+                <type>the guardian</type>
+            </li>
+            <li>
+                <name>Pralla</name>
+                <type>the scholar</type>
+            </li>
+            <li>
+                <name>Battar</name>
+                <type>the counsellor</type>
+            </li>
+            <!-- Three Makabaki nations at two deities each need six unique names. -->
         </fixedDeityNameTypes>
         <symbolPacks>
             <li>

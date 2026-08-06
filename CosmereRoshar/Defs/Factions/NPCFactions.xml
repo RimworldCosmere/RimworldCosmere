@@ -329,7 +329,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>58</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Veden Devotary</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty set the Heralds to guard mankind, and rank is the shape His order takes.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Vorinism</li>
@@ -393,7 +393,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>52</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Devotary of Sincerity</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Learning is a Calling like any other, and the Almighty is served as well by a scholar as by a soldier.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Vorinism</li>
@@ -539,7 +539,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>50</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Yaezirism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Sealed Record</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Yaezir keeps the record of all things. Tashikk merely keeps a copy.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Yaezirism</li>
@@ -612,7 +612,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>46</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Yaezirism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Emuli Rite</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Yaezir endured a hundred deaths and returned from each. Emul intends to do the same.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Yaezirism</li>
@@ -676,7 +676,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>48</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Herdazian Devotary</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty tests the small kingdoms hardest, and a Calling defended is a Calling proved.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Vorinism</li>
@@ -813,7 +813,7 @@
     <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
     <configurationListOrderPriority>42</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Natan Devotary</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty does not promise a kingdom will stand. He promises there is a Calling in rebuilding it.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Vorinism</li>

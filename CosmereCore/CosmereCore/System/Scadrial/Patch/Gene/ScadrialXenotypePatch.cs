@@ -25,7 +25,7 @@ public static class ScadrialXenotypePatch {
         // monolith among them - breaks generation further down.
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony)) return;
+        if (!WorldUtility.IsActive(WorldDefOf.Scadrial)) return;
 
         bool preCatacendre = ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation);
 

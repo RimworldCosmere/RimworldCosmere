@@ -19,4 +19,18 @@
     <CC_Quicktest_Shards_Title>Which Shards should be active?</CC_Quicktest_Shards_Title>
     <CC_Quicktest_Shards_Start>Start quicktest</CC_Quicktest_Shards_Start>
   <CC_Radial_CannotAfford>Cannot afford</CC_Radial_CannotAfford>
+    <CC_World_Label>Cosmere world</CC_World_Label>
+    <CC_World_ShardsLabel>Shards</CC_World_ShardsLabel>
+    <CC_World_None>none</CC_World_None>
+    <CC_World_NoShards>none</CC_World_NoShards>
+    <CC_World_NoneChosen>Choose a Cosmere world before generating.</CC_World_NoneChosen>
+    <CC_World_LockedTip>This scenario is set on a particular world, with the Shards it needs. Pick a different scenario to change them.</CC_World_LockedTip>
+    <CC_SelectShard_Blocked>{SHARD} cannot be held alongside a Shard already chosen. Unpick the other one first.</CC_SelectShard_Blocked>
+    <CC_World_Edit>Edit...</CC_World_Edit>
+    <CC_World_FeaturesLabel>Cosmere settings</CC_World_FeaturesLabel>
+    <CC_Features_Title>Which cosmere features do you want?</CC_Features_Title>
+    <CC_Features_Blurb>This world belongs to none of the shardworlds, so it has none of their weather or wildlife unless you ask for it. Take as much or as little as you like.</CC_Features_Blurb>
+    <CC_Features_NeedsShard>Needs {SHARDS}. Enable the Shard first and this becomes available.</CC_Features_NeedsShard>
+    <CC_Features_None>No shardworld has declared any features. Load a system mod to choose from its weather and wildlife.</CC_Features_None>
+    <CC_Features_TabTip>{ON} of {TOTAL} enabled</CC_Features_TabTip>
 </LanguageData>

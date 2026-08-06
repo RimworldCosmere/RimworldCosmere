@@ -12,18 +12,6 @@ public static class ShardUtility {
         return AreAllEnabled(shard);
     }
 
-    public static bool CachedAreAnyEnabled(ref bool? cache, params ShardDef[] shardDefs) {
-        if (cache.HasValue) return cache.Value;
-        try {
-            bool result = AreAnyEnabled(shardDefs);
-            cache = result;
-            return result;
-        } catch (Exception ex) {
-            Logger.Verbose($"Shard check failed during init: {ex}");
-            return false;
-        }
-    }
-
     public static bool AreAnyEnabled(params string[] shardIds) {
         Shards? s = shards;
         if (s == null) return false;

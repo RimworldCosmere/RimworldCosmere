@@ -38,7 +38,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentDraw() {
         // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
         // growing them, and the particle systems are expensive to keep warm besides.
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         SprenDebugOverlay.DrawOverlay();
 
         // Process pending initializations on main thread before checking initialized -
@@ -66,7 +66,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentUpdate() {
         // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
         // growing them, and the particle systems are expensive to keep warm besides.
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapComponentUpdate();
 
         bool onWorldMap = WorldRendererUtility.WorldRendered;
@@ -78,7 +78,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentTick() {
         // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
         // growing them, and the particle systems are expensive to keep warm besides.
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapComponentTick();
 
         if (!initialized) return;
@@ -125,7 +125,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapGenerated() {
         // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
         // growing them, and the particle systems are expensive to keep warm besides.
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapGenerated();
 
         mapID = map.GetHashCode();

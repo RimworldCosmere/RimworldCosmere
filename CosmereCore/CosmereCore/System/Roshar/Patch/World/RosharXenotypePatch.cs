@@ -25,7 +25,7 @@ public static class RosharXenotypePatch {
         // monolith among them - breaks generation further down.
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium)) return;
+        if (!WorldUtility.IsActive(WorldDefOf.Roshar)) return;
 
         // 70% darkeyes, 30% lighteyes - reflecting Rosharan demographics
         ch.ReturnValue = Rand.Value < 0.7f

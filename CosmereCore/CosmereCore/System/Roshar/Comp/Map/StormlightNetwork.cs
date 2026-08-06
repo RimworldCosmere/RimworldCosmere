@@ -7,10 +7,9 @@ namespace Cosmere.System.Roshar.Comp.Map;
 public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
     private const int DistributeInterval = 60;
 
-    private bool? cachedEnabled;
     private bool dirty = true;
 
-    private bool enabled => ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor);
+    private bool enabled => FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_StormlightNetwork);
 
     public List<StormlightNetworkGrid> Networks { get; } = [];
 

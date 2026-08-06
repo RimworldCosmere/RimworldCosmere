@@ -17,7 +17,7 @@ public class NightwatcherValleyPlacer : GameComponent {
     }
 
     private void PlaceValley() {
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher)) return;
 
         WorldObjectDef? def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Cosmere_Roshar_NightwatcherValley");
         if (def == null) return;

@@ -32,7 +32,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
     }
 
     private void TriggerEncounterForCaravan(Caravan caravan) {
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher)) return;
 
         List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
@@ -50,7 +50,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
             yield return g;
         }
 
-        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) yield break;
+        if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher)) yield break;
 
         List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {

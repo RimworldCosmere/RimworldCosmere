@@ -1,6 +1,6 @@
 using Cosmere.Core.ScenarioPart;
 using Cosmere.Core.ScenarioPart.Action;
-using Cosmere.System.Scadrial.Comp.Map;
+using Cosmere.System.Scadrial.Util;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 
@@ -15,8 +15,8 @@ public class SetMistSnapOddsAction : ProgressionAction {
     public int oneIn = 16;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        MistsWatcher.SnapOneIn = oneIn < 1 ? 1 : oneIn;
-        Logger.Important($"ScenarioProgression: the mists now take one in {MistsWatcher.SnapOneIn}.");
+        MistPressure.OneIn = oneIn;
+        Logger.Important($"ScenarioProgression: the mists now take one in {MistPressure.OneIn}.");
     }
 
     public override string? Describe() {

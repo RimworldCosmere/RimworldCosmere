@@ -21,6 +21,7 @@ public static class CosmereQuestEligibility {
         if (candidate == null || state == null) return false;
 
         if (!EraMatches(candidate.eras, state.era)) return false;
+        if (!WorldMatches(candidate.world, state)) return false;
         if (state.freeColonistCount < candidate.minColonists) return false;
         if (state.daysElapsed < candidate.minDaysElapsed) return false;
 
@@ -99,6 +100,23 @@ public static class CosmereQuestEligibility {
         }
 
         return false;
+    }
+
+    /// <summary>
+    ///     Whether a quest belonging to <paramref name="questWorld" /> may run on this save.
+    /// </summary>
+    /// <remarks>
+    ///     Deliberately permissive in all three unknown cases. A quest that names no world belongs
+    ///     to every world; a cross-world save reaches every shardworld; and a state with no world
+    ///     yet is a save that has not chosen one, where narrowing would silently empty the pool.
+    ///     Only a genuine mismatch between two known worlds turns a quest away.
+    /// </remarks>
+    private static bool WorldMatches(string? questWorld, QuestWorldState state) {
+        if (questWorld == null || questWorld.Length == 0) return true;
+        if (state.crossWorld) return true;
+        if (state.world == null || state.world.Length == 0) return true;
+
+        return questWorld == state.world;
     }
 
     private static bool HasAll(List<string>? required, HashSet<string>? present) {

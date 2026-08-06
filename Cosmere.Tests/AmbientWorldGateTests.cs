@@ -111,12 +111,45 @@ public class AmbientWorldGateTests {
                 continue;
             }
 
-            if (!File.ReadAllText(path).Contains("WorldUtility.IsActive", StringComparison.Ordinal)) {
-                offenders.Add($"{relative} has no world gate");
+            string source = File.ReadAllText(path);
+
+            // Through the arbiter, not WorldUtility.IsActive directly. On the cross-world
+            // sentinel IsActive is true for every world at once, so both patches passed their
+            // gate and both wrote the return value - leaving Concord's composition order to
+            // decide the xenotype of every pawn in the game.
+            if (!source.Contains("XenotypeArbiter.MayAnswer", StringComparison.Ordinal)) {
+                offenders.Add($"{relative} does not ask the arbiter whether it may answer");
+            }
+
+            if (source.Contains("WorldUtility.IsActive", StringComparison.Ordinal)) {
+                offenders.Add($"{relative} still gates on IsActive, which cannot resolve a tie");
             }
         }
 
         Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+    }
+
+    /// <summary>
+    ///     The draw has to be taken once per pawn, ahead of the patches that read it. Two patches
+    ///     each rolling their own would collide exactly as before, just less predictably.
+    /// </summary>
+    [TestMethod]
+    public void TheXenotypeDrawHappensOncePerPawn() {
+        string patch = Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "Core", "Patch", "Gene", "XenotypeArbiterPatch.cs"
+        );
+
+        Assert.IsTrue(File.Exists(patch), $"Expected the arbiter's head patch at {patch}");
+
+        string source = File.ReadAllText(patch);
+        Assert.IsTrue(
+            source.Contains("At.Head", StringComparison.Ordinal),
+            "The draw has to run at the head, ahead of every At.Return injection on the same method."
+        );
+        Assert.IsTrue(
+            source.Contains("XenotypeArbiter.Draw", StringComparison.Ordinal),
+            "Expected the head patch to take the draw."
+        );
     }
 
     /// <summary>

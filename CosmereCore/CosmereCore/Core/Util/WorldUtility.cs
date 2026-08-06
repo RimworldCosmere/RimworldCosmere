@@ -93,15 +93,25 @@ public static class WorldUtility {
     ///     The world a faction belongs to. Null for vanilla and DLC factions, which belong to no
     ///     shardworld.
     /// </summary>
-    /// <remarks>
-    ///     Read off the defName, because every Cosmere faction is named
-    ///     Cosmere_&lt;World&gt;_Faction_* and the world's own defName is that middle token. A
-    ///     hand-kept list on the def would be 25-odd entries whose failure mode is silent: miss
-    ///     one and that faction vanishes from its own world's scenarios with no error. The
-    ///     convention is covered by a test instead.
-    /// </remarks>
     public static CosmereWorldDef? WorldForFaction(FactionDef? faction) {
-        string? defName = faction?.defName;
+        return WorldForDefName(faction?.defName);
+    }
+
+    /// <summary>
+    ///     The world a def belongs to, read out of its own defName. Null when it names none.
+    /// </summary>
+    /// <remarks>
+    ///     Everything we ship is named Cosmere_&lt;World&gt;_&lt;Kind&gt;_*, and the world's own
+    ///     defName is that middle token, so this needs no per-def bookkeeping and a new shardworld
+    ///     costs no code. A hand-kept list would fail silently: miss one entry and that def
+    ///     disappears from its own world with nothing logged. The convention is covered by tests
+    ///     instead.
+    ///     <para>
+    ///         Naming a def without a world token is meaningful rather than a mistake - it says
+    ///         the def belongs to every world.
+    ///     </para>
+    /// </remarks>
+    public static CosmereWorldDef? WorldForDefName(string? defName) {
         if (string.IsNullOrEmpty(defName)) return null;
 
         List<CosmereWorldDef> worlds = DefDatabase<CosmereWorldDef>.AllDefsListForReading;

@@ -20,4 +20,9 @@ public class QuestCandidate {
 
     /// <summary>The FactionDef the quest points its site and its enemies at, if any.</summary>
     public string? targetFaction;
+
+    /// <summary>
+    ///     The CosmereWorldDef this quest belongs to, or null when it belongs to all of them.
+    /// </summary>
+    public string? world;
 }

@@ -18,6 +18,7 @@ namespace Cosmere.Core.Patch;
 ///         page that no longer exists, and the second enable was a no-op, so both went.
 ///     </para>
 /// </remarks>
+[Patch]
 public abstract class PreSelectShardForScenarioPatch : Scenario {
     [Inject(At.Head, nameof(PreConfigure))]
     private void BeforePreConfigure() {

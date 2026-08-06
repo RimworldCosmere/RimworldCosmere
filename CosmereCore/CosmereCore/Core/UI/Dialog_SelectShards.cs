@@ -18,10 +18,12 @@ namespace Cosmere.Core.UI;
 /// </remarks>
 public class Dialog_SelectShards : Verse.Window {
     private readonly List<ShardDef> shards;
+    private readonly HashSet<string> required;
     private Vector2 scrollPos = Vector2.zero;
 
-    public Dialog_SelectShards(List<ShardDef> permitted) {
+    public Dialog_SelectShards(List<ShardDef> permitted, IEnumerable<string>? requiredShards = null) {
         shards = permitted;
+        required = requiredShards == null ? [] : [..requiredShards];
 
         forcePause = true;
         absorbInputAroundWindow = true;
@@ -75,27 +77,31 @@ public class Dialog_SelectShards : Verse.Window {
             Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
 
             foreach (ShardDef shard in group) {
-                y = DrawShardRow(shard, y, viewRect.width, RowHeight, CheckTextPadding);
+                y = DrawShardRow(shard, y, viewRect.width, RowHeight, CheckTextPadding, required.Contains(shard.defName));
             }
         }
 
         Widgets.EndScrollView();
     }
 
-    private static float DrawShardRow(ShardDef shard, float y, float width, float rowHeight, float padding) {
+    private static float DrawShardRow(
+        ShardDef shard, float y, float width, float rowHeight, float padding, bool isRequired
+    ) {
         Rect checkRect = new Rect(8f, y + 10f, 24f, 24f);
 
         bool isEnabled = ShardUtility.AreAnyEnabled(shard);
         bool blocked = !isEnabled && shard.mutuallyExclusiveWith.Any(ShardUtility.IsEnabled);
 
+        // A scenario's own Shards are the premise of the story it tells, so they cannot be
+        // taken away - but nothing stops a player adding more on top.
         bool wasGuiEnabled = GUI.enabled;
-        GUI.enabled = !blocked;
+        GUI.enabled = !blocked && !isRequired;
 
         Rect labelRect = new Rect(checkRect.xMax + padding, y + 6f, width - checkRect.xMax - 20f, 24f);
         bool toggled = isEnabled;
-        Widgets.CheckboxLabeled(labelRect, shard.LabelCap, ref toggled, blocked);
+        Widgets.CheckboxLabeled(labelRect, shard.LabelCap, ref toggled, blocked || isRequired);
 
-        if (toggled != isEnabled) {
+        if (toggled != isEnabled && !isRequired) {
             if (toggled) {
                 ShardUtility.Enable(shard);
             } else {
@@ -110,7 +116,12 @@ public class Dialog_SelectShards : Verse.Window {
             Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f));
         }
 
-        if (blocked) {
+        if (isRequired) {
+            TooltipHandler.TipRegion(
+                new Rect(0f, y, width, rowHeight),
+                "CC_SelectShard_Required".Translate(shard.LabelCap.Named("SHARD"))
+            );
+        } else if (blocked) {
             TooltipHandler.TipRegion(
                 new Rect(0f, y, width, rowHeight),
                 "CC_SelectShard_Blocked".Translate(shard.LabelCap.Named("SHARD"))

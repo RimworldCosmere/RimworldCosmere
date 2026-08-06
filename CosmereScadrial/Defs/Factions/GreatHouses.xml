@@ -83,6 +83,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseVenture</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Venture</label>
     <fixedName>House Venture</fixedName>
     <description>The most powerful house in Luthadel, and the one least interested in pretending otherwise. Straff Venture keeps an army because the others keep armies, and keeps it larger because he intends to be the one still standing.</description>
@@ -94,6 +95,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseElariel</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Elariel</label>
     <fixedName>House Elariel</fixedName>
     <description>Old money and older grudges. Elariel plays the court rather than the field, and has never needed to raise a banner to ruin a rival house.</description>
@@ -105,6 +107,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseHasting</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Hasting</label>
     <fixedName>House Hasting</fixedName>
     <description>A house built on the canal trade, with a keep like a fortress because the family has always assumed it would one day need to be.</description>
@@ -116,6 +119,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseLekal</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Lekal</label>
     <fixedName>House Lekal</fixedName>
     <description>Lekal have spent three generations a rung below the great houses and every one of those generations resenting it. They ally readily and betray on schedule.</description>
@@ -127,6 +131,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseTekiel</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Tekiel</label>
     <fixedName>House Tekiel</fixedName>
     <description>Merchants first, nobles second, and quietly among the wealthiest in the city. Tekiel would rather buy a war than fight one.</description>
@@ -138,6 +143,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseRenoux</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Renoux</label>
     <fixedName>House Renoux</fixedName>
     <description>A canal house out of Fellise, respectable and unremarkable, which is exactly what makes it useful to people who need a respectable and unremarkable name to stand behind.</description>
@@ -149,6 +155,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseCett</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Cett</label>
     <fixedName>House Cett</fixedName>
     <description>Ashweather Cett rules a stretch of the Western Dominance through a mixture of taxation and menace, and sees no reason the arrangement should not extend to Luthadel.</description>
@@ -203,6 +210,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseErikell</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Erikell</label>
     <fixedName>House Erikell</fixedName>
     <description>Survived the Collapse by being useful to whoever was winning and by never being important enough to burn. Three hundred years later that is still the house strategy, and it is still working.</description>
@@ -214,6 +222,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseInnate</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Innate</label>
     <fixedName>House Innate</fixedName>
     <description>Politics rather than plantations. Innate went into the governance of the Basin early and has stayed there, and when Elendel needs somebody to stand up and be reasonable about a crisis it is usually an Innate doing the standing.</description>
@@ -225,6 +234,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseDemoux</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Demoux</label>
     <fixedName>House Demoux</fixedName>
     <description>Descended from a skaa soldier who followed the Survivor and then followed the Ascendant Warrior, and was written down doing it. Being founded by somebody the histories are unambiguous about has been worth more to this house than land ever was.</description>
@@ -236,6 +246,7 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseHammondess</defName>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Hammondess</label>
     <fixedName>House Hammondess</fixedName>
     <description>The line of a thug who liked arguing philosophy more than hitting people, and who lived long enough to do both at length. His descendants have kept the arguing and mostly given up the other thing.</description>

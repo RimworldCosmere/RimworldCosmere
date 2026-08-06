@@ -26,7 +26,7 @@ public class CoreModSettings : CosmereModSettings {
 
     // Faction filtering settings
     public bool disableEmpireInCosmereScenarios;
-    public bool disableOdysseyFactionsInCosmereScenarios;
+    public bool disableOdysseyFactionsInCosmereScenarios = true;
     public bool highContrast;
     public LogLevel logLevel = LogLevel.Verbose;
     public string? quickstartName;
@@ -121,7 +121,7 @@ public class CoreModSettings : CosmereModSettings {
                         new CheckboxControl(
                             () => disableOdysseyFactionsInCosmereScenarios,
                             updated => disableOdysseyFactionsInCosmereScenarios = updated,
-                            false
+                            true
                         )
                     ),
                 ]

@@ -86,7 +86,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
                 DrawWorldRow(main.x, y, controlWidth, worlds, comp, locked);
             }
 
-            DrawShardRow(main.x, y + RowPitch, controlWidth, comp, locked);
+            DrawShardRow(main.x, y + RowPitch, controlWidth, comp);
 
             // Only the cross-world save asks this. Every other world answers it for itself -
             // you do not choose whether Roshar has highstorms.
@@ -134,24 +134,22 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         Find.WindowStack.Add(new FloatMenu(options));
     }
 
-    private static void DrawShardRow(float x, float y, float controlWidth, CosmereWorld comp, bool locked) {
+    private static void DrawShardRow(float x, float y, float controlWidth, CosmereWorld comp) {
         Widgets.Label(new Rect(x, y, LabelWidth, RowHeight), "CC_World_ShardsLabel".Translate());
 
         Rect control = new Rect(x + LabelWidth, y, controlWidth, RowHeight);
-        string label = "CC_World_Edit".Translate();
-
-        if (locked) {
-            DrawLocked(control, label);
-            return;
-        }
-
-        if (!Widgets.ButtonText(control, label)) return;
+        if (!Widgets.ButtonText(control, "CC_World_Edit".Translate())) return;
 
         // Every Shard, not just this world's. Which Shards are active is a fact about the
         // cosmere the save runs in; the world only decides where their magic functions and what
         // a pawn born here is Connected to. Enabling Honor on Scadrial is how you get a Roshar
         // to travel to later.
-        Find.WindowStack.Add(new Dialog_SelectShards(DefDatabase<ShardDef>.AllDefsListForReading));
+        // The scenario's own Shards go in as required: a Final Empire game must keep Ruin and
+        // Preservation, but the player may still add Honor and go to Roshar later.
+        Find.WindowStack.Add(new Dialog_SelectShards(
+            DefDatabase<ShardDef>.AllDefsListForReading,
+            ScenarioDefUtility.AllowsChange ? null : ScenarioDefUtility.CurrentShards?.shards
+        ));
     }
 
     private static void DrawFeatureRow(float x, float y, float controlWidth, bool locked) {

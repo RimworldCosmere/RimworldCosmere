@@ -33,4 +33,5 @@
     <CC_Features_NeedsShard>Needs {SHARDS}. Enable the Shard first and this becomes available.</CC_Features_NeedsShard>
     <CC_Features_None>No shardworld has declared any features. Load a system mod to choose from its weather and wildlife.</CC_Features_None>
     <CC_Features_TabTip>{ON} of {TOTAL} enabled</CC_Features_TabTip>
+    <CC_SelectShard_Required>This scenario is built on {SHARD} and cannot be played without it. You can still add others.</CC_SelectShard_Required>
 </LanguageData>

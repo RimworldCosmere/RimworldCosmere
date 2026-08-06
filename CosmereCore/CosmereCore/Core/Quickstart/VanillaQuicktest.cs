@@ -63,6 +63,9 @@ public static class VanillaQuicktest {
         LongEventHandler.QueueLongEvent(
             () => {
                 Root_Play.SetupForQuickTestPlay();
+
+                // SetupForQuickTestPlay generates the world itself, so the world has to be
+                // committed inside it rather than here. See the WorldForQuicktestPatch.
                 EnableShards(shards);
                 PageUtility.InitGameStart();
             },

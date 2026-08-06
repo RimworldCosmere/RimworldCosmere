@@ -130,6 +130,11 @@ public class Quickstarter {
         };
         Find.Scenario.PreConfigure();
         Current.Game.storyteller = new Storyteller(Quickstart.storyteller, Quickstart.difficulty);
+
+        // Before GenerateWorld, not next to EnableShards below: a WorldGenStep that reads the
+        // world during generation sees null otherwise.
+        WorldUtility.SeedFromScenario();
+
         Current.Game.World = WorldGenerator.GenerateWorld(
             Quickstart.planetCoverage,
             seed,

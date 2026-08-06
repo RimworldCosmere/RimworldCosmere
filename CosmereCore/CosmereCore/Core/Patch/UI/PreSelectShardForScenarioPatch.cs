@@ -1,29 +1,31 @@
 using Concord;
 using Cosmere.Core.Util;
 using RimWorld;
-using Verse;
 using DefModExtension_Shards = Cosmere.Core.DefModExtension.Shards;
 
 namespace Cosmere.Core.Patch;
 
-[Patch]
+/// <summary>
+///     Switches on the Shards a scenario declares, before anything reads them.
+/// </summary>
+/// <remarks>
+///     Runs at PreConfigure, which BeginScenarioConfiguration calls on every pass - including
+///     when the player navigates back to scenario selection, which builds a fresh Game and wipes
+///     the shard component. That is what keeps the set correct across back-navigation.
+///     <para>
+///         This used to have a twin, LockShardSelectionPatch, which enabled the same list again
+///         at StitchedPages and announced it in a toast. The toast referred to a shard-selection
+///         page that no longer exists, and the second enable was a no-op, so both went.
+///     </para>
+/// </remarks>
 public abstract class PreSelectShardForScenarioPatch : Scenario {
     [Inject(At.Head, nameof(PreConfigure))]
     private void BeforePreConfigure() {
-        string? scenarioName = Find.Scenario?.name;
-        if (string.IsNullOrEmpty(scenarioName)) return;
+        DefModExtension_Shards? shards = ScenarioDefUtility.CurrentShards;
+        if (shards?.shards is not { Count: > 0 }) return;
 
-        ScenarioDef? def = DefDatabase<ScenarioDef>.AllDefsListForReading.FirstOrDefault(x => x.label == scenarioName);
-        DefModExtension_Shards? shards = def?.GetModExtension<DefModExtension_Shards>();
-        if (shards?.shards == null) return;
-
-        if (shards.shards.Count == 0) {
-            Logger.Message($"[Core] No matching shard system found for {def?.defName}");
-            return;
-        }
-
-        foreach (string? shard in shards.shards) {
-            ShardUtility.Enable(shard);
+        for (int i = 0; i < shards.shards.Count; i++) {
+            ShardUtility.Enable(shards.shards[i]);
         }
     }
 }

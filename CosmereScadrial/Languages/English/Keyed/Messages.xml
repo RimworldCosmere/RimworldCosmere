@@ -28,7 +28,6 @@
     <CS_PawnSnapped_Temperature>{PAWN} was pushed to the edge by extreme temperatures. As their body began to fail, something within them broke open. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Temperature>
     <CS_PawnSnapped_Withdrawal>{PAWN} was wracked by the agony of withdrawal. Their body tearing itself apart cracked their spirit web. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Withdrawal>
 
-    <CS_LockShardSelection>Shard System has been pre-selected: {SHARDS}</CS_LockShardSelection>
     
     <CS_Coinshot_NoClips>{PAWN} has no clips to throw!</CS_Coinshot_NoClips>
 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- The Makabaki west venerates the Heralds directly rather than through the Vorin church.
+         Azir knows Jezrien as Yaezir, King of the Heralds, and its faith runs through the same
+         civil service that runs everything else there: petitions, seals, and a written record
+         of who asked what of whom. -->
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Yaezirism</defName>
+        <label>Yaezirism</label>
+        <description>Yaezir died a hundred deaths so that mankind might survive, and returned from every one. The Makabaki west venerates the Heralds by name and by deed, keeping their accounts as carefully as any other ledger. A petition to Yaezir is written, sealed and filed, because a thing not recorded did not happen.</description>
+        <iconPath>UI/Ideology/Cosmere/Yaezirism</iconPath>
+        <deityCount>2</deityCount>
+        <worshipRoomLabel>shrine</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)-&gt;[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[packIdeoName]</li>
+                <li>memeLeaderNoun-&gt;prime</li>
+                <li>memeLeaderNoun-&gt;vizier</li>
+                <li>memeLeaderNoun-&gt;scribe-priest</li>
+                <li>memeLeaderAdjective-&gt;yaezir&apos;s</li>
+                <li>memeLeaderAdjective-&gt;sealed</li>
+                <li>memeLeaderAdjective-&gt;azish</li>
+                <li>memeMoralist-&gt;vizier</li>
+                <li>memeMoralist-&gt;arbiter</li>
+                <li>memeMoralist-&gt;clerk of the shrine</li>
+                <li>memeConcept-&gt;record</li>
+                <li>memeConcept-&gt;petition</li>
+                <li>memeConcept-&gt;return</li>
+                <li>memeHyphenPrefix-&gt;yaez</li>
+                <li>memeHyphenPrefix-&gt;seal</li>
+                <li>memeHyphenPrefix-&gt;scrib</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_yaezirism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>Yaezir</name>
+                <type>King of the Heralds</type>
+            </li>
+            <li>
+                <name>Ishu</name>
+                <type>keeper of the record</type>
+            </li>
+            <li>
+                <name>Nakku</name>
+                <type>the judge</type>
+            </li>
+            <li>
+                <name>The Hundred Deaths</name>
+                <type>that which was endured</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Yaezirism</ideoName>
+                <adjective>Yaeziri</adjective>
+                <member>faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Sealed Record</ideoName>
+                <adjective>sealed</adjective>
+                <member>scribe</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Hundred Deaths</ideoName>
+                <adjective>returned</adjective>
+                <member>petitioner</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Heralds&apos; Accounting</ideoName>
+                <adjective>herald&apos;s</adjective>
+                <member>clerk</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

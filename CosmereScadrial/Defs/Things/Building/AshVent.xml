@@ -5,6 +5,7 @@
         <defName>Cosmere_Scadrial_Thing_AshVent</defName>
         <label>ash vent</label>
         <description>A crack in the rock where the mountain breathes out. The Ashmounts themselves are a long way off, but the ground between here and there is not solid, and what they push up finds its way to the surface wherever it can. The stone around the opening is warm to the touch and the air above it will not hold still.</description>
+        <thingClass>Building</thingClass>
         <graphicData>
             <texPath>Things/Building/Natural/AshVent</texPath>
             <graphicClass>Graphic_Single</graphicClass>

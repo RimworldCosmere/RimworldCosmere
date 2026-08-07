@@ -3,9 +3,15 @@
   "description": "Lerasium alloyed with common metals transforms the ingester into a Misting for the alloyed metal.",
   "godMetal": true,
   "shards": [
-    "Preservation"
+    {
+      "shard": "Preservation",
+      "grant": 80
+    },
+    {
+      "shard": "Ruin",
+      "grant": 30
+    }
   ],
-  "connectionGrant": 80,
   "stackable": false,
   "drawSize": 1,
   "marketValue": 8000,

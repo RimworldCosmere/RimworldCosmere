@@ -44,11 +44,8 @@ public class MetalInfo {
 
     public bool GodMetal { get; set; }
 
-    /// <summary>ShardDef defNames this metal is made of. God metals only.</summary>
-    public List<string>? Shards { get; set; }
-
-    /// <summary>Connection granted to each of those Shards when burned, 0-100.</summary>
-    public int ConnectionGrant { get; set; }
+    /// <summary>The Shards this metal is made of, with what burning it grants to each.</summary>
+    public List<ShardGrantInfo>? Shards { get; set; }
 
     public bool Stackable { get; set; } = true;
 
@@ -200,4 +197,11 @@ public class AlloyProduct {
     public string Item { get; set; } = string.Empty;
 
     public int Count { get; set; }
+}
+
+/// <summary>One Shard a metal is made of, and the Connection burning it grants there.</summary>
+public class ShardGrantInfo {
+    public string Shard { get; set; } = string.Empty;
+
+    public int Grant { get; set; }
 }

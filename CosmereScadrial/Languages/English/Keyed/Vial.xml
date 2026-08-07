@@ -10,7 +10,12 @@
     <CS_AlreadyFerring>already {0} Ferring</CS_AlreadyFerring>
     <CS_TooFull>reserve too full</CS_TooFull>
     <CS_NoAllomanticProperties>no allomantic properties</CS_NoAllomanticProperties>
-    <CS_BurnedGodMetal>Pawn burned {METAL}!</CS_BurnedGodMetal>
+    <CS_BurnedGodMetal>{PAWN} burned {METAL}</CS_BurnedGodMetal>
     <CS_BurnedGodMetal_Lerasium>{PAWN} consumes the god metal. In an instant, their spirit web reshapes — all paths of Allomancy now lie open.</CS_BurnedGodMetal_Lerasium>
     <CS_BurnedGodMetal_Atium>{PAWN} consumes the god metal. They can now catch glimpses of other pawns futures! Use it wisely...</CS_BurnedGodMetal_Atium>
+    <CS_BurnedGodMetal_Leratium>{PAWN} consumes the god metal. Their spirit web reshapes around it - every path of Feruchemy now lies open to them.</CS_BurnedGodMetal_Leratium>
+    <CS_BurnedGodMetal_LerasiumAlloy>{PAWN} consumes the alloy. The lerasium in it opens one path of Allomancy, and closes the rest forever.</CS_BurnedGodMetal_LerasiumAlloy>
+    <CS_BurnedGodMetal_LeratiumAlloy>{PAWN} consumes the alloy. The leratium in it opens one path of Feruchemy, and closes the rest forever.</CS_BurnedGodMetal_LeratiumAlloy>
+    <CS_BurnedGodMetal_Harmonium>{PAWN} swallows the god metal. It reacts with the water in them, violently, and there is nothing to be done about it.</CS_BurnedGodMetal_Harmonium>
+    <CS_BurnedGodMetal_Trellium>{PAWN} consumes the god metal. Something far away turns its attention toward them.</CS_BurnedGodMetal_Trellium>
 </LanguageData>

@@ -8,8 +8,10 @@
         <colorTwo>{{rgb metal.colorTwo}}</colorTwo>{{/if}}{{#if metal.godMetal}}
         <godMetal>{{metal.godMetal}}</godMetal>{{/if}}{{#if metal.shards}}
         <shards>{{#each metal.shards}}
-            <li>{{this}}</li>{{/each}}
-        </shards>{{/if}}{{#if metal.connectionGrant}}
-        <connectionGrant>{{metal.connectionGrant}}</connectionGrant>{{/if}}
+            <li>
+                <shard>{{this.shard}}</shard>{{#if this.grant}}
+                <grant>{{this.grant}}</grant>{{/if}}
+            </li>{{/each}}
+        </shards>{{/if}}
     </Cosmere.Core.Def.MetalDef>
 </Defs>

@@ -3,10 +3,15 @@
   "description": "Leratium alloyed with common metals transforms the ingester into a Ferring for the alloyed metal.",
   "godMetal": true,
   "shards": [
-    "Preservation",
-    "Ruin"
+    {
+      "shard": "Preservation",
+      "grant": 80
+    },
+    {
+      "shard": "Ruin",
+      "grant": 80
+    }
   ],
-  "connectionGrant": 80,
   "stackable": false,
   "drawSize": 1,
   "marketValue": 8000,

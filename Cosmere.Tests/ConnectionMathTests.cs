@@ -361,19 +361,40 @@ public class ConnectionMathTests {
 
         foreach (string name in new[] { "Lerasium", "LerasiumAlloy", "Leratium", "LeratiumAlloy" }) {
             Assert.IsTrue(
-                File.ReadAllText(Path.Combine(dir, name + ".json"))
-                    .Contains("connectionGrant", StringComparison.Ordinal),
+                File.ReadAllText(Path.Combine(dir, name + ".json")).Contains("\"grant\"", StringComparison.Ordinal),
                 $"{name} contains lerasium, so burning it has to grant Connection."
             );
         }
 
         foreach (string name in new[] { "Atium", "Harmonium", "Trellium" }) {
             Assert.IsFalse(
-                File.ReadAllText(Path.Combine(dir, name + ".json"))
-                    .Contains("connectionGrant", StringComparison.Ordinal),
+                File.ReadAllText(Path.Combine(dir, name + ".json")).Contains("\"grant\"", StringComparison.Ordinal),
                 $"{name} has no lerasium in it and must not grant Connection."
             );
         }
+    }
+
+    /// <summary>
+    ///     Lerasium makes a Mistborn, and a Mistborn burns atium - so it has to reach far enough
+    ///     into Ruin to allow that, without pretending to be atium itself.
+    /// </summary>
+    [TestMethod]
+    public void LerasiumReachesJustFarEnoughIntoRuin() {
+        string json = File.ReadAllText(
+            Path.Combine(RepoRoot, "Resources", "Data", "Metals", "Lerasium.json")
+        );
+
+        Assert.IsTrue(json.Contains("\"Preservation\"", StringComparison.Ordinal));
+        Assert.IsTrue(json.Contains("\"Ruin\"", StringComparison.Ordinal), "A Mistborn burns atium.");
+        Assert.IsTrue(json.Contains("80", StringComparison.Ordinal), "Preservation is what it truly gives.");
+        Assert.IsTrue(
+            json.Contains("30", StringComparison.Ordinal),
+            "Ruin gets exactly the threshold, no more - lerasium is not atium."
+        );
+        Assert.IsTrue(
+            ConnectionMath.MayUseGodMetal(30),
+            "And thirty has to be enough to burn a god metal, or the grant is pointless."
+        );
     }
 
     private static string RepoRoot {

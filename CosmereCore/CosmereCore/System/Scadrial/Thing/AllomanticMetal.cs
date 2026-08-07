@@ -34,10 +34,6 @@ public class AllomanticMetal : AllomanticVial {
                 return;
             }
 
-            // Swallowing lerasium, or anything alloyed with it, ties the drinker to every Shard
-            // in the metal. This is the route in for someone who had no Connection at all.
-            ConnectionUtility.GrantFromMetal(ingester, metal);
-
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
                 ingester.FillAllAllomanticReserves();
@@ -89,9 +85,13 @@ public class AllomanticMetal : AllomanticVial {
                 StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
             }
 
+            // After the powers, not before: the grant tops the pawn up to a total, and the
+            // Mistborn gene it just handed out is worth Investiture in its own right.
+            ConnectionUtility.GrantFromMetal(ingester, metal);
+
             Find.LetterStack.ReceiveLetter(
-                "CS_BurnedGodMetal".Translate(metal.LabelCap.Named("METAL")),
-                $"CS_BurnedGodMetal_{metal.LabelCap}".Translate(ingester.NameFullColored.Named("PAWN")).Resolve(),
+                "CS_BurnedGodMetal".Translate(ingester.NameShortColored.Named("PAWN"), metal.LabelCap.Named("METAL")),
+                $"CS_BurnedGodMetal_{metal.defName}".Translate(ingester.NameFullColored.Named("PAWN")).Resolve(),
                 LetterDefOf.PositiveEvent,
                 ingester
             );

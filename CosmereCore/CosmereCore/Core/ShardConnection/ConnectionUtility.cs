@@ -91,43 +91,49 @@ public static class ConnectionUtility {
     ///     </para>
     /// </remarks>
     public static bool MayUseMetal(Pawn? pawn, MetalDef? metal) {
-        if (metal == null) return true;
-        if (!metal.godMetal) return true;
-        if (metal.connectionGrant > 0) return true;
+        if (metal is not { godMetal: true }) return true;
         if (metal.shards.Count == 0) return true;
 
         for (int i = 0; i < metal.shards.Count; i++) {
-            if (MayUse(pawn, metal.shards[i])) return true;
+            if (metal.shards[i].grant > 0) return true;
+            if (MayUse(pawn, metal.shards[i].shard)) return true;
         }
 
         return false;
     }
 
-    /// <summary>The first Shard this pawn is not Connected to, for the refusal message.</summary>
+    /// <summary>The first Shard this pawn is not Connected enough to, for the refusal message.</summary>
     public static ShardDef? FirstUnreachedShard(Pawn? pawn, MetalDef? metal) {
-        if (metal?.shards == null) return null;
+        if (metal == null) return null;
 
         for (int i = 0; i < metal.shards.Count; i++) {
-            if (!MayUse(pawn, metal.shards[i])) return metal.shards[i];
+            if (!MayUse(pawn, metal.shards[i].shard)) return metal.shards[i].shard;
         }
 
         return null;
     }
 
     /// <summary>
-    ///     Burning a metal made of lerasium ties the drinker to every Shard in it.
+    ///     Burning a metal ties the drinker to each Shard in it, as deeply as that metal reaches.
     /// </summary>
     /// <remarks>
-    ///     Never lowers a Connection. Someone already deeper into Preservation than the metal
-    ///     grants keeps what they had.
+    ///     Call this <em>after</em> the metal's powers are granted, not before. The grant tops the
+    ///     pawn up to a total, and a Mistborn gene is worth Investiture on its own - topping up
+    ///     first and adding the gene second put a lerasium drinker at 100 rather than 80.
+    ///     <para>
+    ///         Never lowers anyone. A pawn already deeper than the metal reaches keeps what they
+    ///         had.
+    ///     </para>
     /// </remarks>
     public static void GrantFromMetal(Pawn? pawn, MetalDef? metal) {
-        if (pawn == null || metal == null || metal.connectionGrant <= 0) return;
+        if (pawn == null || metal == null) return;
 
         for (int i = 0; i < metal.shards.Count; i++) {
-            ShardDef shard = metal.shards[i];
-            int shortfall = metal.connectionGrant - StrengthOf(pawn, shard);
-            if (shortfall > 0) Grant(pawn, shard, shortfall);
+            ShardGrant entry = metal.shards[i];
+            if (entry.grant <= 0) continue;
+
+            int shortfall = entry.grant - StrengthOf(pawn, entry.shard);
+            if (shortfall > 0) Grant(pawn, entry.shard, shortfall);
         }
     }
 

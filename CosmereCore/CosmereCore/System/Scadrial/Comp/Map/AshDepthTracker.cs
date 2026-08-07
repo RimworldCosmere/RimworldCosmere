@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cosmere.System.Scadrial.Grid;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
@@ -17,8 +18,16 @@ public class AshDepthTracker : MapComponent {
     /// <summary>A stripe comes round once every 64 ticks, so 937.5 times a day.</summary>
     private const float SweepsPerDay = GenDate.TicksPerDay / (float)Stripes;
 
-    /// <summary>Millimetres a day at severity 1. Progression moves severity, not this.</summary>
-    public const float FullRateMmPerDay = 300f;
+    /// <summary>Millimetres a day at severity 1 on a tile no Ashmount reaches.</summary>
+    public const float BaseRateMmPerDay = 300f;
+
+    private float exposureMultiplier = 1f;
+
+    /// <summary>How much worse this tile is than open ground, 1 to 3. Set once at FinalizeInit.</summary>
+    public float ExposureMultiplier => exposureMultiplier;
+
+    /// <summary>What the sweep actually deposits at severity 1 on this map.</summary>
+    public float FullRateMmPerDay => BaseRateMmPerDay * exposureMultiplier;
 
     /// <summary>Rain heavier than this washes ash off unroofed ground. Vanilla's filth threshold.</summary>
     private const float RainWashThreshold = 0.4f;
@@ -40,6 +49,8 @@ public class AshDepthTracker : MapComponent {
     private AshSettleClock settleClock;
     private float severity;
     private float severityTarget;
+
+    private readonly List<Comp.Thing.CompAshVent> vents = new List<Comp.Thing.CompAshVent>();
 
     public AshDepthTracker(Verse.Map map) : base(map) {
         grid = new AshGrid(map);
@@ -79,6 +90,11 @@ public class AshDepthTracker : MapComponent {
     public override void FinalizeInit() {
         base.FinalizeInit();
 
+        exposureMultiplier = Comp.Game.AshmountExposureCache.For(map.Tile);
+        if (exposureMultiplier > 1.01f) {
+            Core.Logger.Important($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
+        }
+
         // Ash falls in the Final Empire whether or not a progression beat has fired yet, and it
         // was already falling before the colony landed - so the arc's current pressure applies at
         // once rather than easing up from clean air over a week.
@@ -93,6 +109,15 @@ public class AshDepthTracker : MapComponent {
         severityTarget = 0f;
     }
 
+    /// <summary>Vents announce themselves rather than the sweep scanning for them each tick.</summary>
+    public void RegisterVent(Comp.Thing.CompAshVent vent) {
+        if (!vents.Contains(vent)) vents.Add(vent);
+    }
+
+    public void DeregisterVent(Comp.Thing.CompAshVent vent) {
+        vents.Remove(vent);
+    }
+
     public override void MapComponentTick() {
         int stripe = Find.TickManager.TicksGame % Stripes;
 
@@ -103,6 +128,18 @@ public class AshDepthTracker : MapComponent {
             if (Grid.Any) DrainStripe(stripe);
         } else {
             AccumulateStripe(stripe);
+
+            // Stripe 0 only: a vent's plume is a bounded local write, so it runs once per full sweep
+            // cycle rather than 64 times.
+            if (stripe == 0 && vents.Count > 0) {
+                float cycleMm = 64f / GenDate.TicksPerDay;
+                bool changed = false;
+                for (int i = 0; i < vents.Count; i++) {
+                    if (vents[i].ContributeToGrid(Grid, cycleMm)) changed = true;
+                }
+
+                if (changed) NotifyAshChanged();
+            }
         }
 
         // Outside the era branch on purpose: the terrain has to unwind off the draining grid, not

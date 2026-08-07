@@ -20,7 +20,7 @@ public static class AshmountDebugActions {
             return;
         }
 
-        float exposure = AshmountExposureCache.For(tile.tileId);
+        float exposure = AshmountExposureCache.For(tile);
         Messages.Message(
             $"Tile {tile.tileId}: ash exposure {exposure:0.00}x (generation gate: {FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)})",
             MessageTypeDefOf.NeutralEvent,

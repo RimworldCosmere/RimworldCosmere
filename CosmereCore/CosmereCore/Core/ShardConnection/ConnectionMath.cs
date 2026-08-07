@@ -81,6 +81,25 @@ public static class ConnectionMath {
         return ownStrength > harmonyStrength ? ownStrength : harmonyStrength;
     }
 
+    /// <summary>
+    ///     Harmony is Ruin and Preservation held together, so being tied to both is being tied to
+    ///     Harmony - at the weaker of the two, since half of Harmony is not Harmony.
+    /// </summary>
+    /// <remarks>
+    ///     The mirror of <see cref="WithHarmony" />, so the two directions cannot disagree.
+    ///     Nothing grants a floor to Harmony directly - ancestry hands out floors from a world's
+    ///     fallback Shards, and Scadrial's are Ruin and Preservation - so without this a
+    ///     post-Catacendre native reads 0 to their own world's Shard.
+    ///     <para>
+    ///         Not about harmonium. Harmonium reacts with water and would kill anyone who
+    ///         swallowed it, which is why it carries no allomancy or feruchemy at all and never
+    ///         reaches the god metal gate.
+    ///     </para>
+    /// </remarks>
+    public static int HarmonyFrom(int ruinStrength, int preservationStrength) {
+        return ruinStrength < preservationStrength ? ruinStrength : preservationStrength;
+    }
+
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>
     public static int FromEdge(float edgeValue) {
         return Clamp((int)global::System.Math.Round(edgeValue * Max));

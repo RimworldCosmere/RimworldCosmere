@@ -169,6 +169,39 @@ public class ConnectionMathTests {
         Assert.AreEqual(0, offenders.Count, "These god metals name no Shard: " + string.Join(", ", offenders));
     }
 
+    /// <summary>
+    ///     Ancestry hands out floors from a world's fallback Shards, which on Scadrial are Ruin
+    ///     and Preservation, so nothing ever grants a floor to Harmony. Without this a
+    ///     post-Catacendre native reads 0 to the Shard their own world is held by.
+    /// </summary>
+    [TestMethod]
+    public void BeingTiedToBothHalvesIsBeingTiedToHarmony() {
+        Assert.AreEqual(
+            30,
+            ConnectionMath.HarmonyFrom(30, 30),
+            "A native with the floor to both halves is tied to Harmony."
+        );
+        Assert.AreEqual(
+            0,
+            ConnectionMath.HarmonyFrom(30, 0),
+            "Half of Harmony is not Harmony - one half alone grants nothing."
+        );
+        Assert.AreEqual(20, ConnectionMath.HarmonyFrom(50, 20), "It is the weaker half that decides.");
+        Assert.AreEqual(0, ConnectionMath.HarmonyFrom(0, 0), "An off-worlder is tied to none of it.");
+    }
+
+    /// <summary>The two directions have to agree, or a pawn's Harmony reading depends on which way you ask.</summary>
+    [TestMethod]
+    public void TheHarmonyRuleIsSymmetric() {
+        int viaHalves = ConnectionMath.HarmonyFrom(40, 40);
+        Assert.AreEqual(40, viaHalves);
+        Assert.AreEqual(
+            40,
+            ConnectionMath.WithHarmony(0, viaHalves),
+            "Harmony derived from both halves must carry back to each of them unchanged."
+        );
+    }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

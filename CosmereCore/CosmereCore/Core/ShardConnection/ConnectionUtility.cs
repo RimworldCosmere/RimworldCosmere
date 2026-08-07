@@ -40,6 +40,23 @@ public static class ConnectionUtility {
         if (shard.defName is "Ruin" or "Preservation") {
             ShardDef? harmony = DefDatabase<ShardDef>.GetNamedSilentFail("Harmony");
             if (harmony != null) return ConnectionMath.WithHarmony(own, Raw(pawn, harmony));
+
+            return own;
+        }
+
+        // And the same fact read the other way, so the two directions cannot disagree. Ancestry
+        // grants floors from a world's fallback Shards - Ruin and Preservation on Scadrial - so
+        // nothing hands a floor to Harmony, and a post-Catacendre native would otherwise read 0
+        // to the Shard their own world is held by.
+        if (shard.defName == "Harmony") {
+            ShardDef? ruin = DefDatabase<ShardDef>.GetNamedSilentFail("Ruin");
+            ShardDef? preservation = DefDatabase<ShardDef>.GetNamedSilentFail("Preservation");
+            if (ruin == null || preservation == null) return own;
+
+            return ConnectionMath.WithHarmony(
+                own,
+                ConnectionMath.HarmonyFrom(Raw(pawn, ruin), Raw(pawn, preservation))
+            );
         }
 
         return own;

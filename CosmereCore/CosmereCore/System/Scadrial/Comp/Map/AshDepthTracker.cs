@@ -250,13 +250,13 @@ public class AshDepthTracker : MapComponent {
         CellIndices indices = map.cellIndices;
         int count = indices.NumGridCells;
         int today = GenDate.DaysPassed;
+        bool flipped = false;
 
         for (int i = stripe; i < count; i += Stripes) {
             int mm = Grid.GetDepthMm(i);
-            buried.Set(i, AshDepthMath.IsBuried(mm, buried.IsBuried(i)));
+            if (buried.Set(i, AshDepthMath.IsBuried(mm, buried.IsBuried(i)))) flipped = true;
 
-            // The budget rations terrain swaps only. Burial has to finish the stripe, or a cell
-            // the ash left stays buried until its turn comes round on a cheaper tick.
+            // The budget rations terrain swaps only. Burial has to finish the stripe.
             if (budget <= 0) continue;
 
             AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(i));
@@ -278,6 +278,9 @@ public class AshDepthTracker : MapComponent {
             settleClock.Cancel(i);
             budget--;
         }
+
+        // The depth write dirtied the mesh up to 64 ticks before this stripe turned it into a flip.
+        if (flipped) NotifyAshChanged();
     }
 
     /// <summary>Only natural ground goes under. A floor the colony laid stays theirs.</summary>

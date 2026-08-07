@@ -82,21 +82,21 @@
     <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
   </FactionDef>
 
-  <!-- Alethi Warcamps: Hostile military factions -->
+  <!-- Alethkar: the Vorin war-kingdom, Gavilar's and then Elhokar's -->
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
-    <defName>Cosmere_Roshar_Faction_AlethiWarcamp</defName>
-    <label>Alethi warcamp</label>
-    <fixedName>Alethi Warcamp</fixedName>
-    <description>An Alethi highprince's warcamp on the Shattered Plains. The Alethi live for war and glory, fighting endlessly against the Parshendi for gemhearts.\n\nThey view outsiders as potential rivals or subjects to be conquered. Honor demands they fight.</description>
-    <pawnSingular>soldier</pawnSingular>
-    <pawnsPlural>soldiers</pawnsPlural>
+    <defName>Cosmere_Roshar_Faction_Alethkar</defName>
+    <label>Alethkar</label>
+    <fixedName>Alethkar</fixedName>
+    <description>The greatest of the Vorin kingdoms, and the most warlike. Ten highprinces answer to its king, each with his own army, his own lands and his own reasons to resent the other nine.\n\nAlethi society is built on the Thrill and on rank. A lighteyed officer expects deference. A darkeyed soldier expects to earn his way up by the spear, and usually dies before he does.</description>
+    <pawnSingular>Alethi</pawnSingular>
+    <pawnsPlural>Alethi</pawnsPlural>
     <listOrderPriority>60</listOrderPriority>
     <settlementGenerationWeight>0.9</settlementGenerationWeight>
     <canMakeRandomly>true</canMakeRandomly>
     <canSiege>true</canSiege>
     <canStageAttacks>true</canStageAttacks>
-    <leaderTitle>Highprince</leaderTitle>
-    <leaderTitleFemale>Brightness</leaderTitleFemale>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
     <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
     <naturalEnemy>true</naturalEnemy>
     <permanentEnemy>false</permanentEnemy>
@@ -149,19 +149,19 @@
     <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
   </FactionDef>
 
-  <!-- Thaylen Merchants: Friendly traders -->
+  <!-- Thaylenah: the island trade nation, and the Passions -->
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
-    <defName>Cosmere_Roshar_Faction_ThaylenMerchants</defName>
-    <label>Thaylen merchants</label>
-    <fixedName>Thaylen Merchants</fixedName>
-    <description>Traders from Thaylenah, a coastal nation of merchants and sailors. The Thaylens are famous for their long eyebrows and their shrewd business sense.\n\nThey follow the Passions, believing that strong emotions drive success. They welcome trade with anyone who has coin.</description>
-    <pawnSingular>merchant</pawnSingular>
-    <pawnsPlural>merchants</pawnsPlural>
+    <defName>Cosmere_Roshar_Faction_Thaylenah</defName>
+    <label>Thaylenah</label>
+    <fixedName>Thaylenah</fixedName>
+    <description>An island kingdom of sailors and traders, ringed by mountains that break the highstorms before they reach Thaylen City. Its Council of Merchants holds nearly as much power as its throne.\n\nThaylens wear their eyebrows long and their ledgers longer. They follow the Passions, and they will trade with anyone who deals honestly.</description>
+    <pawnSingular>Thaylen</pawnSingular>
+    <pawnsPlural>Thaylens</pawnsPlural>
     <listOrderPriority>50</listOrderPriority>
     <settlementGenerationWeight>0.7</settlementGenerationWeight>
     <canMakeRandomly>true</canMakeRandomly>
-    <leaderTitle>Merchant Prince</leaderTitle>
-    <leaderTitleFemale>Merchant Princess</leaderTitleFemale>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
     <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
     <colorSpectrum>
       <li>(0.5, 0.4, 0.6)</li>
@@ -238,12 +238,12 @@
     <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
   </FactionDef>
 
-  <!-- Shin: Peaceful stone worshippers -->
+  <!-- Shinovar: soil, grass, and stone that must not be walked on -->
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
-    <defName>Cosmere_Roshar_Faction_Shin</defName>
-    <label>Shin farmers</label>
-    <fixedName>Shin Farmers</fixedName>
-    <description>The Shin live in Shinovar, the only land on Roshar with soil and grass. They follow Stone Shamanism, believing stone is sacred and those who walk on it are warriors deserving of contempt.\n\nThey are deeply peaceful farmers and herders, though they train their warriors well for when defense is needed.</description>
+    <defName>Cosmere_Roshar_Faction_Shinovar</defName>
+    <label>Shinovar</label>
+    <fixedName>Shinovar</fixedName>
+    <description>The only land on Roshar with deep soil and grass that does not withdraw when touched. The mountains take the highstorms, so Shinovar grows crops the rest of the world has never seen.\n\nThe Shin hold stone sacred and will not walk on it uncovered. They honour farmers above all, and hold warriors in open contempt - which has not stopped them training some of the most dangerous killers alive.</description>
     <pawnSingular>Shin</pawnSingular>
     <pawnsPlural>Shin</pawnsPlural>
     <listOrderPriority>45</listOrderPriority>
@@ -304,6 +304,798 @@
       </li>
     </pawnGroupMakers>
     <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Jah Keved: the second Vorin kingdom, and Alethkar's rival -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_JahKeved</defName>
+    <label>Jah Keved</label>
+    <fixedName>Jah Keved</fixedName>
+    <description>The second of the Vorin kingdoms, and the one Alethkar measures itself against. Vedens are darker of skin than their eastern neighbours and just as fond of a Shardblade.\n\nIts highprinces have spent a generation feuding over the succession. A Veden noble counts allies the way a merchant counts spheres, and trusts them about as far.</description>
+    <pawnSingular>Veden</pawnSingular>
+    <pawnsPlural>Vedens</pawnsPlural>
+    <listOrderPriority>58</listOrderPriority>
+    <settlementGenerationWeight>0.85</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.5, 0.15, 0.15)</li>
+      <li>(0.7, 0.25, 0.25)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>58</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Veden Devotary</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty set the Heralds to guard mankind, and rank is the shape His order takes.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.78</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.22</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Kharbranth: the city of bells, its hospitals and the Palanaeum -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Kharbranth</defName>
+    <label>Kharbranth</label>
+    <fixedName>Kharbranth</fixedName>
+    <description>A city-state built into a bay too sheltered for the highstorms to ruin, ruled by a king who has outlived his usefulness to nobody. Kharbranth keeps no army worth the name and has never needed one.\n\nIts hospitals take any patient who can reach them. Beneath the palace, the Palanaeum holds more books than the rest of Roshar together, and scholars come from every nation to read them.</description>
+    <pawnSingular>Kharbranthian</pawnSingular>
+    <pawnsPlural>Kharbranthians</pawnsPlural>
+    <listOrderPriority>52</listOrderPriority>
+    <settlementGenerationWeight>0.6</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.85, 0.75, 0.45)</li>
+      <li>(0.95, 0.88, 0.6)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>52</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Devotary of Sincerity</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Learning is a Calling like any other, and the Almighty is served as well by a scholar as by a soldier.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.82</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.18</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Azir: the bureaucratic empire, and Yaezir's ledgers -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Azir</defName>
+    <label>Azir</label>
+    <fixedName>The Azish Empire</fixedName>
+    <description>An empire run by its clerks. Every decision of consequence is written, stamped, filed and appealed, and an Azish official would sooner lose a province than lose the paperwork proving it was his.\n\nIts throne goes to whoever submits the most persuasive essay. This sounds absurd to every other nation on Roshar, and has given Azir the most stable succession on the continent.</description>
+    <pawnSingular>Azish</pawnSingular>
+    <pawnsPlural>Azish</pawnsPlural>
+    <listOrderPriority>56</listOrderPriority>
+    <settlementGenerationWeight>0.8</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Prime Aqasix</leaderTitle>
+    <leaderTitleFemale>Prime Aqasix</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.85, 0.6, 0.15)</li>
+      <li>(0.95, 0.75, 0.3)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>56</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Yaezirism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Yaezir is petitioned in writing, through the proper offices, and the reply is filed.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Yaezirism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.9</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.1</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Tashikk: information brokers, Makabaki by faith -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Tashikk</defName>
+    <label>Tashikk</label>
+    <fixedName>Tashikk</fixedName>
+    <description>A small nation that sells the one thing every other nation wants and none will admit to buying. Tashikki information brokers keep ledgers on troop movements, marriages, debts and grudges across all of Roshar.\n\nThey field almost no army. Nobody invades the people who know where your heir sleeps.</description>
+    <pawnSingular>Tashikki</pawnSingular>
+    <pawnsPlural>Tashikki</pawnsPlural>
+    <listOrderPriority>50</listOrderPriority>
+    <settlementGenerationWeight>0.55</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Prince</leaderTitle>
+    <leaderTitleFemale>Princess</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.55, 0.5, 0.7)</li>
+      <li>(0.7, 0.65, 0.85)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Sealed Record</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Yaezir keeps the record of all things. Tashikk merely keeps a copy.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Yaezirism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.88</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.12</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Emul: losing its farmland to Tukar and its god-priest -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Emul</defName>
+    <label>Emul</label>
+    <fixedName>Emul</fixedName>
+    <description>A Makabaki nation halfway through losing a war it did not start. Tukar came for its farmland on the word of a god-priest who says he is Jezrien returned, and Emul has been giving ground ever since.\n\nEmuli eat no meat and concede no territory, in roughly that order of conviction. Their fields have been fought over so long that the soil is worth less than the claim to it.</description>
+    <pawnSingular>Emuli</pawnSingular>
+    <pawnsPlural>Emuli</pawnsPlural>
+    <listOrderPriority>46</listOrderPriority>
+    <settlementGenerationWeight>0.5</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Prince</leaderTitle>
+    <leaderTitleFemale>Princess</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.6, 0.55, 0.35)</li>
+      <li>(0.75, 0.7, 0.5)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>46</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Emuli Rite</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Yaezir endured a hundred deaths and returned from each. Emul intends to do the same.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Yaezirism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.9</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.1</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Herdaz: the small border kingdom Alethkar keeps invading -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Herdaz</defName>
+    <label>Herdaz</label>
+    <fixedName>Herdaz</fixedName>
+    <description>A small kingdom on Alethkar's border, invaded for the third time in living memory and holding out longer than anyone expected.\n\nHerdazians have crystalline fingernails they chip off and chew when nervous, talk faster than any Alethi finds comfortable, and have produced a disproportionate number of very good soldiers for a nation that keeps losing.</description>
+    <pawnSingular>Herdazian</pawnSingular>
+    <pawnsPlural>Herdazians</pawnsPlural>
+    <listOrderPriority>48</listOrderPriority>
+    <settlementGenerationWeight>0.55</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.35, 0.55, 0.4)</li>
+      <li>(0.5, 0.7, 0.55)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>48</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Herdazian Devotary</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty tests the small kingdoms hardest, and a Calling defended is a Calling proved.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.85</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.15</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Iri: the Long Trail, and gold in the hair and the coffers -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Iri</defName>
+    <label>Iri</label>
+    <fixedName>Iri</fixedName>
+    <description>A wealthy northern nation of golden-haired, golden-skinned people who believe their whole race is walking a Long Trail through many worlds, and that Roshar is one stop on it.\n\nIri trades hard, argues theology harder, and has split more than once over how literally that belief should be taken.</description>
+    <pawnSingular>Iriali</pawnSingular>
+    <pawnsPlural>Iriali</pawnsPlural>
+    <listOrderPriority>44</listOrderPriority>
+    <settlementGenerationWeight>0.6</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Monarch</leaderTitle>
+    <leaderTitleFemale>Monarch</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.8, 0.7, 0.3)</li>
+      <li>(0.9, 0.85, 0.5)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>44</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Long Trail</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">This world is a stop on the walk, not the end of it. Learn what it teaches, then move on.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_LongTrail</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.75</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.25</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- New Natanan: the remnant, after Alethkar broke the old kingdom -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Natanatan</defName>
+    <label>New Natanan</label>
+    <fixedName>New Natanan</fixedName>
+    <description>What is left of a kingdom the Alethi broke a generation ago. Its people have a faint blue cast to their skin and a long memory for who did what to whom.\n\nThe old capital is a ruin at the edge of the Shattered Plains. New Natanan is smaller, poorer and considerably more careful.</description>
+    <pawnSingular>Natan</pawnSingular>
+    <pawnsPlural>Natans</pawnsPlural>
+    <listOrderPriority>42</listOrderPriority>
+    <settlementGenerationWeight>0.45</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.4, 0.5, 0.65)</li>
+      <li>(0.55, 0.65, 0.8)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <configurationListOrderPriority>42</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Natan Devotary</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Almighty does not promise a kingdom will stand. He promises there is a Calling in rebuilding it.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.85</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.15</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Ghostbloods: three diamonds, and interests well past this planet -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Ghostbloods</defName>
+    <label>the Ghostbloods</label>
+    <fixedName>The Ghostbloods</fixedName>
+    <description>A secret society whose members mark themselves with a glyph of three interlocking diamonds and whose interests reach considerably further than Roshar.\n\nThey deal in Shardblades, in information and in people. What they are actually working toward, none of their lower ranks know, and asking is how you stop being a lower rank.</description>
+    <pawnSingular>Ghostblood</pawnSingular>
+    <pawnsPlural>Ghostbloods</pawnsPlural>
+    <hidden>true</hidden>
+    <!-- In the configurable list so world generation actually creates it, but not drawn:
+         a society nobody has heard of should not be a row the player ticks. hidden keeps it
+         out of the twelve-faction cap and off the map as a settlement. -->
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <listOrderPriority>30</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canMakeRandomly>false</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Master</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <colorSpectrum>
+      <li>(0.15, 0.15, 0.2)</li>
+      <li>(0.35, 0.2, 0.35)</li>
+    </colorSpectrum>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.7</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.3</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Sons of Honor: they want the Heralds back, whatever comes with them -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_SonsOfHonor</defName>
+    <label>the Sons of Honor</label>
+    <fixedName>The Sons of Honor</fixedName>
+    <description>Vorin loyalists who want the Heralds to return and the Church restored to the authority it held before the Hierocracy fell.\n\nTo get it, they need a Desolation. They have decided this is a price worth paying, and they are working to arrange one.</description>
+    <pawnSingular>Son of Honor</pawnSingular>
+    <pawnsPlural>Sons of Honor</pawnsPlural>
+    <hidden>true</hidden>
+    <!-- In the configurable list so world generation actually creates it, but not drawn:
+         a society nobody has heard of should not be a row the player ticks. hidden keeps it
+         out of the twelve-faction cap and off the map as a settlement. -->
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <listOrderPriority>28</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canMakeRandomly>false</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Brightlord</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <colorSpectrum>
+      <li>(0.5, 0.4, 0.15)</li>
+      <li>(0.7, 0.6, 0.3)</li>
+    </colorSpectrum>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.7</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.3</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Skybreakers: Nale's order, the one that never broke -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Skybreakers</defName>
+    <label>the Skybreakers</label>
+    <fixedName>The Skybreakers</fixedName>
+    <description>The one order of Knights Radiant that did not abandon its oaths at the Recreance, kept alive in secret for centuries by a Herald who no longer entirely remembers why.\n\nThey swear to a law and then enforce it without exception or mercy. Which law is left to the individual, which is the part everyone else finds alarming.</description>
+    <pawnSingular>Skybreaker</pawnSingular>
+    <pawnsPlural>Skybreakers</pawnsPlural>
+    <hidden>true</hidden>
+    <!-- In the configurable list so world generation actually creates it, but not drawn:
+         a society nobody has heard of should not be a row the player ticks. hidden keeps it
+         out of the twelve-faction cap and off the map as a settlement. -->
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <listOrderPriority>32</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canMakeRandomly>false</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Highmarshal</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <colorSpectrum>
+      <li>(0.2, 0.3, 0.45)</li>
+      <li>(0.35, 0.5, 0.7)</li>
+    </colorSpectrum>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.7</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.3</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- The Diagram: Taravangian's night of brilliance, read as scripture -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Diagram</defName>
+    <label>the Diagram</label>
+    <fixedName>The Diagram</fixedName>
+    <description>A conspiracy built around a single night's writing by a man who traded most of his compassion for a day of impossible brilliance, and who has been trying to read his own handwriting ever since.\n\nIts followers treat that text as prophecy. Where the world has diverged from it, they work to force the world back.</description>
+    <pawnSingular>Diagramist</pawnSingular>
+    <pawnsPlural>Diagramists</pawnsPlural>
+    <hidden>true</hidden>
+    <!-- In the configurable list so world generation actually creates it, but not drawn:
+         a society nobody has heard of should not be a row the player ticks. hidden keeps it
+         out of the twelve-faction cap and off the map as a settlement. -->
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <listOrderPriority>26</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canMakeRandomly>false</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Interpreter</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <colorSpectrum>
+      <li>(0.3, 0.25, 0.35)</li>
+      <li>(0.45, 0.4, 0.55)</li>
+    </colorSpectrum>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.7</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.3</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>12</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
   </FactionDef>
 
 </Defs>

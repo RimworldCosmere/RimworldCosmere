@@ -182,6 +182,11 @@ public static class WorldUtility {
         // Falling back to the sentinel, never to worlds[0]. A scenario that names no Shards -
         // vanilla's own Crashlanded, say, which the quick-test path uses - belongs to no
         // particular world, and picking the first in list order silently made it Scadrial.
+        //
+        // A vanilla scenario therefore lands on the cross-world sentinel and gets Cosmere
+        // xenotypes, quests and ambient features while keeping its full vanilla faction roster.
+        // That split is deliberate: the roster is the visible shape of the world, so it stays as
+        // the scenario wrote it, and everything else follows the mod being loaded at all.
         CosmereWorldDef? inferred = InferFromScenario(worlds) ?? Sentinel(worlds) ?? worlds[0];
         Set(inferred);
         return inferred;

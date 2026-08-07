@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- The Iriali believe their people are walking a Long Trail across many worlds toward a
+         final unity, and that Roshar is one stop on it and not the last. It is the one Rosharan
+         faith that takes worldhopping as a matter of doctrine rather than rumour. -->
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_LongTrail</defName>
+        <label>the Long Trail</label>
+        <description>The Iriali walk a path that began on another world and does not end on this one. Each stop teaches what it has to teach, and then the people move on. To die here is not to arrive; it is to be counted, and to wait for the rest to catch up.</description>
+        <iconPath>UI/Ideology/Cosmere/LongTrail</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>waystation</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)-&gt;[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)-&gt;[packIdeoName]</li>
+                <li>memeLeaderNoun-&gt;trailwarden</li>
+                <li>memeLeaderNoun-&gt;pathspeaker</li>
+                <li>memeLeaderNoun-&gt;monarch</li>
+                <li>memeLeaderAdjective-&gt;golden</li>
+                <li>memeLeaderAdjective-&gt;walking</li>
+                <li>memeLeaderAdjective-&gt;iriali</li>
+                <li>memeMoralist-&gt;pathspeaker</li>
+                <li>memeMoralist-&gt;trailwarden</li>
+                <li>memeMoralist-&gt;counter of the walk</li>
+                <li>memeConcept-&gt;journey</li>
+                <li>memeConcept-&gt;unity</li>
+                <li>memeConcept-&gt;passage</li>
+                <li>memeHyphenPrefix-&gt;trail</li>
+                <li>memeHyphenPrefix-&gt;gold</li>
+                <li>memeHyphenPrefix-&gt;walk</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_longtrail</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The One</name>
+                <type>that which became many</type>
+            </li>
+            <li>
+                <name>The Long Trail</name>
+                <type>the path across worlds</type>
+            </li>
+            <li>
+                <name>The Gold</name>
+                <type>mark of the walking people</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>The Long Trail</ideoName>
+                <adjective>walking</adjective>
+                <member>walker</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The One Made Many</ideoName>
+                <adjective>golden</adjective>
+                <member>Iriali</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Passage</ideoName>
+                <adjective>passing</adjective>
+                <member>pilgrim</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

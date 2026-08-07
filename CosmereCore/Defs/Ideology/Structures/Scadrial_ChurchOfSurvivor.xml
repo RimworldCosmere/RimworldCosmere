@@ -57,6 +57,24 @@
                 <name>He Who Stood</name>
                 <type>breaker of chains</type>
             </li>
+            <li>
+                <name>The Survivor of Hathsin</name>
+                <type>he who walked out of the Pits</type>
+            </li>
+            <li>
+                <name>Lord Mistborn</name>
+                <type>the one who could not be held</type>
+            </li>
+            <li>
+                <name>The Sliver of Infinity</name>
+                <type>that which touched the Well</type>
+            </li>
+            <li>
+                <name>The Smiling Man</name>
+                <type>who laughed at the Lord Ruler</type>
+            </li>
+            <!-- Four factions preach the Survivor and every deity name must be unique
+                 across the whole world, so four names left no margin at all. -->
         </fixedDeityNameTypes>
         <symbolPacks>
             <li>

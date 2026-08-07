@@ -6,6 +6,7 @@ using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Radial;
 using Cosmere.Core.UI.Skin;
+using Cosmere.System.Scadrial.Connection;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Savant;
@@ -19,6 +20,10 @@ namespace Cosmere.System.Scadrial.UI;
 [StaticConstructorOnStartup]
 public static class ScadrialUIRegistration {
     static ScadrialUIRegistration() {
+        // What a Misting or a Mistborn is worth toward Ruin and Preservation. Core cannot work
+        // this out for itself and must not learn how.
+        ConnectionInvestitureRegistry.Register(new ScadrialInvestitureSource());
+
         InvestitureBlockingHediffRegistry.Register(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab);
         InvestitureHealExclusionRegistry.Register("Cosmere_Scadrial_Hediff_");
         InvestitureProviderRegistry.Register(new AllomancyInvestitureProvider());

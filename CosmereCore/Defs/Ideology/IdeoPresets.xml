@@ -164,4 +164,29 @@
         </memes>
     </IdeoPresetDef>
 
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Yaezirism</defName>
+        <label>Yaezirism</label>
+        <description>Yaezir died a hundred deaths so that mankind might survive, and returned from every one. The Makabaki west venerates the Heralds by name and keeps their accounts as carefully as any other ledger. A petition is written, sealed and filed, because a thing not recorded did not happen.</description>
+        <categoryDef>Cosmere</categoryDef>
+
+        <memes>
+            <li>Cosmere_Structure_Yaezirism</li>
+            <li>Cosmere_Hierarchist</li>
+            <li>Cosmere_Keeper</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_LongTrail</defName>
+        <label>the Long Trail</label>
+        <description>The Iriali walk a path that began on another world and does not end on this one. Each stop teaches what it has to teach, and then the people move on. To die here is not to arrive; it is to be counted, and to wait for the rest to catch up.</description>
+        <categoryDef>Cosmere</categoryDef>
+
+        <memes>
+            <li>Cosmere_Structure_LongTrail</li>
+            <li>Cosmere_Keeper</li>
+        </memes>
+    </IdeoPresetDef>
+
 </Defs>

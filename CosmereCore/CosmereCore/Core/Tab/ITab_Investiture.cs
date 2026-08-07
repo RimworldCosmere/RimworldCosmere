@@ -16,16 +16,18 @@ public class ITab_Investiture : ITab {
         size = new Vector2(560f, 520f);
     }
 
+    /// <summary>
+    ///     Open for any colonist or prisoner, Invested or not. Connection is chrome above the
+    ///     system switcher and everyone has one - a pawn with none at all is exactly who the
+    ///     reading is most worth having for.
+    /// </summary>
     public override bool IsVisible {
         get {
             Pawn? pawn = SelPawn;
             if (pawn == null) return false;
-            IReadOnlyList<IInvestitureProvider> all = InvestitureProviderRegistry.All;
-            for (int i = 0; i < all.Count; i++) {
-                if (all[i].IsInvested(pawn)) return true;
-            }
+            if (!pawn.RaceProps.Humanlike) return false;
 
-            return false;
+            return pawn.IsColonist || pawn.IsSlaveOfColony || pawn.IsPrisonerOfColony;
         }
     }
 
@@ -34,7 +36,10 @@ public class ITab_Investiture : ITab {
         if (pawn == null) return;
 
         RefreshInvestedProviders(pawn);
-        if (investedProviders.Count == 0) return;
+        if (investedProviders.Count == 0) {
+            DrawConnectionOnly(pawn);
+            return;
+        }
 
         if (state.SelectedSystemIndex >= investedProviders.Count) {
             state.SelectedSystemIndex = 0;
@@ -79,6 +84,32 @@ public class ITab_Investiture : ITab {
         }
 
         CodexSubtabRenderer.Draw(rect, pawn, state, active, state.Subtab);
+    }
+
+    /// <summary>
+    ///     The whole tab for a pawn with no Investiture at all: header, and Connection.
+    /// </summary>
+    /// <remarks>
+    ///     No system switcher and no subtab bar, because there is exactly one thing to look at
+    ///     and a one-tab bar is furniture. The fallback skin supplies the accent - Connection
+    ///     belongs to no shardworld, so borrowing one world's colour here would be a lie.
+    /// </remarks>
+    private void DrawConnectionOnly(Pawn pawn) {
+        ISystemSkin skin = SystemSkinRegistry.ForOrFallback(string.Empty);
+
+        Rect header = new Rect(0f, 0f, size.x, CodexChrome.HeaderHeight);
+        CodexChrome.DrawHeader(header, "CC_Codex_Subtab_Connection".Translate(), skin.AccentColor);
+
+        Rect divider = new Rect(0f, header.yMax, size.x, 1f);
+        CodexChrome.DrawDivider(divider, skin.AccentColor);
+
+        Rect body = new Rect(
+            CodexChrome.Gutter,
+            divider.yMax + CodexChrome.Gutter,
+            size.x - CodexChrome.Gutter * 2f,
+            size.y - divider.yMax - CodexChrome.Gutter * 2f
+        );
+        ConnectionSubtab.Draw(body, pawn, state);
     }
 
     private static string ResolveHeaderLabel(Pawn pawn, IInvestitureProvider provider, ISystemSkin skin) {

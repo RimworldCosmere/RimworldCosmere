@@ -118,4 +118,15 @@
   <CC_Autocast_Trigger_Drafted>Drafted</CC_Autocast_Trigger_Drafted>
 
     <CC_Codex_Subtab_Empty>Nothing to show here yet.</CC_Codex_Subtab_Empty>
+    <CC_Codex_Subtab_Connection>Connection</CC_Codex_Subtab_Connection>
+    <CC_Connection_Tier_None>None</CC_Connection_Tier_None>
+    <CC_Connection_Tier_Touched>Touched</CC_Connection_Tier_Touched>
+    <CC_Connection_Tier_Bonded>Bonded</CC_Connection_Tier_Bonded>
+    <CC_Connection_Tier_Invested>Invested</CC_Connection_Tier_Invested>
+    <CC_Connection_Tier_Ascendant>Ascendant</CC_Connection_Tier_Ascendant>
+    <CC_Connection_Absent>absent</CC_Connection_Absent>
+    <CC_Connection_NoShards>No Shards hold anything in this cosmere.</CC_Connection_NoShards>
+    <CC_Connection_Group_Unclaimed>Beyond these worlds</CC_Connection_Group_Unclaimed>
+    <CC_Connection_RowTip>{SHARD}\n\n{TIER} ({VALUE} of 100).\n\nConnection decides who may use a god metal of this Shard, and who may take on new power from it. Thirty is enough for either.</CC_Connection_RowTip>
+    <CC_Connection_AbsentTip>{SHARD} holds nothing here. No one in this cosmere can be tied to a Shard that is not part of it.</CC_Connection_AbsentTip>
 </LanguageData>

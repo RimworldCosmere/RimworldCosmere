@@ -30,18 +30,22 @@ public abstract class InvestitureTabPatch : Verse.Thing {
         if (alreadyHasTab) yield break;
         if (instance is not Pawn pawn) yield break;
 
-        IReadOnlyList<IInvestitureProvider> all = InvestitureProviderRegistry.All;
-        bool invested = false;
-        for (int i = 0; i < all.Count; i++) {
-            if (all[i].IsInvested(pawn)) {
-                invested = true;
-                break;
-            }
-        }
-
-        if (!invested) yield break;
+        // The Codex used to appear only for Invested pawns. Connection is chrome above the
+        // system switcher and every pawn has one, so the tab now opens for anyone whose
+        // Connection the player is entitled to read.
+        if (!ShowsConnection(pawn)) yield break;
 
         cachedTab ??= new ITab_Investiture();
         yield return cachedTab;
+    }
+
+    /// <summary>
+    ///     Whose Connection the player may read: their own colonists and their prisoners. Every
+    ///     pawn has a Connection, but a raider's is not the player's business.
+    /// </summary>
+    private static bool ShowsConnection(Pawn pawn) {
+        if (!pawn.RaceProps.Humanlike) return false;
+
+        return pawn.IsColonist || pawn.IsSlaveOfColony || pawn.IsPrisonerOfColony;
     }
 }

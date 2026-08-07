@@ -23,9 +23,14 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
 
     public override int SeedPart => 0x4A5B17;
 
+    /// <summary>
+    ///     Deliberately empty. This path runs while a save is deserialising, where the world is not
+    ///     yet known and adding world objects would be wrong.
+    /// </summary>
+    public override void GenerateWithoutWorldData(string seed, PlanetLayer layer) { }
+
     public override void GenerateFresh(string seed, PlanetLayer layer) {
-        // WorldBeforeGenerationPatch guarantees Primary is set before GenerateWorld runs, so
-        // this cannot see the null-permissive fallback inside IsActive.
+        // WorldBeforeGenerationPatch guarantees Primary is set before this runs, so IsActive's null-permissive fallback never triggers.
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) {
             AshmountExposureCache.Set(new Dictionary<int, float>());
             return;
@@ -37,7 +42,10 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         }
 
         int tileCount = layer.TilesCount;
-        if (tileCount <= 0) return;
+        if (tileCount <= 0) {
+            AshmountExposureCache.Set(new Dictionary<int, float>());
+            return;
+        }
 
         int centreId = Rand.Range(0, tileCount);
         PlanetTile centre = new PlanetTile(centreId, layer);
@@ -45,8 +53,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         List<AshmountRing.Candidate> candidates = new List<AshmountRing.Candidate>();
         WorldGrid grid = Find.WorldGrid;
 
-        // Belt and braces with the order-450 slot: nothing should own a tile this early, but a
-        // mod placing objects sooner must not have one stamped impassable underneath it.
+        // At order 350 nothing upstream creates a MapParent, so this is provably empty - kept as insurance against a third-party gen step running earlier.
         HashSet<int> taken = new HashSet<int>();
         foreach (MapParent parent in Find.WorldObjects.MapParents) {
             if (parent.Tile.Layer == layer) taken.Add(parent.Tile.tileId);
@@ -77,16 +84,13 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
             Gen.HashCombineInt(GenText.StableStringHash(seed), SeedPart)
         );
 
-        WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamed("Cosmere_Scadrial_WorldObject_Ashmount");
-
         for (int i = 0; i < mounts.Count; i++) {
             PlanetTile tile = new PlanetTile(mounts[i], layer);
 
-            // Impassable is the settle block. TileFinder.IsValidTileForNewSettlement rejects it
-            // outright, so this needs no Harmony patch and it renders as a range for free.
+            // Impassable is the settle block - TileFinder.IsValidTileForNewSettlement rejects it outright, no Harmony patch needed.
             grid[tile].hilliness = Hilliness.Impassable;
 
-            WorldObject mount = WorldObjectMaker.MakeWorldObject(def);
+            WorldObject mount = WorldObjectMaker.MakeWorldObject(AshmountDefOf.Cosmere_Scadrial_WorldObject_Ashmount);
             mount.Tile = tile;
             Find.WorldObjects.Add(mount);
         }

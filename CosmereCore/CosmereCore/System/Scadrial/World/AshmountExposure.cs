@@ -16,7 +16,6 @@ public static class AshmountExposure {
     /// <summary>One mount's share. Quadratic so the falloff is gentle near and steep far.</summary>
     public static float Contribution(float distanceInTiles) {
         if (distanceInTiles >= RangeTiles) return 0f;
-        if (distanceInTiles < 0f) return 1f;
 
         float t = 1f - distanceInTiles / RangeTiles;
         return t * t;

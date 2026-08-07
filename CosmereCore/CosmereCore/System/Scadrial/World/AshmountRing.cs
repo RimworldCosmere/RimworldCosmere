@@ -45,8 +45,7 @@ public static class AshmountRing {
             pool.Add(candidates[i]);
         }
 
-        // Hills first, then a seeded hash so the order is stable for a seed without being biased
-        // toward low tile ids.
+        // Hills first, then a seeded hash so order is stable per seed without biasing toward low tile ids.
         pool.Sort((a, b) => {
             if (a.Hilly != b.Hilly) return a.Hilly ? -1 : 1;
             return Shuffle(a.TileId, seed).CompareTo(Shuffle(b.TileId, seed));

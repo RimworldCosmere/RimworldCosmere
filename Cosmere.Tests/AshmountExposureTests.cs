@@ -30,8 +30,7 @@ public class AshmountExposureTests {
 
     [TestMethod]
     public void TheHeartlandBeatsASingleCloserMount() {
-        // Eight mounts ringing you at 25 tiles is worse than one mount at 20. This is the design
-        // decision that summing exists to express.
+        // Eight mounts at 25 tiles should beat one mount at 20 - that's why summing exists.
         List<float> ring = new List<float>();
         for (int i = 0; i < 8; i++) {
             ring.Add(25f);

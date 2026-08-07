@@ -1,3 +1,4 @@
+using Cosmere.Core.ShardConnection;
 using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using Verse;
@@ -16,6 +17,23 @@ public class AllomanticMetal : AllomanticVial {
         if (metal is null) return;
 
         if (metal.godMetal) {
+            // The float menu already refuses this, but the menu is not the only way in - a dev
+            // spawn or a scripted beat reaches PostIngested directly. Lerasium stays exempt.
+            if (!metal.Equals(MetallicArtsMetalDefOf.Lerasium) &&
+                !ConnectionUtility.MayUse(ingester, metal.shard)) {
+                Messages.Message(
+                    "CS_NotConnectedToShard".Translate(
+                        ingester.Named("PAWN"),
+                        metal.Named("METAL"),
+                        (metal.shard?.label ?? metal.label).Named("SHARD")
+                    ),
+                    ingester,
+                    MessageTypeDefOf.RejectInput,
+                    false
+                );
+                return;
+            }
+
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
                 ingester.FillAllAllomanticReserves();

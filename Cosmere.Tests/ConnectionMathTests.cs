@@ -202,6 +202,47 @@ public class ConnectionMathTests {
         );
     }
 
+    /// <summary>
+    ///     Every place that decides a god metal may be used has to ask about Connection.
+    /// </summary>
+    /// <remarks>
+    ///     Gating PawnExtension.CanUseMetal was not enough: ingestion never goes through it. A
+    ///     baseliner swallowed atium and became a Misting because the float menu and
+    ///     AllomanticMetal.PostIngested each had their own godMetal branch. This fails the build
+    ///     if a third one appears.
+    /// </remarks>
+    [TestMethod]
+    public void EveryGodMetalDecisionAsksAboutConnection() {
+        string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
+
+        // Files that mention godMetal without deciding anything: a plain data holder, and the
+        // dev utility that uses !godMetal to filter god metals out of a list.
+        string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs"];
+
+        List<string> offenders = [];
+        int seen = 0;
+
+        foreach (string path in Directory.GetFiles(scadrial, "*.cs", SearchOption.AllDirectories)) {
+            string name = Path.GetFileName(path);
+            if (Array.IndexOf(exempt, name) >= 0) continue;
+
+            string source = File.ReadAllText(path);
+            if (!source.Contains("godMetal", StringComparison.Ordinal)) continue;
+
+            seen++;
+            if (!source.Contains("ConnectionUtility", StringComparison.Ordinal)) {
+                offenders.Add(Path.GetRelativePath(scadrial, path));
+            }
+        }
+
+        Assert.IsTrue(seen > 0, "Found no god metal decisions - the walk is wrong, not the code.");
+        Assert.AreEqual(
+            0,
+            offenders.Count,
+            "These branch on godMetal without checking Connection: " + string.Join(", ", offenders)
+        );
+    }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

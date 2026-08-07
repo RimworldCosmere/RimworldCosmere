@@ -1,4 +1,5 @@
 ﻿using System;
+using Cosmere.Core.ShardConnection;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Thing;
@@ -32,6 +33,17 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         MetallicArtsMetalDef metal,
         MetallicArtsMetalDef? stuffMetal
     ) {
+        // Lerasium is the exception: swallowing it is how someone with no Connection gains one,
+        // so gating it would deny it to exactly the people it exists for. Everything else needs
+        // a tie to the Shard it is a piece of.
+        if (!metal.Equals(MetallicArtsMetalDefOf.Lerasium) && !ConnectionUtility.MayUse(pawn, metal.shard)) {
+            return "CS_NotConnectedToShard".Translate(
+                pawn.Named("PAWN"),
+                metal.Named("METAL"),
+                (metal.shard?.label ?? metal.label).Named("SHARD")
+            );
+        }
+
         bool isAllomancy = metal.IsOneOf(MetallicArtsMetalDefOf.Lerasium, MetallicArtsMetalDefOf.LerasiumAlloy);
         float power = pawn.GetStatValue(isAllomancy ? AllomanticPower : FeruchemicPower);
         float max = isAllomancy ? AllomanticPower.maxValue : FeruchemicPower.maxValue;

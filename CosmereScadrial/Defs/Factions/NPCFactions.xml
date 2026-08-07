@@ -3,6 +3,15 @@
 
   <!-- Base for Scadrial NPC factions -->
   <FactionDef ParentName="FactionBase" Name="Cosmere_Scadrial_NPCFactionBase" Abstract="True">
+    <!-- Nobody on Scadrial or Roshar can drop anything out of the sky. Spaceflight is the
+         fourth era of Scadrial and centuries past anything these scenarios cover; Roshar never
+         gets there at all. Raiders walk in, the way people did. -->
+    <arrivalModeBlacklist>
+      <li>CenterDrop</li>
+      <li>EdgeDrop</li>
+      <li>EdgeDropGroups</li>
+      <li>RandomDrop</li>
+    </arrivalModeBlacklist>
     <techLevel>Industrial</techLevel>
     <factionNameMaker>NamerFactionOutlander</factionNameMaker>
     <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>

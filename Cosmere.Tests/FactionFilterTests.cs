@@ -61,6 +61,46 @@ public class FactionFilterTests {
     }
 
     /// <summary>
+    ///     Nobody drops out of the sky on Scadrial or Roshar.
+    /// </summary>
+    /// <remarks>
+    ///     Spaceflight is Scadrial's fourth era, centuries past anything these scenarios cover,
+    ///     and Roshar never reaches it. A raid arriving by pod reads as a different game.
+    /// </remarks>
+    [TestMethod]
+    public void NoCosmereFactionArrivesByDropPod() {
+        string[] bases = [
+            Path.Combine("CosmereScadrial", "Defs", "Factions", "NPCFactions.xml"),
+            Path.Combine("CosmereScadrial", "Defs", "Factions", "ScenarioFactions.xml"),
+            Path.Combine("CosmereRoshar", "Defs", "Factions", "NPCFactions.xml"),
+            Path.Combine("CosmereRoshar", "Defs", "Factions", "ScenarioFactions.xml"),
+        ];
+
+        List<string> offenders = [];
+        foreach (string relative in bases) {
+            string path = Path.Combine(RepoRoot, relative);
+            if (!File.Exists(path)) {
+                offenders.Add($"{relative} is missing");
+                continue;
+            }
+
+            string source = File.ReadAllText(path);
+            if (!source.Contains("arrivalModeBlacklist", StringComparison.Ordinal)) {
+                offenders.Add($"{relative} lets its factions arrive by pod");
+                continue;
+            }
+
+            foreach (string mode in new[] { "CenterDrop", "EdgeDrop", "EdgeDropGroups", "RandomDrop" }) {
+                if (!source.Contains($"<li>{mode}</li>", StringComparison.Ordinal)) {
+                    offenders.Add($"{relative} does not block {mode}");
+                }
+            }
+        }
+
+        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+    }
+
+    /// <summary>
     ///     The Odyssey toggle spent its whole life comparing against "MechanoidHive" and
     ///     "InsectGeneline". Those are the labels. The defNames are "Mechanoid" and "Insect", so
     ///     the setting matched nothing and both factions turned up in every Cosmere scenario.

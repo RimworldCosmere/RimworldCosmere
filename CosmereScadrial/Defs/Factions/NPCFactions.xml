@@ -194,6 +194,8 @@
   <!-- The Final Empire (NPC): The Lord Ruler's oppressive regime. Strong imperial garrison forces -->
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_FinalEmpireNPC</defName>
+    <!-- Skaa outnumber their lords enormously and do all the work. The vanilla kinds below take
+         the faction's own Noble set, which is what keeps the officers and obligators noble. -->
     <label>Final Empire</label>
     <fixedName>The Final Empire</fixedName>
     <description>The thousand-year empire of the Lord Ruler. Its obligators enforce religious orthodoxy through the Steel Ministry, its Inquisitors hunt all who defy the divine order, and its garrisons crush any who would rise against it. To oppose the Final Empire is to oppose a god.</description>
@@ -238,6 +240,7 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>25</Cosmere_Scadrial_PawnKind_Skaa>
           <Town_Guard>8</Town_Guard>
           <Mercenary_Slasher>10</Mercenary_Slasher>
           <Mercenary_Gunner>12</Mercenary_Gunner>
@@ -250,17 +253,19 @@
       <li>
         <kindDef>Peaceful</kindDef>
         <options>
-          <Town_Guard>10</Town_Guard>
-          <Mercenary_Elite>5</Mercenary_Elite>
+          <Cosmere_Scadrial_PawnKind_Skaa>30</Cosmere_Scadrial_PawnKind_Skaa>
+          <Town_Guard>6</Town_Guard>
+          <Mercenary_Elite>3</Mercenary_Elite>
           <Town_Councilman>3</Town_Councilman>
         </options>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Town_Guard>12</Town_Guard>
-          <Mercenary_Elite>10</Mercenary_Elite>
-          <Mercenary_Heavy>8</Mercenary_Heavy>
+          <Cosmere_Scadrial_PawnKind_Skaa>45</Cosmere_Scadrial_PawnKind_Skaa>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Elite>6</Mercenary_Elite>
+          <Mercenary_Heavy>5</Mercenary_Heavy>
           <Town_Councilman>4</Town_Councilman>
         </options>
       </li>

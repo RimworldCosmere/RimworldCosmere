@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,6 +59,53 @@ public class FactionFilterTests {
             hiddenBypass > empireToggle && hiddenBypass > odysseyToggle,
             "The hidden bypass has to come after the settings toggles, or it overrides the player's choice."
         );
+    }
+
+    /// <summary>
+    ///     A faction whose people are all one xenotype still needs the other ranks staffed.
+    /// </summary>
+    /// <remarks>
+    ///     The Final Empire and the great houses are Noble at the faction level, and every
+    ///     vanilla pawnkind inherits that - so a raided Final Empire settlement was populated
+    ///     entirely by aristocrats. Only a kind that names its own people breaks out of it.
+    /// </remarks>
+    [TestMethod]
+    public void NobleFactionsStillFieldSkaa() {
+        string[] files = [
+            Path.Combine("CosmereScadrial", "Defs", "Factions", "NPCFactions.xml"),
+            Path.Combine("CosmereScadrial", "Defs", "Factions", "GreatHouses.xml"),
+        ];
+
+        List<string> offenders = [];
+        foreach (string relative in files) {
+            string path = Path.Combine(RepoRoot, relative);
+            Assert.IsTrue(File.Exists(path), $"Expected {relative}");
+
+            foreach (XElement faction in XDocument.Load(path).Descendants("FactionDef")) {
+                string name = faction.Element("defName")?.Value
+                    ?? faction.Attribute("Name")?.Value
+                    ?? "(unnamed)";
+
+                // Only factions whose own set is Noble-only have this problem.
+                bool nobleOnly = faction
+                    .Descendants("xenotypeChances")
+                    .Elements()
+                    .All(e => e.Name.LocalName.EndsWith("Noble", StringComparison.Ordinal));
+                bool hasSet = faction.Descendants("xenotypeChances").Elements().Any();
+                if (!hasSet || !nobleOnly) continue;
+
+                List<XElement> groups = faction.Descendants("pawnGroupMakers").Elements().ToList();
+                if (groups.Count == 0) continue;
+
+                bool fieldsSkaa = groups
+                    .Descendants()
+                    .Any(e => e.Name.LocalName.Contains("PawnKind_Skaa", StringComparison.Ordinal));
+
+                if (!fieldsSkaa) offenders.Add($"{name} is all nobles, including its labourers");
+            }
+        }
+
+        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
     }
 
     /// <summary>

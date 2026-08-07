@@ -24,7 +24,7 @@ public class CompProperties_AshVent : CompProperties {
 public class CompAshVent : ThingComp {
     private static List<IntVec3>? offsets;
 
-    private float accrued;
+    private float[]? remainder;
 
     public CompProperties_AshVent Props => (CompProperties_AshVent)props;
 
@@ -46,6 +46,9 @@ public class CompAshVent : ThingComp {
         }
     }
 
+    /// <summary>Carried sub-unit remainder per offset cell, banked so no fraction is ever lost.</summary>
+    private float[] Remainder => remainder ??= new float[Offsets.Count];
+
     public override void PostSpawnSetup(bool respawningAfterLoad) {
         base.PostSpawnSetup(respawningAfterLoad);
         parent.Map?.GetComponent<Map.AshDepthTracker>()?.RegisterVent(this);
@@ -56,11 +59,6 @@ public class CompAshVent : ThingComp {
         map.GetComponent<Map.AshDepthTracker>()?.DeregisterVent(this);
     }
 
-    public override void PostExposeData() {
-        base.PostExposeData();
-        Scribe_Values.Look(ref accrued, "ashVentAccrued");
-    }
-
     /// <summary>
     ///     Adds this cycle's share to every cell in range. Returns whether anything changed, so
     ///     the tracker only dirties the mesh when it must.
@@ -69,14 +67,9 @@ public class CompAshVent : ThingComp {
         Verse.Map? map = parent.Map;
         if (map == null) return false;
 
-        accrued += Props.millimetresPerDay * dayFraction;
-        if (accrued < 1f) return false;
+        float millimetres = Props.millimetresPerDay * dayFraction;
 
-        float millimetres = accrued;
-        accrued = 0f;
-
-        // One slowly drifting heading for the whole map, so drifts share a downwind side rather
-        // than each vent picking its own direction.
+        // One slowly drifting heading for the whole map, shared across vents.
         float angle = Mathf.Sin(Find.TickManager.TicksGame / 5200f) * Mathf.PI;
         float headingX = Mathf.Cos(angle);
         float headingZ = Mathf.Sin(angle);
@@ -85,6 +78,7 @@ public class CompAshVent : ThingComp {
         IntVec3 centre = parent.Position;
         CellIndices indices = map.cellIndices;
         List<IntVec3> all = Offsets;
+        float[] carried = Remainder;
         bool changed = false;
 
         for (int i = 0; i < all.Count; i++) {
@@ -95,9 +89,9 @@ public class CompAshVent : ThingComp {
             float weight = AshPlume.Weight(all[i].x, all[i].z, headingX, headingZ, skew);
             if (weight <= 0f) continue;
 
-            int add = (int)(millimetres * weight);
-            if (add <= 0) continue;
-            if (grid.AddDepthMm(indices.CellToIndex(cell), add) > 0) changed = true;
+            int deposit = AshPlume.Bank(ref carried[i], millimetres * weight, AshGrid.UnitMm);
+            if (deposit <= 0) continue;
+            if (grid.AddDepthMm(indices.CellToIndex(cell), deposit) > 0) changed = true;
         }
 
         return changed;

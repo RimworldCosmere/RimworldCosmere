@@ -34,4 +34,18 @@ public static class AshPlume {
         float weight = falloff * lean;
         return weight > 1f ? 1f : weight;
     }
+
+    /// <summary>
+    ///     Adds to a cell's carried remainder and returns the whole units to deposit, keeping the
+    ///     rest. Depositing without banking loses everything under one unit, which starves the
+    ///     plume's tail completely.
+    /// </summary>
+    public static int Bank(ref float remainder, float millimetres, int unitMm) {
+        remainder += millimetres;
+        if (remainder < unitMm) return 0;
+
+        int deposit = (int)(remainder / unitMm) * unitMm;
+        remainder -= deposit;
+        return deposit;
+    }
 }

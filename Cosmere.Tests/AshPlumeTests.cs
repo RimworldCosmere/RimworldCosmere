@@ -57,4 +57,53 @@ public class AshPlumeTests {
             }
         }
     }
+
+    [TestMethod]
+    public void BankDepositsNothingBelowOneUnit() {
+        float remainder = 0f;
+        int deposit = AshPlume.Bank(ref remainder, 4f, 10);
+
+        Assert.AreEqual(0, deposit);
+        Assert.AreEqual(4f, remainder, 0.0001f);
+    }
+
+    [TestMethod]
+    public void BankEventuallyDepositsAWholeMultipleOfTheUnit() {
+        float remainder = 0f;
+        int deposit = 0;
+        for (int i = 0; i < 4; i++) {
+            deposit = AshPlume.Bank(ref remainder, 3f, 10);
+        }
+
+        // 4 adds of 3mm = 12mm, which crosses the 10mm unit on the fourth call.
+        Assert.AreEqual(10, deposit);
+        Assert.AreEqual(0, deposit % 10);
+        Assert.AreEqual(2f, remainder, 0.0001f);
+    }
+
+    [TestMethod]
+    public void BankConservesMassOverManySmallAdds() {
+        float remainder = 0f;
+        int totalDeposited = 0;
+        for (int i = 0; i < 50000; i++) {
+            totalDeposited += AshPlume.Bank(ref remainder, 0.15f, 10);
+        }
+
+        // 50000 adds of 0.15mm = 7500mm total. A version that discards the remainder instead of
+        // subtracting the deposit loses a sliver every crossing; over this many crossings the
+        // slivers compound into whole missed units, landing well under 7480. Correct banking
+        // never drops more than one unit's worth of not-yet-deposited change.
+        Assert.IsTrue(totalDeposited is >= 7480 and <= 7500, $"deposited {totalDeposited}, expected 7480-7500");
+    }
+
+    [TestMethod]
+    public void BankIgnoresZeroAndNegativeAdds() {
+        float remainder = 5f;
+
+        Assert.AreEqual(0, AshPlume.Bank(ref remainder, 0f, 10));
+        Assert.AreEqual(5f, remainder, 0.0001f);
+
+        Assert.AreEqual(0, AshPlume.Bank(ref remainder, -2f, 10));
+        Assert.AreEqual(3f, remainder, 0.0001f);
+    }
 }

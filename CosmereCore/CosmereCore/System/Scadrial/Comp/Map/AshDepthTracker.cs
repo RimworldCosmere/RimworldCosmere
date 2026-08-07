@@ -4,6 +4,7 @@ using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Comp.Map;
 
@@ -13,7 +14,7 @@ namespace Cosmere.System.Scadrial.Comp.Map;
 /// </summary>
 public class AshDepthTracker : MapComponent {
     private const int Stripes = 64;
-    private const float UnitMm = 10f;
+    private const float UnitMm = AshGrid.UnitMm;
 
     /// <summary>A stripe comes round once every 64 ticks, so 937.5 times a day.</summary>
     private const float SweepsPerDay = GenDate.TicksPerDay / (float)Stripes;
@@ -92,7 +93,7 @@ public class AshDepthTracker : MapComponent {
 
         exposureMultiplier = Comp.Game.AshmountExposureCache.For(map.Tile);
         if (exposureMultiplier > 1.01f) {
-            Core.Logger.Important($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
+            Logger.Important($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
         }
 
         // Ash falls in the Final Empire whether or not a progression beat has fired yet, and it
@@ -129,13 +130,12 @@ public class AshDepthTracker : MapComponent {
         } else {
             AccumulateStripe(stripe);
 
-            // Stripe 0 only: a vent's plume is a bounded local write, so it runs once per full sweep
-            // cycle rather than 64 times.
+            // Stripe 0 only: a vent's plume is a bounded write, so it runs once per sweep cycle.
             if (stripe == 0 && vents.Count > 0) {
-                float cycleMm = 64f / GenDate.TicksPerDay;
+                float cycleDays = Stripes / (float)GenDate.TicksPerDay;
                 bool changed = false;
                 for (int i = 0; i < vents.Count; i++) {
-                    if (vents[i].ContributeToGrid(Grid, cycleMm)) changed = true;
+                    if (vents[i].ContributeToGrid(Grid, cycleDays)) changed = true;
                 }
 
                 if (changed) NotifyAshChanged();

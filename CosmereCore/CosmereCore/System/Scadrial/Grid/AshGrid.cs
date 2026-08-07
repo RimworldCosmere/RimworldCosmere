@@ -20,7 +20,7 @@ public enum AshBucket {
 /// </summary>
 public class AshGrid : IExposable {
     public const int MaxDepthMm = 2550;
-    private const int UnitMm = 10;
+    public const int UnitMm = 10;
 
     private readonly Verse.Map map;
     private byte[] depth;

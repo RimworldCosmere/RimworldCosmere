@@ -55,6 +55,23 @@ public class AshVentSitingTests {
     }
 
     [TestMethod]
+    public void TheCheapRulesNeverRejectACellTheFullRuleWouldTake() {
+        bool[] wetness = [false, true];
+
+        foreach (bool isWater in wetness) {
+            for (float fertility = 0f; fertility <= 1.5f; fertility += 0.05f) {
+                if (!AshVentSiting.IsPlausible(0.9f, true, fertility, isWater)) continue;
+
+                Assert.IsTrue(
+                    AshVentSiting.PassesCheapRules(fertility, isWater),
+                    $"map gen short-circuits on the cheap rules, so fertility {fertility} water {isWater} "
+                    + "would be lost before the discs ever ran"
+                );
+            }
+        }
+    }
+
+    [TestMethod]
     public void CountRisesWithExposureAndStaysInRange() {
         Assert.AreEqual(1, AshVentSiting.CountForExposure(1f), "an unexposed map still gets one");
         Assert.AreEqual(6, AshVentSiting.CountForExposure(3f), "a mount-adjacent map gets the full six");

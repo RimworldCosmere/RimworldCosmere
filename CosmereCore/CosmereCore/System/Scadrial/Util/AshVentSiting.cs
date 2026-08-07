@@ -15,11 +15,20 @@ public static class AshVentSiting {
     public const int MaxVents = 6;
 
     public static bool IsPlausible(float meanElevation, bool rockNearby, float fertility, bool isWater) {
-        if (isWater) return false;
+        if (!PassesCheapRules(fertility, isWater)) return false;
         if (!rockNearby) return false;
-        if (fertility >= MaxFertility) return false;
 
         return meanElevation >= MinElevation;
+    }
+
+    /// <summary>
+    ///     The half of the rule a caller can answer without walking a grid. Split out so map gen
+    ///     can reject a cell before paying for the elevation and rock discs.
+    /// </summary>
+    public static bool PassesCheapRules(float fertility, bool isWater) {
+        if (isWater) return false;
+
+        return fertility < MaxFertility;
     }
 
     /// <summary>

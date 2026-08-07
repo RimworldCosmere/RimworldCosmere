@@ -25,6 +25,9 @@ public static class AshDebugActions {
         if (tracker == null) return;
 
         tracker.Grid.Clear();
+
+        // The regenerate below happens now. The sweep that would unbury these does not run paused.
+        tracker.Buried.Clear();
         map!.mapDrawer.RegenerateEverythingNow();
         map.GetComponent<AshOverlayDrawer>()?.SetDirty();
     }

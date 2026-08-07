@@ -1,3 +1,5 @@
+using System;
+
 namespace Cosmere.System.Scadrial.Grid;
 
 /// <summary>
@@ -43,5 +45,13 @@ public class AshBuriedCells {
         buried[index] = value;
         Count += value ? 1 : -1;
         return true;
+    }
+
+    /// <summary>Unburies everything at once, for the dev action that empties the grid outright.</summary>
+    public void Clear() {
+        if (Count == 0) return;
+
+        Array.Clear(buried, 0, buried.Length);
+        Count = 0;
     }
 }

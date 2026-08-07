@@ -39,6 +39,20 @@ public class AshBuriedCellsTests {
     }
 
     [TestMethod]
+    public void ClearingTheSetUnburiesEveryCell() {
+        AshBuriedCells cells = new AshBuriedCells(16);
+        cells.Set(1, true);
+        cells.Set(9, true);
+
+        cells.Clear();
+
+        Assert.AreEqual(0, cells.Count);
+        Assert.IsFalse(cells.Any);
+        Assert.IsFalse(cells.IsBuried(1));
+        Assert.IsFalse(cells.IsBuried(9));
+    }
+
+    [TestMethod]
     public void AnIndexOutsideTheGridIsNeverBuried() {
         AshBuriedCells cells = new AshBuriedCells(16);
         Assert.IsFalse(cells.IsBuried(-1));

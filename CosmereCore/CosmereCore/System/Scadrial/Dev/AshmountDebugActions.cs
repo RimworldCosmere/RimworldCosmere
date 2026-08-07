@@ -20,9 +20,15 @@ public static class AshmountDebugActions {
             return;
         }
 
-        float exposure = AshmountExposureCache.For(tile.tileId);
+        float exposure = AshmountExposureCache.For(tile);
+
+        int vents = 0;
+        Verse.Map? current = Find.CurrentMap;
+        if (current != null) vents = current.listerThings.ThingsOfDef(ThingDefOf.Cosmere_Scadrial_Thing_AshVent).Count;
+
         Messages.Message(
-            $"Tile {tile.tileId}: ash exposure {exposure:0.00}x (generation gate: {FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)})",
+            $"Tile {tile.tileId}: ash exposure {exposure:0.00}x, {vents} vent(s) on this map "
+            + $"(generation gate: {FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)})",
             MessageTypeDefOf.NeutralEvent,
             false
         );

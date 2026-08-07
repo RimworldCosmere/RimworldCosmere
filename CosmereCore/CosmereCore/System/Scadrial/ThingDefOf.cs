@@ -47,6 +47,9 @@ public static partial class ThingDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static ThingDef Cosmere_Scadrial_Thing_AllomanticVial;
 
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_AshVent;
+
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
     }

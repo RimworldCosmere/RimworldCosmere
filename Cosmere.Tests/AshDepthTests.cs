@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cosmere.System.Scadrial.Grid;
 using Cosmere.System.Scadrial.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,6 +11,9 @@ namespace Cosmere.Tests;
 /// </summary>
 [TestClass]
 public class AshDepthTests {
+    /// <summary>Stripes the tracker sweeps in. Its own constant is private and Verse-bound.</summary>
+    private const int Stripes = 64;
+
     [TestMethod]
     public void BucketsRiseWithDepth() {
         Assert.AreEqual(AshBucket.None, AshDepthMath.BucketFor(0));
@@ -221,5 +225,28 @@ public class AshDepthTests {
 
         Assert.IsFalse(AshEra.IsAshEra(null));
         Assert.IsFalse(AshEra.IsAshEra(string.Empty));
+    }
+
+    [TestMethod]
+    public void AStripeBankKeepsEveryFractionAcrossTheRoundTrip() {
+        float[] accrual = new float[Stripes];
+        AshPlume.Bank(ref accrual[0], 9.5f, AshGrid.UnitMm);
+        AshPlume.Bank(ref accrual[Stripes - 1], 4f, AshGrid.UnitMm);
+
+        float[]? restored = AshPlume.RestoreBank([..accrual], Stripes);
+
+        Assert.IsNotNull(restored);
+        Assert.AreEqual(9.5f, restored[0], 0.0001f);
+        Assert.AreEqual(4f, restored[Stripes - 1], 0.0001f);
+
+        // Stripe 0 sat half a millimetre off depositing; a bank dropped on load restarts it at zero.
+        Assert.AreEqual(AshGrid.UnitMm, AshPlume.Bank(ref restored[0], 0.5f, AshGrid.UnitMm));
+    }
+
+    [TestMethod]
+    public void AStripeBankSavedAtADifferentWidthIsDiscardedRatherThanIndexedPast() {
+        Assert.IsNull(AshPlume.RestoreBank(new List<float>(new float[Stripes - 1]), Stripes));
+        Assert.IsNull(AshPlume.RestoreBank(new List<float>(new float[Stripes + 1]), Stripes));
+        Assert.IsNull(AshPlume.RestoreBank(null, Stripes), "a save from before the accrual was scribed");
     }
 }

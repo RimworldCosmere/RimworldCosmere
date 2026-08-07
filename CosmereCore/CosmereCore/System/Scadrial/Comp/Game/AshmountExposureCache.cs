@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Comp.Game;
@@ -12,12 +13,17 @@ public class AshmountExposureCache : GameComponent {
 
     public AshmountExposureCache(Verse.Game game) { }
 
-    /// <summary>1 for any tile no mount reaches, which is every tile on a non-Scadrial world.</summary>
-    public static float For(int tileId) {
+    /// <summary>
+    ///     1 for any tile no mount reaches, and for any layer but the surface - tile ids are only
+    ///     unique within a layer, and only the surface is ever populated.
+    /// </summary>
+    public static float For(PlanetTile tile) {
+        if (!tile.Valid || !tile.Layer.IsRootSurface) return 1f;
+
         AshmountExposureCache? cache = Current.Game?.GetComponent<AshmountExposureCache>();
         if (cache == null) return 1f;
 
-        return cache.exposure.TryGetValue(tileId, out float value) ? value : 1f;
+        return cache.exposure.TryGetValue(tile.tileId, out float value) ? value : 1f;
     }
 
     public static void Set(Dictionary<int, float> values) {

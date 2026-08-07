@@ -24,6 +24,12 @@
   <!-- Bridge Four: Former bridgemen rising under Kaladin -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_BridgeFour</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Bridge Four</label>
     <description>Former bridgemen of Sadeas's army, now united under Kaladin Stormblessed. They were slaves. They became soldiers. They will become something more.</description>
     <fixedName>Bridge Four</fixedName>
@@ -42,6 +48,12 @@
   <!-- House Kholin: Dalinar's unified forces -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_HouseKholin</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.7</Cosmere_Roshar_Xenotype_Lighteyes>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.3</Cosmere_Roshar_Xenotype_Darkeyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>House Kholin</label>
     <description>The most powerful of Alethkar's highprince houses, led by the Blackthorn himself. Honor. Unity. These are the words Dalinar Kholin lives by.</description>
     <fixedName>House Kholin</fixedName>
@@ -61,6 +73,12 @@
   <!-- Generic Warcamp: Shattered Plains operations -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_Warcamp</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>The Warcamp</label>
     <description>An Alethi warcamp on the Shattered Plains, dedicated to the endless war against the Parshendi and the hunt for gemhearts.</description>
     <fixedName>The Warcamp</fixedName>
@@ -80,6 +98,12 @@
   <!-- Knights Radiant: Reformed order -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_KnightsRadiant</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Knights Radiant</label>
     <description>The ancient order returns. Bonded to spren, sworn to Ideals, the Knights Radiant stand against the coming Desolation.</description>
     <fixedName>Knights Radiant</fixedName>
@@ -98,6 +122,12 @@
   <!-- Weeping Survivors: Enduring without Stormlight -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_WeepingSurvivors</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Weeping Survivors</label>
     <description>A small group enduring the Weeping - four weeks without highstorms, without Stormlight, without hope. Only faith remains.</description>
     <fixedName>Weeping Survivors</fixedName>
@@ -116,6 +146,12 @@
   <!-- Kholinar Rescue: Mission to save the city -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_KholinarExpedition</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Kholinar Expedition</label>
     <description>A strike team sent to retake the Oathgate in fallen Kholinar. They came to save a city. They fight to survive.</description>
     <fixedName>Kholinar Expedition</fixedName>
@@ -134,6 +170,12 @@
   <!-- Tower Defenders: Urithiru resistance -->
   <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
     <defName>Cosmere_Roshar_Faction_TowerDefenders</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Tower Defenders</label>
     <description>The last resistance in occupied Urithiru. The Sibling is corrupted, Stormlight fails, but a handful of Radiants and their allies fight on.</description>
     <fixedName>Tower Defenders</fixedName>

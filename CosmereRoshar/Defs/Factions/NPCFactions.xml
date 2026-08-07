@@ -241,6 +241,12 @@
   <!-- Shinovar: soil, grass, and stone that must not be walked on -->
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
     <defName>Cosmere_Roshar_Faction_Shinovar</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.8</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.2</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Shinovar</label>
     <fixedName>Shinovar</fixedName>
     <description>The only land on Roshar with deep soil and grass that does not withdraw when touched. The mountains take the highstorms, so Shinovar grows crops the rest of the world has never seen.\n\nThe Shin hold stone sacred and will not walk on it uncovered. They honour farmers above all, and hold warriors in open contempt - which has not stopped them training some of the most dangerous killers alive.</description>

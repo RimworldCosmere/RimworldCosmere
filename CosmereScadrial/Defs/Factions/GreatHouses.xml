@@ -83,6 +83,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseVenture</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Venture</label>
     <fixedName>House Venture</fixedName>
@@ -95,6 +102,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseElariel</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Elariel</label>
     <fixedName>House Elariel</fixedName>
@@ -107,6 +121,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseHasting</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Hasting</label>
     <fixedName>House Hasting</fixedName>
@@ -119,6 +140,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseLekal</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Lekal</label>
     <fixedName>House Lekal</fixedName>
@@ -131,6 +159,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseTekiel</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Tekiel</label>
     <fixedName>House Tekiel</fixedName>
@@ -143,6 +178,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseRenoux</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Renoux</label>
     <fixedName>House Renoux</fixedName>
@@ -155,6 +197,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseCett</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Cett</label>
     <fixedName>House Cett</fixedName>
@@ -170,6 +219,13 @@
        relations block so it is guaranteed to exist wherever a beat raids with it. -->
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_Ruin</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Ruin's own</label>
     <fixedName>Ruin's Own</fixedName>
     <description>Koloss driven past their own hunger, Inquisitors who stopped pretending to serve the Ministry, and men and women with metal in them who answer something that is not their own thought. They do not raid for food or plunder. They arrive, and then they kill, and Ruin spends them without counting.</description>
@@ -210,6 +266,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseErikell</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Erikell</label>
     <fixedName>House Erikell</fixedName>
@@ -222,6 +285,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseInnate</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Innate</label>
     <fixedName>House Innate</fixedName>
@@ -234,6 +304,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseDemoux</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Demoux</label>
     <fixedName>House Demoux</fixedName>
@@ -246,6 +323,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
     <defName>Cosmere_Scadrial_Faction_HouseHammondess</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
     <label>House Hammondess</label>
     <fixedName>House Hammondess</fixedName>

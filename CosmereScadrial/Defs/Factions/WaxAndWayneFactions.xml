@@ -7,6 +7,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_Elendel</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Elendel Basin</label>
     <fixedName>The Elendel Basin</fixedName>
     <description>The city Harmony built the world around, and the bureaucracy that grew over it afterwards. Elendel writes the laws, sets the freight rates, and is quietly certain the Roughs would starve without it. The Roughs are quietly certain of the opposite.</description>
@@ -57,6 +64,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_RoughsOutlaws</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Roughs outlaws</label>
     <fixedName>The Roughs</fixedName>
     <description>Out past the last rail line, where the law is whoever rode out to enforce it and how long they intend to stay. Rail crews, claim jumpers and men who left the Basin one step ahead of a warrant, all of them well armed and none of them expecting help.</description>
@@ -92,6 +106,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_TheSet</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>the Set</label>
     <fixedName>The Set</fixedName>
     <description>They do not raid, exactly. They acquire: people with the right blood, records nobody thought worth guarding, whole industries bought through four intermediaries. Every time somebody pulls a thread it comes apart in their hands, and the Set have already moved.</description>
@@ -128,6 +149,13 @@
 
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_Malwish</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Malwish</label>
     <fixedName>The Malwish</fixedName>
     <description>Southern Scadrians, who had no Allomancy worth the name and built their way past needing it. They arrive in vehicles that run without animals, carrying medallions that hand a borrowed talent to anyone holding one, and are unfailingly polite about how far ahead they are.</description>

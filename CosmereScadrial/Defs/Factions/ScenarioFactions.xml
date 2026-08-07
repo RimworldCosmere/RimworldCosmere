@@ -24,6 +24,13 @@
   <!-- Lord Ruler Scenario: The Final Empire with Steel Ministry religion -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_FinalEmpire</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.45</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.4</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.15</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>The Final Empire</label>
     <description>The thousand-year empire of the Lord Ruler, maintained through the Steel Ministry's iron grip on society.</description>
     <fixedName>The Final Empire</fixedName>
@@ -42,6 +49,14 @@
   <!-- Kelsier's Crew Scenario: The rebellion with Church of the Survivor -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_KelsiersCrew</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.65</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>0.2</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.05</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>Kelsier's Crew</label>
     <description>The legendary crew assembled by the Survivor of Hathsin to overthrow the Final Empire.</description>
     <fixedName>Kelsier's Crew</fixedName>
@@ -60,6 +75,13 @@
   <!-- Well of Ascension: Elend's fledgling kingdom -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_NewKingdom</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>New Kingdom of the Central Dominance</label>
     <description>The fragile new government established after the Lord Ruler's fall, led by the idealistic Elend Venture.</description>
     <fixedName>New Kingdom</fixedName>
@@ -79,6 +101,13 @@
   <!-- Hero of Ages: The New Empire fighting Ruin -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_NewEmpire</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>New Empire</label>
     <description>The united forces of humanity standing against Ruin's apocalypse, led by Emperor Elend Venture.</description>
     <fixedName>New Empire</fixedName>
@@ -98,6 +127,13 @@
   <!-- Pre-Catacendre: Escaped refugees -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_Refugees</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.8</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.15</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.05</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>The Refugees</label>
     <description>Escaped skaa, Terris stewards, and disillusioned nobles fleeing the tyranny of the Final Empire.</description>
     <fixedName>The Refugees</fixedName>
@@ -116,6 +152,13 @@
   <!-- Post-Catacendre: Harmony's faithful -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_NewScadrial</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>New Scadrial</label>
     <description>Settlers in the world remade by Harmony, building a new civilization under the watchful guidance of the joined god.</description>
     <fixedName>New Scadrial</fixedName>
@@ -134,6 +177,13 @@
   <!-- Alloy of Law: House Ladrian -->
   <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
     <defName>Cosmere_Scadrial_Faction_HouseLadrian</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
     <label>House Ladrian</label>
     <description>The noble house of Waxillium Ladrian, once prominent in Elendel society, now rebuilding its fortunes.</description>
     <fixedName>House Ladrian</fixedName>

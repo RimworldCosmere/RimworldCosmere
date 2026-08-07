@@ -38,6 +38,17 @@ public class MetallicArtsMetalDef : MetalDef {
     public Texture2D? invertedIcon;
     public Texture2D? uiIcon;
 
+    /// <summary>
+    ///     Whether swallowing this metal does anything at all.
+    /// </summary>
+    /// <remarks>
+    ///     A god metal with neither Allomancy nor Feruchemy has no effect to give. Harmonium and
+    ///     trellium are both like that - harmonium in particular reacts with the water in a body
+    ///     and is not something anyone survives eating, which is why it carries no power to
+    ///     grant. Offering it as food promised a transformation that never came.
+    /// </remarks>
+    public bool CanBeIngested => allomancy != null || feruchemy != null;
+
     public static MetallicArtsMetalDef FromMetalDef(MetalDef def) {
         if (def is MetallicArtsMetalDef metallicArtsMetalDef) return metallicArtsMetalDef;
 

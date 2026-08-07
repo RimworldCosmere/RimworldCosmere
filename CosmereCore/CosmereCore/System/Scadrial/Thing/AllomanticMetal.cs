@@ -17,6 +17,9 @@ public class AllomanticMetal : AllomanticVial {
         if (metal is null) return;
 
         if (metal.godMetal) {
+            // Nothing to give, so nothing happens and no letter is sent.
+            if (!metal.CanBeIngested) return;
+
             // The float menu already refuses this, but it is not the only way in - a dev spawn
             // or a scripted beat reaches PostIngested directly.
             if (!ConnectionUtility.MayUseMetal(ingester, metal)) {

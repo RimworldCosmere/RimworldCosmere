@@ -33,6 +33,12 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         MetallicArtsMetalDef metal,
         MetallicArtsMetalDef? stuffMetal
     ) {
+        // Some god metals carry no power to give. Swallowing one did nothing and still announced
+        // itself with a letter, which read as a bug.
+        if (!metal.CanBeIngested) {
+            return "CS_GodMetalNotEdible".Translate(metal.Named("METAL"));
+        }
+
         // Lerasium and its alloys grant Connection rather than spending it, so they are never
         // gated. Everything else needs a tie to at least one Shard it is made of.
         if (!ConnectionUtility.MayUseMetal(pawn, metal)) {

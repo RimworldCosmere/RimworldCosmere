@@ -215,9 +215,10 @@ public class ConnectionMathTests {
     public void EveryGodMetalDecisionAsksAboutConnection() {
         string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
 
-        // Files that mention godMetal without deciding anything: a plain data holder, and the
-        // dev utility that uses !godMetal to filter god metals out of a list.
-        string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs"];
+        // Files that branch on godMetal without deciding whether a pawn may *use* one: a plain
+        // data holder, the dev utility that filters god metals out of a vial list, and the gene
+        // roller, which excludes them from generation rather than gating their use.
+        string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs", "GeneUtility.cs"];
 
         List<string> offenders = [];
         int seen = 0;
@@ -395,6 +396,36 @@ public class ConnectionMathTests {
             ConnectionMath.MayUseGodMetal(30),
             "And thirty has to be enough to burn a god metal, or the grant is pointless."
         );
+    }
+
+    /// <summary>
+    ///     No pawn is born an atium Misting or Ferring. Those come from swallowing atium,
+    ///     lerasium or leratium, never from the roll at generation.
+    /// </summary>
+    /// <remarks>
+    ///     A full Mistborn still gets the atium gene along with every other, which is canonical -
+    ///     it is the single-metal roll that must never land on a god metal.
+    /// </remarks>
+    [TestMethod]
+    public void GodMetalsAreNeverRolledAtGeneration() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Util", "GeneUtility.cs"
+            )
+        );
+
+        foreach (string method in new[] { "AddRandomAllomanticGene", "AddRandomFeruchemicalGene" }) {
+            int start = source.IndexOf(method, StringComparison.Ordinal);
+            Assert.IsTrue(start >= 0, $"Expected {method} to exist.");
+
+            int end = source.IndexOf("RandomElement", start, StringComparison.Ordinal);
+            Assert.IsTrue(end > start, $"Expected {method} to pick from candidates.");
+
+            Assert.IsTrue(
+                source[start..end].Contains("godMetal", StringComparison.Ordinal),
+                $"{method} must skip god metals, or pawns get born as atium Mistings."
+            );
+        }
     }
 
     private static string RepoRoot {

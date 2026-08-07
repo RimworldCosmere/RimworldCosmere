@@ -137,6 +137,9 @@ public static class GeneUtility {
         List<MetallicArtsMetalDef> allDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
         List<MetallicArtsMetalDef> candidates = [];
         for (int i = 0; i < allDefs.Count; i++) {
+            // God metals are never rolled. An atium Misting is not something you are born as -
+            // it is what swallowing atium, lerasium or leratium makes of you.
+            if (allDefs[i].godMetal) continue;
             if (allDefs[i].allomancy != null) candidates.Add(allDefs[i]);
         }
 
@@ -149,6 +152,8 @@ public static class GeneUtility {
         List<MetallicArtsMetalDef> allDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
         List<MetallicArtsMetalDef> candidates = [];
         for (int i = 0; i < allDefs.Count; i++) {
+            // Same as Allomancy: an atium Ferring is made, never born.
+            if (allDefs[i].godMetal) continue;
             if (allDefs[i].feruchemy != null) candidates.Add(allDefs[i]);
         }
 

@@ -67,4 +67,41 @@
             <li>Cosmere_Scadrial_Gene_TerrisStability</li>
         </genes>
     </XenotypeDef>
+
+    <!-- Made, never born. A koloss is what four spikes leave behind, so this xenotype is not
+         inheritable - koloss who breed produce koloss-blooded children instead, which
+         KolossBirthPatch handles. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_Koloss</defName>
+        <label>koloss</label>
+        <description>Four spikes, driven in at once, and what walks away is not the person who lay down. A koloss is enormous, blue-grey and slow of thought, and it grows for the rest of its life until its own skin gives out.</description>
+        <displayPriority>5100</displayPriority>
+        <inheritable>false</inheritable>
+        <iconPath>UI/Icons/Xenotype/Koloss</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
+            <li>Cosmere_Scadrial_Gene_NeverStopsGrowing</li>
+            <li>Cosmere_Scadrial_Gene_SkinTooSmall</li>
+            <li>Cosmere_Scadrial_Gene_SpikeBound</li>
+            <li>Cosmere_Scadrial_Gene_EasilyInfluenced</li>
+            <li>Cosmere_Scadrial_Gene_DeadenedNerves</li>
+        </genes>
+    </XenotypeDef>
+
+    <!-- After the Catacendre. Koloss breed true now, and their children are people - taller and
+         stronger than their neighbours, and entirely sane. At twelve one of them may choose the
+         spikes and stop being this. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_KolossBlooded</defName>
+        <label>koloss-blooded</label>
+        <description>Harmony left the koloss able to father children, and those children are men and women. A koloss-blooded person stands a head above the crowd and is stronger than they look, and that is the whole of the inheritance.</description>
+        <displayPriority>5050</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/KolossBlooded</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KolossBlooded</li>
+            <li>Cosmere_Scadrial_Gene_ScadrianHeritage</li>
+        </genes>
+    </XenotypeDef>
+
 </Defs>

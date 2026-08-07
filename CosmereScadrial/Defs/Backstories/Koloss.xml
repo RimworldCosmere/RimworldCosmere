@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- A koloss has one childhood and one adulthood, because there is nothing to vary. The
+       spikes took whoever they used to be, and what is left has been doing the same thing ever
+       since. Both slots subtract rather than add - a koloss is worse at everything than the
+       person it was made from, except hitting things. -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Koloss_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>made, not born</title>
+    <titleShort>made</titleShort>
+    <description>[PAWN_nameDef] was somebody once. Four spikes went in, and afterwards there was this instead. [PAWN_pronoun] does not remember the name [PAWN_pronoun] had, or the people who used it.</description>
+    <spawnCategories>
+      <li>Cosmere_Koloss</li>
+    </spawnCategories>
+    <skillGains>
+      <Melee>4</Melee>
+      <Intellectual>-8</Intellectual>
+      <Social>-8</Social>
+      <Artistic>-8</Artistic>
+      <Crafting>-6</Crafting>
+      <Medicine>-8</Medicine>
+    </skillGains>
+    <workDisables>
+      <li>Intellectual</li>
+      <li>Social</li>
+      <li>Artistic</li>
+    </workDisables>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Koloss_Adulthood</defName>
+    <slot>Adulthood</slot>
+    <title>kept in a pen</title>
+    <titleShort>penned</titleShort>
+    <description>[PAWN_nameDef] has spent every year since the spikes in a walled yard outside some city, waiting to be pointed at something. The waiting is most of it. The pointing does not last long.</description>
+    <spawnCategories>
+      <li>Cosmere_Koloss</li>
+    </spawnCategories>
+    <skillGains>
+      <Melee>6</Melee>
+      <Mining>2</Mining>
+      <Intellectual>-8</Intellectual>
+      <Social>-8</Social>
+      <Cooking>-6</Cooking>
+      <Plants>-6</Plants>
+    </skillGains>
+    <workDisables>
+      <li>Intellectual</li>
+      <li>Social</li>
+      <li>Artistic</li>
+    </workDisables>
+  </BackstoryDef>
+
+  <!-- Koloss-blooded are people, so they get ordinary lives. These sit alongside the normal
+       Scadrial backstories rather than replacing them - a koloss-blooded farmer is just a
+       farmer who is a head taller than his neighbours. -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_KolossBlooded_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>tall for their age</title>
+    <titleShort>tall</titleShort>
+    <description>[PAWN_nameDef] was bigger than the other children by the time [PAWN_pronoun] was six, and stronger than the adults by twelve. Some of the village were kind about it and some were not.</description>
+    <spawnCategories>
+      <li>Cosmere_KolossBlooded</li>
+    </spawnCategories>
+    <skillGains>
+      <Melee>3</Melee>
+      <Construction>2</Construction>
+      <Social>-1</Social>
+    </skillGains>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_KolossBlooded_Adulthood</defName>
+    <slot>Adulthood</slot>
+    <title>did the heavy work</title>
+    <titleShort>hauler</titleShort>
+    <description>Wherever [PAWN_nameDef] went, somebody had something that needed lifting. It is honest work and it pays, and after a while [PAWN_pronoun] stopped expecting to be asked about anything else.</description>
+    <spawnCategories>
+      <li>Cosmere_KolossBlooded</li>
+    </spawnCategories>
+    <skillGains>
+      <Construction>4</Construction>
+      <Mining>4</Mining>
+      <Melee>2</Melee>
+      <Intellectual>-2</Intellectual>
+    </skillGains>
+  </BackstoryDef>
+
+</Defs>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RecipeDef Name="Cosmere_Scadrial_KolossMakingBase" Abstract="True">
+    <workerClass>Cosmere.System.Scadrial.Hemalurgy.RecipeWorker.MakeKoloss</workerClass>
+    <workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+    <workSkill>Medicine</workSkill>
+    <workSkillLearnFactor>4</workSkillLearnFactor>
+    <anesthetize>true</anesthetize>
+    <researchPrerequisites>
+      <li>Cosmere_Scadrial_Hemalurgy</li>
+    </researchPrerequisites>
+    <recipeUsers>
+      <li>Human</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>Medicine</li>
+          </categories>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+      </thingDefs>
+      <categories>
+        <li>Medicine</li>
+      </categories>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <!-- The Lord Ruler's way. Four spikes at once into someone who did not agree to it, and most
+       of them do not survive it. -->
+  <RecipeDef ParentName="Cosmere_Scadrial_KolossMakingBase">
+    <defName>Cosmere_Scadrial_Recipe_MakeKoloss</defName>
+    <label>make koloss</label>
+    <description>Drive four charged hemalurgic spikes through a living person at once - iron, steel, tin and pewter. What gets up afterwards is enormous, blue and barely able to speak, and it is not the person who lay down. Most subjects do not get up at all.</description>
+    <jobString>Making a koloss.</jobString>
+    <workAmount>12000</workAmount>
+    <surgerySuccessChanceFactor>0.35</surgerySuccessChanceFactor>
+    <deathOnFailedSurgeryChance>0.85</deathOnFailedSurgeryChance>
+    <skillRequirements>
+      <Medicine>8</Medicine>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- After the Catacendre. A koloss-blooded adolescent who wants the spikes gets them from
+       people who have done this before, on someone who is willing and built for it. -->
+  <RecipeDef ParentName="Cosmere_Scadrial_KolossMakingBase">
+    <defName>Cosmere_Scadrial_Recipe_TakeTheSpikes</defName>
+    <label>take the spikes</label>
+    <description>A koloss-blooded youth old enough to choose can ask for the four spikes and become what their parents were. Their body already expects them, and the work is nothing like the butchery the Lord Ruler practised - though it is still four spikes through a living person, and it is still not reversible.</description>
+    <jobString>Driving the spikes.</jobString>
+    <workAmount>6000</workAmount>
+    <surgerySuccessChanceFactor>0.95</surgerySuccessChanceFactor>
+    <deathOnFailedSurgeryChance>0.25</deathOnFailedSurgeryChance>
+    <skillRequirements>
+      <Medicine>5</Medicine>
+    </skillRequirements>
+  </RecipeDef>
+
+</Defs>

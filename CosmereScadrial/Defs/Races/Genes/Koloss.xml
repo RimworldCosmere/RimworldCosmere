@@ -92,11 +92,11 @@
 
   <!-- Emotional Allomancy is the leash. Without one they attack whatever is closest. -->
   <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
-    <defName>Cosmere_Scadrial_Gene_RiotableMind</defName>
-    <label>riotable mind</label>
+    <defName>Cosmere_Scadrial_Gene_EasilyInfluenced</defName>
+    <label>easily influenced</label>
     <labelShortAdj>biddable</labelShortAdj>
-    <description>Whatever the spikes left behind can be pushed on from outside. A Rioter or a Soother can hold a koloss steady, and a koloss with nobody holding it will find something to kill.</description>
-    <iconPath>UI/Icons/Genes/Gene_RiotableMind</iconPath>
+    <description>Whatever the spikes left behind is easy to push on. A Rioter or a Soother can hold a koloss steady with almost no effort, and a koloss with nobody holding it will find something to kill.</description>
+    <iconPath>UI/Icons/Genes/Gene_EasilyInfluenced</iconPath>
     <displayOrderInCategory>104</displayOrderInCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>

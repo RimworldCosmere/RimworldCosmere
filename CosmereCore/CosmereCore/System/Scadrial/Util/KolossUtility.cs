@@ -1,0 +1,56 @@
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Scadrial.Util;
+
+/// <summary>
+///     Turning a person into a koloss, and the rules about who can become one.
+/// </summary>
+public static class KolossUtility {
+    public const string KolossXenotype = "Cosmere_Scadrial_Xenotype_Koloss";
+    public const string KolossBloodedXenotype = "Cosmere_Scadrial_Xenotype_KolossBlooded";
+
+    public static bool IsKoloss(Pawn? pawn) {
+        return pawn?.genes?.Xenotype?.defName == KolossXenotype;
+    }
+
+    public static bool IsKolossBlooded(Pawn? pawn) {
+        return pawn?.genes?.Xenotype?.defName == KolossBloodedXenotype;
+    }
+
+    /// <summary>
+    ///     Replaces everything the pawn was with the koloss xenotype, and starts the clock.
+    /// </summary>
+    /// <remarks>
+    ///     The old xenotype's genes go rather than stack. A koloss made out of a Terris woman is
+    ///     a koloss, not a Terris koloss - the spikes take what was there and leave something
+    ///     that has no room for it.
+    ///     <para>
+    ///         Growth is added at severity zero however old the subject was. The clock starts at
+    ///         the spikes, not at birth.
+    ///     </para>
+    /// </remarks>
+    public static void Become(Pawn pawn, XenotypeDef koloss) {
+        if (pawn.genes == null) return;
+
+        pawn.genes.SetXenotype(koloss);
+
+        if (pawn.health?.hediffSet?.GetFirstHediffOfDef(
+                HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth
+            ) == null) {
+            pawn.health?.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth);
+        }
+
+        // Nothing it knew survives in a form it can still use. Combat is muscle memory and
+        // stays; everything that needed a mind to hold it does not.
+        if (pawn.skills?.skills != null) {
+            for (int i = 0; i < pawn.skills.skills.Count; i++) {
+                SkillRecord skill = pawn.skills.skills[i];
+                bool physical = skill.def == RimWorld.SkillDefOf.Melee || skill.def == RimWorld.SkillDefOf.Shooting;
+                skill.Level = physical ? Mathf.Max(0, skill.Level - 2) : 0;
+                skill.passion = Passion.None;
+            }
+        }
+    }
+}

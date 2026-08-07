@@ -13,7 +13,6 @@ public class AshmountExposureCache : GameComponent {
 
     public AshmountExposureCache(Verse.Game game) { }
 
-    /// <summary>1 for any tile no mount reaches, which is every tile on a non-Scadrial world.</summary>
     /// <summary>
     ///     1 for any tile no mount reaches, and for any layer but the surface - tile ids are only
     ///     unique within a layer, and only the surface is ever populated.

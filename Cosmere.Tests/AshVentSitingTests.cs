@@ -72,6 +72,33 @@ public class AshVentSitingTests {
     }
 
     [TestMethod]
+    public void TheMapGenShortCircuitAcceptsExactlyWhatTheFullRuleDoes() {
+        bool[] flags = [false, true];
+
+        foreach (bool isWater in flags) {
+            foreach (bool rockNearby in flags) {
+                for (float fertility = 0f; fertility <= 1.5f; fertility += 0.05f) {
+                    for (float elevation = 0f; elevation <= 1.5f; elevation += 0.05f) {
+                        bool full = AshVentSiting.IsPlausible(elevation, rockNearby, fertility, isWater);
+
+                        // The order CanScatterAt runs the rules in, cheapest first.
+                        bool staged = AshVentSiting.PassesCheapRules(fertility, isWater)
+                                      && rockNearby
+                                      && AshVentSiting.IsPlausible(elevation, true, fertility, isWater);
+
+                        Assert.AreEqual(
+                            full,
+                            staged,
+                            $"fertility {fertility} elevation {elevation} rock {rockNearby} water {isWater} "
+                            + "is accepted by one ordering and not the other"
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    [TestMethod]
     public void CountRisesWithExposureAndStaysInRange() {
         Assert.AreEqual(1, AshVentSiting.CountForExposure(1f), "an unexposed map still gets one");
         Assert.AreEqual(6, AshVentSiting.CountForExposure(3f), "a mount-adjacent map gets the full six");

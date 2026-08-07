@@ -44,9 +44,10 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
         float fertility = map.fertilityGrid.FertilityAt(loc);
         if (!AshVentSiting.PassesCheapRules(fertility, isWater)) return false;
 
-        // Last on purpose. IsPlausible takes its arguments eagerly, and these two discs are ~430
-        // grid reads against 1000 candidates a vent.
-        return AshVentSiting.IsPlausible(MeanElevation(loc, map), RockNearby(loc, map), fertility, isWater);
+        // Rock quits on its first hit; elevation walks all 317 cells of its disc without one.
+        if (!RockNearby(loc, map)) return false;
+
+        return AshVentSiting.IsPlausible(MeanElevation(loc, map), rockNearby: true, fertility, isWater);
     }
 
     protected override void ScatterAt(IntVec3 loc, Verse.Map map, GenStepParams parms, int stackCount = 1) {

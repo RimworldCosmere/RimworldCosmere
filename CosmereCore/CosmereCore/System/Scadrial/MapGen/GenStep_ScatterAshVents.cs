@@ -37,8 +37,7 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
 
         bool isWater = loc.GetTerrain(map).IsWater;
 
-        // Vanilla only runs the fallback pass when fallbackValidators is non-empty, which is the
-        // whole reason the def carries one.
+        // Vanilla only runs this pass when fallbackValidators is non-empty, which is why the def carries one.
         if (useFallback) return AshVentSiting.IsPlausibleFallback(isWater);
 
         float fertility = map.fertilityGrid.FertilityAt(loc);

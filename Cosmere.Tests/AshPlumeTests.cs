@@ -90,10 +90,7 @@ public class AshPlumeTests {
             totalDeposited += AshPlume.Bank(ref remainder, 0.15f, 10);
         }
 
-        // 50000 adds of 0.15mm = 7500mm total. A version that discards the remainder instead of
-        // subtracting the deposit loses a sliver every crossing; over this many crossings the
-        // slivers compound into whole missed units, landing well under 7480. Correct banking
-        // never drops more than one unit's worth of not-yet-deposited change.
+        // 7500mm of adds. Discarding the remainder instead of subtracting compounds slivers under 7480.
         Assert.IsTrue(totalDeposited is >= 7480 and <= 7500, $"deposited {totalDeposited}, expected 7480-7500");
     }
 

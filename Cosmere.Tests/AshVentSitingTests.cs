@@ -25,8 +25,7 @@ public class AshVentSitingTests {
 
     [TestMethod]
     public void PollutedGroundIsNeverAVent() {
-        // Biotech clamps a polluted cell to exactly FertilityGrid.MaxPollutedFertility, 0.5. A
-        // strictly-greater test would let every polluted cell through the farmland rule.
+        // Biotech clamps polluted ground to exactly 0.5, so a strictly-greater test would pass it all.
         Assert.IsFalse(AshVentSiting.IsPlausible(0.9f, true, 0.5f, false));
     }
 

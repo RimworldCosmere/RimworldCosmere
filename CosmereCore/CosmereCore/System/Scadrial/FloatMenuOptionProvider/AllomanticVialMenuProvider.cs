@@ -33,14 +33,13 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         MetallicArtsMetalDef metal,
         MetallicArtsMetalDef? stuffMetal
     ) {
-        // Lerasium is the exception: swallowing it is how someone with no Connection gains one,
-        // so gating it would deny it to exactly the people it exists for. Everything else needs
-        // a tie to the Shard it is a piece of.
-        if (!metal.Equals(MetallicArtsMetalDefOf.Lerasium) && !ConnectionUtility.MayUse(pawn, metal.shard)) {
+        // Lerasium and its alloys grant Connection rather than spending it, so they are never
+        // gated. Everything else needs a tie to at least one Shard it is made of.
+        if (!ConnectionUtility.MayUseMetal(pawn, metal)) {
             return "CS_NotConnectedToShard".Translate(
                 pawn.Named("PAWN"),
                 metal.Named("METAL"),
-                (metal.shard?.LabelCap ?? metal.LabelCap).Named("SHARD")
+                (ConnectionUtility.FirstUnreachedShard(pawn, metal)?.LabelCap ?? metal.LabelCap).Named("SHARD")
             );
         }
 

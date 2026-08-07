@@ -25,15 +25,14 @@ public static class PawnExtension {
             return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
         }
 
-        // Lerasium is the deliberate exception. Burning it is how someone with no Connection at
-        // all gains one, so gating it would deny it to exactly the people it exists for.
-        if (metal.godMetal && !metal.Equals(MetalDefOf.Lerasium)) {
-            if (!ConnectionUtility.MayUse(pawn, metal.shard)) {
+        if (metal.godMetal) {
+            if (!ConnectionUtility.MayUseMetal(pawn, metal)) {
                 return new AcceptanceReport(
                     "CS_NotConnectedToShard".Translate(
                         pawn.Named("PAWN"),
                         metal.Named("METAL"),
-                        (metal.shard?.LabelCap ?? metal.LabelCap).Named("SHARD")
+                        (ConnectionUtility.FirstUnreachedShard(pawn, metal)?.LabelCap
+                            ?? metal.LabelCap).Named("SHARD")
                     )
                 );
             }

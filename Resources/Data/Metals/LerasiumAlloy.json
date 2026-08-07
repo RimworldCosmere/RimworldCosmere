@@ -2,7 +2,10 @@
   "name": "lerasium alloy",
   "description": "Lerasium alloyed with common metals transforms the ingester into a Misting for the alloyed metal.",
   "godMetal": true,
-  "shard": "Preservation",
+  "shards": [
+    "Preservation"
+  ],
+  "connectionGrant": 80,
   "stackable": false,
   "drawSize": 1,
   "marketValue": 8000,

@@ -146,7 +146,7 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
-    ///     Every god metal has to name the Shard it is a piece of, or the gate has nothing to
+    ///     Every god metal has to name the Shards it is made of, or the gate has nothing to
     ///     check against and silently lets everyone through.
     /// </summary>
     [TestMethod]
@@ -160,13 +160,13 @@ public class ConnectionMathTests {
             if (!json.Contains("\"godMetal\": true", StringComparison.OrdinalIgnoreCase)) continue;
 
             seen++;
-            if (!json.Contains("\"shard\"", StringComparison.Ordinal)) {
+            if (!json.Contains("\"shards\"", StringComparison.Ordinal)) {
                 offenders.Add(Path.GetFileNameWithoutExtension(path));
             }
         }
 
         Assert.IsTrue(seen > 0, "Found no god metals - the walk is wrong, not the data.");
-        Assert.AreEqual(0, offenders.Count, "These god metals name no Shard: " + string.Join(", ", offenders));
+        Assert.AreEqual(0, offenders.Count, "These god metals name no Shards: " + string.Join(", ", offenders));
     }
 
     /// <summary>
@@ -321,6 +321,59 @@ public class ConnectionMathTests {
         );
         Assert.AreEqual(30, refugeeWhoStayed, "A year on the ground earns what being born there grants.");
         Assert.IsTrue(ConnectionMath.MayUseGodMetal(refugeeWhoStayed), "And with it, atium.");
+    }
+
+    /// <summary>
+    ///     God metals alloy with each other, so a metal is made of a list of Shards rather than
+    ///     one. Leratium is lerasium and atium together and ties the drinker to Preservation and
+    ///     Ruin both.
+    /// </summary>
+    [TestMethod]
+    public void AlloyedGodMetalsNameEveryShardTheyAreMadeOf() {
+        string dir = Path.Combine(RepoRoot, "Resources", "Data", "Metals");
+
+        Dictionary<string, string[]> expected = new Dictionary<string, string[]> {
+            ["Lerasium"] = ["Preservation"],
+            ["LerasiumAlloy"] = ["Preservation"],
+            ["Leratium"] = ["Preservation", "Ruin"],
+            ["LeratiumAlloy"] = ["Preservation", "Ruin"],
+            ["Atium"] = ["Ruin"],
+        };
+
+        foreach (KeyValuePair<string, string[]> pair in expected) {
+            string json = File.ReadAllText(Path.Combine(dir, pair.Key + ".json"));
+            foreach (string shard in pair.Value) {
+                Assert.IsTrue(
+                    json.Contains($"\"{shard}\"", StringComparison.Ordinal),
+                    $"{pair.Key} should be made of {shard}."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Lerasium and everything alloyed with it grant Connection instead of spending it, and
+    ///     so are never gated. Atium spends what you already had.
+    /// </summary>
+    [TestMethod]
+    public void OnlyLerasiumBearingMetalsGrantConnection() {
+        string dir = Path.Combine(RepoRoot, "Resources", "Data", "Metals");
+
+        foreach (string name in new[] { "Lerasium", "LerasiumAlloy", "Leratium", "LeratiumAlloy" }) {
+            Assert.IsTrue(
+                File.ReadAllText(Path.Combine(dir, name + ".json"))
+                    .Contains("connectionGrant", StringComparison.Ordinal),
+                $"{name} contains lerasium, so burning it has to grant Connection."
+            );
+        }
+
+        foreach (string name in new[] { "Atium", "Harmonium", "Trellium" }) {
+            Assert.IsFalse(
+                File.ReadAllText(Path.Combine(dir, name + ".json"))
+                    .Contains("connectionGrant", StringComparison.Ordinal),
+                $"{name} has no lerasium in it and must not grant Connection."
+            );
+        }
     }
 
     private static string RepoRoot {

@@ -2,7 +2,9 @@
   "name": "atium",
   "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
   "godMetal": true,
-  "shard": "Ruin",
+  "shards": [
+    "Ruin"
+  ],
   "stackable": false,
   "drawSize": 1,
   "marketValue": 10000,

@@ -17,15 +17,15 @@ public class AllomanticMetal : AllomanticVial {
         if (metal is null) return;
 
         if (metal.godMetal) {
-            // The float menu already refuses this, but the menu is not the only way in - a dev
-            // spawn or a scripted beat reaches PostIngested directly. Lerasium stays exempt.
-            if (!metal.Equals(MetallicArtsMetalDefOf.Lerasium) &&
-                !ConnectionUtility.MayUse(ingester, metal.shard)) {
+            // The float menu already refuses this, but it is not the only way in - a dev spawn
+            // or a scripted beat reaches PostIngested directly.
+            if (!ConnectionUtility.MayUseMetal(ingester, metal)) {
                 Messages.Message(
                     "CS_NotConnectedToShard".Translate(
                         ingester.Named("PAWN"),
                         metal.Named("METAL"),
-                        (metal.shard?.LabelCap ?? metal.LabelCap).Named("SHARD")
+                        (ConnectionUtility.FirstUnreachedShard(ingester, metal)?.LabelCap
+                            ?? metal.LabelCap).Named("SHARD")
                     ),
                     ingester,
                     MessageTypeDefOf.RejectInput,
@@ -33,6 +33,10 @@ public class AllomanticMetal : AllomanticVial {
                 );
                 return;
             }
+
+            // Swallowing lerasium, or anything alloyed with it, ties the drinker to every Shard
+            // in the metal. This is the route in for someone who had no Connection at all.
+            ConnectionUtility.GrantFromMetal(ingester, metal);
 
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");

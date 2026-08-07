@@ -2,7 +2,9 @@
   "name": "harmonium",
   "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
   "godMetal": true,
-  "shard": "Harmony",
+  "shards": [
+    "Harmony"
+  ],
   "stackable": false,
   "drawSize": 1,
   "marketValue": 10000,

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Cosmere.Tools.Models;
@@ -43,8 +44,11 @@ public class MetalInfo {
 
     public bool GodMetal { get; set; }
 
-    /// <summary>ShardDef defName this metal belongs to. God metals only.</summary>
-    public string? Shard { get; set; }
+    /// <summary>ShardDef defNames this metal is made of. God metals only.</summary>
+    public List<string>? Shards { get; set; }
+
+    /// <summary>Connection granted to each of those Shards when burned, 0-100.</summary>
+    public int ConnectionGrant { get; set; }
 
     public bool Stackable { get; set; } = true;
 

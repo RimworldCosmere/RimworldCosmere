@@ -78,6 +78,59 @@ public static class ConnectionUtility {
         return ConnectionMath.MayUseGodMetal(StrengthOf(pawn, shard));
     }
 
+    /// <summary>
+    ///     Whether this pawn may burn a god metal, by the Shards it is made of.
+    /// </summary>
+    /// <remarks>
+    ///     A metal that grants Connection is never gated: lerasium and its alloys are how an
+    ///     unconnected person becomes Connected at all, so requiring Connection first would deny
+    ///     them to exactly the people they exist for.
+    ///     <para>
+    ///         Otherwise a tie to any one of its Shards is enough. Leratium is Preservation and
+    ///         Ruin both, and someone who holds only one half can still swallow it.
+    ///     </para>
+    /// </remarks>
+    public static bool MayUseMetal(Pawn? pawn, MetalDef? metal) {
+        if (metal == null) return true;
+        if (!metal.godMetal) return true;
+        if (metal.connectionGrant > 0) return true;
+        if (metal.shards.Count == 0) return true;
+
+        for (int i = 0; i < metal.shards.Count; i++) {
+            if (MayUse(pawn, metal.shards[i])) return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>The first Shard this pawn is not Connected to, for the refusal message.</summary>
+    public static ShardDef? FirstUnreachedShard(Pawn? pawn, MetalDef? metal) {
+        if (metal?.shards == null) return null;
+
+        for (int i = 0; i < metal.shards.Count; i++) {
+            if (!MayUse(pawn, metal.shards[i])) return metal.shards[i];
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    ///     Burning a metal made of lerasium ties the drinker to every Shard in it.
+    /// </summary>
+    /// <remarks>
+    ///     Never lowers a Connection. Someone already deeper into Preservation than the metal
+    ///     grants keeps what they had.
+    /// </remarks>
+    public static void GrantFromMetal(Pawn? pawn, MetalDef? metal) {
+        if (pawn == null || metal == null || metal.connectionGrant <= 0) return;
+
+        for (int i = 0; i < metal.shards.Count; i++) {
+            ShardDef shard = metal.shards[i];
+            int shortfall = metal.connectionGrant - StrengthOf(pawn, shard);
+            if (shortfall > 0) Grant(pawn, shard, shortfall);
+        }
+    }
+
     /// <summary>Adds to the earned portion. Never moves the recomputed parts.</summary>
     public static void Grant(Pawn? pawn, ShardDef? shard, int amount) {
         if (pawn == null || shard == null || amount == 0) return;

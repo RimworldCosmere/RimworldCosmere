@@ -243,6 +243,45 @@ public class ConnectionMathTests {
         );
     }
 
+    /// <summary>
+    ///     Ancestry comes from the xenotype and nothing else.
+    /// </summary>
+    /// <remarks>
+    ///     Two rules got this wrong in turn. Falling back to the save's world made a baseliner on
+    ///     Scadrial a native; then the cross-world sentinel handed every world's floor to
+    ///     everyone, so a Crashlanded colony of baseliners started at 30 to Ruin and Preservation
+    ///     and burned atium on day one. Neither pawn had earned anything.
+    /// </remarks>
+    [TestMethod]
+    public void AncestryComesFromTheXenotypeAlone() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", "ConnectionUtility.cs"
+            )
+        );
+
+        int floor = source.IndexOf("private static int AncestryFloor", StringComparison.Ordinal);
+        Assert.IsTrue(floor >= 0, "Expected an AncestryFloor to guard.");
+
+        string body = source[floor..];
+        int end = body.IndexOf("\n    }", StringComparison.Ordinal);
+        if (end > 0) body = body[..end];
+
+        Assert.IsFalse(
+            body.Contains("WorldUtility.Primary", StringComparison.Ordinal),
+            "The save's world must not grant ancestry - that made every baseliner a native."
+        );
+        Assert.IsFalse(
+            body.Contains("crossWorld", StringComparison.Ordinal),
+            "The cross-world sentinel must not grant ancestry either - that gave a Crashlanded "
+            + "colony of baseliners 30 to every Shard before they had done anything."
+        );
+        Assert.IsTrue(
+            body.Contains("WorldForXenotype", StringComparison.Ordinal),
+            "The xenotype is what ancestry is read from."
+        );
+    }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

@@ -116,24 +116,20 @@ public static class ConnectionUtility {
     ///     Whether this pawn was born to a world this Shard belongs to.
     /// </summary>
     /// <remarks>
-    ///     The xenotype is the only thing that grants ancestry on a single-world save. Falling
-    ///     back to the save's world made every baseliner who stepped out of a drop pod a native
-    ///     Scadrian, and they could burn atium on arrival - which is the opposite of what the
-    ///     design says an off-world refugee reads.
+    ///     The xenotype is the only thing that grants ancestry, on any save. Two earlier rules
+    ///     both handed a floor to people who had not earned one: falling back to the save's world
+    ///     made every baseliner stepping out of a drop pod a native, and the cross-world sentinel
+    ///     handed 30 to all of them at once, so a Crashlanded colony of baseliners burned atium on
+    ///     day one.
     ///     <para>
-    ///         The cross-world sentinel keeps the floor, because reaching every system is the
-    ///         entire point of that scenario. Everywhere else an off-worlder starts at nothing
-    ///         and has to earn it by living there.
+    ///         An off-worlder starts at nothing wherever they are, and earns it by living there.
+    ///         Picking a world at world generation says where the colony is, not who the colonists
+    ///         are.
     ///     </para>
     /// </remarks>
     private static int AncestryFloor(Pawn pawn, ShardDef shard) {
         CosmereWorldDef? home = WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
-
-        if (home == null) {
-            CosmereWorldDef? primary = WorldUtility.Primary;
-            if (primary?.crossWorld != true) return 0;
-            home = primary;
-        }
+        if (home == null) return 0;
 
         List<ShardDef> ancestral = WorldUtility.AncestryShards(home);
         for (int i = 0; i < ancestral.Count; i++) {

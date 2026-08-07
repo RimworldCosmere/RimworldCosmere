@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <GenStepDef>
+        <defName>Cosmere_Scadrial_GenStep_AshVents</defName>
+        <order>250</order>
+        <genStep Class="Cosmere.System.Scadrial.MapGen.GenStep_ScatterAshVents">
+            <minSpacing>40</minSpacing>
+            <minEdgeDist>12</minEdgeDist>
+            <allowRoofed>false</allowRoofed>
+            <allowInWaterBiome>false</allowInWaterBiome>
+        </genStep>
+    </GenStepDef>
+
+</Defs>

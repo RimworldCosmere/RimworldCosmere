@@ -48,4 +48,14 @@ public static class AshPlume {
         remainder -= deposit;
         return deposit;
     }
+
+    /// <summary>
+    ///     Rebuilds a saved bank, discarding one whose length no longer matches the offset list.
+    ///     A stale length would index past the array inside the tick loop; losing fractions will not.
+    /// </summary>
+    public static float[]? RestoreBank(List<float>? saved, int cellCount) {
+        if (saved == null || saved.Count != cellCount) return null;
+
+        return saved.ToArray();
+    }
 }

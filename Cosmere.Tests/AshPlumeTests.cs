@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cosmere.System.Scadrial.Grid;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -105,5 +106,31 @@ public class AshPlumeTests {
 
         Assert.AreEqual(0, AshPlume.Bank(ref remainder, -2f, 10));
         Assert.AreEqual(3f, remainder, 0.0001f);
+    }
+
+    [TestMethod]
+    public void ARestoredBankKeepsEveryFractionItWasSavedWith() {
+        float[] saved = new float[3];
+        AshPlume.Bank(ref saved[0], 4f, 10);
+        AshPlume.Bank(ref saved[1], 9.5f, 10);
+
+        float[]? restored = AshPlume.RestoreBank([..saved], saved.Length);
+
+        Assert.IsNotNull(restored);
+        Assert.AreEqual(4f, restored[0], 0.0001f);
+        Assert.AreEqual(9.5f, restored[1], 0.0001f);
+        Assert.AreEqual(0f, restored[2], 0.0001f);
+
+        // 9.5 was half a millimetre off a deposit; a bank dropped on load restarts the cell at 0.
+        Assert.AreEqual(10, AshPlume.Bank(ref restored[1], 0.5f, 10));
+    }
+
+    [TestMethod]
+    public void ABankSavedAtADifferentRadiusIsDiscardedRatherThanIndexedPast() {
+        List<float> saved = [1f, 2f, 3f];
+
+        Assert.IsNull(AshPlume.RestoreBank(saved, 4), "a grown offset list would read past the saved bank");
+        Assert.IsNull(AshPlume.RestoreBank(saved, 2), "a shrunk one would leave the tail unread");
+        Assert.IsNull(AshPlume.RestoreBank(null, 3), "a save from before the bank existed");
     }
 }

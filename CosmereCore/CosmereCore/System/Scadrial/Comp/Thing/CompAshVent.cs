@@ -59,6 +59,17 @@ public class CompAshVent : ThingComp {
         map.GetComponent<Map.AshDepthTracker>()?.DeregisterVent(this);
     }
 
+    public override void PostExposeData() {
+        base.PostExposeData();
+
+        List<float>? banked = null;
+        if (Scribe.mode == LoadSaveMode.Saving && remainder != null) banked = [..remainder];
+
+        Scribe_Collections.Look(ref banked, "ashVentRemainder", LookMode.Value);
+
+        if (Scribe.mode == LoadSaveMode.LoadingVars) remainder = AshPlume.RestoreBank(banked, Offsets.Count);
+    }
+
     /// <summary>
     ///     Adds this cycle's share to every cell in range. Returns whether anything changed, so
     ///     the tracker only dirties the mesh when it must.

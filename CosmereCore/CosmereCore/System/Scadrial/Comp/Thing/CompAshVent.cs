@@ -86,7 +86,7 @@ public class CompAshVent : ThingComp {
         float headingZ = Mathf.Sin(angle);
         float skew = Props.skew * Mathf.Clamp01(map.windManager.WindSpeed);
 
-        IntVec3 centre = parent.Position;
+        IntVec3 centre = parent.OccupiedRect().CenterCell;
         CellIndices indices = map.cellIndices;
         List<IntVec3> all = Offsets;
         float[] carried = Remainder;

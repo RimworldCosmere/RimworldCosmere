@@ -64,4 +64,14 @@ public class AshBuriedCells {
             Set(i, AshDepthMath.IsBuried(depthMm(i), false));
         }
     }
+
+    /// <summary>
+    ///     Re-derives every cell from depth and keeps the hysteresis each one already carries. For
+    ///     the dev actions that move the whole grid at once and cannot wait on the sweep.
+    /// </summary>
+    public void RefreshFromDepth(Func<int, int> depthMm) {
+        for (int i = 0; i < buried.Length; i++) {
+            Set(i, AshDepthMath.IsBuried(depthMm(i), buried[i]));
+        }
+    }
 }

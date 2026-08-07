@@ -69,6 +69,22 @@ public class AshBuriedCellsTests {
     }
 
     [TestMethod]
+    public void RefreshingFromDepthKeepsTheHysteresisThatSeedingDiscards() {
+        AshBuriedCells cells = new AshBuriedCells(4);
+        int between = AshDepthMath.UncoveredMm + 1;
+        int[] depth = [between, between, AshDepthMath.BuriedMm, 0];
+        cells.Set(0, true);
+        cells.Set(3, true);
+
+        cells.RefreshFromDepth(i => depth[i]);
+
+        Assert.IsTrue(cells.IsBuried(0), "a buried cell above the unbury line stays buried");
+        Assert.IsFalse(cells.IsBuried(1), "an unburied cell needs the full burial line");
+        Assert.IsTrue(cells.IsBuried(2));
+        Assert.IsFalse(cells.IsBuried(3), "ash gone means the cell unburies");
+    }
+
+    [TestMethod]
     public void AnIndexOutsideTheGridIsNeverBuried() {
         AshBuriedCells cells = new AshBuriedCells(16);
         Assert.IsFalse(cells.IsBuried(-1));

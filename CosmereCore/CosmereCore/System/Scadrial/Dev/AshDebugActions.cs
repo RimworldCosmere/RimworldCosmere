@@ -65,6 +65,8 @@ public static class AshDebugActions {
             if (grid.CanHaveAsh(indices.IndexToCell(i))) grid.AddDepthMm(i, millimetres);
         }
 
+        // The regenerate below draws off the set, and the sweep that fills it does not run paused.
+        tracker.Buried.RefreshFromDepth(grid.GetDepthMm);
         map.mapDrawer.RegenerateEverythingNow();
         map.GetComponent<AshOverlayDrawer>()?.SetDirty();
     }

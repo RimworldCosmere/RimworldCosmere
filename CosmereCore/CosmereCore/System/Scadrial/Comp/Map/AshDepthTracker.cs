@@ -38,8 +38,8 @@ public class AshDepthTracker : MapComponent {
     private static MapMeshFlagDef? ashFlag;
     private static TerrainDef? ashTerrain;
 
-    private readonly float[] stripeAccrual = new float[Stripes];
-    private readonly float[] drainAccrual = new float[Stripes];
+    private float[] stripeAccrual = new float[Stripes];
+    private float[] drainAccrual = new float[Stripes];
 
     private Render.AshParticles? veil;
 
@@ -178,12 +178,29 @@ public class AshDepthTracker : MapComponent {
         Scribe_Deep.Look(ref grid, "ashGrid", map);
         Scribe_Deep.Look(ref terrainMemory, "ashTerrainMemory", map);
         Scribe_Deep.Look(ref settleClock, "ashSettleClock", map);
+        ExposeAccrual(ref stripeAccrual, "ashStripeAccrual");
+        ExposeAccrual(ref drainAccrual, "ashDrainAccrual");
 
         if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
 
         grid ??= new AshGrid(map);
         terrainMemory ??= new AshTerrainMemory(map);
         settleClock ??= new AshSettleClock(map);
+    }
+
+    /// <summary>
+    ///     Banked sub-unit millimetres, through the list round trip and length guard the vent uses.
+    ///     Leaving them unsaved costs every stripe just under a whole unit on each load.
+    /// </summary>
+    private static void ExposeAccrual(ref float[] accrual, string label) {
+        List<float>? banked = null;
+        if (Scribe.mode == LoadSaveMode.Saving) banked = [..accrual];
+
+        Scribe_Collections.Look(ref banked, label, LookMode.Value);
+
+        if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+
+        accrual = AshPlume.RestoreBank(banked, Stripes) ?? new float[Stripes];
     }
 
     /// <summary>

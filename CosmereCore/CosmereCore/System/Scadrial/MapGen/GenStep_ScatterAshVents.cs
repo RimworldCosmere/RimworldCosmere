@@ -50,7 +50,7 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
     }
 
     protected override void ScatterAt(IntVec3 loc, Verse.Map map, GenStepParams parms, int stackCount = 1) {
-        GenSpawn.Spawn(ThingDefOf_AshVent.Cosmere_Scadrial_Thing_AshVent, loc, map);
+        GenSpawn.Spawn(ThingDefOf.Cosmere_Scadrial_Thing_AshVent, loc, map);
         placed++;
     }
 
@@ -76,14 +76,5 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
         }
 
         return false;
-    }
-}
-
-[DefOf]
-public static class ThingDefOf_AshVent {
-    public static ThingDef Cosmere_Scadrial_Thing_AshVent = null!;
-
-    static ThingDefOf_AshVent() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf_AshVent));
     }
 }

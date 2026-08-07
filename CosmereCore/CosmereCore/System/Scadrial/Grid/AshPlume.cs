@@ -14,8 +14,8 @@ public static class AshPlume {
     private const float Softening = 2f;
 
     /// <summary>
-    ///     1 at the vent, falling to 0 at the radius. Skew runs 0 to 1 and leans the plume along
-    ///     the heading, which is what gives a map a downwind side instead of a tidy circle.
+    ///     1 at the vent, thinning to about 0.014 on the boundary ring and 0 past it. Skew runs 0
+    ///     to 1 and leans the plume along the heading, which gives a map a downwind side.
     /// </summary>
     public static float Weight(int offsetX, int offsetZ, float headingX, float headingZ, float skew) {
         float distanceSquared = offsetX * offsetX + offsetZ * offsetZ;

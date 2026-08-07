@@ -1,6 +1,5 @@
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Comp.Game;
-using Cosmere.System.Scadrial.MapGen;
 using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
@@ -25,7 +24,7 @@ public static class AshmountDebugActions {
 
         int vents = 0;
         Verse.Map? current = Find.CurrentMap;
-        if (current != null) vents = current.listerThings.ThingsOfDef(ThingDefOf_AshVent.Cosmere_Scadrial_Thing_AshVent).Count;
+        if (current != null) vents = current.listerThings.ThingsOfDef(ThingDefOf.Cosmere_Scadrial_Thing_AshVent).Count;
 
         Messages.Message(
             $"Tile {tile.tileId}: ash exposure {exposure:0.00}x, {vents} vent(s) on this map "

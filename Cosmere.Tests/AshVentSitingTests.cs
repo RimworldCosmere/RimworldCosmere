@@ -35,6 +35,19 @@ public class AshVentSitingTests {
     }
 
     [TestMethod]
+    public void TheFallbackPassTakesGroundTheStrictRulesReject() {
+        Assert.IsFalse(
+            AshVentSiting.IsPlausible(0.1f, false, 1f, false),
+            "low rockless farmland fails every strict rule at once"
+        );
+        Assert.IsTrue(
+            AshVentSiting.IsPlausibleFallback(false),
+            "the fallback takes it anyway, so a starved map still gets its vent"
+        );
+        Assert.IsFalse(AshVentSiting.IsPlausibleFallback(true), "water is still water");
+    }
+
+    [TestMethod]
     public void CountRisesWithExposureAndStaysInRange() {
         Assert.AreEqual(1, AshVentSiting.CountForExposure(1f), "an unexposed map still gets one");
         Assert.AreEqual(6, AshVentSiting.CountForExposure(3f), "a mount-adjacent map gets the full six");

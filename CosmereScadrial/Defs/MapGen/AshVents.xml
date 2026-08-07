@@ -9,6 +9,12 @@
             <minEdgeDist>12</minEdgeDist>
             <allowRoofed>false</allowRoofed>
             <allowInWaterBiome>false</allowInWaterBiome>
+            <!-- Vanilla skips the fallback pass entirely unless this list has an entry. -->
+            <fallbackValidators>
+                <li Class="ScattererValidator_NoNonNaturalEdifices">
+                    <radius>0</radius>
+                </li>
+            </fallbackValidators>
         </genStep>
     </GenStepDef>
 

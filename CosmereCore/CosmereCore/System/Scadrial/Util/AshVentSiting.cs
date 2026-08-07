@@ -23,6 +23,14 @@ public static class AshVentSiting {
     }
 
     /// <summary>
+    ///     What survives on the fallback pass. Elevation and fertility go; a starved map is meant
+    ///     to get its vent somewhere rather than nowhere.
+    /// </summary>
+    public static bool IsPlausibleFallback(bool isWater) {
+        return !isWater;
+    }
+
+    /// <summary>
     ///     Exposure runs 1 to 3. One vent at the belt's edge, six on a mount-adjacent tile, and
     ///     the steps between are what makes distance to a mount feel like a choice.
     /// </summary>

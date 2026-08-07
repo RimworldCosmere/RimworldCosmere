@@ -9,6 +9,8 @@
             <minEdgeDist>12</minEdgeDist>
             <allowRoofed>false</allowRoofed>
             <allowInWaterBiome>false</allowInWaterBiome>
+            <!-- Vanilla warns before it tries the fallback. Our own log carries the placed count. -->
+            <warnOnFail>false</warnOnFail>
             <!-- Vanilla skips the fallback pass entirely unless this list has an entry. -->
             <fallbackValidators>
                 <li Class="ScattererValidator_NoNonNaturalEdifices">

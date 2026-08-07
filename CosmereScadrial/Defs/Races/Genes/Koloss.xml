@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <GeneDef Name="Cosmere_Scadrial_KolossGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
+    <exclusionTags>
+      <li>CosmereKoloss</li>
+    </exclusionTags>
+  </GeneDef>
+
+  <!-- The identity gene. Carries the body and the colour, because a koloss reads as a koloss
+       before any of its statistics matter. Hulk is the largest human body vanilla has; the
+       render node scales the whole thing past what a person can be. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossHeritage</defName>
+    <label>koloss</label>
+    <labelShortAdj>koloss</labelShortAdj>
+    <description>Four spikes made this thing out of a person. It is larger than any man, blue-grey, and remembers almost nothing of who it used to be.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossHeritage</iconPath>
+    <displayOrderInCategory>100</displayOrderInCategory>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <bodyType>Hulk</bodyType>
+    <skinColorOverride>(96, 122, 148)</skinColorOverride>
+    <skinIsHairColor>false</skinIsHairColor>
+    <renderNodeProperties>
+      <li>
+        <debugLabel>KolossBulk</debugLabel>
+        <nodeClass>PawnRenderNode</nodeClass>
+        <workerClass>Cosmere.System.Scadrial.Rendering.PawnRenderNodeWorker_KolossBulk</workerClass>
+        <baseLayer>4</baseLayer>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Body</parentTagDef>
+      </li>
+    </renderNodeProperties>
+    <statFactors>
+      <MoveSpeed>1.35</MoveSpeed>
+      <CarryingCapacity>4.0</CarryingCapacity>
+      <MeleeDamageFactor>2.5</MeleeDamageFactor>
+    </statFactors>
+    <statOffsets>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- Koloss never stop growing. The hediff does the killing; this gene is why it exists. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_NeverStopsGrowing</defName>
+    <label>never stops growing</label>
+    <labelShortAdj>growing</labelShortAdj>
+    <description>A koloss grows for as long as it lives. Nothing tells it to stop, and eventually its own size is what kills it.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossGrowth</iconPath>
+    <displayOrderInCategory>101</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <statOffsets>
+      <MaxNutrition>0.8</MaxNutrition>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- The signature. Skin does not keep pace with the body under it. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkinTooSmall</defName>
+    <label>skin too small</label>
+    <labelShortAdj>split-skinned</labelShortAdj>
+    <description>The body grows. The skin does not. It splits along the shoulders and thighs and hangs open, and the koloss pins the worst of it shut with whatever is to hand.</description>
+    <iconPath>UI/Icons/Genes/Gene_SkinTooSmall</iconPath>
+    <displayOrderInCategory>102</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <statOffsets>
+      <ImmunityGainSpeed>-0.15</ImmunityGainSpeed>
+    </statOffsets>
+    <statFactors>
+      <InjuryHealingFactor>0.7</InjuryHealingFactor>
+    </statFactors>
+  </GeneDef>
+
+  <!-- Four spikes. Pull one and there is nothing holding the mind in. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SpikeBound</defName>
+    <label>spike-bound</label>
+    <labelShortAdj>spiked</labelShortAdj>
+    <description>Four hemalurgic spikes hold this creature together - iron, steel, tin and pewter, driven through in one sitting. Remove any of them and what is left stops being a koloss, and then stops being anything.</description>
+    <iconPath>UI/Icons/Genes/Gene_SpikeBound</iconPath>
+    <displayOrderInCategory>103</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <statFactors>
+      <PsychicSensitivity>2.0</PsychicSensitivity>
+    </statFactors>
+  </GeneDef>
+
+  <!-- Emotional Allomancy is the leash. Without one they attack whatever is closest. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_RiotableMind</defName>
+    <label>riotable mind</label>
+    <labelShortAdj>biddable</labelShortAdj>
+    <description>Whatever the spikes left behind can be pushed on from outside. A Rioter or a Soother can hold a koloss steady, and a koloss with nobody holding it will find something to kill.</description>
+    <iconPath>UI/Icons/Genes/Gene_RiotableMind</iconPath>
+    <displayOrderInCategory>104</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <statFactors>
+      <SocialImpact>0.2</SocialImpact>
+      <NegotiationAbility>0.1</NegotiationAbility>
+    </statFactors>
+    <statOffsets>
+      <MentalBreakThreshold>0.35</MentalBreakThreshold>
+    </statOffsets>
+    <!-- Nothing that needs a mind. They fight, they carry, they clear ground. -->
+    <disabledWorkTags>
+      <li>Intellectual</li>
+      <li>Social</li>
+      <li>Artistic</li>
+      <li>Crafting</li>
+      <li>Cooking</li>
+      <li>Caring</li>
+      <li>Animals</li>
+      <li>PlantWork</li>
+      <li>Firefighting</li>
+    </disabledWorkTags>
+  </GeneDef>
+
+  <!-- Pain is information a koloss has stopped receiving. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
+    <defName>Cosmere_Scadrial_Gene_DeadenedNerves</defName>
+    <label>deadened nerves</label>
+    <labelShortAdj>unfeeling</labelShortAdj>
+    <description>A koloss registers a spear through the gut as a distraction. It will keep walking toward you with the shaft still in it.</description>
+    <iconPath>UI/Icons/Genes/Gene_DeadenedNerves</iconPath>
+    <displayOrderInCategory>105</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <painFactor>0.3</painFactor>
+    <statOffsets>
+      <PainShockThreshold>0.6</PainShockThreshold>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- Post-Catacendre, and nothing to do with the rest of this file. A koloss-blooded pawn is a
+       person with a big grandfather, not a thing built out of spikes - so it carries no
+       exclusion tag and sits happily alongside ordinary human genes. -->
+  <GeneDef ParentName="Cosmere_Scadrial_RaceGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossBlooded</defName>
+    <label>koloss-blooded</label>
+    <labelShortAdj>koloss-blooded</labelShortAdj>
+    <description>Harmony made the koloss able to breed true, and in the generations since, their blood has spread. A koloss-blooded man is a head taller than his neighbours and stronger than he looks, and that is the whole of it.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossBlooded</iconPath>
+    <displayOrderInCategory>110</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <bodyType>Hulk</bodyType>
+    <statFactors>
+      <CarryingCapacity>1.5</CarryingCapacity>
+      <MeleeDamageFactor>1.25</MeleeDamageFactor>
+    </statFactors>
+    <statOffsets>
+      <ComfyTemperatureMin>-6</ComfyTemperatureMin>
+      <PainShockThreshold>0.1</PainShockThreshold>
+    </statOffsets>
+  </GeneDef>
+
+</Defs>

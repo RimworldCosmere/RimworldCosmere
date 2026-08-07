@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- A koloss grows for as long as it lives, and the growing is what eventually kills it. The
+       severity of this hediff is the koloss's size: the render worker reads it every frame, and
+       the last stage is the one where the skin finally gives out. -->
+  <HediffDef>
+    <defName>Cosmere_Scadrial_Hediff_KolossGrowth</defName>
+    <label>unchecked growth</label>
+    <description>Nothing in this body tells it to stop. Muscle and bone keep laying themselves down year after year, and the skin over them does not keep up.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.65, 0.75)</defaultLabelColor>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <maxSeverity>1.0</maxSeverity>
+    <comps>
+      <!-- Eight years from spiking to splitting. ScadrialModSettings.kolossGrowthYears
+           rewrites this at startup and whenever the settings window closes, so this value is
+           the default rather than the truth. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0.00208333</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>young</label>
+        <minSeverity>0</minSeverity>
+        <statFactors>
+          <MeleeDamageFactor>1.0</MeleeDamageFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>grown</label>
+        <minSeverity>0.25</minSeverity>
+        <statFactors>
+          <MeleeDamageFactor>1.25</MeleeDamageFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>overgrown</label>
+        <minSeverity>0.55</minSeverity>
+        <painOffset>0.10</painOffset>
+        <statFactors>
+          <MeleeDamageFactor>1.5</MeleeDamageFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>splitting</label>
+        <minSeverity>0.80</minSeverity>
+        <painOffset>0.25</painOffset>
+        <lifeThreatening>true</lifeThreatening>
+        <statFactors>
+          <MeleeDamageFactor>1.7</MeleeDamageFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.30</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

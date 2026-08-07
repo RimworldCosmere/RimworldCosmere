@@ -1,6 +1,8 @@
 using System;
 using Cosmere.Core.Settings;
 using Cosmere.Core.Settings.Model;
+using Cosmere.System.Scadrial.Util;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Settings;
@@ -15,6 +17,12 @@ public class ScadrialModSettings : CosmereModSettings {
     public bool alwaysShowAllomanticAuras;
     public bool enableAshfall = true;
     public bool enableMists = true;
+
+    /// <summary>
+    ///     Years from the fourth spike going in to the skin giving out. Rewrites the growth
+    ///     hediff's rate - see KolossGrowthTuning.
+    /// </summary>
+    public float kolossGrowthYears = 8f;
     public bool mistsArrivalLetter = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
@@ -136,6 +144,26 @@ public class ScadrialModSettings : CosmereModSettings {
                     ),
                 ]
             ),
+            new SettingSection(
+                "koloss",
+                "CS_Settings_Category_Koloss",
+                [
+                    new SettingDescriptor(
+                        "koloss-growth-years",
+                        "CS_Settings_KolossGrowthYears_Label",
+                        "CS_Settings_KolossGrowthYears_Tooltip",
+                        new SliderControl(
+                            () => kolossGrowthYears,
+                            updated => kolossGrowthYears = Mathf.Round(updated),
+                            KolossGrowthTuning.DefaultYears,
+                            KolossGrowthTuning.MinYears,
+                            KolossGrowthTuning.MaxYears,
+                            1f,
+                            value => value.ToString("0")
+                        )
+                    ),
+                ]
+            ),
         ];
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate(Name, sections);
@@ -147,6 +175,7 @@ public class ScadrialModSettings : CosmereModSettings {
     }
 
     public override void ExposeData() {
+        Scribe_Values.Look(ref kolossGrowthYears, "kolossGrowthYears", 8f);
         Scribe_Values.Look(ref enableMists, "enableMists", true);
         Scribe_Values.Look(ref mistsFrequency, "mistsFrequency");
         Scribe_Values.Look(ref pawnsKeepMetalmindsWhenDowned, "pawnsKeepMetalmindsWhenDowned", true);

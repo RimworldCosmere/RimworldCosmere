@@ -12,6 +12,8 @@ namespace Cosmere.System.Scadrial.MapGen;
 public class GenStep_ScatterAshVents : GenStep_Scatterer {
     private const int ElevationSampleRadius = 10;
 
+    private int placed;
+
     public override int SeedPart => 0x5AE17;
 
     /// <summary>
@@ -22,8 +24,11 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
         if (!AshEra.CanAccumulate(map)) return;
 
         count = AshVentSiting.CountForExposure(AshmountExposureCache.For(map.Tile));
+        placed = 0;
         base.Generate(map, parms);
-        Logger.Important($"AshVents: scattered up to {count} on this map.");
+
+        // Counted in ScatterAt, not from usedSpots - Generate clears that list before it returns.
+        Logger.Important($"AshVents: scattered {placed} on this map.");
     }
 
     protected override bool CanScatterAt(IntVec3 loc, Verse.Map map) {
@@ -46,6 +51,7 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
 
     protected override void ScatterAt(IntVec3 loc, Verse.Map map, GenStepParams parms, int stackCount = 1) {
         GenSpawn.Spawn(ThingDefOf_AshVent.Cosmere_Scadrial_Thing_AshVent, loc, map);
+        placed++;
     }
 
     private static float MeanElevation(IntVec3 centre, Verse.Map map) {

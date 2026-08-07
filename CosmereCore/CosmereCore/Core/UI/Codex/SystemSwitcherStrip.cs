@@ -91,9 +91,16 @@ public static class SystemSwitcherStrip {
         bool selected = state.ShowingConnection;
         Color mark = selected ? ConnectionPalette.Selected : DockPalette.MutedText;
 
-        // A ring: outer square in the mark colour, inner square punched back out to the panel.
-        Widgets.DrawBoxSolid(new Rect(orb.center.x - 9f, orb.center.y - 9f, 18f, 18f), mark);
-        Widgets.DrawBoxSolid(new Rect(orb.center.x - 5f, orb.center.y - 5f, 10f, 10f), DockPalette.Panel);
+        if (ConnectionTextures.Sigil != null) {
+            Color prev = GUI.color;
+            GUI.color = mark;
+            GUI.DrawTexture(orb.ContractedBy(3f), ConnectionTextures.Sigil);
+            GUI.color = prev;
+        } else {
+            // Until the art exists: a ring, drawn as an outer square punched back to the panel.
+            Widgets.DrawBoxSolid(new Rect(orb.center.x - 9f, orb.center.y - 9f, 18f, 18f), mark);
+            Widgets.DrawBoxSolid(new Rect(orb.center.x - 5f, orb.center.y - 5f, 10f, 10f), DockPalette.Panel);
+        }
 
         TooltipHandler.TipRegion(orb, "CC_Codex_Subtab_Connection".Translate());
         Widgets.DrawHighlightIfMouseover(orb);

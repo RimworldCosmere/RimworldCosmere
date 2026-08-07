@@ -1,5 +1,6 @@
 using Cosmere.Core.ShardConnection;
 using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.UI.Codex;
 
@@ -53,4 +54,22 @@ public static class ConnectionPalette {
             _ => "CC_Connection_Tier_None",
         };
     }
+}
+
+/// <summary>
+///     The Connection sigil, looked up once at startup.
+/// </summary>
+/// <remarks>
+///     ContentFinder must never be called from a draw path - it is a dictionary lookup plus a
+///     load on miss, and the rail redraws every frame the tab is open.
+///     <para>
+///         Flat white on transparent, because SystemSwitcherStrip tints it with GUI.color to
+///         show selection. Any colour baked into the texture would be multiplied by the accent
+///         and come out muddy.
+///     </para>
+/// </remarks>
+[StaticConstructorOnStartup]
+public static class ConnectionTextures {
+    public static readonly Texture2D? Sigil =
+        ContentFinder<Texture2D>.Get("UI/Icons/Connection", false);
 }

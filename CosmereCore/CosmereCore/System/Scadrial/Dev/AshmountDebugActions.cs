@@ -1,5 +1,6 @@
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Comp.Game;
+using Cosmere.System.Scadrial.MapGen;
 using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
@@ -21,8 +22,14 @@ public static class AshmountDebugActions {
         }
 
         float exposure = AshmountExposureCache.For(tile);
+
+        int vents = 0;
+        Verse.Map? current = Find.CurrentMap;
+        if (current != null) vents = current.listerThings.ThingsOfDef(ThingDefOf_AshVent.Cosmere_Scadrial_Thing_AshVent).Count;
+
         Messages.Message(
-            $"Tile {tile.tileId}: ash exposure {exposure:0.00}x (generation gate: {FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)})",
+            $"Tile {tile.tileId}: ash exposure {exposure:0.00}x, {vents} vent(s) on this map "
+            + $"(generation gate: {FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)})",
             MessageTypeDefOf.NeutralEvent,
             false
         );

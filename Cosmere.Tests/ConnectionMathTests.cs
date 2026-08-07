@@ -282,6 +282,47 @@ public class ConnectionMathTests {
         );
     }
 
+    /// <summary>
+    ///     Residence reaches the ancestry floor at a year and stops. It is how an off-worlder
+    ///     eventually burns atium without ever having been Scadrian.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceReachesTheFloorInAYearAndStops() {
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0), "Day one is nothing.");
+        Assert.AreEqual(15, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear / 2), "Half a year, half way.");
+        Assert.AreEqual(Floor, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear), "A year reaches the floor.");
+        Assert.AreEqual(
+            Floor,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 10),
+            "Ten years is still the floor - naturalising makes you a local, not a native twice over."
+        );
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(-1), "Negative time is nothing, not a wrap-around.");
+    }
+
+    /// <summary>
+    ///     A native who has also lived there stays at 30. Residence and ancestry are two routes
+    ///     to the same baseline, and Compose already takes the larger - this guards the pairing.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceNeverStacksOnTopOfBeingNative() {
+        int nativeWhoStayed = ConnectionMath.Compose(
+            Floor,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
+            0,
+            0
+        );
+        Assert.AreEqual(30, nativeWhoStayed);
+
+        int refugeeWhoStayed = ConnectionMath.Compose(
+            0,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
+            0,
+            0
+        );
+        Assert.AreEqual(30, refugeeWhoStayed, "A year on the ground earns what being born there grants.");
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(refugeeWhoStayed), "And with it, atium.");
+    }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

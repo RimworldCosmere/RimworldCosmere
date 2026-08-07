@@ -106,7 +106,7 @@ public static class ConnectionUtility {
     private static int Raw(Pawn pawn, ShardDef shard) {
         return ConnectionMath.Compose(
             AncestryFloor(pawn, shard),
-            0, // Residence is Phase 5. Until then nobody naturalises.
+            Verse.Current.Game?.GetComponent<ResidenceTracker>()?.StrengthFor(pawn, shard) ?? 0,
             ConnectionInvestitureRegistry.StrengthFor(pawn, shard),
             Earned(pawn, shard)
         );

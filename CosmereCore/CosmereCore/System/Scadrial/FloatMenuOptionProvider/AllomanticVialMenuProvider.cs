@@ -40,7 +40,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
             return "CS_NotConnectedToShard".Translate(
                 pawn.Named("PAWN"),
                 metal.Named("METAL"),
-                (metal.shard?.label ?? metal.label).Named("SHARD")
+                (metal.shard?.LabelCap ?? metal.LabelCap).Named("SHARD")
             );
         }
 

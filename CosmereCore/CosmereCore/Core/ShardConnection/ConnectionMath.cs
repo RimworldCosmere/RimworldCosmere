@@ -100,6 +100,20 @@ public static class ConnectionMath {
         return ruinStrength < preservationStrength ? ruinStrength : preservationStrength;
     }
 
+    /// <summary>Mirrors Verse.GenDate.TicksPerYear, which the test project cannot reference.</summary>
+    public const int TicksPerYear = 3600000;
+
+    /// <summary>
+    ///     What living on a world is worth so far. Reaches the ancestry floor at one year and
+    ///     stops there - naturalising makes you a local, not a native twice over.
+    /// </summary>
+    public static int ResidenceFrom(int ticksResident) {
+        if (ticksResident <= 0) return 0;
+        if (ticksResident >= TicksPerYear) return AncestryFloor;
+
+        return (int)((long)ticksResident * AncestryFloor / TicksPerYear);
+    }
+
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>
     public static int FromEdge(float edgeValue) {
         return Clamp((int)global::System.Math.Round(edgeValue * Max));

@@ -25,7 +25,7 @@ public class AllomanticMetal : AllomanticVial {
                     "CS_NotConnectedToShard".Translate(
                         ingester.Named("PAWN"),
                         metal.Named("METAL"),
-                        (metal.shard?.label ?? metal.label).Named("SHARD")
+                        (metal.shard?.LabelCap ?? metal.LabelCap).Named("SHARD")
                     ),
                     ingester,
                     MessageTypeDefOf.RejectInput,

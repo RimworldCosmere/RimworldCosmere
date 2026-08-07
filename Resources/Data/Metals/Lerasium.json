@@ -2,6 +2,7 @@
   "name": "lerasium",
   "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
   "godMetal": true,
+  "shard": "Preservation",
   "stackable": false,
   "drawSize": 1,
   "marketValue": 10000,

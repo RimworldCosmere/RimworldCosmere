@@ -3,4 +3,5 @@
     <CS_Error_MissingRequirement>{0} can't be on a pawn that doesn't have {0}</CS_Error_MissingRequirement>
     <CS_Error_CannotModifyInvestiture>Modifying investiture on on an hediff tree that doesnt have investiture</CS_Error_CannotModifyInvestiture>
     <CS_Allomancy_NoShardPresent>No Scadrial shard is present.</CS_Allomancy_NoShardPresent>
+    <CS_NotConnectedToShard>{PAWN} has no Connection to {SHARD}. {METAL} would do nothing but sit in their stomach.</CS_NotConnectedToShard>
 </LanguageData>

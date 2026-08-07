@@ -2,6 +2,7 @@
   "name": "leratium alloy",
   "description": "Leratium alloyed with common metals transforms the ingester into a Ferring for the alloyed metal.",
   "godMetal": true,
+  "shard": "Ruin",
   "stackable": false,
   "drawSize": 1,
   "marketValue": 8000,
@@ -20,7 +21,9 @@
     "stuffCount": "32",
     "ingredients": [
       {
-        "items": ["leratium"],
+        "items": [
+          "leratium"
+        ],
         "count": 1
       }
     ],

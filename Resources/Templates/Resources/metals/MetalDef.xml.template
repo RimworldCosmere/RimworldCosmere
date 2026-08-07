@@ -6,6 +6,7 @@
         <description>{{metal.description}}</description>
         <color>{{rgb metal.color}}</color>{{#if metal.colorTwo}}
         <colorTwo>{{rgb metal.colorTwo}}</colorTwo>{{/if}}{{#if metal.godMetal}}
-        <godMetal>{{metal.godMetal}}</godMetal>{{/if}}
+        <godMetal>{{metal.godMetal}}</godMetal>{{/if}}{{#if metal.shard}}
+        <shard>{{metal.shard}}</shard>{{/if}}
     </Cosmere.Core.Def.MetalDef>
 </Defs>

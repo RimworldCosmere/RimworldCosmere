@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Cosmere.Core.ShardConnection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -114,6 +117,67 @@ public class ConnectionMathTests {
                 ConnectionMath.FromEdge(ConnectionMath.ToEdge(strength)),
                 $"{strength} did not survive the trip through the SpiritWeb edge."
             );
+        }
+    }
+
+    /// <summary>
+    ///     The clause this whole system replaces. CanUseMetal read
+    ///     <c>if (metal.godMetal || ...) return true;</c>, so godMetal short-circuited to true for
+    ///     any pawn at all and a vanilla space refugee could burn atium.
+    /// </summary>
+    [TestMethod]
+    public void GodMetalNoLongerShortCircuitsToTrue() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Extension", "PawnExtension.cs"
+            )
+        );
+
+        int gate = source.IndexOf("ConnectionUtility.MayUse", StringComparison.Ordinal);
+        int shortCircuit = source.IndexOf(
+            "if (metal.godMetal || pawn.IsMistborn()", StringComparison.Ordinal
+        );
+
+        Assert.IsTrue(gate >= 0, "Expected god metal use to go through the Connection gate.");
+        Assert.IsTrue(
+            shortCircuit < 0 || gate < shortCircuit,
+            "The Connection gate has to run before the godMetal short-circuit, or it never fires."
+        );
+    }
+
+    /// <summary>
+    ///     Every god metal has to name the Shard it is a piece of, or the gate has nothing to
+    ///     check against and silently lets everyone through.
+    /// </summary>
+    [TestMethod]
+    public void EveryGodMetalNamesItsShard() {
+        List<string> offenders = [];
+        int seen = 0;
+
+        foreach (string path in Directory.GetFiles(
+                     Path.Combine(RepoRoot, "Resources", "Data", "Metals"), "*.json")) {
+            string json = File.ReadAllText(path);
+            if (!json.Contains("\"godMetal\": true", StringComparison.OrdinalIgnoreCase)) continue;
+
+            seen++;
+            if (!json.Contains("\"shard\"", StringComparison.Ordinal)) {
+                offenders.Add(Path.GetFileNameWithoutExtension(path));
+            }
+        }
+
+        Assert.IsTrue(seen > 0, "Found no god metals - the walk is wrong, not the data.");
+        Assert.AreEqual(0, offenders.Count, "These god metals name no Shard: " + string.Join(", ", offenders));
+    }
+
+    private static string RepoRoot {
+        get {
+            DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "CosmereScadrial", "Defs"))) {
+                dir = dir.Parent;
+            }
+
+            Assert.IsNotNull(dir, "Could not locate the repo root above the test output directory.");
+            return dir!.FullName;
         }
     }
 }

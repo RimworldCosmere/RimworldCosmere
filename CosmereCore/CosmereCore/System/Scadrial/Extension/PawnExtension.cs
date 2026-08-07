@@ -2,6 +2,7 @@ using Cosmere.Core;
 using Cosmere.Core.Def;
 using Cosmere.Core.Hediff;
 using Cosmere.Core.Savant;
+using Cosmere.Core.ShardConnection;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
@@ -22,6 +23,22 @@ public static class PawnExtension {
     public static AcceptanceReport CanUseMetal(this Pawn pawn, MetalDef metal) {
         if (metal.Equals(MetalDefOf.Lerasium) && pawn.IsMistborn()) {
             return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
+        }
+
+        // Lerasium is the deliberate exception. Burning it is how someone with no Connection at
+        // all gains one, so gating it would deny it to exactly the people it exists for.
+        if (metal.godMetal && !metal.Equals(MetalDefOf.Lerasium)) {
+            if (!ConnectionUtility.MayUse(pawn, metal.shard)) {
+                return new AcceptanceReport(
+                    "CS_NotConnectedToShard".Translate(
+                        pawn.Named("PAWN"),
+                        metal.Named("METAL"),
+                        (metal.shard?.label ?? metal.label).Named("SHARD")
+                    )
+                );
+            }
+
+            return true;
         }
 
         if (metal.godMetal || pawn.IsMistborn() || pawn.IsMisting(metal)) {

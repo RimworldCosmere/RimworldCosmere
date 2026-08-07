@@ -13,6 +13,12 @@ public class MetalDef : Verse.Def {
     public Color? colorTwo;
     public bool godMetal = false;
 
+    /// <summary>
+    ///     The Shard this metal is a piece of. Set on god metals only; ordinary metals belong to
+    ///     nobody and are not gated on Connection.
+    /// </summary>
+    public ShardDef? shard;
+
     public Material transparentLineColor => cachedTransparentLineColor ??=
         MaterialPool.MatFrom(GenDraw.LineTexPath, Verse.ShaderDatabase.Transparent, color);
 

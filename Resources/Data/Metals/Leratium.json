@@ -2,6 +2,7 @@
   "name": "leratium",
   "description": "Leratium is an alloy of the two god metals: Atium and Lerasium. A more perfect combination of the god metals.",
   "godMetal": true,
+  "shard": "Ruin",
   "stackable": false,
   "drawSize": 1,
   "marketValue": 15000,
@@ -18,11 +19,15 @@
     "type": "complex",
     "ingredients": [
       {
-        "items": ["lerasium"],
+        "items": [
+          "lerasium"
+        ],
         "count": 1
       },
       {
-        "items": ["atium"],
+        "items": [
+          "atium"
+        ],
         "count": 1
       }
     ],

@@ -43,6 +43,9 @@ public class MetalInfo {
 
     public bool GodMetal { get; set; }
 
+    /// <summary>ShardDef defName this metal belongs to. God metals only.</summary>
+    public string? Shard { get; set; }
+
     public bool Stackable { get; set; } = true;
 
     public float DrawSize { get; set; } = 1f;

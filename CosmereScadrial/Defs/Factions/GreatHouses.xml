@@ -85,9 +85,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseVenture</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -104,9 +102,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseElariel</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -123,9 +119,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseHasting</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -142,9 +136,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseLekal</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -161,9 +153,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseTekiel</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -180,9 +170,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseRenoux</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -199,9 +187,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseCett</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -221,9 +207,7 @@
     <defName>Cosmere_Scadrial_Faction_Ruin</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Skaa>1.0</Cosmere_Scadrial_Xenotype_Skaa>
       </xenotypeChances>
     </xenotypeSet>
     <label>Ruin's own</label>
@@ -268,9 +252,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseErikell</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -287,9 +269,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseInnate</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -306,9 +286,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseDemoux</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
@@ -325,9 +303,7 @@
     <defName>Cosmere_Scadrial_Faction_HouseHammondess</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>

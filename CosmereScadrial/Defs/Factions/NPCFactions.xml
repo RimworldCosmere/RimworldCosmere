@@ -56,8 +56,7 @@
     </forcedMemes>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Terris>0.9</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>1.0</Cosmere_Scadrial_Xenotype_Terris>
       </xenotypeChances>
     </xenotypeSet>
     <pawnGroupMakers>
@@ -134,9 +133,7 @@
     </forcedMemes>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.75</Cosmere_Scadrial_Xenotype_Skaa>
-        <Cosmere_Scadrial_Xenotype_Terris>0.15</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>1.0</Cosmere_Scadrial_Xenotype_Skaa>
       </xenotypeChances>
     </xenotypeSet>
     <caravanTraderKinds>
@@ -216,9 +213,7 @@
     </forcedMemes>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.5</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.45</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <maxPawnCostPerTotalPointsCurve>

@@ -26,9 +26,7 @@
     <defName>Cosmere_Scadrial_Faction_FinalEmpire</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.45</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.4</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.15</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>The Final Empire</label>
@@ -51,10 +49,9 @@
     <defName>Cosmere_Scadrial_Faction_KelsiersCrew</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.65</Cosmere_Scadrial_Xenotype_Skaa>
-        <Cosmere_Scadrial_Xenotype_Noble>0.2</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Terris>0.05</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.8</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>0.1</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
       </xenotypeChances>
     </xenotypeSet>
     <label>Kelsier's Crew</label>
@@ -77,9 +74,8 @@
     <defName>Cosmere_Scadrial_Faction_NewKingdom</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>New Kingdom of the Central Dominance</label>
@@ -103,9 +99,8 @@
     <defName>Cosmere_Scadrial_Faction_NewEmpire</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>New Empire</label>
@@ -129,9 +124,7 @@
     <defName>Cosmere_Scadrial_Faction_Refugees</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.8</Cosmere_Scadrial_Xenotype_Skaa>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.15</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Terris>0.05</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Skaa>1.0</Cosmere_Scadrial_Xenotype_Skaa>
       </xenotypeChances>
     </xenotypeSet>
     <label>The Refugees</label>
@@ -154,9 +147,8 @@
     <defName>Cosmere_Scadrial_Faction_NewScadrial</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>New Scadrial</label>
@@ -179,9 +171,8 @@
     <defName>Cosmere_Scadrial_Faction_HouseLadrian</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Noble>0.7</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.25</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
       </xenotypeChances>
     </xenotypeSet>
     <label>House Ladrian</label>

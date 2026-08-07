@@ -2,6 +2,10 @@
 <Defs>
     <PawnKindDef>
         <defName>Cosmere_Roshar_PawnKind_Lighteyes</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>rosharan lighteyes</label>
         <race>Human</race>
         <xenotypeSet>
@@ -29,6 +33,10 @@
 
     <PawnKindDef>
         <defName>Cosmere_Roshar_PawnKind_Darkeyes</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>rosharan darkeyes</label>
         <race>Human</race>
         <xenotypeSet>

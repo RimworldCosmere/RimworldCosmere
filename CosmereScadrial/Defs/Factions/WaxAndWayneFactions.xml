@@ -9,9 +9,8 @@
     <defName>Cosmere_Scadrial_Faction_Elendel</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>Elendel Basin</label>
@@ -66,9 +65,8 @@
     <defName>Cosmere_Scadrial_Faction_RoughsOutlaws</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>Roughs outlaws</label>
@@ -108,9 +106,8 @@
     <defName>Cosmere_Scadrial_Faction_TheSet</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>the Set</label>
@@ -151,9 +148,8 @@
     <defName>Cosmere_Scadrial_Faction_Malwish</defName>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.8</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.88</Cosmere_Scadrial_Xenotype_Scadrian>
         <Cosmere_Scadrial_Xenotype_Terris>0.12</Cosmere_Scadrial_Xenotype_Terris>
-        <Cosmere_Scadrial_Xenotype_Noble>0.08</Cosmere_Scadrial_Xenotype_Noble>
       </xenotypeChances>
     </xenotypeSet>
     <label>Malwish</label>

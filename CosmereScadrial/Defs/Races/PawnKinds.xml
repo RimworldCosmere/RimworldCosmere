@@ -2,6 +2,10 @@
 <Defs>
     <PawnKindDef ParentName="BasePlayerPawnKind">
         <defName>Cosmere_Scadrial_PawnKind_Noble</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>scadrian noble</label>
         <race>Human</race>
         <xenotypeSet>
@@ -25,6 +29,10 @@
 
     <PawnKindDef ParentName="BasePlayerPawnKind">
         <defName>Cosmere_Scadrial_PawnKind_Scadrian</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>scadrian person</label>
         <race>Human</race>
         <xenotypeSet>
@@ -48,6 +56,10 @@
 
     <PawnKindDef ParentName="BasePlayerPawnKind">
         <defName>Cosmere_Scadrial_PawnKind_Skaa</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>skaa person</label>
         <race>Human</race>
         <xenotypeSet>
@@ -72,6 +84,10 @@
 
     <PawnKindDef ParentName="BasePlayerPawnKind">
         <defName>Cosmere_Scadrial_PawnKind_Terris</defName>
+        <!-- Names its own people, so the faction's set must not be added on top: chances are
+         summed, and a Skaa kind in a noble house came out Noble half the time. This is
+         what lets a great house keep skaa without its lords becoming skaa. -->
+        <useFactionXenotypes>false</useFactionXenotypes>
         <label>terris person</label>
         <race>Human</race>
         <xenotypeSet>

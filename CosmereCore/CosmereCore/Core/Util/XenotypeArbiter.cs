@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cosmere.Core.Def;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Util;
@@ -46,13 +47,34 @@ public static class XenotypeArbiter {
     /// <summary>Whether <paramref name="world" />'s patch may set the xenotype for this pawn.</summary>
     public static bool MayAnswer(CosmereWorldDef? world) {
         if (world == null) return false;
+
+        // Nothing decided yet, so nobody answers. IsActive is deliberately permissive about a
+        // null world and returns true for everything, which used to let both shards through and
+        // leave composition order to pick - the very tie this class exists to break.
+        CosmereWorldDef? primary = WorldUtility.Primary;
+        if (primary == null) return false;
+
         if (!WorldUtility.IsActive(world)) return false;
 
-        // A single-world save has already been decided by IsActive - only one world can be
-        // active, so there is nothing to arbitrate.
-        CosmereWorldDef? primary = WorldUtility.Primary;
-        if (primary?.crossWorld != true) return true;
+        // A single world has already been decided by IsActive - only one can be active, so there
+        // is nothing to arbitrate.
+        if (!primary.crossWorld) return true;
 
         return chosen == world;
+    }
+
+    /// <summary>
+    ///     Whether the pawn's faction already answers this, in which case no world should.
+    /// </summary>
+    /// <remarks>
+    ///     A faction that declares its own people is more specific than the planet they stand on.
+    ///     Without this the arbiter drew a world at random per pawn, so an Alethkar soldier on a
+    ///     cross-world save had even odds of coming out Skaa while Alethkar's own set said
+    ///     darkeyes and lighteyes.
+    /// </remarks>
+    public static bool FactionSpeaksForItself(PawnGenerationRequest request) {
+        XenotypeSet? set = request.Faction?.def?.xenotypeSet;
+
+        return set is { Count: > 0 };
     }
 }

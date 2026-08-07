@@ -199,6 +199,60 @@ public class AmbientWorldGateTests {
     }
 
     /// <summary>
+    ///     A faction that names its own people outranks the world its pawns stand on.
+    /// </summary>
+    /// <remarks>
+    ///     The arbiter draws a world at random per pawn on a cross-world save, which gave an
+    ///     Alethkar soldier even odds of coming out Skaa while Alethkar's own set said darkeyes
+    ///     and lighteyes.
+    /// </remarks>
+    [TestMethod]
+    public void TheFactionOutranksTheWorld() {
+        List<string> offenders = [];
+
+        foreach (string relative in WorldOnlyFiles) {
+            string path = Path.Combine(SystemDir, relative.Replace('/', Path.DirectorySeparatorChar));
+            if (!File.Exists(path)) {
+                offenders.Add($"{relative} is missing");
+                continue;
+            }
+
+            string source = File.ReadAllText(path);
+            int defers = source.IndexOf("FactionSpeaksForItself", StringComparison.Ordinal);
+            int answers = source.IndexOf("MayAnswer", StringComparison.Ordinal);
+
+            if (defers < 0) {
+                offenders.Add($"{relative} overrides a faction that named its own people");
+            } else if (answers >= 0 && defers > answers) {
+                offenders.Add($"{relative} checks the faction after the world, which is too late");
+            }
+        }
+
+        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+    }
+
+    /// <summary>
+    ///     Before a world is chosen, nobody answers. IsActive is permissive about a null world
+    ///     and returns true for everything, which let both shards through and left composition
+    ///     order to pick the xenotype - the exact tie the arbiter exists to break.
+    /// </summary>
+    [TestMethod]
+    public void NobodyAnswersBeforeAWorldIsChosen() {
+        string source = File.ReadAllText(
+            Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "Util", "XenotypeArbiter.cs")
+        );
+
+        int guard = source.IndexOf("if (primary == null) return false;", StringComparison.Ordinal);
+        int isActive = source.IndexOf("WorldUtility.IsActive", StringComparison.Ordinal);
+
+        Assert.IsTrue(guard >= 0, "Expected MayAnswer to refuse before a world is set.");
+        Assert.IsTrue(
+            isActive < 0 || guard < isActive,
+            "The null check has to come before IsActive, which answers true for every world."
+        );
+    }
+
+    /// <summary>
     ///     The cached shard check never invalidated, and MistsWatcher read it cached in one place
     ///     and uncached in another so it could disagree with itself. It must not come back.
     /// </summary>

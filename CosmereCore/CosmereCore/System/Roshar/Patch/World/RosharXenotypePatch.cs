@@ -27,6 +27,9 @@ public static class RosharXenotypePatch {
 
         // Not IsActive: on the cross-world sentinel every world is active at once, and two
         // patches writing the same return value let composition order pick the xenotype.
+        // A faction that names its own people outranks the planet they stand on.
+        if (XenotypeArbiter.FactionSpeaksForItself(request)) return;
+
         if (!XenotypeArbiter.MayAnswer(WorldDefOf.Roshar)) return;
 
         // 70% darkeyes, 30% lighteyes - reflecting Rosharan demographics

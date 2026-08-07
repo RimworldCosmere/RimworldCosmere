@@ -27,6 +27,9 @@ public static class ScadrialXenotypePatch {
 
         // Not IsActive: on the cross-world sentinel every world is active at once, and two
         // patches writing the same return value let composition order pick the xenotype.
+        // A faction that names its own people outranks the planet they stand on.
+        if (XenotypeArbiter.FactionSpeaksForItself(request)) return;
+
         if (!XenotypeArbiter.MayAnswer(WorldDefOf.Scadrial)) return;
 
         bool preCatacendre = ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation);

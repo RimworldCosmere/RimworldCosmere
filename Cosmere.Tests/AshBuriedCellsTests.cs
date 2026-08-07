@@ -18,6 +18,7 @@ public class AshBuriedCellsTests {
         cells.Set(3, true);
         Assert.IsTrue(AshDepthMath.IsBuried(301, cells.IsBuried(3)));
         Assert.IsFalse(AshDepthMath.IsBuried(300, cells.IsBuried(3)));
+        Assert.IsFalse(AshDepthMath.IsBuried(0, cells.IsBuried(3)), "ash gone means the cell unburies");
     }
 
     [TestMethod]

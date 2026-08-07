@@ -54,4 +54,14 @@ public class AshBuriedCells {
         Array.Clear(buried, 0, buried.Length);
         Count = 0;
     }
+
+    /// <summary>
+    ///     Rebuilds the set off depth alone, treating every cell as previously unburied. For a save
+    ///     that predates the set, where there is nothing to restore and no hysteresis to lose.
+    /// </summary>
+    public void SeedFromDepth(Func<int, int> depthMm) {
+        for (int i = 0; i < buried.Length; i++) {
+            Set(i, AshDepthMath.IsBuried(depthMm(i), false));
+        }
+    }
 }

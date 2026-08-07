@@ -53,6 +53,21 @@ public class AshBuriedCellsTests {
     }
 
     [TestMethod]
+    public void SeedingFromDepthUsesTheBurialLineAndNotTheHysteresisFloor() {
+        AshBuriedCells cells = new AshBuriedCells(5);
+        int[] depth = [0, 500, 890, 900, 2550];
+
+        cells.SeedFromDepth(i => depth[i]);
+
+        Assert.IsFalse(cells.IsBuried(0));
+        Assert.IsFalse(cells.IsBuried(1));
+        Assert.IsFalse(cells.IsBuried(2));
+        Assert.IsTrue(cells.IsBuried(3));
+        Assert.IsTrue(cells.IsBuried(4));
+        Assert.AreEqual(2, cells.Count);
+    }
+
+    [TestMethod]
     public void AnIndexOutsideTheGridIsNeverBuried() {
         AshBuriedCells cells = new AshBuriedCells(16);
         Assert.IsFalse(cells.IsBuried(-1));

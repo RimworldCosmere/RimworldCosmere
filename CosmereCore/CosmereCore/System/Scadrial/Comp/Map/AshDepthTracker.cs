@@ -192,6 +192,9 @@ public class AshDepthTracker : MapComponent {
         grid ??= new AshGrid(map);
         terrainMemory ??= new AshTerrainMemory(map);
         settleClock ??= new AshSettleClock(map);
+
+        // An old save loads the set empty under metres of ash, and the sweep only runs unpaused.
+        if (!buried.Any && grid.Any) buried.SeedFromDepth(grid.GetDepthMm);
     }
 
     /// <summary>

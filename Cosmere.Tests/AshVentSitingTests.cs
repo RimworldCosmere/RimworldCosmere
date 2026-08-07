@@ -17,10 +17,17 @@ public class AshVentSitingTests {
     [TestMethod]
     public void FarmlandIsNeverAVent() {
         Assert.IsFalse(
-            AshVentSiting.IsPlausible(0.9f, true, AshVentSiting.MaxFertility + 0.01f, false),
-            "a vent on the best soil on the map pre-ruins the farm before the player arrives"
+            AshVentSiting.IsPlausible(0.9f, true, 1f, false),
+            "soil reads 1.0, and a vent on the best ground pre-ruins the farm before the player arrives"
         );
-        Assert.IsTrue(AshVentSiting.IsPlausible(0.9f, true, AshVentSiting.MaxFertility, false));
+        Assert.IsTrue(AshVentSiting.IsPlausible(0.9f, true, 0f, false), "bare rock and sand read 0");
+    }
+
+    [TestMethod]
+    public void PollutedGroundIsNeverAVent() {
+        // Biotech clamps a polluted cell to exactly FertilityGrid.MaxPollutedFertility, 0.5. A
+        // strictly-greater test would let every polluted cell through the farmland rule.
+        Assert.IsFalse(AshVentSiting.IsPlausible(0.9f, true, 0.5f, false));
     }
 
     [TestMethod]

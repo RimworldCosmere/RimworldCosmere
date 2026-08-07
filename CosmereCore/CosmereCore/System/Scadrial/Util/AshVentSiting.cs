@@ -8,7 +8,7 @@ public static class AshVentSiting {
     /// <summary>Mean elevation over a radius-10 disc, below which the ground is too low.</summary>
     public const float MinElevation = 0.62f;
 
-    /// <summary>Above this the cell is farmland, and a vent there is just cruel.</summary>
+    /// <summary>Terrain def fertility at or above this is farmable, and a vent there is just cruel.</summary>
     public const float MaxFertility = 0.5f;
 
     public const int MinVents = 1;
@@ -17,7 +17,7 @@ public static class AshVentSiting {
     public static bool IsPlausible(float meanElevation, bool rockNearby, float fertility, bool isWater) {
         if (isWater) return false;
         if (!rockNearby) return false;
-        if (fertility > MaxFertility) return false;
+        if (fertility >= MaxFertility) return false;
 
         return meanElevation >= MinElevation;
     }

@@ -13,11 +13,11 @@ public class AshBuriedCellsTests {
     }
 
     [TestMethod]
-    public void OnceBuriedACellStaysBuriedUntilThreeHundred() {
+    public void OnceBuriedACellStaysBuriedDownToTheUncoveredLine() {
         AshBuriedCells cells = new AshBuriedCells(16);
         cells.Set(3, true);
-        Assert.IsTrue(AshDepthMath.IsBuried(301, cells.IsBuried(3)));
-        Assert.IsFalse(AshDepthMath.IsBuried(300, cells.IsBuried(3)));
+        Assert.IsTrue(AshDepthMath.IsBuried(AshDepthMath.UncoveredMm + 1, cells.IsBuried(3)));
+        Assert.IsFalse(AshDepthMath.IsBuried(AshDepthMath.UncoveredMm, cells.IsBuried(3)));
         Assert.IsFalse(AshDepthMath.IsBuried(0, cells.IsBuried(3)), "ash gone means the cell unburies");
     }
 

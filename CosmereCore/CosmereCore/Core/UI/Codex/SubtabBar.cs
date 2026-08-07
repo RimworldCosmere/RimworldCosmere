@@ -13,10 +13,6 @@ public static class SubtabBar {
     public static void Draw(Rect rect, Pawn pawn, CodexState state, IInvestitureProvider active, Color accent) {
         buffer.Clear();
 
-        // First, and unconditional. Connection is not an investiture system - every pawn has one,
-        // including a pawn with no Investiture at all, which is exactly who the reading is most
-        // worth having for.
-        buffer.Add((CodexSubtab.Connection, "CC_Codex_Subtab_Connection"));
         buffer.Add((CodexSubtab.Autocast, "CC_Codex_Subtab_Autocast"));
         buffer.Add((CodexSubtab.Progression, "CC_Codex_Subtab_Progression"));
         if (active.Codex.ShowsBondsSubtab) {

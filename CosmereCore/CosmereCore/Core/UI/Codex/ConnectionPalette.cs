@@ -13,6 +13,9 @@ namespace Cosmere.Core.UI.Codex;
 ///     glance instead of a spectrum you have to decode.
 /// </remarks>
 public static class ConnectionPalette {
+    /// <summary>The rail orb when Connection is the chosen section.</summary>
+    public static readonly Color Selected = new Color(0.85f, 0.78f, 0.58f);
+
     public static readonly Color Ground = new Color(0.16f, 0.15f, 0.14f, 0.55f);
     public static readonly Color Track = new Color(0.10f, 0.10f, 0.10f, 0.70f);
     public static readonly Color Divider = new Color(0.55f, 0.50f, 0.42f, 0.35f);

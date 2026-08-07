@@ -14,13 +14,6 @@ public static class CodexSubtabRenderer {
         IInvestitureProvider active,
         CodexSubtab subtab
     ) {
-        // Connection is chrome, not a system. It is drawn before the active provider is
-        // consulted at all, because a pawn with no Investiture has no provider.
-        if (subtab == CodexSubtab.Connection) {
-            ConnectionSubtab.Draw(rect, pawn, state);
-            return;
-        }
-
         ICodexContentProvider cp = active.Codex;
         switch (subtab) {
             case CodexSubtab.Progression when cp.HasProgression(pawn):
@@ -43,7 +36,6 @@ public static class CodexSubtabRenderer {
             CodexSubtab.Progression => "CC_Codex_Progression_Empty",
             CodexSubtab.Bonds => "CC_Codex_Bonds_Empty",
             CodexSubtab.Memories => "CC_Codex_Memories_Empty",
-            CodexSubtab.Connection => "CC_Connection_NoShards",
             _ => "CC_Codex_Subtab_Empty",
         };
     }

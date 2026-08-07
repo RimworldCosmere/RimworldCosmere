@@ -37,6 +37,7 @@ public class ITab_Investiture : ITab {
 
         RefreshInvestedProviders(pawn);
         if (investedProviders.Count == 0) {
+            state.ShowingConnection = true;
             DrawConnectionOnly(pawn);
             return;
         }
@@ -50,14 +51,36 @@ public class ITab_Investiture : ITab {
         ISystemSkin skin = SystemSkinRegistry.ForOrFallback(active.SystemId);
 
         Rect header = new Rect(0f, 0f, size.x, CodexChrome.HeaderHeight);
-        CodexChrome.DrawHeader(header, ResolveHeaderLabel(pawn, active, skin), skin.AccentColor);
+        string headerLabel = state.ShowingConnection
+            ? "CC_Codex_Subtab_Connection".Translate().Resolve()
+            : ResolveHeaderLabel(pawn, active, skin);
+        Color headerAccent = state.ShowingConnection ? ConnectionPalette.Selected : skin.AccentColor;
+        CodexChrome.DrawHeader(header, headerLabel, headerAccent);
 
-        bool hasSwitcher = investedProviders.Count > 1;
+        // Connection always has a slot, so the rail is shown whenever any system exists.
+        bool hasSwitcher = investedProviders.Count > 0;
         float contentX = hasSwitcher ? CodexChrome.RailWidth : 0f;
 
         if (hasSwitcher) {
             Rect rail = new Rect(0f, CodexChrome.HeaderHeight, CodexChrome.RailWidth, size.y - CodexChrome.HeaderHeight);
             SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
+        }
+
+        if (state.ShowingConnection) {
+            Rect connectionDivider = new Rect(contentX, CodexChrome.HeaderHeight, size.x - contentX, 1f);
+            CodexChrome.DrawDivider(connectionDivider, headerAccent);
+
+            ConnectionSubtab.Draw(
+                new Rect(
+                    contentX + CodexChrome.Gutter,
+                    connectionDivider.yMax + CodexChrome.Gutter,
+                    size.x - contentX - CodexChrome.Gutter * 2f,
+                    size.y - connectionDivider.yMax - CodexChrome.Gutter * 2f
+                ),
+                pawn,
+                state
+            );
+            return;
         }
 
         // Runs to both frame edges: a gap before the first tab and after the last

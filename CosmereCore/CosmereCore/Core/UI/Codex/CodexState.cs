@@ -9,5 +9,11 @@ public sealed class CodexState {
     public Vector2 ProgressionScroll = Vector2.zero;
     public int SelectedSprenIndex = 0;
     public int SelectedSystemIndex = 0;
-    public CodexSubtab Subtab = CodexSubtab.Connection;
+
+    /// <summary>
+    ///     Connection sits in the rail beside the investiture systems rather than inside one of
+    ///     them, so which of the two is showing is its own piece of state.
+    /// </summary>
+    public bool ShowingConnection = true;
+    public CodexSubtab Subtab = CodexSubtab.Progression;
 }

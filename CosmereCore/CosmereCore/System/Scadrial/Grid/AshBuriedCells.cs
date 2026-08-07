@@ -11,6 +11,21 @@ public class AshBuriedCells {
         buried = new bool[cellCount];
     }
 
+    /// <summary>
+    ///     Rebuilds the set off a saved array. A length that does not match the map is dropped
+    ///     rather than indexed - the sweep recomputes the whole grid within 64 ticks.
+    /// </summary>
+    public static AshBuriedCells Restore(bool[]? saved, int cellCount) {
+        AshBuriedCells cells = new AshBuriedCells(cellCount);
+        if (saved == null || saved.Length != cellCount) return cells;
+
+        for (int i = 0; i < cellCount; i++) {
+            cells.Set(i, saved[i]);
+        }
+
+        return cells;
+    }
+
     public int Count { get; private set; }
 
     public bool Any => Count > 0;

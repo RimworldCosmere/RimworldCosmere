@@ -48,6 +48,7 @@ public class AshDepthTracker : MapComponent {
     private AshGrid grid;
     private AshTerrainMemory terrainMemory;
     private AshSettleClock settleClock;
+    private AshBuriedCells buried;
     private float severity;
     private float severityTarget;
 
@@ -57,9 +58,13 @@ public class AshDepthTracker : MapComponent {
         grid = new AshGrid(map);
         terrainMemory = new AshTerrainMemory(map);
         settleClock = new AshSettleClock(map);
+        buried = new AshBuriedCells(map.cellIndices.NumGridCells);
     }
 
     public AshGrid Grid => grid;
+
+    /// <summary>Cells holding enough ash to swallow what is on them. Kept current by the sweep.</summary>
+    public AshBuriedCells Buried => buried;
 
     /// <summary>What the deep cells were before the ash, so the Catacendre can put them back.</summary>
     public AshTerrainMemory TerrainMemory => terrainMemory;
@@ -180,6 +185,7 @@ public class AshDepthTracker : MapComponent {
         Scribe_Deep.Look(ref settleClock, "ashSettleClock", map);
         ExposeAccrual(ref stripeAccrual, "ashStripeAccrual");
         ExposeAccrual(ref drainAccrual, "ashDrainAccrual");
+        ExposeBuried();
 
         if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
 
@@ -204,6 +210,21 @@ public class AshDepthTracker : MapComponent {
     }
 
     /// <summary>
+    ///     Bit-packed, so a fully buried 250x250 map costs under 8 KB before the deflate. Unsaved,
+    ///     every load would hand back a stockpile the ash had already swallowed.
+    /// </summary>
+    private void ExposeBuried() {
+        int count = map.cellIndices.NumGridCells;
+        bool[]? saved = Scribe.mode == LoadSaveMode.Saving ? buried.Raw : null;
+
+        DataExposeUtility.LookBoolArray(ref saved, count, "ashBuriedCells");
+
+        if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+
+        buried = AshBuriedCells.Restore(saved, count);
+    }
+
+    /// <summary>
     ///     Turns deep cells into ash terrain and hands them back as they thin out. Runs every
     ///     sweep rather than only on a deposit, so a cell a pawn just shovelled reverts without
     ///     waiting on the next millimetre to fall.
@@ -224,15 +245,21 @@ public class AshDepthTracker : MapComponent {
     }
 
     private void SweepTerrain(int stripe, int budget, bool ignoreDwell = false) {
-        if (!Grid.Any && terrainMemory.SwappedCount == 0) return;
+        if (!Grid.Any && terrainMemory.SwappedCount == 0 && !buried.Any) return;
 
         CellIndices indices = map.cellIndices;
         int count = indices.NumGridCells;
         int today = GenDate.DaysPassed;
 
-        for (int i = stripe; i < count && budget > 0; i += Stripes) {
-            AshTerrainAction action =
-                AshDepthMath.NextTerrainAction(Grid.GetDepthMm(i), terrainMemory.IsSwapped(i));
+        for (int i = stripe; i < count; i += Stripes) {
+            int mm = Grid.GetDepthMm(i);
+            buried.Set(i, AshDepthMath.IsBuried(mm, buried.IsBuried(i)));
+
+            // The budget rations terrain swaps only. Burial has to finish the stripe, or a cell
+            // the ash left stays buried until its turn comes round on a cheaper tick.
+            if (budget <= 0) continue;
+
+            AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(i));
 
             if (action == AshTerrainAction.Leave) {
                 settleClock.Cancel(i);

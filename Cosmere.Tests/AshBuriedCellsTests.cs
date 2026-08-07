@@ -45,4 +45,29 @@ public class AshBuriedCellsTests {
         Assert.IsFalse(cells.IsBuried(16));
         Assert.IsFalse(cells.Set(99, true));
     }
+
+    [TestMethod]
+    public void ScribedBuriedCellsSurviveARoundTrip() {
+        AshBuriedCells before = new AshBuriedCells(64);
+        before.Set(7, true);
+        before.Set(31, true);
+
+        AshBuriedCells after = AshBuriedCells.Restore(before.Raw, 64);
+
+        Assert.IsTrue(after.IsBuried(7));
+        Assert.IsTrue(after.IsBuried(31));
+        Assert.IsFalse(after.IsBuried(8));
+        Assert.AreEqual(2, after.Count);
+    }
+
+    [TestMethod]
+    public void ASavedSetOfTheWrongLengthIsDiscardedNotIndexed() {
+        bool[] stale = new bool[16];
+        stale[3] = true;
+
+        AshBuriedCells restored = AshBuriedCells.Restore(stale, 64);
+
+        Assert.AreEqual(0, restored.Count);
+        Assert.IsFalse(restored.IsBuried(3));
+    }
 }

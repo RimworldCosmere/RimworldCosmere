@@ -3,8 +3,8 @@ using System;
 namespace Cosmere.System.Scadrial.Grid;
 
 /// <summary>
-///     How much of a vent's output lands on a cell. Pure and Verse-free so the shape can be
-///     tested; the comp only walks the offsets and multiplies.
+///     How much of a vent's output lands on a cell, and how much of it the vent keeps off its own
+///     doorstep. Pure and Verse-free so the shape can be tested; the comp only walks the offsets.
 /// </summary>
 public static class AshPlume {
     /// <summary>Cells from the vent the plume reaches. Bounds the per-vent write.</summary>
@@ -33,6 +33,21 @@ public static class AshPlume {
 
         float weight = falloff * lean;
         return weight > 1f ? 1f : weight;
+    }
+
+    /// <summary>
+    ///     The deepest a cell this close to a vent is allowed to stay. 0 on the mouth itself,
+    ///     rising to waist deep at the feather's edge and leaving anything past it alone.
+    /// </summary>
+    public static int AllowedDepthMm(int depthMm, float distance, float radius) {
+        if (distance <= 0f) return 0;
+        if (distance >= radius) return depthMm;
+
+        // Waist deep, not the grid cap. The burial wash saturates its alpha there and the movement
+        // bucket tops out there, so a ceiling any higher only moves millimetres nobody can see -
+        // and it would spend most of the feather's width doing it.
+        int allowed = (int)(distance / radius * AshDepthMath.WaistMm);
+        return depthMm < allowed ? depthMm : allowed;
     }
 
     /// <summary>

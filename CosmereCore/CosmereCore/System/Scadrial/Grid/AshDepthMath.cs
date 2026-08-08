@@ -20,8 +20,11 @@ public static class AshDepthMath {
     /// <summary>Items under this much ash are buried: unhaulable and hidden.</summary>
     public const int BuriedMm = 900;
 
-    /// <summary>Hysteresis on the way back out, or a drifting boundary flickers.</summary>
-    public const int UncoveredMm = 300;
+    /// <summary>
+    ///     Hysteresis on the way back out, or a drifting boundary flickers. Close under BuriedMm
+    ///     so the wash that ramps from here never shows clear ground a colonist cannot haul from.
+    /// </summary>
+    public const int UncoveredMm = 850;
 
     /// <summary>Past this a cell stops being dusted ground and becomes ash terrain outright.</summary>
     public const int TerrainSwapMm = 1100;

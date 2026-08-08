@@ -14,8 +14,12 @@ namespace Cosmere.System.Scadrial.Render;
 /// </summary>
 [StaticConstructorOnStartup]
 public class SectionLayer_AshBurial : SectionLayer {
+    // Map/Transparent and Map/Cutout both sit at queue 2900, so the wash ties with the printed
+    // things and loses on submission order. 2910 draws it after them, still under blueprints.
+    private const int WashRenderQueue = 2910;
+
     private static readonly Material AshMat =
-        MaterialPool.MatFrom("Terrain/AshDeep", Verse.ShaderDatabase.Transparent);
+        MaterialPool.MatFrom("Terrain/AshDeep", Verse.ShaderDatabase.Transparent, WashRenderQueue);
 
     private static readonly Color32 Deep = new Color32(58, 55, 53, 255);
 
@@ -35,6 +39,9 @@ public class SectionLayer_AshBurial : SectionLayer {
         AshDepthTracker? tracker = Map.GetComponent<AshDepthTracker>();
         if (tracker == null) return;
 
+        AshBuriedCells buried = tracker.Buried;
+        if (!buried.Any) return;
+
         AshGrid grid = tracker.Grid;
         CellIndices indices = Map.cellIndices;
         CellRect cellRect = section.CellRect;
@@ -42,14 +49,16 @@ public class SectionLayer_AshBurial : SectionLayer {
 
         for (int x = cellRect.minX; x <= cellRect.maxX; x++) {
             for (int z = cellRect.minZ; z <= cellRect.maxZ; z++) {
-                IntVec3 cell = new IntVec3(x, 0, z);
-                int mm = grid.GetDepthMm(indices.CellToIndex(cell));
-                if (mm < AshDepthMath.BuriedMm) continue;
+                int index = indices.CellToIndex(new IntVec3(x, 0, z));
 
-                // Ramps from nothing at the burial line to near-solid at the cap, so the world
-                // disappears gradually rather than snapping shut.
+                // The set, not the depth. Recomputing here would drop the hysteresis.
+                if (!buried.IsBuried(index)) continue;
+
+                // Ramps from nothing at the unbury line to near-solid by waist deep. The grid
+                // caps at 2550mm, but ash that swallows a stack should read as solid well before.
                 float t = Mathf.Clamp01(
-                    (mm - AshDepthMath.BuriedMm) / (float)(AshGrid.MaxDepthMm - AshDepthMath.BuriedMm)
+                    (grid.GetDepthMm(index) - AshDepthMath.UncoveredMm) /
+                    (float)(AshDepthMath.WaistMm - AshDepthMath.UncoveredMm)
                 );
 
                 Color32 tint = Deep;

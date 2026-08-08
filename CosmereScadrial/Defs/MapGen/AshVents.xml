@@ -3,14 +3,39 @@
 
     <GenStepDef>
         <defName>Cosmere_Scadrial_GenStep_AshVents</defName>
-        <order>250</order>
+        <!-- Same slot as SteamGeysers, so ruins, shrines and scenario structures have already laid
+             their floors by the time a vent goes looking for ground. -->
+        <order>950</order>
         <genStep Class="Cosmere.System.Scadrial.MapGen.GenStep_ScatterAshVents">
+            <thingDef>Cosmere_Scadrial_Thing_AshVent</thingDef>
             <minSpacing>40</minSpacing>
             <minEdgeDist>12</minEdgeDist>
+            <extraNoBuildEdgeDist>4</extraNoBuildEdgeDist>
             <allowRoofed>false</allowRoofed>
             <allowInWaterBiome>false</allowInWaterBiome>
+            <!-- A cell count, not a radius. The geyser's 30 clears room for a 6x6 geothermal
+                 generator; a 2x2 vent with nothing to build on it wants about one cell of ring. -->
+            <clearSpaceSize>12</clearSpaceSize>
+            <terrainValidationRadius>4</terrainValidationRadius>
+            <terrainValidationDisallowed>
+                <li>Road</li>
+            </terrainValidationDisallowed>
             <!-- Vanilla warns before it tries the fallback. Our own log carries the placed count. -->
             <warnOnFail>false</warnOnFail>
+            <validators>
+                <li Class="ScattererValidator_Buildable">
+                    <radius>4</radius>
+                    <affordance>Heavy</affordance>
+                </li>
+                <li Class="ScattererValidator_NoNonNaturalEdifices">
+                    <radius>4</radius>
+                </li>
+                <li Class="ScattererValidator_AvoidSpecialThings" />
+                <!-- One "r" here and two on the rest. Vanilla's spelling, not a typo. -->
+                <li Class="ScatterValidator_AvoidUsedRects">
+                    <size>(6, 6)</size>
+                </li>
+            </validators>
             <!-- Vanilla skips the fallback pass entirely unless this list has an entry. -->
             <fallbackValidators>
                 <li Class="ScattererValidator_NoNonNaturalEdifices">

@@ -30,6 +30,22 @@
             <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshVent">
                 <millimetresPerDay>140</millimetresPerDay>
                 <skew>0.55</skew>
+                <!-- Cells past its own 2x2 that the vent thins back in. The drift still peaks
+                     against the mouth; this only stops it closing over the top. -->
+                <clearRadius>3</clearRadius>
+                <!-- Per vent, so the six on a mount-adjacent tile throw six times as often as a
+                     lone one out at the belt's edge. -->
+                <throwsPerDay>0.5</throwsPerDay>
+                <lumpsPerThrow>4</lumpsPerThrow>
+                <!-- Inside the plume, not past it. Out here the vent's own fall is a fifteenth of
+                     what lands on its mouth, which is the days the player has to come and look. -->
+                <throwRadius>6</throwRadius>
+                <metals>
+                    <li>Cadmium</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Duralumin</li>
+                </metals>
             </li>
         </comps>
     </ThingDef>

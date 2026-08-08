@@ -48,8 +48,10 @@ public class AshDepthTracker : MapComponent {
     private AshGrid grid;
     private AshTerrainMemory terrainMemory;
     private AshSettleClock settleClock;
+    private AshBuriedCells buried;
     private float severity;
     private float severityTarget;
+    private bool metalSeen;
 
     private readonly List<Comp.Thing.CompAshVent> vents = new List<Comp.Thing.CompAshVent>();
 
@@ -57,9 +59,16 @@ public class AshDepthTracker : MapComponent {
         grid = new AshGrid(map);
         terrainMemory = new AshTerrainMemory(map);
         settleClock = new AshSettleClock(map);
+        buried = new AshBuriedCells(map.cellIndices.NumGridCells);
     }
 
     public AshGrid Grid => grid;
+
+    /// <summary>
+    ///     Cells holding enough ash to swallow what is on them. The sweep catches up within 64
+    ///     ticks; anything writing depth and dirtying the mesh sooner has to update this itself.
+    /// </summary>
+    public AshBuriedCells Buried => buried;
 
     /// <summary>What the deep cells were before the ash, so the Catacendre can put them back.</summary>
     public AshTerrainMemory TerrainMemory => terrainMemory;
@@ -119,6 +128,22 @@ public class AshDepthTracker : MapComponent {
         vents.Remove(vent);
     }
 
+    /// <summary>The vents breathing on this map, for the dev action that fires them all at once.</summary>
+    public IReadOnlyList<Comp.Thing.CompAshVent> Vents => vents;
+
+    /// <summary>
+    ///     Announces the first lump to land on this map, or a player only ever meets the metal as
+    ///     something the ash already took. Once a map, and banked so a reload cannot repeat it.
+    /// </summary>
+    public void NotifyMetalThrown(IntVec3 cell) {
+        if (metalSeen) return;
+
+        metalSeen = true;
+        Messages.Message(
+            "CS_AshVent_FirstMetal".Translate(), new LookTargets(cell, map), MessageTypeDefOf.PositiveEvent
+        );
+    }
+
     public override void MapComponentTick() {
         int stripe = Find.TickManager.TicksGame % Stripes;
 
@@ -175,17 +200,22 @@ public class AshDepthTracker : MapComponent {
     public override void ExposeData() {
         Scribe_Values.Look(ref severity, "ashSeverity");
         Scribe_Values.Look(ref severityTarget, "ashSeverityTarget");
+        Scribe_Values.Look(ref metalSeen, "ashMetalSeen");
         Scribe_Deep.Look(ref grid, "ashGrid", map);
         Scribe_Deep.Look(ref terrainMemory, "ashTerrainMemory", map);
         Scribe_Deep.Look(ref settleClock, "ashSettleClock", map);
         ExposeAccrual(ref stripeAccrual, "ashStripeAccrual");
         ExposeAccrual(ref drainAccrual, "ashDrainAccrual");
+        ExposeBuried();
 
         if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
 
         grid ??= new AshGrid(map);
         terrainMemory ??= new AshTerrainMemory(map);
         settleClock ??= new AshSettleClock(map);
+
+        // An old save loads the set empty under metres of ash, and the sweep only runs unpaused.
+        if (!buried.Any && grid.Any) buried.SeedFromDepth(grid.GetDepthMm);
     }
 
     /// <summary>
@@ -201,6 +231,21 @@ public class AshDepthTracker : MapComponent {
         if (Scribe.mode != LoadSaveMode.LoadingVars) return;
 
         accrual = AshPlume.RestoreBank(banked, Stripes) ?? new float[Stripes];
+    }
+
+    /// <summary>
+    ///     Bit-packed, so a fully buried 250x250 map costs under 8 KB before the deflate. Unsaved,
+    ///     every load would hand back a stockpile the ash had already swallowed.
+    /// </summary>
+    private void ExposeBuried() {
+        int count = map.cellIndices.NumGridCells;
+        bool[]? saved = Scribe.mode == LoadSaveMode.Saving ? buried.Raw : null;
+
+        DataExposeUtility.LookBoolArray(ref saved, count, "ashBuriedCells");
+
+        if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+
+        buried = AshBuriedCells.Restore(saved, count);
     }
 
     /// <summary>
@@ -224,15 +269,21 @@ public class AshDepthTracker : MapComponent {
     }
 
     private void SweepTerrain(int stripe, int budget, bool ignoreDwell = false) {
-        if (!Grid.Any && terrainMemory.SwappedCount == 0) return;
+        if (!Grid.Any && terrainMemory.SwappedCount == 0 && !buried.Any) return;
 
         CellIndices indices = map.cellIndices;
         int count = indices.NumGridCells;
         int today = GenDate.DaysPassed;
+        bool flipped = false;
 
-        for (int i = stripe; i < count && budget > 0; i += Stripes) {
-            AshTerrainAction action =
-                AshDepthMath.NextTerrainAction(Grid.GetDepthMm(i), terrainMemory.IsSwapped(i));
+        for (int i = stripe; i < count; i += Stripes) {
+            int mm = Grid.GetDepthMm(i);
+            if (buried.Set(i, AshDepthMath.IsBuried(mm, buried.IsBuried(i)))) flipped = true;
+
+            // The budget rations terrain swaps only. Burial has to finish the stripe.
+            if (budget <= 0) continue;
+
+            AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(i));
 
             if (action == AshTerrainAction.Leave) {
                 settleClock.Cancel(i);
@@ -251,6 +302,9 @@ public class AshDepthTracker : MapComponent {
             settleClock.Cancel(i);
             budget--;
         }
+
+        // The depth write dirtied the mesh up to 64 ticks before this stripe turned it into a flip.
+        if (flipped) NotifyAshChanged();
     }
 
     /// <summary>Only natural ground goes under. A floor the colony laid stays theirs.</summary>

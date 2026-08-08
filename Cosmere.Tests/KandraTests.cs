@@ -818,4 +818,40 @@ public class KandraTests {
 
         Assert.IsTrue(checkedDefs > 0, "No stuff categories were checked. Run make generate.");
     }
+
+    /// <summary>
+    ///     Each Blessing surgery asks for exactly one lot of spikes and one of medicine.
+    /// </summary>
+    /// <remarks>
+    ///     Def inheritance appends list nodes rather than replacing them. Leaving a generic
+    ///     ingredients block on the abstract base stacked it on top of each child's metal
+    ///     specific one, and every surgery asked for four spikes and four medicine.
+    /// </remarks>
+    [TestMethod]
+    public void ABlessingCostsTwoSpikesNotFour() {
+        int seen = 0;
+
+        foreach (XElement recipe in DefsOfType("RecipeDef")) {
+            string? name = recipe.Element("defName")?.Value;
+            if (name == null || !name.StartsWith("Cosmere_Scadrial_Recipe_BlessingOf", StringComparison.Ordinal)) {
+                continue;
+            }
+
+            seen++;
+            List<XElement> lines = recipe.Element("ingredients")!.Elements("li").ToList();
+
+            Assert.AreEqual(2, lines.Count, $"{name} lists {lines.Count} ingredient lines, expected spikes and medicine.");
+            foreach (XElement line in lines) {
+                Assert.AreEqual("2", line.Element("count")?.Value, $"{name} asks for the wrong count.");
+            }
+        }
+
+        Assert.AreEqual(4, seen, "A Blessing surgery is missing.");
+
+        // And the base must contribute none, or they come back doubled.
+        XElement? abstractBase = DefsOfType("RecipeDef")
+            .FirstOrDefault(r => (string?)r.Attribute("Name") == "Cosmere_Scadrial_KandraBlessingBase");
+        Assert.IsNotNull(abstractBase);
+        Assert.IsNull(abstractBase!.Element("ingredients"), "The base must not list ingredients; they append.");
+    }
 }

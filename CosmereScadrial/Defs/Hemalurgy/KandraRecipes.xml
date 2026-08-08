@@ -19,24 +19,9 @@
         <recipeUsers>
             <li>Human</li>
         </recipeUsers>
-        <ingredients>
-            <li>
-                <filter>
-                    <thingDefs>
-                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
-                    </thingDefs>
-                </filter>
-                <count>2</count>
-            </li>
-            <li>
-                <filter>
-                    <categories>
-                        <li>Medicine</li>
-                    </categories>
-                </filter>
-                <count>2</count>
-            </li>
-        </ingredients>
+        <!-- No ingredients here on purpose. Def inheritance appends list nodes rather than
+             replacing them, so anything listed on the base is added to each child's own metal
+             specific block and every surgery ends up asking for two lots of everything. -->
         <fixedIngredientFilter>
             <thingDefs>
                 <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>

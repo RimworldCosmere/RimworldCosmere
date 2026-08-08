@@ -11,6 +11,25 @@
 
          renderTree is a plain field rather than something derived from intelligence, so the
          Animal tree keeps it drawn as a dog while the rest of it answers to the player. -->
+    <!-- The Animal tree is unusable here. Every node in it reads CurKindLifeStage, which
+         returns null for a humanlike pawn by design and logs an error saying so. This tree
+         takes its graphic from a def extension instead. -->
+    <PawnRenderTreeDef>
+        <defName>Cosmere_Scadrial_RenderTree_KandraShape</defName>
+        <root Class="PawnRenderNodeProperties_Parent">
+            <debugLabel>Root</debugLabel>
+            <tagDef>Root</tagDef>
+            <children>
+                <li>
+                    <debugLabel>Body</debugLabel>
+                    <tagDef>Body</tagDef>
+                    <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraShape</nodeClass>
+                    <workerClass>PawnRenderNodeWorker_Body</workerClass>
+                </li>
+            </children>
+        </root>
+    </PawnRenderTreeDef>
+
     <ThingDef ParentName="AnimalThingBase">
         <defName>Cosmere_Scadrial_Race_KandraWolfhound</defName>
         <label>kandra wolfhound</label>
@@ -21,6 +40,12 @@
             <ComfyTemperatureMin>-40</ComfyTemperatureMin>
         </statBases>
         <uiIconScale>1.4</uiIconScale>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Kandra.KandraShapeGraphic">
+                <texPath>Things/Pawn/Animal/Husky/Husky</texPath>
+                <drawSize>1.4</drawSize>
+            </li>
+        </modExtensions>
         <race>
             <body>QuadrupedAnimalWithPawsAndTail</body>
             <baseBodySize>0.86</baseBodySize>
@@ -33,8 +58,9 @@
             <!-- The whole reason this def exists. Animal intelligence cannot be drafted. -->
             <intelligence>Humanlike</intelligence>
 
-            <!-- And this is what keeps it looking like a dog anyway. -->
-            <renderTree>Animal</renderTree>
+            <!-- Ours, not Animal: that one dereferences CurKindLifeStage, which refuses
+                 humanlike pawns outright. -->
+            <renderTree>Cosmere_Scadrial_RenderTree_KandraShape</renderTree>
 
             <thinkTreeMain>Humanlike</thinkTreeMain>
             <thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>

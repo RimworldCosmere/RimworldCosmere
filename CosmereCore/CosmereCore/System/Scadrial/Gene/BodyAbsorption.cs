@@ -24,7 +24,12 @@ public class BodyAbsorption : Verse.Gene {
     private CompKandraForms? Forms => pawn.TryGetComp<CompKandraForms>();
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
-        foreach (Verse.Gizmo gizmo in base.GetGizmos()) yield return gizmo;
+        // Gene.GetGizmos returns null rather than an empty sequence, so this cannot be foreached
+        // directly. Doing so throws every frame the pawn is selected.
+        IEnumerable<Verse.Gizmo>? inherited = base.GetGizmos();
+        if (inherited != null) {
+            foreach (Verse.Gizmo gizmo in inherited) yield return gizmo;
+        }
 
         CompKandraForms? forms = Forms;
         if (forms == null) yield break;

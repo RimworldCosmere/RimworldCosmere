@@ -235,4 +235,18 @@ public class KandraTests {
             );
         }
     }
+
+    /// <summary>
+    ///     Gene.GetGizmos returns null rather than an empty sequence. Foreaching it directly
+    ///     threw a NullReferenceException every frame a kandra was selected.
+    /// </summary>
+    [TestMethod]
+    public void BodyAbsorptionGuardsTheInheritedGizmos() {
+        string source = Source("Gene", "BodyAbsorption.cs");
+        Assert.IsFalse(
+            source.Contains("foreach (Verse.Gizmo gizmo in base.GetGizmos())", StringComparison.Ordinal),
+            "base.GetGizmos() can be null and must be null-checked before iterating."
+        );
+        Assert.IsTrue(source.Contains("if (inherited != null)", StringComparison.Ordinal));
+    }
 }

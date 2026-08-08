@@ -13,14 +13,46 @@ public static class AshPlume {
     /// <summary>Softens the inverse square so the vent cell is not absurdly deeper than its neighbour.</summary>
     private const float Softening = 2f;
 
+    private static int cellCount = -1;
+    private static float totalWeight = -1f;
+
+    /// <summary>
+    ///     Whether an offset falls inside the disc. The comp's cell list, the cell count and the
+    ///     weights all ask this, so none of the three can drift away from the other two.
+    /// </summary>
+    public static bool InRange(int offsetX, int offsetZ) {
+        return offsetX * offsetX + offsetZ * offsetZ <= RadiusCells * RadiusCells;
+    }
+
+    /// <summary>Cells one vent writes in a cycle. The bound a roofed vent has to stay inside too.</summary>
+    public static int CellCount {
+        get {
+            if (cellCount < 0) Measure();
+
+            return cellCount;
+        }
+    }
+
+    /// <summary>
+    ///     Every cell's weight added up, wind neutral. A vent's whole output in millimetre-cells is
+    ///     its mouth rate times this, which is the mass a roofed vent has to put somewhere else.
+    /// </summary>
+    public static float TotalWeight {
+        get {
+            if (cellCount < 0) Measure();
+
+            return totalWeight;
+        }
+    }
+
     /// <summary>
     ///     1 at the vent, thinning to about 0.014 on the boundary ring and 0 past it. Skew runs 0
     ///     to 1 and leans the plume along the heading, which gives a map a downwind side.
     /// </summary>
     public static float Weight(int offsetX, int offsetZ, float headingX, float headingZ, float skew) {
-        float distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
-        if (distanceSquared > RadiusCells * RadiusCells) return 0f;
+        if (!InRange(offsetX, offsetZ)) return 0f;
 
+        float distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
         float falloff = Softening / (Softening + distanceSquared);
 
         float distance = (float)Math.Sqrt(distanceSquared);
@@ -88,5 +120,23 @@ public static class AshPlume {
         if (saved == null || saved.Count != cellCount) return null;
 
         return saved.ToArray();
+    }
+
+    /// <summary>Walks the disc once so neither the count nor the mass is paid for again.</summary>
+    private static void Measure() {
+        int cells = 0;
+        float weight = 0f;
+
+        for (int x = -RadiusCells; x <= RadiusCells; x++) {
+            for (int z = -RadiusCells; z <= RadiusCells; z++) {
+                if (!InRange(x, z)) continue;
+
+                cells++;
+                weight += Weight(x, z, 1f, 0f, 0f);
+            }
+        }
+
+        totalWeight = weight;
+        cellCount = cells;
     }
 }

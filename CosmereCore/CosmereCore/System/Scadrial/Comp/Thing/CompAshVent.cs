@@ -62,6 +62,7 @@ public class CompAshVent : ThingComp {
     private static TerrainDef? ventSoil;
 
     private float[]? remainder;
+    private float roomRemainder;
     private float throwRemainder;
     private int throwsMade;
 
@@ -79,9 +80,7 @@ public class CompAshVent : ThingComp {
             offsets = new List<IntVec3>();
             for (int x = -AshPlume.RadiusCells; x <= AshPlume.RadiusCells; x++) {
                 for (int z = -AshPlume.RadiusCells; z <= AshPlume.RadiusCells; z++) {
-                    if (x * x + z * z <= AshPlume.RadiusCells * AshPlume.RadiusCells) {
-                        offsets.Add(new IntVec3(x, 0, z));
-                    }
+                    if (AshPlume.InRange(x, z)) offsets.Add(new IntVec3(x, 0, z));
                 }
             }
 
@@ -112,6 +111,7 @@ public class CompAshVent : ThingComp {
 
         // Unsaved, every load hands the vent back a fresh empty bank and pushes the next throw a
         // full cycle out. The ordinal rides along or a save scum reshuffles which metal comes up.
+        Scribe_Values.Look(ref roomRemainder, "ashVentRoomRemainder");
         Scribe_Values.Look(ref throwRemainder, "ashVentThrowRemainder");
         Scribe_Values.Look(ref throwsMade, "ashVentThrowsMade");
 
@@ -119,15 +119,34 @@ public class CompAshVent : ThingComp {
     }
 
     /// <summary>
-    ///     Adds this cycle's share to every cell in range. Returns whether anything changed, so
-    ///     the tracker only dirties the mesh when it must.
+    ///     Puts this cycle's share on the ground - into the room when the mouth is roofed, over the
+    ///     map when it is not. Returns whether anything changed, so the mesh only dirties when it must.
     /// </summary>
     public bool ContributeToGrid(AshGrid grid, float dayFraction) {
         Verse.Map? map = parent.Map;
         if (map == null) return false;
 
+        Map.AshDepthTracker? tracker = map.GetComponent<Map.AshDepthTracker>();
         float millimetres = Props.millimetresPerDay * dayFraction;
+        bool changed;
 
+        // Roof the mouth and the plume has nowhere to go, so it goes into the room instead. The
+        // tracker owns the buried set, so without one there is nothing to fill a room safely with.
+        if (tracker != null && SealedRoom(map, grid) is { } room) {
+            changed = FillRoom(map, grid, tracker, room, millimetres);
+        } else {
+            changed = Drift(map, grid, millimetres);
+
+            // Sealed in it stops sweeping too, or a box the size of its mouth cancels the plume.
+            if (tracker != null && ClearOwnMouth(map, grid, tracker)) changed = true;
+        }
+
+        ThrowMetal(dayFraction);
+        return changed;
+    }
+
+    /// <summary>Spreads the cycle's share downwind across open ground, thinning with distance.</summary>
+    private bool Drift(Verse.Map map, AshGrid grid, float millimetres) {
         // One slowly drifting heading for the whole map, shared across vents.
         float angle = Mathf.Sin(Find.TickManager.TicksGame / 5200f) * Mathf.PI;
         float headingX = Mathf.Cos(angle);
@@ -154,10 +173,53 @@ public class CompAshVent : ThingComp {
             if (grid.AddDepthMm(indices.CellToIndex(cell), deposit) > 0) changed = true;
         }
 
-        Map.AshDepthTracker? tracker = map.GetComponent<Map.AshDepthTracker>();
-        if (tracker != null && ClearOwnMouth(map, grid, tracker)) changed = true;
+        return changed;
+    }
 
-        ThrowMetal(dayFraction);
+    /// <summary>
+    ///     The room a capped vent breathes into, or null while it still has sky. Roofed is asked
+    ///     through CanHaveAsh rather than the roof grid, so the two never disagree about a cell.
+    /// </summary>
+    private Verse.Room? SealedRoom(Verse.Map map, AshGrid grid) {
+        // Every cell of the mouth, not any: leave one square open and the plume finds its way out.
+        foreach (IntVec3 cell in parent.OccupiedRect()) {
+            if (grid.CanHaveAsh(cell)) return null;
+        }
+
+        // Position is the low corner of the mouth, and the vent's def leaves passability at
+        // standable, so the cell carries a normal region. RoomAt still hands back null on one the
+        // region grid has not rebuilt yet, and the vent drifts that cycle rather than throwing.
+        Verse.Room? room = parent.Position.GetRoom(map);
+        if (room == null) return null;
+
+        return AshRoomFill.HoldsThePlume(room.CellCount, room.PsychologicallyOutdoors) ? room : null;
+    }
+
+    /// <summary>
+    ///     Puts the whole plume's mass into the room. Bypasses CanHaveAsh deliberately - the roof
+    ///     is why this runs, not a reason to skip the cell - and refreshes each cell it moves.
+    /// </summary>
+    private bool FillRoom(
+        Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker, Verse.Room room, float millimetres
+    ) {
+        float share = AshRoomFill.PerCellMm(millimetres, room.CellCount);
+        int deposit = AshPlume.Bank(ref roomRemainder, share, AshGrid.UnitMm);
+        if (deposit <= 0) return false;
+
+        CellIndices indices = map.cellIndices;
+        AshBuriedCells buried = tracker.Buried;
+        bool changed = false;
+
+        foreach (IntVec3 cell in room.Cells) {
+            int index = indices.CellToIndex(cell);
+            if (grid.AddDepthMm(index, deposit) <= 0) continue;
+
+            // The sweep would catch these up within 64 ticks, but a room fills fast enough that a
+            // stockpile would sit visible under waist-deep ash for a tick the player can see.
+            buried.Set(index, AshDepthMath.IsBuried(grid.GetDepthMm(index), buried.IsBuried(index)));
+            changed = true;
+        }
+
         return changed;
     }
 

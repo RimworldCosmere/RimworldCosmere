@@ -465,4 +465,48 @@ public class KandraTests {
         );
         Assert.IsTrue(body.Contains("KandraUtility.GiveBlessing", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     The spikes hediff has to be attached to a body part.
+    /// </summary>
+    /// <remarks>
+    ///     Recipe_Surgery asks its worker for parts to operate on, and RemoveSpike answers with
+    ///     the spikes hediff's Part. Adding the hediff with no part leaves that null, the recipe
+    ///     reports no valid parts, and "remove hemalurgic spike" never appears in the bill list.
+    ///     Nothing logs. The kandra just cannot be unmade.
+    /// </remarks>
+    [TestMethod]
+    public void SpikesAreAttachedToTheTorso() {
+        string source = Source("Util", "KandraUtility.cs");
+        int start = source.IndexOf("private static void DriveSpikes(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0);
+
+        string body = source[start..];
+        Assert.IsTrue(
+            body.Contains("BodyPartDefOf.Torso", StringComparison.Ordinal),
+            "The spikes hediff must be placed on a real body part."
+        );
+        Assert.IsTrue(
+            body.Contains("HediffMaker.MakeHediff", StringComparison.Ordinal),
+            "Build the hediff with its part, the way the implant surgery does."
+        );
+        Assert.IsFalse(
+            body.Contains("pawn.health.AddHediff(\n                Hemalurgy.HemalurgicDefOf", StringComparison.Ordinal),
+            "Do not add the spikes hediff without a part."
+        );
+    }
+
+    /// <summary>
+    ///     A kandra saved before the part fix carries a part-less hediff, which would keep the
+    ///     removal surgery hidden for the rest of that colony's life.
+    /// </summary>
+    [TestMethod]
+    public void PartlessSpikeHediffsGetReseated() {
+        string source = Source("Util", "KandraUtility.cs");
+        Assert.IsTrue(source.Contains("stray.Part == null", StringComparison.Ordinal));
+        Assert.IsTrue(
+            source.Contains("salvaged", StringComparison.Ordinal),
+            "Re-seating must keep the spikes that were already in it."
+        );
+    }
 }

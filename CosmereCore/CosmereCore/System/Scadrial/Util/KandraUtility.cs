@@ -154,13 +154,41 @@ public static class KandraUtility {
         (string metal, HemalurgicStealType steal)? recipe = RecipeFor(blessing);
         if (recipe == null || pawn.health == null) return;
 
+        List<ImplantedSpikeData>? salvaged = null;
+
         Hediff? existing = pawn.health.hediffSet?.GetFirstHediffOfDef(
             Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
+
+        // Kandra made before the spikes were attached to a part carry one with no Part, which
+        // hides the removal surgery forever. Take it off and let the code below rebuild it,
+        // keeping whatever spikes were in it.
+        if (existing is HemalurgicSpikes stray && stray.Part == null) {
+            List<ImplantedSpikeData> carried = [.. stray.spikes];
+            pawn.health.RemoveHediff(stray);
+            existing = null;
+            salvaged = carried;
+        }
+
         if (existing is not HemalurgicSpikes set) {
-            set = (HemalurgicSpikes)pawn.health.AddHediff(
-                Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
+            // On the torso, the way the implant surgery does it. Added with no part, the hediff
+            // works for everything that only counts spikes, but Recipe_Surgery asks the worker
+            // for parts to operate on and it answers with this hediff's Part. Null there means
+            // no valid parts, so "remove hemalurgic spike" silently never appears.
+            BodyPartRecord? torso = pawn.health.hediffSet?.GetNotMissingParts()
+                .FirstOrDefault(part => part.def == BodyPartDefOf.Torso);
+            if (torso == null) return;
+
+            set = (HemalurgicSpikes)HediffMaker.MakeHediff(
+                Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes,
+                pawn,
+                torso
             );
+            pawn.health.AddHediff(set, torso);
+        }
+
+        if (salvaged != null) {
+            for (int i = 0; i < salvaged.Count; i++) set.AddSpike(salvaged[i]);
         }
 
         for (int i = set.spikeCount; i < SpikesPerBlessing; i++) {

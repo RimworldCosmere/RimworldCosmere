@@ -203,6 +203,23 @@
                 <li><def>Melee</def><level>4</level></li>
               </skills>
             </li>
+            <!-- Kelsier's kandra, wearing Lord Renoux so the crew has a nobleman to send into
+                 keeps. The real OreSeur; the thing that replaces him comes later. -->
+            <li>
+              <firstName>OreSeur</firstName>
+              <age>44</age>
+              <chronologicalAge>340</chronologicalAge>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Kandra</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Kandra_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Kandra_Adulthood</adulthood>
+              <noRandomTraits>true</noRandomTraits>
+              <skills>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Intellectual</def><level>11</level></li>
+                <li><def>Melee</def><level>8</level></li>
+              </skills>
+            </li>
           </pawns>
         </li>
 
@@ -211,14 +228,14 @@
              each pawn through Notify_PawnGenerated as it comes out. -->
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
           <def>ConfigurePawnsXenotypes</def>
-          <pawnChoiceCount>9</pawnChoiceCount>
+          <pawnChoiceCount>10</pawnChoiceCount>
           <!-- TotalPawnCount is the sum of these, and it is what sets
                startingPawnCount. An empty list means zero starting pawns and an
                index error during map generation. No xenotype named, so the named
                pawns decide their own. -->
           <xenotypeCounts>
             <li>
-              <count>9</count>
+              <count>10</count>
             </li>
           </xenotypeCounts>
         </li>

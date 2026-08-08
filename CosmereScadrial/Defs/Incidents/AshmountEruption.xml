@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Fired by the storyteller, so unlike the progression incidents in this mod it needs a real
+       baseChance. The worker adds the two gates a def cannot state: the era still has Ashmounts
+       pushing, and this map actually has a vent. -->
+  <IncidentDef>
+    <defName>Cosmere_Scadrial_Incident_AshmountEruption</defName>
+    <label>ashmount eruption</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.System.Scadrial.Incident.Worker.IncidentWorker_AshmountEruption</workerClass>
+    <gameCondition>Cosmere_Scadrial_Condition_AshmountEruption</gameCondition>
+    <!-- The spike snaps on and then eases off at the tracker's 0.12-a-day cap, so a day and a half
+         of eruption keeps the ash thick for about four. Any longer and the tail never lets up. -->
+    <durationDays>1~2</durationDays>
+    <baseChance>1.0</baseChance>
+    <!-- A season between eruptions. The metal it showers is worth roughly eight days of what the
+         vents give on their own, and closer together than this that stops being a windfall. -->
+    <minRefireDays>25</minRefireDays>
+    <!-- Nothing to survive on the first morning. Landing under an eruption reads as the map being
+         broken rather than as the mountain doing what mountains here do. -->
+    <earliestDay>8</earliestDay>
+    <letterDef>NegativeEvent</letterDef>
+    <letterLabel>Ashmount Eruption</letterLabel>
+  </IncidentDef>
+
+</Defs>

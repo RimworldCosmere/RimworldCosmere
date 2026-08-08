@@ -96,7 +96,10 @@ public class AshDepthTracker : MapComponent {
         severityTarget = Mathf.Clamp01(target);
     }
 
-    /// <summary>Dev shortcut. Progression must never use this - the whole point is the slow ramp.</summary>
+    /// <summary>
+    ///     Snaps rather than ramps. Progression must never use this - a beat is the world thickening
+    ///     and reads as a cut if it jumps. An eruption is a mountain opening, so it does jump.
+    /// </summary>
     public void SetSeverityNow(float value) {
         severityTarget = Mathf.Clamp01(value);
         severity = severityTarget;

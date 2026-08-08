@@ -8,6 +8,9 @@
         <graphicData>
             <texPath>Things/Item/AshPile</texPath>
             <graphicClass>Graphic_Single</graphicClass>
+            <!-- The art fills its 128 canvas, unlike vanilla resource textures, so the default
+                 1.0 draws a pile the full width of a tile. -->
+            <drawSize>0.7</drawSize>
         </graphicData>
         <soundInteract>Standard_Drop</soundInteract>
         <soundDrop>Standard_Drop</soundDrop>

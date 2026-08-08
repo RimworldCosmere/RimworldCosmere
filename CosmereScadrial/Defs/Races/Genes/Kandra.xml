@@ -9,6 +9,7 @@
 
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
     <defName>Cosmere_Scadrial_Gene_KandraHeritage</defName>
+    <geneClass>Cosmere.System.Scadrial.Gene.KandraHeritage</geneClass>
     <label>kandra</label>
     <labelShortAdj>kandra</labelShortAdj>
     <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate. It does not age biologically and catches nothing. Poison, plague, infection and cancer all need a body organised the way a person's is, and a kandra is not. Kandra die when something kills them, or when the spikes come out, and otherwise they simply keep going.</description>
@@ -119,17 +120,5 @@
     <biostatMet>-2</biostatMet>
   </GeneDef>
 
-  <!-- Generation. Earlier is stronger and harder to command. -->
-  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
-    <defName>Cosmere_Scadrial_Gene_Generational</defName>
-    <geneClass>Cosmere.System.Scadrial.Gene.Generational</geneClass>
-    <label>generational</label>
-    <labelShortAdj>generational</labelShortAdj>
-    <description>Kandra count themselves by generation, first through tenth and beyond. None of them die of old age, so the early ones are still walking around centuries later: stronger, harder to order about, and remembering things nobody wanted written down.</description>
-    <iconPath>UI/Icons/Genes/Gene_KandraGeneration</iconPath>
-    <displayOrderInCategory>205</displayOrderInCategory>
-    <biostatCpx>1</biostatCpx>
-    <biostatMet>0</biostatMet>
-  </GeneDef>
 
 </Defs>

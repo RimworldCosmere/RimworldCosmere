@@ -91,7 +91,7 @@ public class KandraTests {
         HashSet<string> genes = DefNamesOfType("GeneDef");
         List<string> named = kandra!.Element("genes")?.Elements("li").Select(li => li.Value).ToList() ?? [];
 
-        Assert.AreEqual(6, named.Count, "The kandra xenotype should carry exactly its six genes.");
+        Assert.AreEqual(5, named.Count, "The kandra xenotype should carry exactly its five genes.");
         foreach (string gene in named) {
             Assert.IsTrue(genes.Contains(gene), $"The kandra xenotype names {gene}, which no GeneDef defines.");
         }
@@ -273,7 +273,7 @@ public class KandraTests {
 
         foreach (XElement gene in DefsOfType("GeneDef")) {
             string? name = gene.Element("defName")?.Value;
-            if (name == null || !name.Contains("Kandra") && name != "Cosmere_Scadrial_Gene_Generational") continue;
+            if (name == null || !name.Contains("Kandra")) continue;
 
             Assert.IsNull(
                 gene.Element("statFactors")?.Element("LifespanFactor"),
@@ -304,5 +304,28 @@ public class KandraTests {
         foreach (string disease in perfectImmunity) {
             Assert.IsTrue(immune.Contains(disease), $"A kandra should be immune to {disease}.");
         }
+    }
+
+    /// <summary>
+    ///     Generation is a record of when the Contract made this kandra, not a heritable trait.
+    ///     It rides on the heritage gene rather than having one of its own.
+    /// </summary>
+    [TestMethod]
+    public void GenerationIsNotItsOwnGene() {
+        Assert.IsFalse(
+            DefNamesOfType("GeneDef").Contains("Cosmere_Scadrial_Gene_Generational"),
+            "Generation should not be a gene. It is not biology."
+        );
+
+        XElement heritage = DefsOfType("GeneDef")
+            .First(g => g.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KandraHeritage");
+        Assert.AreEqual(
+            "Cosmere.System.Scadrial.Gene.KandraHeritage",
+            heritage.Element("geneClass")?.Value,
+            "The heritage gene should carry the generation roll."
+        );
+
+        string source = Source("Gene", "KandraHeritage.cs");
+        Assert.IsTrue(source.Contains("kandraGeneration", StringComparison.Ordinal), "Generation must still be saved.");
     }
 }

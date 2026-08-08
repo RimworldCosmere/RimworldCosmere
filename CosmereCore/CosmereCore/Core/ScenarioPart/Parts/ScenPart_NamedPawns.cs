@@ -179,6 +179,8 @@ public class ScenPart_NamedPawns : ScenPart {
             pawn.gender = template.gender;
         }
 
+        ApplyAppearance(pawn, template);
+
         if (template.age > 0) {
             pawn.ageTracker.AgeBiologicalTicks = template.age * 3600000L;
             pawn.ageTracker.AgeChronologicalTicks = template.GetChronologicalAge() * 3600000L;
@@ -257,6 +259,67 @@ public class ScenPart_NamedPawns : ScenPart {
     // given has to stick. Left to pawn generation they take a random pair, which
     // is both off-character and how they end up incapable of work the scenario
     // never meant to bar them from.
+    /// <summary>
+    ///     Makes the pawn look like the person the template names.
+    /// </summary>
+    /// <remarks>
+    ///     Gender used to be handed to the generator as a hint, which worked while this part
+    ///     built the roster itself. The config page now clears the roster and regenerates it from
+    ///     default requests, so the hint is gone by the time these pawns exist and the only thing
+    ///     left is to correct them afterwards. Setting gender alone flips the label and leaves the
+    ///     body and head that were rolled, which is how Kelsier ended up a woman.
+    /// </remarks>
+    private static void ApplyAppearance(Pawn pawn, NamedPawnDef template) {
+        if (pawn.story == null) return;
+
+        BodyTypeDef? body = template.bodyType == null
+            ? null
+            : DefDatabase<BodyTypeDef>.GetNamedSilentFail(template.bodyType);
+
+        // No explicit body, but the rolled one belongs to the other gender.
+        if (body == null && template.gender != Gender.None) {
+            bool mismatched = (template.gender == Gender.Male && pawn.story.bodyType == BodyTypeDefOf.Female)
+                              || (template.gender == Gender.Female && pawn.story.bodyType == BodyTypeDefOf.Male);
+            if (mismatched) {
+                body = template.gender == Gender.Male ? BodyTypeDefOf.Male : BodyTypeDefOf.Female;
+            }
+        }
+
+        if (body != null) pawn.story.bodyType = body;
+
+        HeadTypeDef? head = template.headType == null
+            ? null
+            : DefDatabase<HeadTypeDef>.GetNamedSilentFail(template.headType);
+
+        // Head types carry a gender of their own, so a rolled one can contradict the template.
+        if (head == null && template.gender != Gender.None) {
+            HeadTypeDef? current = pawn.story.headType;
+            if (current != null && current.gender != Gender.None && current.gender != template.gender) {
+                head = DefDatabase<HeadTypeDef>.AllDefsListForReading
+                    .Where(candidate => candidate.gender == template.gender || candidate.gender == Gender.None)
+                    .RandomElementWithFallback(current);
+            }
+        }
+
+        if (head != null) pawn.story.headType = head;
+
+        if (template.skinColor != null && ParseColour(template.skinColor) is UnityEngine.Color skin) {
+            pawn.story.skinColorOverride = skin;
+        }
+    }
+
+    /// <summary>Reads "(r, g, b)" in 0-255, the way the gene defs write colours.</summary>
+    private static UnityEngine.Color? ParseColour(string text) {
+        string[] parts = text.Trim('(', ')', ' ').Split(',');
+        if (parts.Length != 3) return null;
+
+        if (!float.TryParse(parts[0], out float r)) return null;
+        if (!float.TryParse(parts[1], out float g)) return null;
+        if (!float.TryParse(parts[2], out float b)) return null;
+
+        return new UnityEngine.Color(r / 255f, g / 255f, b / 255f);
+    }
+
     private static void ApplyBackstories(Pawn pawn, NamedPawnDef template) {
         if (pawn.story == null) return;
 

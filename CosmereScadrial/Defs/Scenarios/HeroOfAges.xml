@@ -41,6 +41,7 @@
             </li>
             <li>
               <firstName>Vin</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
               <age>18</age>
               <gender>Female</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
@@ -122,6 +123,7 @@
             </li>
             <li>
               <firstName>Hammond</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
               <nickName>Ham</nickName>
               <age>37</age>
               <gender>Male</gender>

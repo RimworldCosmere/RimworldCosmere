@@ -17,6 +17,15 @@ public class NamedPawnDef {
 
     /// <summary>Which generation of kandra, 1 to 10. Zero leaves it to the roll.</summary>
     public int kandraGeneration;
+
+    /// <summary>A BodyTypeDef name. Left empty, one is chosen to match the gender.</summary>
+    public string? bodyType;
+
+    /// <summary>A HeadTypeDef name. Left empty, one is chosen to match the gender.</summary>
+    public string? headType;
+
+    /// <summary>Skin colour as "(r, g, b)" in 0-255. Overrides whatever the genes rolled.</summary>
+    public string? skinColor;
     public List<NamedPawnInventoryEntry> apparel = [];
 
     /// <summary>
@@ -93,6 +102,15 @@ public class NamedPawnDef {
                 case "kandraGeneration":
                     if (!int.TryParse(node.InnerText, out kandraGeneration))
                         Logger.Warning($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
+                    break;
+                case "bodyType":
+                    bodyType = node.InnerText;
+                    break;
+                case "headType":
+                    headType = node.InnerText;
+                    break;
+                case "skinColor":
+                    skinColor = node.InnerText;
                     break;
                 case "mistborn":
                     if (!bool.TryParse(node.InnerText, out mistborn))

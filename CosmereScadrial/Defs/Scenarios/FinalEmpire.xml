@@ -16,6 +16,7 @@
           <pawns>
             <li>
               <firstName>Kelsier</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
               <age>38</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
@@ -44,6 +45,7 @@
             </li>
             <li>
               <firstName>Vin</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
               <age>16</age>
               <gender>Female</gender>
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
@@ -72,6 +74,7 @@
             </li>
             <li>
               <firstName>Hammond</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
               <nickName>Ham</nickName>
               <age>35</age>
               <gender>Male</gender>

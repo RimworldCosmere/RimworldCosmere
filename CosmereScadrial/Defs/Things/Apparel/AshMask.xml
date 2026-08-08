@@ -25,9 +25,9 @@
             <StuffEffectMultiplierArmor>0.1</StuffEffectMultiplierArmor>
         </statBases>
         <equippedStatOffsets>
-            <!-- Not 1.0 on purpose. A mask that stops all of it turns the vent from a decision
-                 into a tailoring job, and it still does nothing about the heat. -->
-            <Cosmere_Scadrial_Stat_AshFiltration>0.85</Cosmere_Scadrial_Stat_AshFiltration>
+            <!-- Break-even is filtration 0.769 - above that a masked pawn heals at the mouth.
+                 0.6 slows ash lung without stopping it. Biotech's gas mask gets 1.0 by patch. -->
+            <Cosmere_Scadrial_Stat_AshFiltration>0.6</Cosmere_Scadrial_Stat_AshFiltration>
         </equippedStatOffsets>
         <apparel>
             <bodyPartGroups>

@@ -115,6 +115,41 @@ public static class AshDebugActions {
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
+    /// <summary>
+    ///     The same two calls Storyteller.TryFire makes - CanFireNow then TryExecute - so the
+    ///     vents-present and era gates apply exactly as they would for the real storyteller.
+    /// </summary>
+    [DebugAction("Cosmere", "Ash: fire eruption", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    private static void FireEruption() {
+        Verse.Map map = Find.CurrentMap;
+        IncidentDef? incidentDef = DefDatabase<IncidentDef>.GetNamedSilentFail("Cosmere_Scadrial_Incident_AshmountEruption");
+        if (incidentDef == null) {
+            Messages.Message("Cosmere_Scadrial_Incident_AshmountEruption is not loaded.", MessageTypeDefOf.RejectInput, false);
+
+            return;
+        }
+
+        IncidentParms parms = StorytellerUtility.DefaultParmsNow(incidentDef.category, map);
+        parms.forced = true;
+
+        if (!incidentDef.Worker.CanFireNow(parms)) {
+            Messages.Message(
+                "Ashmount eruption can't fire here - no vents, an eruption is already running, or the era has moved past the Ashmounts.",
+                MessageTypeDefOf.RejectInput,
+                false
+            );
+
+            return;
+        }
+
+        bool fired = incidentDef.Worker.TryExecute(parms);
+        Messages.Message(
+            fired ? "Ashmount eruption fired." : "Ashmount eruption failed to fire.",
+            fired ? MessageTypeDefOf.NeutralEvent : MessageTypeDefOf.RejectInput,
+            false
+        );
+    }
+
     private static void AddAsh(int millimetres) {
         Verse.Map map = Find.CurrentMap;
         AshDepthTracker? tracker = map?.GetComponent<AshDepthTracker>();

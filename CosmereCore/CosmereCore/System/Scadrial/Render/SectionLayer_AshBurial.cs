@@ -14,8 +14,12 @@ namespace Cosmere.System.Scadrial.Render;
 /// </summary>
 [StaticConstructorOnStartup]
 public class SectionLayer_AshBurial : SectionLayer {
+    // Map/Transparent and Map/Cutout both sit at queue 2900, so the wash ties with the printed
+    // things and loses on submission order. 2910 draws it after them, still under blueprints.
+    private const int WashRenderQueue = 2910;
+
     private static readonly Material AshMat =
-        MaterialPool.MatFrom("Terrain/AshDeep", Verse.ShaderDatabase.Transparent);
+        MaterialPool.MatFrom("Terrain/AshDeep", Verse.ShaderDatabase.Transparent, WashRenderQueue);
 
     private static readonly Color32 Deep = new Color32(58, 55, 53, 255);
 

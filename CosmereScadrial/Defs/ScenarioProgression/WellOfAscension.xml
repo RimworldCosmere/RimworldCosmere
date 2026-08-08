@@ -139,6 +139,30 @@
 
       <!-- Two chained forks, in the order the story happens: Elend's wound resolves first,
            because the second fork can end the campaign and would strand it. -->
+      <!-- The reveal, between the koloss reaching the walls and the Well itself. Vin's kandra
+           has been TenSoon since before the campaign started; OreSeur is dead and wearing him
+           is the whole point. Skipped without complaint if he never joined or did not last. -->
+      <li>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
+            <days>65</days>
+            <sinceArcStart>true</sinceArcStart>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
+            <pawnName>OreSeur</pawnName>
+            <alive>true</alive>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.Action.RenamePawnAction">
+            <pawnName>OreSeur</pawnName>
+            <newFirstName>TenSoon</newFirstName>
+            <letterTitle>TenSoon</letterTitle>
+            <letterText>The kandra has stopped answering to OreSeur.\n\nHe says the name belonged to someone else, and that he has been wearing that man's bones since before he came here. His own name is TenSoon, of the Third Generation. He offers no defence and asks for none.\n\nHe is still under Contract. Whether that means anything now is a question the Contract does not answer.</letterText>
+          </li>
+        </actions>
+      </li>
+
       <li>
         <key>the_well</key>
         <triggers>

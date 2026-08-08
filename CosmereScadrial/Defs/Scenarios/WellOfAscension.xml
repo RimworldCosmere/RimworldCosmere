@@ -187,6 +187,25 @@
                 <li><def>Social</def><level>12</level></li>
               </skills>
             </li>
+            <!-- Vin's kandra. Whether he is who he says he is, the campaign answers later. -->
+            <li>
+              <firstName>OreSeur</firstName>
+              <age>40</age>
+              <chronologicalAge>320</chronologicalAge>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Kandra</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Kandra_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Kandra_Adulthood</adulthood>
+              <noRandomTraits>true</noRandomTraits>
+              <traits>
+                <li><def>Nimble</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>13</level></li>
+                <li><def>Melee</def><level>9</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
+            </li>
           </pawns>
         </li>
 
@@ -195,14 +214,14 @@
              each pawn through Notify_PawnGenerated as it comes out. -->
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
           <def>ConfigurePawnsXenotypes</def>
-          <pawnChoiceCount>9</pawnChoiceCount>
+          <pawnChoiceCount>10</pawnChoiceCount>
           <!-- TotalPawnCount is the sum of these, and it is what sets
                startingPawnCount. An empty list means zero starting pawns and an
                index error during map generation. No xenotype named, so the named
                pawns decide their own. -->
           <xenotypeCounts>
             <li>
-              <count>9</count>
+              <count>10</count>
             </li>
           </xenotypeCounts>
         </li>

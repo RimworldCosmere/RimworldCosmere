@@ -118,8 +118,15 @@
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
           <def>ConfigurePawnsXenotypes</def>
           <pawnChoiceCount>8</pawnChoiceCount>
-          <!-- Required. PostIdeoChosen calls .Where on it without a null check. -->
-          <xenotypeCounts />
+          <!-- TotalPawnCount is the sum of these, and it is what sets
+               startingPawnCount. An empty list means zero starting pawns and an
+               index error during map generation. No xenotype named, so the named
+               pawns decide their own. -->
+          <xenotypeCounts>
+            <li>
+              <count>8</count>
+            </li>
+          </xenotypeCounts>
         </li>
 
         <li Class="ScenPart_PlayerPawnsArriveMethod">

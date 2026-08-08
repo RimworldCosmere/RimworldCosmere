@@ -84,19 +84,30 @@ public class ScenarioBuilderPageTests {
     }
 
     /// <summary>
-    ///     ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes.PostIdeoChosen calls
-    ///     xenotypeCounts.Where without a null check, and the field has no default. Leaving the
-    ///     element out throws on every start of that scenario.
+    ///     xenotypeCounts has to exist and has to add up to something.
     /// </summary>
+    /// <remarks>
+    ///     PostIdeoChosen calls <c>xenotypeCounts.Where</c> with no null check, so omitting the
+    ///     element throws outright. Worse, an empty list parses fine and makes TotalPawnCount
+    ///     zero, which sets startingPawnCount to zero and blows up in DoDropPods during map
+    ///     generation, a long way from the cause. A sum above pawnChoiceCount is fine: that just
+    ///     means extra optional picks.
+    /// </remarks>
     [TestMethod]
-    public void EveryXenotypeConfigPageDeclaresXenotypeCounts() {
+    public void EveryXenotypeConfigPageStartsWithAtLeastOnePawn() {
         foreach ((string name, List<XElement> parts) in Scenarios()) {
             foreach (XElement part in parts) {
                 if (!ClassOf(part).EndsWith("ConfigureStartingPawns_Xenotypes", StringComparison.Ordinal)) continue;
 
-                Assert.IsNotNull(
-                    part.Element("xenotypeCounts"),
-                    $"{name} omits xenotypeCounts, which NREs in PostIdeoChosen."
+                XElement? counts = part.Element("xenotypeCounts");
+                Assert.IsNotNull(counts, $"{name} omits xenotypeCounts, which NREs in PostIdeoChosen.");
+
+                int total = counts!.Elements("li")
+                    .Sum(li => int.TryParse(li.Element("count")?.Value, out int c) ? c : 0);
+
+                Assert.IsTrue(
+                    total > 0,
+                    $"{name} has xenotypeCounts summing to {total}. That starts the colony with no pawns."
                 );
             }
         }

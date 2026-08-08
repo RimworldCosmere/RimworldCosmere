@@ -50,9 +50,6 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
-                    <stuffCategoriesToAllow>
-                        <li>Cosmere_Core_StuffCategory_Metal_Copper</li>
-                    </stuffCategoriesToAllow>
                 </filter>
                 <count>2</count>
             </li>
@@ -83,9 +80,6 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
-                    <stuffCategoriesToAllow>
-                        <li>Cosmere_Core_StuffCategory_Metal_Iron</li>
-                    </stuffCategoriesToAllow>
                 </filter>
                 <count>2</count>
             </li>
@@ -116,9 +110,6 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
-                    <stuffCategoriesToAllow>
-                        <li>Cosmere_Core_StuffCategory_Metal_Zinc</li>
-                    </stuffCategoriesToAllow>
                 </filter>
                 <count>2</count>
             </li>
@@ -149,9 +140,6 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
-                    <stuffCategoriesToAllow>
-                        <li>Cosmere_Core_StuffCategory_Metal_Tin</li>
-                    </stuffCategoriesToAllow>
                 </filter>
                 <count>2</count>
             </li>

@@ -714,38 +714,28 @@ public class KandraTests {
     }
 
     /// <summary>
-    ///     Each Blessing surgery has to demand its own metal.
+    ///     A recipe filter must not try to name a metal through stuffCategoriesToAllow.
     /// </summary>
     /// <remarks>
-    ///     A ThingFilter can narrow by stuff category but never by a single stuff def, so a
-    ///     recipe asking for "a hemalurgic spike" got whatever was nearest. Potency was granted
-    ///     off duralumin and pewter while the hediff recorded two iron. Every metal now carries a
-    ///     stuff category of its own so the bill cannot pick up the wrong spike.
+    ///     ThingFilter.SetAllow(StuffCategoryDef) walks every ThingDef and allows the ones that
+    ///     ARE that stuff, so listing the zinc category made zinc bars a valid stand-in for a
+    ///     spike. Nothing in ThingFilter can express "a spike made of zinc"; a thing's stuff is
+    ///     not filterable. The metal has to be checked in the recipe worker instead.
     /// </remarks>
     [TestMethod]
-    public void EachBlessingSurgeryDemandsItsOwnMetal() {
-        Dictionary<string, string> expected = new() {
-            ["Cosmere_Scadrial_Recipe_BlessingOfPresence"] = "Cosmere_Core_StuffCategory_Metal_Copper",
-            ["Cosmere_Scadrial_Recipe_BlessingOfPotency"] = "Cosmere_Core_StuffCategory_Metal_Iron",
-            ["Cosmere_Scadrial_Recipe_BlessingOfStability"] = "Cosmere_Core_StuffCategory_Metal_Zinc",
-            ["Cosmere_Scadrial_Recipe_BlessingOfAwareness"] = "Cosmere_Core_StuffCategory_Metal_Tin",
-        };
-
-        int seen = 0;
+    public void BlessingSurgeriesDoNotFilterSpikesByStuffCategory() {
         foreach (XElement recipe in DefsOfType("RecipeDef")) {
             string? name = recipe.Element("defName")?.Value;
-            if (name == null || !expected.TryGetValue(name, out string? category)) continue;
+            if (name == null || !name.StartsWith("Cosmere_Scadrial_Recipe_BlessingOf", StringComparison.Ordinal)) {
+                continue;
+            }
 
-            seen++;
-            List<string> allowed = recipe.Element("ingredients")!.Elements("li")
-                .SelectMany(li => li.Element("filter")?.Element("stuffCategoriesToAllow")?.Elements("li") ?? [])
-                .Select(li => li.Value)
-                .ToList();
-
-            CollectionAssert.Contains(allowed, category, $"{name} does not demand {category}.");
+            Assert.AreEqual(
+                0,
+                recipe.Descendants("stuffCategoriesToAllow").Count(),
+                $"{name} filters by stuff category, which lets bare metal count as a spike."
+            );
         }
-
-        Assert.AreEqual(expected.Count, seen, "A Blessing surgery is missing.");
     }
 
     /// <summary>

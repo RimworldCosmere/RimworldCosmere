@@ -9,7 +9,8 @@ namespace Cosmere.System.Scadrial.FloatMenuOptionProvider;
 ///     Right-click a corpse as a kandra: take its bones.
 /// </summary>
 public class KandraBonesMenuProvider : RimWorld.FloatMenuOptionProvider {
-    protected override bool Drafted => false;
+    // A drafted kandra is exactly the one standing over a fresh body.
+    protected override bool Drafted => true;
 
     protected override bool Undrafted => true;
 

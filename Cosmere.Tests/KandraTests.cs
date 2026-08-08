@@ -328,4 +328,60 @@ public class KandraTests {
         string source = Source("Gene", "KandraHeritage.cs");
         Assert.IsTrue(source.Contains("kandraGeneration", StringComparison.Ordinal), "Generation must still be saved.");
     }
+
+    /// <summary>
+    ///     Two genes sharing an exclusion tag switch each other off.
+    /// </summary>
+    /// <remarks>
+    ///     Pawn_GeneTracker.CheckForOverrides compares every pair of genes and overrides one of
+    ///     any pair whose defs ConflictsWith. Putting one tag on an abstract base to group a
+    ///     xenotype's genes therefore disables all but one of them, silently. Both the kandra
+    ///     and koloss sets shipped that way and almost nothing they did actually ran.
+    /// </remarks>
+    [TestMethod]
+    public void NoTwoGenesInOneSetShareAnExclusionTag() {
+        string genes = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Races", "Genes");
+
+        foreach (string file in Directory.GetFiles(genes, "*.xml")) {
+            XDocument doc = XDocument.Load(file);
+            if (doc.Root == null) continue;
+
+            Dictionary<string, XElement> abstracts = doc.Root.Elements("GeneDef")
+                .Where(g => g.Attribute("Name") != null)
+                .ToDictionary(g => g.Attribute("Name")!.Value, g => g);
+
+            Dictionary<string, List<string>> byTag = [];
+
+            foreach (XElement gene in doc.Root.Elements("GeneDef")) {
+                string? name = gene.Element("defName")?.Value;
+                if (name == null) continue;
+
+                List<string> tags = Tags(gene);
+                XElement? walk = gene;
+                while (walk?.Attribute("ParentName")?.Value is string parent
+                       && abstracts.TryGetValue(parent, out XElement? next)) {
+                    tags.AddRange(Tags(next));
+                    walk = next;
+                }
+
+                foreach (string tag in tags.Distinct()) {
+                    if (!byTag.TryGetValue(tag, out List<string>? owners)) byTag[tag] = owners = [];
+                    owners.Add(name);
+                }
+            }
+
+            foreach ((string tag, List<string> owners) in byTag) {
+                Assert.AreEqual(
+                    1,
+                    owners.Count,
+                    $"In {Path.GetFileName(file)}, exclusion tag '{tag}' is on {owners.Count} genes "
+                    + $"({string.Join(", ", owners)}). All but one would be switched off in game."
+                );
+            }
+        }
+
+        static List<string> Tags(XElement gene) {
+            return gene.Element("exclusionTags")?.Elements("li").Select(li => li.Value).ToList() ?? [];
+        }
+    }
 }

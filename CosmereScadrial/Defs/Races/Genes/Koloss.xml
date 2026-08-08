@@ -2,9 +2,6 @@
 <Defs>
 
   <GeneDef Name="Cosmere_Scadrial_KolossGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
-    <exclusionTags>
-      <li>CosmereKoloss</li>
-    </exclusionTags>
   </GeneDef>
 
   <!-- The identity gene. Carries the body and the colour, because a koloss reads as a koloss

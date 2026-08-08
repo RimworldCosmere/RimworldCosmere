@@ -2,9 +2,6 @@
 <Defs>
 
   <GeneDef Name="Cosmere_Scadrial_KandraGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
-    <exclusionTags>
-      <li>CosmereKandra</li>
-    </exclusionTags>
   </GeneDef>
 
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">

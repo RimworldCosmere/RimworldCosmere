@@ -156,4 +156,45 @@
         </stages>
     </HediffDef>
 
+    <!-- One spike out of the pair. The kandra is still in there, mostly, and knows something is
+         missing. Losing the second one finishes it. -->
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_HalfBlessed</defName>
+        <label>half-blessed</label>
+        <description>One spike gone. What is left can still answer to its name, but the years behind it have holes in them and it loses the thread of a sentence partway through. Kandra do not talk about this. Put the second spike back or take the first one out; leaving it here is the cruelty.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>true</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <disabledWorkTags>
+                    <li>Intellectual</li>
+                    <li>Social</li>
+                    <li>Artistic</li>
+                </disabledWorkTags>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.35</offset>
+                    </li>
+                    <li>
+                        <capacity>Talking</capacity>
+                        <offset>-0.30</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <MentalBreakThreshold>0.20</MentalBreakThreshold>
+                </statOffsets>
+                <statFactors>
+                    <SocialImpact>0.40</SocialImpact>
+                    <GlobalLearningFactor>0.25</GlobalLearningFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
 </Defs>

@@ -151,14 +151,42 @@ public class KandraTests {
     }
 
     /// <summary>
-    ///     Losing a spike is the hemalurgist's way of unmaking a kandra, so the check has to
-    ///     count spikes and not just look for the Blessing hediff.
+    ///     A Blessing is a pair of spikes and the spikes are what get pulled, so the state has
+    ///     to be driven off how many are left rather than off the Blessing hediff vanishing.
+    ///     Two is a kandra, one is half-blessed, none is a mistwraith.
     /// </summary>
     [TestMethod]
-    public void BlessingBoundChecksTheSpikeCount() {
-        string source = Source("Gene", "BlessingBound.cs");
-        Assert.IsTrue(source.Contains("KandraUtility.SpikeCount", StringComparison.Ordinal));
-        Assert.IsTrue(source.Contains("KandraUtility.SpikesPerBlessing", StringComparison.Ordinal));
+    public void SpikeCountDrivesAllThreeStates() {
+        string gene = Source("Gene", "BlessingBound.cs");
+        Assert.IsTrue(
+            gene.Contains("KandraUtility.ReconcileSpikes", StringComparison.Ordinal),
+            "BlessingBound should delegate to ReconcileSpikes."
+        );
+
+        string util = Source("Util", "KandraUtility.cs");
+        int start = util.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "ReconcileSpikes is missing.");
+
+        string body = util[start..];
+        Assert.IsTrue(body.Contains("SpikeCount(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("SpikesPerBlessing", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("RevertToMistwraith", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Pulling a spike in surgery has to take effect immediately. Waiting for the slow gene
+    ///     tick would leave the surgeon watching nothing happen.
+    /// </summary>
+    [TestMethod]
+    public void SurgeryReconcilesSpikesImmediately() {
+        string source = Source("Hemalurgy", "RecipeWorker", "RemoveSpike.cs");
+        Assert.IsTrue(source.Contains("KandraUtility.ReconcileSpikes", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void HalfBlessedHediffExists() {
+        Assert.IsTrue(DefNamesOfType("HediffDef").Contains("Cosmere_Scadrial_Hediff_HalfBlessed"));
     }
 
     /// <summary>

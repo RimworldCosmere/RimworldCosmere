@@ -1,5 +1,6 @@
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
 
@@ -47,6 +48,10 @@ public class RemoveSpike : Recipe_Surgery {
         pawn.TakeDamage(damage);
 
         UpdateRuinsInfluence(pawn);
+
+        // A kandra is two spikes. Taking one out has to land now rather than on the next slow
+        // tick, because the surgeon is standing right there watching it happen.
+        KandraUtility.ReconcileSpikes(pawn);
     }
 
     private void RemoveGrantedGene(Pawn pawn, ImplantedSpikeData spike) {

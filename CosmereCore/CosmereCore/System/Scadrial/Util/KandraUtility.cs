@@ -175,6 +175,52 @@ public static class KandraUtility {
     }
 
     /// <summary>
+    ///     Brings the kandra's state into line with how many spikes are actually still in it.
+    /// </summary>
+    /// <remarks>
+    ///     Two spikes and it is a kandra. One and it keeps its name but loses the thread of its
+    ///     own centuries. None and it is a mistwraith. Called on a slow tick and after any
+    ///     surgery, so a hemalurgist pulling a single spike gets the half state rather than
+    ///     nothing until the second one comes out.
+    /// </remarks>
+    public static void ReconcileSpikes(Pawn pawn) {
+        if (pawn.health?.hediffSet == null) return;
+
+        int spikes = SpikeCount(pawn);
+
+        if (spikes >= SpikesPerBlessing) {
+            Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
+            return;
+        }
+
+        if (spikes <= 0) {
+            if (!pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith)) {
+                RevertToMistwraith(pawn);
+            }
+
+            return;
+        }
+
+        // Exactly one left.
+        if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed)) return;
+
+        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
+        pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
+
+        Messages.Message(
+            "CS_Kandra_HalfBlessed".Translate(pawn.NameShortColored.Named("PAWN")),
+            pawn,
+            MessageTypeDefOf.NegativeEvent,
+            false
+        );
+    }
+
+    private static void Remove(Pawn pawn, HediffDef def) {
+        Hediff? found = pawn.health?.hediffSet?.GetFirstHediffOfDef(def);
+        if (found != null) pawn.health?.RemoveHediff(found);
+    }
+
+    /// <summary>
     ///     Pulls the spikes. What is left keeps breathing and stops being a person.
     /// </summary>
     /// <remarks>
@@ -184,6 +230,8 @@ public static class KandraUtility {
     public static void RevertToMistwraith(Pawn pawn) {
         Hediff? blessing = BlessingOn(pawn);
         if (blessing != null) pawn.health?.RemoveHediff(blessing);
+
+        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
 
         KandraShapeshift.Revert(pawn);
 

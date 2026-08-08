@@ -26,4 +26,7 @@ public static partial class HediffDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static HediffDef Cosmere_Scadrial_Hediff_Formless;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static HediffDef Cosmere_Scadrial_Hediff_HalfBlessed;
 }

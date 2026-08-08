@@ -56,12 +56,9 @@ public static class KandraShapeshift {
         // Mistborn's body looks like her; it does not make them Mistborn. Shapeshifting is a
         // disguise, not a way to farm powers off corpses.
 
-        // The name is the disguise. Without it the colony sees a stranger wearing a dead
-        // friend's face, which is worse than either.
-        if (!string.IsNullOrEmpty(form.nameFull)) {
-            pawn.Name = new NameSingle(form.nameShort ?? form.nameFull!);
-        }
-
+        // The pawn keeps its own Name. Overwriting it looked right until a kandra died wearing
+        // somebody's face and the corpse kept their name for good. The worn name lives on the
+        // comp and is added at the places that display it.
         pawn.Drawer?.renderer?.SetAllGraphicsDirty();
     }
 }

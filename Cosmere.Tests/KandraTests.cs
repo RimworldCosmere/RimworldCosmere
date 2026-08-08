@@ -207,8 +207,41 @@ public class KandraTests {
     }
 
     /// <summary>
-    ///     A kandra that dies mid-disguise used to keep the borrowed name on its corpse, which
-    ///     left the person it ate on the colony's dead list forever.
+    ///     Overwriting pawn.Name left a dead kandra permanently carrying the name of the person
+    ///     it ate. The pawn keeps its own name now and the worn one is added only where it is
+    ///     displayed, which also keeps the colonist bar honest.
+    /// </summary>
+    [TestMethod]
+    public void ShapeshiftingNeverOverwritesTheRealName() {
+        string source = Source("Kandra", "KandraShapeshift.cs");
+        Assert.IsFalse(
+            source.Contains("pawn.Name =", StringComparison.Ordinal),
+            "ApplyTo must not assign pawn.Name."
+        );
+
+        string comp = Source("Kandra", "CompKandraForms.cs");
+        Assert.IsTrue(comp.Contains("WornName", StringComparison.Ordinal));
+        Assert.IsTrue(comp.Contains("CompInspectStringExtra", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Only the map label gains the second name. The colonist bar takes a different path, so
+    ///     patching GetPawnLabel is what keeps the two different.
+    /// </summary>
+    [TestMethod]
+    public void OnlyTheMapLabelShowsTheWornName() {
+        string path = Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "Core", "Patch", "UI", "KandraMapLabelPatch.cs"
+        );
+        Assert.IsTrue(File.Exists(path), "The map label patch is missing.");
+
+        string source = File.ReadAllText(path);
+        Assert.IsTrue(source.Contains("GetPawnLabel", StringComparison.Ordinal));
+        Assert.IsTrue(source.Contains("WornName", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     A kandra that dies mid-disguise should not stay in somebody else's shape.
     /// </summary>
     [TestMethod]
     public void DeathDropsTheDisguise() {

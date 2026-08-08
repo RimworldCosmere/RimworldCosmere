@@ -105,6 +105,22 @@ public class CompKandraForms : ThingComp {
         if (parent is Pawn pawn) trueBody = KandraForm.From(pawn);
     }
 
+    /// <summary>The name the colony hears, or null when the kandra is being itself.</summary>
+    public string? WornName => current?.Label;
+
+    /// <summary>
+    ///     Puts the impersonation in the selected pawn's panel.
+    /// </summary>
+    /// <remarks>
+    ///     The player has to be able to tell at a glance which of their colonists is currently a
+    ///     kandra wearing somebody. Nobody else in the colony gets this line.
+    /// </remarks>
+    public override string CompInspectStringExtra() {
+        if (current == null) return string.Empty;
+
+        return "CS_Kandra_Wearing".Translate(current.Label.Named("FORM")).Resolve();
+    }
+
     public KandraForm? TrueBody => trueBody;
 
     public void SetCurrent(KandraForm? form) {

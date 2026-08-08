@@ -58,6 +58,39 @@ public static class KandraUtility {
         return null;
     }
 
+    /// <summary>Every Blessing the kandra carries. Kandra can hold more than one.</summary>
+    public static List<Hediff> BlessingsOn(Pawn? pawn) {
+        List<Hediff> found = [];
+        HediffSet? set = pawn?.health?.hediffSet;
+        if (set == null) return found;
+
+        IReadOnlyList<HediffDef> all = Blessings;
+        for (int i = 0; i < all.Count; i++) {
+            Hediff? hediff = set.GetFirstHediffOfDef(all[i]);
+            if (hediff != null) found.Add(hediff);
+        }
+
+        return found;
+    }
+
+    /// <summary>
+    ///     The Blessings that still have both their spikes in.
+    /// </summary>
+    /// <remarks>
+    ///     Each Blessing stands on its own pair. Pulling one spike breaks that Blessing and
+    ///     leaves the others alone, so a kandra with three of them can lose one and carry on.
+    /// </remarks>
+    public static List<Hediff> CompleteBlessingsOn(Pawn? pawn) {
+        List<Hediff> whole = [];
+        List<Hediff> all = BlessingsOn(pawn);
+
+        for (int i = 0; i < all.Count; i++) {
+            if (MatchingSpikeCount(pawn, all[i].def) >= SpikesPerBlessing) whole.Add(all[i]);
+        }
+
+        return whole;
+    }
+
     public static bool HasBlessing(Pawn? pawn) {
         return BlessingOn(pawn) != null;
     }
@@ -188,13 +221,9 @@ public static class KandraUtility {
 
         DriveSpikes(pawn, blessing);
 
-        if (MatchingSpikeCount(pawn, blessing) < SpikesPerBlessing) return;
-
-        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
-        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
-
-        // The spikes held it rather than contained it, so the same person comes back.
-        pawn.TryGetComp<CompKandraForms>()?.Mind.Restore(pawn);
+        // One place decides what the spikes add up to, so adding a second Blessing and repairing
+        // a broken one go down the same path.
+        ReconcileSpikes(pawn);
     }
 
     /// <summary>Grey, wet and roughly upright. Placeholder until the art lands.</summary>
@@ -265,7 +294,10 @@ public static class KandraUtility {
             for (int i = 0; i < salvaged.Count; i++) set.AddSpike(salvaged[i]);
         }
 
-        for (int i = set.spikeCount; i < SpikesPerBlessing; i++) {
+        // Count this Blessing's own pair, not every spike in the body. A kandra with three
+        // Blessings has six spikes in it, and topping up to two total would leave the new one
+        // with nothing.
+        for (int i = MatchingSpikeCount(pawn, blessing); i < SpikesPerBlessing; i++) {
             set.AddSpike(
                 new ImplantedSpikeData {
                     metalDefName = recipe.Value.metal,
@@ -288,15 +320,38 @@ public static class KandraUtility {
     public static void ReconcileSpikes(Pawn pawn) {
         if (pawn.health?.hediffSet == null) return;
 
-        Hediff? blessing = BlessingOn(pawn);
-        int spikes = blessing == null ? 0 : MatchingSpikeCount(pawn, blessing.def);
+        // A Blessing whose pair is broken stops being a Blessing, and its stats go with it. The
+        // spikes that are left stay in the body; they just do not add up to anything.
+        List<Hediff> all = BlessingsOn(pawn);
+        for (int i = 0; i < all.Count; i++) {
+            if (MatchingSpikeCount(pawn, all[i].def) < SpikesPerBlessing) {
+                pawn.health.RemoveHediff(all[i]);
+            }
+        }
 
-        if (spikes >= SpikesPerBlessing) {
+        int whole = CompleteBlessingsOn(pawn).Count;
+
+        if (whole > 0) {
             Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
+            Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
+
+            CompKandraForms? forms = pawn.TryGetComp<CompKandraForms>();
+            KandraForm? worn = forms?.Mind.Shape;
+
+            forms?.Mind.Restore(pawn);
+
+            // A repaired kandra picks its old face back up. Coming out of it grey and nameless
+            // would make every recovery feel like a different person walking in.
+            if (worn != null) {
+                KandraShapeshift.Wear(pawn, worn);
+            } else if (forms != null) {
+                KandraShapeshift.Revert(pawn);
+            }
+
             return;
         }
 
-        if (spikes <= 0) {
+        if (SpikeCount(pawn) <= 0) {
             if (!pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith)) {
                 RevertToMistwraith(pawn);
             }
@@ -304,13 +359,13 @@ public static class KandraUtility {
             return;
         }
 
-        // Exactly one left.
+        // Spikes in the body, but not two of a kind among them.
         if (pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed)) return;
 
         Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
         pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
 
-        // One spike is not enough to hold a borrowed shape, and the years start going.
+        // Not enough left to hold a borrowed shape, and the years start going.
         pawn.TryGetComp<CompKandraForms>()?.Mind.Store(pawn);
         KandraMind.Clear(pawn, alsoSkills: false);
         WearMistwraithShape(pawn);

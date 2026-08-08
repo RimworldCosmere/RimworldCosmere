@@ -46,6 +46,11 @@ public class KandraMind : IExposable {
     private List<Thought_Memory> memories = [];
     private bool held;
 
+    /// <summary>The shape it was wearing when the spikes came out, so it can put it back on.</summary>
+    private KandraForm? shape;
+
+    public KandraForm? Shape => shape;
+
     public bool Held => held;
 
     /// <summary>
@@ -65,6 +70,8 @@ public class KandraMind : IExposable {
         memories = [];
         List<Thought_Memory>? current = pawn.needs?.mood?.thoughts?.memories?.Memories;
         if (current != null) memories.AddRange(current);
+
+        shape = pawn.TryGetComp<CompKandraForms>()?.Current;
 
         held = true;
     }
@@ -110,6 +117,7 @@ public class KandraMind : IExposable {
 
         skills = [];
         memories = [];
+        shape = null;
         held = false;
     }
 
@@ -117,6 +125,7 @@ public class KandraMind : IExposable {
         Scribe_Values.Look(ref held, "held");
         Scribe_Collections.Look(ref skills, "skills", LookMode.Deep);
         Scribe_Collections.Look(ref memories, "memories", LookMode.Deep);
+        Scribe_Deep.Look(ref shape, "shape");
         skills ??= [];
         memories ??= [];
     }

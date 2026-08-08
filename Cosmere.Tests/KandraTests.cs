@@ -168,8 +168,8 @@ public class KandraTests {
         Assert.IsTrue(start >= 0, "ReconcileSpikes is missing.");
 
         string body = util[start..];
-        Assert.IsTrue(body.Contains("MatchingSpikeCount(pawn, blessing.def)", StringComparison.Ordinal));
-        Assert.IsTrue(body.Contains("SpikesPerBlessing", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("CompleteBlessingsOn(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("SpikeCount(pawn) <= 0", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("RevertToMistwraith", StringComparison.Ordinal));
     }
@@ -528,8 +528,8 @@ public class KandraTests {
         int rec = source.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
         string recBody = source[rec..];
         Assert.IsTrue(
-            recBody.Contains("MatchingSpikeCount(pawn, blessing.def)", StringComparison.Ordinal),
-            "ReconcileSpikes must count the matched pair, not every spike."
+            recBody.Contains("CompleteBlessingsOn(pawn)", StringComparison.Ordinal),
+            "ReconcileSpikes must work from whole Blessings, not a raw spike count."
         );
     }
 
@@ -577,5 +577,81 @@ public class KandraTests {
         string util = Source("Util", "KandraUtility.cs");
         Assert.IsTrue(util.Contains("Mind.Store(pawn)", StringComparison.Ordinal));
         Assert.IsTrue(util.Contains("Mind.Restore(pawn)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Kandra can carry more than one Blessing, and each stands on its own pair of spikes.
+    /// </summary>
+    /// <remarks>
+    ///     Topping up to two spikes in total was right while a kandra could only have one
+    ///     Blessing. With three, that is six spikes, and a new Blessing would have been driven
+    ///     into a body that already had two and given nothing.
+    /// </remarks>
+    [TestMethod]
+    public void EachBlessingStandsOnItsOwnPair() {
+        string source = Source("Util", "KandraUtility.cs");
+
+        Assert.IsTrue(source.Contains("public static List<Hediff> BlessingsOn(", StringComparison.Ordinal));
+        Assert.IsTrue(source.Contains("public static List<Hediff> CompleteBlessingsOn(", StringComparison.Ordinal));
+
+        int drive = source.IndexOf("private static void DriveSpikes(", StringComparison.Ordinal);
+        string body = source[drive..];
+        Assert.IsTrue(
+            body.Contains("MatchingSpikeCount(pawn, blessing); i < SpikesPerBlessing", StringComparison.Ordinal),
+            "DriveSpikes must top up this Blessing's pair, not the pawn's total spike count."
+        );
+    }
+
+    /// <summary>
+    ///     A Blessing that loses a spike stops applying, and takes its stats with it, while the
+    ///     kandra's other Blessings carry on.
+    /// </summary>
+    [TestMethod]
+    public void ABrokenBlessingIsRemovedButTheOthersSurvive() {
+        string source = Source("Util", "KandraUtility.cs");
+        int rec = source.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
+        string body = source[rec..];
+
+        Assert.IsTrue(
+            body.Contains("MatchingSpikeCount(pawn, all[i].def) < SpikesPerBlessing", StringComparison.Ordinal),
+            "Each Blessing should be judged on its own pair."
+        );
+        Assert.IsTrue(
+            body.Contains("if (whole > 0)", StringComparison.Ordinal),
+            "One whole Blessing should be enough to stay a kandra."
+        );
+    }
+
+    /// <summary>
+    ///     Coming back from a mistwraith grey and nameless would read as a different person
+    ///     walking in. The face it was wearing goes back on with the mind.
+    /// </summary>
+    [TestMethod]
+    public void RepairingAKandraPutsItsFaceBackOn() {
+        string mind = Source("Kandra", "KandraMind.cs");
+        Assert.IsTrue(mind.Contains("KandraForm? shape", StringComparison.Ordinal));
+        Assert.IsTrue(mind.Contains("public KandraForm? Shape => shape;", StringComparison.Ordinal));
+
+        string util = Source("Util", "KandraUtility.cs");
+        int rec = util.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
+        string body = util[rec..];
+        Assert.IsTrue(body.Contains("KandraShapeshift.Wear(pawn, worn)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The surgery used to demand a mistwraith, which meant a working kandra could never be
+    ///     given a second Blessing.
+    /// </summary>
+    [TestMethod]
+    public void AKandraCanBeGivenAnotherBlessing() {
+        string source = Source("Hemalurgy", "RecipeWorker", "GiveBlessing.cs");
+        Assert.IsTrue(
+            source.Contains("return KandraUtility.IsKandra(pawn);", StringComparison.Ordinal),
+            "An awake kandra should be offered Blessings it does not have."
+        );
+        Assert.IsTrue(
+            source.Contains("HasHediff(blessing) == true) return false", StringComparison.Ordinal),
+            "But not the same Blessing twice."
+        );
     }
 }

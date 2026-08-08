@@ -20,11 +20,19 @@ public class GiveBlessing : Recipe_Surgery {
         if (!HemalurgicDefOf.Cosmere_Scadrial_Hemalurgy.IsFinished) return false;
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony)) return false;
 
-        if (KandraUtility.HasBlessing(pawn)) return false;
+        HediffDef? blessing = recipe?.GetModExtension<BlessingExtension>()?.blessing;
+        if (blessing == null) return false;
 
-        return pawn.health?.hediffSet?.HasHediff(
-            HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith
-        ) == true;
+        // Not this one twice. Another Blessing on top of the ones it already has is fine, and is
+        // how a kandra ends up carrying more than one.
+        if (pawn.health?.hediffSet?.HasHediff(blessing) == true) return false;
+
+        // Waking a mistwraith up, or adding to a kandra that is already awake.
+        if (pawn.health?.hediffSet?.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith) == true) {
+            return true;
+        }
+
+        return KandraUtility.IsKandra(pawn);
     }
 
     public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe) {
@@ -48,7 +56,12 @@ public class GiveBlessing : Recipe_Surgery {
             return;
         }
 
-        KandraUtility.Become(pawn, blessing);
+        if (KandraUtility.IsKandra(pawn)) {
+            // Already a kandra. It is gaining a Blessing, not being made into one.
+            KandraUtility.GiveBlessing(pawn, blessing);
+        } else {
+            KandraUtility.Become(pawn, blessing);
+        }
 
         Messages.Message(
             "CS_BecameKandra".Translate(

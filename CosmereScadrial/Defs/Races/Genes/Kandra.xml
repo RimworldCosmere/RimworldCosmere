@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <GeneDef Name="Cosmere_Scadrial_KandraGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
+    <exclusionTags>
+      <li>CosmereKandra</li>
+    </exclusionTags>
+  </GeneDef>
+
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KandraHeritage</defName>
+    <label>kandra</label>
+    <labelShortAdj>kandra</labelShortAdj>
+    <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate.</description>
+    <iconPath>UI/Icons/Genes/Gene_KandraHeritage</iconPath>
+    <displayOrderInCategory>200</displayOrderInCategory>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-2</biostatMet>
+    <statFactors>
+      <MoveSpeed>0.92</MoveSpeed>
+    </statFactors>
+    <statOffsets>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <ToxicResistance>0.4</ToxicResistance>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- No skeleton to break. The upside of being mostly fluid. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_Boneless</defName>
+    <label>boneless</label>
+    <labelShortAdj>boneless</labelShortAdj>
+    <description>There is nothing rigid in a kandra except the bones it has borrowed. Blows that would shatter a man displace it instead, and it can fold itself through a gap no one its size should manage.</description>
+    <iconPath>UI/Icons/Genes/Gene_Boneless</iconPath>
+    <displayOrderInCategory>201</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <statFactors>
+      <IncomingDamageFactor>0.85</IncomingDamageFactor>
+    </statFactors>
+    <statOffsets>
+      <PainShockThreshold>0.2</PainShockThreshold>
+    </statOffsets>
+  </GeneDef>
+
+  <!-- What it looks like with nothing on. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_TrueBody</defName>
+    <label>true body</label>
+    <labelShortAdj>formless</labelShortAdj>
+    <description>Its own shape, worn when it is not pretending to be anybody. Translucent, wet, and unsettling to look at for long. Most kandra avoid it in company.</description>
+    <iconPath>UI/Icons/Genes/Gene_TrueBody</iconPath>
+    <displayOrderInCategory>202</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <statFactors>
+      <SocialImpact>0.75</SocialImpact>
+    </statFactors>
+  </GeneDef>
+
+  <!-- Two spikes, and everything depends on them staying in. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_BlessingBound</defName>
+    <label>blessing-bound</label>
+    <labelShortAdj>blessed</labelShortAdj>
+    <description>Two hemalurgic spikes hold a kandra's mind in place - a Blessing, in their own word for it. Take both out and what remains is a mistwraith: alive, hungry, and nobody at all.</description>
+    <iconPath>UI/Icons/Genes/Gene_BlessingBound</iconPath>
+    <displayOrderInCategory>203</displayOrderInCategory>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <statFactors>
+      <PsychicSensitivity>1.5</PsychicSensitivity>
+    </statFactors>
+  </GeneDef>
+
+  <!-- Eating the dead, and wearing them afterwards. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_BodyAbsorption</defName>
+    <label>body absorption</label>
+    <labelShortAdj>mimic</labelShortAdj>
+    <description>Given a corpse and an hour, a kandra can take its bones inside itself and build that body around them. Afterwards it can put the shape back on whenever it likes, down to the voice.</description>
+    <iconPath>UI/Icons/Genes/Gene_BodyAbsorption</iconPath>
+    <displayOrderInCategory>204</displayOrderInCategory>
+    <biostatCpx>3</biostatCpx>
+    <biostatMet>-2</biostatMet>
+  </GeneDef>
+
+  <!-- Generation. Earlier is stronger and harder to command. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
+    <defName>Cosmere_Scadrial_Gene_Generational</defName>
+    <label>generational</label>
+    <labelShortAdj>generational</labelShortAdj>
+    <description>Kandra count themselves by generation, first through tenth and beyond. The early ones are stronger, harder to order about, and remember things nobody wanted written down.</description>
+    <iconPath>UI/Icons/Genes/Gene_KandraGeneration</iconPath>
+    <displayOrderInCategory>205</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <statFactors>
+      <LifespanFactor>4.0</LifespanFactor>
+    </statFactors>
+  </GeneDef>
+
+</Defs>

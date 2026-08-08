@@ -52,6 +52,10 @@ public static class KandraShapeshift {
 
         pawn.gender = form.gender;
 
+        // The xenotype is captured on the form and deliberately not applied. A kandra wearing a
+        // Mistborn's body looks like her; it does not make them Mistborn. Shapeshifting is a
+        // disguise, not a way to farm powers off corpses.
+
         // The name is the disguise. Without it the colony sees a stranger wearing a dead
         // friend's face, which is worse than either.
         if (!string.IsNullOrEmpty(form.nameFull)) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Every humanlike carries the repertoire. It costs nothing on a pawn that never becomes a
+         kandra, and adding the comp later to an existing pawn is not something RimWorld makes
+         easy. -->
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="Human"]/comps</xpath>
+        <value>
+            <li Class="Cosmere.System.Scadrial.Kandra.CompProperties_KandraForms">
+                <freeFormSkill>12</freeFormSkill>
+                <xpPerForm>3000</xpPerForm>
+            </li>
+        </value>
+    </Operation>
+</Patch>

@@ -104,4 +104,23 @@
         </genes>
     </XenotypeDef>
 
+    <!-- Made from a mistwraith by driving two spikes into it, so nothing about a kandra is
+         inherited. They do not have children. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_Kandra</defName>
+        <label>kandra</label>
+        <description>A boneless thing wearing somebody else's shape, held together by two hemalurgic spikes. Kandra serve under contract, count their generations, and remember a great deal more than they admit to.</description>
+        <displayPriority>5120</displayPriority>
+        <inheritable>false</inheritable>
+        <iconPath>UI/Icons/Xenotype/Kandra</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KandraHeritage</li>
+            <li>Cosmere_Scadrial_Gene_Boneless</li>
+            <li>Cosmere_Scadrial_Gene_TrueBody</li>
+            <li>Cosmere_Scadrial_Gene_BlessingBound</li>
+            <li>Cosmere_Scadrial_Gene_BodyAbsorption</li>
+            <li>Cosmere_Scadrial_Gene_Generational</li>
+        </genes>
+    </XenotypeDef>
+
 </Defs>

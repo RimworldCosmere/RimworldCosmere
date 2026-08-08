@@ -168,7 +168,7 @@ public class KandraTests {
         Assert.IsTrue(start >= 0, "ReconcileSpikes is missing.");
 
         string body = util[start..];
-        Assert.IsTrue(body.Contains("SpikeCount(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("MatchingSpikeCount(pawn, blessing.def)", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("SpikesPerBlessing", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("RevertToMistwraith", StringComparison.Ordinal));
@@ -508,5 +508,74 @@ public class KandraTests {
             source.Contains("salvaged", StringComparison.Ordinal),
             "Re-seating must keep the spikes that were already in it."
         );
+    }
+
+    /// <summary>
+    ///     A Blessing is two spikes of one metal stealing one thing. Counting every spike in the
+    ///     body would let a kandra hold its mind together on a scavenged pair off somebody else.
+    /// </summary>
+    [TestMethod]
+    public void OnlyTheBlessingsOwnMatchedPairCounts() {
+        string source = Source("Util", "KandraUtility.cs");
+
+        int start = source.IndexOf("public static int MatchingSpikeCount(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "MatchingSpikeCount is missing.");
+
+        string body = source[start..];
+        Assert.IsTrue(body.Contains("metalDefName != recipe.Value.metal", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("stealType != recipe.Value.steal", StringComparison.Ordinal));
+
+        int rec = source.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
+        string recBody = source[rec..];
+        Assert.IsTrue(
+            recBody.Contains("MatchingSpikeCount(pawn, blessing.def)", StringComparison.Ordinal),
+            "ReconcileSpikes must count the matched pair, not every spike."
+        );
+    }
+
+    /// <summary>
+    ///     Holding somebody else's face takes a whole mind. One spike or none and the kandra
+    ///     drops the shape and loses the buttons entirely.
+    /// </summary>
+    [TestMethod]
+    public void DegradedKandraCannotTakeAForm() {
+        string util = Source("Util", "KandraUtility.cs");
+        int start = util.IndexOf("public static bool CanHoldAShape(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "CanHoldAShape is missing.");
+
+        string body = util[start..];
+        Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_Mistwraith", StringComparison.Ordinal));
+
+        string gene = Source("Gene", "BodyAbsorption.cs");
+        Assert.IsTrue(
+            gene.Contains("CanHoldAShape(pawn)) yield break", StringComparison.Ordinal),
+            "The gizmos should disappear, not merely disable."
+        );
+
+        Assert.IsTrue(
+            util.Contains("WearMistwraithShape", StringComparison.Ordinal),
+            "Both degraded states should drop to the mistwraith shape."
+        );
+    }
+
+    /// <summary>
+    ///     The spikes hold a kandra's mind rather than contain it, so a fresh pair gives back the
+    ///     same person. Without the snapshot, re-blessing would produce a blank one.
+    /// </summary>
+    [TestMethod]
+    public void ReblessingRestoresSkillsAndMemories() {
+        string mind = Source("Kandra", "KandraMind.cs");
+        Assert.IsTrue(mind.Contains("public void Store(Pawn pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(mind.Contains("public void Restore(Pawn pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(mind.Contains("memories", StringComparison.Ordinal));
+        Assert.IsTrue(
+            mind.Contains("if (held) return;", StringComparison.Ordinal),
+            "Losing the second spike must not overwrite the snapshot taken at the first."
+        );
+
+        string util = Source("Util", "KandraUtility.cs");
+        Assert.IsTrue(util.Contains("Mind.Store(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("Mind.Restore(pawn)", StringComparison.Ordinal));
     }
 }

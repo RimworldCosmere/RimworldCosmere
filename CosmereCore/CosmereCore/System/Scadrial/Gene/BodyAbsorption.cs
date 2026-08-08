@@ -35,6 +35,10 @@ public class BodyAbsorption : Verse.Gene {
         if (forms == null) yield break;
         if (!pawn.IsColonistPlayerControlled) yield break;
 
+        // Half-blessed and mistwraiths cannot hold a shape, so there is nothing to offer. The
+        // buttons go rather than grey out: a mistwraith is not a colonist waiting on a cooldown.
+        if (!Util.KandraUtility.CanHoldAShape(pawn)) yield break;
+
         yield return WearGizmo(forms);
 
         if (forms.IsWearingSomeoneElse) yield return RevertGizmo();

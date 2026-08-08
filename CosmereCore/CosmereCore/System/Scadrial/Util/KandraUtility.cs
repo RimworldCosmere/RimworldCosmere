@@ -62,6 +62,23 @@ public static class KandraUtility {
         return BlessingOn(pawn) != null;
     }
 
+    /// <summary>
+    ///     True when the kandra has lost a spike and cannot hold a shape any more.
+    /// </summary>
+    /// <remarks>
+    ///     Covers both the one-spike state and the no-spike one. Shapeshifting needs a whole
+    ///     mind, so neither of them gets to do it.
+    /// </remarks>
+    public static bool CanHoldAShape(Pawn? pawn) {
+        HediffSet? set = pawn?.health?.hediffSet;
+        if (set == null) return false;
+
+        if (set.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed)) return false;
+        if (set.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith)) return false;
+
+        return true;
+    }
+
     /// <summary>A Blessing is two spikes. Fewer than two and there is no Blessing left.</summary>
     public const int SpikesPerBlessing = 2;
 
@@ -98,6 +115,34 @@ public static class KandraUtility {
         );
 
         return spiked is HemalurgicSpikes set ? set.spikeCount : 0;
+    }
+
+    /// <summary>
+    ///     How many of the pawn's spikes are the matched pair this Blessing is made of.
+    /// </summary>
+    /// <remarks>
+    ///     A Blessing is two spikes of one metal stealing one thing. Counting every spike in the
+    ///     body would let a kandra keep its mind on a scavenged pair of somebody else's, which is
+    ///     not what a Blessing is. Anything the kandra picked up elsewhere is ignored here.
+    /// </remarks>
+    public static int MatchingSpikeCount(Pawn? pawn, HediffDef blessing) {
+        (string metal, HemalurgicStealType steal)? recipe = RecipeFor(blessing);
+        if (recipe == null) return 0;
+
+        Hediff? spiked = pawn?.health?.hediffSet?.GetFirstHediffOfDef(
+            Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
+        );
+        if (spiked is not HemalurgicSpikes set) return 0;
+
+        int matching = 0;
+        for (int i = 0; i < set.spikes.Count; i++) {
+            if (set.spikes[i].metalDefName != recipe.Value.metal) continue;
+            if (set.spikes[i].stealType != recipe.Value.steal) continue;
+
+            matching++;
+        }
+
+        return matching;
     }
 
     /// <summary>
@@ -142,6 +187,35 @@ public static class KandraUtility {
         if (BlessingOn(pawn) == null) pawn.health?.AddHediff(blessing);
 
         DriveSpikes(pawn, blessing);
+
+        if (MatchingSpikeCount(pawn, blessing) < SpikesPerBlessing) return;
+
+        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
+        Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
+
+        // The spikes held it rather than contained it, so the same person comes back.
+        pawn.TryGetComp<CompKandraForms>()?.Mind.Restore(pawn);
+    }
+
+    /// <summary>Grey, wet and roughly upright. Placeholder until the art lands.</summary>
+    private static readonly UnityEngine.Color MistwraithGrey = new UnityEngine.Color(0.58f, 0.60f, 0.58f);
+
+    /// <summary>
+    ///     Drops whatever shape the kandra was holding and leaves the thing underneath.
+    /// </summary>
+    /// <remarks>
+    ///     Holding a face takes a whole mind. With one spike or none there is not enough left to
+    ///     do it, so the borrowed body goes whether the player wanted it to or not. The look is a
+    ///     recolour for now; a mistwraith needs its own art before this is finished.
+    /// </remarks>
+    public static void WearMistwraithShape(Pawn pawn) {
+        KandraShapeshift.Revert(pawn);
+
+        if (pawn.story == null) return;
+
+        pawn.story.skinColorOverride = MistwraithGrey;
+        pawn.story.hairDef = HairDefOf.Bald;
+        pawn.Drawer?.renderer?.SetAllGraphicsDirty();
     }
 
     /// <summary>Puts the pair in, so the rest of hemalurgy can see them.</summary>
@@ -214,7 +288,8 @@ public static class KandraUtility {
     public static void ReconcileSpikes(Pawn pawn) {
         if (pawn.health?.hediffSet == null) return;
 
-        int spikes = SpikeCount(pawn);
+        Hediff? blessing = BlessingOn(pawn);
+        int spikes = blessing == null ? 0 : MatchingSpikeCount(pawn, blessing.def);
 
         if (spikes >= SpikesPerBlessing) {
             Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
@@ -234,6 +309,11 @@ public static class KandraUtility {
 
         Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
         pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
+
+        // One spike is not enough to hold a borrowed shape, and the years start going.
+        pawn.TryGetComp<CompKandraForms>()?.Mind.Store(pawn);
+        KandraMind.Clear(pawn, alsoSkills: false);
+        WearMistwraithShape(pawn);
 
         Messages.Message(
             "CS_Kandra_HalfBlessed".Translate(pawn.NameShortColored.Named("PAWN")),
@@ -269,12 +349,11 @@ public static class KandraUtility {
             pawn.health?.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
         }
 
-        if (pawn.skills?.skills != null) {
-            for (int i = 0; i < pawn.skills.skills.Count; i++) {
-                pawn.skills.skills[i].Level = 0;
-                pawn.skills.skills[i].passion = Passion.None;
-            }
-        }
+        CompKandraForms? forms = pawn.TryGetComp<CompKandraForms>();
+        forms?.Mind.Store(pawn);
+        KandraMind.Clear(pawn, alsoSkills: true);
+
+        WearMistwraithShape(pawn);
 
         Messages.Message(
             "CS_KandraLostBlessing".Translate(pawn.NameShortColored.Named("PAWN")),

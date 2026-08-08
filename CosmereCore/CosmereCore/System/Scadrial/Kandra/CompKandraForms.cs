@@ -33,6 +33,11 @@ public class CompKandraForms : ThingComp {
     /// <summary>The kandra's own body, kept so they can always go back to it.</summary>
     private KandraForm? trueBody;
 
+    /// <summary>What the spikes were holding, kept for when a new pair goes in.</summary>
+    private KandraMind mind = new KandraMind();
+
+    public KandraMind Mind => mind;
+
     public CompProperties_KandraForms Props => (CompProperties_KandraForms)props;
 
     public IReadOnlyList<KandraForm> Known => known;
@@ -83,6 +88,8 @@ public class CompKandraForms : ThingComp {
         Scribe_Collections.Look(ref known, "knownForms", LookMode.Deep);
         Scribe_Deep.Look(ref current, "currentForm");
         Scribe_Deep.Look(ref trueBody, "trueBody");
+        Scribe_Deep.Look(ref mind, "mind");
+        mind ??= new KandraMind();
         known ??= [];
     }
 

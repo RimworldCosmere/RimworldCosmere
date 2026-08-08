@@ -54,6 +54,11 @@
                 <li>3</li>
             </forceEyesVisibleForRotations>
         </apparel>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshMask">
+                <scoreOffsetNearVents>0.5</scoreOffsetNearVents>
+            </li>
+        </comps>
         <tradeTags>
             <li>BasicClothing</li>
         </tradeTags>

@@ -309,6 +309,12 @@ public static class KandraUtility {
                 }
             );
         }
+
+        // Spikes are spikes. A kandra's are what hold its mind together, and they are also the
+        // hole Ruin talks through. Driving them in here rather than through the surgery bypassed
+        // the influence entirely, so kandra were the one spiked thing on Scadrial that nothing
+        // whispered to.
+        HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
     }
 
     /// <summary>
@@ -394,6 +400,9 @@ public static class KandraUtility {
     ///     thought they were talking to a friend finds out at the same moment the kandra does.
     /// </remarks>
     public static void RevertToMistwraith(Pawn pawn) {
+        // Whatever spikes are left decide how loudly Ruin still speaks.
+        HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
+
         Hediff? blessing = BlessingOn(pawn);
         if (blessing != null) pawn.health?.RemoveHediff(blessing);
 

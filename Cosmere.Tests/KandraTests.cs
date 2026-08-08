@@ -828,4 +828,32 @@ public class KandraTests {
             "The metal comes from the thing's stuff."
         );
     }
+
+    /// <summary>
+    ///     A kandra's spikes have to feed Ruin's influence like anyone else's.
+    /// </summary>
+    /// <remarks>
+    ///     The influence hediff and its stacking mood penalty already existed, but only the
+    ///     surgery path updated them. Driving a Blessing's spikes straight into the hediff
+    ///     bypassed it, which left kandra the one spiked thing on Scadrial that nothing whispered
+    ///     to. Pulling them has to update it too, or the whispers outlive the spikes.
+    /// </remarks>
+    [TestMethod]
+    public void KandraSpikesFeedRuinsInfluence() {
+        string source = Source("Util", "KandraUtility.cs");
+
+        int drive = source.IndexOf("private static void DriveSpikes(", StringComparison.Ordinal);
+        Assert.IsTrue(drive >= 0);
+        Assert.IsTrue(
+            source[drive..].Contains("UpdateRuinsInfluence(pawn)", StringComparison.Ordinal),
+            "Driving spikes in must raise the influence."
+        );
+
+        int revert = source.IndexOf("public static void RevertToMistwraith(", StringComparison.Ordinal);
+        Assert.IsTrue(revert >= 0);
+        Assert.IsTrue(
+            source[revert..(revert + 500)].Contains("UpdateRuinsInfluence(pawn)", StringComparison.Ordinal),
+            "Losing the spikes must lower it again."
+        );
+    }
 }

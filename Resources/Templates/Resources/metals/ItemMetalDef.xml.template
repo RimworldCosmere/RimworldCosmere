@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <!-- One stuff category per metal, so a recipe can demand this metal and nothing else. A
+         ThingFilter can only narrow by stuff category, never by a single stuff def, and
+         "two iron spikes" is exactly the kind of thing hemalurgy needs to be able to ask for. -->
+    <StuffCategoryDef>
+        <defName>Cosmere_Core_StuffCategory_Metal_{{defName metal.name}}</defName>
+        <label>{{title metal.name}}</label>
+        <noun>{{title metal.name}}</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Large</destroySoundLarge>
+    </StuffCategoryDef>
+
     <ThingDef ParentName="CosmereMetalBase">
         <defName>{{defName metal.name}}</defName>
         <label>{{title metal.name}}</label>
@@ -77,6 +89,7 @@
 
         <stuffProps>
             <categories>
+                <li>Cosmere_Core_StuffCategory_Metal_{{defName metal.name}}</li>
                 <li>Cosmere_Core_StuffCategory_Metals</li>
                 {{#if metal.allomancy }}
                 <li>Cosmere_Core_StuffCategory_AllomanticMetals</li>

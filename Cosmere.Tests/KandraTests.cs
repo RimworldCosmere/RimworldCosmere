@@ -712,4 +712,65 @@ public class KandraTests {
             );
         }
     }
+
+    /// <summary>
+    ///     Each Blessing surgery has to demand its own metal.
+    /// </summary>
+    /// <remarks>
+    ///     A ThingFilter can narrow by stuff category but never by a single stuff def, so a
+    ///     recipe asking for "a hemalurgic spike" got whatever was nearest. Potency was granted
+    ///     off duralumin and pewter while the hediff recorded two iron. Every metal now carries a
+    ///     stuff category of its own so the bill cannot pick up the wrong spike.
+    /// </remarks>
+    [TestMethod]
+    public void EachBlessingSurgeryDemandsItsOwnMetal() {
+        Dictionary<string, string> expected = new() {
+            ["Cosmere_Scadrial_Recipe_BlessingOfPresence"] = "Cosmere_Core_StuffCategory_Metal_Copper",
+            ["Cosmere_Scadrial_Recipe_BlessingOfPotency"] = "Cosmere_Core_StuffCategory_Metal_Iron",
+            ["Cosmere_Scadrial_Recipe_BlessingOfStability"] = "Cosmere_Core_StuffCategory_Metal_Zinc",
+            ["Cosmere_Scadrial_Recipe_BlessingOfAwareness"] = "Cosmere_Core_StuffCategory_Metal_Tin",
+        };
+
+        int seen = 0;
+        foreach (XElement recipe in DefsOfType("RecipeDef")) {
+            string? name = recipe.Element("defName")?.Value;
+            if (name == null || !expected.TryGetValue(name, out string? category)) continue;
+
+            seen++;
+            List<string> allowed = recipe.Element("ingredients")!.Elements("li")
+                .SelectMany(li => li.Element("filter")?.Element("stuffCategoriesToAllow")?.Elements("li") ?? [])
+                .Select(li => li.Value)
+                .ToList();
+
+            CollectionAssert.Contains(allowed, category, $"{name} does not demand {category}.");
+        }
+
+        Assert.AreEqual(expected.Count, seen, "A Blessing surgery is missing.");
+    }
+
+    /// <summary>
+    ///     Every metal and gem gets a stuff category of its own, emitted by the same template
+    ///     that builds the item, so a recipe can always ask for one specific material.
+    /// </summary>
+    [TestMethod]
+    public void EveryMetalAndGemHasItsOwnStuffCategory() {
+        foreach ((string dir, string prefix) in new[] {
+                     (Path.Combine("Things", "Metals", "Items"), "Cosmere_Core_StuffCategory_Metal_"),
+                     (Path.Combine("Things", "Gems", "Items"), "Cosmere_Core_StuffCategory_Gem_"),
+                 }) {
+            string path = Path.Combine(RepoRoot, "CosmereCore", "Defs", dir);
+            if (!Directory.Exists(path)) continue;
+
+            string[] files = Directory.GetFiles(path, "*Item.generated.xml");
+            Assert.IsTrue(files.Length > 0, $"No generated items under {dir}.");
+
+            foreach (string file in files) {
+                XDocument doc = XDocument.Load(file);
+                bool has = doc.Root!.Elements("StuffCategoryDef")
+                    .Any(d => d.Element("defName")?.Value.StartsWith(prefix, StringComparison.Ordinal) == true);
+
+                Assert.IsTrue(has, $"{Path.GetFileName(file)} has no stuff category of its own.");
+            }
+        }
+    }
 }

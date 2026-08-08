@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <!-- One stuff category per gem, for the same reason the metals have one: a recipe can only
+         narrow by stuff category, so without this there is no way to ask for a specific gem. -->
+    <StuffCategoryDef>
+        <defName>Cosmere_Core_StuffCategory_Gem_{{defName gem.name}}</defName>
+        <label>{{title gem.name}}</label>
+        <noun>{{title gem.name}}</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Large</destroySoundLarge>
+    </StuffCategoryDef>
+
     <!-- Raw {{defName gem.name}} -->
     <ThingDef ParentName="CosmereGemBase">
         <defName>Raw{{defName gem.name}}</defName>
@@ -27,6 +38,7 @@
 
         <stuffProps>
             <categories>
+                <li>Cosmere_Core_StuffCategory_Gem_{{defName gem.name}}</li>
                 <li>Cosmere_Core_StuffCategory_Gems</li>
                 <li>Cosmere_Core_StuffCategory_RawGems</li>
             </categories>

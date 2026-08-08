@@ -45,6 +45,8 @@
                 <li>Medicine</li>
             </categories>
         </fixedIngredientFilter>
+        <!-- Each child narrows the spike ingredient to its own metal. A ThingFilter can only
+             narrow by stuff category, which is why every metal now has one of its own. -->
     </RecipeDef>
 
     <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
@@ -57,6 +59,27 @@
                 <blessing>Cosmere_Scadrial_Hediff_BlessingOfPresence</blessing>
             </li>
         </modExtensions>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+                    </thingDefs>
+                    <stuffCategoriesToAllow>
+                        <li>Cosmere_Core_StuffCategory_Metal_Copper</li>
+                    </stuffCategoriesToAllow>
+                </filter>
+                <count>2</count>
+            </li>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
     </RecipeDef>
 
     <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
@@ -69,6 +92,27 @@
                 <blessing>Cosmere_Scadrial_Hediff_BlessingOfPotency</blessing>
             </li>
         </modExtensions>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+                    </thingDefs>
+                    <stuffCategoriesToAllow>
+                        <li>Cosmere_Core_StuffCategory_Metal_Iron</li>
+                    </stuffCategoriesToAllow>
+                </filter>
+                <count>2</count>
+            </li>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
     </RecipeDef>
 
     <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
@@ -81,6 +125,27 @@
                 <blessing>Cosmere_Scadrial_Hediff_BlessingOfStability</blessing>
             </li>
         </modExtensions>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+                    </thingDefs>
+                    <stuffCategoriesToAllow>
+                        <li>Cosmere_Core_StuffCategory_Metal_Zinc</li>
+                    </stuffCategoriesToAllow>
+                </filter>
+                <count>2</count>
+            </li>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
     </RecipeDef>
 
     <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
@@ -93,6 +158,27 @@
                 <blessing>Cosmere_Scadrial_Hediff_BlessingOfAwareness</blessing>
             </li>
         </modExtensions>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+                    </thingDefs>
+                    <stuffCategoriesToAllow>
+                        <li>Cosmere_Core_StuffCategory_Metal_Tin</li>
+                    </stuffCategoriesToAllow>
+                </filter>
+                <count>2</count>
+            </li>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
     </RecipeDef>
 
 </Defs>

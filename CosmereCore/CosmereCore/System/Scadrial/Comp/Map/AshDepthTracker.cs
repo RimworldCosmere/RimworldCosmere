@@ -16,6 +16,9 @@ public class AshDepthTracker : MapComponent {
     private const int Stripes = 64;
     private const float UnitMm = AshGrid.UnitMm;
 
+    /// <summary>Stripe the gas sweep rides. Not 0 - that one already carries every vent's plume.</summary>
+    private const int GasStripe = 32;
+
     /// <summary>A stripe comes round once every 64 ticks, so 937.5 times a day.</summary>
     private const float SweepsPerDay = GenDate.TicksPerDay / (float)Stripes;
 
@@ -54,6 +57,8 @@ public class AshDepthTracker : MapComponent {
     private bool metalSeen;
 
     private readonly List<Comp.Thing.CompAshVent> vents = new List<Comp.Thing.CompAshVent>();
+
+    private readonly List<Comp.Thing.CompAshGas> gasVents = new List<Comp.Thing.CompAshGas>();
 
     public AshDepthTracker(Verse.Map map) : base(map) {
         grid = new AshGrid(map);
@@ -128,6 +133,15 @@ public class AshDepthTracker : MapComponent {
         vents.Remove(vent);
     }
 
+    /// <summary>The gas rides the same announce-yourself contract the plume does.</summary>
+    public void RegisterGas(Comp.Thing.CompAshGas gas) {
+        if (!gasVents.Contains(gas)) gasVents.Add(gas);
+    }
+
+    public void DeregisterGas(Comp.Thing.CompAshGas gas) {
+        gasVents.Remove(gas);
+    }
+
     /// <summary>The vents breathing on this map, for the dev action that fires them all at once.</summary>
     public IReadOnlyList<Comp.Thing.CompAshVent> Vents => vents;
 
@@ -165,6 +179,11 @@ public class AshDepthTracker : MapComponent {
 
                 if (changed) NotifyAshChanged();
             }
+        }
+
+        // Outside the era branch: the gas stops at the Catacendre, ash lung still has to recede.
+        if (stripe == GasStripe) {
+            Comp.Thing.CompAshGas.Exhale(map, gasVents, Stripes / (float)GenDate.TicksPerHour);
         }
 
         // Outside the era branch on purpose: the terrain has to unwind off the draining grid, not

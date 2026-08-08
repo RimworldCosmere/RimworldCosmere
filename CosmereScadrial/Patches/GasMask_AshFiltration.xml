@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- The skaa cloth mask slows ash lung; a real filter stops it. Wrapped in FindMod because
+         Apparel_GasMask is Biotech's, and a missing xpath target is a red error at load. -->
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Biotech</li>
+        </mods>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Apparel_GasMask"]/equippedStatOffsets</xpath>
+            <value>
+                <Cosmere_Scadrial_Stat_AshFiltration>1.0</Cosmere_Scadrial_Stat_AshFiltration>
+            </value>
+        </match>
+    </Operation>
+</Patch>

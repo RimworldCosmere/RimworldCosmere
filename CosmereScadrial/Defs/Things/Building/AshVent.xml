@@ -47,6 +47,20 @@
                     <li>Duralumin</li>
                 </metals>
             </li>
+            <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshGas">
+                <!-- Cells past the 2x2 mouth the gas still reaches. The gain and recede crossover
+                     sits about three quarters out, so the last ring or two is already relief. -->
+                <radius>5</radius>
+                <!-- Raw exposure on the mouth itself. The severity rate belongs to AshLungMath;
+                     move this and the hediff's whole stage timeline moves with it. -->
+                <exposureAtMouth>1</exposureAtMouth>
+            </li>
+            <li Class="CompProperties_HeatPusher">
+                <!-- Outdoors a heat push is a no-op, so open ground never warms and this only
+                     bites once somebody roofs the vent in. Then the room cooks. -->
+                <heatPerSecond>30</heatPerSecond>
+                <heatPushMaxTemperature>100</heatPushMaxTemperature>
+            </li>
         </comps>
     </ThingDef>
 

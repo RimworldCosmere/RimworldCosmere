@@ -23,6 +23,10 @@
       <ComfyTemperatureMin>-8</ComfyTemperatureMin>
       <ToxicResistance>0.4</ToxicResistance>
     </statOffsets>
+    <makeImmuneTo>
+      <li>FoodPoisoning</li>
+      <li>GutWorms</li>
+    </makeImmuneTo>
   </GeneDef>
 
   <!-- No skeleton to break. The upside of being mostly fluid. -->
@@ -35,9 +39,11 @@
     <displayOrderInCategory>201</displayOrderInCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>
-    <statFactors>
-      <IncomingDamageFactor>0.85</IncomingDamageFactor>
-    </statFactors>
+    <damageFactors>
+      <Blunt>0.45</Blunt>
+      <Crush>0.35</Crush>
+      <Stab>0.80</Stab>
+    </damageFactors>
     <statOffsets>
       <PainShockThreshold>0.2</PainShockThreshold>
     </statOffsets>
@@ -46,6 +52,7 @@
   <!-- What it looks like with nothing on. -->
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
     <defName>Cosmere_Scadrial_Gene_TrueBody</defName>
+    <geneClass>Cosmere.System.Scadrial.Gene.TrueBody</geneClass>
     <label>true body</label>
     <labelShortAdj>formless</labelShortAdj>
     <description>Its own shape, worn when it is not pretending to be anybody. Translucent, wet, and unsettling to look at for long. Most kandra avoid it in company.</description>
@@ -53,9 +60,6 @@
     <displayOrderInCategory>202</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
-    <statFactors>
-      <SocialImpact>0.75</SocialImpact>
-    </statFactors>
   </GeneDef>
 
   <!-- Two spikes, and everything depends on them staying in. -->
@@ -77,6 +81,7 @@
   <!-- Eating the dead, and wearing them afterwards. -->
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
     <defName>Cosmere_Scadrial_Gene_BodyAbsorption</defName>
+    <geneClass>Cosmere.System.Scadrial.Gene.BodyAbsorption</geneClass>
     <label>body absorption</label>
     <labelShortAdj>mimic</labelShortAdj>
     <description>Given a corpse and an hour, a kandra can take its bones inside itself and build that body around them. Afterwards it can put the shape back on whenever it likes, down to the voice.</description>
@@ -89,6 +94,7 @@
   <!-- Generation. Earlier is stronger and harder to command. -->
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
     <defName>Cosmere_Scadrial_Gene_Generational</defName>
+    <geneClass>Cosmere.System.Scadrial.Gene.Generational</geneClass>
     <label>generational</label>
     <labelShortAdj>generational</labelShortAdj>
     <description>Kandra count themselves by generation, first through tenth and beyond. The early ones are stronger, harder to order about, and remember things nobody wanted written down.</description>

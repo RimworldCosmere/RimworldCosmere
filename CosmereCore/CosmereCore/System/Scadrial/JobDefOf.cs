@@ -12,6 +12,12 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class JobDefOf {
     [MayRequire("Cosmere.Scadrial")]
+    public static JobDef Cosmere_Scadrial_Job_KandraChangeShape;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static JobDef Cosmere_Scadrial_Job_KandraConsumeBones;
+
+    [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_MaintainAllomanticTarget;
 
     [MayRequire("Cosmere.Scadrial")]

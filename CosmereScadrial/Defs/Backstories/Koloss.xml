@@ -16,9 +16,6 @@
     </spawnCategories>
     <skillGains>
       <Melee>4</Melee>
-      <Intellectual>-8</Intellectual>
-      <Social>-8</Social>
-      <Artistic>-8</Artistic>
       <Crafting>-6</Crafting>
       <Medicine>-8</Medicine>
     </skillGains>
@@ -41,8 +38,6 @@
     <skillGains>
       <Melee>6</Melee>
       <Mining>2</Mining>
-      <Intellectual>-8</Intellectual>
-      <Social>-8</Social>
       <Cooking>-6</Cooking>
       <Plants>-6</Plants>
     </skillGains>

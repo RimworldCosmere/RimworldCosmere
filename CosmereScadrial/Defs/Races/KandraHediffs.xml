@@ -134,4 +134,26 @@
         </stages>
     </HediffDef>
 
+    <!-- Only while the kandra is actually in its own body. A working disguise costs nothing. -->
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_Formless</defName>
+        <label>formless</label>
+        <description>Wet grey and roughly upright. Nobody who watches a kandra move in its own body forgets it, and nobody enjoys it either.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>0.60</SocialImpact>
+                    <NegotiationAbility>0.60</NegotiationAbility>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
 </Defs>

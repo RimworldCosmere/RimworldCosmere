@@ -61,5 +61,6 @@
     <CS_KandraTookForm>Now wearing {FORM}.</CS_KandraTookForm>
     <CS_KandraLostBlessing>The spikes are out of {PAWN}. What is left of them will not answer to the name any more.</CS_KandraLostBlessing>
     <CS_BecameKandra>{PAWN} woke up. The {BLESSING} holds, and whatever is behind those eyes is willing to talk.</CS_BecameKandra>
+    <CS_Kandra_LearnedForm>{PAWN} has taken {FORM}'s bones. That shape is theirs to wear now.</CS_Kandra_LearnedForm>
     <CS_KandraLearnedForm>{PAWN} has the bones of {FORM}, and can wear that body now.</CS_KandraLearnedForm>
 </LanguageData>

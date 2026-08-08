@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Kandra_TakeForm>Take a form</CS_Kandra_TakeForm>
+    <CS_Kandra_TakeFormDesc>Rearrange into one of the bodies this kandra has eaten. Takes ten seconds. Forms known: {COUNT}.</CS_Kandra_TakeFormDesc>
+    <CS_Kandra_NoFormsYet>This kandra has not taken anyone's bones yet.</CS_Kandra_NoFormsYet>
+    <CS_Kandra_Revert>Return to true body</CS_Kandra_Revert>
+    <CS_Kandra_RevertDesc>Drop the borrowed shape. Others find the sight of a kandra's own body hard to sit with.</CS_Kandra_RevertDesc>
+    <CS_Kandra_ConsumeBones>Take the bones of {FORM}</CS_Kandra_ConsumeBones>
+</LanguageData>

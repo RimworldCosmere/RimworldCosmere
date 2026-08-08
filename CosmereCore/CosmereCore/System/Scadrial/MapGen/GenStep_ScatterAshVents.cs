@@ -1,6 +1,5 @@
 using Cosmere.System.Scadrial.Comp.Game;
 using Cosmere.System.Scadrial.Util;
-using RimWorld;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 
@@ -8,11 +7,10 @@ namespace Cosmere.System.Scadrial.MapGen;
 
 /// <summary>
 ///     Scatters ash vents across a map, more of them the closer the tile sits to an Ashmount.
+///     Base class matches the steam geyser so a vent gets the same footprint and terrain checks.
 /// </summary>
-public class GenStep_ScatterAshVents : GenStep_Scatterer {
+public class GenStep_ScatterAshVents : GenStep_ScatterThings {
     private const int ElevationSampleRadius = 10;
-
-    private int placed;
 
     public override int SeedPart => 0x5AE17;
 
@@ -22,13 +20,34 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
     /// </summary>
     public override void Generate(Verse.Map map, GenStepParams parms) {
         if (!AshEra.CanAccumulate(map)) return;
+        if (ShouldSkipMap(map)) return;
 
-        count = AshVentSiting.CountForExposure(AshmountExposureCache.For(map.Tile));
-        placed = 0;
-        base.Generate(map, parms);
+        // GenStep_ScatterThings.Generate never sets useFallback, so inheriting it would drop the
+        // fallback pass. Its stack splitting only matters for items, so run the scatterer's loop.
+        useFallback = false;
+        usedSpots.Clear();
 
-        // Counted in ScatterAt, not from usedSpots - Generate clears that list before it returns.
-        Logger.Important($"AshVents: scattered {placed} on this map.");
+        int wanted = CalculateFinalCount(map);
+        for (int i = 0; i < wanted; i++) {
+            if (!TryFindScatterCell(map, out IntVec3 spot)) {
+                if (useFallback || fallbackValidators.NullOrEmpty()) break;
+
+                useFallback = true;
+                if (!TryFindScatterCell(map, out spot)) break;
+            }
+
+            ScatterAt(spot, map, parms);
+            usedSpots.Add(spot);
+        }
+
+        usedSpots.Clear();
+
+        // Read back off the lister - ScatterAt can still decline a cell it was handed.
+        Logger.Important($"AshVents: scattered {map.listerThings.ThingsOfDef(thingDef).Count} on this map.");
+    }
+
+    protected override int CalculateFinalCount(Verse.Map map) {
+        return AshVentSiting.CountForExposure(AshmountExposureCache.For(map.Tile));
     }
 
     protected override bool CanScatterAt(IntVec3 loc, Verse.Map map) {
@@ -37,7 +56,7 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
 
         bool isWater = loc.GetTerrain(map).IsWater;
 
-        // Vanilla only runs this pass when fallbackValidators is non-empty, which is why the def carries one.
+        // The base skips validators on the fallback pass, so our own rules relax here too.
         if (useFallback) return AshVentSiting.IsPlausibleFallback(isWater);
 
         float fertility = map.fertilityGrid.FertilityAt(loc);
@@ -47,11 +66,6 @@ public class GenStep_ScatterAshVents : GenStep_Scatterer {
         if (!RockNearby(loc, map)) return false;
 
         return AshVentSiting.IsPlausible(MeanElevation(loc, map), rockNearby: true, fertility, isWater);
-    }
-
-    protected override void ScatterAt(IntVec3 loc, Verse.Map map, GenStepParams parms, int stackCount = 1) {
-        GenSpawn.Spawn(ThingDefOf.Cosmere_Scadrial_Thing_AshVent, loc, map);
-        placed++;
     }
 
     private static float MeanElevation(IntVec3 centre, Verse.Map map) {

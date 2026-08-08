@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cosmere.System.Scadrial.Grid;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Comp.Thing;
 
@@ -12,19 +13,53 @@ public class CompProperties_AshVent : CompProperties {
     /// <summary>0 to 1. How hard the plume leans downwind.</summary>
     public float skew = 0.55f;
 
+    /// <summary>Throws a day. One lump every two days at the default.</summary>
+    public float throwsPerDay = 0.5f;
+
+    /// <summary>How big a stack one throw lands.</summary>
+    public int lumpsPerThrow = 4;
+
+    /// <summary>How far from the vent a lump can land, in cells.</summary>
+    public int throwRadius = 6;
+
+    /// <summary>What the vent brings up with the ash.</summary>
+    public List<string> metals = ["Cadmium", "Chromium", "Nicrosil", "Duralumin"];
+
+    private List<ThingDef> resolvedMetals = [];
+
+    /// <summary><see cref="metals"/> looked up once at load rather than once per throw.</summary>
+    public List<ThingDef> ResolvedMetals => resolvedMetals;
+
     public CompProperties_AshVent() {
         compClass = typeof(CompAshVent);
+    }
+
+    public override void ResolveReferences(ThingDef parentDef) {
+        base.ResolveReferences(parentDef);
+
+        resolvedMetals = new List<ThingDef>(metals.Count);
+        for (int i = 0; i < metals.Count; i++) {
+            ThingDef? metal = DefDatabase<ThingDef>.GetNamedSilentFail(metals[i]);
+            if (metal == null) {
+                Logger.Error($"{parentDef.defName} lists thrown metal {metals[i]}, which is not a loaded ThingDef.");
+                continue;
+            }
+
+            resolvedMetals.Add(metal);
+        }
     }
 }
 
 /// <summary>
-///     A vent breathing ash onto the ground around it. The offsets are walked once per full sweep
-///     cycle, so the cost is a bounded local write and never a scan of the map.
+///     A vent breathing ash onto the ground around it, and throwing up metal with it. The offsets
+///     are walked once per sweep cycle, so the cost is a bounded local write and never a map scan.
 /// </summary>
 public class CompAshVent : ThingComp {
     private static List<IntVec3>? offsets;
 
     private float[]? remainder;
+    private float throwRemainder;
+    private int throwsMade;
 
     public CompProperties_AshVent Props => (CompProperties_AshVent)props;
 
@@ -67,6 +102,11 @@ public class CompAshVent : ThingComp {
 
         Scribe_Collections.Look(ref banked, "ashVentRemainder", LookMode.Value);
 
+        // Unsaved, every load hands the vent back a fresh empty bank and pushes the next throw a
+        // full cycle out. The ordinal rides along or a save scum reshuffles which metal comes up.
+        Scribe_Values.Look(ref throwRemainder, "ashVentThrowRemainder");
+        Scribe_Values.Look(ref throwsMade, "ashVentThrowsMade");
+
         if (Scribe.mode == LoadSaveMode.LoadingVars) remainder = AshPlume.RestoreBank(banked, Offsets.Count);
     }
 
@@ -106,6 +146,62 @@ public class CompAshVent : ThingComp {
             if (grid.AddDepthMm(indices.CellToIndex(cell), deposit) > 0) changed = true;
         }
 
+        ThrowMetal(dayFraction);
         return changed;
+    }
+
+    /// <summary>
+    ///     Banks this cycle's share of a throw and lands whatever it has earned. Called from the
+    ///     plume so it sits behind the tracker's era gate rather than carrying a second one.
+    /// </summary>
+    private void ThrowMetal(float dayFraction) {
+        int due = AshMetalThrow.Bank(ref throwRemainder, Props.throwsPerDay, dayFraction);
+        for (int i = 0; i < due; i++) {
+            ThrowOnce();
+        }
+    }
+
+    /// <summary>Lands one stack of one metal near the vent. False when no cell in range took it.</summary>
+    public bool ThrowOnce() {
+        Verse.Map? map = parent.Map;
+        if (map == null) return false;
+
+        Map.AshDepthTracker? tracker = map.GetComponent<Map.AshDepthTracker>();
+        if (tracker == null) return false;
+
+        List<ThingDef> metals = Props.ResolvedMetals;
+        if (metals.Count == 0) return false;
+
+        ThingDef metal = metals[AshMetalThrow.MetalIndex(throwsMade, parent.thingIDNumber, metals.Count)];
+        throwsMade++;
+
+        if (!TryFindLandingCell(map, tracker, out IntVec3 cell)) return false;
+
+        Verse.Thing lump = ThingMaker.MakeThing(metal);
+        lump.stackCount = Props.lumpsPerThrow;
+
+        // Direct, not Near. Near spirals outward past the checks below and can settle the lump on
+        // a buried cell, and it logs an error rather than failing quietly when it runs out of room.
+        return GenPlace.TryPlaceThing(lump, cell, map, ThingPlaceMode.Direct);
+    }
+
+    /// <summary>
+    ///     Standable ground in range the ash has not already swallowed. A lump landing on a buried
+    ///     cell would be invisible and unhaulable the instant it existed.
+    /// </summary>
+    private bool TryFindLandingCell(Verse.Map map, Map.AshDepthTracker tracker, out IntVec3 cell) {
+        CellIndices indices = map.cellIndices;
+
+        // TryFindRandomCellNear clamps its square to map.Size, one past the last valid index, so
+        // InBounds has to come before anything that reads a grid.
+        bool Valid(IntVec3 candidate) {
+            if (!candidate.InBounds(map)) return false;
+            if (!candidate.Standable(map)) return false;
+
+            int index = indices.CellToIndex(candidate);
+            return !AshDepthMath.IsBuried(tracker.Grid.GetDepthMm(index), tracker.Buried.IsBuried(index));
+        }
+
+        return CellFinder.TryFindRandomCellNear(parent.Position, map, Props.throwRadius, Valid, out cell);
     }
 }

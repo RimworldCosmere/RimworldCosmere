@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef>
+        <defName>Cosmere_Scadrial_Stat_AshFiltration</defName>
+        <label>ash filtration</label>
+        <description>The share of airborne ash a mask or filter keeps out of the lungs. At 0% every breath taken near a vent carries ash. At 100% none of it reaches the lungs.\n\nAsh is not pollution. This is deliberately separate from toxic environment resistance: resistance to toxins does nothing against ash, and this does nothing against pollution or toxic fallout.</description>
+        <category>Cosmere</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <minValue>0</minValue>
+        <maxValue>1</maxValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>90</displayPriorityInCategory>
+        <scenarioRandomizable>false</scenarioRandomizable>
+        <showOnDefaultValue>false</showOnDefaultValue>
+        <showIfUndefined>false</showIfUndefined>
+    </StatDef>
+</Defs>

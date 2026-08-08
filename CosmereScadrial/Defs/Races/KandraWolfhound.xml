@@ -82,6 +82,9 @@
         <label>kandra wolfhound</label>
         <race>Cosmere_Scadrial_Race_KandraWolfhound</race>
         <combatPower>60</combatPower>
+        <!-- Required of any humanlike pawnkind, even one that is never recruited or captured. -->
+        <initialResistanceRange>10~20</initialResistanceRange>
+        <initialWillRange>2~4</initialWillRange>
         <lifeStages>
             <li>
                 <bodyGraphicData>

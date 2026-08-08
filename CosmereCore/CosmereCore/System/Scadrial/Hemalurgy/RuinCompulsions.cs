@@ -68,8 +68,14 @@ public static class RuinCompulsions {
 
     public static void Warn(Pawn pawn, RuinCompulsion compulsion) {
         Find.LetterStack.ReceiveLetter(
-            ("CS_Ruin_Compulsion_" + compulsion.key + "_Title").Translate(pawn.NameShortColored.Named("PAWN")),
-            ("CS_Ruin_Compulsion_" + compulsion.key + "_Text").Translate(pawn.NameShortColored.Named("PAWN")),
+            ("CS_Ruin_Compulsion_" + compulsion.key + "_Title").Translate(
+                pawn.NameShortColored.Named("PAWN"),
+                HemalurgicShard.Name.Named("SHARD")
+            ),
+            ("CS_Ruin_Compulsion_" + compulsion.key + "_Text").Translate(
+                pawn.NameShortColored.Named("PAWN"),
+                HemalurgicShard.Name.Named("SHARD")
+            ),
             LetterDefOf.ThreatSmall,
             pawn
         );
@@ -81,7 +87,7 @@ public static class RuinCompulsions {
 
         pawn.mindState.mentalStateHandler.TryStartMentalState(
             state,
-            "CS_Hemalurgy_RuinsControl".Translate(),
+            "CS_Hemalurgy_RuinsControl".Translate(HemalurgicShard.Name.Named("SHARD")),
             forceWake: true,
             causedByMood: false
         );

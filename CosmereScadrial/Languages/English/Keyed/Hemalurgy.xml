@@ -37,7 +37,7 @@
     <CS_Hemalurgy_ChargeSpikeLabel>charge hemalurgic spike</CS_Hemalurgy_ChargeSpikeLabel>
     <CS_Hemalurgy_ChargeSpikeDesc>Drive a hemalurgic spike through the subject to capture a fragment of their spirit web. The metal of the spike determines what is stolen.</CS_Hemalurgy_ChargeSpikeDesc>
     <CS_Hemalurgy_ImplantSpikeLabel>implant hemalurgic spike</CS_Hemalurgy_ImplantSpikeLabel>
-    <CS_Hemalurgy_ImplantSpikeDesc>Surgically implant a charged hemalurgic spike into the subject, transferring the stolen attribute. Each spike weakens the recipient's spirit web, opening them to Ruin's influence.</CS_Hemalurgy_ImplantSpikeDesc>
+    <CS_Hemalurgy_ImplantSpikeDesc>Surgically implant a charged hemalurgic spike into the subject, transferring the stolen attribute. Each spike weakens the recipient's spirit web, opening them to the Shard that made it.</CS_Hemalurgy_ImplantSpikeDesc>
     <CS_Hemalurgy_RemoveSpikeLabel>remove hemalurgic spike</CS_Hemalurgy_RemoveSpikeLabel>
     <CS_Hemalurgy_RemoveSpikeDesc>Extract an implanted hemalurgic spike. The process is dangerous and the recipient will lose the stolen attribute.</CS_Hemalurgy_RemoveSpikeDesc>
 
@@ -61,9 +61,9 @@
     <CS_Hemalurgy_NeedleOption>{0} needle ({1})</CS_Hemalurgy_NeedleOption>
 
     <!-- Ruin's influence -->
-    <CS_Hemalurgy_RuinsWhispers>whispers of Ruin</CS_Hemalurgy_RuinsWhispers>
-    <CS_Hemalurgy_RuinsUrges>urges of Ruin</CS_Hemalurgy_RuinsUrges>
-    <CS_Hemalurgy_RuinsControl>Ruin's grip</CS_Hemalurgy_RuinsControl>
+    <CS_Hemalurgy_RuinsWhispers>whispers of {SHARD}</CS_Hemalurgy_RuinsWhispers>
+    <CS_Hemalurgy_RuinsUrges>urges of {SHARD}</CS_Hemalurgy_RuinsUrges>
+    <CS_Hemalurgy_RuinsControl>the grip of {SHARD}</CS_Hemalurgy_RuinsControl>
 
     <!-- Letters -->
     <CS_Hemalurgy_LetterChargeLabel>Spike Charged</CS_Hemalurgy_LetterChargeLabel>

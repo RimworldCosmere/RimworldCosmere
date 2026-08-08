@@ -2,23 +2,23 @@
 <Defs>
 	<ThoughtDef>
 		<defName>Cosmere_Scadrial_Thought_RuinsWhispers</defName>
-		<thoughtClass>Thought_Situational</thoughtClass>
+		<thoughtClass>Cosmere.System.Scadrial.Hemalurgy.Thought_ShardInfluence</thoughtClass>
 		<workerClass>ThoughtWorker_Hediff</workerClass>
 		<hediff>Cosmere_Scadrial_Hediff_RuinsInfluence</hediff>
 		<stages>
 			<li>
-				<label>whispers of Ruin</label>
+				<label>whispers of {SHARD}</label>
 				<description>Something scratches at the edges of thought. Faint, insistent, patient. It knows my name.</description>
 				<baseMoodEffect>-3</baseMoodEffect>
 			</li>
 			<li>
-				<label>urges of Ruin</label>
+				<label>urges of {SHARD}</label>
 				<description>The voice is clearer now. It suggests things. Violent things. Helpful things. It is difficult to tell the difference.</description>
 				<baseMoodEffect>-8</baseMoodEffect>
 			</li>
 			<li>
-				<label>Ruin's grip</label>
-				<description>There are moments when the hands move on their own. Moments when the thoughts are not mine. Ruin does not ask permission.</description>
+				<label>the grip of {SHARD}</label>
+				<description>There are moments when the hands move on their own. Moments when the thoughts are not mine. {SHARD} does not ask permission.</description>
 				<baseMoodEffect>-15</baseMoodEffect>
 			</li>
 		</stages>

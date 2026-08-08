@@ -91,4 +91,50 @@ public class RuinCompulsionTests {
             Assert.IsTrue(keyed.Contains($"CS_Ruin_Compulsion_{key}_Text", StringComparison.Ordinal), $"{key} has no body.");
         }
     }
+
+    /// <summary>
+    ///     After the Catacendre, Harmony holds both Shards. A spiked colonist in the Alloy era
+    ///     hearing Ruin by name reads as a bug rather than as history, so nothing player-facing
+    ///     may hardcode the name.
+    /// </summary>
+    [TestMethod]
+    public void TheVoiceIsNamedForTheLiveShard() {
+        string resolver = Source("HemalurgicShard.cs");
+        Assert.IsTrue(resolver.Contains("ShardDefOf.Harmony", StringComparison.Ordinal));
+        Assert.IsTrue(resolver.Contains("ShardDefOf.Ruin", StringComparison.Ordinal));
+
+        string thought = Source("Thought_ShardInfluence.cs");
+        Assert.IsTrue(thought.Contains("HemalurgicShard.Name", StringComparison.Ordinal));
+
+        string compulsions = Source("RuinCompulsions.cs");
+        Assert.IsTrue(
+            compulsions.Contains("HemalurgicShard.Name.Named(\"SHARD\")", StringComparison.Ordinal),
+            "The warning letters should name the live Shard."
+        );
+    }
+
+    /// <summary>
+    ///     The stage labels and letters have to carry the placeholder, or the substitution has
+    ///     nothing to replace and the text silently keeps saying Ruin.
+    /// </summary>
+    [TestMethod]
+    public void TheInfluenceTextUsesThePlaceholder() {
+        string thoughts = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Hemalurgy", "Thoughts.xml"
+        ));
+
+        Assert.IsTrue(
+            thoughts.Contains("Cosmere.System.Scadrial.Hemalurgy.Thought_ShardInfluence", StringComparison.Ordinal),
+            "The thought needs the class that does the substitution."
+        );
+
+        XDocument doc = XDocument.Parse(thoughts);
+        XElement whispers = doc.Descendants("ThoughtDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thought_RuinsWhispers");
+
+        foreach (XElement stage in whispers.Element("stages")!.Elements("li")) {
+            string label = stage.Element("label")?.Value ?? string.Empty;
+            Assert.IsTrue(label.Contains("{SHARD}", StringComparison.Ordinal), $"'{label}' hardcodes a Shard name.");
+        }
+    }
 }

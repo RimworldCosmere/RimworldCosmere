@@ -59,12 +59,17 @@ public class CompProperties_AshVent : CompProperties {
 /// </summary>
 public class CompAshVent : ThingComp {
     private static List<IntVec3>? offsets;
+    private static TerrainDef? ventSoil;
 
     private float[]? remainder;
     private float throwRemainder;
     private int throwsMade;
 
     public CompProperties_AshVent Props => (CompProperties_AshVent)props;
+
+    /// <summary>What the vent leaves behind on the ground it keeps swept.</summary>
+    private static TerrainDef VentSoil =>
+        ventSoil ??= DefDatabase<TerrainDef>.GetNamed("Cosmere_Scadrial_Terrain_VentSoil");
 
     /// <summary>Every cell inside the plume radius, built once and shared by every vent.</summary>
     private static List<IntVec3> Offsets {
@@ -167,6 +172,10 @@ public class CompAshVent : ThingComp {
         CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(Props.clearRadius));
         CellIndices indices = map.cellIndices;
         AshBuriedCells buried = tracker.Buried;
+
+        // Rationed the way the terrain sweep rations its own, and for the same reason. Nothing to
+        // bank: a cell already laid fails the check next cycle, so the terrain grid is the record.
+        int soilBudget = AshDepthMath.TerrainChangesPerSweep;
         bool changed = false;
 
         for (int x = reach.minX; x <= reach.maxX; x++) {
@@ -181,6 +190,8 @@ public class CompAshVent : ThingComp {
                 float distance = Mathf.Sqrt(dx * dx + dz * dz);
 
                 int index = indices.CellToIndex(cell);
+                if (soilBudget > 0 && LaySoil(map, tracker, index, distance, Props.clearRadius)) soilBudget--;
+
                 int depth = grid.GetDepthMm(index);
                 int allowed = AshPlume.AllowedDepthMm(depth, distance, Props.clearRadius);
 
@@ -198,6 +209,29 @@ public class CompAshVent : ThingComp {
         }
 
         return changed;
+    }
+
+    /// <summary>
+    ///     Turns a cell the vent holds clear into ground worth farming. Terrain only - it moves no
+    ///     ash, so the buried set is owed nothing here.
+    /// </summary>
+    private static bool LaySoil(Verse.Map map, Map.AshDepthTracker tracker, int index, float distance, float radius) {
+        if (!AshPlume.StaysBelowTheSwap(distance, radius)) return false;
+
+        // Ash terrain standing over a remembered original. Laying here would strand that memory,
+        // so leave it to the sweep to hand the cell back and take it on a later cycle.
+        if (tracker.TerrainMemory.IsSwapped(index)) return false;
+
+        TerrainDef current = map.terrainGrid.TerrainAt(index);
+        if (current == VentSoil) return false;
+
+        // The same ground the ash swap accepts, for the same reason. A floor the colony laid stays
+        // theirs, and neither water nor solid rock is ground the vent can feed.
+        if (current.temporary || !current.natural || current.IsWater) return false;
+        if (current.passability == Traversability.Impassable) return false;
+
+        map.terrainGrid.SetTerrain(map.cellIndices.IndexToCell(index), VentSoil);
+        return true;
     }
 
     /// <summary>

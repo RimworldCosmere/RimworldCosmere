@@ -8,7 +8,10 @@ public static class AshVentSiting {
     /// <summary>Mean elevation over a radius-10 disc, below which the ground is too low.</summary>
     public const float MinElevation = 0.62f;
 
-    /// <summary>Terrain def fertility at or above this is farmable, and a vent there is just cruel.</summary>
+    /// <summary>
+    ///     Terrain def fertility at or above this is farmable, and a vent there is just cruel. The
+    ///     vent then makes its own: siting runs once at map gen, so the soil never feeds back in.
+    /// </summary>
     public const float MaxFertility = 0.5f;
 
     public const int MinVents = 1;

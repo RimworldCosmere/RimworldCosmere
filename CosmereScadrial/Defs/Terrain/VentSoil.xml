@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Laid by CompAshVent inside the mouth it keeps clear. The feather caps that ground well
+         under AshDepthMath.TerrainSwapMm, so deep ash never takes it back. -->
+    <TerrainDef ParentName="NaturalTerrainBase">
+        <defName>Cosmere_Scadrial_Terrain_VentSoil</defName>
+        <label>vent soil</label>
+        <description>Ground the vent keeps swept, and keeps feeding. What the mountain pushes up is not only ash - it carries minerals from far below, and here they settle instead of blowing on. Crops take to it better than to anything the Final Empire has left. Working it means standing in the vent's air, which is the price.</description>
+        <!-- Vanilla rich soil, tinted warmer and darker. The shape is right; the ground under a
+             vent should not read as ordinary farmland. Replace when dedicated art exists. -->
+        <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+        <color>(0.80, 0.71, 0.64)</color>
+        <edgeType>FadeRough</edgeType>
+        <categoryType>Soil</categoryType>
+        <renderPrecedence>336</renderPrecedence>
+        <pathCost>2</pathCost>
+        <!-- Above vanilla rich soil's 1.4, under a hydroponics basin's 2.8. A vent hands out about
+             thirty cells of it, sitting under gas that scars lungs. -->
+        <fertility>1.8</fertility>
+        <statBases>
+            <Beauty>-2</Beauty>
+            <BeautyOutdoors>0</BeautyOutdoors>
+            <Cleanliness>-1</Cleanliness>
+        </statBases>
+        <affordances>
+            <li>Light</li>
+            <li>Medium</li>
+            <li>Heavy</li>
+            <li>GrowSoil</li>
+            <li>Diggable</li>
+        </affordances>
+        <generatedFilth>Filth_Dirt</generatedFilth>
+        <takeFootprints>true</takeFootprints>
+        <tags>
+            <li>Soil</li>
+            <li>Cosmere_VentSoil</li>
+        </tags>
+    </TerrainDef>
+
+</Defs>

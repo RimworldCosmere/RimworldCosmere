@@ -11,6 +11,14 @@
         <factionDef>Cosmere_Scadrial_Faction_FinalEmpire</factionDef>
       </playerFaction>
       <parts>
+        <!-- Without this the builder is skipped entirely. It has to sit before
+             ScenPart_NamedPawns, which clears and rebuilds the roster after it. -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>1</pawnChoiceCount>
+          <!-- Required. PostIdeoChosen calls .Where on it without a null check. -->
+          <xenotypeCounts />
+        </li>
         <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>
           <pawns>

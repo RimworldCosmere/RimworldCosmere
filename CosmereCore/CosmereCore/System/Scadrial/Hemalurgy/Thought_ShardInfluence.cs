@@ -7,12 +7,17 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 ///     The voice in a spiked pawn's head, named for whichever Shard is actually behind it.
 /// </summary>
 /// <remarks>
-///     Thought stage labels are static XML, so the def writes {SHARD} and this fills it in when
+///     Thought stage labels are static XML, so the def writes a placeholder and this fills it in when
 ///     the player looks. Post-Catacendre a spiked colonist should be hearing Harmony rather than
 ///     a Shard that stopped existing three hundred years ago.
 /// </remarks>
 public class Thought_ShardInfluence : Thought_Situational {
-    private const string Placeholder = "{SHARD}";
+    /// <summary>
+    ///     Deliberately not braces. Thought.LabelCap runs the label through RimWorld's grammar
+    ///     resolver before this class sees it, and an unresolvable {SHARD} logs an error there
+    ///     rather than reaching the substitution below.
+    /// </summary>
+    private const string Placeholder = "[SHARD]";
 
     public override string LabelCap => Fill(base.LabelCap);
 

@@ -111,6 +111,16 @@ public class RuinCompulsionTests {
             compulsions.Contains("HemalurgicShard.Name.Named(\"SHARD\")", StringComparison.Ordinal),
             "The warning letters should name the live Shard."
         );
+
+        // Braces are the grammar resolver's syntax and it runs before the substitution, so a
+        // thought label using them logs an unresolvable symbol every time the tab is drawn.
+        string thoughtDefs = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Hemalurgy", "Thoughts.xml"
+        ));
+        Assert.IsFalse(
+            thoughtDefs.Contains("{SHARD}", StringComparison.Ordinal),
+            "Thought text must use [SHARD], which the grammar resolver ignores."
+        );
     }
 
     /// <summary>
@@ -134,7 +144,7 @@ public class RuinCompulsionTests {
 
         foreach (XElement stage in whispers.Element("stages")!.Elements("li")) {
             string label = stage.Element("label")?.Value ?? string.Empty;
-            Assert.IsTrue(label.Contains("{SHARD}", StringComparison.Ordinal), $"'{label}' hardcodes a Shard name.");
+            Assert.IsTrue(label.Contains("[SHARD]", StringComparison.Ordinal), $"'{label}' hardcodes a Shard name.");
         }
     }
 }

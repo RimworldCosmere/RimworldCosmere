@@ -217,7 +217,10 @@ public static class KandraUtility {
     ///     being applied. Calling SetXenotype from in there sets the whole thing going again.
     /// </remarks>
     public static void GiveBlessing(Pawn pawn, HediffDef blessing) {
-        if (BlessingOn(pawn) == null) pawn.health?.AddHediff(blessing);
+        // This Blessing, not any Blessing. Checking whether the pawn had one at all meant a
+        // kandra that already carried Presence could never be given Potency: the hediff was
+        // skipped and only the spikes went in.
+        if (pawn.health?.hediffSet?.HasHediff(blessing) != true) pawn.health?.AddHediff(blessing);
 
         DriveSpikes(pawn, blessing);
 

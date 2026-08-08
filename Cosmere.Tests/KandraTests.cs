@@ -654,4 +654,62 @@ public class KandraTests {
             "But not the same Blessing twice."
         );
     }
+
+    /// <summary>
+    ///     Granting a second Blessing has to add that Blessing's hediff.
+    /// </summary>
+    /// <remarks>
+    ///     The guard asked whether the pawn had any Blessing at all, so a kandra already carrying
+    ///     Presence got the spikes for Potency driven in and no Potency hediff to show for it.
+    /// </remarks>
+    [TestMethod]
+    public void GivingASecondBlessingAddsItsOwnHediff() {
+        string source = Source("Util", "KandraUtility.cs");
+        int start = source.IndexOf("public static void GiveBlessing(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0);
+
+        string body = source[start..(start + 600)];
+        Assert.IsFalse(
+            body.Contains("BlessingOn(pawn) == null", StringComparison.Ordinal),
+            "Checking for any Blessing skips the one being granted."
+        );
+        Assert.IsTrue(body.Contains("HasHediff(blessing)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     OreSeur is Third Generation, which is a fact about him rather than a roll.
+    /// </summary>
+    [TestMethod]
+    public void OreSeurIsThirdGeneration() {
+        foreach (string file in new[] { "PreCatacendre.xml", "FinalEmpire.xml", "WellOfAscension.xml" }) {
+            XDocument doc = XDocument.Load(Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Scenarios", file));
+            XElement? oreSeur = doc.Descendants("li")
+                .FirstOrDefault(li => li.Element("firstName")?.Value == "OreSeur");
+
+            Assert.IsNotNull(oreSeur, $"OreSeur is missing from {file}.");
+            Assert.AreEqual("3", oreSeur!.Element("kandraGeneration")?.Value, $"in {file}");
+        }
+    }
+
+    /// <summary>
+    ///     A quickstart exists to hand a pawn the gear and powers a test needs. Renaming somebody
+    ///     to Kaladin throws away the roster the scenario just built.
+    /// </summary>
+    [TestMethod]
+    public void QuickstartsDoNotRewriteWhoAPawnIs() {
+        string root = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore");
+
+        foreach (string file in Directory.GetFiles(root, "*Quickstart*.cs", SearchOption.AllDirectories)) {
+            string source = File.ReadAllText(file);
+
+            Assert.IsFalse(
+                source.Contains("pawn.Name = ", StringComparison.Ordinal),
+                $"{Path.GetFileName(file)} renames an existing colonist."
+            );
+            Assert.IsFalse(
+                source.Contains("pawn.gender = ", StringComparison.Ordinal),
+                $"{Path.GetFileName(file)} changes an existing colonist's gender."
+            );
+        }
+    }
 }

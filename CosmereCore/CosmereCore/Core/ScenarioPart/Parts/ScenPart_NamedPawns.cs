@@ -193,6 +193,15 @@ public class ScenPart_NamedPawns : ScenPart {
         RedressAfterAgeChange(pawn);
 
         pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+        if (template.kandraGeneration > 0) {
+            // A story kandra's generation is a fact about it, not a roll.
+            Verse.Gene? heritage = pawn.genes?.GetGene(
+                DefDatabase<GeneDef>.GetNamedSilentFail("Cosmere_Scadrial_Gene_KandraHeritage")
+            );
+            if (heritage is System.Scadrial.Gene.KandraHeritage kandra) {
+                kandra.SetGeneration(template.kandraGeneration);
+            }
+        }
     }
 
     // This hook fires after gear generation, so aging a pawn down here trips

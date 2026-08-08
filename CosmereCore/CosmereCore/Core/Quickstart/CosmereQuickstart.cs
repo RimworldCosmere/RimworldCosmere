@@ -70,115 +70,67 @@ public class CosmereQuickstart : AbstractQuickstart {
     private static void SetupCharacter(int index, Pawn pawn) {
         switch (index) {
             case 0:
-                pawn.Name = new NameSingle("Wit");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Thin;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 Find.Selector.Select(pawn, false);
                 break;
             case 1:
-                pawn.Name = new NameSingle("Dalinar");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Male;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 2:
-                pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Male;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 3:
-                pawn.Name = new NameSingle("Szeth");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Male;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 4:
-                pawn.Name = new NameSingle("Vin");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Female;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 5:
-                pawn.Name = new NameSingle("Malata");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Female;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 6:
-                pawn.Name = new NameSingle("Lift");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Thin;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 7:
-                pawn.Name = new NameSingle("Renarin");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Thin;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 8:
-                pawn.Name = new NameSingle("Jasnah");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Female;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 9:
-                pawn.Name = new NameSingle("Venli");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Female;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 10:
-                pawn.Name = new NameSingle("Tsazo");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Hulk;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 11:
-                pawn.Name = new NameSingle("Navani");
-                pawn.gender = Gender.Female;
-                pawn.story.bodyType = BodyTypeDefOf.Female;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 12:
-                pawn.Name = new NameSingle("Sazed");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Male;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 13:
-                pawn.Name = new NameSingle("Rashek");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Hulk;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 14:
-                pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Male;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;
             case 15:
-                pawn.Name = new NameSingle("Wayne");
-                pawn.gender = Gender.Male;
-                pawn.story.bodyType = BodyTypeDefOf.Thin;
                 pawn.GetInvestiture()!.currentInvestitureSelf = 500;
                 QuickstartCharacterSetupRegistry.Apply(index, pawn);
                 break;

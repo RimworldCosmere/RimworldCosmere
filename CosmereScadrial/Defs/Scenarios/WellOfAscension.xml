@@ -190,6 +190,7 @@
             <!-- Vin's kandra. Whether he is who he says he is, the campaign answers later. -->
             <li>
               <firstName>OreSeur</firstName>
+              <kandraGeneration>3</kandraGeneration>
               <age>40</age>
               <chronologicalAge>320</chronologicalAge>
               <gender>Male</gender>

@@ -34,6 +34,14 @@ public class KandraHeritage : Verse.Gene {
         }
     }
 
+    /// <summary>
+    ///     Pins the generation instead of rolling it. For story kandra whose rank is a fact.
+    /// </summary>
+    public void SetGeneration(int value) {
+        generation = Mathf.Clamp(value, Earliest, Latest);
+        Apply();
+    }
+
     /// <summary>1.0 for the first generation, tailing to 0.0 for the tenth.</summary>
     public float Seniority => 1f - ((Generation - Earliest) / (float)(Latest - Earliest));
 

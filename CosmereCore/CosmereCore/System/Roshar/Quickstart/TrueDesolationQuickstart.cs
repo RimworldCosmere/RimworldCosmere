@@ -50,9 +50,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out Pawn? pawn)) {
-            pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
-            pawn.gender = Gender.Male;
-            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 20;
 
@@ -76,9 +73,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.Name = new NameSingle("Szeth");
-            pawn.gender = Gender.Male;
-            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.story.traits.GainTrait(new Trait(RimWorld.TraitDefOf.Pyromaniac));
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantSkybreaker, 1);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 10;
@@ -88,9 +82,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.Name = new NameSingle("Malata");
-            pawn.gender = Gender.Female;
-            pawn.story.bodyType = BodyTypeDefOf.Female;
             pawn.story.traits.GainTrait(new Trait(RimWorld.TraitDefOf.Pyromaniac));
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
@@ -99,9 +90,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kholin");
-            pawn.gender = Gender.Male;
-            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_PatientsSaved, 5);
@@ -109,9 +97,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.Name = new NameSingle("Dalinar");
-            pawn.gender = Gender.Male;
-            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 3);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 5);

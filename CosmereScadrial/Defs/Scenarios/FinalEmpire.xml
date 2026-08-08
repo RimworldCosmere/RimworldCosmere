@@ -207,6 +207,7 @@
                  keeps. This one is the real OreSeur. The thing that replaces him comes later. -->
             <li>
               <firstName>OreSeur</firstName>
+              <kandraGeneration>3</kandraGeneration>
               <age>44</age>
               <chronologicalAge>340</chronologicalAge>
               <gender>Male</gender>

@@ -14,6 +14,9 @@ public class NamedPawnDef {
     public Gender gender = Gender.None;
     public List<string> genes = [];
     public int idealLevel;
+
+    /// <summary>Which generation of kandra, 1 to 10. Zero leaves it to the roll.</summary>
+    public int kandraGeneration;
     public List<NamedPawnInventoryEntry> apparel = [];
 
     /// <summary>
@@ -85,6 +88,11 @@ public class NamedPawnDef {
                 case "idealLevel":
                     if (!int.TryParse(node.InnerText, out idealLevel))
                         Logger.Warning($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
+
+                    break;
+                case "kandraGeneration":
+                    if (!int.TryParse(node.InnerText, out kandraGeneration))
+                        Logger.Warning($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
                     break;
                 case "mistborn":
                     if (!bool.TryParse(node.InnerText, out mistborn))

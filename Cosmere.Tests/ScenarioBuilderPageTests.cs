@@ -112,4 +112,44 @@ public class ScenarioBuilderPageTests {
             }
         }
     }
+
+    /// <summary>
+    ///     The builder count has to keep up with the roster.
+    /// </summary>
+    /// <remarks>
+    ///     Adding a named pawn without raising pawnChoiceCount and the xenotypeCounts total
+    ///     leaves the colony short a person, and getting that total wrong is what broke map
+    ///     generation once already. Scenarios with no named pawns are free to offer more choices
+    ///     than they require, which is ordinary vanilla behaviour.
+    /// </remarks>
+    [TestMethod]
+    public void NamedPawnScenariosSizeTheBuilderToTheirRoster() {
+        foreach ((string name, List<XElement> parts) in Scenarios()) {
+            XElement? named = parts.FirstOrDefault(p => ClassOf(p) == NamedPawns);
+            if (named == null) continue;
+
+            int roster = named.Element("pawns")?.Elements("li").Count() ?? 0;
+            if (roster == 0) continue;
+
+            XElement? config = parts.FirstOrDefault(
+                p => ClassOf(p).EndsWith("ConfigureStartingPawns_Xenotypes", StringComparison.Ordinal)
+            );
+            Assert.IsNotNull(config, $"{name} has named pawns but no config page.");
+
+            Assert.AreEqual(
+                roster,
+                int.Parse(config!.Element("pawnChoiceCount")!.Value),
+                $"{name}: pawnChoiceCount does not match its {roster} named pawns."
+            );
+
+            int total = config.Element("xenotypeCounts")!.Elements("li")
+                .Sum(li => int.TryParse(li.Element("count")?.Value, out int c) ? c : 0);
+
+            Assert.AreEqual(
+                roster,
+                total,
+                $"{name}: xenotypeCounts sums to {total} but the roster has {roster}."
+            );
+        }
+    }
 }

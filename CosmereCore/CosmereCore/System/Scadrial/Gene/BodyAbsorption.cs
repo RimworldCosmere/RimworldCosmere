@@ -45,24 +45,12 @@ public class BodyAbsorption : Verse.Gene {
             defaultLabel = "CS_Kandra_TakeForm".Translate(),
             defaultDesc = "CS_Kandra_TakeFormDesc".Translate(forms.Known.Count.Named("COUNT")),
             icon = Icon,
-            action = () => Find.WindowStack.Add(new FloatMenu(FormOptions(forms))),
+            action = () => Find.WindowStack.Add(new Dialog_KandraForms(forms, StartChange)),
         };
 
         if (forms.Known.Count == 0) wear.Disable("CS_Kandra_NoFormsYet".Translate());
 
         return wear;
-    }
-
-    private List<FloatMenuOption> FormOptions(CompKandraForms forms) {
-        List<FloatMenuOption> options = [];
-        IReadOnlyList<KandraForm> known = forms.Known;
-
-        for (int i = 0; i < known.Count; i++) {
-            int index = i;
-            options.Add(new FloatMenuOption(known[i].Label, () => StartChange(index)));
-        }
-
-        return options;
     }
 
     private Command_Action RevertGizmo() {

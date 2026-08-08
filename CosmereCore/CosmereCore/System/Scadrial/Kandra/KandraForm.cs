@@ -9,8 +9,8 @@ namespace Cosmere.System.Scadrial.Kandra;
 /// </summary>
 /// <remarks>
 ///     Stores what the kandra reproduces, which is everything anyone looks at plus the name they
-///     answer to. A kandra wearing this is that person as far as the colony is concerned, and
-///     only bronze sees otherwise.
+///     answer to, and who that person belonged to. A kandra wearing this is that person as far as
+///     the colony is concerned, and only bronze sees otherwise.
 /// </remarks>
 public class KandraForm : IExposable {
     public BodyTypeDef? bodyType;
@@ -26,6 +26,22 @@ public class KandraForm : IExposable {
     public Color skinColour;
     public XenotypeDef? xenotype;
 
+    /// <summary>Who they belonged to. Shown on the card so you can tell two guards apart.</summary>
+    public FactionDef? faction;
+
+    /// <summary>What they believed. Held by reference, so it goes null if the ideo is gone.</summary>
+    public Ideo? ideo;
+
+    /// <summary>
+    ///     A pawn that exists only to be drawn.
+    /// </summary>
+    /// <remarks>
+    ///     Rendering a portrait needs a Pawn, and the one this form came from was eaten. Rather
+    ///     than serialise a whole Pawn into every save, this builds a throwaway one from the
+    ///     stored appearance the first time the picker asks for it, and lets it go on load.
+    /// </remarks>
+    private Pawn? portrait;
+
     public KandraForm() { }
 
     public static KandraForm From(Pawn source) {
@@ -39,10 +55,46 @@ public class KandraForm : IExposable {
             skinColour = source.story?.SkinColor ?? Color.white,
             gender = source.gender,
             xenotype = source.genes?.Xenotype,
+            faction = source.Faction?.def,
+            ideo = source.Ideo,
         };
     }
 
     public string Label => nameShort ?? nameFull ?? "unknown";
+
+    /// <summary>Builds the stand-in on first use. Null if generation failed for any reason.</summary>
+    public Pawn? PortraitPawn {
+        get {
+            if (portrait != null) return portrait;
+
+            try {
+                portrait = PawnGenerator.GeneratePawn(
+                    new PawnGenerationRequest(
+                        RimWorld.PawnKindDefOf.Colonist,
+                        null,
+                        PawnGenerationContext.NonPlayer,
+                        forceGenerateNewPawn: true,
+                        canGeneratePawnRelations: false,
+                        fixedGender: gender,
+                        forcedXenotype: xenotype
+                    )
+                );
+            } catch (global::System.Exception) {
+                return null;
+            }
+
+            if (portrait.story != null) {
+                if (bodyType != null) portrait.story.bodyType = bodyType;
+                if (headType != null) portrait.story.headType = headType;
+                portrait.story.hairDef = hair ?? portrait.story.hairDef;
+                portrait.story.HairColor = hairColour;
+                portrait.story.skinColorOverride = skinColour;
+            }
+
+            portrait.Drawer?.renderer?.SetAllGraphicsDirty();
+            return portrait;
+        }
+    }
 
     public void ExposeData() {
         Scribe_Values.Look(ref nameFull, "nameFull");
@@ -54,5 +106,7 @@ public class KandraForm : IExposable {
         Scribe_Values.Look(ref skinColour, "skinColour");
         Scribe_Values.Look(ref gender, "gender");
         Scribe_Defs.Look(ref xenotype, "xenotype");
+        Scribe_Defs.Look(ref faction, "faction");
+        Scribe_References.Look(ref ideo, "ideo");
     }
 }

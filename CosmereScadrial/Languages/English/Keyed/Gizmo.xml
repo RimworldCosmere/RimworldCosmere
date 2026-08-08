@@ -6,4 +6,7 @@
     <CS_Kandra_Revert>Return to true body</CS_Kandra_Revert>
     <CS_Kandra_RevertDesc>Drop the borrowed shape. Others find the sight of a kandra's own body hard to sit with.</CS_Kandra_RevertDesc>
     <CS_Kandra_ConsumeBones>Take the bones of {FORM}</CS_Kandra_ConsumeBones>
+    <CS_Kandra_PickForm>Take a form</CS_Kandra_PickForm>
+    <CS_Kandra_FormCount>{COUNT} remembered</CS_Kandra_FormCount>
+    <CS_Kandra_PickFormTip>Click to take this shape. It takes about ten seconds.</CS_Kandra_PickFormTip>
 </LanguageData>

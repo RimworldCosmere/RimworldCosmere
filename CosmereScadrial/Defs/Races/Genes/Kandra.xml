@@ -18,6 +18,9 @@
     <biostatMet>-2</biostatMet>
     <statFactors>
       <MoveSpeed>0.92</MoveSpeed>
+      <!-- Wounds close while you watch. It has no organs to protect and no bones to knit, so
+           there is nothing to heal except closing the gap. -->
+      <InjuryHealingFactor>5.0</InjuryHealingFactor>
     </statFactors>
     <statOffsets>
       <ComfyTemperatureMin>-8</ComfyTemperatureMin>

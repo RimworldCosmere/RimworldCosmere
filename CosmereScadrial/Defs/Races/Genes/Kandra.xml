@@ -11,7 +11,7 @@
     <defName>Cosmere_Scadrial_Gene_KandraHeritage</defName>
     <label>kandra</label>
     <labelShortAdj>kandra</labelShortAdj>
-    <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate. It does not age biologically, cannot be poisoned, and does not get cancer or infections. Kandra die when something kills them, or when the spikes come out, and otherwise they simply keep going.</description>
+    <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate. It does not age biologically and catches nothing. Poison, plague, infection and cancer all need a body organised the way a person's is, and a kandra is not. Kandra die when something kills them, or when the spikes come out, and otherwise they simply keep going.</description>
     <iconPath>UI/Icons/Genes/Gene_KandraHeritage</iconPath>
     <displayOrderInCategory>200</displayOrderInCategory>
     <biostatCpx>3</biostatCpx>
@@ -28,11 +28,22 @@
       <ToxicResistance>1</ToxicResistance>
       <ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
     </statOffsets>
+    <!-- Everything vanilla's perfect-immunity gene covers, plus the two mechanite strains and
+         the ones that need a digestive tract. Nothing here has a host to work on. -->
     <makeImmuneTo>
-      <li>FoodPoisoning</li>
-      <li>GutWorms</li>
-      <li>Carcinoma</li>
+      <li>Flu</li>
+      <li>Plague</li>
+      <li>Malaria</li>
+      <li>SleepingSickness</li>
       <li>WoundInfection</li>
+      <li>LungRot</li>
+      <li>GutWorms</li>
+      <li>MuscleParasites</li>
+      <li>OrganDecay</li>
+      <li>FibrousMechanites</li>
+      <li>SensoryMechanites</li>
+      <li>FoodPoisoning</li>
+      <li>Carcinoma</li>
     </makeImmuneTo>
     <!-- Flat zero from the first tick. A kandra is built out of a mistwraith rather than grown,
          so there is no childhood to age out of the way vanilla's ageless gene assumes. -->

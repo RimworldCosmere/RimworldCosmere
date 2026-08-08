@@ -281,4 +281,28 @@ public class KandraTests {
             );
         }
     }
+
+    /// <summary>
+    ///     A kandra should catch nothing a sanguophage would not. Vanilla's perfect-immunity
+    ///     gene is the benchmark, so anything on that list has to be on this one.
+    /// </summary>
+    [TestMethod]
+    public void KandraAreAtLeastAsImmuneAsASanguophage() {
+        string[] perfectImmunity = [
+            "Flu", "Malaria", "SleepingSickness", "Plague", "WoundInfection",
+            "LungRot", "GutWorms", "MuscleParasites", "OrganDecay",
+        ];
+
+        XElement heritage = DefsOfType("GeneDef")
+            .First(g => g.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KandraHeritage");
+
+        HashSet<string> immune = heritage.Element("makeImmuneTo")?
+            .Elements("li")
+            .Select(li => li.Value)
+            .ToHashSet() ?? [];
+
+        foreach (string disease in perfectImmunity) {
+            Assert.IsTrue(immune.Contains(disease), $"A kandra should be immune to {disease}.");
+        }
+    }
 }

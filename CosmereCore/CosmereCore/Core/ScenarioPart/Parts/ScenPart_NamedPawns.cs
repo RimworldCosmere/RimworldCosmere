@@ -303,9 +303,40 @@ public class ScenPart_NamedPawns : ScenPart {
 
         if (head != null) pawn.story.headType = head;
 
+        // Hair carries a style gender too, and a rolled one contradicts the template just as
+        // readily as the head did. Ham kept a woman's haircut through the first fix because only
+        // the body and head were being corrected.
+        HairDef? hair = pawn.story.hairDef;
+        if (hair != null && !SuitsGender(hair.styleGender, template.gender)) {
+            pawn.story.hairDef = DefDatabase<HairDef>.AllDefsListForReading
+                .Where(candidate => SuitsGender(candidate.styleGender, template.gender))
+                .RandomElementWithFallback(hair);
+        }
+
+        // Same for beards, which no amount of hair fixing hides.
+        BeardDef? beard = pawn.style?.beardDef;
+        if (pawn.style != null && template.gender == Gender.Female && beard != null && beard != BeardDefOf.NoBeard) {
+            pawn.style.beardDef = BeardDefOf.NoBeard;
+        }
+
         if (template.skinColor != null && ParseColour(template.skinColor) is UnityEngine.Color skin) {
             pawn.story.skinColorOverride = skin;
         }
+    }
+
+    /// <summary>
+    ///     Whether a style is acceptable for this gender. "Usually" variants read as allowed,
+    ///     the way vanilla treats them when it dresses a pawn.
+    /// </summary>
+    private static bool SuitsGender(StyleGender style, Gender gender) {
+        if (gender == Gender.None) return true;
+
+        return style switch {
+            StyleGender.Any => true,
+            StyleGender.Male or StyleGender.MaleUsually => gender == Gender.Male,
+            StyleGender.Female or StyleGender.FemaleUsually => gender == Gender.Female,
+            _ => true,
+        };
     }
 
     /// <summary>Reads "(r, g, b)" in 0-255, the way the gene defs write colours.</summary>

@@ -249,4 +249,36 @@ public class KandraTests {
         );
         Assert.IsTrue(source.Contains("if (inherited != null)", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     Kandra do not age. A lifespan multiplier only stretches out a clock that is still
+    ///     running, which is a different thing and was what this used to have.
+    /// </summary>
+    [TestMethod]
+    public void KandraDoNotAge() {
+        XElement heritage = DefsOfType("GeneDef")
+            .First(g => g.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KandraHeritage");
+
+        XElement? curve = heritage.Element("biologicalAgeTickFactorFromAgeCurve");
+        Assert.IsNotNull(curve, "The kandra heritage gene should stop biological ageing.");
+
+        List<string> points = curve!.Element("points")?.Elements("li").Select(li => li.Value).ToList() ?? [];
+        Assert.IsTrue(points.Count > 0, "The ageing curve has no points.");
+        foreach (string point in points) {
+            Assert.IsTrue(
+                point.TrimEnd(')', ' ').EndsWith("0", StringComparison.Ordinal),
+                $"Every point on the ageing curve must be zero, but found {point}."
+            );
+        }
+
+        foreach (XElement gene in DefsOfType("GeneDef")) {
+            string? name = gene.Element("defName")?.Value;
+            if (name == null || !name.Contains("Kandra") && name != "Cosmere_Scadrial_Gene_Generational") continue;
+
+            Assert.IsNull(
+                gene.Element("statFactors")?.Element("LifespanFactor"),
+                $"{name} still has a LifespanFactor. Ageless pawns do not need one."
+            );
+        }
+    }
 }

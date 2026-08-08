@@ -11,7 +11,7 @@
     <defName>Cosmere_Scadrial_Gene_KandraHeritage</defName>
     <label>kandra</label>
     <labelShortAdj>kandra</labelShortAdj>
-    <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate.</description>
+    <description>Beneath whatever face it is wearing, a kandra is a boneless thing that grew around two spikes. It has no shape of its own worth speaking of, and takes the shape of whoever it last ate. It does not age. Kandra die when something kills them, or when the spikes come out, and otherwise they simply keep going.</description>
     <iconPath>UI/Icons/Genes/Gene_KandraHeritage</iconPath>
     <displayOrderInCategory>200</displayOrderInCategory>
     <biostatCpx>3</biostatCpx>
@@ -27,6 +27,13 @@
       <li>FoodPoisoning</li>
       <li>GutWorms</li>
     </makeImmuneTo>
+    <!-- Flat zero from the first tick. A kandra is built out of a mistwraith rather than grown,
+         so there is no childhood to age out of the way vanilla's ageless gene assumes. -->
+    <biologicalAgeTickFactorFromAgeCurve>
+      <points>
+        <li>(0, 0)</li>
+      </points>
+    </biologicalAgeTickFactorFromAgeCurve>
   </GeneDef>
 
   <!-- No skeleton to break. The upside of being mostly fluid. -->
@@ -97,14 +104,11 @@
     <geneClass>Cosmere.System.Scadrial.Gene.Generational</geneClass>
     <label>generational</label>
     <labelShortAdj>generational</labelShortAdj>
-    <description>Kandra count themselves by generation, first through tenth and beyond. The early ones are stronger, harder to order about, and remember things nobody wanted written down.</description>
+    <description>Kandra count themselves by generation, first through tenth and beyond. None of them die of old age, so the early ones are still walking around centuries later: stronger, harder to order about, and remembering things nobody wanted written down.</description>
     <iconPath>UI/Icons/Genes/Gene_KandraGeneration</iconPath>
     <displayOrderInCategory>205</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
-    <statFactors>
-      <LifespanFactor>4.0</LifespanFactor>
-    </statFactors>
   </GeneDef>
 
 </Defs>

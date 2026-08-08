@@ -95,4 +95,19 @@ public class AshVentGenStepTests {
             "GenStep_ScatterThings dereferences thingDef on every candidate cell"
         );
     }
+
+    /// <summary>
+    ///     The one place we deliberately part company with the geyser, so it needs a guard against
+    ///     anyone restoring parity by reflex.
+    /// </summary>
+    [TestMethod]
+    public void ClearedSpaceIsSizedForTheVentNotForAGeothermalGenerator() {
+        XElement genStep = VentGenStep().Element("genStep")!;
+
+        Assert.AreEqual(
+            "12",
+            genStep.Element("clearSpaceSize")?.Value.Trim(),
+            "a cell count - the geyser's 30 is room for a 6x6 generator, and a 2x2 vent carries none"
+        );
+    }
 }

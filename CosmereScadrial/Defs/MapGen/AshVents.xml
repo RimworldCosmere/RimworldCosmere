@@ -13,7 +13,9 @@
             <extraNoBuildEdgeDist>4</extraNoBuildEdgeDist>
             <allowRoofed>false</allowRoofed>
             <allowInWaterBiome>false</allowInWaterBiome>
-            <clearSpaceSize>30</clearSpaceSize>
+            <!-- A cell count, not a radius. The geyser's 30 clears room for a 6x6 geothermal
+                 generator; a 2x2 vent with nothing to build on it wants about one cell of ring. -->
+            <clearSpaceSize>12</clearSpaceSize>
             <terrainValidationRadius>4</terrainValidationRadius>
             <terrainValidationDisallowed>
                 <li>Road</li>

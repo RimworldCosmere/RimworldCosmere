@@ -18,7 +18,13 @@ public class KandraBonesMenuProvider : RimWorld.FloatMenuOptionProvider {
 
     protected override FloatMenuOption? GetSingleOptionFor(Verse.Thing clickedThing, FloatMenuContext context) {
         if (clickedThing is not Corpse corpse) return null;
-        if (!corpse.InnerPawn.RaceProps.Humanlike) return null;
+
+        // Animals count now, but only the ones we have a shape for. Eating a boomrat teaches
+        // nothing if there is no boomrat form to wear.
+        if (!corpse.InnerPawn.RaceProps.Humanlike
+            && KandraAnimalForms.ShapeFor(corpse.InnerPawn.kindDef) == null) {
+            return null;
+        }
 
         Pawn? pawn = context.FirstSelectedPawn;
         if (pawn?.TryGetComp<CompKandraForms>() == null) return null;

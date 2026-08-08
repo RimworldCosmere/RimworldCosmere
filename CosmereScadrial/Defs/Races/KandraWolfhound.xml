@@ -97,6 +97,9 @@
             <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
             <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
         </race>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Kandra.CompProperties_KandraShapePair" />
+        </comps>
         <tools>
             <li>
                 <label>teeth</label>

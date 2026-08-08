@@ -78,4 +78,5 @@
 
     <CS_Ruin_Compulsion_Slaughter_Title>{PAWN} is watching the animals</CS_Ruin_Compulsion_Slaughter_Title>
     <CS_Ruin_Compulsion_Slaughter_Text>{PAWN} has been standing at the pens a long while, and the animals have noticed before anyone else did.\n\nThere is enough metal in them now for {SHARD} to spend them on something small and cruel. It will, soon.\n\nTake them out of the equation before it does.</CS_Ruin_Compulsion_Slaughter_Text>
+    <CS_Kandra_TookAnimalForm>{PAWN} is a {FORM} now. Whoever needs to be fooled by that will be.</CS_Kandra_TookAnimalForm>
 </LanguageData>

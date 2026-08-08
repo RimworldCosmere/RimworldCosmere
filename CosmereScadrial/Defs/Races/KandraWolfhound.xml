@@ -11,6 +11,21 @@
 
          renderTree is a plain field rather than something derived from intelligence, so the
          Animal tree keeps it drawn as a dog while the rest of it answers to the player. -->
+    <!-- Its own life stage purely for silhouetteGraphicData. PawnRenderer.RenderPawnAt reads
+         CurLifeStage.silhouetteGraphicData.Graphic unguarded for any humanlike pawn, and the
+         animal life stages have none, so it threw once a frame. AnimalAdult otherwise. -->
+    <LifeStageDef>
+        <defName>Cosmere_Scadrial_LifeStage_KandraShape</defName>
+        <label>adult</label>
+        <visible>false</visible>
+        <reproductive>false</reproductive>
+        <silhouetteGraphicData>
+            <texPath>Things/Pawn/Animal/Husky/Husky_south</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.4</drawSize>
+        </silhouetteGraphicData>
+    </LifeStageDef>
+
     <!-- The Animal tree is unusable here. Every node in it reads CurKindLifeStage, which
          returns null for a humanlike pawn by design and logs an error saying so. This tree
          takes its graphic from a def extension instead. -->
@@ -70,7 +85,7 @@
             <trainability>None</trainability>
             <lifeStageAges>
                 <li>
-                    <def>AnimalAdult</def>
+                    <def>Cosmere_Scadrial_LifeStage_KandraShape</def>
                     <minAge>0</minAge>
                     <soundWounded>Pawn_Husky_Injured</soundWounded>
                     <soundDeath>Pawn_Husky_Death</soundDeath>

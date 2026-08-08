@@ -69,6 +69,31 @@ public static class AnimalControlSpike {
         Report(dog, "spawned and given a drafter");
     }
 
+    /// <summary>
+    ///     The real question: does a humanlike-intelligence pawn with the Animal render tree draw
+    ///     as a dog and still take orders? Click an empty tile.
+    /// </summary>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: spawn kandra wolfhound",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void SpawnKandraWolfhound() {
+        PawnKindDef? kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(
+            "Cosmere_Scadrial_PawnKind_KandraWolfhound"
+        );
+        if (kind == null) {
+            Logger.Warning("AnimalControlSpike: the kandra wolfhound pawnkind did not load.");
+            return;
+        }
+
+        Pawn hound = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, Faction.OfPlayer));
+        GenSpawn.Spawn(hound, Verse.UI.MouseCell(), Find.CurrentMap);
+
+        Report(hound, "spawned");
+    }
+
     /// <summary>Reports what the game thinks of whatever is under the cursor.</summary>
     [DebugAction(
         "Cosmere/Core",

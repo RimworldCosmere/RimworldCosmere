@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- A kandra wearing a wolfhound.
+
+         This is not a dog. It is a person who is currently shaped like one, which is exactly why
+         it inherits from the animal base and then takes humanlike intelligence back. RimWorld
+         will only hand a pawn a draft controller if its race is humanlike or a colony mech, and
+         only offers orders to something IsColonistPlayerControlled, which wants humanlike again.
+         Nothing else gets to be told what to do.
+
+         renderTree is a plain field rather than something derived from intelligence, so the
+         Animal tree keeps it drawn as a dog while the rest of it answers to the player. -->
+    <ThingDef ParentName="AnimalThingBase">
+        <defName>Cosmere_Scadrial_Race_KandraWolfhound</defName>
+        <label>kandra wolfhound</label>
+        <description>A kandra wearing the bones of a wolfhound. It moves like the animal it is copying and thinks like the person underneath, which is the point of the shape.</description>
+        <statBases>
+            <MoveSpeed>4.6</MoveSpeed>
+            <MarketValue>250</MarketValue>
+            <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+        </statBases>
+        <uiIconScale>1.4</uiIconScale>
+        <race>
+            <body>QuadrupedAnimalWithPawsAndTail</body>
+            <baseBodySize>0.86</baseBodySize>
+            <baseHealthScale>0.85</baseHealthScale>
+            <baseHungerRate>0.4</baseHungerRate>
+            <foodType>OmnivoreAnimal</foodType>
+            <leatherDef>Leather_Dog</leatherDef>
+            <lifeExpectancy>12</lifeExpectancy>
+
+            <!-- The whole reason this def exists. Animal intelligence cannot be drafted. -->
+            <intelligence>Humanlike</intelligence>
+
+            <!-- And this is what keeps it looking like a dog anyway. -->
+            <renderTree>Animal</renderTree>
+
+            <thinkTreeMain>Humanlike</thinkTreeMain>
+            <thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
+
+            <hasGenders>true</hasGenders>
+            <needsRest>true</needsRest>
+            <trainability>None</trainability>
+            <lifeStageAges>
+                <li>
+                    <def>AnimalAdult</def>
+                    <minAge>0</minAge>
+                    <soundWounded>Pawn_Husky_Injured</soundWounded>
+                    <soundDeath>Pawn_Husky_Death</soundDeath>
+                    <soundCall>Pawn_Husky_Call</soundCall>
+                    <soundAngry>Pawn_Husky_Angry</soundAngry>
+                </li>
+            </lifeStageAges>
+            <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
+            <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
+            <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+        </race>
+        <tools>
+            <li>
+                <label>teeth</label>
+                <capacities>
+                    <li>Bite</li>
+                </capacities>
+                <power>12</power>
+                <cooldownTime>2</cooldownTime>
+                <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+                <surpriseAttack>
+                    <extraMeleeDamages>
+                        <li>
+                            <def>Stun</def>
+                            <amount>14</amount>
+                        </li>
+                    </extraMeleeDamages>
+                </surpriseAttack>
+            </li>
+        </tools>
+    </ThingDef>
+
+    <PawnKindDef ParentName="AnimalKindBase">
+        <defName>Cosmere_Scadrial_PawnKind_KandraWolfhound</defName>
+        <label>kandra wolfhound</label>
+        <race>Cosmere_Scadrial_Race_KandraWolfhound</race>
+        <combatPower>60</combatPower>
+        <lifeStages>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Husky/Husky</texPath>
+                    <drawSize>1.4</drawSize>
+                    <shaderType>CutoutComplex</shaderType>
+                </bodyGraphicData>
+                <dessicatedBodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Husky/Dessicated_Husky</texPath>
+                    <drawSize>1.4</drawSize>
+                </dessicatedBodyGraphicData>
+            </li>
+        </lifeStages>
+    </PawnKindDef>
+
+</Defs>

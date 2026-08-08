@@ -68,17 +68,18 @@ public class ScenarioBuilderPageTests {
     }
 
     /// <summary>
-    ///     ScenPart_NamedPawns clears the roster and rebuilds it from templates, so it has to run
-    ///     after the config page. The other way round and the story cast is thrown away.
+    ///     The config page clears the roster in GenerateStartingPawns and regenerates it, and
+    ///     ScenPart_NamedPawns stamps its templates onto each pawn through Notify_PawnGenerated
+    ///     as it comes out. So the config page has to be the last word, not the first.
     /// </summary>
     [TestMethod]
-    public void TheBuilderRunsBeforeTheNamedPawns() {
+    public void TheBuilderRunsAfterTheNamedPawns() {
         foreach ((string name, List<XElement> parts) in Scenarios()) {
             int config = parts.FindIndex(p => ClassOf(p).Contains("ConfigPage", StringComparison.Ordinal));
             int named = parts.FindIndex(p => ClassOf(p) == NamedPawns);
             if (named < 0) continue;
 
-            Assert.IsTrue(config >= 0 && config < named, $"{name} runs NamedPawns before the config page.");
+            Assert.IsTrue(config > named, $"{name} runs the config page before NamedPawns.");
         }
     }
 

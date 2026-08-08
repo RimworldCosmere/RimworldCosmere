@@ -445,4 +445,24 @@ public class KandraTests {
             return gene.Element("exclusionTags")?.Elements("li").Select(li => li.Value).ToList() ?? [];
         }
     }
+
+    /// <summary>
+    ///     A Blessing hediff with no spikes under it is a kandra with nothing holding it
+    ///     together: no spike for a surgeon to pull, and the next spike check would drop it to a
+    ///     mistwraith. PostAdd has to top the pair up rather than bail when it sees the hediff.
+    /// </summary>
+    [TestMethod]
+    public void PostAddGivesSpikesEvenWhenTheBlessingIsAlreadyThere() {
+        string source = Source("Gene", "BlessingBound.cs");
+        int start = source.IndexOf("public override void PostAdd()", StringComparison.Ordinal);
+        int end = source.IndexOf("public override void TickInterval(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0 && end > start);
+
+        string body = source[start..end];
+        Assert.IsFalse(
+            body.Contains("if (KandraUtility.HasBlessing(pawn)) return;", StringComparison.Ordinal),
+            "PostAdd must not bail on an existing Blessing; the spikes may still be missing."
+        );
+        Assert.IsTrue(body.Contains("KandraUtility.GiveBlessing", StringComparison.Ordinal));
+    }
 }

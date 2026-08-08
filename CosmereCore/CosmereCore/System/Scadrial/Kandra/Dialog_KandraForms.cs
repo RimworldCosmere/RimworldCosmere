@@ -25,6 +25,12 @@ public class Dialog_KandraForms : Window {
     private static readonly Color CardHover = new Color(0.24f, 0.26f, 0.29f);
     private static readonly Color Accent = new Color(0.62f, 0.66f, 0.72f);
 
+    /// <summary>Parchment, the colour vanilla already uses for a person's name.</summary>
+    private static readonly Color NameTint = new Color(0.90f, 0.84f, 0.67f);
+
+    /// <summary>Muted violet. Distinct from faction and ideoligion, which bring their own.</summary>
+    private static readonly Color XenotypeTint = new Color(0.71f, 0.64f, 0.82f);
+
     private readonly CompKandraForms forms;
     private readonly global::System.Action<int> choose;
 
@@ -153,16 +159,26 @@ public class Dialog_KandraForms : Window {
         }
     }
 
+    /// <summary>
+    ///     Four lines that all look alike are four lines nobody reads. Each carries its own
+    ///     colour so the eye can go straight to the one it wants, and the faction and ideoligion
+    ///     match the icons on the card.
+    /// </summary>
     private static string Tooltip(KandraForm form) {
         global::System.Text.StringBuilder text = new global::System.Text.StringBuilder();
-        text.AppendLine(form.nameFull ?? form.Label);
 
-        if (form.faction != null) text.AppendLine(form.faction.LabelCap);
-        if (form.ideo != null) text.AppendLine(form.ideo.name);
-        if (form.xenotype != null) text.AppendLine(form.xenotype.LabelCap);
+        text.AppendLine(Tinted(form.nameFull ?? form.Label, NameTint));
+
+        if (form.faction != null) text.AppendLine(Tinted(form.faction.LabelCap, form.faction.DefaultColor));
+        if (form.ideo != null) text.AppendLine(Tinted(form.ideo.name, form.ideo.Color));
+        if (form.xenotype != null) text.AppendLine(Tinted(form.xenotype.LabelCap, XenotypeTint));
 
         text.AppendLine();
         text.Append("CS_Kandra_PickFormTip".Translate().Resolve());
         return text.ToString();
+    }
+
+    private static string Tinted(string body, Color colour) {
+        return "<color=#" + ColorUtility.ToHtmlStringRGB(colour) + ">" + body + "</color>";
     }
 }

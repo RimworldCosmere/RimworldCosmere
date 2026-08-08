@@ -22,12 +22,17 @@ public class BlessingBound : Verse.Gene {
     public override void PostAdd() {
         base.PostAdd();
 
-        // A kandra the game generated arrives with the xenotype and nothing in it. Give it the
-        // middle Blessing rather than letting the first check unmake it.
-        if (KandraUtility.HasBlessing(pawn)) return;
         if (KandraUtility.Blessings.Count == 0) return;
 
-        KandraUtility.GiveBlessing(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_BlessingOfPresence);
+        // A kandra the game generated arrives with the xenotype and nothing in it. One that came
+        // from a save or a dev tool may have the Blessing hediff and no spikes under it, which
+        // reads as a kandra with nothing holding it together: no spike to pull, and the next
+        // check would turn it into a mistwraith. Either way, make the spikes match the Blessing.
+        Verse.Hediff? existing = KandraUtility.BlessingOn(pawn);
+        KandraUtility.GiveBlessing(
+            pawn,
+            existing?.def ?? HediffDefOf.Cosmere_Scadrial_Hediff_BlessingOfPresence
+        );
     }
 
     public override void TickInterval(int delta) {

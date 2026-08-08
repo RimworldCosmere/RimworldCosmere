@@ -16,6 +16,10 @@ public static class SkillDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static SkillDef Cosmere_Scadrial_Skill_FeruchemicPower;
 
+    /// <summary>How well a kandra wears a body that is not theirs.</summary>
+    [MayRequire("Cosmere.Scadrial")]
+    public static SkillDef Cosmere_Scadrial_Skill_Shapeshift;
+
     static SkillDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(SkillDefOf));
     }

@@ -54,4 +54,24 @@
         </rulesStrings>
       </generalRules>
     </SkillDef>
+
+    <!-- Eating a body's bones teaches a kandra how that body works. The skill decides whether
+         they can shape one from nothing, and how well the disguise holds when somebody who knew
+         the dead looks closely. -->
+    <SkillDef>
+        <defName>Cosmere_Scadrial_Skill_Shapeshift</defName>
+        <description>Represents how well a kandra wears a body that is not theirs. Learned by consuming bones, and spent on holding a shape nobody should be able to hold.</description>
+        <skillLabel>shapeshifting</skillLabel>
+        <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
+        <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
+        <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <generalRules>
+            <rulesStrings>
+                <li>subject-&gt;shapeshifting</li>
+                <li>subject-&gt;wearing the dead</li>
+                <li>subject_story-&gt;learned the shape of a body nobody missed</li>
+            </rulesStrings>
+        </generalRules>
+    </SkillDef>
+
 </Defs>

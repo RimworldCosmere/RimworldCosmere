@@ -30,6 +30,9 @@
             <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshVent">
                 <millimetresPerDay>140</millimetresPerDay>
                 <skew>0.55</skew>
+                <!-- Cells past its own 2x2 that the vent thins back in. The drift still peaks
+                     against the mouth; this only stops it closing over the top. -->
+                <clearRadius>3</clearRadius>
                 <!-- Per vent, so the six on a mount-adjacent tile throw six times as often as a
                      lone one out at the belt's edge. -->
                 <throwsPerDay>0.5</throwsPerDay>

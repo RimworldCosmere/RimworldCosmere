@@ -13,6 +13,9 @@ public class CompProperties_AshVent : CompProperties {
     /// <summary>0 to 1. How hard the plume leans downwind.</summary>
     public float skew = 0.55f;
 
+    /// <summary>How far past its own cells the vent thins the drift back in, in cells.</summary>
+    public float clearRadius = 3f;
+
     /// <summary>Throws a day. One lump every two days at the default.</summary>
     public float throwsPerDay = 0.5f;
 
@@ -147,34 +150,50 @@ public class CompAshVent : ThingComp {
         }
 
         Map.AshDepthTracker? tracker = map.GetComponent<Map.AshDepthTracker>();
-        if (tracker != null && ClearOwnFootprint(map, grid, tracker)) changed = true;
+        if (tracker != null && ClearOwnMouth(map, grid, tracker)) changed = true;
 
         ThrowMetal(dayFraction);
         return changed;
     }
 
     /// <summary>
-    ///     Keeps the vent's own cells clear. They take the plume's peak weight, so left alone the
-    ///     thing blowing the ash out is the first thing to disappear under it.
+    ///     Clears the vent's own cells and thins the drift back in around them. They take the
+    ///     plume's peak weight, so left alone the thing blowing the ash out disappears under it.
     /// </summary>
-    private bool ClearOwnFootprint(Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker) {
+    private bool ClearOwnMouth(Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker) {
         // Position is the low corner of a 2x2 and CenterCell hands back the high one, so neither
         // is the footprint. OccupiedRect is.
-        CellRect footprint = parent.OccupiedRect();
+        CellRect mouth = parent.OccupiedRect();
+        CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(Props.clearRadius));
         CellIndices indices = map.cellIndices;
+        AshBuriedCells buried = tracker.Buried;
         bool changed = false;
 
-        for (int x = footprint.minX; x <= footprint.maxX; x++) {
-            for (int z = footprint.minZ; z <= footprint.maxZ; z++) {
+        for (int x = reach.minX; x <= reach.maxX; x++) {
+            for (int z = reach.minZ; z <= reach.maxZ; z++) {
                 IntVec3 cell = new IntVec3(x, 0, z);
                 if (!cell.InBounds(map)) continue;
 
-                int index = indices.CellToIndex(cell);
-                if (grid.RemoveDepthMm(index, AshGrid.MaxDepthMm) > 0) changed = true;
+                // Straight-line distance out of the rect, so the falloff rounds off the corners
+                // instead of ringing the mouth in another square.
+                int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
+                int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
+                float distance = Mathf.Sqrt(dx * dx + dz * dz);
 
-                // Depth without the set is the bug this feature has already shipped three times.
-                // The sweep would catch it in 64 ticks and the wash would sit on the vent for all of them.
-                if (tracker.Buried.Set(index, false)) changed = true;
+                int index = indices.CellToIndex(cell);
+                int depth = grid.GetDepthMm(index);
+                int allowed = AshPlume.AllowedDepthMm(depth, distance, Props.clearRadius);
+
+                // Under a whole unit is not removable, so bailing here is what stops an already
+                // thinned cell reporting a change every cycle and dirtying the mesh forever.
+                if (depth - allowed < AshGrid.UnitMm) continue;
+
+                grid.RemoveDepthMm(index, depth - allowed);
+
+                // Every cell whose depth moved, not just the ones that reach zero. A cell dropping
+                // from 1200 to 400 stops being buried and the set has to hear about it.
+                buried.Set(index, AshDepthMath.IsBuried(grid.GetDepthMm(index), buried.IsBuried(index)));
+                changed = true;
             }
         }
 

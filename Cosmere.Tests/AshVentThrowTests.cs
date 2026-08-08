@@ -65,7 +65,7 @@ public class AshVentThrowTests {
     public void EveryThrowFieldIsSetInTheDefRatherThanLeftToTheCompDefault() {
         XElement comp = VentComp();
 
-        foreach (string field in new[] { "throwsPerDay", "lumpsPerThrow", "throwRadius", "metals" }) {
+        foreach (string field in new[] { "throwsPerDay", "lumpsPerThrow", "throwRadius", "metals", "clearRadius" }) {
             Assert.IsNotNull(comp.Element(field), $"{field} is not on the vent def, so it cannot be tuned without a rebuild");
         }
     }

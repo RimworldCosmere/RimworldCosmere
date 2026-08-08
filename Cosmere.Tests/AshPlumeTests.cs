@@ -130,4 +130,81 @@ public class AshPlumeTests {
         Assert.IsNull(AshPlume.RestoreBank(saved, 2), "a shrunk one would leave the tail unread");
         Assert.IsNull(AshPlume.RestoreBank(null, 3), "a save from before the bank existed");
     }
+
+    /// <summary>
+    ///     The vent blows its own mouth clear. Every cell of its footprint sits at distance 0, and
+    ///     nothing the drift can throw at it may survive there.
+    /// </summary>
+    [TestMethod]
+    public void TheMouthItselfIsAlwaysClear() {
+        foreach (int depth in new[] { 0, 10, 900, 1400, AshGrid.MaxDepthMm }) {
+            Assert.AreEqual(0, AshPlume.AllowedDepthMm(depth, 0f, 3f), $"{depth}mm survived on the mouth");
+        }
+    }
+
+    /// <summary>
+    ///     A vent thins the drift, it never adds to it. An allowance above the cell's own depth
+    ///     would read as the vent piling ash up outside its radius.
+    /// </summary>
+    [TestMethod]
+    public void TheFeatherOnlyEverTakesAway() {
+        for (int depth = 0; depth <= AshGrid.MaxDepthMm; depth += 50) {
+            for (float distance = 0f; distance <= 4f; distance += 0.25f) {
+                int allowed = AshPlume.AllowedDepthMm(depth, distance, 3f);
+                Assert.IsTrue(allowed <= depth, $"{distance} cells out, {depth}mm was raised to {allowed}mm");
+                Assert.IsTrue(allowed >= 0, $"{distance} cells out, {depth}mm gave a negative {allowed}mm");
+            }
+        }
+    }
+
+    [TestMethod]
+    public void PastTheRadiusTheDriftIsLeftAlone() {
+        Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 3f, 3f), "the outer edge is the first untouched ring");
+        Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 9f, 3f));
+    }
+
+    [TestMethod]
+    public void TheAllowanceRisesWithDistance() {
+        int previous = -1;
+        for (float distance = 0f; distance < 3f; distance += 0.1f) {
+            int allowed = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, distance, 3f);
+            Assert.IsTrue(allowed >= previous, $"the feather dipped at {distance} cells: {allowed} after {previous}");
+            previous = allowed;
+        }
+    }
+
+    /// <summary>
+    ///     The comp re-imposes this every sweep cycle. If a second pass moved a cell that the first
+    ///     already thinned, the mesh would dirty forever on ground that never actually changes.
+    /// </summary>
+    [TestMethod]
+    public void ThinningAnAlreadyThinnedCellChangesNothing() {
+        for (float distance = 0f; distance <= 3f; distance += 0.2f) {
+            int once = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, distance, 3f);
+            int twice = AshPlume.AllowedDepthMm(once, distance, 3f);
+
+            Assert.AreEqual(once, twice, $"{distance} cells out, a second pass moved {once}mm to {twice}mm");
+        }
+    }
+
+    /// <summary>
+    ///     The outer ring has to reach the depth the burial wash saturates at, or the last thinned
+    ///     cell and the untouched one beside it draw at different alphas and the feather has a seam.
+    /// </summary>
+    [TestMethod]
+    public void TheOuterRingReachesTheDepthTheWashSaturatesAt() {
+        int edge = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, 2.999f, 3f);
+
+        Assert.IsTrue(
+            edge >= AshDepthMath.WaistMm - AshGrid.UnitMm,
+            $"the feather tops out at {edge}mm, under the {AshDepthMath.WaistMm}mm the wash saturates at"
+        );
+    }
+
+    /// <summary>Turning the feather off in XML must not turn the mouth clearing off with it.</summary>
+    [TestMethod]
+    public void AZeroRadiusStillClearsTheMouth() {
+        Assert.AreEqual(0, AshPlume.AllowedDepthMm(2000, 0f, 0f), "the mouth kept its ash");
+        Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 1f, 0f), "a zero radius reached a cell anyway");
+    }
 }

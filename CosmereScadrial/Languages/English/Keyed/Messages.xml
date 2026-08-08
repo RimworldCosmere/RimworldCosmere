@@ -67,4 +67,15 @@
     <CS_Kandra_Regrew>{PAWN} has grown back a {PART}. The new one works as well as the old one did.</CS_Kandra_Regrew>
     <CS_Kandra_HalfBlessed>One of {PAWN}'s spikes has been pulled. They still know their own name. Most of the rest of it is going.</CS_Kandra_HalfBlessed>
     <CS_KandraLearnedForm>{PAWN} has the bones of {FORM}, and can wear that body now.</CS_KandraLearnedForm>
+    <CS_Ruin_Compulsion_Wander_Title>{PAWN} has stopped listening</CS_Ruin_Compulsion_Wander_Title>
+    <CS_Ruin_Compulsion_Wander_Text>{PAWN} has gone quiet and keeps looking at the door.\n\nSomething is working on them through the spikes, and it is not finished yet. Whatever it wants, it wants them walking.\n\nPut them down, tie them up or knock them out and it gets nothing. Leave them standing and it will not need to ask twice.</CS_Ruin_Compulsion_Wander_Text>
+
+    <CS_Ruin_Compulsion_Violence_Title>{PAWN} is being wound up</CS_Ruin_Compulsion_Violence_Title>
+    <CS_Ruin_Compulsion_Violence_Text>{PAWN} will not put the weapon down and has not blinked in some time.\n\nRuin has enough of them to make a decision on their behalf, and this one ends with somebody bleeding. There is a little time before it does.\n\nDown them, arrest them or sedate them. It cannot use a body that is not standing.</CS_Ruin_Compulsion_Violence_Text>
+
+    <CS_Ruin_Compulsion_Fire_Title>{PAWN} keeps finding the lamps</CS_Ruin_Compulsion_Fire_Title>
+    <CS_Ruin_Compulsion_Fire_Text>{PAWN} has been counting the oil and standing too near the flame.\n\nRuin unmakes things, and fire is the shortest road it has. It is going to use them for it shortly.\n\nStop them however you can. An unconscious arsonist starts nothing.</CS_Ruin_Compulsion_Fire_Text>
+
+    <CS_Ruin_Compulsion_Slaughter_Title>{PAWN} is watching the animals</CS_Ruin_Compulsion_Slaughter_Title>
+    <CS_Ruin_Compulsion_Slaughter_Text>{PAWN} has been standing at the pens a long while, and the animals have noticed before anyone else did.\n\nThere is enough metal in them now for Ruin to spend them on something small and cruel. It will, soon.\n\nTake them out of the equation before it does.</CS_Ruin_Compulsion_Slaughter_Text>
 </LanguageData>

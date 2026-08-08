@@ -844,4 +844,59 @@ public class KandraTests {
         Assert.IsNotNull(abstractBase);
         Assert.IsNull(abstractBase!.Element("ingredients"), "The base must not list ingredients; they append.");
     }
+
+    /// <summary>
+    ///     Each Blessing surgery rejects spikes of the wrong metal.
+    /// </summary>
+    /// <remarks>
+    ///     A ThingFilter cannot see a thing's stuff, and its stuff category list allows the
+    ///     material as an item instead, which is how zinc bars became a valid spike. The only
+    ///     hook handed the Thing is a special filter's worker, so the metal check goes there and
+    ///     each recipe wears it as a specialFiltersToDisallow entry.
+    /// </remarks>
+    [TestMethod]
+    public void EachBlessingRejectsSpikesOfTheWrongMetal() {
+        Dictionary<string, string> expected = new() {
+            ["Cosmere_Scadrial_Recipe_BlessingOfPresence"] = "Cosmere_Scadrial_SpecialFilter_NotSpikeCopper",
+            ["Cosmere_Scadrial_Recipe_BlessingOfPotency"] = "Cosmere_Scadrial_SpecialFilter_NotSpikeIron",
+            ["Cosmere_Scadrial_Recipe_BlessingOfStability"] = "Cosmere_Scadrial_SpecialFilter_NotSpikeZinc",
+            ["Cosmere_Scadrial_Recipe_BlessingOfAwareness"] = "Cosmere_Scadrial_SpecialFilter_NotSpikeTin",
+        };
+
+        HashSet<string> filters = DefNamesOfType("SpecialThingFilterDef");
+        int seen = 0;
+
+        foreach (XElement recipe in DefsOfType("RecipeDef")) {
+            string? name = recipe.Element("defName")?.Value;
+            if (name == null || !expected.TryGetValue(name, out string? wanted)) continue;
+
+            seen++;
+            List<string> disallowed = recipe.Descendants("specialFiltersToDisallow")
+                .Elements("li").Select(li => li.Value).ToList();
+
+            CollectionAssert.Contains(disallowed, wanted, $"{name} accepts spikes of any metal.");
+            Assert.IsTrue(filters.Contains(wanted), $"{wanted} is referenced but never defined.");
+        }
+
+        Assert.AreEqual(expected.Count, seen, "A Blessing surgery is missing.");
+    }
+
+    /// <summary>
+    ///     The worker must only ever have an opinion about spikes. Matching anything else would
+    ///     quietly drop medicine out of the same bill.
+    /// </summary>
+    [TestMethod]
+    public void TheSpikeMetalFilterOnlyJudgesSpikes() {
+        string source = Source("Hemalurgy", "SpecialThingFilterWorker_WrongSpikeMetal.cs");
+
+        Assert.IsTrue(source.Contains("public override bool Matches(", StringComparison.Ordinal));
+        Assert.IsTrue(
+            source.Contains("Cosmere_Scadrial_Thing_HemalurgicSpike", StringComparison.Ordinal),
+            "It has to check the thing is a spike before judging its metal."
+        );
+        Assert.IsTrue(
+            source.Contains("t.Stuff?.defName != wanted", StringComparison.Ordinal),
+            "The metal comes from the thing's stuff."
+        );
+    }
 }

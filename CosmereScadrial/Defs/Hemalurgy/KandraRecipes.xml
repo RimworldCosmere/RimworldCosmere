@@ -50,6 +50,9 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
+                    <specialFiltersToDisallow>
+                        <li>Cosmere_Scadrial_SpecialFilter_NotSpikeCopper</li>
+                    </specialFiltersToDisallow>
                 </filter>
                 <count>2</count>
             </li>
@@ -80,6 +83,9 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
+                    <specialFiltersToDisallow>
+                        <li>Cosmere_Scadrial_SpecialFilter_NotSpikeIron</li>
+                    </specialFiltersToDisallow>
                 </filter>
                 <count>2</count>
             </li>
@@ -110,6 +116,9 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
+                    <specialFiltersToDisallow>
+                        <li>Cosmere_Scadrial_SpecialFilter_NotSpikeZinc</li>
+                    </specialFiltersToDisallow>
                 </filter>
                 <count>2</count>
             </li>
@@ -140,6 +149,9 @@
                     <thingDefs>
                         <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
                     </thingDefs>
+                    <specialFiltersToDisallow>
+                        <li>Cosmere_Scadrial_SpecialFilter_NotSpikeTin</li>
+                    </specialFiltersToDisallow>
                 </filter>
                 <count>2</count>
             </li>

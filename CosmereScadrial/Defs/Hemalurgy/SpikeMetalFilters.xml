@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- A ThingFilter cannot see a thing's stuff. The one hook that is handed the Thing itself is
+         a special filter's worker, so "this spike is the wrong metal" is expressed here and worn
+         by each Blessing recipe as a specialFiltersToDisallow entry. -->
+
+    <SpecialThingFilterDef>
+        <defName>Cosmere_Scadrial_SpecialFilter_NotSpikeCopper</defName>
+        <label>spikes that are not copper</label>
+        <description>Rejects hemalurgic spikes made of anything but copper.</description>
+        <parentCategory>Cosmere_Scadrial_ThingCategory_Hemalurgy</parentCategory>
+        <allowedByDefault>true</allowedByDefault>
+        <saveKey>cosmereNotSpikeCopper</saveKey>
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.SpecialThingFilterWorker_WrongSpikeMetal</workerClass>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.RequiredSpikeMetal">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+    </SpecialThingFilterDef>
+
+    <SpecialThingFilterDef>
+        <defName>Cosmere_Scadrial_SpecialFilter_NotSpikeIron</defName>
+        <label>spikes that are not iron</label>
+        <description>Rejects hemalurgic spikes made of anything but iron.</description>
+        <parentCategory>Cosmere_Scadrial_ThingCategory_Hemalurgy</parentCategory>
+        <allowedByDefault>true</allowedByDefault>
+        <saveKey>cosmereNotSpikeIron</saveKey>
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.SpecialThingFilterWorker_WrongSpikeMetal</workerClass>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.RequiredSpikeMetal">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
+    </SpecialThingFilterDef>
+
+    <SpecialThingFilterDef>
+        <defName>Cosmere_Scadrial_SpecialFilter_NotSpikeZinc</defName>
+        <label>spikes that are not zinc</label>
+        <description>Rejects hemalurgic spikes made of anything but zinc.</description>
+        <parentCategory>Cosmere_Scadrial_ThingCategory_Hemalurgy</parentCategory>
+        <allowedByDefault>true</allowedByDefault>
+        <saveKey>cosmereNotSpikeZinc</saveKey>
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.SpecialThingFilterWorker_WrongSpikeMetal</workerClass>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.RequiredSpikeMetal">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+    </SpecialThingFilterDef>
+
+    <SpecialThingFilterDef>
+        <defName>Cosmere_Scadrial_SpecialFilter_NotSpikeTin</defName>
+        <label>spikes that are not tin</label>
+        <description>Rejects hemalurgic spikes made of anything but tin.</description>
+        <parentCategory>Cosmere_Scadrial_ThingCategory_Hemalurgy</parentCategory>
+        <allowedByDefault>true</allowedByDefault>
+        <saveKey>cosmereNotSpikeTin</saveKey>
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.SpecialThingFilterWorker_WrongSpikeMetal</workerClass>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.RequiredSpikeMetal">
+                <metal>Tin</metal>
+            </li>
+        </modExtensions>
+    </SpecialThingFilterDef>
+
+</Defs>

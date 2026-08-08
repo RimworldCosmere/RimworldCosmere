@@ -182,7 +182,10 @@ public class CompAshVent : ThingComp {
 
         // Direct, not Near. Near spirals outward past the checks below and can settle the lump on
         // a buried cell, and it logs an error rather than failing quietly when it runs out of room.
-        return GenPlace.TryPlaceThing(lump, cell, map, ThingPlaceMode.Direct);
+        if (!GenPlace.TryPlaceThing(lump, cell, map, ThingPlaceMode.Direct)) return false;
+
+        tracker.NotifyMetalThrown(cell);
+        return true;
     }
 
     /// <summary>

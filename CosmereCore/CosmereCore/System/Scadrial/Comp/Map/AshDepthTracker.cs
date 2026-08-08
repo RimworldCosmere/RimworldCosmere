@@ -51,6 +51,7 @@ public class AshDepthTracker : MapComponent {
     private AshBuriedCells buried;
     private float severity;
     private float severityTarget;
+    private bool metalSeen;
 
     private readonly List<Comp.Thing.CompAshVent> vents = new List<Comp.Thing.CompAshVent>();
 
@@ -124,6 +125,22 @@ public class AshDepthTracker : MapComponent {
         vents.Remove(vent);
     }
 
+    /// <summary>The vents breathing on this map, for the dev action that fires them all at once.</summary>
+    public IReadOnlyList<Comp.Thing.CompAshVent> Vents => vents;
+
+    /// <summary>
+    ///     Announces the first lump to land on this map, or a player only ever meets the metal as
+    ///     something the ash already took. Once a map, and banked so a reload cannot repeat it.
+    /// </summary>
+    public void NotifyMetalThrown(IntVec3 cell) {
+        if (metalSeen) return;
+
+        metalSeen = true;
+        Messages.Message(
+            "CS_AshVent_FirstMetal".Translate(), new LookTargets(cell, map), MessageTypeDefOf.PositiveEvent
+        );
+    }
+
     public override void MapComponentTick() {
         int stripe = Find.TickManager.TicksGame % Stripes;
 
@@ -180,6 +197,7 @@ public class AshDepthTracker : MapComponent {
     public override void ExposeData() {
         Scribe_Values.Look(ref severity, "ashSeverity");
         Scribe_Values.Look(ref severityTarget, "ashSeverityTarget");
+        Scribe_Values.Look(ref metalSeen, "ashMetalSeen");
         Scribe_Deep.Look(ref grid, "ashGrid", map);
         Scribe_Deep.Look(ref terrainMemory, "ashTerrainMemory", map);
         Scribe_Deep.Look(ref settleClock, "ashSettleClock", map);

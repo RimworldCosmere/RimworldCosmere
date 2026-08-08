@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Cosmere.System.Scadrial.Comp.Map;
+using Cosmere.System.Scadrial.Comp.Thing;
 using Cosmere.System.Scadrial.Grid;
 using LudeonTK;
 using RimWorld;
@@ -30,6 +32,24 @@ public static class AshDebugActions {
         tracker.Buried.Clear();
         map!.mapDrawer.RegenerateEverythingNow();
         map.GetComponent<AshOverlayDrawer>()?.SetDirty();
+    }
+
+    /// <summary>
+    ///     A vent throws every second day on its own, which is half an hour of watching. Nothing
+    ///     here is skipped - it is the same ThrowOnce the plume calls, landing rules and all.
+    /// </summary>
+    [DebugAction("Cosmere", "Ash: throw metal from every vent", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    private static void ThrowMetal() {
+        AshDepthTracker? tracker = Find.CurrentMap?.GetComponent<AshDepthTracker>();
+        if (tracker == null) return;
+
+        IReadOnlyList<CompAshVent> vents = tracker.Vents;
+        int landed = 0;
+        for (int i = 0; i < vents.Count; i++) {
+            if (vents[i].ThrowOnce()) landed++;
+        }
+
+        Messages.Message($"{landed} of {vents.Count} vents landed metal.", MessageTypeDefOf.NeutralEvent, false);
     }
 
     [DebugAction("Cosmere", "Ash: severity to max", allowedGameStates = AllowedGameStates.PlayingOnMap)]

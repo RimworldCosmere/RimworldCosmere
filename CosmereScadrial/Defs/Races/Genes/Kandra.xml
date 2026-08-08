@@ -44,7 +44,7 @@
     <defName>Cosmere_Scadrial_Gene_Boneless</defName>
     <label>boneless</label>
     <labelShortAdj>boneless</labelShortAdj>
-    <description>There is nothing rigid in a kandra except the bones it has borrowed. Blows that would shatter a man displace it instead, and it can fold itself through a gap no one its size should manage.</description>
+    <description>There is nothing rigid in a kandra except the bones it has borrowed. Blows that would shatter a man displace it instead, and it can fold itself through a gap no one its size should manage. Acid is the exception. A body that is all one substance has nowhere to keep the damage away from the rest of it.</description>
     <iconPath>UI/Icons/Genes/Gene_Boneless</iconPath>
     <displayOrderInCategory>201</displayOrderInCategory>
     <biostatCpx>2</biostatCpx>
@@ -53,6 +53,9 @@
       <Blunt>0.45</Blunt>
       <Crush>0.35</Crush>
       <Stab>0.80</Stab>
+      <!-- The one thing that reliably kills a kandra. There is no organ to miss and no bone to
+           glance off, so acid gets all of it at once and the healing cannot keep pace. -->
+      <AcidBurn>4.0</AcidBurn>
     </damageFactors>
     <statOffsets>
       <PainShockThreshold>0.2</PainShockThreshold>

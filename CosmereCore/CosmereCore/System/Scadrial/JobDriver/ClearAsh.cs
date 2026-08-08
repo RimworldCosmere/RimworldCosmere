@@ -66,9 +66,17 @@ public class ClearAsh : Verse.AI.JobDriver {
         if (tracker == null) return;
 
         AshGrid grid = tracker.Grid;
+        AshBuriedCells buried = tracker.Buried;
+        CellIndices indices = Map.cellIndices;
         int swept = 0;
+
         foreach (IntVec3 cell in Brush()) {
-            swept += grid.RemoveDepthMm(Map.cellIndices.CellToIndex(cell), AshGrid.MaxDepthMm);
+            int index = indices.CellToIndex(cell);
+            swept += grid.RemoveDepthMm(index, AshGrid.MaxDepthMm);
+
+            // The dirty below regenerates the wash off this set, now. Left to the sweep, ground a
+            // colonist just shovelled keeps drawing as deep ash and stays unhaulable for 64 ticks.
+            buried.Set(index, AshDepthMath.IsBuried(grid.GetDepthMm(index), buried.IsBuried(index)));
         }
 
         tracker.NotifyAshChanged();

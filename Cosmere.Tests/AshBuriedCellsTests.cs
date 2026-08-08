@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Cosmere.System.Scadrial.Grid;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -5,6 +7,48 @@ namespace Cosmere.Tests;
 
 [TestClass]
 public class AshBuriedCellsTests {
+    private static string RepoRoot {
+        get {
+            DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "CosmereScadrial", "Defs"))) {
+                dir = dir.Parent;
+            }
+
+            Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
+            return dir!.FullName;
+        }
+    }
+
+    /// <summary>
+    ///     Five callers have now moved depth and left the set stale, and each one shipped looking
+    ///     correct. Nothing runtime can catch it, so the rule is enforced against the source.
+    /// </summary>
+    [TestMethod]
+    public void EveryDepthWriterOutsideTheSweepAlsoTouchesTheBuriedSet() {
+        string root = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
+        int checked_ = 0;
+
+        foreach (string path in Directory.GetFiles(root, "*.cs", SearchOption.AllDirectories)) {
+            string name = Path.GetFileName(path);
+
+            // AshGrid declares the mutators. AshDepthTracker owns the sweep that reconciles the set.
+            if (name is "AshGrid.cs" or "AshDepthTracker.cs") continue;
+
+            string source = File.ReadAllText(path);
+            if (!source.Contains("AddDepthMm(") && !source.Contains("RemoveDepthMm(")) continue;
+
+            checked_++;
+            Assert.IsTrue(
+                source.Contains("Buried"),
+                $"{name} moves ash depth and never mentions the buried set. The wash and the haul " +
+                "block both read that set, so every cell it touches goes stale until the sweep " +
+                "reaches its stripe - and if it dirties the mesh itself, the player sees the stale frame."
+            );
+        }
+
+        Assert.IsTrue(checked_ > 0, "found no depth writers at all, so this guard is not actually looking at anything");
+    }
+
     [TestMethod]
     public void ACellCrossesTheBurialLineOnlyAtNineHundred() {
         AshBuriedCells cells = new AshBuriedCells(16);

@@ -283,7 +283,7 @@ public class AshDepthTracker : MapComponent {
         }
 
         // The depth write dirtied the mesh up to 64 ticks before this stripe turned it into a flip.
-        if (flipped) NotifyAshChanged(true);
+        if (flipped) NotifyAshChanged();
     }
 
     /// <summary>Only natural ground goes under. A floor the colony laid stays theirs.</summary>
@@ -347,16 +347,9 @@ public class AshDepthTracker : MapComponent {
         if (changed) NotifyAshChanged();
     }
 
-    /// <summary>
-    ///     Ash moved, so the mesh and the dev overlay both need rebuilding. A burial flip has to
-    ///     dirty Things as well - buried items are kept out of that mesh, and it rebuilds off its
-    ///     own flag rather than ours.
-    /// </summary>
-    public void NotifyAshChanged(bool burialFlipped = false) {
-        ulong flags = AshFlag;
-        if (burialFlipped) flags |= MapMeshFlagDefOf.Things;
-
-        map.mapDrawer.WholeMapChanged(flags);
+    /// <summary>Ash moved, so the mesh and the dev overlay both need rebuilding.</summary>
+    public void NotifyAshChanged() {
+        map.mapDrawer.WholeMapChanged(AshFlag);
         map.GetComponent<Dev.AshOverlayDrawer>()?.SetDirty();
     }
 

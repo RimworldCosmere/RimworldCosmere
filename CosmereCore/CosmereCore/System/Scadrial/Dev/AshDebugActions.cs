@@ -74,6 +74,47 @@ public static class AshDebugActions {
         Messages.Message($"{swapped} cells standing as deep ash.", MessageTypeDefOf.NeutralEvent, false);
     }
 
+    /// <summary>
+    ///     Standing in gas long enough to reach a late stage is most of a day per stage, so the
+    ///     stages get read here instead. Severity 0 removes it the way receding to zero would.
+    /// </summary>
+    [DebugAction(
+        "Cosmere",
+        "Ash: set ash lung",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    private static void SetAshLung(Pawn pawn) {
+        HediffDef? def = DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AshLung");
+        if (def == null) {
+            Messages.Message("Cosmere_Scadrial_Hediff_AshLung is not loaded.", MessageTypeDefOf.RejectInput, false);
+
+            return;
+        }
+
+        List<DebugMenuOption> options = [];
+        foreach (float severity in new[] { 0f, 0.15f, 0.35f, 0.6f, 0.85f, 1f }) {
+            float value = severity;
+            options.Add(new DebugMenuOption(
+                value.ToStringPercent(),
+                DebugMenuOptionMode.Action,
+                () => {
+                    pawn.health.hediffSet.TryGetHediff(def, out Hediff? lung);
+                    if (value <= 0f) {
+                        if (lung != null) pawn.health.RemoveHediff(lung);
+
+                        return;
+                    }
+
+                    lung ??= pawn.health.GetOrAddHediff(def);
+                    lung.Severity = value;
+                }
+            ));
+        }
+
+        Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
+    }
+
     private static void AddAsh(int millimetres) {
         Verse.Map map = Find.CurrentMap;
         AshDepthTracker? tracker = map?.GetComponent<AshDepthTracker>();

@@ -54,10 +54,11 @@ public class SectionLayer_AshBurial : SectionLayer {
                 // The set, not the depth. Recomputing here would drop the hysteresis.
                 if (!buried.IsBuried(index)) continue;
 
-                // Ramps from nothing at the unbury line to near-solid at the cap.
+                // Ramps from nothing at the unbury line to near-solid by waist deep. The grid
+                // caps at 2550mm, but ash that swallows a stack should read as solid well before.
                 float t = Mathf.Clamp01(
                     (grid.GetDepthMm(index) - AshDepthMath.UncoveredMm) /
-                    (float)(AshGrid.MaxDepthMm - AshDepthMath.UncoveredMm)
+                    (float)(AshDepthMath.WaistMm - AshDepthMath.UncoveredMm)
                 );
 
                 Color32 tint = Deep;

@@ -37,15 +37,36 @@ public static class AnimalControlSpike {
 
             pawn.drafter ??= new Pawn_DraftController(pawn);
 
-            Logger.Important(
-                $"AnimalControlSpike: {pawn.LabelShort} now has a drafter."
-                + $"\n  IsColonist: {pawn.IsColonist}"
-                + $"\n  IsColonistPlayerControlled: {pawn.IsColonistPlayerControlled}"
-                + $"\n  playerSettings: {(pawn.playerSettings != null ? "yes" : "no")}"
-                + $"\n  workSettings: {(pawn.workSettings != null ? "yes" : "no")}"
-                + "\n  Select it and look for a draft button."
-            );
+            Report(pawn, "given a drafter");
         }
+    }
+
+    /// <summary>
+    ///     Drops a tamed colony dog on the cursor and hands it a drafter, so the spike needs no
+    ///     setup at all. Click an empty tile.
+    /// </summary>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: spawn controllable dog",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void SpawnControllableDog() {
+        PawnKindDef? kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("Husky")
+                            ?? DefDatabase<PawnKindDef>.GetNamedSilentFail("LabradorRetriever")
+                            ?? DefDatabase<PawnKindDef>.GetNamedSilentFail("YorkshireTerrier");
+        if (kind == null) {
+            Logger.Warning("AnimalControlSpike: no dog pawnkind found to spawn.");
+            return;
+        }
+
+        Pawn dog = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, Faction.OfPlayer));
+        GenSpawn.Spawn(dog, Verse.UI.MouseCell(), Find.CurrentMap);
+
+        dog.drafter ??= new Pawn_DraftController(dog);
+        dog.playerSettings ??= new Pawn_PlayerSettings(dog);
+
+        Report(dog, "spawned and given a drafter");
     }
 
     /// <summary>Reports what the game thinks of whatever is under the cursor.</summary>
@@ -59,15 +80,19 @@ public static class AnimalControlSpike {
         foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
             if (thing is not Pawn pawn) continue;
 
-            Logger.Important(
-                $"AnimalControlSpike: {pawn.LabelShort} ({pawn.def.defName})"
-                + $"\n  intelligence: {pawn.RaceProps.intelligence}"
-                + $"\n  Humanlike: {pawn.RaceProps.Humanlike} | Animal: {pawn.RaceProps.Animal}"
-                + $"\n  IsColonist: {pawn.IsColonist}"
-                + $"\n  IsColonistPlayerControlled: {pawn.IsColonistPlayerControlled}"
-                + $"\n  drafter: {(pawn.drafter != null ? "yes" : "no")}"
-                + $"\n  Drafted: {pawn.Drafted}"
-            );
+            Report(pawn, "inspected");
         }
+    }
+
+    private static void Report(Pawn pawn, string what) {
+        Logger.Important(
+            $"AnimalControlSpike: {pawn.LabelShort} ({pawn.def.defName}) {what}"
+            + $"\n  intelligence: {pawn.RaceProps.intelligence}"
+            + $"\n  Humanlike: {pawn.RaceProps.Humanlike} | Animal: {pawn.RaceProps.Animal}"
+            + $"\n  IsColonist: {pawn.IsColonist}"
+            + $"\n  IsColonistPlayerControlled: {pawn.IsColonistPlayerControlled}"
+            + $"\n  drafter: {(pawn.drafter != null ? "yes" : "no")} | Drafted: {pawn.Drafted}"
+            + "\n  Select it: is there a draft button? Right-click something: any orders?"
+        );
     }
 }

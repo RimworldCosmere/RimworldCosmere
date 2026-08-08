@@ -773,4 +773,49 @@ public class KandraTests {
             }
         }
     }
+
+    /// <summary>
+    ///     Sound names on the generated stuff categories have to be real.
+    /// </summary>
+    /// <remarks>
+    ///     Vanilla's large-metal destruction sound is BuildingDestroyed_Metal_Big. Writing
+    ///     _Large instead loads without stopping anything and logs one unresolved cross-reference
+    ///     per material, which was 35 red lines from a single typo in two templates.
+    /// </remarks>
+    [TestMethod]
+    public void GeneratedStuffCategoriesNameRealSounds() {
+        HashSet<string> real = [
+            "BuildingDestroyed_Metal_Small", "BuildingDestroyed_Metal_Medium", "BuildingDestroyed_Metal_Big",
+            "BuildingDestroyed_Stone_Small", "BuildingDestroyed_Stone_Medium", "BuildingDestroyed_Stone_Big",
+            "BuildingDestroyed_Wood_Small", "BuildingDestroyed_Wood_Medium", "BuildingDestroyed_Wood_Big",
+            "BuildingDestroyed_Soft_Small", "BuildingDestroyed_Soft_Medium",
+        ];
+
+        string defs = Path.Combine(RepoRoot, "CosmereCore", "Defs");
+        int checkedDefs = 0;
+
+        foreach (string file in Directory.GetFiles(defs, "*.xml", SearchOption.AllDirectories)) {
+            XDocument doc;
+            try {
+                doc = XDocument.Load(file);
+            } catch (Exception) {
+                continue;
+            }
+
+            foreach (XElement category in doc.Root?.Elements("StuffCategoryDef") ?? []) {
+                checkedDefs++;
+                foreach (string field in new[] { "destroySoundSmall", "destroySoundMedium", "destroySoundLarge" }) {
+                    string? sound = category.Element(field)?.Value;
+                    if (sound == null) continue;
+
+                    Assert.IsTrue(
+                        real.Contains(sound),
+                        $"{category.Element("defName")?.Value} names '{sound}', which is not a vanilla SoundDef."
+                    );
+                }
+            }
+        }
+
+        Assert.IsTrue(checkedDefs > 0, "No stuff categories were checked. Run make generate.");
+    }
 }

@@ -8,7 +8,7 @@
         <noun>{{title gem.name}}</noun>
         <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
-        <destroySoundLarge>BuildingDestroyed_Metal_Large</destroySoundLarge>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
 
     <!-- Raw {{defName gem.name}} -->

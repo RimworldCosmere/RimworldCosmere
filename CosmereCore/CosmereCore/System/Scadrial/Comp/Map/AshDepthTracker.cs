@@ -64,7 +64,10 @@ public class AshDepthTracker : MapComponent {
 
     public AshGrid Grid => grid;
 
-    /// <summary>Cells holding enough ash to swallow what is on them. Kept current by the sweep.</summary>
+    /// <summary>
+    ///     Cells holding enough ash to swallow what is on them. The sweep catches up within 64
+    ///     ticks; anything writing depth and dirtying the mesh sooner has to update this itself.
+    /// </summary>
     public AshBuriedCells Buried => buried;
 
     /// <summary>What the deep cells were before the ash, so the Catacendre can put them back.</summary>

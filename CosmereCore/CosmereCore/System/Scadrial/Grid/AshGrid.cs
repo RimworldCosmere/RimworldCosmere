@@ -68,7 +68,10 @@ public class AshGrid : IExposable {
         return !map.roofGrid.Roofed(cell);
     }
 
-    /// <summary>Returns the millimetres actually added, which is less than asked for near the cap.</summary>
+    /// <summary>
+    ///     Returns the millimetres actually added, which is less than asked for near the cap.
+    ///     Callers owe the buried set: sweep stripe, own refresh, or tolerate a 64-tick lag.
+    /// </summary>
     public int AddDepthMm(int index, int millimetres) {
         byte before = depth[index];
         int after = Mathf.Clamp(before + millimetres / UnitMm, 0, MaxDepthMm / UnitMm);
@@ -79,7 +82,10 @@ public class AshGrid : IExposable {
         return (after - before) * UnitMm;
     }
 
-    /// <summary>Returns the millimetres actually removed, so clearing can conserve mass.</summary>
+    /// <summary>
+    ///     Returns the millimetres actually removed, so clearing can conserve mass.
+    ///     Callers owe the buried set: sweep stripe, own refresh, or tolerate a 64-tick lag.
+    /// </summary>
     public int RemoveDepthMm(int index, int millimetres) {
         byte before = depth[index];
         if (before == 0) return 0;
@@ -88,15 +94,6 @@ public class AshGrid : IExposable {
         depth[index] = (byte)after;
         TotalUnits -= before - after;
         return (before - after) * UnitMm;
-    }
-
-    public void SetDepthMm(int index, int millimetres) {
-        byte before = depth[index];
-        byte after = (byte)Mathf.Clamp(millimetres / UnitMm, 0, MaxDepthMm / UnitMm);
-        if (after == before) return;
-
-        depth[index] = after;
-        TotalUnits += after - before;
     }
 
     public void Clear() {

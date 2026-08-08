@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <RecipeDef Name="Cosmere_Scadrial_KandraBlessingBase" Abstract="True">
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.RecipeWorker.GiveBlessing</workerClass>
+        <workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+        <workSkill>Medicine</workSkill>
+        <workSkillLearnFactor>4</workSkillLearnFactor>
+        <anesthetize>true</anesthetize>
+        <workAmount>4000</workAmount>
+        <surgerySuccessChanceFactor>0.90</surgerySuccessChanceFactor>
+        <deathOnFailedSurgeryChance>0.15</deathOnFailedSurgeryChance>
+        <skillRequirements>
+            <Medicine>6</Medicine>
+        </skillRequirements>
+        <researchPrerequisites>
+            <li>Cosmere_Scadrial_Hemalurgy</li>
+        </researchPrerequisites>
+        <recipeUsers>
+            <li>Human</li>
+        </recipeUsers>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+                    </thingDefs>
+                </filter>
+                <count>2</count>
+            </li>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+            </thingDefs>
+            <categories>
+                <li>Medicine</li>
+            </categories>
+        </fixedIngredientFilter>
+    </RecipeDef>
+
+    <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Recipe_BlessingOfPresence</defName>
+        <label>grant the Blessing of Presence</label>
+        <description>Two copper spikes through the shoulders of a mistwraith. It wakes up able to hold a thought, and keeps holding it for as long as the spikes stay in.</description>
+        <jobString>Granting the Blessing of Presence.</jobString>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.BlessingExtension">
+                <blessing>Cosmere_Scadrial_Hediff_BlessingOfPresence</blessing>
+            </li>
+        </modExtensions>
+    </RecipeDef>
+
+    <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Recipe_BlessingOfPotency</defName>
+        <label>grant the Blessing of Potency</label>
+        <description>Two iron spikes, set deep. The mistwraith wakes into a body that can fight, which is why the Contract hands this one to the kandra it expects to lose.</description>
+        <jobString>Granting the Blessing of Potency.</jobString>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.BlessingExtension">
+                <blessing>Cosmere_Scadrial_Hediff_BlessingOfPotency</blessing>
+            </li>
+        </modExtensions>
+    </RecipeDef>
+
+    <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Recipe_BlessingOfStability</defName>
+        <label>grant the Blessing of Stability</label>
+        <description>Two zinc spikes, close to the heart. Whatever the kandra sees afterward, it reports in a level voice.</description>
+        <jobString>Granting the Blessing of Stability.</jobString>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.BlessingExtension">
+                <blessing>Cosmere_Scadrial_Hediff_BlessingOfStability</blessing>
+            </li>
+        </modExtensions>
+    </RecipeDef>
+
+    <RecipeDef ParentName="Cosmere_Scadrial_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Recipe_BlessingOfAwareness</defName>
+        <label>grant the Blessing of Awareness</label>
+        <description>Two tin spikes, driven high through the skull. The kandra wakes to everything at once and never quite stops hearing it.</description>
+        <jobString>Granting the Blessing of Awareness.</jobString>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.BlessingExtension">
+                <blessing>Cosmere_Scadrial_Hediff_BlessingOfAwareness</blessing>
+            </li>
+        </modExtensions>
+    </RecipeDef>
+
+</Defs>

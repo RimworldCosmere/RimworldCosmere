@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- A Blessing is two hemalurgic spikes driven into a mistwraith. It is what gives the thing a
+         mind, and which pair you use decides what kind of mind it gets. Pull them and the kandra
+         stops being a kandra. -->
+    <HediffDef Abstract="True" Name="Cosmere_Scadrial_Hediff_KandraBlessingBase">
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <scenarioCanAdd>true</scenarioCanAdd>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Hediff_BlessingOfPresence</defName>
+        <label>Blessing of Presence</label>
+        <description>Two copper spikes, driven through the shoulders. They hold a mind together against the long formless years. A kandra who carries Presence can hold a contract in its head for a century and not lose the thread of it.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MentalBreakThreshold>-0.10</MentalBreakThreshold>
+                </statOffsets>
+                <statFactors>
+                    <GlobalLearningFactor>1.25</GlobalLearningFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Hediff_BlessingOfPotency</defName>
+        <label>Blessing of Potency</label>
+        <description>Two iron spikes, set deep. The body they hold together is stronger than the bones it borrowed. Potency is the Blessing the Contract gives to kandra who expect to be hit.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeDamageFactor>1.25</MeleeDamageFactor>
+                    <CarryingCapacity>1.30</CarryingCapacity>
+                    <IncomingDamageFactor>0.90</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Hediff_BlessingOfStability</defName>
+        <label>Blessing of Stability</label>
+        <description>Two zinc spikes, worked in close to the heart. Nothing shakes a kandra who carries Stability. It watches its contract-holder die and reports the death in the same voice it used that morning.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MentalBreakThreshold>-0.20</MentalBreakThreshold>
+                </statOffsets>
+                <statFactors>
+                    <SocialImpact>1.20</SocialImpact>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_KandraBlessingBase">
+        <defName>Cosmere_Scadrial_Hediff_BlessingOfAwareness</defName>
+        <label>Blessing of Awareness</label>
+        <description>Two tin spikes, driven high through the skull. Awareness costs a kandra its peace and gives back everything happening in the room. The ones who scout for the Contract carry it.</description>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>0.20</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>0.30</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <PsychicSensitivity>0.20</PsychicSensitivity>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <!-- What is left when the spikes come out. The body survives; the person does not. -->
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_Mistwraith</defName>
+        <label>mistwraith</label>
+        <description>Bones and muscle with nothing steering them. A mistwraith scavenges, hides, and arranges what it eats into shapes that almost look like people. It cannot be reasoned with, because there is no longer anyone in there to reason with.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>true</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <disabledWorkTags>
+                    <li>Intellectual</li>
+                    <li>ManualSkilled</li>
+                    <li>Social</li>
+                    <li>Crafting</li>
+                    <li>Artistic</li>
+                    <li>Caring</li>
+                    <li>Firefighting</li>
+                    <li>Animals</li>
+                    <li>PlantWork</li>
+                    <li>Cooking</li>
+                    <li>Mining</li>
+                    <li>Constructing</li>
+                    <li>Hauling</li>
+                    <li>Cleaning</li>
+                    <li>Violent</li>
+                </disabledWorkTags>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.40</setMax>
+                    </li>
+                    <li>
+                        <capacity>Talking</capacity>
+                        <setMax>0</setMax>
+                    </li>
+                </capMods>
+                <statFactors>
+                    <SocialImpact>0.10</SocialImpact>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+</Defs>

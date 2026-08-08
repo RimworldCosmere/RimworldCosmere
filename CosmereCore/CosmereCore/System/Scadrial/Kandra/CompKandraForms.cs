@@ -62,6 +62,22 @@ public class CompKandraForms : ThingComp {
         }
     }
 
+    /// <summary>
+    ///     A dead kandra drops the disguise.
+    /// </summary>
+    /// <remarks>
+    ///     Without this the corpse keeps the borrowed face and, worse, the borrowed name, so a
+    ///     colonist who is standing right there stays on the dead list forever while the thing
+    ///     that ate them gets buried under their headstone.
+    /// </remarks>
+    public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null) {
+        base.Notify_Killed(prevMap, dinfo);
+
+        if (current == null) return;
+
+        KandraShapeshift.Revert((Pawn)parent);
+    }
+
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Collections.Look(ref known, "knownForms", LookMode.Deep);

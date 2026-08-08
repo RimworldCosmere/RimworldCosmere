@@ -61,6 +61,7 @@
   <!-- Two spikes, and everything depends on them staying in. -->
   <GeneDef ParentName="Cosmere_Scadrial_KandraGeneBase">
     <defName>Cosmere_Scadrial_Gene_BlessingBound</defName>
+        <geneClass>Cosmere.System.Scadrial.Gene.BlessingBound</geneClass>
     <label>blessing-bound</label>
     <labelShortAdj>blessed</labelShortAdj>
     <description>Two hemalurgic spikes hold a kandra's mind in place - a Blessing, in their own word for it. Take both out and what remains is a mistwraith: alive, hungry, and nobody at all.</description>

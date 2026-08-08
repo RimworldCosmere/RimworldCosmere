@@ -59,5 +59,7 @@
     <CS_Savant_Feruchemy_Stage3_Message>{PAWN} has used {POWER} metalminds so extensively that the art has permanently altered {PAWN_possessive} spirit web. Feruchemical power is extraordinary, but it has left permanent marks.</CS_Savant_Feruchemy_Stage3_Message>
     <CS_BecameKoloss>{PAWN} is a koloss now. Whoever they were did not come back up off the table.</CS_BecameKoloss>
     <CS_KandraTookForm>Now wearing {FORM}.</CS_KandraTookForm>
+    <CS_KandraLostBlessing>The spikes are out of {PAWN}. What is left of them will not answer to the name any more.</CS_KandraLostBlessing>
+    <CS_BecameKandra>{PAWN} woke up. The {BLESSING} holds, and whatever is behind those eyes is willing to talk.</CS_BecameKandra>
     <CS_KandraLearnedForm>{PAWN} has the bones of {FORM}, and can wear that body now.</CS_KandraLearnedForm>
 </LanguageData>

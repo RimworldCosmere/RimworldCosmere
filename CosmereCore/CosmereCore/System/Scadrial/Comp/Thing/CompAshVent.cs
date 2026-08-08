@@ -146,7 +146,38 @@ public class CompAshVent : ThingComp {
             if (grid.AddDepthMm(indices.CellToIndex(cell), deposit) > 0) changed = true;
         }
 
+        Map.AshDepthTracker? tracker = map.GetComponent<Map.AshDepthTracker>();
+        if (tracker != null && ClearOwnFootprint(map, grid, tracker)) changed = true;
+
         ThrowMetal(dayFraction);
+        return changed;
+    }
+
+    /// <summary>
+    ///     Keeps the vent's own cells clear. They take the plume's peak weight, so left alone the
+    ///     thing blowing the ash out is the first thing to disappear under it.
+    /// </summary>
+    private bool ClearOwnFootprint(Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker) {
+        // Position is the low corner of a 2x2 and CenterCell hands back the high one, so neither
+        // is the footprint. OccupiedRect is.
+        CellRect footprint = parent.OccupiedRect();
+        CellIndices indices = map.cellIndices;
+        bool changed = false;
+
+        for (int x = footprint.minX; x <= footprint.maxX; x++) {
+            for (int z = footprint.minZ; z <= footprint.maxZ; z++) {
+                IntVec3 cell = new IntVec3(x, 0, z);
+                if (!cell.InBounds(map)) continue;
+
+                int index = indices.CellToIndex(cell);
+                if (grid.RemoveDepthMm(index, AshGrid.MaxDepthMm) > 0) changed = true;
+
+                // Depth without the set is the bug this feature has already shipped three times.
+                // The sweep would catch it in 64 ticks and the wash would sit on the vent for all of them.
+                if (tracker.Buried.Set(index, false)) changed = true;
+            }
+        }
+
         return changed;
     }
 

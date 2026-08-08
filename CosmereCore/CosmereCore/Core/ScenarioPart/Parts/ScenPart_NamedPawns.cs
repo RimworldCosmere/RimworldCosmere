@@ -12,6 +12,7 @@ public class ScenPart_NamedPawns : ScenPart {
         if (pawns.Count == 0) return;
 
         Find.GameInitData.startingPawnCount = pawns.Count;
+        generationCounter = 0;
         StartingPawnUtility.ClearAllStartingPawns();
         for (int i = 0; i < pawns.Count; i++) {
             NamedPawnDef template = pawns[i];
@@ -122,9 +123,24 @@ public class ScenPart_NamedPawns : ScenPart {
         generationCounter++;
     }
 
+    /// <summary>
+    ///     Which template the pawn currently being generated should get.
+    /// </summary>
+    /// <remarks>
+    ///     The roster is the source of truth: the pawn being built is not in it yet, so its
+    ///     count is the index. An empty roster means index zero, not "fall back to the counter".
+    ///     <para>
+    ///         That fallback used to fire on the first pawn of a regeneration pass, because
+    ///         ClearAllStartingPawns removes entries rather than nulling them and leaves the list
+    ///         empty. The counter was already at the roster size from the previous pass, so
+    ///         template zero was skipped and the first pawn came out a random colonist. Kelsier
+    ///         arrived called Irish.
+    ///     </para>
+    ///     The counter survives only for the case where there is no GameInitData at all.
+    /// </remarks>
     private int ResolveTemplateIndex() {
         List<Pawn>? startingPawns = Find.GameInitData?.startingAndOptionalPawns;
-        if (startingPawns == null || startingPawns.Count == 0) {
+        if (startingPawns == null) {
             return generationCounter;
         }
 

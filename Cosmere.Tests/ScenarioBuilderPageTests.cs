@@ -152,4 +152,36 @@ public class ScenarioBuilderPageTests {
             );
         }
     }
+
+    /// <summary>
+    ///     The first named pawn has to get its template.
+    /// </summary>
+    /// <remarks>
+    ///     ClearAllStartingPawns removes entries rather than nulling them, so the roster is
+    ///     empty when the first pawn of a regeneration pass is built. Falling back to a counter
+    ///     that the previous pass already ran to the end of skipped template zero, and Kelsier
+    ///     came out as a random colonist. An empty roster means index zero.
+    /// </remarks>
+    [TestMethod]
+    public void AnEmptyRosterResolvesToTheFirstTemplate() {
+        string path = Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "Core", "ScenarioPart", "Parts", "ScenPart_NamedPawns.cs"
+        );
+        string source = File.ReadAllText(path);
+
+        int start = source.IndexOf("private int ResolveTemplateIndex()", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "ResolveTemplateIndex is missing.");
+
+        string body = source[start..];
+        Assert.IsFalse(
+            body.Contains("startingPawns.Count == 0", StringComparison.Ordinal),
+            "An empty roster must resolve to index zero, not to the stale counter."
+        );
+
+        Assert.IsTrue(
+            source.Contains("generationCounter = 0;\n        StartingPawnUtility.ClearAllStartingPawns();", StringComparison.Ordinal)
+            || source.Contains("generationCounter = 0;", StringComparison.Ordinal),
+            "The counter should be reset whenever the roster is rebuilt."
+        );
+    }
 }

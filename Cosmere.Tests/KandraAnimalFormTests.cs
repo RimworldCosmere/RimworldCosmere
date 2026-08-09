@@ -563,4 +563,68 @@ public class KandraAnimalFormTests {
             "Only what LifeStageDef declares; the Def bookkeeping must stay ours."
         );
     }
+
+    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
+        new[] { RepoRoot, "CosmereCore", "CosmereCore", "Core" }.Concat(parts).ToArray()
+    ));
+
+    /// <summary>
+    ///     Connections, the log, the social tab and the Codex are all keyed by the pawn, and a
+    ///     shape is a different pawn. Rather than keeping a second copy of each on the body, they
+    ///     ask who is really there.
+    /// </summary>
+    [TestMethod]
+    public void WhatIsKeyedByThePawnAsksWhoIsReallyThere() {
+        string spiritWeb = Core("Comp", "Game", "SpiritWeb.cs");
+        Assert.IsTrue(
+            spiritWeb.Contains("PawnIdentityRegistry.Real(one)", StringComparison.Ordinal),
+            "Every connection read and write goes through NormalizeKey."
+        );
+        Assert.IsTrue(spiritWeb.Contains("PawnIdentityRegistry.Real(target)", StringComparison.Ordinal));
+
+        string tab = Core("Tab", "ITab_Investiture.cs");
+        Assert.IsTrue(
+            tab.Contains("PawnIdentityRegistry.Real(SelPawn)", StringComparison.Ordinal),
+            "A shape carries none of the kandra's genes, so the Codex must not read the body."
+        );
+    }
+
+    /// <summary>
+    ///     Log entries hold pawn references in one global list, so a shape's own history and the
+    ///     kandra's are both real and neither can be moved. The tab shows both.
+    /// </summary>
+    [TestMethod]
+    public void TheLogShowsBothHalves() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "KandraLogPatch.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("ch.ReturnValue.AddRange(theirs)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            patch.Contains("if (inside) return;", StringComparison.Ordinal),
+            "The appended call re-enters this injection and would never stop."
+        );
+    }
+
+    /// <summary>
+    ///     Redirecting replaced the relation copy. Keeping both would mean two sets of the same
+    ///     relationships, one of which is thrown away every time a shape comes off.
+    /// </summary>
+    [TestMethod]
+    public void RelationsAreNotAlsoCopied() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+
+        Assert.IsFalse(transfer.Contains("Relations(kandra, shape)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            transfer.Contains("Skills(kandra, shape)", StringComparison.Ordinal),
+            "Skills still move; the shape has to actually be able to do the work."
+        );
+    }
 }

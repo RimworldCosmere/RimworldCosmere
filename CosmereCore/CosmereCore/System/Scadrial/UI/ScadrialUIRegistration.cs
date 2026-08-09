@@ -24,6 +24,10 @@ public static class ScadrialUIRegistration {
         // this out for itself and must not learn how.
         ConnectionInvestitureRegistry.Register(new ScadrialInvestitureSource());
 
+        // A kandra wearing an animal is a different Pawn with a different load ID. Everything
+        // keyed by the pawn asks here so it finds the person rather than the borrowed body.
+        PawnIdentityRegistry.Register(static wearing => wearing.TryGetComp<Kandra.CompKandraShapePair>()?.Held);
+
         InvestitureBlockingHediffRegistry.Register(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab);
         InvestitureHealExclusionRegistry.Register("Cosmere_Scadrial_Hediff_");
         InvestitureProviderRegistry.Register(new AllomancyInvestitureProvider());

@@ -36,8 +36,9 @@ public static class KandraAnimalShape {
             return null;
         }
 
-        // The colony is watching the same person walk around on four legs.
-        if (kandra.Name != null) animal.Name = kandra.Name;
+        // The colony is watching the same person walk around on four legs, so everything that
+        // belongs to the kandra rather than to the body goes with it.
+        KandraShapeTransfer.Into(kandra, animal);
 
         CompKandraShapePair? pair = animal.TryGetComp<CompKandraShapePair>();
         if (pair == null) {
@@ -52,7 +53,12 @@ public static class KandraAnimalShape {
         kandra.DeSpawn();
         pair.Hold(kandra);
 
+        bool wasSelected = Find.Selector.IsSelected(kandra);
+
         GenSpawn.Spawn(animal, where, map);
+
+        // Losing the selection mid-shapeshift means hunting for your own colonist afterwards.
+        if (wasSelected) Find.Selector.Select(animal, false, false);
 
         Messages.Message(
             "CS_Kandra_TookAnimalForm".Translate(
@@ -79,11 +85,18 @@ public static class KandraAnimalShape {
 
         pair.Release();
 
-        // Injuries do not carry across. The kandra was never in this body; it was wearing it.
+        // What the shape learned or felt comes back with it. Its injuries do not: they were done
+        // to a body the kandra was wearing rather than to the kandra.
+        KandraShapeTransfer.OutOf(animal, kandra);
+
+        bool wasSelected = Find.Selector.IsSelected(animal);
+
         animal.Destroy();
 
         GenSpawn.Spawn(kandra, where, map);
         kandra.TryGetComp<CompKandraForms>()?.SetCurrent(null);
+
+        if (wasSelected) Find.Selector.Select(kandra, false, false);
 
         return kandra;
     }

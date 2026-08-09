@@ -121,4 +121,65 @@ public class KandraAnimalFormTests {
 
         Assert.IsTrue(has, "Without the comp there is nowhere to put the kandra.");
     }
+
+    /// <summary>
+    ///     Stepping out of a shape must not clear the kandra's hediffs.
+    /// </summary>
+    /// <remarks>
+    ///     Into() wipes the target first, which is right for a freshly generated animal carrying
+    ///     its own scars. Running the same thing in reverse would wipe the kandra's spikes, which
+    ///     are anchored to its torso, and take the Blessing and its mind with them.
+    /// </remarks>
+    [TestMethod]
+    public void LeavingAShapeDoesNotWipeTheKandra() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+
+        int outOf = transfer.IndexOf("public static void OutOf(", StringComparison.Ordinal);
+        int intoEnd = transfer.IndexOf("private static void Identity(", StringComparison.Ordinal);
+        Assert.IsTrue(outOf >= 0 && intoEnd > outOf);
+
+        string body = transfer[outOf..intoEnd];
+        Assert.IsFalse(
+            body.Contains("Hediffs(", StringComparison.Ordinal),
+            "OutOf must not touch hediffs; it would remove the kandra's spikes."
+        );
+        Assert.IsTrue(body.Contains("Skills(", StringComparison.Ordinal));
+
+        string shape = Kandra("KandraAnimalShape.cs");
+        Assert.IsTrue(shape.Contains("KandraShapeTransfer.Into(kandra, animal)", StringComparison.Ordinal));
+        Assert.IsTrue(shape.Contains("KandraShapeTransfer.OutOf(animal, kandra)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Losing the selection mid-shapeshift means hunting the map for your own colonist.
+    /// </summary>
+    [TestMethod]
+    public void TheSelectionSurvivesBothTransitions() {
+        string shape = Kandra("KandraAnimalShape.cs");
+        Assert.AreEqual(
+            2,
+            shape.Split("Find.Selector.IsSelected").Length - 1,
+            "Both directions should remember whether the pawn was selected."
+        );
+        Assert.AreEqual(
+            2,
+            shape.Split("Find.Selector.Select").Length - 1,
+            "Both directions should reselect the pawn that replaced it."
+        );
+    }
+
+    /// <summary>
+    ///     A body part record belongs to one body. Carrying a part-anchored hediff into another
+    ///     would point it at nothing.
+    /// </summary>
+    [TestMethod]
+    public void OnlyWholeBodyHediffsTravel() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+        int start = transfer.IndexOf("private static void Hediffs(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0);
+
+        string body = transfer[start..];
+        Assert.IsTrue(body.Contains("hediff.Part != null", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("Hediff_Injury", StringComparison.Ordinal), "Injuries stay with the body.");
+    }
 }

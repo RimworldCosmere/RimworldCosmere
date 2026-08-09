@@ -159,7 +159,10 @@ public class AshPlumeTests {
 
     [TestMethod]
     public void PastTheRadiusTheDriftIsLeftAlone() {
-        Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 3f, 3f), "the outer edge is the first untouched ring");
+        Assert.AreEqual(
+            AshPlume.WarmCeilingMm, AshPlume.AllowedDepthMm(2000, 3f, 3f), "the outer ring is the last thinned one"
+        );
+        Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 3.01f, 3f), "the first ring past the front");
         Assert.AreEqual(2000, AshPlume.AllowedDepthMm(2000, 9f, 3f));
     }
 
@@ -188,17 +191,34 @@ public class AshPlumeTests {
     }
 
     /// <summary>
-    ///     The outer ring has to reach the depth the burial wash saturates at, or the last thinned
-    ///     cell and the untouched one beside it draw at different alphas and the feather has a seam.
+    ///     The outer ring has to reach the ceiling, or the vent thins its own far edge harder than
+    ///     the ground just inside it and the apron reads inside out.
     /// </summary>
     [TestMethod]
-    public void TheOuterRingReachesTheDepthTheWashSaturatesAt() {
-        int edge = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, 2.999f, 3f);
+    public void TheOuterRingReachesTheWarmCeiling() {
+        int edge = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, 8f, 8f);
 
-        Assert.IsTrue(
-            edge >= AshDepthMath.WaistMm - AshGrid.UnitMm,
-            $"the feather tops out at {edge}mm, under the {AshDepthMath.WaistMm}mm the wash saturates at"
-        );
+        Assert.AreEqual(AshPlume.WarmCeilingMm, edge, $"the feather tops out at {edge}mm");
+    }
+
+    /// <summary>
+    ///     The stall this shipped with: past the clearing nothing was thinned, so the drift crossed
+    ///     TerrainSwapMm and the soil ladder stopped around the second rung. Every warmed cell has
+    ///     to sit under the restore line, not the swap line - a cell the drift already claimed only
+    ///     hands itself back below the lower of the two.
+    /// </summary>
+    [TestMethod]
+    public void WarmedGroundStaysShallowEnoughForTheSoilToClimb() {
+        float reach = AshVentSoilSpread.MaxReachCells;
+
+        for (float distance = 0.25f; distance <= reach; distance += 0.25f) {
+            int allowed = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, distance, reach);
+
+            Assert.IsFalse(
+                AshDepthMath.ShouldSwapToAshTerrain(allowed, true),
+                $"{distance} cells out the vent allows {allowed}mm, which leaves ash terrain on the cell"
+            );
+        }
     }
 
     /// <summary>Turning the feather off in XML must not turn the mouth clearing off with it.</summary>

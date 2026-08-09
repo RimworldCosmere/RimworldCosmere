@@ -68,23 +68,29 @@ public static class AshPlume {
     }
 
     /// <summary>
+    ///     Deepest the drift gets on ground a vent has warmed. One unit under TerrainRestoreMm, so
+    ///     a cell the drift already swapped hands itself back instead of stalling the soil under it.
+    /// </summary>
+    public const int WarmCeilingMm = AshDepthMath.TerrainRestoreMm - AshGrid.UnitMm;
+
+    /// <summary>
     ///     The deepest a cell this close to a vent is allowed to stay. 0 on the mouth itself,
-    ///     rising to waist deep at the feather's edge and leaving anything past it alone.
+    ///     rising to shin deep at the edge of the warmed ground and leaving anything past it alone.
     /// </summary>
     public static int AllowedDepthMm(int depthMm, float distance, float radius) {
         if (distance <= 0f) return 0;
-        if (distance >= radius) return depthMm;
+        if (distance > radius) return depthMm;
 
         int allowed = CeilingMm(distance, radius);
         return depthMm < allowed ? depthMm : allowed;
     }
 
     /// <summary>
-    ///     Waist deep at the feather's edge, not the grid cap. The burial wash saturates its alpha
-    ///     there and the movement bucket tops out there, so a higher ceiling moves nothing visible.
+    ///     Held under the restore line the whole way out, not just inside the clearing. Above it the
+    ///     ground swaps to ash terrain and the soil ladder stalls, which stranded the outer front.
     /// </summary>
     private static int CeilingMm(float distance, float radius) {
-        return (int)(distance / radius * AshDepthMath.WaistMm);
+        return (int)(distance / radius * WarmCeilingMm);
     }
 
     /// <summary>

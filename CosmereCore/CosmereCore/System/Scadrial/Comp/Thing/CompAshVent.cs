@@ -272,14 +272,19 @@ public class CompAshVent : ThingComp {
     }
 
     /// <summary>
-    ///     Clears the vent's own cells and thins the drift back in around them. They take the
-    ///     plume's peak weight, so left alone the thing blowing the ash out disappears under it.
+    ///     Clears the vent's own cells and thins the drift back in around them, out as far as the
+    ///     ground it has warmed. Left alone the thing blowing the ash out disappears under it, and
+    ///     the soil it is feeding stalls under ash terrain before the outer front ever ripens.
     /// </summary>
     private bool ClearOwnMouth(Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker) {
         // Position is the low corner of a 2x2 and CenterCell hands back the high one, so neither
         // is the footprint. OccupiedRect is.
         CellRect mouth = parent.OccupiedRect();
-        CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(Props.clearRadius));
+
+        // Last cycle's front, since SpreadSoil runs after this. A 64-tick lag on a radius that
+        // takes eight days to gain a cell is nothing.
+        float radius = Mathf.Max(Props.clearRadius, soilRadius);
+        CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(radius));
         CellIndices indices = map.cellIndices;
         AshBuriedCells buried = tracker.Buried;
         bool changed = false;
@@ -297,7 +302,7 @@ public class CompAshVent : ThingComp {
 
                 int index = indices.CellToIndex(cell);
                 int depth = grid.GetDepthMm(index);
-                int allowed = AshPlume.AllowedDepthMm(depth, distance, Props.clearRadius);
+                int allowed = AshPlume.AllowedDepthMm(depth, distance, radius);
 
                 // Under a whole unit is not removable, so bailing here is what stops an already
                 // thinned cell reporting a change every cycle and dirtying the mesh forever.

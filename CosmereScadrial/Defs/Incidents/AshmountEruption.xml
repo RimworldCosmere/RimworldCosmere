@@ -15,8 +15,9 @@
          of eruption keeps the ash thick for about four. Any longer and the tail never lets up. -->
     <durationDays>1~2</durationDays>
     <baseChance>1.0</baseChance>
-    <!-- A season between eruptions. The metal it showers is worth roughly eight days of what the
-         vents give on their own, and closer together than this that stops being a windfall. -->
+    <!-- A season between eruptions. The metal it showers is worth roughly fifty days of what the
+         vents give on their own, which is the "more than a season" the condition's letter promises,
+         and closer together than this that stops being a windfall. -->
     <minRefireDays>25</minRefireDays>
     <!-- Nothing to survive on the first morning. Landing under an eruption reads as the map being
          broken rather than as the mountain doing what mountains here do. -->

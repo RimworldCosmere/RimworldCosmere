@@ -13,17 +13,38 @@ public static class AshEruption {
     /// </summary>
     public const float PeakStep = 0.35f;
 
-    /// <summary>Throws one vent makes across the whole eruption, evenly spaced.</summary>
-    public const int ThrowsPerVent = 4;
+    /// <summary>
+    ///     Throws one vent makes across the whole eruption, evenly spaced. With the tremors that is a
+    ///     beat every 42 game minutes on the shortest roll and every 85 on the longest.
+    /// </summary>
+    public const int ThrowsPerVent = 25;
 
-    /// <summary>Times the ground moves across the whole eruption.</summary>
-    public const int TremorCount = 6;
+    /// <summary>
+    ///     Times the ground moves across the whole eruption. Shares no factor with the throws, or
+    ///     every tremor would land inside one and stop reading as its own event.
+    /// </summary>
+    public const int TremorCount = 9;
 
     /// <summary>Cells from a vent's mouth a tremor reaches. Well past the apron the vent sweeps.</summary>
     public const float TremorRadiusCells = 8f;
 
-    /// <summary>Hit points one tremor takes off something standing on the mouth itself.</summary>
-    public const int TremorPeakDamage = 18;
+    /// <summary>
+    ///     Hit points one tremor takes off something standing on the mouth itself. Five a ring out to
+    ///     the edge, which is a tenth of a wooden wall for anything built against the vent's clearing.
+    /// </summary>
+    public const int TremorPeakDamage = 40;
+
+    /// <summary>
+    ///     Camera shake a throw beat asks for. What vanilla spends on a one-cell building falling
+    ///     over, because this fires two dozen times a run and a heavy one is the first thing modded out.
+    /// </summary>
+    public const float ThrowShake = 0.07f;
+
+    /// <summary>
+    ///     Camera shake a tremor asks for. Between vanilla's own figures for a 2x2 and a 3x3 coming
+    ///     down, so the ground moving reads as the bigger beat without saturating the camera's ceiling.
+    /// </summary>
+    public const float TremorShake = 0.15f;
 
     /// <summary>Where severity sits while the mountain is open, given what it sat at before.</summary>
     public static float SpikeSeverity(float standing) {

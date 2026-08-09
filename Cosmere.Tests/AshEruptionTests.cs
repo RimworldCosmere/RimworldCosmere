@@ -204,6 +204,84 @@ public class AshEruptionTests {
         Assert.IsFalse(AshEruption.DueOn(6, 3, 6), "a packed run kept beating past its count.");
     }
 
+    /// <summary>Beats of one kind a run of this length actually fires, counted rather than divided.</summary>
+    private static int BeatsIn(int durationTicks, int count) {
+        int fired = 0;
+
+        for (int tick = 0; tick <= durationTicks; tick++) {
+            if (AshEruption.DueOn(tick, durationTicks, count)) fired++;
+        }
+
+        return fired;
+    }
+
+    /// <summary>Throws and tremors together, per game hour, for an eruption rolled this many days.</summary>
+    private static float BeatsPerHour(float days) {
+        int duration = (int)(days * TicksPerDay);
+        int beats = BeatsIn(duration, AshEruption.ThrowsPerVent) + BeatsIn(duration, AshEruption.TremorCount);
+
+        return beats / (days * 24f);
+    }
+
+    /// <summary>
+    ///     What the player actually feels: how often anything at all happens. Stated at both ends of
+    ///     the rolled duration, because the two disagree and a rate pinned at one of them says nothing
+    ///     about the other.
+    /// </summary>
+    [TestMethod]
+    public void SomethingHappensAboutEveryGameHourAcrossTheWholeRolledDuration() {
+        (float min, float max) = DurationDays();
+
+        Assert.AreEqual(
+            1.42f, BeatsPerHour(min), 0.01f, $"the shortest eruption now beats {BeatsPerHour(min):0.00} times an hour."
+        );
+
+        Assert.AreEqual(
+            0.71f, BeatsPerHour(max), 0.01f, $"the longest eruption now beats {BeatsPerHour(max):0.00} times an hour."
+        );
+
+        Assert.IsTrue(
+            BeatsPerHour(max) > 0.5f,
+            "the longest eruption now goes over two game hours between beats, which is the cadence the player read as "
+            + "nothing happening."
+        );
+    }
+
+    /// <summary>
+    ///     The two beats have to stay tellable apart. Any shared factor and the rarer one lands inside
+    ///     the commoner one every time, stacking both shakes and costing the tremor its own identity.
+    /// </summary>
+    [TestMethod]
+    public void ATremorNeverLandsInsideAThrowExceptOnTheOpeningTick() {
+        Assert.AreEqual(
+            1,
+            Gcd(AshEruption.ThrowsPerVent, AshEruption.TremorCount),
+            $"{AshEruption.ThrowsPerVent} throws and {AshEruption.TremorCount} tremors share a factor."
+        );
+
+        int[] durations = [60000, 75000, 90000, 105000, 120000];
+
+        foreach (int duration in durations) {
+            for (int tick = 1; tick <= duration; tick++) {
+                bool throwing = AshEruption.DueOn(tick, duration, AshEruption.ThrowsPerVent);
+                if (!throwing) continue;
+
+                Assert.IsFalse(
+                    AshEruption.DueOn(tick, duration, AshEruption.TremorCount),
+                    $"a {duration} tick run put a tremor and a throw on tick {tick}."
+                );
+            }
+        }
+    }
+
+    private static int Gcd(int a, int b) {
+        while (b != 0) {
+            (a, b) = (b, a % b);
+        }
+
+        return a;
+    }
+
     /// <summary>Full strength on the mouth, nothing at the edge, and nothing at all past it.</summary>
     [TestMethod]
     public void ATremorFallsOffToNothing() {
@@ -221,16 +299,102 @@ public class AshEruptionTests {
         Assert.AreEqual(0, AshEruption.TremorDamage(1f, 8f, 0));
     }
 
+    /// <summary>Hit points one tremor takes off something standing this many cells out from a mouth.</summary>
+    private static int TremorAt(int cells) {
+        return AshEruption.TremorDamage(cells, AshEruption.TremorRadiusCells, AshEruption.TremorPeakDamage);
+    }
+
+    /// <summary>What a whole eruption's worth of tremors takes off something that far out.</summary>
+    private static int EruptionTremorsAt(int cells) {
+        return TremorAt(cells) * AshEruption.TremorCount;
+    }
+
     /// <summary>
-    ///     The whole eruption's tremor budget against something built on the mouth itself. This is
-    ///     meant to be a warning worth heeding and not a demolition, so the figure is stated rather
-    ///     than left to fall out of two constants nobody checks together.
+    ///     The shipped falloff, ring by ring, rather than at the two ends a curve of any shape would
+    ///     agree on. A square falloff matches at the mouth and at the edge and nowhere between.
     /// </summary>
     [TestMethod]
-    public void TheWholeEruptionTakes108OffTheMouth() {
-        int perTremor = AshEruption.TremorDamage(0f, AshEruption.TremorRadiusCells, AshEruption.TremorPeakDamage);
+    public void ATremorGivesUpTheSameHitPointsEveryRingOut() {
+        int step = (int)(AshEruption.TremorPeakDamage / AshEruption.TremorRadiusCells);
 
-        Assert.AreEqual(108, perTremor * AshEruption.TremorCount, "the tremor budget moved without the comment moving.");
+        Assert.AreEqual(5, step, "the falloff no longer lands on whole hit points a ring, so the table below drifts.");
+
+        for (int ring = 0; ring <= (int)AshEruption.TremorRadiusCells; ring++) {
+            Assert.AreEqual(
+                AshEruption.TremorPeakDamage - step * ring,
+                TremorAt(ring),
+                $"ring {ring} took something other than the straight falloff the constants describe."
+            );
+        }
+    }
+
+    /// <summary>A wall of wood: 300 hit points on the def, times the 0.65 wood carries as stuff.</summary>
+    private const int WoodenWallHitPoints = 195;
+
+    /// <summary>A shelf of wood: 100 on the def, times the same 0.65.</summary>
+    private const int WoodenShelfHitPoints = 65;
+
+    /// <summary>A battery is built from a costList rather than stuff, so it keeps the def's 100.</summary>
+    private const int BatteryHitPoints = 100;
+
+    /// <summary>
+    ///     One tremor has to move the health bar or the player reads the eruption as scenery. The old
+    ///     peak of 18 put a twentieth of a wooden wall out of reach at this distance; this is the pin
+    ///     that failed on it.
+    /// </summary>
+    [TestMethod]
+    public void OneTremorTakesABiteOutOfAWoodenWallTheHealthBarWillShow() {
+        Assert.IsTrue(
+            TremorAt(4) * 20 >= WoodenWallHitPoints,
+            $"one tremor four cells out takes {TremorAt(4)} off a {WoodenWallHitPoints} point wooden wall, under the "
+            + "twentieth that shows as damage."
+        );
+    }
+
+    /// <summary>
+    ///     A whole eruption ruins a wooden wall built just outside the vent's clearing without felling
+    ///     it, and fells one built inside. The letter's warning about building near a mouth, in numbers.
+    /// </summary>
+    [TestMethod]
+    public void AnEruptionLeavesAWoodenWallStandingOutsideTheVentsClearing() {
+        Assert.AreEqual(180, EruptionTremorsAt(4), "the tremor budget four cells out moved without this moving.");
+
+        Assert.IsTrue(
+            EruptionTremorsAt(4) < WoodenWallHitPoints,
+            $"an eruption now takes {EruptionTremorsAt(4)} off a {WoodenWallHitPoints} point wooden wall four cells "
+            + "out, which fells it. A tremor is meant to be a warning worth heeding, not a demolition."
+        );
+
+        Assert.IsTrue(
+            EruptionTremorsAt(3) > WoodenWallHitPoints,
+            "a wooden wall inside the vent's own clearing now survives an eruption, so the ground near a mouth costs "
+            + "the player nothing."
+        );
+    }
+
+    /// <summary>
+    ///     The same tremors against two things that are not walls. Stated at two distances that
+    ///     disagree, because a budget checked at one point cannot tell a threat from a flattening.
+    /// </summary>
+    [TestMethod]
+    public void TheSameTremorsFlattenAShelfAndABatteryBuiltAgainstTheClearing() {
+        Assert.IsTrue(
+            EruptionTremorsAt(4) > BatteryHitPoints,
+            $"a battery four cells from a mouth now survives an eruption on {BatteryHitPoints - EruptionTremorsAt(4)} "
+            + "hit points."
+        );
+
+        Assert.IsTrue(
+            EruptionTremorsAt(6) > WoodenShelfHitPoints,
+            "a wooden shelf six cells from a mouth now survives an eruption, so nothing outside the clearing is ever "
+            + "at risk."
+        );
+
+        Assert.IsTrue(
+            EruptionTremorsAt(6) < BatteryHitPoints,
+            $"an eruption now takes {EruptionTremorsAt(6)} off a battery six cells out, which fells it. The reach is "
+            + "meant to thin to a nuisance well before it runs out."
+        );
     }
 
     /// <summary>
@@ -405,19 +569,98 @@ public class AshEruptionTests {
     }
 
     /// <summary>
-    ///     The incident def sells the eruption as roughly eight days of what the vents give anyway.
-    ///     That figure is two numbers multiplied together in different files, which is exactly the
-    ///     shape of claim that quietly stops being true.
+    ///     The incident def sells the eruption as roughly fifty days of what the vents give anyway,
+    ///     and the condition's letter promises more than a season's worth. That is three numbers in
+    ///     three files, which is exactly the shape of claim that quietly stops being true.
     /// </summary>
     [TestMethod]
-    public void TheEruptionPaysTheEightDaysOfMetalTheDefClaims() {
+    public void TheEruptionPaysTheFiftyDaysOfMetalTheDefClaims() {
+        const float seasonDays = 15f;
         float throwsPerDay = float.Parse(Field(VentComp(), "throwsPerDay"), CultureInfo.InvariantCulture);
+        float days = AshEruption.ThrowsPerVent / throwsPerDay;
 
+        Assert.AreEqual(50f, days, 0.001f, "the eruption no longer pays the fifty days of throws the incident def claims.");
+
+        Assert.IsTrue(
+            days > seasonDays,
+            $"an eruption showers {days:0} days of vent metal, and the condition's letter promises more than the "
+            + $"{seasonDays:0} days a season gives."
+        );
+    }
+
+    /// <summary>Vanilla clamps every request to this, times the player's own shake intensity setting.</summary>
+    private const float VanillaMaxShake = 0.2f;
+
+    /// <summary>
+    ///     Both magnitudes sit inside what vanilla already spends on a building falling over, and the
+    ///     tremor reads as the bigger of the two. This fires three dozen times a run.
+    /// </summary>
+    [TestMethod]
+    public void TheShakeStaysInsideWhatVanillaSpendsOnABuildingFallingOver() {
+        Assert.AreEqual(0.07f, AshEruption.ThrowShake, 0.0001f, "the throw shake moved off vanilla's one-cell collapse.");
+        Assert.AreEqual(0.15f, AshEruption.TremorShake, 0.0001f, "the tremor shake moved off vanilla's collapse curve.");
+
+        Assert.IsTrue(AshEruption.ThrowShake > 0f, "a throw asks the camera for nothing at all.");
+
+        Assert.IsTrue(
+            AshEruption.ThrowShake < AshEruption.TremorShake,
+            "a throw now shakes the screen at least as hard as the ground moving, so the two stop being tellable apart."
+        );
+
+        Assert.IsTrue(
+            AshEruption.TremorShake < VanillaMaxShake,
+            $"a tremor asks for {AshEruption.TremorShake}, which saturates vanilla's own {VanillaMaxShake} ceiling."
+        );
+    }
+
+    /// <summary>
+    ///     The shake is global to the camera and the eruption is not. Vanilla's own callers all check
+    ///     the map is the one on screen, and without it a caravan map rattles the colony being watched.
+    /// </summary>
+    [TestMethod]
+    public void TheShakeOnlyReachesTheMapThePlayerIsLookingAt() {
+        string source = ConditionSource;
+
+        Assert.IsTrue(
+            Regex.IsMatch(source, @"Find\.CameraDriver\.shaker\.DoShake\("),
+            "the eruption asks for no camera shake at all, so a throw and a tremor both land in silence."
+        );
+
+        Assert.IsTrue(
+            Regex.IsMatch(source, @"Find\.CurrentMap"),
+            "the shake is not gated on the map the player is looking at."
+        );
+    }
+
+    /// <summary>
+    ///     One request a beat, not one a vent. Six vents on a mount-adjacent tile would stack six and
+    ///     clamp to a full-strength jolt, which is the shake players mod out.
+    /// </summary>
+    [TestMethod]
+    public void TheShakeIsAskedForOncePerBeatAndNotOncePerVent() {
         Assert.AreEqual(
-            8f,
-            AshEruption.ThrowsPerVent / throwsPerDay,
-            0.001f,
-            "the eruption no longer pays the eight days of throws the incident def claims."
+            1,
+            Regex.Matches(ConditionSource, @"shaker\.DoShake\s*\(").Count,
+            "the eruption asks the camera to shake from more than one place, so the count per beat is no longer one."
+        );
+    }
+
+    /// <summary>
+    ///     The shake is the throw's own cue, so it has to wait on the throw landing. Every candidate
+    ///     cell inside the throw radius can be buried, and a jolt with no lump explains nothing.
+    /// </summary>
+    [TestMethod]
+    public void TheThrowShakeWaitsForALumpToActuallyLand() {
+        string source = ConditionSource;
+
+        Assert.IsTrue(
+            Regex.IsMatch(source, @"private static bool ThrowFromEveryVent"),
+            "ThrowFromEveryVent no longer reports whether a lump landed, so the throw shake cannot wait on one."
+        );
+
+        Assert.IsTrue(
+            Regex.IsMatch(source, @"ThrowsPerVent\)\s*&&\s*ThrowFromEveryVent"),
+            "the throw beat shakes the screen whether or not a lump landed."
         );
     }
 

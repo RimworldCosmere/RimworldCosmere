@@ -39,8 +39,14 @@ public class AshmountEruption : RimWorld.GameCondition {
         int passed = TicksPassed;
         int duration = Duration;
 
-        if (AshEruption.DueOn(passed, duration, AshEruption.ThrowsPerVent)) ThrowFromEveryVent(tracker);
-        if (AshEruption.DueOn(passed, duration, AshEruption.TremorCount)) Shake(map, tracker);
+        if (AshEruption.DueOn(passed, duration, AshEruption.ThrowsPerVent) && ThrowFromEveryVent(tracker)) {
+            ShakeCamera(map, AshEruption.ThrowShake);
+        }
+
+        if (AshEruption.DueOn(passed, duration, AshEruption.TremorCount)) {
+            Tremor(map, tracker);
+            ShakeCamera(map, AshEruption.TremorShake);
+        }
     }
 
     public override void End() {
@@ -76,15 +82,33 @@ public class AshmountEruption : RimWorld.GameCondition {
         return false;
     }
 
-    private static void ThrowFromEveryVent(AshDepthTracker tracker) {
+    /// <summary>
+    ///     Every vent throws. Reports whether any of them found ground to land on, so the screen only
+    ///     knocks when there is a lump on it to explain the knock.
+    /// </summary>
+    private static bool ThrowFromEveryVent(AshDepthTracker tracker) {
         IReadOnlyList<CompAshVent> vents = tracker.Vents;
+        bool landed = false;
+
         for (int i = 0; i < vents.Count; i++) {
-            vents[i].ThrowOnce();
+            if (vents[i].ThrowOnce()) landed = true;
         }
+
+        return landed;
+    }
+
+    /// <summary>
+    ///     One brief knock, once a beat rather than once a vent - six vents would stack six requests
+    ///     and clamp to a full jolt. Gated on the map being the one on screen, as vanilla's callers are.
+    /// </summary>
+    private static void ShakeCamera(Verse.Map map, float magnitude) {
+        if (map != Find.CurrentMap) return;
+
+        Find.CameraDriver.shaker.DoShake(magnitude);
     }
 
     /// <summary>Rattles what stands near a mouth, hardest on the mouth itself.</summary>
-    private static void Shake(Verse.Map map, AshDepthTracker tracker) {
+    private static void Tremor(Verse.Map map, AshDepthTracker tracker) {
         IReadOnlyList<CompAshVent> vents = tracker.Vents;
         int reach = Mathf.CeilToInt(AshEruption.TremorRadiusCells);
 

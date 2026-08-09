@@ -196,9 +196,11 @@ public static class AnimalControlSpike {
                     );
                     pawn.Drawer?.renderer?.SetAllGraphicsDirty();
                     PortraitsCache.SetDirty(pawn);
+                    Logger.Important($"ONE-PAWN spike: {pawn.LabelShort} is wearing {kind.label}.");
                 }));
             }
 
+            options.SortBy(o => o.label);
             Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
             return;
         }
@@ -223,5 +225,41 @@ public static class AnimalControlSpike {
             pawn.Drawer?.renderer?.SetAllGraphicsDirty();
             PortraitsCache.SetDirty(pawn);
         }
+    }
+
+    /// <summary>
+    ///     Answers the spike's one real question without anybody squinting at a dog.
+    /// </summary>
+    /// <remarks>
+    ///     A human body still showing has two completely different causes - the patch never
+    ///     applied, or it applied and vanilla ignores subworkers - and they look identical on
+    ///     screen. The veto counter separates them.
+    /// </remarks>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: report shape render state",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void ReportShapeRenderState() {
+        int patched = 0;
+        PawnRenderTreeDef? humanlike = DefDatabase<PawnRenderTreeDef>.GetNamedSilentFail("Humanlike");
+        if (humanlike?.root?.children != null) {
+            foreach (PawnRenderNodeProperties child in humanlike.root.children) {
+                if (child.subworkerClasses?.Contains(
+                        typeof(Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileShaped)
+                    ) == true) {
+                    patched++;
+                }
+            }
+        }
+
+        Logger.Important(
+            "Kandra shape render state:"
+            + $"\n  Humanlike root children patched: {patched} (expect 3: Body, Head stump, Head)"
+            + $"\n  vetoes fired so far: {Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileShaped.Vetoes}"
+            + "\n  patched 3 and vetoes 0 while shaped => vanilla is not consulting subworkers. Approach is dead."
+            + "\n  patched 0 => the XML patch did not apply. Fix the patch, not the design."
+        );
     }
 }

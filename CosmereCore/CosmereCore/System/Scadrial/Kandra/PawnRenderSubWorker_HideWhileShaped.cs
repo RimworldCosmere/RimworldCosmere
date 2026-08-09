@@ -18,7 +18,20 @@ namespace Cosmere.System.Scadrial.Kandra;
 ///     </para>
 /// </remarks>
 public class PawnRenderSubWorker_HideWhileShaped : PawnRenderSubWorker {
+    /// <summary>
+    ///     How many times this has hidden a human part, for the spike to report.
+    /// </summary>
+    /// <remarks>
+    ///     The question the spike exists to answer is whether vanilla consults a subworker added
+    ///     to its own tree by a patch. Eyeballing a dog cannot separate "the veto works" from "the
+    ///     patch never applied", and both look identical. A counter can.
+    /// </remarks>
+    public static int Vetoes { get; private set; }
+
     public override bool CanDrawNowSub(PawnRenderNode node, PawnDrawParms parms) {
-        return parms.pawn?.TryGetComp<CompKandraForms>()?.Current?.animalKind == null;
+        if (parms.pawn?.TryGetComp<CompKandraForms>()?.Current?.animalKind == null) return true;
+
+        Vetoes++;
+        return false;
     }
 }

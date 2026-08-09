@@ -20,6 +20,7 @@ namespace Cosmere.System.Scadrial.Kandra;
 public static class KandraAnimalShape {
     /// <summary>Steps the kandra out and the animal in. Returns the animal, or null on failure.</summary>
     public static Pawn? Wear(Pawn kandra, KandraForm form) {
+        Cosmere.Core.Logger.Important($"TWO-PAWN path: {kandra.LabelShort} spawning a {form.animalKind?.defName}.");
         if (form.animalKind == null) return null;
         if (!kandra.Spawned) return null;
 

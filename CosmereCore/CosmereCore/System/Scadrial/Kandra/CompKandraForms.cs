@@ -191,13 +191,41 @@ public class CompKandraForms : ThingComp {
     public void RememberWorkPriorities() {
         if (parent is not Pawn pawn || pawn.workSettings is not { EverWork: true }) return;
 
+        // Shaping twice without reverting would otherwise snapshot the already-zeroed tab and
+        // lose the real one for good.
+        if (workPriorities.Count > 0) return;
+
+        DefMap<WorkTypeDef, int>? stored = StoredPriorities(pawn);
+        if (stored == null) return;
+
         workPriorities = [];
         List<WorkTypeDef> all = DefDatabase<WorkTypeDef>.AllDefsListForReading;
         for (int i = 0; i < all.Count; i++) {
-            int priority = pawn.workSettings.GetPriority(all[i]);
+            int priority = stored[all[i]];
             if (priority > 0) workPriorities[all[i]] = priority;
         }
     }
+
+    /// <summary>
+    ///     The real stored priorities, not what the work tab is willing to admit to.
+    /// </summary>
+    /// <remarks>
+    ///     <c>Pawn_WorkSettings.GetPriority</c> returns a flat 3 for any humanlike pawn with a
+    ///     non-zero priority while <c>Find.PlaySettings.useWorkPriorities</c> is off, which is the
+    ///     default. Snapshotting through it would store 3 for everything and hand 3 back on
+    ///     restore, quietly flattening a player's tuned 1s and 4s the first time their kandra
+    ///     changed shape.
+    /// </remarks>
+    private static DefMap<WorkTypeDef, int>? StoredPriorities(Pawn pawn) {
+        prioritiesField ??= typeof(Pawn_WorkSettings).GetField(
+            "priorities",
+            global::System.Reflection.BindingFlags.NonPublic | global::System.Reflection.BindingFlags.Instance
+        );
+
+        return prioritiesField?.GetValue(pawn.workSettings) as DefMap<WorkTypeDef, int>;
+    }
+
+    private static global::System.Reflection.FieldInfo? prioritiesField;
 
     /// <summary>
     ///     Puts the work tab back, after the shape is gone.

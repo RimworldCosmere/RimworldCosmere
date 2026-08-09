@@ -50,11 +50,12 @@ public static class KandraAnimalShape {
         // belongs to the kandra rather than to the body goes with it.
         KandraShapeTransfer.Into(kandra, animal);
 
-        // Four legs and a mouth. Whatever the kandra knows, it cannot hold a scalpel today.
-        Verse.HediffDef? shapeLimits = DefDatabase<Verse.HediffDef>.GetNamedSilentFail(
-            "Cosmere_Scadrial_Hediff_AnimalShape"
-        );
-        if (shapeLimits != null) animal.health?.AddHediff(shapeLimits);
+        // The shape hediff is NOT added here any more. It now carries a render node, and a
+        // generated shape race is humanlike, so it passes every gate in
+        // DynamicPawnRenderNodeSetup_Hediffs and the animal gets drawn a second time - full size
+        // from the race's own tree, and shrunk by the portrait clamp on top of it in the colonist
+        // bar. This path gets its speed and tools from the generated race's statBases and tools
+        // instead, and dies with the rest of it.
 
         // While the kandra is still on the map. Taking apparel off needs a floor to put it on,
         // and a despawned pawn has none.

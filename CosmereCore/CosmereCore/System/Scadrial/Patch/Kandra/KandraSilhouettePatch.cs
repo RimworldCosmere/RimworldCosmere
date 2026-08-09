@@ -24,7 +24,10 @@ namespace Cosmere.System.Scadrial.Patch.Kandra;
 ///     </para>
 /// </remarks>
 public static class KandraSilhouette {
-    private static readonly Dictionary<PawnKindDef, Graphic> outlines = [];
+    // Keyed on gender too. DataFor picks the female graphic when there is one, so keying on the
+    // kind alone let the first kandra to wear a gendered animal decide the outline for every
+    // other one. Vanilla's own SilhouetteCacheKey includes gender for exactly this reason.
+    private static readonly Dictionary<(PawnKindDef, Gender), Graphic> outlines = [];
 
     /// <summary>
     ///     Reaches the renderer's pawn, which is private and readonly.
@@ -45,14 +48,15 @@ public static class KandraSilhouette {
         PawnKindDef? kind = KandraShapeGraphicUtility.WornKind(pawn);
         if (kind == null) return null;
 
-        if (outlines.TryGetValue(kind, out Graphic? cached)) return cached;
+        (PawnKindDef, Gender) key = (kind, pawn!.gender);
+        if (outlines.TryGetValue(key, out Graphic? cached)) return cached;
 
         GraphicData? data = KandraShapeGraphicUtility.DataFor(pawn);
         if (data == null || string.IsNullOrEmpty(data.texPath)) return null;
 
-        outlines[kind] = data.Graphic;
+        outlines[key] = data.Graphic;
 
-        return outlines[kind];
+        return outlines[key];
     }
 
     public static Material MaterialFor(Graphic animal, bool west) {

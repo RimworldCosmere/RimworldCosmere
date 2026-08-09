@@ -252,8 +252,13 @@ public class KandraAnimalFormTests {
             CollectionAssert.Contains(disabled, tag, $"An animal shape should not be able to do {tag} work.");
         }
 
+        // The two-pawn path must NOT add this hediff any more: it carries a render node now, and
+        // a generated shape race is humanlike, so the animal would be drawn a second time.
         string shape = Kandra("KandraAnimalShape.cs");
-        Assert.IsTrue(shape.Contains("Cosmere_Scadrial_Hediff_AnimalShape", StringComparison.Ordinal));
+        Assert.IsFalse(
+            shape.Contains("AddHediff(shapeLimits)", StringComparison.Ordinal),
+            "A generated shape race gets its limits from its own statBases and tools."
+        );
     }
 
     /// <summary>A dog cannot fire a rifle or negotiate a trade deal.</summary>
@@ -790,6 +795,28 @@ public class KandraAnimalFormTests {
         Assert.IsTrue(
             verbs.Contains("HediffCompProperties_KandraShapeVerbs : HediffCompProperties_VerbGiver", StringComparison.Ordinal),
             "Deriving from plain HediffCompProperties makes every melee lookup throw."
+        );
+    }
+
+    /// <summary>
+    ///     Pawn_WorkSettings.GetPriority returns a flat 3 for any humanlike pawn with a non-zero
+    ///     priority while Find.PlaySettings.useWorkPriorities is off, which is the default. Reading
+    ///     through it stores 3 for everything and hands 3 back, flattening a player's tuned 1s and
+    ///     4s the first time their kandra changes shape - invisibly, until they turn manual
+    ///     priorities back on.
+    /// </summary>
+    [TestMethod]
+    public void TheWorkSnapshotReadsTheRealPrioritiesNotTheDisplayedOnes() {
+        string comp = Kandra("CompKandraForms.cs");
+
+        Assert.IsTrue(comp.Contains("StoredPriorities(pawn)", StringComparison.Ordinal));
+        Assert.IsFalse(
+            comp.Contains("pawn.workSettings.GetPriority(", StringComparison.Ordinal),
+            "GetPriority lies while manual priorities are off."
+        );
+        Assert.IsTrue(
+            comp.Contains("if (workPriorities.Count > 0) return;", StringComparison.Ordinal),
+            "Shaping twice without reverting would snapshot the already-zeroed tab."
         );
     }
 }

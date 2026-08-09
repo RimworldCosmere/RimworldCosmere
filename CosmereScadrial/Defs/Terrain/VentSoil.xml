@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-    <!-- Laid by CompAshVent inside the mouth it keeps clear. The feather caps that ground well
-         under AshDepthMath.TerrainSwapMm, so deep ash never takes it back. -->
+    <!-- The top of the chain CompAshVent walks the ground up, a rung every twelve days. The
+         feather caps the clearing well under AshDepthMath.TerrainSwapMm, so deep ash never takes it
+         back. -->
     <TerrainDef ParentName="NaturalTerrainBase">
         <defName>Cosmere_Scadrial_Terrain_VentSoil</defName>
         <label>vent soil</label>

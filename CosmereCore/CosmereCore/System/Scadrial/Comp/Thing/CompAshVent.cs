@@ -58,12 +58,13 @@ public class CompProperties_AshVent : CompProperties {
 ///     are walked once per sweep cycle, so the cost is a bounded local write and never a map scan.
 /// </summary>
 public class CompAshVent : ThingComp {
+    private static Dictionary<TerrainDef, TerrainDef>? ladder;
     private static List<IntVec3>? offsets;
-    private static TerrainDef? ventSoil;
 
     private bool contained;
     private float[]? remainder;
     private float roomRemainder;
+    private float soilDays;
     private float soilRadius;
     private float throwRemainder;
     private int throwsMade;
@@ -76,9 +77,30 @@ public class CompAshVent : ThingComp {
     /// </summary>
     public bool Contained => contained;
 
-    /// <summary>What the vent leaves behind on the ground it keeps swept.</summary>
-    private static TerrainDef VentSoil =>
-        ventSoil ??= DefDatabase<TerrainDef>.GetNamed("Cosmere_Scadrial_Terrain_VentSoil");
+    /// <summary>
+    ///     The chain, resolved against the def database once. A rung whose terrain no loaded mod
+    ///     declares is dropped rather than throwing, so one missing def costs one rung.
+    /// </summary>
+    private static Dictionary<TerrainDef, TerrainDef> Ladder {
+        get {
+            if (ladder != null) return ladder;
+
+            ladder = new Dictionary<TerrainDef, TerrainDef>(AshVentSoilLadder.Rungs.Count);
+            foreach (KeyValuePair<string, string> rung in AshVentSoilLadder.Rungs) {
+                TerrainDef? from = DefDatabase<TerrainDef>.GetNamedSilentFail(rung.Key);
+                TerrainDef? to = DefDatabase<TerrainDef>.GetNamedSilentFail(rung.Value);
+
+                if (from == null || to == null) {
+                    Logger.Warning($"Ash vent soil ladder drops {rung.Key} to {rung.Value}: one is not loaded.");
+                    continue;
+                }
+
+                ladder[from] = to;
+            }
+
+            return ladder;
+        }
+    }
 
     /// <summary>Every cell inside the plume radius, built once and shared by every vent.</summary>
     private static List<IntVec3> Offsets {
@@ -130,6 +152,10 @@ public class CompAshVent : ThingComp {
         // The spread front. A soil cell says it was reached, never whether its neighbours were,
         // so the terrain grid stops being the record the moment the front leaves the clearing.
         Scribe_Values.Look(ref soilRadius, "ashVentSoilRadius");
+
+        // The rung clock. A cell's rung is its terrain, but nothing on the ground says when it
+        // last climbed, and unsaved every reload would push the whole patch a rung further out.
+        Scribe_Values.Look(ref soilDays, "ashVentSoilDays");
 
         if (Scribe.mode == LoadSaveMode.LoadingVars) remainder = AshPlume.RestoreBank(banked, Offsets.Count);
     }
@@ -290,17 +316,20 @@ public class CompAshVent : ThingComp {
     }
 
     /// <summary>
-    ///     Walks the front out a little further and feeds the ground behind it. Rationed the way
-    ///     the terrain sweep rations its own, so six vents cannot fire hundreds of writes a tick.
+    ///     Walks the front out a little further and carries the ground behind it up a rung where
+    ///     one is due. Rationed the way the terrain sweep rations its own, so six vents cannot
+    ///     fire hundreds of writes a tick.
     /// </summary>
     private void SpreadSoil(Verse.Map map, Map.AshDepthTracker tracker, float dayFraction) {
         soilRadius = AshVentSoilSpread.Advance(
             soilRadius, Props.clearRadius, Scadrial.Mod.ventSoilReach, dayFraction
         );
 
+        float daysBefore = soilDays;
+        soilDays += dayFraction;
+
         CellRect mouth = parent.OccupiedRect();
         CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(soilRadius));
-        CellIndices indices = map.cellIndices;
         int budget = AshDepthMath.TerrainChangesPerSweep;
 
         for (int x = reach.minX; x <= reach.maxX; x++) {
@@ -314,35 +343,49 @@ public class CompAshVent : ThingComp {
                 // instead of ringing the mouth in another square. Squared, to skip the Sqrt.
                 int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
                 int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
-                if (!AshVentSoilSpread.Reaches(dx * dx + dz * dz, soilRadius)) continue;
+                int distanceSquared = (dx * dx) + (dz * dz);
+                if (!AshVentSoilSpread.Reaches(distanceSquared, soilRadius)) continue;
 
-                if (LaySoil(map, tracker, indices.CellToIndex(cell))) budget--;
+                if (ClimbOneRung(map, tracker, cell, distanceSquared, daysBefore)) budget--;
             }
         }
     }
 
     /// <summary>
-    ///     Turns a cell inside the front into ground worth farming. Terrain only - it moves no
-    ///     ash, so the buried set is owed nothing here.
+    ///     Carries one cell up the chain when its dwell on the rung below is done. Terrain only -
+    ///     it moves no ash, so the buried set is owed nothing here.
     /// </summary>
-    private static bool LaySoil(Verse.Map map, Map.AshDepthTracker tracker, int index) {
+    private bool ClimbOneRung(
+        Verse.Map map, Map.AshDepthTracker tracker, IntVec3 cell, int distanceSquared, float daysBefore
+    ) {
+        int index = map.cellIndices.CellToIndex(cell);
+
         // AshPlume.StaysBelowTheSwap used to gate this, and it only holds inside the clearing the
         // vent thins. Out at the front the plume caps nothing, so ask the grid what is really there.
         if (AshDepthMath.ShouldSwapToAshTerrain(tracker.Grid.GetDepthMm(index), false)) return false;
 
-        // Ash terrain standing over a remembered original. Laying here would strand that memory,
+        // Ash terrain standing over a remembered original. Climbing here would strand that memory,
         // so leave it to the sweep to hand the cell back and take it on a later cycle.
         if (tracker.TerrainMemory.IsSwapped(index)) return false;
 
         TerrainDef current = map.terrainGrid.TerrainAt(index);
-        if (current == VentSoil) return false;
 
         // The same ground the ash swap accepts, for the same reason. A floor the colony laid stays
         // theirs, and neither water nor solid rock is ground the vent can feed.
         if (current.temporary || !current.natural || current.IsWater) return false;
         if (current.passability == Traversability.Impassable) return false;
 
-        map.terrainGrid.SetTerrain(map.cellIndices.IndexToCell(index), VentSoil);
+        // Stone, ice and anything from a mod we have never heard of have no rung above them, and
+        // ground already at the top of the chain has nowhere left to go.
+        if (!Ladder.TryGetValue(current, out TerrainDef? next)) return false;
+
+        if (!AshVentSoilLadder.RungIsDue(
+                cell.x, cell.z, Mathf.Sqrt(distanceSquared), Props.clearRadius, daysBefore, soilDays
+            )) {
+            return false;
+        }
+
+        map.terrainGrid.SetTerrain(cell, next);
         return true;
     }
 

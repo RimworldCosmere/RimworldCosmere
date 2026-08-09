@@ -76,7 +76,11 @@ public class Hediff_KandraAnimalShape : HediffWithComps {
             // The player-facing consequences of being a beast, which stay whatever the animal is.
             disabledWorkTags = baseline.disabledWorkTags,
             capMods = baseline.capMods,
-            becomeVisible = false,
+
+            // Not optional. DynamicPawnRenderNodeSetup_Hediffs skips any hediff whose Visible is
+            // false, so hiding this from the health tab also deletes the render node and the
+            // pawn draws as nothing at all.
+            becomeVisible = true,
             statFactors = [],
             statOffsets = [],
         };

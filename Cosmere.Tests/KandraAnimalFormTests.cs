@@ -743,4 +743,20 @@ public class KandraAnimalFormTests {
 
         Assert.IsTrue(float.Parse(manipulation.Element("setMax")!.Value) >= 0.9f);
     }
+
+    /// <summary>
+    ///     DynamicPawnRenderNodeSetup_Hediffs skips any hediff whose Visible is false, so hiding
+    ///     the shape hediff from the health tab also deletes its render node and the pawn draws as
+    ///     nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void TheShapeHediffStaysVisibleOrNothingDraws() {
+        string hediff = Kandra("Hediff_KandraAnimalShape.cs");
+
+        Assert.IsTrue(hediff.Contains("becomeVisible = true", StringComparison.Ordinal));
+        Assert.IsFalse(
+            hediff.Contains("becomeVisible = false", StringComparison.Ordinal),
+            "An invisible hediff has no render node, and the kandra vanishes."
+        );
+    }
 }

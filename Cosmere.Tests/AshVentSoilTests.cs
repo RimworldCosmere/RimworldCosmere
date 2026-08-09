@@ -224,16 +224,17 @@ public class AshVentSoilTests {
         Assert.AreEqual(2f, AshVentSoilSpread.Advance(8f, ClearRadius, 2f, 0f), 0.0001f);
     }
 
-    /// <summary>Clearing 3 out to the default 8 is five cells at twelve days each: sixty days, a year.</summary>
+    /// <summary>Clearing 3 out to the default 8 is five cells at eight days each: forty days.</summary>
     [TestMethod]
-    public void TheFrontTakesAYearToReachTheDefault() {
+    public void TheFrontTakesFortyDaysToReachTheDefault() {
         float front = AshVentSoilSpread.Advance(0f, ClearRadius, 8f, 0f);
+        float short_ = (5f * AshVentSoilSpread.DaysPerCell) - 1f;
 
-        front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, 59f);
-        Assert.IsTrue(front < 8f, $"the front reached the default in 59 days, at {front}.");
+        front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, short_);
+        Assert.IsTrue(front < 8f, $"the front reached the default in {short_} days, at {front}.");
 
         front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, 1.1f);
-        Assert.AreEqual(8f, front, 0.0001f, "sixty days did not carry the front out to the default 8.");
+        Assert.AreEqual(8f, front, 0.0001f, "five cells of dwell did not carry the front to the default 8.");
     }
 
     /// <summary>

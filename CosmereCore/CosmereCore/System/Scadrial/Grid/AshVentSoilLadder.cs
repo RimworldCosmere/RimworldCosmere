@@ -11,7 +11,7 @@ public static class AshVentSoilLadder {
     public const string TopRung = "Cosmere_Scadrial_Terrain_VentSoil";
 
     /// <summary>Days a cell holds one rung. Sand to vent soil is four of them, so forty-eight.</summary>
-    public const float DaysPerRung = 12f;
+    public const float DaysPerRung = 8f;
 
     /// <summary>
     ///     Steps the jitter is cut into. A rung split a thousand and twenty-four ways lands finer

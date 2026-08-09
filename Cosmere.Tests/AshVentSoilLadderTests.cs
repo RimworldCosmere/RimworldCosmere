@@ -100,12 +100,12 @@ public class AshVentSoilLadderTests {
         }
     }
 
-    /// <summary>Aaron's rate, and the numbers he read off it: sand to vent soil in forty-eight days.</summary>
+    /// <summary>Aaron's rate, and the numbers he read off it: sand to vent soil in thirty-two days.</summary>
     [TestMethod]
-    public void ARungTakesTwelveDays() {
-        Assert.AreEqual(12f, AshVentSoilLadder.DaysPerRung);
-        Assert.AreEqual(48f, RungsFrom("Sand") * AshVentSoilLadder.DaysPerRung, "sand is not four rungs out.");
-        Assert.AreEqual(24f, 2 * AshVentSoilLadder.DaysPerRung, "gravel to rich soil is not two rungs.");
+    public void ARungTakesEightDays() {
+        Assert.AreEqual(8f, AshVentSoilLadder.DaysPerRung);
+        Assert.AreEqual(32f, RungsFrom("Sand") * AshVentSoilLadder.DaysPerRung, "sand is not four rungs out.");
+        Assert.AreEqual(16f, 2 * AshVentSoilLadder.DaysPerRung, "gravel to rich soil is not two rungs.");
         Assert.AreEqual(2, RungsFrom("Gravel") - 1, "gravel is not two rungs under rich soil.");
     }
 
@@ -113,10 +113,10 @@ public class AshVentSoilLadderTests {
     public void ARungIsOnlyEarnedOnceItsDwellIsDone() {
         Assert.AreEqual(0, AshVentSoilLadder.RungsClimbed(-40f));
         Assert.AreEqual(0, AshVentSoilLadder.RungsClimbed(0f));
-        Assert.AreEqual(0, AshVentSoilLadder.RungsClimbed(11.99f));
-        Assert.AreEqual(1, AshVentSoilLadder.RungsClimbed(12f));
-        Assert.AreEqual(1, AshVentSoilLadder.RungsClimbed(23.99f));
-        Assert.AreEqual(4, AshVentSoilLadder.RungsClimbed(48f));
+        Assert.AreEqual(0, AshVentSoilLadder.RungsClimbed(7.99f));
+        Assert.AreEqual(1, AshVentSoilLadder.RungsClimbed(8f));
+        Assert.AreEqual(1, AshVentSoilLadder.RungsClimbed(15.99f));
+        Assert.AreEqual(4, AshVentSoilLadder.RungsClimbed(32f));
     }
 
     /// <summary>The clearing is the vent's from the day it spawns, so its dwell starts at nothing.</summary>
@@ -170,7 +170,7 @@ public class AshVentSoilLadderTests {
             Assert.AreEqual(expected, climbed[rung - 1], 0.01f, $"rung {rung} did not land at day {expected}.");
         }
 
-        Assert.AreEqual(48f, RungsFrom("Sand") * AshVentSoilLadder.DaysPerRung, "sand is no longer 48 days out.");
+        Assert.AreEqual(32f, RungsFrom("Sand") * AshVentSoilLadder.DaysPerRung, "sand is no longer 32 days out.");
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ public class AshVentSoilLadderTests {
     /// </summary>
     [TestMethod]
     public void TheJitterSpreadsAcrossTheWholeRungWindow() {
-        HashSet<int> twelfths = [];
+        HashSet<int> buckets = [];
 
         for (int x = -20; x <= 20; x++) {
             for (int z = -20; z <= 20; z++) {
@@ -218,11 +218,15 @@ public class AshVentSoilLadderTests {
                     jitter >= 0f && jitter < AshVentSoilLadder.DaysPerRung,
                     $"cell {x},{z} jittered {jitter}, outside one rung window."
                 );
-                twelfths.Add((int)jitter);
+                buckets.Add((int)jitter);
             }
         }
 
-        Assert.AreEqual(12, twelfths.Count, "the jitter never lands in some parts of the window.");
+        Assert.AreEqual(
+            (int)AshVentSoilLadder.DaysPerRung,
+            buckets.Count,
+            "the jitter never lands in some parts of the window."
+        );
     }
 
     /// <summary>A cell's jitter is a fact about where it is, so a reload cannot shift its schedule.</summary>

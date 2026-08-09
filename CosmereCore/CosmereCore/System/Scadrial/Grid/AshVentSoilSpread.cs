@@ -21,7 +21,7 @@ public static class AshVentSoilSpread {
     ///     Days the front takes to advance one cell. Twelve puts 8 new cells on the outer ring in
     ///     a day and 60 in a quadrum, and carries the clearing out to the default 8 in a year.
     /// </summary>
-    public const float DaysPerCell = 12f;
+    public const float DaysPerCell = 8f;
 
     /// <summary>
     ///     Where the front stands after this cycle. The vent always holds its own clearing, so a

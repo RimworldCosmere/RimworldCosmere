@@ -323,11 +323,11 @@ public class KandraAnimalFormTests {
     public void BronzeIsNotARoll() {
         string disguise = Kandra("KandraDisguise.cs");
         int seen = disguise.IndexOf("public static bool SeenByBronze(", StringComparison.Ordinal);
-        int slipped = disguise.IndexOf("public static bool Slipped(", StringComparison.Ordinal);
+        Assert.IsTrue(seen >= 0);
 
-        Assert.IsTrue(seen >= 0 && slipped > seen);
-
-        string body = disguise[seen..slipped];
+        // Stop at the next doc comment so the following member's prose is not read as code.
+        int next = disguise.IndexOf("/// <summary>", seen, StringComparison.Ordinal);
+        string body = disguise[seen..next];
         Assert.IsFalse(
             body.Contains("Rand.Chance", StringComparison.Ordinal),
             "Bronze does not guess; it either hears the kandra or it does not."

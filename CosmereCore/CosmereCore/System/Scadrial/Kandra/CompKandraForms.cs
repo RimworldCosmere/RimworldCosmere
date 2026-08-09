@@ -109,6 +109,11 @@ public class CompKandraForms : ThingComp {
         pawn.skills?.Learn(SkillDefOf.Cosmere_Scadrial_Skill_Shapeshift, Props.xpPerForm, true);
     }
 
+    /// <summary>Adds a shape to the repertoire without eating anybody for it.</summary>
+    public void Remember(KandraForm form) {
+        known.Add(form);
+    }
+
     /// <summary>Remembers what the kandra actually is, the first time they wear anything else.</summary>
     public void RememberTrueBody() {
         if (trueBody != null) return;

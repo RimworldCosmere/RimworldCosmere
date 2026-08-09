@@ -1,4 +1,5 @@
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Kandra;
@@ -60,5 +61,36 @@ public static class KandraShapeshift {
         // somebody's face and the corpse kept their name for good. The worn name lives on the
         // comp and is added at the places that display it.
         pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+    }
+
+    /// <summary>
+    ///     Builds a face nobody has ever worn.
+    /// </summary>
+    /// <remarks>
+    ///     The reward for practice. A kandra that has eaten enough bodies stops needing a
+    ///     template and can put together a person who never existed, which is exactly the thing
+    ///     that makes an old kandra impossible to search for.
+    /// </remarks>
+    public static void WearInvented(Pawn kandra) {
+        CompKandraForms? forms = kandra.TryGetComp<CompKandraForms>();
+        if (forms == null || !forms.CanFreeForm) return;
+
+        forms.RememberTrueBody();
+
+        KandraForm invented = new KandraForm {
+            // A face nobody has worn needs a name nobody answers to. Any person namer will do;
+            // the kandra is inventing, not impersonating.
+            nameFull = PawnBioAndNameGenerator.GeneratePawnName(kandra, NameStyle.Full).ToStringShort,
+            bodyType = kandra.story?.bodyType,
+            headType = kandra.story?.headType,
+            hair = kandra.story?.hairDef,
+            hairColour = kandra.story?.HairColor ?? Color.white,
+            skinColour = kandra.story?.SkinColor ?? Color.white,
+            gender = kandra.gender,
+        };
+        invented.nameShort = invented.nameFull;
+
+        forms.Remember(invented);
+        Wear(kandra, invented);
     }
 }

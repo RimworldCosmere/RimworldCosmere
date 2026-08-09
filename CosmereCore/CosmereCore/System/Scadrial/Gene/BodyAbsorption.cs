@@ -14,7 +14,7 @@ namespace Cosmere.System.Scadrial.Gene;
 ///     The repertoire lives on <see cref="CompKandraForms" /> rather than here, because it has
 ///     to survive the pawn losing this gene. A mistwraith that ate somebody still has the bones.
 /// </remarks>
-public class BodyAbsorption : Verse.Gene {
+public class BodyAbsorption : Shapeshifter {
     private static Texture2D? icon;
 
     private static Texture2D Icon =>
@@ -41,6 +41,8 @@ public class BodyAbsorption : Verse.Gene {
 
         yield return WearGizmo(forms);
 
+        yield return FreeFormGizmo(forms);
+
         if (forms.IsWearingSomeoneElse) yield return RevertGizmo();
     }
 
@@ -55,6 +57,32 @@ public class BodyAbsorption : Verse.Gene {
         if (forms.Known.Count == 0) wear.Disable("CS_Kandra_NoFormsYet".Translate());
 
         return wear;
+    }
+
+    /// <summary>
+    ///     Shaping a body nobody has eaten, for a kandra practised enough to invent one.
+    /// </summary>
+    /// <remarks>
+    ///     CanFreeForm has existed unused since the comp was written. This is what it was for:
+    ///     below the skill threshold a kandra can only reproduce what it has taken bones from,
+    ///     and above it the shape no longer needs a template.
+    /// </remarks>
+    private Command_Action FreeFormGizmo(CompKandraForms forms) {
+        Command_Action free = new Command_Action {
+            defaultLabel = "CS_Kandra_FreeForm".Translate(),
+            defaultDesc = "CS_Kandra_FreeFormDesc".Translate(),
+            icon = Icon,
+            action = () => {
+                KandraShapeshift.WearInvented(pawn);
+                forms.Mind.Store(pawn);
+            },
+        };
+
+        if (!forms.CanFreeForm) {
+            free.Disable("CS_Kandra_FreeFormLocked".Translate(forms.Props.freeFormSkill.Named("LEVEL")));
+        }
+
+        return free;
     }
 
     private Command_Action RevertGizmo() {

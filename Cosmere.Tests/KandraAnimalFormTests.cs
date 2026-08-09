@@ -759,4 +759,28 @@ public class KandraAnimalFormTests {
             "An invisible hediff has no render node, and the kandra vanishes."
         );
     }
+
+    /// <summary>
+    ///     VerbProperties.GetDamageFactorFor returns 0 for a body part group the body does not
+    ///     have, and Verb.IsStillUsableBy then drops the verb silently - so a wolf's paw attack on
+    ///     a human body would never once land.
+    /// </summary>
+    [TestMethod]
+    public void TheShapesTeethAttachToSomethingTheBodyHas() {
+        string verbs = Kandra("HediffComp_KandraShapeVerbs.cs");
+
+        Assert.IsTrue(verbs.Contains("linkedBodyPartsGroup = Bite", StringComparison.Ordinal));
+        Assert.IsFalse(
+            verbs.Contains("FrontLeftPaw", StringComparison.Ordinal),
+            "A human body has no paws, and the verb would be dropped without a word."
+        );
+        Assert.IsTrue(
+            verbs.Contains("verbTracker = new VerbTracker(this)", StringComparison.Ordinal),
+            "VerbTracker caches its list, so a kandra would keep biting like the first shape it wore."
+        );
+        Assert.IsTrue(
+            verbs.Contains(": HediffComp_VerbGiver, IVerbOwner", StringComparison.Ordinal),
+            "Re-declaring the interface is what re-maps Tools away from the def's copy."
+        );
+    }
 }

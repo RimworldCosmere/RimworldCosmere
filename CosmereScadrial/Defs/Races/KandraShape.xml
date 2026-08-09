@@ -58,7 +58,10 @@
                 </capMods>
             </li>
         </stages>
-            <renderNodeProperties>
+            <comps>
+            <li Class="Cosmere.System.Scadrial.Kandra.HediffCompProperties_KandraShapeVerbs" />
+        </comps>
+        <renderNodeProperties>
             <li>
                 <debugLabel>Kandra shape</debugLabel>
                 <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraShape</nodeClass>

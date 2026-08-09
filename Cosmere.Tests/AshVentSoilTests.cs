@@ -11,8 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Cosmere.Tests;
 
 /// <summary>
-///     Volcanic ground is fertile, so the patch a vent keeps swept is worth farming. The whole
-///     feature rests on that patch never being deep enough for the ash to take the terrain back.
+///     Volcanic ground is fertile, so the patch a vent keeps swept is worth farming. Inside the
+///     clearing the ash can never take that patch back; past it, AshTerrainMemory hands it back.
 /// </summary>
 [TestClass]
 public class AshVentSoilTests {
@@ -135,61 +135,6 @@ public class AshVentSoilTests {
         }
 
         Assert.IsTrue(found >= 2, $"expected the ash and vent soil lookups, found {found}.");
-    }
-
-    /// <summary>
-    ///     The guard the whole placement rests on. Anywhere the vent lays soil, the feather's own
-    ///     ceiling has to stay under the depth at which a cell turns into ash terrain.
-    /// </summary>
-    [TestMethod]
-    public void SoilIsOnlyLaidWhereAshCanNeverTakeTheTerrain() {
-        for (float radius = 0f; radius <= 12f; radius += 0.5f) {
-            for (float distance = 0f; distance <= 16f; distance += 0.05f) {
-                if (!AshPlume.StaysBelowTheSwap(distance, radius)) continue;
-
-                int ceiling = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, distance, radius);
-                Assert.IsTrue(
-                    ceiling < AshDepthMath.TerrainSwapMm,
-                    $"radius {radius}, {distance} cells out: the feather allows {ceiling}mm, at or over the "
-                    + $"{AshDepthMath.TerrainSwapMm}mm swap point, so soil laid there would go under ash."
-                );
-            }
-        }
-    }
-
-    /// <summary>The mouth is swept to bare ground at every radius, so it always takes soil.</summary>
-    [TestMethod]
-    public void TheMouthItselfAlwaysTakesSoil() {
-        foreach (float radius in new[] { 0f, 1f, 3f, 12f }) {
-            Assert.IsTrue(AshPlume.StaysBelowTheSwap(0f, radius), $"radius {radius} refused its own mouth.");
-        }
-    }
-
-    /// <summary>Past the feather the vent thins nothing, so anything laid there is on borrowed time.</summary>
-    [TestMethod]
-    public void NothingIsLaidPastTheFeather() {
-        Assert.IsFalse(AshPlume.StaysBelowTheSwap(3f, 3f), "the outer edge is the first untouched ring.");
-        Assert.IsFalse(AshPlume.StaysBelowTheSwap(9f, 3f));
-        Assert.IsFalse(AshPlume.StaysBelowTheSwap(1f, 0f), "a zero radius reached a cell off the mouth.");
-    }
-
-    /// <summary>
-    ///     At the shipped radius 3 the patch has to be worth walking to. A rule that only ever
-    ///     returned the 2x2 mouth would pass every other test here and hand the player nothing.
-    /// </summary>
-    [TestMethod]
-    public void TheShippedRadiusGivesAPatchWorthFarming() {
-        int cells = 0;
-        for (int x = -4; x <= 5; x++) {
-            for (int z = -4; z <= 5; z++) {
-                int dx = x < 0 ? -x : x > 1 ? x - 1 : 0;
-                int dz = z < 0 ? -z : z > 1 ? z - 1 : 0;
-                if (AshPlume.StaysBelowTheSwap((float)Math.Sqrt(dx * dx + dz * dz), 3f)) cells++;
-            }
-        }
-
-        // A 2x2 mouth grown to distance 2.236: 32 cells, the four diagonal corners at 2.828 cut.
-        Assert.AreEqual(32, cells, "the vent soil patch changed size.");
     }
 
     [TestMethod]

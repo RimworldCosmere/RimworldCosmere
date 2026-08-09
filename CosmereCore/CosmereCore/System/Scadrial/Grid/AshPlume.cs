@@ -80,17 +80,6 @@ public static class AshPlume {
     }
 
     /// <summary>
-    ///     Whether the feather holds this cell under the depth ash becomes terrain. Ground laid
-    ///     inside it stays put; ground laid outside it goes under the first drift that banks up.
-    /// </summary>
-    public static bool StaysBelowTheSwap(float distance, float radius) {
-        if (distance <= 0f) return true;
-        if (distance >= radius) return false;
-
-        return CeilingMm(distance, radius) < AshDepthMath.TerrainSwapMm;
-    }
-
-    /// <summary>
     ///     Waist deep at the feather's edge, not the grid cap. The burial wash saturates its alpha
     ///     there and the movement bucket tops out there, so a higher ceiling moves nothing visible.
     /// </summary>

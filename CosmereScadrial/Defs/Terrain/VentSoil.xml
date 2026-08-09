@@ -35,7 +35,6 @@
         <takeFootprints>true</takeFootprints>
         <tags>
             <li>Soil</li>
-            <li>Cosmere_VentSoil</li>
         </tags>
     </TerrainDef>
 

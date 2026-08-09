@@ -360,8 +360,8 @@ public class CompAshVent : ThingComp {
     ) {
         int index = map.cellIndices.CellToIndex(cell);
 
-        // AshPlume.StaysBelowTheSwap used to gate this, and it only holds inside the clearing the
-        // vent thins. Out at the front the plume caps nothing, so ask the grid what is really there.
+        // The plume's own feather caps nothing out at the front, only inside the clearing the vent
+        // thins, so ask the grid what is really on the cell rather than what the feather allows.
         if (AshDepthMath.ShouldSwapToAshTerrain(tracker.Grid.GetDepthMm(index), false)) return false;
 
         // Ash terrain standing over a remembered original. Climbing here would strand that memory,

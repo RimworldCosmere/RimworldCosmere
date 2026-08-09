@@ -17,19 +17,45 @@ public class CompProperties_KandraShapePair : CompProperties {
 ///     Holding the pawn here rather than leaving it on the map is what makes the swap reversible.
 ///     It is despawned but not destroyed, so its skills, hediffs, relationships and remembered
 ///     forms all survive the trip and come back with it.
+///     <para>
+///         It is held in a <see cref="ThingOwner" /> rather than a plain field so the game can
+///         still find it. A despawned pawn with no holder has a null <c>MapHeld</c>, and anything
+///         that starts from the map - the social tab most visibly - sees nobody at all.
+///     </para>
 /// </remarks>
-public class CompKandraShapePair : ThingComp {
-    private Pawn? held;
+public class CompKandraShapePair : ThingComp, IThingHolder {
+    private ThingOwner<Pawn> inside;
 
     /// <summary>What the kandra was holding and wearing, so it goes back the same way.</summary>
     private List<Verse.Thing> wasEquipped = [];
     private List<Verse.Thing> wasWorn = [];
 
-    public Pawn? Held => held;
+    public CompKandraShapePair() {
+        inside = new ThingOwner<Pawn>(this, true);
+    }
+
+    public Pawn? Held => inside.Count > 0 ? inside[0] : null;
 
     public List<Verse.Thing> WasEquipped => wasEquipped;
 
     public List<Verse.Thing> WasWorn => wasWorn;
+
+    /// <summary>
+    ///     The shape itself, so the kandra's holder chain reaches the map it is standing on.
+    /// </summary>
+    /// <remarks>
+    ///     Explicit, because ThingComp already has a ParentHolder that means something else: the
+    ///     holder of the shape, which is nothing at all while the shape is walking around.
+    /// </remarks>
+    IThingHolder IThingHolder.ParentHolder => (IThingHolder)parent;
+
+    public void GetChildHolders(List<IThingHolder> outChildren) {
+        ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+    }
+
+    public ThingOwner GetDirectlyHeldThings() {
+        return inside;
+    }
 
     public void RememberGear(IEnumerable<Verse.Thing> equipped, IEnumerable<Verse.Thing> worn) {
         wasEquipped = [.. equipped];
@@ -37,11 +63,13 @@ public class CompKandraShapePair : ThingComp {
     }
 
     public void Hold(Pawn kandra) {
-        held = kandra;
+        inside.TryAddOrTransfer(kandra, false);
     }
 
     public void Release() {
-        held = null;
+        Pawn? kandra = Held;
+        if (kandra != null) inside.Remove(kandra);
+
         wasEquipped = [];
         wasWorn = [];
     }
@@ -57,17 +85,17 @@ public class CompKandraShapePair : ThingComp {
     public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null) {
         base.Notify_Killed(prevMap, dinfo);
 
-        if (held == null) return;
+        Pawn? kandra = Held;
+        if (kandra == null) return;
 
-        Pawn kandra = held;
-        held = null;
+        inside.Remove(kandra);
 
         GenSpawn.Spawn(kandra, parent.Position, prevMap);
         kandra.Kill(dinfo);
     }
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
-        if (held == null) yield break;
+        if (Held == null) yield break;
         if (parent.Faction != Faction.OfPlayer) yield break;
 
         yield return new Command_Action {
@@ -79,15 +107,17 @@ public class CompKandraShapePair : ThingComp {
     }
 
     public override string CompInspectStringExtra() {
-        if (held == null) return string.Empty;
+        Pawn? kandra = Held;
+        if (kandra == null) return string.Empty;
 
-        return "CS_Kandra_WearingAnimal".Translate(held.Name?.ToStringShort.Named("PAWN") ?? string.Empty.Named("PAWN"))
+        return "CS_Kandra_WearingAnimal".Translate(kandra.Name?.ToStringShort.Named("PAWN") ?? string.Empty.Named("PAWN"))
             .Resolve();
     }
 
     public override void PostExposeData() {
         base.PostExposeData();
-        Scribe_Deep.Look(ref held, "heldKandra");
+        Scribe_Deep.Look(ref inside, "inside", this);
+        inside ??= new ThingOwner<Pawn>(this, true);
 
         // By reference: the things themselves live in this pawn's inventory.
         Scribe_Collections.Look(ref wasEquipped, "wasEquipped", LookMode.Reference);

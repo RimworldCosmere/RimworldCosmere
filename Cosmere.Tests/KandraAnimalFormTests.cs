@@ -111,7 +111,7 @@ public class KandraAnimalFormTests {
         );
 
         string pair = Kandra("CompKandraShapePair.cs");
-        Assert.IsTrue(pair.Contains("Scribe_Deep.Look(ref held", StringComparison.Ordinal), "It has to survive a save.");
+        Assert.IsTrue(pair.Contains("Scribe_Deep.Look(ref inside", StringComparison.Ordinal), "It has to survive a save.");
         Assert.IsTrue(
             pair.Contains("Notify_Killed", StringComparison.Ordinal),
             "Killing the animal must not silently delete the person inside it."
@@ -554,13 +554,17 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void AShapeIsTheSameSizeAsTheAnimal() {
+        string node = Kandra("PawnRenderNode_KandraShape.cs");
+
+        Assert.IsTrue(
+            node.Contains("MeshPool.GetMeshSetForSize(size.x, size.y)", StringComparison.Ordinal),
+            "The base returns a fixed human body quad and never reads the graphic's drawSize."
+        );
+        Assert.IsTrue(node.Contains("public override GraphicMeshSet MeshSetFor", StringComparison.Ordinal));
+
         Assert.IsTrue(
             Generator.Contains("CopyOwnFields(source, stage)", StringComparison.Ordinal),
-            "The stage has to inherit the animal's scaling, not invent its own."
-        );
-        Assert.IsTrue(
-            Generator.Contains("BindingFlags.DeclaredOnly", StringComparison.Ordinal),
-            "Only what LifeStageDef declares; the Def bookkeeping must stay ours."
+            "Health scale, hunger and melee factors still come from the animal's own stage."
         );
     }
 
@@ -626,5 +630,42 @@ public class KandraAnimalFormTests {
             transfer.Contains("Skills(kandra, shape)", StringComparison.Ordinal),
             "Skills still move; the shape has to actually be able to do the work."
         );
+    }
+
+    /// <summary>
+    ///     A despawned pawn with no holder has a null MapHeld, and SocialCardUtility starts from
+    ///     the map. The kandra was in a plain field, so its social tab was empty.
+    /// </summary>
+    [TestMethod]
+    public void TheHeldKandraIsSomewhereTheGameCanFindIt() {
+        string pair = Kandra("CompKandraShapePair.cs");
+
+        Assert.IsTrue(pair.Contains("IThingHolder", StringComparison.Ordinal));
+        Assert.IsTrue(pair.Contains("ThingOwner<Pawn> inside", StringComparison.Ordinal));
+        Assert.IsTrue(
+            pair.Contains("IThingHolder.ParentHolder => (IThingHolder)parent", StringComparison.Ordinal),
+            "It has to point at the shape, or the chain never reaches a map."
+        );
+        Assert.IsFalse(
+            pair.Contains("private Pawn? held;", StringComparison.Ordinal),
+            "A plain field is exactly what left the kandra nowhere."
+        );
+    }
+
+    /// <summary>
+    ///     Ancestry is the only thing that grants a connection floor and it keys off the xenotype.
+    ///     Kandra and koloss were missing from Scadrial's list, so both read as Connected to
+    ///     nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void EveryScadrianXenotypeBelongsToScadrial() {
+        XDocument worlds = XDocument.Load(Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Worlds.xml"));
+        List<string> listed = worlds.Descendants("xenotypes")
+            .Elements("li")
+            .Select(e => e.Value)
+            .ToList();
+
+        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Kandra"));
+        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Koloss"));
     }
 }

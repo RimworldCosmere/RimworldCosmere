@@ -101,28 +101,53 @@ public static class KandraShapeGenerator {
     }
 
     /// <summary>
-    ///     Its own life stage, purely to carry silhouette data.
+    ///     The animal's own life stage, plus the silhouette data a humanlike pawn needs.
     /// </summary>
     /// <remarks>
-    ///     PawnRenderer.RenderPawnAt reads CurLifeStage.silhouetteGraphicData unguarded for every
-    ///     humanlike pawn, and the animal life stages have none, so without this it throws once a
-    ///     frame. The animal's own picture stands in for the outline.
+    ///     Two things force this. PawnRenderer.RenderPawnAt reads CurLifeStage.silhouetteGraphicData
+    ///     unguarded for every humanlike pawn and the animal stages have none, so it threw once a
+    ///     frame. And a stage built from nothing takes every default, including bodySizeFactor of
+    ///     1 - small birds live on AnimalJuvenile at 0.5, so a kandra bluebird came out at twice
+    ///     the size of a real one.
+    ///     <para>
+    ///         The fields are copied rather than listed so a stage stays whatever the animal's
+    ///         does, including fields added by a mod or a later RimWorld.
+    ///     </para>
     /// </remarks>
     private static LifeStageDef ShapeLifeStage(PawnKindDef animal, GraphicData picture) {
         LifeStageDef stage = new LifeStageDef {
             defName = "Cosmere_Scadrial_LifeStage_KandraShape_" + animal.defName,
             label = "adult",
-            visible = false,
-            reproductive = false,
-            silhouetteGraphicData = new GraphicData {
-                texPath = picture.texPath,
-                graphicClass = typeof(Graphic_Multi),
-                drawSize = picture.drawSize,
-            },
+        };
+
+        LifeStageDef? source = animal.race.race.lifeStageAges is { Count: > 0 } ages
+            ? ages[^1].def
+            : null;
+        if (source != null) CopyOwnFields(source, stage);
+
+        stage.visible = false;
+        stage.reproductive = false;
+        stage.silhouetteGraphicData = new GraphicData {
+            texPath = picture.texPath,
+            graphicClass = typeof(Graphic_Multi),
+            drawSize = picture.drawSize,
         };
 
         Register(stage);
         return stage;
+    }
+
+    /// <summary>Copies what LifeStageDef itself declares, leaving the Def bookkeeping alone.</summary>
+    private static void CopyOwnFields(LifeStageDef from, LifeStageDef to) {
+        global::System.Reflection.FieldInfo[] fields = typeof(LifeStageDef).GetFields(
+            global::System.Reflection.BindingFlags.Public
+            | global::System.Reflection.BindingFlags.Instance
+            | global::System.Reflection.BindingFlags.DeclaredOnly
+        );
+
+        for (int i = 0; i < fields.Length; i++) {
+            fields[i].SetValue(to, fields[i].GetValue(from));
+        }
     }
 
     private static ThingDef ShapeRace(

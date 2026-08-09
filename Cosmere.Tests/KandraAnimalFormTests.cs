@@ -546,4 +546,21 @@ public class KandraAnimalFormTests {
             "The property is lossy in both directions; the backing field is not."
         );
     }
+
+    /// <summary>
+    ///     A life stage built from nothing takes every default, bodySizeFactor of 1 included.
+    ///     Small birds live on AnimalJuvenile at 0.5, so a kandra bluebird drew at twice the size
+    ///     of a real one standing next to it.
+    /// </summary>
+    [TestMethod]
+    public void AShapeIsTheSameSizeAsTheAnimal() {
+        Assert.IsTrue(
+            Generator.Contains("CopyOwnFields(source, stage)", StringComparison.Ordinal),
+            "The stage has to inherit the animal's scaling, not invent its own."
+        );
+        Assert.IsTrue(
+            Generator.Contains("BindingFlags.DeclaredOnly", StringComparison.Ordinal),
+            "Only what LifeStageDef declares; the Def bookkeeping must stay ours."
+        );
+    }
 }

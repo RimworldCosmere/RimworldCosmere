@@ -84,6 +84,9 @@ public class AshmountEruption : RimWorld.GameCondition {
         IReadOnlyList<CompAshVent> vents = tracker.Vents;
         int reach = Mathf.CeilToInt(AshEruption.TremorRadiusCells);
 
+        // One buffer for the whole beat. Six vents at reach 8 is around 1,200 cells to copy.
+        List<Verse.Thing> standing = [];
+
         for (int i = 0; i < vents.Count; i++) {
             IntVec3 mouth = vents[i].parent.Position;
 
@@ -94,7 +97,7 @@ public class AshmountEruption : RimWorld.GameCondition {
                     mouth.DistanceTo(cell), AshEruption.TremorRadiusCells, AshEruption.TremorPeakDamage
                 );
 
-                if (damage > 0) ShakeCell(map, cell, damage);
+                if (damage > 0) ShakeCell(map, cell, damage, standing);
             }
         }
     }
@@ -103,12 +106,14 @@ public class AshmountEruption : RimWorld.GameCondition {
     ///     Natural rock is skipped deliberately. A tremor that chewed through a mountain would be a
     ///     better payday than the metal the vent throws, and free.
     /// </summary>
-    private static void ShakeCell(Verse.Map map, IntVec3 cell, int damage) {
-        List<Verse.Thing> things = map.thingGrid.ThingsListAtFast(cell);
+    private static void ShakeCell(Verse.Map map, IntVec3 cell, int damage, List<Verse.Thing> standing) {
+        // Copied, not walked live: killing a shelf hands its overflow to the next cell, which takes
+        // several entries off the grid list in one TakeDamage and outruns any cursor into it.
+        standing.Clear();
+        standing.AddRange(map.thingGrid.ThingsListAtFast(cell));
 
-        // Backwards: a tremor can destroy what it hits, and that comes straight off this list.
-        for (int i = things.Count - 1; i >= 0; i--) {
-            Verse.Thing thing = things[i];
+        for (int i = 0; i < standing.Count; i++) {
+            Verse.Thing thing = standing[i];
 
             // One cell per thing, or a wide building takes the tremor once per square it covers.
             if (thing.Position != cell) continue;

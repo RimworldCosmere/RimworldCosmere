@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Cosmere.System.Scadrial.Grid;
 using Cosmere.System.Scadrial.Util;
@@ -57,6 +58,19 @@ public class AshEruptionTests {
         Assert.IsFalse(string.IsNullOrEmpty(value), $"{def.Element("defName")?.Value} carries no {name}.");
 
         return value!;
+    }
+
+    /// <summary>The condition's own source, for the checks a Verse-bound tick cannot be run for.</summary>
+    private static string ConditionSource {
+        get {
+            string path = Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "GameCondition", "AshmountEruption.cs"
+            );
+
+            Assert.IsTrue(File.Exists(path), $"Expected the eruption condition at {path}");
+
+            return File.ReadAllText(path);
+        }
     }
 
     /// <summary>Whether any C# file under CosmereCore declares this fully qualified class.</summary>
@@ -215,6 +229,27 @@ public class AshEruptionTests {
         int perTremor = AshEruption.TremorDamage(0f, AshEruption.TremorRadiusCells, AshEruption.TremorPeakDamage);
 
         Assert.AreEqual(108, perTremor * AshEruption.TremorCount, "the tremor budget moved without the comment moving.");
+    }
+
+    /// <summary>
+    ///     One TakeDamage can take several things off a cell at once - a dying shelf hands its
+    ///     overflow to a neighbour - so the tremor has to walk a copy and not the grid's own list.
+    /// </summary>
+    [TestMethod]
+    public void TheTremorWalksACopyOfTheCellAndNotTheGridsOwnList() {
+        string source = ConditionSource;
+
+        Assert.AreEqual(
+            1,
+            Regex.Matches(source, @"ThingsListAtFast\s*\(").Count,
+            "the condition reads the thing grid's live list somewhere new, which this check does not cover."
+        );
+
+        Assert.IsTrue(
+            Regex.IsMatch(source, @"AddRange\(\s*map\.thingGrid\.ThingsListAtFast\s*\("),
+            "the tremor indexes the thing grid's own list. Destroying a shelf relocates its overflow inside the "
+            + "same TakeDamage, which takes more than one entry off that list and throws on the next index."
+        );
     }
 
     /// <summary>The vent's own comp block, which is where the everyday throw cadence is tuned.</summary>

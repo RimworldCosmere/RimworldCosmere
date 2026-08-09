@@ -96,12 +96,14 @@ public static class KandraAnimalShape {
 
         bool wasSelected = Find.Selector.IsSelected(animal);
 
-        pair.Release();
-
         // What the shape learned or felt comes back with it. Its injuries do not: they were done
         // to a body the kandra was wearing rather than to the kandra.
         KandraShapeTransfer.OutOf(animal, kandra);
         UnstowGear(animal, kandra, pair);
+
+        // Only now. Release clears the record of what was equipment and what was apparel, and
+        // without it everything comes back as cargo sitting in a pocket.
+        pair.Release();
 
         animal.Destroy();
 

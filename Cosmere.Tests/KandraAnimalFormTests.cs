@@ -300,4 +300,18 @@ public class KandraAnimalFormTests {
         Assert.IsTrue(stow >= 0 && despawn >= 0);
         Assert.IsTrue(stow < despawn, "Gear must move while the kandra is still on the map.");
     }
+
+    /// <summary>
+    ///     Release clears the record of what was equipment and what was apparel, so it has to run
+    ///     after the gear is handed back. Doing it first put a re-equipped rifle in a pocket.
+    /// </summary>
+    [TestMethod]
+    public void TheGearRecordSurvivesUntilItIsUsed() {
+        string shape = Kandra("KandraAnimalShape.cs");
+        int unstow = shape.IndexOf("UnstowGear(animal, kandra, pair)", StringComparison.Ordinal);
+        int release = shape.IndexOf("pair.Release()", StringComparison.Ordinal);
+
+        Assert.IsTrue(unstow >= 0 && release >= 0);
+        Assert.IsTrue(unstow < release, "Release wipes the gear lists; it must come after UnstowGear.");
+    }
 }

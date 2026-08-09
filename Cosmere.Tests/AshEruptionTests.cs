@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Cosmere.System.Scadrial.Comp.Map;
 using Cosmere.System.Scadrial.Grid;
 using Cosmere.System.Scadrial.Util;
+using Cosmere.System.Scadrial.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cosmere.Tests;
@@ -269,6 +271,104 @@ public class AshEruptionTests {
             "GameConditionTick does not check the era. An eruption in flight when the Catacendre lands keeps "
             + "throwing metal and shaking buildings, and ThrowOnce carries no gate of its own."
         );
+    }
+
+    /// <summary>Ticks a stripe waits between visits, so also the tracker's real sampling rate.</summary>
+    private const int Stripes = 64;
+
+    private const int TicksPerDay = 60000;
+    private const int TicksPerHour = 2500;
+
+    /// <summary>
+    ///     Millimetres the eruption puts down over and above the Final Empire, walked the way the
+    ///     tracker walks it: ease once per stripe visit, then deposit at whatever severity that left.
+    /// </summary>
+    private static float ExtraMillimetres(float durationDays, float exposure) {
+        float full = AshDepthTracker.BaseRateMmPerDay * exposure;
+        int duration = (int)(durationDays * TicksPerDay);
+
+        // Long enough for the ease to walk the whole spike back off, plus one visit of slack.
+        int span = duration + (int)(AshEruption.PeakStep / AshDepthMath.SeverityEasePerDay * TicksPerDay) + Stripes;
+
+        float severity = AshEruption.SpikeSeverity(AshPressure.Default);
+        float target = severity;
+        float erupting = 0f;
+        float standing = 0f;
+
+        for (int tick = 0; tick <= span; tick += Stripes) {
+            if (tick > duration) target = AshPressure.Default;
+
+            severity = AshDepthMath.EaseSeverity(
+                severity, target, AshDepthMath.SeverityEasePerDay, Stripes / (float)TicksPerDay
+            );
+
+            erupting += AshDepthMath.FallRateMmPerHour(severity, full) * (Stripes / (float)TicksPerHour);
+            standing += AshDepthMath.FallRateMmPerHour(AshPressure.Default, full) * (Stripes / (float)TicksPerHour);
+        }
+
+        return erupting - standing;
+    }
+
+    /// <summary>The rolled range the incident def hands vanilla as the condition's duration.</summary>
+    private static (float min, float max) DurationDays() {
+        string[] parts = Field(DefNamed("IncidentDef", IncidentDefName), "durationDays").Split('~');
+        Assert.AreEqual(2, parts.Length, "durationDays is not a range.");
+
+        return (
+            float.Parse(parts[0], CultureInfo.InvariantCulture), float.Parse(parts[1], CultureInfo.InvariantCulture)
+        );
+    }
+
+    /// <summary>
+    ///     The one figure the eruption is tuned on that a player reads as depth rather than as a
+    ///     dial. Held as a range because durationDays is rolled, and pinned because PeakStep, the
+    ///     ease cap and the def's duration all move it and all live in different files.
+    /// </summary>
+    [TestMethod]
+    public void TheEruptionLeavesBetween900AndAMetreAndAThirdOfExtraAshOnTheWorstTile() {
+        (float min, float max) = DurationDays();
+
+        float shortest = ExtraMillimetres(min, AshmountExposure.MaxMultiplier);
+        float longest = ExtraMillimetres(max, AshmountExposure.MaxMultiplier);
+
+        Assert.AreEqual(916f, shortest, 5f, $"the shortest eruption now leaves {shortest:0} mm rather than 916.");
+        Assert.AreEqual(1311f, longest, 5f, $"the longest eruption now leaves {longest:0} mm rather than 1311.");
+    }
+
+    /// <summary>
+    ///     Every roll buries what is standing on the ground, which is the point. Nothing stops the
+    ///     longest roll turning the ground itself to ash terrain either, so state both.
+    /// </summary>
+    [TestMethod]
+    public void EvenTheShortestEruptionBuriesTheWorstTile() {
+        (float min, float max) = DurationDays();
+
+        Assert.IsTrue(
+            ExtraMillimetres(min, AshmountExposure.MaxMultiplier) > AshDepthMath.BuriedMm,
+            $"the shortest eruption no longer clears the {AshDepthMath.BuriedMm} mm that hides and unhauls items."
+        );
+
+        Assert.IsTrue(
+            ExtraMillimetres(max, AshmountExposure.MaxMultiplier) > AshDepthMath.TerrainSwapMm,
+            $"the longest eruption no longer clears the {AshDepthMath.TerrainSwapMm} mm that turns ground to ash."
+        );
+    }
+
+    /// <summary>
+    ///     Exposure is a flat multiplier on the fall rate, so an ordinary tile takes a third of
+    ///     what the heartland does. A tile that only gets a nuisance dusting is the intended floor.
+    /// </summary>
+    [TestMethod]
+    public void AnUnexposedTileTakesAThirdOfWhatTheHeartlandTakes() {
+        (float min, float max) = DurationDays();
+        float midpoint = (min + max) / 2f;
+
+        float open = ExtraMillimetres(midpoint, 1f);
+        float heartland = ExtraMillimetres(midpoint, AshmountExposure.MaxMultiplier);
+
+        Assert.AreEqual(371f, open, 5f, $"an ordinary tile now takes {open:0} mm rather than 371.");
+        Assert.AreEqual(AshmountExposure.MaxMultiplier, heartland / open, 0.01f);
+        Assert.IsTrue(open < AshDepthMath.BuriedMm, "an eruption now buries an ordinary tile as well.");
     }
 
     /// <summary>The vent's own comp block, which is where the everyday throw cadence is tuned.</summary>

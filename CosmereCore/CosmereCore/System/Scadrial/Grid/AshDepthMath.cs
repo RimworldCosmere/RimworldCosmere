@@ -102,6 +102,9 @@ public static class AshDepthMath {
         return shaped * ratePerDayAtFull / 24f;
     }
 
+    /// <summary>Most severity the sweep lets a day move it. Faster than this reads as a cut.</summary>
+    public const float SeverityEasePerDay = 0.12f;
+
     /// <summary>
     ///     Severity never jumps to its target. A progression beat lands over days so the player
     ///     reads it as the world thickening rather than as a cut.

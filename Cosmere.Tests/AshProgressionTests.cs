@@ -127,7 +127,7 @@ public class AshProgressionTests {
                 next++;
             }
 
-            severity = AshDepthMath.EaseSeverity(severity, target, 0.12f, 1f);
+            severity = AshDepthMath.EaseSeverity(severity, target, AshDepthMath.SeverityEasePerDay, 1f);
 
             if (!ended) {
                 Assert.IsTrue(

@@ -164,7 +164,9 @@ public class AshDepthTracker : MapComponent {
     public override void MapComponentTick() {
         int stripe = Find.TickManager.TicksGame % Stripes;
 
-        severity = AshDepthMath.EaseSeverity(severity, severityTarget, 0.12f, 1f / GenDate.TicksPerDay);
+        severity = AshDepthMath.EaseSeverity(
+            severity, severityTarget, AshDepthMath.SeverityEasePerDay, 1f / GenDate.TicksPerDay
+        );
 
         if (!AshEra.CanAccumulate(map)) {
             if (severityTarget != 0f) severityTarget = 0f;

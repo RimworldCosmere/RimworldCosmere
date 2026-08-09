@@ -191,7 +191,7 @@ public class AshDepthTests {
     [TestMethod]
     public void SeverityNeverJumpsToItsTarget() {
         float oneTick = 1f / 60000f;
-        float stepped = AshDepthMath.EaseSeverity(0f, 1f, 0.12f, oneTick);
+        float stepped = AshDepthMath.EaseSeverity(0f, 1f, AshDepthMath.SeverityEasePerDay, oneTick);
 
         Assert.IsTrue(stepped > 0f);
         Assert.IsTrue(stepped < 0.001f, $"one tick moved severity by {stepped}, which reads as a jump cut");
@@ -201,7 +201,7 @@ public class AshDepthTests {
     public void SeverityEventuallyArrives() {
         float value = 0f;
         for (int day = 0; day < 200; day++) {
-            value = AshDepthMath.EaseSeverity(value, 1f, 0.12f, 1f);
+            value = AshDepthMath.EaseSeverity(value, 1f, AshDepthMath.SeverityEasePerDay, 1f);
         }
 
         Assert.AreEqual(1f, value, 0.0001f);

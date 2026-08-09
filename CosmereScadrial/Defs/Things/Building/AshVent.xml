@@ -36,7 +36,7 @@
                 <!-- Per vent, so the six on a mount-adjacent tile throw six times as often as a
                      lone one out at the belt's edge. -->
                 <throwsPerDay>0.5</throwsPerDay>
-                <lumpsPerThrow>4</lumpsPerThrow>
+                <lumpsPerThrow>1</lumpsPerThrow>
                 <!-- Inside the plume, not past it. Out here the vent's own fall is a fifteenth of
                      what lands on its mouth, which is the days the player has to come and look. -->
                 <throwRadius>6</throwRadius>

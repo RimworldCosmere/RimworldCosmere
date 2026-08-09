@@ -19,8 +19,8 @@ public class CompProperties_AshVent : CompProperties {
     /// <summary>Throws a day. One lump every two days at the default.</summary>
     public float throwsPerDay = 0.5f;
 
-    /// <summary>How big a stack one throw lands.</summary>
-    public int lumpsPerThrow = 4;
+    /// <summary>How big a stack one throw lands. Small on purpose - an eruption throws 25 times.</summary>
+    public int lumpsPerThrow = 1;
 
     /// <summary>How far from the vent a lump can land, in cells.</summary>
     public int throwRadius = 6;

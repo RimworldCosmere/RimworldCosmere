@@ -33,11 +33,27 @@ public class PawnRenderNode_KandraShape : PawnRenderNode {
     public PawnRenderNode_KandraShape(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
         : base(pawn, props, tree) { }
 
-    public override Graphic? GraphicFor(Pawn pawn) {
-        KandraShapeGraphic? shape = pawn.def.GetModExtension<KandraShapeGraphic>();
-        if (shape == null) return null;
+    /// <summary>
+    ///     Draws on a quad the size of the animal, not the size of a person.
+    /// </summary>
+    /// <remarks>
+    ///     The base returns <c>HumanlikeMeshPoolUtility.GetHumanlikeBodySetForPawn</c>, a fixed
+    ///     1.5 by 1.5 human body quad, and the graphic's own drawSize is never consulted - the
+    ///     mesh comes from the pool rather than from <c>Graphic.MeshAt</c>. So a bluebird authored
+    ///     at 0.6 was being stretched over a human.
+    /// </remarks>
+    public override GraphicMeshSet MeshSetFor(Pawn pawn) {
+        GraphicData? data = DataFor(pawn);
+        if (data == null) return base.MeshSetFor(pawn);
 
-        GraphicData? data = pawn.gender == Gender.Female && shape.female != null ? shape.female : shape.body;
+        Vector2 size = data.drawSize;
+        if (size.x <= 0f || size.y <= 0f) return base.MeshSetFor(pawn);
+
+        return MeshPool.GetMeshSetForSize(size.x, size.y);
+    }
+
+    public override Graphic? GraphicFor(Pawn pawn) {
+        GraphicData? data = DataFor(pawn);
         if (data == null || string.IsNullOrEmpty(data.texPath)) return null;
 
         // GraphicData.Graphic applies the colour, mask and shader the animal was authored with.
@@ -48,5 +64,12 @@ public class PawnRenderNode_KandraShape : PawnRenderNode {
         Color colourTwo = pawn.health.hediffSet.GetSkinColor(graphic.ColorTwo);
 
         return graphic.GetColoredVersion(graphic.Shader, colour, colourTwo);
+    }
+
+    private static GraphicData? DataFor(Pawn pawn) {
+        KandraShapeGraphic? shape = pawn.def.GetModExtension<KandraShapeGraphic>();
+        if (shape == null) return null;
+
+        return pawn.gender == Gender.Female && shape.female != null ? shape.female : shape.body;
     }
 }

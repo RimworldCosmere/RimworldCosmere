@@ -111,7 +111,7 @@ public class KandraAnimalFormTests {
         );
 
         string pair = Kandra("CompKandraShapePair.cs");
-        Assert.IsTrue(pair.Contains("Scribe_Deep.Look(ref held", StringComparison.Ordinal), "It has to survive a save.");
+        Assert.IsTrue(pair.Contains("Scribe_Deep.Look(ref inside", StringComparison.Ordinal), "It has to survive a save.");
         Assert.IsTrue(
             pair.Contains("Notify_Killed", StringComparison.Ordinal),
             "Killing the animal must not silently delete the person inside it."
@@ -545,5 +545,127 @@ public class KandraAnimalFormTests {
             transfer.Contains("target.Level = source.Level;", StringComparison.Ordinal),
             "The property is lossy in both directions; the backing field is not."
         );
+    }
+
+    /// <summary>
+    ///     A life stage built from nothing takes every default, bodySizeFactor of 1 included.
+    ///     Small birds live on AnimalJuvenile at 0.5, so a kandra bluebird drew at twice the size
+    ///     of a real one standing next to it.
+    /// </summary>
+    [TestMethod]
+    public void AShapeIsTheSameSizeAsTheAnimal() {
+        string node = Kandra("PawnRenderNode_KandraShape.cs");
+
+        Assert.IsTrue(
+            node.Contains("MeshPool.GetMeshSetForSize(size.x, size.y)", StringComparison.Ordinal),
+            "The base returns a fixed human body quad and never reads the graphic's drawSize."
+        );
+        Assert.IsTrue(node.Contains("public override GraphicMeshSet MeshSetFor", StringComparison.Ordinal));
+
+        Assert.IsTrue(
+            Generator.Contains("CopyOwnFields(source, stage)", StringComparison.Ordinal),
+            "Health scale, hunger and melee factors still come from the animal's own stage."
+        );
+    }
+
+    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
+        new[] { RepoRoot, "CosmereCore", "CosmereCore", "Core" }.Concat(parts).ToArray()
+    ));
+
+    /// <summary>
+    ///     Connections, the log, the social tab and the Codex are all keyed by the pawn, and a
+    ///     shape is a different pawn. Rather than keeping a second copy of each on the body, they
+    ///     ask who is really there.
+    /// </summary>
+    [TestMethod]
+    public void WhatIsKeyedByThePawnAsksWhoIsReallyThere() {
+        string spiritWeb = Core("Comp", "Game", "SpiritWeb.cs");
+        Assert.IsTrue(
+            spiritWeb.Contains("PawnIdentityRegistry.Real(one)", StringComparison.Ordinal),
+            "Every connection read and write goes through NormalizeKey."
+        );
+        Assert.IsTrue(spiritWeb.Contains("PawnIdentityRegistry.Real(target)", StringComparison.Ordinal));
+
+        string tab = Core("Tab", "ITab_Investiture.cs");
+        Assert.IsTrue(
+            tab.Contains("PawnIdentityRegistry.Real(SelPawn)", StringComparison.Ordinal),
+            "A shape carries none of the kandra's genes, so the Codex must not read the body."
+        );
+    }
+
+    /// <summary>
+    ///     Log entries hold pawn references in one global list, so a shape's own history and the
+    ///     kandra's are both real and neither can be moved. The tab shows both.
+    /// </summary>
+    [TestMethod]
+    public void TheLogShowsBothHalves() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "KandraLogPatch.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("ch.ReturnValue.AddRange(theirs)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            patch.Contains("if (inside) return;", StringComparison.Ordinal),
+            "The appended call re-enters this injection and would never stop."
+        );
+    }
+
+    /// <summary>
+    ///     Redirecting replaced the relation copy. Keeping both would mean two sets of the same
+    ///     relationships, one of which is thrown away every time a shape comes off.
+    /// </summary>
+    [TestMethod]
+    public void RelationsAreNotAlsoCopied() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+
+        Assert.IsFalse(transfer.Contains("Relations(kandra, shape)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            transfer.Contains("Skills(kandra, shape)", StringComparison.Ordinal),
+            "Skills still move; the shape has to actually be able to do the work."
+        );
+    }
+
+    /// <summary>
+    ///     A despawned pawn with no holder has a null MapHeld, and SocialCardUtility starts from
+    ///     the map. The kandra was in a plain field, so its social tab was empty.
+    /// </summary>
+    [TestMethod]
+    public void TheHeldKandraIsSomewhereTheGameCanFindIt() {
+        string pair = Kandra("CompKandraShapePair.cs");
+
+        Assert.IsTrue(pair.Contains("IThingHolder", StringComparison.Ordinal));
+        Assert.IsTrue(pair.Contains("ThingOwner<Pawn> inside", StringComparison.Ordinal));
+        Assert.IsTrue(
+            pair.Contains("IThingHolder.ParentHolder => (IThingHolder)parent", StringComparison.Ordinal),
+            "It has to point at the shape, or the chain never reaches a map."
+        );
+        Assert.IsFalse(
+            pair.Contains("private Pawn? held;", StringComparison.Ordinal),
+            "A plain field is exactly what left the kandra nowhere."
+        );
+    }
+
+    /// <summary>
+    ///     Ancestry is the only thing that grants a connection floor and it keys off the xenotype.
+    ///     Kandra and koloss were missing from Scadrial's list, so both read as Connected to
+    ///     nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void EveryScadrianXenotypeBelongsToScadrial() {
+        XDocument worlds = XDocument.Load(Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Worlds.xml"));
+        List<string> listed = worlds.Descendants("xenotypes")
+            .Elements("li")
+            .Select(e => e.Value)
+            .ToList();
+
+        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Kandra"));
+        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Koloss"));
     }
 }

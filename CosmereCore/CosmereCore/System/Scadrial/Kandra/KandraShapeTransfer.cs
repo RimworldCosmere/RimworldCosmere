@@ -23,7 +23,6 @@ public static class KandraShapeTransfer {
         Skills(kandra, shape);
         Needs(kandra, shape);
         Hediffs(kandra, shape);
-        Relations(kandra, shape);
         Records(kandra, shape);
     }
 
@@ -121,26 +120,6 @@ public static class KandraShapeTransfer {
             if (hediff.Part != null) continue;
 
             to.health.AddHediff(hediff.def);
-        }
-    }
-
-    /// <summary>
-    ///     Copies the kandra's direct relations so the colony still knows who this is.
-    /// </summary>
-    /// <remarks>
-    ///     One-way on purpose. The other side of each relation still points at the kandra, which
-    ///     is correct: the kandra is the one who has a brother, and it is only borrowing a body.
-    ///     The copy exists so the social tab on the animal is not blank.
-    /// </remarks>
-    private static void Relations(Pawn from, Pawn to) {
-        if (from.relations == null || to.relations == null) return;
-
-        List<DirectPawnRelation> theirs = [.. from.relations.DirectRelations];
-        for (int i = 0; i < theirs.Count; i++) {
-            if (theirs[i].otherPawn == null) continue;
-            if (to.relations.DirectRelationExists(theirs[i].def, theirs[i].otherPawn)) continue;
-
-            to.relations.AddDirectRelation(theirs[i].def, theirs[i].otherPawn);
         }
     }
 

@@ -1,3 +1,4 @@
+using Cosmere.Core.Framework;
 using Cosmere.Core.UI.Codex;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
@@ -21,9 +22,18 @@ public class ITab_Investiture : ITab {
     ///     system switcher and everyone has one - a pawn with none at all is exactly who the
     ///     reading is most worth having for.
     /// </summary>
+    /// <summary>
+    ///     Whose Investiture this is, which is not always whose body is selected.
+    /// </summary>
+    /// <remarks>
+    ///     A kandra wearing an animal is a separate pawn carrying none of the kandra's genes, so
+    ///     reading the selected body would report a wolf with no Investiture at all.
+    /// </remarks>
+    private Pawn? Reading => SelPawn == null ? null : PawnIdentityRegistry.Real(SelPawn);
+
     public override bool IsVisible {
         get {
-            Pawn? pawn = SelPawn;
+            Pawn? pawn = Reading;
             if (pawn == null) return false;
             if (!pawn.RaceProps.Humanlike) return false;
 
@@ -32,7 +42,7 @@ public class ITab_Investiture : ITab {
     }
 
     protected override void FillTab() {
-        Pawn? pawn = SelPawn;
+        Pawn? pawn = Reading;
         if (pawn == null) return;
 
         RefreshInvestedProviders(pawn);

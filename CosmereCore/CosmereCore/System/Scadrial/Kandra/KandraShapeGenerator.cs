@@ -60,7 +60,7 @@ public static class KandraShapeGenerator {
         // before anything can save a pawn wearing one.
         ShortHashGiver.GiveAllShortHashes();
 
-        Cosmere.Core.Logger.Info($"KandraShapeGenerator: built {shapes.Count} animal shapes.");
+        Cosmere.Core.Logger.Important($"KandraShapeGenerator: built {shapes.Count} animal shapes.");
     }
 
     /// <summary>

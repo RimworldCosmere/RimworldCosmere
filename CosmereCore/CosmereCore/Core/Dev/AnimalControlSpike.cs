@@ -109,6 +109,40 @@ public static class AnimalControlSpike {
         }
     }
 
+    /// <summary>
+    ///     Says whether the animal shapes were generated, and how many.
+    /// </summary>
+    /// <remarks>
+    ///     The generator runs from a static constructor, which fires before Cosmere's logger is
+    ///     ready, so its own message goes nowhere. This asks the database directly.
+    /// </remarks>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: count kandra animal shapes",
+        allowedGameStates = AllowedGameStates.Entry | AllowedGameStates.PlayingOnMap
+    )]
+    public static void CountKandraShapes() {
+        int races = 0;
+        int kinds = 0;
+
+        foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading) {
+            if (def.defName.StartsWith(Cosmere.System.Scadrial.Kandra.KandraShapeGenerator.RacePrefix, global::System.StringComparison.Ordinal)) {
+                races++;
+            }
+        }
+
+        foreach (PawnKindDef def in DefDatabase<PawnKindDef>.AllDefsListForReading) {
+            if (def.defName.StartsWith(Cosmere.System.Scadrial.Kandra.KandraShapeGenerator.KindPrefix, global::System.StringComparison.Ordinal)) {
+                kinds++;
+            }
+        }
+
+        Logger.Important(
+            $"KandraShapeGenerator check: {races} races, {kinds} pawnkinds, "
+            + $"{Cosmere.System.Scadrial.Kandra.KandraShapeGenerator.Shapes.Count} mapped from animals."
+        );
+    }
+
     private static void Report(Pawn pawn, string what) {
         Logger.Important(
             $"AnimalControlSpike: {pawn.LabelShort} ({pawn.def.defName}) {what}"

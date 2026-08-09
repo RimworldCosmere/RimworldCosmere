@@ -307,7 +307,10 @@ public class CompAshVent : ThingComp {
         }
     }
 
-    /// <summary>Lands one stack of one metal near the vent. False when no cell in range took it.</summary>
+    /// <summary>
+    ///     Lands one stack of one metal near the vent. False when no cell in range took it. Carries
+    ///     no era check of its own, so every caller but the dev action has to bring one.
+    /// </summary>
     public bool ThrowOnce() {
         Verse.Map? map = parent.Map;
         if (map == null) return false;

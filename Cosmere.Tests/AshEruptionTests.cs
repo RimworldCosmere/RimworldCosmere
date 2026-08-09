@@ -252,6 +252,25 @@ public class AshEruptionTests {
         );
     }
 
+    /// <summary>
+    ///     The Catacendre can land inside a 1 to 2 day eruption. Start and end both check the era,
+    ///     so the tick has to as well or the vents keep paying out after the Ashmounts are gone.
+    /// </summary>
+    [TestMethod]
+    public void TheEruptionStopsItsPerTickEffectsAtTheCatacendre() {
+        Match tick = Regex.Match(
+            ConditionSource, @"public override void GameConditionTick\(\)\s*\{(.*?)\n    \}", RegexOptions.Singleline
+        );
+
+        Assert.IsTrue(tick.Success, "could not find GameConditionTick on the eruption condition.");
+
+        Assert.IsTrue(
+            tick.Groups[1].Value.Contains("AshEra.CanAccumulate"),
+            "GameConditionTick does not check the era. An eruption in flight when the Catacendre lands keeps "
+            + "throwing metal and shaking buildings, and ThrowOnce carries no gate of its own."
+        );
+    }
+
     /// <summary>The vent's own comp block, which is where the everyday throw cadence is tuned.</summary>
     private static XElement VentComp() {
         XElement vent = DefNamed("ThingDef", VentDefName);

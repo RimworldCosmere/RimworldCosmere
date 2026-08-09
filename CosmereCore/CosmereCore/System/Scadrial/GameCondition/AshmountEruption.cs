@@ -29,6 +29,10 @@ public class AshmountEruption : RimWorld.GameCondition {
         // to go permanent, but a dev tool can still set it.
         if (map == null || Permanent) return;
 
+        // The Catacendre can land mid-eruption. The start and the end both check the era, and
+        // without this the middle keeps throwing metal and shaking ground the mountains no longer own.
+        if (!AshEra.CanAccumulate(map)) return;
+
         AshDepthTracker? tracker = map.GetComponent<AshDepthTracker>();
         if (tracker == null) return;
 

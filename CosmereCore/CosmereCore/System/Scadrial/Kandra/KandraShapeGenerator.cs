@@ -154,10 +154,14 @@ public static class KandraShapeGenerator {
             comps = [.. source.comps ?? [], new CompProperties_KandraShapePair()],
             modExtensions = [
                 new KandraShapeGraphic {
-                    texPath = picture.texPath,
-                    drawSize = picture.drawSize.x,
+                    body = picture,
+                    female = animal.lifeStages[^1].femaleGraphicData,
                 },
             ],
+
+            // The shape is holding a colonist, so it needs the tabs a colonist has. Reading them
+            // off Human rather than listing them picks up whatever else has been patched on.
+            inspectorTabs = HumanTabs(),
             race = new RaceProperties {
                 body = source.race.body,
                 baseBodySize = source.race.baseBodySize,
@@ -185,6 +189,13 @@ public static class KandraShapeGenerator {
 
         Register(race);
         return race;
+    }
+
+    /// <summary>The tab set a colonist has, whatever mods have added to it.</summary>
+    private static List<global::System.Type>? HumanTabs() {
+        ThingDef? human = DefDatabase<ThingDef>.GetNamedSilentFail("Human");
+
+        return human?.inspectorTabs == null ? null : [.. human.inspectorTabs];
     }
 
     private static PawnKindDef ShapeKind(PawnKindDef animal, ThingDef race) {

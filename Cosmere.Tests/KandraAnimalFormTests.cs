@@ -503,4 +503,47 @@ public class KandraAnimalFormTests {
         Assert.IsTrue(Generator.Contains("PawnNameCategory.HumanStandard", StringComparison.Ordinal));
         Assert.IsTrue(Generator.Contains("nameMaker = animal.nameMaker", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     Vanilla draws an animal from its GraphicData, which carries the colour, the mask and
+    ///     the shader. Rebuilding one from just a texture path dropped all three, and a cougar
+    ///     came out white.
+    /// </summary>
+    [TestMethod]
+    public void AShapeIsDrawnInTheAnimalsOwnColour() {
+        string node = Kandra("PawnRenderNode_KandraShape.cs");
+
+        Assert.IsTrue(node.Contains("Graphic graphic = data.Graphic;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            node.Contains("Color.white", StringComparison.Ordinal),
+            "Forcing white throws away whatever colour the animal was authored with."
+        );
+        Assert.IsTrue(Generator.Contains("body = picture,", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The shape is holding a colonist, so the inspect pane needs a colonist's tabs. A race
+    ///     built in code has none unless it is told.
+    /// </summary>
+    [TestMethod]
+    public void AShapeKeepsTheColonistTabs() {
+        Assert.IsTrue(Generator.Contains("inspectorTabs = HumanTabs()", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("GetNamedSilentFail(\"Human\")", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     SkillRecord.Level returns 0 when the skill is currently disabled, and adds aptitude on
+    ///     top of what is stored. The animal shape disables twelve work tags, so reading through
+    ///     the property and writing it back zeroed those skills on the kandra for good.
+    /// </summary>
+    [TestMethod]
+    public void SteppingOutOfAShapeDoesNotEatSkills() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+
+        Assert.IsTrue(transfer.Contains("target.levelInt = source.levelInt;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            transfer.Contains("target.Level = source.Level;", StringComparison.Ordinal),
+            "The property is lossy in both directions; the backing field is not."
+        );
+    }
 }

@@ -156,17 +156,36 @@ public class AshVentReliefTests {
     }
 
     /// <summary>
-    ///     Severity is a dial; millimetres are what the player reads. The shaping curve is not
-    ///     linear, so the cap has to be pinned in fall rate as well as in severity.
+    ///     Severity is a dial; millimetres are what the player reads. Stated at two severities,
+    ///     because the shaping curve happens to pass a halved endgame straight through unchanged.
     /// </summary>
     [TestMethod]
-    public void FullContainmentAtTheEndgameHalvesTheFallRate() {
+    public void FullContainmentHalvesTheEndgameFallRateAndCutsTheFinalEmpireDeeper() {
         float full = AshDepthTracker.BaseRateMmPerDay * AshmountExposure.MaxMultiplier;
+
         float open = AshDepthMath.FallRateMmPerHour(Endgame, full);
         float held = AshDepthMath.FallRateMmPerHour(AshVentRelief.Relieve(Endgame, AshVentSiting.MaxVents), full);
 
         Assert.AreEqual(
             0.5f, held / open, 0.001f, $"a fully sealed endgame map falls at {held / open:0.000} of an open one."
+        );
+
+        float standingOpen = AshDepthMath.FallRateMmPerHour(AshPressure.Default, full);
+        float standingHeld = AshDepthMath.FallRateMmPerHour(
+            AshVentRelief.Relieve(AshPressure.Default, AshVentSiting.MaxVents), full
+        );
+
+        Assert.AreEqual(
+            0.264f,
+            standingHeld / standingOpen,
+            0.001f,
+            $"a fully sealed Final Empire map falls at {standingHeld / standingOpen:0.000} of an open one."
+        );
+
+        Assert.IsTrue(
+            standingHeld / standingOpen < held / open,
+            "halving severity now takes the same fraction off the fall rate wherever it is applied, which is what a "
+            + "linear rate would do. The shaping curve has stopped being consulted."
         );
     }
 

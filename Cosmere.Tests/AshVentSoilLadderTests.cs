@@ -132,6 +132,14 @@ public class AshVentSoilLadderTests {
     /// </summary>
     [TestMethod]
     public void GroundPastTheClearingWaitsForTheFront() {
+        Assert.AreEqual(
+            2f * AshVentSoilSpread.DaysPerCell,
+            AshVentSoilLadder.WarmedAtDays(ClearRadius + 2f, ClearRadius),
+            0.0001f,
+            "the wait is no longer counted from the edge of the clearing, so ground the front already holds is made "
+            + "to wait for it all over again."
+        );
+
         for (float distance = ClearRadius; distance <= 16f; distance += 0.25f) {
             float front = AshVentSoilSpread.Advance(0f, ClearRadius, 16f, AshVentSoilLadder.WarmedAtDays(distance, ClearRadius));
 

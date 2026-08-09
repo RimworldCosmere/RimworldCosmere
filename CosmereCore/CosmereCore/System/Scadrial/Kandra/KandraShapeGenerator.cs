@@ -56,6 +56,10 @@ public static class KandraShapeGenerator {
             Generate(animals[i]);
         }
 
+        // Once, after everything is in. The per-def version is private, and these need hashes
+        // before anything can save a pawn wearing one.
+        ShortHashGiver.GiveAllShortHashes();
+
         Cosmere.Core.Logger.Info($"KandraShapeGenerator: built {shapes.Count} animal shapes.");
     }
 
@@ -187,13 +191,12 @@ public static class KandraShapeGenerator {
     ///     Puts a freshly built def into the database the way the loader would have.
     /// </summary>
     /// <remarks>
-    ///     A short hash and PostLoad are both required: without the hash the def cannot be saved
-    ///     or referenced, and without PostLoad its own nested data is never resolved.
+    ///     PostLoad resolves the def's own nested data. Short hashes are handed out in one pass
+    ///     afterwards, because the per-def call is private.
     /// </remarks>
     private static void Register<T>(T def)
         where T : Verse.Def {
         def.PostLoad();
-        ShortHashGiver.GiveShortHash(def, typeof(T));
         DefDatabase<T>.Add(def);
         def.ResolveReferences();
     }

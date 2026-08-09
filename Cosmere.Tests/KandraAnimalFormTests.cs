@@ -77,6 +77,10 @@ public class KandraAnimalFormTests {
             node[body..].Contains("CurKindLifeStage", StringComparison.Ordinal),
             "The node must not touch the age tracker; that is the whole reason it exists."
         );
+
+        // Both designs run through this node while the one-pawn spike is being proven: the comp
+        // is asked first, the generated race's def extension second.
+        Assert.IsTrue(node.Contains("WornKind(pawn)", StringComparison.Ordinal));
         Assert.IsTrue(node.Contains("GetModExtension<KandraShapeGraphic>", StringComparison.Ordinal));
     }
 

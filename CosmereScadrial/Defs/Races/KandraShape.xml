@@ -77,4 +77,30 @@
         </root>
     </PawnRenderTreeDef>
 
+    <!-- SPIKE ONLY. Proves a kandra can be drawn as an animal without becoming one. Carries the
+         render node and nothing else - no work tags, no capMods - so the experiment tests exactly
+         one thing. Folded into Cosmere_Scadrial_Hediff_AnimalShape in phase 2, or deleted with the
+         branch if the render approach does not hold. -->
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_AnimalShapeSpike</defName>
+        <label>wearing an animal (spike)</label>
+        <description>A kandra rearranged into the shape of a beast.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <renderNodeProperties>
+            <li>
+                <debugLabel>Kandra shape</debugLabel>
+                <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraShape</nodeClass>
+                <workerClass>Cosmere.System.Scadrial.Kandra.PawnRenderNodeWorker_KandraShape</workerClass>
+                <!-- Explicit. Vanilla Body declares none and defaults to 0; so does the carried
+                     node. Leaving ours unset makes the animal-versus-weapon order undefined. -->
+                <baseLayer>0</baseLayer>
+            </li>
+        </renderNodeProperties>
+    </HediffDef>
 </Defs>

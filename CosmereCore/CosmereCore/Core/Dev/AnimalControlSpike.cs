@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -153,5 +154,74 @@ public static class AnimalControlSpike {
             + $"\n  drafter: {(pawn.drafter != null ? "yes" : "no")} | Drafted: {pawn.Drafted}"
             + "\n  Select it: is there a draft button? Right-click something: any orders?"
         );
+    }
+
+    /// <summary>
+    ///     Phase 1 spike: draw the selected kandra as an animal without making a second pawn.
+    /// </summary>
+    /// <remarks>
+    ///     Order matters and is the whole trap. The render node reads the worn form from
+    ///     <c>CompKandraForms</c> inside its constructor, because <c>node.hediff</c> is still null
+    ///     at that point, so the form has to be set before the hediff is added.
+    /// </remarks>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: wear an animal in place",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void WearAnimalInPlace() {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
+            if (thing is not Pawn pawn) continue;
+
+            Cosmere.System.Scadrial.Kandra.CompKandraForms? forms =
+                pawn.TryGetComp<Cosmere.System.Scadrial.Kandra.CompKandraForms>();
+            if (forms == null) {
+                Logger.Warning($"{pawn.LabelShort} is not a kandra.");
+                continue;
+            }
+
+            List<DebugMenuOption> options = [];
+            List<PawnKindDef> kinds = DefDatabase<PawnKindDef>.AllDefsListForReading;
+            for (int i = 0; i < kinds.Count; i++) {
+                PawnKindDef kind = kinds[i];
+                if (kind.race?.race?.Animal != true) continue;
+                if (kind.lifeStages == null || kind.lifeStages.Count == 0) continue;
+                if (kind.lifeStages[^1].bodyGraphicData == null) continue;
+
+                options.Add(new DebugMenuOption(kind.label ?? kind.defName, DebugMenuOptionMode.Action, () => {
+                    forms.SetCurrent(Cosmere.System.Scadrial.Kandra.KandraForm.FromAnimal(pawn, kind));
+                    pawn.health.AddHediff(
+                        DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShapeSpike")
+                    );
+                    pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+                    PortraitsCache.SetDirty(pawn);
+                }));
+            }
+
+            Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
+            return;
+        }
+    }
+
+    /// <summary>Puts the kandra back, in the reverse order.</summary>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: stop wearing an animal",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void StopWearingAnimal() {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
+            if (thing is not Pawn pawn) continue;
+
+            Verse.Hediff? worn = pawn.health?.hediffSet
+                ?.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShapeSpike"));
+            if (worn != null) pawn.health!.RemoveHediff(worn);
+
+            pawn.TryGetComp<Cosmere.System.Scadrial.Kandra.CompKandraForms>()?.SetCurrent(null);
+            pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+            PortraitsCache.SetDirty(pawn);
+        }
     }
 }

@@ -10,12 +10,12 @@ public static class AshVentSoilLadder {
     /// <summary>Where the chain ends. Our own soil, richer than anything vanilla grows.</summary>
     public const string TopRung = "Cosmere_Scadrial_Terrain_VentSoil";
 
-    /// <summary>Days a cell holds one rung. Sand to vent soil is four of them, so forty-eight.</summary>
+    /// <summary>Days a cell holds one rung. Sand to vent soil is four of them.</summary>
     public const float DaysPerRung = 8f;
 
     /// <summary>
-    ///     Steps the jitter is cut into. A rung split a thousand and twenty-four ways lands finer
-    ///     than one sweep, and a power of two costs a mask rather than a modulo.
+    ///     Steps the jitter is cut into. A step is several sweeps wide, so neighbouring slots still
+    ///     come due on different ticks, and a power of two costs a mask rather than a modulo.
     /// </summary>
     private const int JitterSteps = 1024;
 
@@ -56,7 +56,7 @@ public static class AshVentSoilLadder {
 
     /// <summary>
     ///     A cell's own place in the rung window. Without it a ring would come due on one tick and
-    ///     swamp the sweep's ration, because the front and a rung both take twelve days.
+    ///     swamp the sweep's ration, because the front takes a cell in the time a rung takes.
     /// </summary>
     public static float JitterDays(int x, int z) {
         unchecked {

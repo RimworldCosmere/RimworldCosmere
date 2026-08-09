@@ -31,7 +31,7 @@
     <CS_Settings_Category_Ash>Ash</CS_Settings_Category_Ash>
 
     <CS_Settings_VentSoilReach_Label>Vent soil reach</CS_Settings_VentSoilReach_Label>
-    <CS_Settings_VentSoilReach_Tooltip>How far an ash vent feeds the ground around it, in cells. What the mountain pushes up carries minerals, and they settle where the vent breathes.\n\nThe ground creeps outward one cell every twelve days, so a vent takes about a year to reach the default eight. Behind the front the ground improves a step at a time, another twelve days each: sand to gravel, gravel to soil, soil to rich soil, and rich soil to vent soil. Stone, ice and water are not ground the vent can feed, and never change.\n\nSoil laid past the clearing the vent sweeps can still go under deep ash, and comes back when the ash thins.</CS_Settings_VentSoilReach_Tooltip>
+    <CS_Settings_VentSoilReach_Tooltip>How far an ash vent feeds the ground around it, in cells. What the mountain pushes up carries minerals, and they settle where the vent breathes.\n\nThe ground creeps outward one cell every eight days, so a vent takes about forty days to reach the default eight. Behind the front the ground improves a step at a time, another eight days each: sand to gravel, gravel to soil, soil to rich soil, and rich soil to vent soil. Stone, ice and water are not ground the vent can feed, and never change.\n\nSoil laid past the clearing the vent sweeps can still go under deep ash, and comes back when the ash thins.</CS_Settings_VentSoilReach_Tooltip>
 
     <CS_Settings_Category_Koloss>Koloss</CS_Settings_Category_Koloss>
     <CS_Settings_KolossGrowthYears_Label>Years before a koloss outgrows its skin</CS_Settings_KolossGrowthYears_Label>

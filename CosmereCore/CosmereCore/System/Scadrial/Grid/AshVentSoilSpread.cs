@@ -18,8 +18,8 @@ public static class AshVentSoilSpread {
     public const float MaxReachCells = 16f;
 
     /// <summary>
-    ///     Days the front takes to advance one cell. Twelve puts 8 new cells on the outer ring in
-    ///     a day and 60 in a quadrum, and carries the clearing out to the default 8 in a year.
+    ///     Days the front takes to advance one cell. Five of them carry the clearing out to the
+    ///     default reach, and the last ring lands about six new cells a day.
     /// </summary>
     public const float DaysPerCell = 8f;
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-    <!-- The top of the chain CompAshVent walks the ground up, a rung every twelve days. The
-         feather caps the clearing well under AshDepthMath.TerrainSwapMm, so deep ash never takes it
-         back. -->
+    <!-- The top of the chain CompAshVent walks the ground up. The feather holds the vent's own
+         clearing under AshDepthMath.TerrainSwapMm; past it drift can still swap the cell, and
+         AshTerrainMemory hands the rung back once the ash thins. -->
     <TerrainDef ParentName="NaturalTerrainBase">
         <defName>Cosmere_Scadrial_Terrain_VentSoil</defName>
         <label>vent soil</label>

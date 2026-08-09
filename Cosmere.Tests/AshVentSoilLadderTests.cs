@@ -127,7 +127,7 @@ public class AshVentSoilLadderTests {
     }
 
     /// <summary>
-    ///     Ground past the clearing waits for the front, which creeps a cell every twelve days. A
+    ///     Ground past the clearing waits for the front, which creeps a cell every DaysPerCell. A
     ///     cell that climbed before the vent reached it would be enriching itself.
     /// </summary>
     [TestMethod]
@@ -144,11 +144,11 @@ public class AshVentSoilLadderTests {
     }
 
     /// <summary>
-    ///     Sand in the clearing reaches vent soil in forty-eight days plus its own jitter, and not
-    ///     one rung sooner. Counted the way the comp counts it, a cycle at a time.
+    ///     Sand in the clearing reaches vent soil in four rungs plus its own jitter, and not one
+    ///     rung sooner. Counted the way the comp counts it, a cycle at a time.
     /// </summary>
     [TestMethod]
-    public void SandInTheClearingTakesFortyEightDaysToReachVentSoil() {
+    public void SandInTheClearingTakesFourRungsToReachVentSoil() {
         const int x = 40;
         const int z = 71;
 
@@ -174,8 +174,8 @@ public class AshVentSoilLadderTests {
     }
 
     /// <summary>
-    ///     The reason the jitter exists. The front and a rung both take twelve days, so without it
-    ///     every whole-numbered ring comes due on one tick and the sweep's ration eats the rest.
+    ///     The reason the jitter exists. The front takes a cell in the time a rung takes, so without
+    ///     it every whole-numbered ring comes due on one tick and the sweep's ration eats the rest.
     /// </summary>
     [TestMethod]
     public void NoOneSweepEverOwesMoreRungsThanItCanWrite() {

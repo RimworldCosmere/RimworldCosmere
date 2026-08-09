@@ -31,8 +31,8 @@
             </li>
             <li>
               <firstName>Lirin</firstName>
-              <age>26</age>
-              <gender>Female</gender>
+              <age>45</age>
+              <gender>Male</gender>
               <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
               <radiantOrder>Cosmere_Roshar_Gene_RadiantEdgedancer</radiantOrder>
               <idealLevel>1</idealLevel>

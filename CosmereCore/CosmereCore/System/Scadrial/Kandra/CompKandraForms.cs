@@ -97,9 +97,12 @@ public class CompKandraForms : ThingComp {
     public void Learn(Pawn corpsePawn) {
         if (parent is not Pawn pawn) return;
 
-        KandraForm form = KandraForm.From(corpsePawn);
+        PawnKindDef? shape = KandraAnimalForms.ShapeFor(corpsePawn.kindDef);
+        KandraForm form = shape != null
+            ? KandraForm.FromAnimal(corpsePawn, shape)
+            : KandraForm.From(corpsePawn);
         for (int i = 0; i < known.Count; i++) {
-            if (known[i].nameFull == form.nameFull) return;
+            if (known[i].nameFull == form.nameFull && known[i].animalKind == form.animalKind) return;
         }
 
         known.Add(form);

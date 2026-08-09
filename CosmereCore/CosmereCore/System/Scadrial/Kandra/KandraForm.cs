@@ -33,6 +33,18 @@ public class KandraForm : IExposable {
     public Ideo? ideo;
 
     /// <summary>
+    ///     Set when this form is an animal rather than a person.
+    /// </summary>
+    /// <remarks>
+    ///     A human shape is worn by editing the kandra in place. An animal one cannot be: a
+    ///     pawn's race is its ThingDef and does not change, so wearing it means putting the
+    ///     kandra aside and standing a pawn of this kind up in its place.
+    /// </remarks>
+    public PawnKindDef? animalKind;
+
+    public bool IsAnimal => animalKind != null;
+
+    /// <summary>
     ///     A pawn that exists only to be drawn.
     /// </summary>
     /// <remarks>
@@ -43,6 +55,16 @@ public class KandraForm : IExposable {
     private Pawn? portrait;
 
     public KandraForm() { }
+
+    /// <summary>An animal shape, remembered by its kind rather than by its face.</summary>
+    public static KandraForm FromAnimal(Pawn source, PawnKindDef wornAs) {
+        return new KandraForm {
+            nameFull = source.kindDef.label,
+            nameShort = source.kindDef.label,
+            gender = source.gender,
+            animalKind = wornAs,
+        };
+    }
 
     public static KandraForm From(Pawn source) {
         return new KandraForm {
@@ -66,6 +88,18 @@ public class KandraForm : IExposable {
     public Pawn? PortraitPawn {
         get {
             if (portrait != null) return portrait;
+
+            if (animalKind != null) {
+                try {
+                    portrait = PawnGenerator.GeneratePawn(
+                        new PawnGenerationRequest(animalKind, forceGenerateNewPawn: true)
+                    );
+                } catch (global::System.Exception) {
+                    return null;
+                }
+
+                return portrait;
+            }
 
             try {
                 portrait = PawnGenerator.GeneratePawn(
@@ -108,5 +142,6 @@ public class KandraForm : IExposable {
         Scribe_Defs.Look(ref xenotype, "xenotype");
         Scribe_Defs.Look(ref faction, "faction");
         Scribe_References.Look(ref ideo, "ideo");
+        Scribe_Defs.Look(ref animalKind, "animalKind");
     }
 }

@@ -48,6 +48,7 @@
             </li>
             <li>
               <firstName>Rock</firstName>
+              <bodyType>Hulk</bodyType>
               <age>35</age>
               <gender>Male</gender>
               <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>

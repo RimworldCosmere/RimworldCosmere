@@ -36,6 +36,8 @@ public class Dialog_AshTuning : Window {
         float newSeverity = list.Slider(severity, 0f, 1f);
         if (!Mathf.Approximately(newSeverity, severity)) tracker.SetSeverityNow(newSeverity);
 
+        list.Label($"Falling at: {tracker.EffectiveSeverity:F2} after sealed vents");
+
         list.Gap(6f);
 
         list.Label($"Rate at severity 0: {AshParticles.MinEmissionRate:F0}/s");

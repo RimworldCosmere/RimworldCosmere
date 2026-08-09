@@ -82,6 +82,27 @@ public class AshDepthTracker : MapComponent {
 
     public float Severity => severity;
 
+    /// <summary>
+    ///     Vents breathing into a sealed room rather than over the map. Counted on demand off six
+    ///     bools rather than cached, so a roof torn down takes effect on the same tick it falls.
+    /// </summary>
+    private int SealedVents {
+        get {
+            int count = 0;
+            for (int i = 0; i < vents.Count; i++) {
+                if (vents[i].Contained) count++;
+            }
+
+            return count;
+        }
+    }
+
+    /// <summary>
+    ///     What the map actually falls at. Derived here rather than written into the target, which
+    ///     the story arc owns and an eruption re-derives from - two writers there is already one too many.
+    /// </summary>
+    public float EffectiveSeverity => AshVentRelief.Relieve(severity, SealedVents);
+
     private static MapMeshFlagDef AshFlag =>
         ashFlag ??= DefDatabase<MapMeshFlagDef>.GetNamed("Cosmere_Scadrial_MapMeshFlag_Ash");
 
@@ -202,11 +223,14 @@ public class AshDepthTracker : MapComponent {
     public override void MapComponentUpdate() {
         if (map != Find.CurrentMap) return;
 
-        UnityEngine.Shader.SetGlobalFloat(Scadrial.Shader.AshShaderProperties.AshSeverity, severity);
+        // The relieved figure, not the raw one. Sealing a vent that thinned the ground but left
+        // the sky as thick as ever would read as the roof having done nothing.
+        float shown = EffectiveSeverity;
+        UnityEngine.Shader.SetGlobalFloat(Scadrial.Shader.AshShaderProperties.AshSeverity, shown);
 
         // CanAccumulate, not ShouldRender: nothing new falls after the Catacendre. The ground
         // layers keep drawing off ShouldRender until the grid empties, but the sky stops feeding.
-        if (severity <= 0.01f || !AshEra.CanAccumulate(map)) {
+        if (shown <= 0.01f || !AshEra.CanAccumulate(map)) {
             // Flakes already in the air finish falling. Only drop the emitter once the ground has
             // drained too, so the end of the ashfall reads as stopping and not as a cut.
             if (veil != null && !AshEra.ShouldRender(map)) {
@@ -218,7 +242,7 @@ public class AshDepthTracker : MapComponent {
         }
 
         if (veil is not { Alive: true }) veil = new Render.AshParticles(map.uniqueID);
-        veil.Update(map, severity);
+        veil.Update(map, shown);
     }
 
     public override void ExposeData() {
@@ -370,7 +394,7 @@ public class AshDepthTracker : MapComponent {
             return;
         }
 
-        float perSweepMm = AshDepthMath.FallRateMmPerHour(severity, FullRateMmPerDay) *
+        float perSweepMm = AshDepthMath.FallRateMmPerHour(EffectiveSeverity, FullRateMmPerDay) *
                            (Stripes / (float)GenDate.TicksPerHour);
 
         stripeAccrual[stripe] += perSweepMm;

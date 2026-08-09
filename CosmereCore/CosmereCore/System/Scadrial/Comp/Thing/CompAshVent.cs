@@ -61,6 +61,7 @@ public class CompAshVent : ThingComp {
     private static List<IntVec3>? offsets;
     private static TerrainDef? ventSoil;
 
+    private bool contained;
     private float[]? remainder;
     private float roomRemainder;
     private float soilRadius;
@@ -68,6 +69,12 @@ public class CompAshVent : ThingComp {
     private int throwsMade;
 
     public CompProperties_AshVent Props => (CompProperties_AshVent)props;
+
+    /// <summary>
+    ///     Whether the mouth is breathing into a sealed room instead of over the map. The tracker
+    ///     reads it to work out how much of the map's severity this vent has stopped paying for.
+    /// </summary>
+    public bool Contained => contained;
 
     /// <summary>What the vent leaves behind on the ground it keeps swept.</summary>
     private static TerrainDef VentSoil =>
@@ -116,6 +123,10 @@ public class CompAshVent : ThingComp {
         Scribe_Values.Look(ref throwRemainder, "ashVentThrowRemainder");
         Scribe_Values.Look(ref throwsMade, "ashVentThrowsMade");
 
+        // The sweep rebuilds this within 64 ticks, but the game loads paused, so unsaved it would
+        // hand a sealed map its full severity back for as long as the player stayed paused.
+        Scribe_Values.Look(ref contained, "ashVentContained");
+
         // The spread front. A soil cell says it was reached, never whether its neighbours were,
         // so the terrain grid stops being the record the moment the front leaves the clearing.
         Scribe_Values.Look(ref soilRadius, "ashVentSoilRadius");
@@ -138,8 +149,11 @@ public class CompAshVent : ThingComp {
         // Roof the mouth and the plume has nowhere to go, so it goes into the room instead. The
         // tracker owns the buried set, so without one there is nothing to fill a room safely with.
         if (tracker != null && SealedRoom(map, grid) is { } room) {
+            // Same branch, same fact: the mass stops reaching the map, so the map stops paying.
+            contained = true;
             changed = FillRoom(map, grid, tracker, room, millimetres);
         } else {
+            contained = false;
             changed = Drift(map, grid, millimetres);
 
             // Sealed in it stops sweeping too, or a box the size of its mouth cancels the plume.

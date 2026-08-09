@@ -67,6 +67,11 @@ public class KandraAnimalFormTests {
             "The generator looks this up by name and throws if it is gone."
         );
 
+        // One-pawn draws through a hediff render node bolted onto the vanilla Humanlike tree.
+        XElement worn = ShapeDefs.Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
+        Assert.IsNotNull(worn.Element("renderNodeProperties"));
+
         string node = Kandra("PawnRenderNode_KandraShape.cs");
 
         // Only the body. The doc comment names CurKindLifeStage to explain why it is avoided.

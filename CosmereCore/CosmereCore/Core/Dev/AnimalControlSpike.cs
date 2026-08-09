@@ -190,9 +190,15 @@ public static class AnimalControlSpike {
                 if (kind.lifeStages[^1].bodyGraphicData == null) continue;
 
                 options.Add(new DebugMenuOption(kind.label ?? kind.defName, DebugMenuOptionMode.Action, () => {
+                    // Snapshot BEFORE the hediff lands: adding it fires
+                    // Notify_DisabledWorkTypesChanged, which zeroes twelve work priorities.
+                    forms.RememberWorkPriorities();
+
+                    // SetCurrent first. The render node reads the worn form in its constructor,
+                    // where node.hediff is still null.
                     forms.SetCurrent(Cosmere.System.Scadrial.Kandra.KandraForm.FromAnimal(pawn, kind));
                     pawn.health.AddHediff(
-                        DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShapeSpike")
+                        DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShape")
                     );
                     pawn.Drawer?.renderer?.SetAllGraphicsDirty();
                     PortraitsCache.SetDirty(pawn);
@@ -218,10 +224,15 @@ public static class AnimalControlSpike {
             if (thing is not Pawn pawn) continue;
 
             Verse.Hediff? worn = pawn.health?.hediffSet
-                ?.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShapeSpike"));
+                ?.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_AnimalShape"));
             if (worn != null) pawn.health!.RemoveHediff(worn);
 
-            pawn.TryGetComp<Cosmere.System.Scadrial.Kandra.CompKandraForms>()?.SetCurrent(null);
+            Cosmere.System.Scadrial.Kandra.CompKandraForms? forms =
+                pawn.TryGetComp<Cosmere.System.Scadrial.Kandra.CompKandraForms>();
+            forms?.SetCurrent(null);
+
+            // After removal, never before: SetPriority errors on a still-disabled work type.
+            forms?.RestoreWorkPriorities();
             pawn.Drawer?.renderer?.SetAllGraphicsDirty();
             PortraitsCache.SetDirty(pawn);
         }

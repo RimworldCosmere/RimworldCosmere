@@ -28,9 +28,11 @@ public class KandraAnimalFormTests {
         RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", file
     ));
 
-    private static XDocument Wolfhound => XDocument.Load(Path.Combine(
-        RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraWolfhound.xml"
+    private static XDocument ShapeDefs => XDocument.Load(Path.Combine(
+        RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraShape.xml"
     ));
+
+    private static string Generator => Kandra("KandraShapeGenerator.cs");
 
     /// <summary>
     ///     Only humanlike pawns and colony mechs are ever handed a draft controller, so a form
@@ -38,10 +40,10 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void AnAnimalFormIsHumanlikeSoItCanBeDrafted() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-
-        Assert.AreEqual("Humanlike", race.Element("race")?.Element("intelligence")?.Value);
+        Assert.IsTrue(
+            Generator.Contains("intelligence = Intelligence.Humanlike", StringComparison.Ordinal),
+            "An animal intelligence is never handed a draft controller."
+        );
     }
 
     /// <summary>
@@ -51,12 +53,19 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void TheFormUsesOurRenderTreeNotTheAnimalOne() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
+        Assert.IsTrue(
+            Generator.Contains(
+                "renderTree = DefDatabase<PawnRenderTreeDef>.GetNamed(\"Cosmere_Scadrial_RenderTree_KandraShape\")",
+                StringComparison.Ordinal
+            ),
+            "The Animal tree cannot draw a humanlike pawn."
+        );
 
-        string? tree = race.Element("race")?.Element("renderTree")?.Value;
-        Assert.AreNotEqual("Animal", tree, "The Animal tree cannot draw a humanlike pawn.");
-        Assert.AreEqual("Cosmere_Scadrial_RenderTree_KandraShape", tree);
+        Assert.IsNotNull(
+            ShapeDefs.Descendants("PawnRenderTreeDef")
+                .FirstOrDefault(d => d.Element("defName")?.Value == "Cosmere_Scadrial_RenderTree_KandraShape"),
+            "The generator looks this up by name and throws if it is gone."
+        );
 
         string node = Kandra("PawnRenderNode_KandraShape.cs");
 
@@ -77,15 +86,14 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void TheFormsLifeStageCarriesSilhouetteData() {
-        XElement stage = Wolfhound.Descendants("LifeStageDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_LifeStage_KandraShape");
-
-        Assert.IsNotNull(stage.Element("silhouetteGraphicData"), "A humanlike pawn needs one or it throws every frame.");
-
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-        string? used = race.Element("race")?.Element("lifeStageAges")?.Elements("li").First().Element("def")?.Value;
-        Assert.AreEqual("Cosmere_Scadrial_LifeStage_KandraShape", used);
+        Assert.IsTrue(
+            Generator.Contains("silhouetteGraphicData = new GraphicData {", StringComparison.Ordinal),
+            "A humanlike pawn needs one or RenderPawnAt throws every frame."
+        );
+        Assert.IsTrue(
+            Generator.Contains("lifeStageAges = [new LifeStageAge { def = stage", StringComparison.Ordinal),
+            "The generated race has to use the stage carrying that data."
+        );
     }
 
     /// <summary>
@@ -113,14 +121,10 @@ public class KandraAnimalFormTests {
     /// <summary>The animal needs the comp, or wearing it would strand the kandra.</summary>
     [TestMethod]
     public void TheFormCarriesTheShapePairComp() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-
-        bool has = race.Element("comps")?.Elements("li")
-            .Any(li => (string?)li.Attribute("Class")
-                == "Cosmere.System.Scadrial.Kandra.CompProperties_KandraShapePair") == true;
-
-        Assert.IsTrue(has, "Without the comp there is nowhere to put the kandra.");
+        Assert.IsTrue(
+            Generator.Contains("new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
+            "Without the comp there is nowhere to put the kandra."
+        );
     }
 
     /// <summary>
@@ -227,7 +231,7 @@ public class KandraAnimalFormTests {
     /// <summary>A body with no hands cannot do work that needs them.</summary>
     [TestMethod]
     public void AnAnimalShapeCannotDoHandiwork() {
-        XElement hediff = Wolfhound.Descendants("HediffDef")
+        XElement hediff = ShapeDefs.Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
 
         List<string> disabled = hediff.Element("stages")!.Elements("li")
@@ -246,7 +250,7 @@ public class KandraAnimalFormTests {
     /// <summary>A dog cannot fire a rifle or negotiate a trade deal.</summary>
     [TestMethod]
     public void AnAnimalShapeCannotShootOrTalkPeopleRound() {
-        XElement hediff = Wolfhound.Descendants("HediffDef")
+        XElement hediff = ShapeDefs.Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
 
         List<string> disabled = hediff.Element("stages")!.Elements("li")
@@ -313,5 +317,233 @@ public class KandraAnimalFormTests {
 
         Assert.IsTrue(unstow >= 0 && release >= 0);
         Assert.IsTrue(unstow < release, "Release wipes the gear lists; it must come after UnstowGear.");
+    }
+
+    /// <summary>
+    ///     Bronze reads the Investiture holding a shape together, so practice cannot beat it. A
+    ///     first-generation kandra is exactly as visible as one made last week.
+    /// </summary>
+    [TestMethod]
+    public void BronzeIsNotARoll() {
+        string disguise = Kandra("KandraDisguise.cs");
+        int seen = disguise.IndexOf("public static bool SeenByBronze(", StringComparison.Ordinal);
+        Assert.IsTrue(seen >= 0);
+
+        // Stop at the next doc comment so the following member's prose is not read as code.
+        int next = disguise.IndexOf("/// <summary>", seen, StringComparison.Ordinal);
+        string body = disguise[seen..next];
+        Assert.IsFalse(
+            body.Contains("Rand.Chance", StringComparison.Ordinal),
+            "Bronze does not guess; it either hears the kandra or it does not."
+        );
+        Assert.IsFalse(
+            body.Contains("Conviction", StringComparison.Ordinal),
+            "Skill must not help against bronze."
+        );
+        Assert.IsTrue(body.Contains("IsBurning(bronze)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Conviction and CanFreeForm were written and never read. An unused difficulty knob is
+    ///     the same as no difficulty knob.
+    /// </summary>
+    [TestMethod]
+    public void TheShapeshiftSkillActuallyDoesSomething() {
+        string disguise = Kandra("KandraDisguise.cs");
+        Assert.IsTrue(
+            disguise.Contains("1f - forms.Conviction", StringComparison.Ordinal),
+            "Practice should make an ordinary observer less likely to notice."
+        );
+
+        string gene = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs"
+        ));
+        Assert.IsTrue(gene.Contains("forms.CanFreeForm", StringComparison.Ordinal), "CanFreeForm should gate something.");
+        Assert.IsTrue(gene.Contains("FreeFormGizmo", StringComparison.Ordinal));
+    }
+
+    /// <summary>Being seen has to end the disguise, or nothing was actually at stake.</summary>
+    [TestMethod]
+    public void BeingCaughtDropsTheShape() {
+        string watcher = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "Shapeshifter.cs"
+        ));
+
+        Assert.IsTrue(watcher.Contains("KandraDisguise.SeenByBronze", StringComparison.Ordinal));
+        Assert.IsTrue(watcher.Contains("KandraDisguise.Slipped", StringComparison.Ordinal));
+        Assert.IsTrue(watcher.Contains("KandraAnimalShape.Revert", StringComparison.Ordinal), "Animal shapes drop too.");
+        Assert.IsTrue(watcher.Contains("KandraShapeshift.Revert", StringComparison.Ordinal), "So do worn faces.");
+    }
+
+    /// <summary>
+    ///     A disguise talks somebody out of a fight. It must never start one, or a kandra in a
+    ///     dog becomes a reason for a friendly caravan to open fire.
+    /// </summary>
+    [TestMethod]
+    public void TheDisguiseOnlyEverCalmsThingsDown() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "DisguiseHostilityPatch.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("if (!ch.ReturnValue) return;", StringComparison.Ordinal));
+        Assert.IsTrue(patch.Contains("ch.ReturnValue = false;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            patch.Contains("ch.ReturnValue = true;", StringComparison.Ordinal),
+            "Nothing about wearing a face should make somebody hostile who was not."
+        );
+    }
+
+    /// <summary>
+    ///     Wearing an enemy uniform and shooting the raid from inside it would be free. Cover
+    ///     ends the moment the kandra swings, and does not come back until it changes shape.
+    /// </summary>
+    [TestMethod]
+    public void SwingingAtSomebodyEndsTheDisguise() {
+        string disguise = Kandra("KandraDisguise.cs");
+        Assert.IsTrue(disguise.Contains("forms.FoughtInThisShape(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(disguise.Contains("forms.BlowCover();", StringComparison.Ordinal));
+
+        string comp = Kandra("CompKandraForms.cs");
+        Assert.IsTrue(
+            comp.Contains("last > wornSinceTick", StringComparison.Ordinal),
+            "A fight in a previous shape must not count against the current one."
+        );
+        Assert.IsTrue(
+            comp.Contains("coverBlown = false;", StringComparison.Ordinal),
+            "Changing shape is the way out of a blown cover."
+        );
+    }
+
+    /// <summary>
+    ///     The face has to belong to somebody the observer is not already fighting. Wearing a
+    ///     colonist in front of a raid should do nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void AHostileFaceFoolsNobody() {
+        string disguise = Kandra("KandraDisguise.cs");
+        Assert.IsTrue(disguise.Contains("!live.HostileTo(theirs)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            disguise.Contains("if (theirs == null) return false;", StringComparison.Ordinal),
+            "Wildlife and unfactioned things decide hostility on their own terms."
+        );
+    }
+
+    /// <summary>
+    ///     GiveAllShortHashes walks every def in the game and calls Log.Error on each one that
+    ///     already has a hash, which by generation time is all of them. That flooded the log with
+    ///     thousands of red errors and tripped RimWorld's message limit, which then swallowed
+    ///     everything logged afterwards.
+    /// </summary>
+    [TestMethod]
+    public void TheGeneratorHashesOnlyItsOwnDefs() {
+        Assert.IsFalse(
+            Generator.Contains("ShortHashGiver.GiveAllShortHashes()", StringComparison.Ordinal),
+            "One error per existing def is not an acceptable price for three new ones."
+        );
+        Assert.IsTrue(Generator.Contains("\"GiveShortHash\"", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("Hash(def, typeof(T));", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The generator builds a shape for every animal, wolfhound included. A hand-written one
+    ///     alongside it is a second entry in every list and, as it turned out, seven dead sound
+    ///     references nobody was looking at.
+    /// </summary>
+    [TestMethod]
+    public void NoHandWrittenShapeCompetesWithTheGeneratedOnes() {
+        Assert.AreEqual(0, ShapeDefs.Descendants("ThingDef").Count());
+        Assert.AreEqual(0, ShapeDefs.Descendants("PawnKindDef").Count());
+        Assert.AreEqual(0, ShapeDefs.Descendants("LifeStageDef").Count());
+    }
+
+    /// <summary>
+    ///     A generated race built from scratch has none of the comps the BasePawn patch adds, so
+    ///     the shape arrived with an Investiture need and nowhere for it to write. Copying the
+    ///     need threw, and taking any form failed.
+    /// </summary>
+    [TestMethod]
+    public void AShapeKeepsTheCompsEveryPawnGets() {
+        Assert.IsTrue(
+            Generator.Contains("comps = [.. source.comps ?? [], new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
+            "The animal's comps carry the InvestitureHolder that Investiture.CurLevel writes into."
+        );
+    }
+
+    /// <summary>
+    ///     Animals have no Pawn_GeneTracker, and IsBurning reaches into it without checking. The
+    ///     bronze sweep walks every pawn on the map, so it hit the first squirrel it found.
+    /// </summary>
+    [TestMethod]
+    public void TheBronzeSweepSkipsPawnsWithoutGenes() {
+        string disguise = Kandra("KandraDisguise.cs");
+        int seen = disguise.IndexOf("public static bool SeenByBronze(", StringComparison.Ordinal);
+        int next = disguise.IndexOf("/// <summary>", seen, StringComparison.Ordinal);
+        string body = disguise[seen..next];
+
+        int guard = body.IndexOf("seeker.genes == null", StringComparison.Ordinal);
+        int burning = body.IndexOf("seeker.IsBurning(bronze)", StringComparison.Ordinal);
+
+        Assert.IsTrue(guard >= 0, "Animals have no gene tracker.");
+        Assert.IsTrue(guard < burning, "The guard has to come first or it does nothing.");
+    }
+
+    /// <summary>
+    ///     Humanlike name generation ends in Log.Error when the race is NoName, which every
+    ///     animal is. The name is overwritten with the kandra's a moment later either way.
+    /// </summary>
+    [TestMethod]
+    public void AShapeHasSomewhereToGetAName() {
+        Assert.IsTrue(Generator.Contains("PawnNameCategory.HumanStandard", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("nameMaker = animal.nameMaker", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Vanilla draws an animal from its GraphicData, which carries the colour, the mask and
+    ///     the shader. Rebuilding one from just a texture path dropped all three, and a cougar
+    ///     came out white.
+    /// </summary>
+    [TestMethod]
+    public void AShapeIsDrawnInTheAnimalsOwnColour() {
+        string node = Kandra("PawnRenderNode_KandraShape.cs");
+
+        Assert.IsTrue(node.Contains("Graphic graphic = data.Graphic;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            node.Contains("Color.white", StringComparison.Ordinal),
+            "Forcing white throws away whatever colour the animal was authored with."
+        );
+        Assert.IsTrue(Generator.Contains("body = picture,", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The shape is holding a colonist, so the inspect pane needs a colonist's tabs. A race
+    ///     built in code has none unless it is told.
+    /// </summary>
+    [TestMethod]
+    public void AShapeKeepsTheColonistTabs() {
+        Assert.IsTrue(Generator.Contains("inspectorTabs = HumanTabs()", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("GetNamedSilentFail(\"Human\")", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     SkillRecord.Level returns 0 when the skill is currently disabled, and adds aptitude on
+    ///     top of what is stored. The animal shape disables twelve work tags, so reading through
+    ///     the property and writing it back zeroed those skills on the kandra for good.
+    /// </summary>
+    [TestMethod]
+    public void SteppingOutOfAShapeDoesNotEatSkills() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+
+        Assert.IsTrue(transfer.Contains("target.levelInt = source.levelInt;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            transfer.Contains("target.Level = source.Level;", StringComparison.Ordinal),
+            "The property is lossy in both directions; the backing field is not."
+        );
     }
 }

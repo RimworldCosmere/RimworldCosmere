@@ -31,6 +31,18 @@ public static class KandraShapeGenerator {
     /// <summary>The animal each generated shape copies, so eating one can find it later.</summary>
     private static readonly Dictionary<PawnKindDef, PawnKindDef> shapes = [];
 
+    private static readonly global::System.Reflection.MethodInfo? giveShortHash =
+        typeof(ShortHashGiver).GetMethod(
+            "GiveShortHash",
+            global::System.Reflection.BindingFlags.NonPublic | global::System.Reflection.BindingFlags.Static
+        );
+
+    private static readonly global::System.Reflection.FieldInfo? takenHashesPerDefType =
+        typeof(ShortHashGiver).GetField(
+            "takenHashesPerDeftype",
+            global::System.Reflection.BindingFlags.NonPublic | global::System.Reflection.BindingFlags.Static
+        );
+
     public static IReadOnlyDictionary<PawnKindDef, PawnKindDef> Shapes => shapes;
 
     /// <summary>
@@ -55,10 +67,6 @@ public static class KandraShapeGenerator {
         for (int i = 0; i < animals.Count; i++) {
             Generate(animals[i]);
         }
-
-        // Once, after everything is in. The per-def version is private, and these need hashes
-        // before anything can save a pawn wearing one.
-        ShortHashGiver.GiveAllShortHashes();
 
         Cosmere.Core.Logger.Important($"KandraShapeGenerator: built {shapes.Count} animal shapes.");
     }
@@ -139,13 +147,21 @@ public static class KandraShapeGenerator {
             statBases = source.statBases,
             tools = source.tools,
             uiIconScale = source.uiIconScale,
-            comps = [new CompProperties_KandraShapePair()],
+
+            // The animal's own comps come along, which is how the shape ends up with the
+            // InvestitureHolder that every pawn gets patched onto BasePawn. Without it the
+            // Investiture need has nowhere to write and throws the moment a shape goes on.
+            comps = [.. source.comps ?? [], new CompProperties_KandraShapePair()],
             modExtensions = [
                 new KandraShapeGraphic {
-                    texPath = picture.texPath,
-                    drawSize = picture.drawSize.x,
+                    body = picture,
+                    female = animal.lifeStages[^1].femaleGraphicData,
                 },
             ],
+
+            // The shape is holding a colonist, so it needs the tabs a colonist has. Reading them
+            // off Human rather than listing them picks up whatever else has been patched on.
+            inspectorTabs = HumanTabs(),
             race = new RaceProperties {
                 body = source.race.body,
                 baseBodySize = source.race.baseBodySize,
@@ -155,6 +171,9 @@ public static class KandraShapeGenerator {
                 leatherDef = source.race.leatherDef,
                 lifeExpectancy = source.race.lifeExpectancy,
                 hasGenders = source.race.hasGenders,
+                nameCategory = source.race.nameCategory == PawnNameCategory.NoName
+                    ? PawnNameCategory.HumanStandard
+                    : source.race.nameCategory,
                 needsRest = true,
                 trainability = TrainabilityDefOf.None,
 
@@ -172,12 +191,21 @@ public static class KandraShapeGenerator {
         return race;
     }
 
+    /// <summary>The tab set a colonist has, whatever mods have added to it.</summary>
+    private static List<global::System.Type>? HumanTabs() {
+        ThingDef? human = DefDatabase<ThingDef>.GetNamedSilentFail("Human");
+
+        return human?.inspectorTabs == null ? null : [.. human.inspectorTabs];
+    }
+
     private static PawnKindDef ShapeKind(PawnKindDef animal, ThingDef race) {
         PawnKindDef kind = new PawnKindDef {
             defName = KindPrefix + animal.defName,
             label = race.label,
             race = race,
             combatPower = animal.combatPower,
+            nameMaker = animal.nameMaker,
+            nameMakerFemale = animal.nameMakerFemale,
             initialResistanceRange = new FloatRange(10f, 20f),
             initialWillRange = new FloatRange(2f, 4f),
             lifeStages = [new PawnKindLifeStage()],
@@ -191,13 +219,36 @@ public static class KandraShapeGenerator {
     ///     Puts a freshly built def into the database the way the loader would have.
     /// </summary>
     /// <remarks>
-    ///     PostLoad resolves the def's own nested data. Short hashes are handed out in one pass
-    ///     afterwards, because the per-def call is private.
+    ///     PostLoad resolves the def's own nested data, and the def needs a short hash before
+    ///     anything can save a pawn wearing it.
     /// </remarks>
     private static void Register<T>(T def)
         where T : Verse.Def {
         def.PostLoad();
         DefDatabase<T>.Add(def);
+        Hash(def, typeof(T));
         def.ResolveReferences();
+    }
+
+    /// <summary>
+    ///     Hands one def a short hash, reusing vanilla's collision handling.
+    /// </summary>
+    /// <remarks>
+    ///     <c>GiveAllShortHashes</c> is the public way in and the wrong one: it walks every def in
+    ///     the game and calls <c>Log.Error</c> on each one that already has a hash, which is all of
+    ///     them by this point. That is thousands of red errors and a message-limit cutoff that
+    ///     swallows everything logged after it. The private per-def call has none of that.
+    /// </remarks>
+    private static void Hash(Verse.Def def, global::System.Type defType) {
+        if (giveShortHash == null || takenHashesPerDefType == null) return;
+
+        if (takenHashesPerDefType.GetValue(null) is not Dictionary<global::System.Type, HashSet<ushort>> taken) return;
+
+        if (!taken.TryGetValue(defType, out HashSet<ushort>? forType)) {
+            forType = [];
+            taken[defType] = forType;
+        }
+
+        giveShortHash.Invoke(null, [def, defType, forType]);
     }
 }

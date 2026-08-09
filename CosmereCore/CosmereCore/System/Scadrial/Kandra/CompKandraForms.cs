@@ -36,6 +36,12 @@ public class CompKandraForms : ThingComp {
     /// <summary>What the spikes were holding, kept for when a new pair goes in.</summary>
     private KandraMind mind = new KandraMind();
 
+    /// <summary>Set once somebody has worked out what this is. Cleared by changing shape.</summary>
+    private bool coverBlown;
+
+    /// <summary>When the current shape went on, so a fight three shapes ago does not count.</summary>
+    private int wornSinceTick;
+
     public KandraMind Mind => mind;
 
     public CompProperties_KandraForms Props => (CompProperties_KandraForms)props;
@@ -89,6 +95,8 @@ public class CompKandraForms : ThingComp {
         Scribe_Deep.Look(ref current, "currentForm");
         Scribe_Deep.Look(ref trueBody, "trueBody");
         Scribe_Deep.Look(ref mind, "mind");
+        Scribe_Values.Look(ref coverBlown, "coverBlown");
+        Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
         mind ??= new KandraMind();
         known ??= [];
     }
@@ -107,6 +115,11 @@ public class CompKandraForms : ThingComp {
 
         known.Add(form);
         pawn.skills?.Learn(SkillDefOf.Cosmere_Scadrial_Skill_Shapeshift, Props.xpPerForm, true);
+    }
+
+    /// <summary>Adds a shape to the repertoire without eating anybody for it.</summary>
+    public void Remember(KandraForm form) {
+        known.Add(form);
     }
 
     /// <summary>Remembers what the kandra actually is, the first time they wear anything else.</summary>
@@ -135,6 +148,28 @@ public class CompKandraForms : ThingComp {
 
     public void SetCurrent(KandraForm? form) {
         current = form;
+        coverBlown = false;
+        wornSinceTick = Find.TickManager?.TicksGame ?? 0;
+    }
+
+    /// <summary>
+    ///     Whether anybody has worked out what this is while it wears the current shape.
+    /// </summary>
+    /// <remarks>
+    ///     Stays true for as long as the shape does. Changing shape is the way out, which is the
+    ///     whole reason a kandra keeps more than one face.
+    /// </remarks>
+    public bool CoverBlown => coverBlown;
+
+    public void BlowCover() {
+        coverBlown = true;
+    }
+
+    /// <summary>Whether the kandra has raised a hand to anyone since putting this shape on.</summary>
+    public bool FoughtInThisShape(Pawn wearing) {
+        int last = wearing.mindState?.lastAttackTargetTick ?? 0;
+
+        return last > wornSinceTick;
     }
 
     private static int SkillLevel(Pawn pawn) {

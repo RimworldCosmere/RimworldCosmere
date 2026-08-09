@@ -67,7 +67,11 @@ public static class KandraShapeTransfer {
             SkillRecord? target = to.skills.GetSkill(source.def);
             if (target == null) continue;
 
-            target.Level = source.Level;
+            // levelInt, not Level. The getter returns 0 for a skill the pawn is currently
+            // incapable of, and adds trait and gene aptitude on top of what is stored. Reading
+            // through it zeroed every skill the animal shape disables, permanently, and baked
+            // aptitude bonuses in again on every round trip.
+            target.levelInt = source.levelInt;
             target.xpSinceLastLevel = source.xpSinceLastLevel;
             target.passion = source.passion;
         }

@@ -5,10 +5,14 @@ using Verse;
 namespace Cosmere.System.Scadrial.Kandra;
 
 /// <summary>Where a borrowed shape gets its graphic from.</summary>
+/// <remarks>
+///     The animal's own <see cref="GraphicData" /> is carried whole rather than picked apart.
+///     Rebuilding one from a texture path alone threw away the colour, the mask and the shader,
+///     which is how a cougar ended up white.
+/// </remarks>
 public class KandraShapeGraphic : DefModExtension {
-    public string texPath = string.Empty;
-    public float drawSize = 1.4f;
-    public ShaderTypeDef? shader;
+    public GraphicData? body;
+    public GraphicData? female;
 }
 
 /// <summary>
@@ -31,20 +35,18 @@ public class PawnRenderNode_KandraShape : PawnRenderNode {
 
     public override Graphic? GraphicFor(Pawn pawn) {
         KandraShapeGraphic? shape = pawn.def.GetModExtension<KandraShapeGraphic>();
-        if (shape == null || string.IsNullOrEmpty(shape.texPath)) return null;
+        if (shape == null) return null;
 
-        UnityEngine.Shader shader = shape.shader?.Shader ?? ShaderDatabase.Cutout;
-        Vector2 size = new Vector2(shape.drawSize, shape.drawSize);
+        GraphicData? data = pawn.gender == Gender.Female && shape.female != null ? shape.female : shape.body;
+        if (data == null || string.IsNullOrEmpty(data.texPath)) return null;
 
-        Graphic graphic = GraphicDatabase.Get<Graphic_Multi>(
-            shape.texPath,
-            shader,
-            size,
-            Color.white
-        );
+        // GraphicData.Graphic applies the colour, mask and shader the animal was authored with.
+        Graphic graphic = data.Graphic;
 
         // Wounds and rot still read through the hediff set, the same as any other body.
         Color colour = pawn.health.hediffSet.GetSkinColor(graphic.Color);
-        return graphic.GetColoredVersion(graphic.Shader, colour, colour);
+        Color colourTwo = pawn.health.hediffSet.GetSkinColor(graphic.ColorTwo);
+
+        return graphic.GetColoredVersion(graphic.Shader, colour, colourTwo);
     }
 }

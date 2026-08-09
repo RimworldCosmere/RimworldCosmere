@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Concord;
 using RimWorld;
 using Verse;
 
@@ -20,8 +19,12 @@ namespace Cosmere.System.Scadrial.Kandra;
 ///         animals from other mods, and the list keeps itself up to date.
 ///     </para>
 /// </remarks>
-[Patch(typeof(DefGenerator))]
+[StaticConstructorOnStartup]
 public static class KandraShapeGenerator {
+    static KandraShapeGenerator() {
+        Build();
+    }
+
     public const string RacePrefix = "Cosmere_Scadrial_Race_KandraShape_";
     public const string KindPrefix = "Cosmere_Scadrial_PawnKind_KandraShape_";
 
@@ -30,8 +33,16 @@ public static class KandraShapeGenerator {
 
     public static IReadOnlyDictionary<PawnKindDef, PawnKindDef> Shapes => shapes;
 
-    [Inject(At.Return, nameof(DefGenerator.GenerateImpliedDefs_PreResolve))]
-    private static void AfterGenerateImpliedDefs(bool hotReload) {
+    /// <summary>
+    ///     Runs on startup rather than during def generation.
+    /// </summary>
+    /// <remarks>
+    ///     Concord's patcher applies long after GenerateImpliedDefs_PreResolve has finished, so
+    ///     hooking it there did nothing at all. These defs are never referenced from XML, only
+    ///     looked up by name at runtime, so adding them straight to the database afterwards is
+    ///     enough.
+    /// </remarks>
+    private static void Build() {
         List<PawnKindDef> animals = [];
         List<PawnKindDef> all = DefDatabase<PawnKindDef>.AllDefsListForReading;
 
@@ -42,7 +53,7 @@ public static class KandraShapeGenerator {
         }
 
         for (int i = 0; i < animals.Count; i++) {
-            Generate(animals[i], hotReload);
+            Generate(animals[i]);
         }
 
         Cosmere.Core.Logger.Info($"KandraShapeGenerator: built {shapes.Count} animal shapes.");
@@ -66,13 +77,13 @@ public static class KandraShapeGenerator {
         return kind.lifeStages[^1].bodyGraphicData != null;
     }
 
-    private static void Generate(PawnKindDef animal, bool hotReload) {
+    private static void Generate(PawnKindDef animal) {
         ThingDef source = animal.race;
         GraphicData picture = animal.lifeStages[^1].bodyGraphicData;
 
-        LifeStageDef stage = ShapeLifeStage(animal, picture, hotReload);
-        ThingDef race = ShapeRace(animal, source, picture, stage, hotReload);
-        PawnKindDef kind = ShapeKind(animal, race, hotReload);
+        LifeStageDef stage = ShapeLifeStage(animal, picture);
+        ThingDef race = ShapeRace(animal, source, picture, stage);
+        PawnKindDef kind = ShapeKind(animal, race);
 
         shapes[animal] = kind;
     }
@@ -85,7 +96,7 @@ public static class KandraShapeGenerator {
     ///     humanlike pawn, and the animal life stages have none, so without this it throws once a
     ///     frame. The animal's own picture stands in for the outline.
     /// </remarks>
-    private static LifeStageDef ShapeLifeStage(PawnKindDef animal, GraphicData picture, bool hotReload) {
+    private static LifeStageDef ShapeLifeStage(PawnKindDef animal, GraphicData picture) {
         LifeStageDef stage = new LifeStageDef {
             defName = "Cosmere_Scadrial_LifeStage_KandraShape_" + animal.defName,
             label = "adult",
@@ -98,7 +109,7 @@ public static class KandraShapeGenerator {
             },
         };
 
-        DefGenerator.AddImpliedDef(stage, hotReload);
+        Register(stage);
         return stage;
     }
 
@@ -106,8 +117,7 @@ public static class KandraShapeGenerator {
         PawnKindDef animal,
         ThingDef source,
         GraphicData picture,
-        LifeStageDef stage,
-        bool hotReload
+        LifeStageDef stage
     ) {
         ThingDef race = new ThingDef {
             defName = RacePrefix + animal.defName,
@@ -154,11 +164,11 @@ public static class KandraShapeGenerator {
             },
         };
 
-        DefGenerator.AddImpliedDef(race, hotReload);
+        Register(race);
         return race;
     }
 
-    private static PawnKindDef ShapeKind(PawnKindDef animal, ThingDef race, bool hotReload) {
+    private static PawnKindDef ShapeKind(PawnKindDef animal, ThingDef race) {
         PawnKindDef kind = new PawnKindDef {
             defName = KindPrefix + animal.defName,
             label = race.label,
@@ -169,7 +179,22 @@ public static class KandraShapeGenerator {
             lifeStages = [new PawnKindLifeStage()],
         };
 
-        DefGenerator.AddImpliedDef(kind, hotReload);
+        Register(kind);
         return kind;
+    }
+
+    /// <summary>
+    ///     Puts a freshly built def into the database the way the loader would have.
+    /// </summary>
+    /// <remarks>
+    ///     A short hash and PostLoad are both required: without the hash the def cannot be saved
+    ///     or referenced, and without PostLoad its own nested data is never resolved.
+    /// </remarks>
+    private static void Register<T>(T def)
+        where T : Verse.Def {
+        def.PostLoad();
+        ShortHashGiver.GiveShortHash(def, typeof(T));
+        DefDatabase<T>.Add(def);
+        def.ResolveReferences();
     }
 }

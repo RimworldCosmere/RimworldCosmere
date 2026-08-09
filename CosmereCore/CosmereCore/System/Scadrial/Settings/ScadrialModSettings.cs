@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.Settings;
 using Cosmere.Core.Settings.Model;
+using Cosmere.System.Scadrial.Grid;
 using Cosmere.System.Scadrial.Util;
 using UnityEngine;
 using Verse;
@@ -27,6 +28,9 @@ public class ScadrialModSettings : CosmereModSettings {
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
     public bool pawnsKeepVialsWhenDowned;
+
+    /// <summary>Cells a vent's fertile ground creeps out to before it stops.</summary>
+    public float ventSoilReach = AshVentSoilSpread.DefaultReachCells;
 
     public override string Name => "Scadrial";
 
@@ -145,6 +149,26 @@ public class ScadrialModSettings : CosmereModSettings {
                 ]
             ),
             new SettingSection(
+                "ash",
+                "CS_Settings_Category_Ash",
+                [
+                    new SettingDescriptor(
+                        "vent-soil-reach",
+                        "CS_Settings_VentSoilReach_Label",
+                        "CS_Settings_VentSoilReach_Tooltip",
+                        new SliderControl(
+                            () => ventSoilReach,
+                            updated => ventSoilReach = Mathf.Round(updated),
+                            AshVentSoilSpread.DefaultReachCells,
+                            AshVentSoilSpread.MinReachCells,
+                            AshVentSoilSpread.MaxReachCells,
+                            1f,
+                            value => value.ToString("0")
+                        )
+                    ),
+                ]
+            ),
+            new SettingSection(
                 "koloss",
                 "CS_Settings_Category_Koloss",
                 [
@@ -181,5 +205,6 @@ public class ScadrialModSettings : CosmereModSettings {
         Scribe_Values.Look(ref pawnsKeepMetalmindsWhenDowned, "pawnsKeepMetalmindsWhenDowned", true);
         Scribe_Values.Look(ref pawnsKeepVialsWhenDowned, "pawnsKeepVialsWhenDowned", true);
         Scribe_Values.Look(ref alwaysShowAllomanticAuras, "alwaysShowAllomanticAuras");
+        Scribe_Values.Look(ref ventSoilReach, "ventSoilReach", AshVentSoilSpread.DefaultReachCells);
     }
 }

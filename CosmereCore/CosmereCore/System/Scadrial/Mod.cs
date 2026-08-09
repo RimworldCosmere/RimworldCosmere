@@ -16,6 +16,9 @@ public class Mod(ModContentPack content) : CosmereMod<ScadrialModSettings>(conte
     /// <summary>Years from the fourth spike to the skin giving out.</summary>
     public static float kolossGrowthYears => Settings.kolossGrowthYears;
 
+    /// <summary>Cells a vent's fertile ground creeps out to.</summary>
+    public static float ventSoilReach => Settings.ventSoilReach;
+
     /// <summary>
     ///     Some settings are baked into defs rather than read live, so they have to be pushed
     ///     back out when the player changes one. Without this, koloss growth would keep the rate

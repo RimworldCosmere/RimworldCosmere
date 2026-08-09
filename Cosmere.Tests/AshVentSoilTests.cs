@@ -22,6 +22,20 @@ public class AshVentSoilTests {
     /// <summary>Core's own terrain folder. A path under it resolves without art of ours.</summary>
     private const string VanillaTexturePrefix = "Terrain/Surfaces/";
 
+    /// <summary>GenDate.TicksPerDay, which the test project deliberately cannot load.</summary>
+    private const float TicksPerDay = 60000f;
+
+    /// <summary>AshDepthTracker.Stripes. A vent contributes once a cycle, on stripe 0.</summary>
+    private const float CycleTicks = 64f;
+
+    private const float CycleDays = CycleTicks / TicksPerDay;
+
+    /// <summary>Days in a quadrum. What "noticed across a season" is measured against.</summary>
+    private const float QuadrumDays = 15f;
+
+    /// <summary>The vent's own clearing, from CompProperties_AshVent.clearRadius.</summary>
+    private const float ClearRadius = 3f;
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -176,5 +190,158 @@ public class AshVentSoilTests {
 
         // A 2x2 mouth grown to distance 2.236: 32 cells, the four diagonal corners at 2.828 cut.
         Assert.AreEqual(32, cells, "the vent soil patch changed size.");
+    }
+
+    [TestMethod]
+    public void TheDefaultReachIsEightCells() {
+        Assert.AreEqual(8f, AshVentSoilSpread.DefaultReachCells);
+    }
+
+    [TestMethod]
+    public void TheSettingRangeHoldsTheDefault() {
+        Assert.IsTrue(
+            AshVentSoilSpread.MinReachCells <= AshVentSoilSpread.DefaultReachCells
+            && AshVentSoilSpread.MaxReachCells >= AshVentSoilSpread.DefaultReachCells,
+            $"the default {AshVentSoilSpread.DefaultReachCells} sits outside "
+            + $"[{AshVentSoilSpread.MinReachCells}, {AshVentSoilSpread.MaxReachCells}], so the slider cannot show it."
+        );
+    }
+
+    /// <summary>The vent holds its own clearing fertile from the day it spawns, then creeps out.</summary>
+    [TestMethod]
+    public void AFreshVentStartsAtItsOwnClearing() {
+        Assert.AreEqual(ClearRadius, AshVentSoilSpread.Advance(0f, ClearRadius, 8f, 0f), 0.0001f);
+    }
+
+    [TestMethod]
+    public void TheFrontStopsAtTheConfiguredReach() {
+        Assert.AreEqual(8f, AshVentSoilSpread.Advance(ClearRadius, ClearRadius, 8f, 10000f), 0.0001f);
+    }
+
+    /// <summary>Turning the setting down pulls the front in rather than stranding it past the cap.</summary>
+    [TestMethod]
+    public void AReachUnderTheClearingPullsTheFrontIn() {
+        Assert.AreEqual(2f, AshVentSoilSpread.Advance(8f, ClearRadius, 2f, 0f), 0.0001f);
+    }
+
+    /// <summary>Clearing 3 out to the default 8 is five cells at twelve days each: sixty days, a year.</summary>
+    [TestMethod]
+    public void TheFrontTakesAYearToReachTheDefault() {
+        float front = AshVentSoilSpread.Advance(0f, ClearRadius, 8f, 0f);
+
+        front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, 59f);
+        Assert.IsTrue(front < 8f, $"the front reached the default in 59 days, at {front}.");
+
+        front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, 1.1f);
+        Assert.AreEqual(8f, front, 0.0001f, "sixty days did not carry the front out to the default 8.");
+    }
+
+    /// <summary>
+    ///     The rate claim, counted in cells. A day has to read as nothing and a quadrum as a
+    ///     wider band, or the spread is either invisible or a jump.
+    /// </summary>
+    [TestMethod]
+    public void ADaysCreepIsInvisibleAndAQuadrumsIsNot() {
+        float front = AshVentSoilSpread.DefaultReachCells;
+        int total = CellsInside(front);
+
+        int inADay = total - CellsInside(front - 1f / AshVentSoilSpread.DaysPerCell);
+        int inAQuadrum = total - CellsInside(front - QuadrumDays / AshVentSoilSpread.DaysPerCell);
+
+        Assert.IsTrue(inADay <= 10, $"a day adds {inADay} cells of {total}, which a player reads as a jump.");
+        Assert.IsTrue(inAQuadrum >= 50, $"a quadrum adds only {inAQuadrum} cells of {total}, which reads as nothing.");
+    }
+
+    /// <summary>
+    ///     The banked front is the whole record. Thirty days in one step and thirty days a cycle
+    ///     at a time have to land in the same place, or a reload would shift the ground.
+    /// </summary>
+    [TestMethod]
+    public void CycleByCycleMatchesOneLongStep() {
+        float stepped = AshVentSoilSpread.Advance(ClearRadius, ClearRadius, 8f, 30f);
+
+        float banked = ClearRadius;
+        int cycles = (int)(30f / CycleDays);
+        for (int i = 0; i < cycles; i++) {
+            banked = AshVentSoilSpread.Advance(banked, ClearRadius, 8f, CycleDays);
+        }
+
+        // 28125 float adds, so the two drift apart by rounding rather than by rule.
+        Assert.AreEqual(stepped, banked, 0.02f, "the front moved differently when it was advanced a cycle at a time.");
+    }
+
+    /// <summary>
+    ///     One cycle is 0.0011 days, so the step is 0.00009 cells. Banked on a float already out
+    ///     at 7.5 it still has to move, or the front stalls short of the setting forever.
+    /// </summary>
+    [TestMethod]
+    public void OneCyclesStepSurvivesFloatPrecision() {
+        const float front = 7.5f;
+
+        Assert.IsTrue(
+            AshVentSoilSpread.Advance(front, ClearRadius, 16f, CycleDays) > front,
+            $"a cycle's step vanished into the float at {front}."
+        );
+    }
+
+    /// <summary>
+    ///     The ration is what stops six vents firing hundreds of SetTerrain calls on one tick. It
+    ///     still has to outpace the front, or the spread never reaches the setting.
+    /// </summary>
+    [TestMethod]
+    public void TheWriteRationOutpacesTheFront() {
+        float front = AshVentSoilSpread.DefaultReachCells;
+        int openedPerDay = CellsInside(front) - CellsInside(front - 1f / AshVentSoilSpread.DaysPerCell);
+        float writesPerDay = AshDepthMath.TerrainChangesPerSweep * (TicksPerDay / CycleTicks);
+
+        Assert.IsTrue(
+            openedPerDay < writesPerDay,
+            $"the front opens {openedPerDay} cells a day against {writesPerDay} rationed writes."
+        );
+    }
+
+    /// <summary>At the default the patch is worth the walk, and a change to its shape is deliberate.</summary>
+    [TestMethod]
+    public void TheDefaultReachGivesAPatchWorthFarming() {
+        Assert.AreEqual(
+            232, CellsInside(AshVentSoilSpread.DefaultReachCells), "the vent soil patch changed size."
+        );
+    }
+
+    /// <summary>
+    ///     The front is banked state. Soil in the terrain grid says a cell was reached, never
+    ///     whether its neighbours were, and this feature has shipped unsaved state twice already.
+    /// </summary>
+    [TestMethod]
+    public void TheSpreadFrontIsScribed() {
+        string comp = Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Comp", "Thing", "CompAshVent.cs"
+        );
+
+        Assert.IsTrue(File.Exists(comp), $"CompAshVent.cs is missing at {comp}.");
+        StringAssert.Contains(
+            File.ReadAllText(comp),
+            "Scribe_Values.Look(ref soilRadius",
+            "the spread front is not saved, so every reload would walk it back out from the clearing."
+        );
+    }
+
+    /// <summary>
+    ///     Cells a front of this radius covers around the 2x2 mouth, by the same out-of-rect
+    ///     distance the comp walks.
+    /// </summary>
+    private static int CellsInside(float radius) {
+        int reach = (int)radius + 2;
+        int cells = 0;
+
+        for (int x = -reach; x <= 1 + reach; x++) {
+            for (int z = -reach; z <= 1 + reach; z++) {
+                int dx = x < 0 ? -x : x > 1 ? x - 1 : 0;
+                int dz = z < 0 ? -z : z > 1 ? z - 1 : 0;
+                if (AshVentSoilSpread.Reaches(dx * dx + dz * dz, radius)) cells++;
+            }
+        }
+
+        return cells;
     }
 }

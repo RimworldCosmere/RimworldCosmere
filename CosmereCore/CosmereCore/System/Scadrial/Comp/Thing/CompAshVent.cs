@@ -63,6 +63,7 @@ public class CompAshVent : ThingComp {
 
     private float[]? remainder;
     private float roomRemainder;
+    private float soilRadius;
     private float throwRemainder;
     private int throwsMade;
 
@@ -115,6 +116,10 @@ public class CompAshVent : ThingComp {
         Scribe_Values.Look(ref throwRemainder, "ashVentThrowRemainder");
         Scribe_Values.Look(ref throwsMade, "ashVentThrowsMade");
 
+        // The spread front. A soil cell says it was reached, never whether its neighbours were,
+        // so the terrain grid stops being the record the moment the front leaves the clearing.
+        Scribe_Values.Look(ref soilRadius, "ashVentSoilRadius");
+
         if (Scribe.mode == LoadSaveMode.LoadingVars) remainder = AshPlume.RestoreBank(banked, Offsets.Count);
     }
 
@@ -139,6 +144,9 @@ public class CompAshVent : ThingComp {
 
             // Sealed in it stops sweeping too, or a box the size of its mouth cancels the plume.
             if (tracker != null && ClearOwnMouth(map, grid, tracker)) changed = true;
+
+            // Same branch, same reason: a capped vent feeds no ground outside the box it is in.
+            if (tracker != null) SpreadSoil(map, tracker, dayFraction);
         }
 
         ThrowMetal(dayFraction);
@@ -234,10 +242,6 @@ public class CompAshVent : ThingComp {
         CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(Props.clearRadius));
         CellIndices indices = map.cellIndices;
         AshBuriedCells buried = tracker.Buried;
-
-        // Rationed the way the terrain sweep rations its own, and for the same reason. Nothing to
-        // bank: a cell already laid fails the check next cycle, so the terrain grid is the record.
-        int soilBudget = AshDepthMath.TerrainChangesPerSweep;
         bool changed = false;
 
         for (int x = reach.minX; x <= reach.maxX; x++) {
@@ -252,8 +256,6 @@ public class CompAshVent : ThingComp {
                 float distance = Mathf.Sqrt(dx * dx + dz * dz);
 
                 int index = indices.CellToIndex(cell);
-                if (soilBudget > 0 && LaySoil(map, tracker, index, distance, Props.clearRadius)) soilBudget--;
-
                 int depth = grid.GetDepthMm(index);
                 int allowed = AshPlume.AllowedDepthMm(depth, distance, Props.clearRadius);
 
@@ -274,11 +276,45 @@ public class CompAshVent : ThingComp {
     }
 
     /// <summary>
-    ///     Turns a cell the vent holds clear into ground worth farming. Terrain only - it moves no
+    ///     Walks the front out a little further and feeds the ground behind it. Rationed the way
+    ///     the terrain sweep rations its own, so six vents cannot fire hundreds of writes a tick.
+    /// </summary>
+    private void SpreadSoil(Verse.Map map, Map.AshDepthTracker tracker, float dayFraction) {
+        soilRadius = AshVentSoilSpread.Advance(
+            soilRadius, Props.clearRadius, Scadrial.Mod.ventSoilReach, dayFraction
+        );
+
+        CellRect mouth = parent.OccupiedRect();
+        CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(soilRadius));
+        CellIndices indices = map.cellIndices;
+        int budget = AshDepthMath.TerrainChangesPerSweep;
+
+        for (int x = reach.minX; x <= reach.maxX; x++) {
+            for (int z = reach.minZ; z <= reach.maxZ; z++) {
+                if (budget <= 0) return;
+
+                IntVec3 cell = new IntVec3(x, 0, z);
+                if (!cell.InBounds(map)) continue;
+
+                // Out of the rect rather than off a centre, so the front rounds the corners off
+                // instead of ringing the mouth in another square. Squared, to skip the Sqrt.
+                int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
+                int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
+                if (!AshVentSoilSpread.Reaches(dx * dx + dz * dz, soilRadius)) continue;
+
+                if (LaySoil(map, tracker, indices.CellToIndex(cell))) budget--;
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Turns a cell inside the front into ground worth farming. Terrain only - it moves no
     ///     ash, so the buried set is owed nothing here.
     /// </summary>
-    private static bool LaySoil(Verse.Map map, Map.AshDepthTracker tracker, int index, float distance, float radius) {
-        if (!AshPlume.StaysBelowTheSwap(distance, radius)) return false;
+    private static bool LaySoil(Verse.Map map, Map.AshDepthTracker tracker, int index) {
+        // AshPlume.StaysBelowTheSwap used to gate this, and it only holds inside the clearing the
+        // vent thins. Out at the front the plume caps nothing, so ask the grid what is really there.
+        if (AshDepthMath.ShouldSwapToAshTerrain(tracker.Grid.GetDepthMm(index), false)) return false;
 
         // Ash terrain standing over a remembered original. Laying here would strand that memory,
         // so leave it to the sweep to hand the cell back and take it on a later cycle.

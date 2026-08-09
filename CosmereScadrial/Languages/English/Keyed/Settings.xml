@@ -27,6 +27,12 @@
 
     <CS_Settings_AlwaysShowAuras_Label>Always show allomantic auras</CS_Settings_AlwaysShowAuras_Label>
     <CS_Settings_AlwaysShowAuras_Tooltip>When enabled, iron, steel, and bronze sight lines draw for every burning allomancer, not just the one selected. Can clutter the view in large colonies.</CS_Settings_AlwaysShowAuras_Tooltip>
+
+    <CS_Settings_Category_Ash>Ash</CS_Settings_Category_Ash>
+
+    <CS_Settings_VentSoilReach_Label>Vent soil reach</CS_Settings_VentSoilReach_Label>
+    <CS_Settings_VentSoilReach_Tooltip>How far an ash vent feeds the ground around it, in cells. What the mountain pushes up carries minerals, and they settle where the vent breathes.\n\nThe ground creeps outward one cell every twelve days, so a vent takes about a year to reach the default eight. Soil laid past the clearing the vent sweeps can still go under deep ash, and comes back when the ash thins.</CS_Settings_VentSoilReach_Tooltip>
+
     <CS_Settings_Category_Koloss>Koloss</CS_Settings_Category_Koloss>
     <CS_Settings_KolossGrowthYears_Label>Years before a koloss outgrows its skin</CS_Settings_KolossGrowthYears_Label>
     <CS_Settings_KolossGrowthYears_Tooltip>A koloss never stops growing, and the growing is what kills it. This is how long one lives between the fourth spike going in and its skin failing for good.\n\nEight years fits the arc inside a long colony. Twenty is closer to the books, but most games end before a koloss finishes growing.</CS_Settings_KolossGrowthYears_Tooltip>

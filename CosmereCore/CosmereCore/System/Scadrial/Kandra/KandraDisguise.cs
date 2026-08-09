@@ -57,6 +57,9 @@ public static class KandraDisguise {
         for (int i = 0; i < nearby.Count; i++) {
             Pawn seeker = nearby[i];
             if (seeker == disguised || seeker.Dead) continue;
+
+            // Animals have no gene tracker at all, and IsBurning reaches straight into it.
+            if (seeker.genes == null) continue;
             if (!seeker.IsBurning(bronze)) continue;
             if (!seeker.Position.InHorDistOf(disguised.Position, BronzeRange(seeker))) continue;
 

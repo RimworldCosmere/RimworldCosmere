@@ -147,7 +147,11 @@ public static class KandraShapeGenerator {
             statBases = source.statBases,
             tools = source.tools,
             uiIconScale = source.uiIconScale,
-            comps = [new CompProperties_KandraShapePair()],
+
+            // The animal's own comps come along, which is how the shape ends up with the
+            // InvestitureHolder that every pawn gets patched onto BasePawn. Without it the
+            // Investiture need has nowhere to write and throws the moment a shape goes on.
+            comps = [.. source.comps ?? [], new CompProperties_KandraShapePair()],
             modExtensions = [
                 new KandraShapeGraphic {
                     texPath = picture.texPath,
@@ -163,6 +167,9 @@ public static class KandraShapeGenerator {
                 leatherDef = source.race.leatherDef,
                 lifeExpectancy = source.race.lifeExpectancy,
                 hasGenders = source.race.hasGenders,
+                nameCategory = source.race.nameCategory == PawnNameCategory.NoName
+                    ? PawnNameCategory.HumanStandard
+                    : source.race.nameCategory,
                 needsRest = true,
                 trainability = TrainabilityDefOf.None,
 
@@ -186,6 +193,8 @@ public static class KandraShapeGenerator {
             label = race.label,
             race = race,
             combatPower = animal.combatPower,
+            nameMaker = animal.nameMaker,
+            nameMakerFemale = animal.nameMakerFemale,
             initialResistanceRange = new FloatRange(10f, 20f),
             initialWillRange = new FloatRange(2f, 4f),
             lifeStages = [new PawnKindLifeStage()],

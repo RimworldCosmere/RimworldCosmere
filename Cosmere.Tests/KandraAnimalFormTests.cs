@@ -122,7 +122,7 @@ public class KandraAnimalFormTests {
     [TestMethod]
     public void TheFormCarriesTheShapePairComp() {
         Assert.IsTrue(
-            Generator.Contains("comps = [new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
+            Generator.Contains("new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
             "Without the comp there is nowhere to put the kandra."
         );
     }
@@ -461,5 +461,46 @@ public class KandraAnimalFormTests {
         Assert.AreEqual(0, ShapeDefs.Descendants("ThingDef").Count());
         Assert.AreEqual(0, ShapeDefs.Descendants("PawnKindDef").Count());
         Assert.AreEqual(0, ShapeDefs.Descendants("LifeStageDef").Count());
+    }
+
+    /// <summary>
+    ///     A generated race built from scratch has none of the comps the BasePawn patch adds, so
+    ///     the shape arrived with an Investiture need and nowhere for it to write. Copying the
+    ///     need threw, and taking any form failed.
+    /// </summary>
+    [TestMethod]
+    public void AShapeKeepsTheCompsEveryPawnGets() {
+        Assert.IsTrue(
+            Generator.Contains("comps = [.. source.comps ?? [], new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
+            "The animal's comps carry the InvestitureHolder that Investiture.CurLevel writes into."
+        );
+    }
+
+    /// <summary>
+    ///     Animals have no Pawn_GeneTracker, and IsBurning reaches into it without checking. The
+    ///     bronze sweep walks every pawn on the map, so it hit the first squirrel it found.
+    /// </summary>
+    [TestMethod]
+    public void TheBronzeSweepSkipsPawnsWithoutGenes() {
+        string disguise = Kandra("KandraDisguise.cs");
+        int seen = disguise.IndexOf("public static bool SeenByBronze(", StringComparison.Ordinal);
+        int next = disguise.IndexOf("/// <summary>", seen, StringComparison.Ordinal);
+        string body = disguise[seen..next];
+
+        int guard = body.IndexOf("seeker.genes == null", StringComparison.Ordinal);
+        int burning = body.IndexOf("seeker.IsBurning(bronze)", StringComparison.Ordinal);
+
+        Assert.IsTrue(guard >= 0, "Animals have no gene tracker.");
+        Assert.IsTrue(guard < burning, "The guard has to come first or it does nothing.");
+    }
+
+    /// <summary>
+    ///     Humanlike name generation ends in Log.Error when the race is NoName, which every
+    ///     animal is. The name is overwritten with the kandra's a moment later either way.
+    /// </summary>
+    [TestMethod]
+    public void AShapeHasSomewhereToGetAName() {
+        Assert.IsTrue(Generator.Contains("PawnNameCategory.HumanStandard", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("nameMaker = animal.nameMaker", StringComparison.Ordinal));
     }
 }

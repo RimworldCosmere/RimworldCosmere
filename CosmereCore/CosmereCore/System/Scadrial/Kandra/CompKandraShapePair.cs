@@ -21,7 +21,20 @@ public class CompProperties_KandraShapePair : CompProperties {
 public class CompKandraShapePair : ThingComp {
     private Pawn? held;
 
+    /// <summary>What the kandra was holding and wearing, so it goes back the same way.</summary>
+    private List<Verse.Thing> wasEquipped = [];
+    private List<Verse.Thing> wasWorn = [];
+
     public Pawn? Held => held;
+
+    public List<Verse.Thing> WasEquipped => wasEquipped;
+
+    public List<Verse.Thing> WasWorn => wasWorn;
+
+    public void RememberGear(IEnumerable<Verse.Thing> equipped, IEnumerable<Verse.Thing> worn) {
+        wasEquipped = [.. equipped];
+        wasWorn = [.. worn];
+    }
 
     public void Hold(Pawn kandra) {
         held = kandra;
@@ -29,6 +42,8 @@ public class CompKandraShapePair : ThingComp {
 
     public void Release() {
         held = null;
+        wasEquipped = [];
+        wasWorn = [];
     }
 
     /// <summary>
@@ -73,5 +88,11 @@ public class CompKandraShapePair : ThingComp {
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Deep.Look(ref held, "heldKandra");
+
+        // By reference: the things themselves live in this pawn's inventory.
+        Scribe_Collections.Look(ref wasEquipped, "wasEquipped", LookMode.Reference);
+        Scribe_Collections.Look(ref wasWorn, "wasWorn", LookMode.Reference);
+        wasEquipped ??= [];
+        wasWorn ??= [];
     }
 }

@@ -36,6 +36,15 @@ public static class KandraAnimalShape {
             return null;
         }
 
+        CompKandraShapePair? pair = animal.TryGetComp<CompKandraShapePair>();
+        if (pair == null) {
+            Cosmere.Core.Logger.Warning(
+                $"KandraAnimalShape: {form.animalKind.defName} has no shape pair comp, so the kandra would be lost."
+            );
+            animal.Destroy();
+            return null;
+        }
+
         // The colony is watching the same person walk around on four legs, so everything that
         // belongs to the kandra rather than to the body goes with it.
         KandraShapeTransfer.Into(kandra, animal);
@@ -46,14 +55,9 @@ public static class KandraAnimalShape {
         );
         if (shapeLimits != null) animal.health?.AddHediff(shapeLimits);
 
-        CompKandraShapePair? pair = animal.TryGetComp<CompKandraShapePair>();
-        if (pair == null) {
-            Cosmere.Core.Logger.Warning(
-                $"KandraAnimalShape: {form.animalKind.defName} has no shape pair comp, so the kandra would be lost."
-            );
-            animal.Destroy();
-            return null;
-        }
+        // While the kandra is still on the map. Taking apparel off needs a floor to put it on,
+        // and a despawned pawn has none.
+        StowGear(kandra, animal, pair);
 
         // Read before despawning: taking a pawn off the map clears the selection, so asking
         // afterwards always says no and the player loses track of their own colonist.
@@ -65,7 +69,6 @@ public static class KandraAnimalShape {
 
         GenSpawn.Spawn(animal, where, map);
 
-        // Losing the selection mid-shapeshift means hunting for your own colonist afterwards.
         if (wasSelected) Find.Selector.Select(animal, false, false);
 
         Messages.Message(
@@ -98,6 +101,7 @@ public static class KandraAnimalShape {
         // What the shape learned or felt comes back with it. Its injuries do not: they were done
         // to a body the kandra was wearing rather than to the kandra.
         KandraShapeTransfer.OutOf(animal, kandra);
+        UnstowGear(animal, kandra, pair);
 
         animal.Destroy();
 
@@ -107,5 +111,84 @@ public static class KandraAnimalShape {
         if (wasSelected) Find.Selector.Select(kandra, false, false);
 
         return kandra;
+    }
+
+    /// <summary>
+    ///     Moves the kandra's gear into the animal's pack rather than leaving it behind.
+    /// </summary>
+    /// <remarks>
+    ///     A wolfhound cannot hold a rifle, but it can carry one, and a kandra that walked out
+    ///     with its things should not have to come back for them. What was equipment and what was
+    ///     apparel is remembered so it all goes back the way it came.
+    /// </remarks>
+    private static void StowGear(Pawn kandra, Pawn animal, CompKandraShapePair pair) {
+        if (animal.inventory == null) return;
+
+        List<Verse.Thing> equipped = [];
+        List<Verse.Thing> worn = [];
+
+        if (kandra.equipment != null) {
+            List<ThingWithComps> weapons = [.. kandra.equipment.AllEquipmentListForReading];
+            for (int i = 0; i < weapons.Count; i++) {
+                if (!kandra.equipment.TryTransferEquipmentToContainer(weapons[i], animal.inventory.innerContainer)) {
+                    continue;
+                }
+
+                equipped.Add(weapons[i]);
+            }
+        }
+
+        if (kandra.apparel != null) {
+            List<Apparel> clothes = [.. kandra.apparel.WornApparel];
+            for (int i = 0; i < clothes.Count; i++) {
+                if (!kandra.apparel.TryDrop(clothes[i], out Apparel? dropped, kandra.Position, false)) continue;
+                if (dropped == null) continue;
+
+                dropped.DeSpawn();
+                if (animal.inventory.innerContainer.TryAdd(dropped)) worn.Add(dropped);
+            }
+        }
+
+        // Anything already in the kandra's pack rides along as cargo.
+        if (kandra.inventory != null) {
+            kandra.inventory.innerContainer.TryTransferAllToContainer(animal.inventory.innerContainer);
+        }
+
+        pair.RememberGear(equipped, worn);
+    }
+
+    /// <summary>
+    ///     Puts back whatever survived the trip, the way it was carried.
+    /// </summary>
+    /// <remarks>
+    ///     Only what is still in the pack. Anything the player made the animal drop stays
+    ///     dropped, because the point of putting it in the inventory was that it could be.
+    /// </remarks>
+    private static void UnstowGear(Pawn animal, Pawn kandra, CompKandraShapePair pair) {
+        if (animal.inventory == null) return;
+
+        List<Verse.Thing> equipped = [.. pair.WasEquipped];
+        List<Verse.Thing> worn = [.. pair.WasWorn];
+
+        for (int i = 0; i < equipped.Count; i++) {
+            if (!animal.inventory.innerContainer.Contains(equipped[i])) continue;
+            if (equipped[i] is not ThingWithComps weapon) continue;
+
+            animal.inventory.innerContainer.Remove(weapon);
+            kandra.equipment?.AddEquipment(weapon);
+        }
+
+        for (int i = 0; i < worn.Count; i++) {
+            if (!animal.inventory.innerContainer.Contains(worn[i])) continue;
+            if (worn[i] is not Apparel clothing) continue;
+
+            animal.inventory.innerContainer.Remove(clothing);
+            kandra.apparel?.Wear(clothing, false);
+        }
+
+        // Everything else was cargo and stays cargo.
+        if (kandra.inventory != null) {
+            animal.inventory.innerContainer.TryTransferAllToContainer(kandra.inventory.innerContainer);
+        }
     }
 }

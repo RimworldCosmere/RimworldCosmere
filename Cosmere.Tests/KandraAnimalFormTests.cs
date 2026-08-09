@@ -242,4 +242,62 @@ public class KandraAnimalFormTests {
         string shape = Kandra("KandraAnimalShape.cs");
         Assert.IsTrue(shape.Contains("Cosmere_Scadrial_Hediff_AnimalShape", StringComparison.Ordinal));
     }
+
+    /// <summary>A dog cannot fire a rifle or negotiate a trade deal.</summary>
+    [TestMethod]
+    public void AnAnimalShapeCannotShootOrTalkPeopleRound() {
+        XElement hediff = Wolfhound.Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
+
+        List<string> disabled = hediff.Element("stages")!.Elements("li")
+            .SelectMany(stage => stage.Element("disabledWorkTags")?.Elements("li") ?? [])
+            .Select(li => li.Value)
+            .ToList();
+
+        CollectionAssert.Contains(disabled, "Shooting");
+        CollectionAssert.Contains(disabled, "Social");
+    }
+
+    /// <summary>
+    ///     Gear goes into the pack rather than being left on the floor, and comes back the way it
+    ///     was carried. Anything dropped while a dog stays dropped, which is the point of putting
+    ///     it somewhere droppable.
+    /// </summary>
+    [TestMethod]
+    public void GearRidesAlongAndReturnsAsItLeft() {
+        string shape = Kandra("KandraAnimalShape.cs");
+
+        Assert.IsTrue(shape.Contains("private static void StowGear(", StringComparison.Ordinal));
+        Assert.IsTrue(shape.Contains("private static void UnstowGear(", StringComparison.Ordinal));
+
+        int unstow = shape.IndexOf("private static void UnstowGear(", StringComparison.Ordinal);
+        string body = shape[unstow..];
+
+        Assert.IsTrue(
+            body.Contains("innerContainer.Contains(equipped[i])", StringComparison.Ordinal),
+            "Only gear still in the pack comes back; dropped things stay dropped."
+        );
+        Assert.IsTrue(body.Contains("AddEquipment(weapon)", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("apparel?.Wear(clothing", StringComparison.Ordinal));
+
+        string pair = Kandra("CompKandraShapePair.cs");
+        Assert.IsTrue(
+            pair.Contains("LookMode.Reference", StringComparison.Ordinal),
+            "The remembered gear lists point at things that live in the pack."
+        );
+    }
+
+    /// <summary>
+    ///     Apparel needs a floor to be taken off onto, and a despawned pawn has no map. The gear
+    ///     has to move while the kandra is still standing there.
+    /// </summary>
+    [TestMethod]
+    public void GearMovesBeforeTheKandraLeavesTheMap() {
+        string shape = Kandra("KandraAnimalShape.cs");
+        int stow = shape.IndexOf("StowGear(kandra, animal, pair)", StringComparison.Ordinal);
+        int despawn = shape.IndexOf("kandra.DeSpawn()", StringComparison.Ordinal);
+
+        Assert.IsTrue(stow >= 0 && despawn >= 0);
+        Assert.IsTrue(stow < despawn, "Gear must move while the kandra is still on the map.");
+    }
 }

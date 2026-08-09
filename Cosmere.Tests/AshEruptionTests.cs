@@ -159,7 +159,10 @@ public class AshEruptionTests {
         }
     }
 
-    /// <summary>Evenly spaced, or the eruption front-loads and then goes quiet for a day.</summary>
+    /// <summary>
+    ///     Evenly spaced, and spread across the whole run. A spacing check alone cannot tell the
+    ///     shipped interval from a shorter one, which packs every beat into the opening stretch.
+    /// </summary>
     [TestMethod]
     public void TheBeatsAreEvenlySpaced() {
         const int duration = 90000;
@@ -177,6 +180,13 @@ public class AshEruptionTests {
         }
 
         Assert.IsTrue(fired[^1] < duration, "the last beat landed on or past the closing tick.");
+
+        Assert.IsTrue(
+            fired[^1] >= duration - gap,
+            $"the last beat landed on tick {fired[^1]} of {duration}, leaving the closing "
+            + $"{duration - fired[^1]} ticks silent against a {gap} tick gap. The eruption compresses into the front "
+            + "of its run and goes quiet for the tail."
+        );
     }
 
     /// <summary>

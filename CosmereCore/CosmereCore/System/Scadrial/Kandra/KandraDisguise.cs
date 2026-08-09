@@ -87,4 +87,52 @@ public static class KandraDisguise {
 
         return Rand.Chance(BaseSuspicion * (1f - forms.Conviction));
     }
+
+    /// <summary>
+    ///     Whether a disguise stands between these two, so neither should treat the other as a
+    ///     threat.
+    /// </summary>
+    /// <remarks>
+    ///     This is what the whole thing is for. A kandra wearing an obligator walks through a
+    ///     Steel Ministry raid, and one wearing a wolfhound is just another animal on the map. The
+    ///     shape has to be worth wearing before anybody will bother wearing it.
+    /// </remarks>
+    public static bool Fools(Verse.Thing a, Verse.Thing b) {
+        return FoolsOneWay(a, b) || FoolsOneWay(b, a);
+    }
+
+    /// <summary>
+    ///     Whether <paramref name="observer" /> is taken in by <paramref name="disguised" />.
+    /// </summary>
+    /// <remarks>
+    ///     Once the kandra swings at somebody the shape stops working for good, whatever face is
+    ///     on. Anything else would let a player wear an enemy uniform and shoot the whole raid
+    ///     while it walked past.
+    /// </remarks>
+    private static bool FoolsOneWay(Verse.Thing disguised, Verse.Thing observer) {
+        if (disguised is not Pawn pawn) return false;
+
+        Pawn? kandra = Behind(pawn);
+        CompKandraForms? forms = kandra?.TryGetComp<CompKandraForms>();
+        if (forms is not { IsWearingSomeoneElse: true }) return false;
+        if (forms.CoverBlown) return false;
+
+        if (forms.FoughtInThisShape(pawn)) {
+            forms.BlowCover();
+            return false;
+        }
+
+        // Wildlife and unfactioned things work out hostility their own way, and a kandra wearing
+        // a face has nothing to say to a manhunting boomrat.
+        Faction? theirs = observer.Faction;
+        if (theirs == null) return false;
+
+        // An animal shape belongs to nobody, which is exactly why it is worth wearing.
+        FactionDef? worn = forms.Current?.faction;
+        if (worn == null) return true;
+
+        Faction? live = Find.FactionManager?.FirstFactionOfDef(worn);
+
+        return live == null || !live.HostileTo(theirs);
+    }
 }

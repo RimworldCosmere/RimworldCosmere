@@ -370,4 +370,64 @@ public class KandraAnimalFormTests {
         Assert.IsTrue(watcher.Contains("KandraAnimalShape.Revert", StringComparison.Ordinal), "Animal shapes drop too.");
         Assert.IsTrue(watcher.Contains("KandraShapeshift.Revert", StringComparison.Ordinal), "So do worn faces.");
     }
+
+    /// <summary>
+    ///     A disguise talks somebody out of a fight. It must never start one, or a kandra in a
+    ///     dog becomes a reason for a friendly caravan to open fire.
+    /// </summary>
+    [TestMethod]
+    public void TheDisguiseOnlyEverCalmsThingsDown() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "DisguiseHostilityPatch.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("if (!ch.ReturnValue) return;", StringComparison.Ordinal));
+        Assert.IsTrue(patch.Contains("ch.ReturnValue = false;", StringComparison.Ordinal));
+        Assert.IsFalse(
+            patch.Contains("ch.ReturnValue = true;", StringComparison.Ordinal),
+            "Nothing about wearing a face should make somebody hostile who was not."
+        );
+    }
+
+    /// <summary>
+    ///     Wearing an enemy uniform and shooting the raid from inside it would be free. Cover
+    ///     ends the moment the kandra swings, and does not come back until it changes shape.
+    /// </summary>
+    [TestMethod]
+    public void SwingingAtSomebodyEndsTheDisguise() {
+        string disguise = Kandra("KandraDisguise.cs");
+        Assert.IsTrue(disguise.Contains("forms.FoughtInThisShape(pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(disguise.Contains("forms.BlowCover();", StringComparison.Ordinal));
+
+        string comp = Kandra("CompKandraForms.cs");
+        Assert.IsTrue(
+            comp.Contains("last > wornSinceTick", StringComparison.Ordinal),
+            "A fight in a previous shape must not count against the current one."
+        );
+        Assert.IsTrue(
+            comp.Contains("coverBlown = false;", StringComparison.Ordinal),
+            "Changing shape is the way out of a blown cover."
+        );
+    }
+
+    /// <summary>
+    ///     The face has to belong to somebody the observer is not already fighting. Wearing a
+    ///     colonist in front of a raid should do nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void AHostileFaceFoolsNobody() {
+        string disguise = Kandra("KandraDisguise.cs");
+        Assert.IsTrue(disguise.Contains("!live.HostileTo(theirs)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            disguise.Contains("if (theirs == null) return false;", StringComparison.Ordinal),
+            "Wildlife and unfactioned things decide hostility on their own terms."
+        );
+    }
 }

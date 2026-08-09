@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -181,5 +182,64 @@ public class KandraAnimalFormTests {
         string body = transfer[start..];
         Assert.IsTrue(body.Contains("hediff.Part != null", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("Hediff_Injury", StringComparison.Ordinal), "Injuries stay with the body.");
+    }
+
+    /// <summary>
+    ///     Pawn_RecordsTracker.AddTo refuses Time records outright and logs an error, so copying
+    ///     every record blindly threw on TimeAsColonistOrColonyAnimal.
+    /// </summary>
+    [TestMethod]
+    public void TimeRecordsAreNotCopied() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+        int start = transfer.IndexOf("private static void Records(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0);
+
+        Assert.IsTrue(
+            transfer[start..].Contains("RecordType.Time", StringComparison.Ordinal),
+            "Time records have to be skipped; AddTo rejects them."
+        );
+    }
+
+    /// <summary>
+    ///     A humanlike shape rolls its own xenotype at generation, so a kandra came out a Skaa
+    ///     wolfhound. It is still a kandra whatever it is wearing.
+    /// </summary>
+    [TestMethod]
+    public void TheShapeKeepsTheKandrasXenotype() {
+        string transfer = Kandra("KandraShapeTransfer.cs");
+        Assert.IsTrue(transfer.Contains("SetXenotypeDirect(from.genes.Xenotype)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Taking a pawn off the map clears the selection, so it has to be read before despawning
+    ///     or the answer is always no.
+    /// </summary>
+    [TestMethod]
+    public void SelectionIsReadBeforeTheKandraLeavesTheMap() {
+        string shape = Kandra("KandraAnimalShape.cs");
+        int selected = shape.IndexOf("bool wasSelected = Find.Selector.IsSelected(kandra)", StringComparison.Ordinal);
+        int despawn = shape.IndexOf("kandra.DeSpawn()", StringComparison.Ordinal);
+
+        Assert.IsTrue(selected >= 0 && despawn >= 0);
+        Assert.IsTrue(selected < despawn, "Selection must be read before the pawn is despawned.");
+    }
+
+    /// <summary>A body with no hands cannot do work that needs them.</summary>
+    [TestMethod]
+    public void AnAnimalShapeCannotDoHandiwork() {
+        XElement hediff = Wolfhound.Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
+
+        List<string> disabled = hediff.Element("stages")!.Elements("li")
+            .SelectMany(stage => stage.Element("disabledWorkTags")?.Elements("li") ?? [])
+            .Select(li => li.Value)
+            .ToList();
+
+        foreach (string tag in new[] { "Crafting", "Constructing", "Cooking", "Caring", "Intellectual" }) {
+            CollectionAssert.Contains(disabled, tag, $"An animal shape should not be able to do {tag} work.");
+        }
+
+        string shape = Kandra("KandraAnimalShape.cs");
+        Assert.IsTrue(shape.Contains("Cosmere_Scadrial_Hediff_AnimalShape", StringComparison.Ordinal));
     }
 }

@@ -53,6 +53,9 @@ public static class KandraShapeTransfer {
             to.story.traits = from.story.traits;
         }
 
+        // Without this the shape rolls its own, and a kandra walks out as a Skaa wolfhound.
+        if (from.genes?.Xenotype != null) to.genes?.SetXenotypeDirect(from.genes.Xenotype);
+
         if (from.Ideo != null) to.ideo?.SetIdeo(from.Ideo);
     }
 
@@ -143,6 +146,9 @@ public static class KandraShapeTransfer {
 
         List<RecordDef> all = DefDatabase<RecordDef>.AllDefsListForReading;
         for (int i = 0; i < all.Count; i++) {
+            // Time records are ticked up by the game and AddTo refuses them outright.
+            if (all[i].type == RecordType.Time) continue;
+
             float value = from.records.GetValue(all[i]);
             if (value <= 0f) continue;
 

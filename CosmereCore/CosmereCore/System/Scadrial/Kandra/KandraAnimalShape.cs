@@ -40,6 +40,12 @@ public static class KandraAnimalShape {
         // belongs to the kandra rather than to the body goes with it.
         KandraShapeTransfer.Into(kandra, animal);
 
+        // Four legs and a mouth. Whatever the kandra knows, it cannot hold a scalpel today.
+        Verse.HediffDef? shapeLimits = DefDatabase<Verse.HediffDef>.GetNamedSilentFail(
+            "Cosmere_Scadrial_Hediff_AnimalShape"
+        );
+        if (shapeLimits != null) animal.health?.AddHediff(shapeLimits);
+
         CompKandraShapePair? pair = animal.TryGetComp<CompKandraShapePair>();
         if (pair == null) {
             Cosmere.Core.Logger.Warning(
@@ -49,11 +55,13 @@ public static class KandraAnimalShape {
             return null;
         }
 
+        // Read before despawning: taking a pawn off the map clears the selection, so asking
+        // afterwards always says no and the player loses track of their own colonist.
+        bool wasSelected = Find.Selector.IsSelected(kandra);
+
         // Out of the world before the animal takes its place, and held rather than discarded.
         kandra.DeSpawn();
         pair.Hold(kandra);
-
-        bool wasSelected = Find.Selector.IsSelected(kandra);
 
         GenSpawn.Spawn(animal, where, map);
 
@@ -83,13 +91,13 @@ public static class KandraAnimalShape {
         Map map = animal.Map;
         IntVec3 where = animal.Position;
 
+        bool wasSelected = Find.Selector.IsSelected(animal);
+
         pair.Release();
 
         // What the shape learned or felt comes back with it. Its injuries do not: they were done
         // to a body the kandra was wearing rather than to the kandra.
         KandraShapeTransfer.OutOf(animal, kandra);
-
-        bool wasSelected = Find.Selector.IsSelected(animal);
 
         animal.Destroy();
 

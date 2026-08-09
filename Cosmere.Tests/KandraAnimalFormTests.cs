@@ -780,7 +780,16 @@ public class KandraAnimalFormTests {
         );
         Assert.IsTrue(
             verbs.Contains(": HediffComp_VerbGiver, IVerbOwner", StringComparison.Ordinal),
-            "Re-declaring the interface is what re-maps Tools away from the def's copy."
+            "Re-declaring the interface is what re-maps Tools away from the def's copy. VerbTracker"
+            + " reads directOwner.Tools through IVerbOwner, so the subclass wins."
+        );
+
+        // HediffComp_VerbGiver.Props hard-casts to HediffCompProperties_VerbGiver, and
+        // VerbProperties reads through it. The wrong base throws InvalidCastException every time
+        // anything asks the pawn for a melee verb.
+        Assert.IsTrue(
+            verbs.Contains("HediffCompProperties_KandraShapeVerbs : HediffCompProperties_VerbGiver", StringComparison.Ordinal),
+            "Deriving from plain HediffCompProperties makes every melee lookup throw."
         );
     }
 }

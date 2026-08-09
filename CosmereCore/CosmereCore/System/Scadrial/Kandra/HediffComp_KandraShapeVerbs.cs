@@ -4,7 +4,16 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Kandra;
 
-public class HediffCompProperties_KandraShapeVerbs : HediffCompProperties {
+/// <summary>
+///     Must derive from the verb giver's own properties, not from HediffCompProperties.
+/// </summary>
+/// <remarks>
+///     <c>HediffComp_VerbGiver.Props</c> is a hard cast to
+///     <see cref="HediffCompProperties_VerbGiver" />, and <c>VerbProperties</c> reads through it.
+///     Deriving from the wrong base throws <c>InvalidCastException</c> the first time anything asks
+///     the pawn for a melee verb, which is every time it is attacked or told to attack.
+/// </remarks>
+public class HediffCompProperties_KandraShapeVerbs : HediffCompProperties_VerbGiver {
     public HediffCompProperties_KandraShapeVerbs() {
         compClass = typeof(HediffComp_KandraShapeVerbs);
     }

@@ -81,10 +81,10 @@ public static class AnimalControlSpike {
     )]
     public static void SpawnKandraWolfhound() {
         PawnKindDef? kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(
-            "Cosmere_Scadrial_PawnKind_KandraWolfhound"
+            Cosmere.System.Scadrial.Kandra.KandraShapeGenerator.KindPrefix + "Wolfhound"
         );
         if (kind == null) {
-            Logger.Warning("AnimalControlSpike: the kandra wolfhound pawnkind did not load.");
+            Logger.Warning("AnimalControlSpike: no generated wolfhound shape. Did the generator run?");
             return;
         }
 

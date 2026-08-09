@@ -14,12 +14,11 @@ namespace Cosmere.System.Scadrial.Gene;
 ///     The repertoire lives on <see cref="CompKandraForms" /> rather than here, because it has
 ///     to survive the pawn losing this gene. A mistwraith that ate somebody still has the bones.
 /// </remarks>
+[StaticConstructorOnStartup]
 public class BodyAbsorption : Shapeshifter {
-    private static Texture2D? icon;
-
-    private static Texture2D Icon =>
-        icon ??= ContentFinder<Texture2D>.Get("UI/Icons/Genes/Gene_BodyAbsorption", false)
-                 ?? BaseContent.BadTex;
+    // Textures have to be pulled on the main thread at startup, never from a gizmo draw.
+    private static readonly Texture2D Icon =
+        ContentFinder<Texture2D>.Get("UI/Icons/Genes/Gene_BodyAbsorption", false) ?? BaseContent.BadTex;
 
     private CompKandraForms? Forms => pawn.TryGetComp<CompKandraForms>();
 

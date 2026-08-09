@@ -28,9 +28,11 @@ public class KandraAnimalFormTests {
         RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", file
     ));
 
-    private static XDocument Wolfhound => XDocument.Load(Path.Combine(
-        RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraWolfhound.xml"
+    private static XDocument ShapeDefs => XDocument.Load(Path.Combine(
+        RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraShape.xml"
     ));
+
+    private static string Generator => Kandra("KandraShapeGenerator.cs");
 
     /// <summary>
     ///     Only humanlike pawns and colony mechs are ever handed a draft controller, so a form
@@ -38,10 +40,10 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void AnAnimalFormIsHumanlikeSoItCanBeDrafted() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-
-        Assert.AreEqual("Humanlike", race.Element("race")?.Element("intelligence")?.Value);
+        Assert.IsTrue(
+            Generator.Contains("intelligence = Intelligence.Humanlike", StringComparison.Ordinal),
+            "An animal intelligence is never handed a draft controller."
+        );
     }
 
     /// <summary>
@@ -51,12 +53,19 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void TheFormUsesOurRenderTreeNotTheAnimalOne() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
+        Assert.IsTrue(
+            Generator.Contains(
+                "renderTree = DefDatabase<PawnRenderTreeDef>.GetNamed(\"Cosmere_Scadrial_RenderTree_KandraShape\")",
+                StringComparison.Ordinal
+            ),
+            "The Animal tree cannot draw a humanlike pawn."
+        );
 
-        string? tree = race.Element("race")?.Element("renderTree")?.Value;
-        Assert.AreNotEqual("Animal", tree, "The Animal tree cannot draw a humanlike pawn.");
-        Assert.AreEqual("Cosmere_Scadrial_RenderTree_KandraShape", tree);
+        Assert.IsNotNull(
+            ShapeDefs.Descendants("PawnRenderTreeDef")
+                .FirstOrDefault(d => d.Element("defName")?.Value == "Cosmere_Scadrial_RenderTree_KandraShape"),
+            "The generator looks this up by name and throws if it is gone."
+        );
 
         string node = Kandra("PawnRenderNode_KandraShape.cs");
 
@@ -77,15 +86,14 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void TheFormsLifeStageCarriesSilhouetteData() {
-        XElement stage = Wolfhound.Descendants("LifeStageDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_LifeStage_KandraShape");
-
-        Assert.IsNotNull(stage.Element("silhouetteGraphicData"), "A humanlike pawn needs one or it throws every frame.");
-
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-        string? used = race.Element("race")?.Element("lifeStageAges")?.Elements("li").First().Element("def")?.Value;
-        Assert.AreEqual("Cosmere_Scadrial_LifeStage_KandraShape", used);
+        Assert.IsTrue(
+            Generator.Contains("silhouetteGraphicData = new GraphicData {", StringComparison.Ordinal),
+            "A humanlike pawn needs one or RenderPawnAt throws every frame."
+        );
+        Assert.IsTrue(
+            Generator.Contains("lifeStageAges = [new LifeStageAge { def = stage", StringComparison.Ordinal),
+            "The generated race has to use the stage carrying that data."
+        );
     }
 
     /// <summary>
@@ -113,14 +121,10 @@ public class KandraAnimalFormTests {
     /// <summary>The animal needs the comp, or wearing it would strand the kandra.</summary>
     [TestMethod]
     public void TheFormCarriesTheShapePairComp() {
-        XElement race = Wolfhound.Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Race_KandraWolfhound");
-
-        bool has = race.Element("comps")?.Elements("li")
-            .Any(li => (string?)li.Attribute("Class")
-                == "Cosmere.System.Scadrial.Kandra.CompProperties_KandraShapePair") == true;
-
-        Assert.IsTrue(has, "Without the comp there is nowhere to put the kandra.");
+        Assert.IsTrue(
+            Generator.Contains("comps = [new CompProperties_KandraShapePair()]", StringComparison.Ordinal),
+            "Without the comp there is nowhere to put the kandra."
+        );
     }
 
     /// <summary>
@@ -227,7 +231,7 @@ public class KandraAnimalFormTests {
     /// <summary>A body with no hands cannot do work that needs them.</summary>
     [TestMethod]
     public void AnAnimalShapeCannotDoHandiwork() {
-        XElement hediff = Wolfhound.Descendants("HediffDef")
+        XElement hediff = ShapeDefs.Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
 
         List<string> disabled = hediff.Element("stages")!.Elements("li")
@@ -246,7 +250,7 @@ public class KandraAnimalFormTests {
     /// <summary>A dog cannot fire a rifle or negotiate a trade deal.</summary>
     [TestMethod]
     public void AnAnimalShapeCannotShootOrTalkPeopleRound() {
-        XElement hediff = Wolfhound.Descendants("HediffDef")
+        XElement hediff = ShapeDefs.Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
 
         List<string> disabled = hediff.Element("stages")!.Elements("li")
@@ -429,5 +433,33 @@ public class KandraAnimalFormTests {
             disguise.Contains("if (theirs == null) return false;", StringComparison.Ordinal),
             "Wildlife and unfactioned things decide hostility on their own terms."
         );
+    }
+
+    /// <summary>
+    ///     GiveAllShortHashes walks every def in the game and calls Log.Error on each one that
+    ///     already has a hash, which by generation time is all of them. That flooded the log with
+    ///     thousands of red errors and tripped RimWorld's message limit, which then swallowed
+    ///     everything logged afterwards.
+    /// </summary>
+    [TestMethod]
+    public void TheGeneratorHashesOnlyItsOwnDefs() {
+        Assert.IsFalse(
+            Generator.Contains("ShortHashGiver.GiveAllShortHashes()", StringComparison.Ordinal),
+            "One error per existing def is not an acceptable price for three new ones."
+        );
+        Assert.IsTrue(Generator.Contains("\"GiveShortHash\"", StringComparison.Ordinal));
+        Assert.IsTrue(Generator.Contains("Hash(def, typeof(T));", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The generator builds a shape for every animal, wolfhound included. A hand-written one
+    ///     alongside it is a second entry in every list and, as it turned out, seven dead sound
+    ///     references nobody was looking at.
+    /// </summary>
+    [TestMethod]
+    public void NoHandWrittenShapeCompetesWithTheGeneratedOnes() {
+        Assert.AreEqual(0, ShapeDefs.Descendants("ThingDef").Count());
+        Assert.AreEqual(0, ShapeDefs.Descendants("PawnKindDef").Count());
+        Assert.AreEqual(0, ShapeDefs.Descendants("LifeStageDef").Count());
     }
 }

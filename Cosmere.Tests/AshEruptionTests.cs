@@ -292,13 +292,23 @@ public class AshEruptionTests {
         return a;
     }
 
-    /// <summary>Full strength on the mouth, nothing at the edge, and nothing at all past it.</summary>
+    /// <summary>
+    ///     Full strength on the mouth, nothing at the edge, and nothing at all past it. Plus one
+    ///     input the arithmetic is not exact at, which is what every real off-axis cell hands it.
+    /// </summary>
     [TestMethod]
     public void ATremorFallsOffToNothing() {
         Assert.AreEqual(18, AshEruption.TremorDamage(0f, 8f, 18));
         Assert.AreEqual(9, AshEruption.TremorDamage(4f, 8f, 18));
         Assert.AreEqual(0, AshEruption.TremorDamage(8f, 8f, 18), "the edge ring still took damage.");
         Assert.AreEqual(0, AshEruption.TremorDamage(20f, 8f, 18), "the tremor reached past its radius.");
+
+        Assert.AreEqual(
+            15,
+            AshEruption.TremorDamage(1f, 8f, 18),
+            "the falloff no longer truncates. Rounding or a ceiling gives 16 here, and the caller passes a "
+            + "non-integer distance for every off-axis cell, so a whole eruption drifts nine hit points."
+        );
     }
 
     /// <summary>Nothing here may divide by a radius of zero or hand back a negative.</summary>

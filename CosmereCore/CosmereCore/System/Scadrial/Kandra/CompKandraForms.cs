@@ -42,6 +42,9 @@ public class CompKandraForms : ThingComp {
     /// <summary>When the current shape went on, so a fight three shapes ago does not count.</summary>
     private int wornSinceTick;
 
+    /// <summary>The work tab as it was before a shape disabled half of it.</summary>
+    private Dictionary<WorkTypeDef, int> workPriorities = [];
+
     public KandraMind Mind => mind;
 
     public CompProperties_KandraForms Props => (CompProperties_KandraForms)props;
@@ -97,6 +100,8 @@ public class CompKandraForms : ThingComp {
         Scribe_Deep.Look(ref mind, "mind");
         Scribe_Values.Look(ref coverBlown, "coverBlown");
         Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
+        Scribe_Collections.Look(ref workPriorities, "workPriorities", LookMode.Def, LookMode.Value);
+        workPriorities ??= [];
         mind ??= new KandraMind();
         known ??= [];
     }
@@ -170,6 +175,49 @@ public class CompKandraForms : ThingComp {
         int last = wearing.mindState?.lastAttackTargetTick ?? 0;
 
         return last > wornSinceTick;
+    }
+
+    /// <summary>
+    ///     Remembers the work tab before a shape disables half of it.
+    /// </summary>
+    /// <remarks>
+    ///     <c>Pawn_HealthTracker.CheckForStateChange</c> calls
+    ///     <c>Notify_DisabledWorkTypesChanged</c> for any hediff stage carrying
+    ///     <c>disabledWorkTags</c>, which walks the newly disabled types and calls
+    ///     <c>SetPriority(w, 0)</c> on each. RimWorld has no inverse: removing the hediff re-enables
+    ///     the work type but leaves the priority at zero forever. Twelve columns would go blank
+    ///     every time the kandra shaped.
+    /// </remarks>
+    public void RememberWorkPriorities() {
+        if (parent is not Pawn pawn || pawn.workSettings is not { EverWork: true }) return;
+
+        workPriorities = [];
+        List<WorkTypeDef> all = DefDatabase<WorkTypeDef>.AllDefsListForReading;
+        for (int i = 0; i < all.Count; i++) {
+            int priority = pawn.workSettings.GetPriority(all[i]);
+            if (priority > 0) workPriorities[all[i]] = priority;
+        }
+    }
+
+    /// <summary>
+    ///     Puts the work tab back, after the shape is gone.
+    /// </summary>
+    /// <remarks>
+    ///     Order is not optional. <c>SetPriority</c> logs an error when given a non-zero priority
+    ///     for a work type that is still disabled, so this must run after the hediff is removed,
+    ///     never before.
+    /// </remarks>
+    public void RestoreWorkPriorities() {
+        if (workPriorities.Count == 0) return;
+        if (parent is not Pawn pawn || pawn.workSettings is not { EverWork: true }) return;
+
+        foreach (KeyValuePair<WorkTypeDef, int> remembered in workPriorities) {
+            if (pawn.WorkTypeIsDisabled(remembered.Key)) continue;
+
+            pawn.workSettings.SetPriority(remembered.Key, remembered.Value);
+        }
+
+        workPriorities = [];
     }
 
     private static int SkillLevel(Pawn pawn) {

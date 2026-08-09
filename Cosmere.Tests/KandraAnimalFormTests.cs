@@ -672,4 +672,70 @@ public class KandraAnimalFormTests {
         Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Kandra"));
         Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Koloss"));
     }
+
+    /// <summary>
+    ///     There are 117 animals and one hediff, so the stage is built from the worn animal at
+    ///     runtime. HediffStage has no IExposable, so nothing about it survives a save and it has
+    ///     to be rebuilt on load - miss that and a shaped kandra loads with human stats silently.
+    /// </summary>
+    [TestMethod]
+    public void TheShapeHediffSynthesisesTheAnimalsNumbers() {
+        string hediff = Kandra("Hediff_KandraAnimalShape.cs");
+
+        Assert.IsTrue(hediff.Contains("public override HediffStage? CurStage", StringComparison.Ordinal));
+        Assert.IsTrue(hediff.Contains("RimWorld.StatDefOf.MoveSpeed", StringComparison.Ordinal));
+        Assert.IsTrue(hediff.Contains("ComfyTemperatureMin", StringComparison.Ordinal));
+        Assert.IsTrue(hediff.Contains("hungerRateFactor", StringComparison.Ordinal));
+        Assert.IsTrue(
+            hediff.Contains("LoadSaveMode.PostLoadInit", StringComparison.Ordinal),
+            "The cached stage is not saved, so it must be dropped and rebuilt after load."
+        );
+        Assert.IsTrue(
+            hediff.Contains("builtFor == worn", StringComparison.Ordinal),
+            "CurStage is hit once per stat lookup; it must not rebuild every time."
+        );
+
+        XDocument defs = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraShape.xml"
+        ));
+        XElement shape = defs.Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AnimalShape");
+        Assert.AreEqual(
+            "Cosmere.System.Scadrial.Kandra.Hediff_KandraAnimalShape",
+            shape.Element("hediffClass")?.Value
+        );
+    }
+
+    /// <summary>
+    ///     Notify_DisabledWorkTypesChanged calls SetPriority(w, 0) for every newly disabled work
+    ///     type and RimWorld has no inverse, so twelve columns of the Work tab would go blank on
+    ///     every shape and stay blank.
+    /// </summary>
+    [TestMethod]
+    public void ShapingDoesNotEatTheWorkTab() {
+        string comp = Kandra("CompKandraForms.cs");
+
+        Assert.IsTrue(comp.Contains("RememberWorkPriorities", StringComparison.Ordinal));
+        Assert.IsTrue(comp.Contains("RestoreWorkPriorities", StringComparison.Ordinal));
+        Assert.IsTrue(
+            comp.Contains("if (pawn.WorkTypeIsDisabled(remembered.Key)) continue;", StringComparison.Ordinal),
+            "SetPriority logs an error for a work type that is still disabled, so restore comes after removal."
+        );
+        Assert.IsTrue(
+            comp.Contains("Scribe_Collections.Look(ref workPriorities", StringComparison.Ordinal),
+            "A kandra saved mid-shape must still get its work tab back."
+        );
+    }
+
+    /// <summary>A wolf has paws and full Manipulation; halving melee hit chance was not intended.</summary>
+    [TestMethod]
+    public void AShapeFightsLikeTheAnimal() {
+        XDocument defs = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraShape.xml"
+        ));
+        XElement manipulation = defs.Descendants("li")
+            .First(li => li.Element("capacity")?.Value == "Manipulation");
+
+        Assert.IsTrue(float.Parse(manipulation.Element("setMax")!.Value) >= 0.9f);
+    }
 }

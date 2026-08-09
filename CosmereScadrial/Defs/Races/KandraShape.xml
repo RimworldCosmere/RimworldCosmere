@@ -17,7 +17,10 @@
         <defName>Cosmere_Scadrial_Hediff_AnimalShape</defName>
         <label>wearing an animal</label>
         <description>Four legs and a mouth. The kandra inside remembers how to set a bone and cannot do it with this body.</description>
-        <hediffClass>HediffWithComps</hediffClass>
+        <!-- Synthesises its own stage from whichever animal is worn: move speed, temperature
+             tolerance and hunger rate all come from the real animal's ThingDef at runtime,
+             because there are 117 animals and one hediff. -->
+        <hediffClass>Cosmere.System.Scadrial.Kandra.Hediff_KandraAnimalShape</hediffClass>
         <isBad>false</isBad>
         <tendable>false</tendable>
         <everCurableByItem>false</everCurableByItem>
@@ -42,8 +45,11 @@
                 </disabledWorkTags>
                 <capMods>
                     <li>
+                        <!-- A real wolf has full Manipulation; it has paws. Dropping this to 0.20
+                             cost about 9.6 MeleeHitChance, since MeleeHitChance carries a
+                             capacityOffsets entry on Manipulation with a scale of 12. -->
                         <capacity>Manipulation</capacity>
-                        <setMax>0.20</setMax>
+                        <setMax>0.90</setMax>
                     </li>
                     <li>
                         <capacity>Talking</capacity>

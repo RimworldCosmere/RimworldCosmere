@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <!-- A koloss is not uncomfortable, because being comfortable was never something it knew about.
+       It sleeps where it stops, eats off the floor, wears whatever is left of what it was given,
+       and none of that registers as a hardship. Nullifying rather than offsetting: the thought
+       should not appear in the mood tab at all, because a list of complaints it does not have is
+       noise on every koloss you own. -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThoughtDef[
+        defName="SleptOutside" or
+        defName="SleptOnGround" or
+        defName="SleptInCold" or
+        defName="SleptInHeat" or
+        defName="AteWithoutTable" or
+        defName="ApparelDamaged" or
+        defName="DeadMansApparel" or
+        defName="HumanLeatherApparelSad" or
+        defName="Naked" or
+        defName="EnvironmentCold" or
+        defName="EnvironmentHot" or
+        defName="EnvironmentDark" or
+        defName="NeedComfort" or
+        defName="NeedRoomSize" or
+        defName="Ugly"
+      ]</xpath>
+    <value>
+      <nullifyingGenes>
+        <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
+      </nullifyingGenes>
+    </value>
+  </Operation>
+
+</Patch>

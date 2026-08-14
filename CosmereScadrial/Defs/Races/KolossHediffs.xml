@@ -97,4 +97,22 @@
     </stages>
   </HediffDef>
 
+  <!-- Nothing troubles a koloss for long. It is not brave and it is not calm - there is simply
+       very little in there for a bad day to land on. Keyed to the growth hediff rather than the
+       gene because ThoughtWorker_Hediff is the vanilla worker for exactly this, and every koloss
+       carries that hediff from the moment it is made. -->
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_Thought_SimpleMinded</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>Cosmere_Scadrial_Hediff_KolossGrowth</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>simple minded</label>
+        <description>There is not much in here to upset. Things happen, and then they stop happening.</description>
+        <baseMoodEffect>15</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
 </Defs>

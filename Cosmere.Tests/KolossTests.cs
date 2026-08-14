@@ -552,4 +552,48 @@ public class KolossTests {
 
         Assert.IsFalse(block.Contains("Shooting", StringComparison.Ordinal), "Shooting is disabled outright.");
     }
+
+    /// <summary>
+    ///     A koloss is not uncomfortable - being comfortable was never something it knew about. The
+    ///     thoughts are nullified rather than offset so they never appear in the mood tab, because
+    ///     a list of complaints it does not have is noise on every koloss you own.
+    /// </summary>
+    [TestMethod]
+    public void AKolossDoesNotNoticeHowItLives() {
+        XDocument patch = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Patches", "KolossSimpleMind.xml"
+        ));
+        string xpath = patch.Descendants("xpath").First().Value;
+
+        foreach (string thought in new[] {
+            "SleptOutside", "SleptOnGround", "AteWithoutTable", "ApparelDamaged",
+            "EnvironmentCold", "EnvironmentHot", "NeedComfort", "Naked",
+        }) {
+            Assert.IsTrue(
+                xpath.Contains($"defName=\"{thought}\"", StringComparison.Ordinal),
+                $"A koloss should not care about {thought}."
+            );
+        }
+
+        Assert.IsTrue(
+            patch.Descendants("nullifyingGenes").Elements("li")
+                .Any(li => li.Value == "Cosmere_Scadrial_Gene_KolossHeritage"),
+            "Keyed to the gene every koloss has."
+        );
+    }
+
+    /// <summary>
+    ///     There is very little in there for a bad day to land on. Keyed to the growth hediff
+    ///     because ThoughtWorker_Hediff is the vanilla worker for a permanent situational thought,
+    ///     and every koloss carries that hediff from the moment it is made.
+    /// </summary>
+    [TestMethod]
+    public void AKolossIsContentByDefault() {
+        XElement thought = Defs("Races", "KolossHediffs.xml").Descendants("ThoughtDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thought_SimpleMinded");
+
+        Assert.AreEqual("ThoughtWorker_Hediff", thought.Element("workerClass")?.Value);
+        Assert.AreEqual("Cosmere_Scadrial_Hediff_KolossGrowth", thought.Element("hediff")?.Value);
+        Assert.AreEqual("15", thought.Descendants("baseMoodEffect").First().Value);
+    }
 }

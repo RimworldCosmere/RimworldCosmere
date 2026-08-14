@@ -41,8 +41,12 @@ public class NamedPawnAppearanceTests {
         string body = source[start..];
         Assert.IsTrue(body.Contains("pawn.story.bodyType = body", StringComparison.Ordinal));
         Assert.IsTrue(body.Contains("pawn.story.headType = head", StringComparison.Ordinal));
+
+        // The gender filter moved into HeadTypeUtility, which also drops the heads the generator
+        // would never offer. Sazed came out of this scenario wearing Stump because the old filter
+        // asked about gender and nothing else.
         Assert.IsTrue(
-            body.Contains("candidate.gender == template.gender", StringComparison.Ordinal),
+            body.Contains("HeadTypeUtility.RandomFor(template.gender", StringComparison.Ordinal),
             "A replacement head must match the template's gender."
         );
 

@@ -22,6 +22,7 @@
             <Flammability>0</Flammability>
             <DeteriorationRate>0</DeteriorationRate>
             <Beauty>-2</Beauty>
+            <Nutrition>0.05</Nutrition>
         </statBases>
         <thingCategories>
             <li>ResourcesRaw</li>
@@ -33,7 +34,6 @@
         <ingestible>
             <foodType>Processed</foodType>
             <preferability>DesperateOnly</preferability>
-            <nutrition>0.05</nutrition>
             <maxNumToIngestAtOnce>20</maxNumToIngestAtOnce>
             <ingestEffect>EatVegetarian</ingestEffect>
             <ingestSound>RawVegetable_Eat</ingestSound>

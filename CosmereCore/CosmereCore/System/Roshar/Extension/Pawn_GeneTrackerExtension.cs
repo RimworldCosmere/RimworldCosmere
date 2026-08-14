@@ -52,7 +52,14 @@ public static class Pawn_GeneTrackerExtension {
 
         if (spren.story != null) {
             spren.story.bodyType = BodyTypeDefOf.Thin;
-            spren.story.headType = DefDatabase<HeadTypeDef>.AllDefsListForReading[0];
+
+            // Every spren wears the same face, which is the point - they are one order wearing one
+            // shape. Taking index 0 out of the database used to do it, until a mod loaded a head
+            // ahead of ours and every spren in the game turned up as a skull.
+            HeadTypeDef? face = Cosmere.Core.Util.HeadTypeUtility.Available(spren.gender, spren)
+                .MinBy(head => head.defName);
+            if (face != null) spren.story.headType = face;
+
             spren.story.Title = orderDef.sprenLabel;
         }
 

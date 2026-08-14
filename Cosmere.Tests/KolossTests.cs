@@ -689,18 +689,24 @@ public class KolossTests {
     /// </summary>
     [TestMethod]
     public void OnlyAKolossEatsAshWithoutMinding() {
-        XElement food = XDocument.Load(Path.Combine(
+        XElement ash = XDocument.Load(Path.Combine(
                 RepoRoot, "CosmereScadrial", "Defs", "Things", "Ash.xml"
             )).Descendants("ThingDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_Ash")
-            .Element("ingestible")!;
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_Ash");
+        XElement food = ash.Element("ingestible")!;
+
+        // Nutrition is a stat, not an IngestibleProperties field. Putting it in the wrong place
+        // loads as zero, and zero nutrition with DesperateOnly is a config error at startup.
+        Assert.IsNull(food.Element("nutrition"), "Nutrition belongs in statBases.");
 
         Assert.AreEqual(
             "DesperateOnly",
             food.Element("preferability")?.Value,
             "Ash must never win against an actual meal."
         );
-        Assert.IsTrue(double.Parse(food.Element("nutrition")!.Value) <= 0.1d);
+        Assert.IsTrue(
+            double.Parse(ash.Element("statBases")!.Element("Nutrition")!.Value) is > 0d and <= 0.1d
+        );
 
         XElement taste = Defs("Races", "KolossHediffs.xml").Descendants("ThoughtDef")
             .First(d => d.Element("defName")?.Value == food.Element("tasteThought")!.Value);

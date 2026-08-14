@@ -295,9 +295,7 @@ public class ScenPart_NamedPawns : ScenPart {
         if (head == null && template.gender != Gender.None) {
             HeadTypeDef? current = pawn.story.headType;
             if (current != null && current.gender != Gender.None && current.gender != template.gender) {
-                head = DefDatabase<HeadTypeDef>.AllDefsListForReading
-                    .Where(candidate => candidate.gender == template.gender || candidate.gender == Gender.None)
-                    .RandomElementWithFallback(current);
+                head = Util.HeadTypeUtility.RandomFor(template.gender, pawn, current);
             }
         }
 

@@ -129,5 +129,15 @@
                 </categories>
             </li>
         </backstoryFiltersOverride>
+        <!-- Scraps, tied on. A koloss keeps whatever it was wearing when the spikes went in and
+             does not replace it as it outgrows it, which is most of why they look the way they do.
+             The budget is deliberately near nothing rather than absent - a player pawn with no
+             apparel budget at all generates naked. -->
+        <apparelTags>
+            <li>IndustrialBasic</li>
+        </apparelTags>
+        <apparelMoney>40~120</apparelMoney>
+        <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
+        <gearHealthRange>0.1~0.4</gearHealthRange>
     </PawnKindDef>
 </Defs>

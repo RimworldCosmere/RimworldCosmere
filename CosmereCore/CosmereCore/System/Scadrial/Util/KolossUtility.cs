@@ -20,6 +20,30 @@ public static class KolossUtility {
         return pawn?.genes?.Xenotype?.defName == KolossBloodedXenotype;
     }
 
+    /// <summary>How many spikes are still in it. Counting them is Hemalurgy's question.</summary>
+    public static int SpikeCount(Pawn? pawn) {
+        return Hemalurgy.HemalurgicSpikeUtility.SpikeCount(pawn);
+    }
+
+    /// <summary>
+    ///     Checks whether there are still enough spikes to hold a koloss together.
+    /// </summary>
+    /// <remarks>
+    ///     Four made it. Pulling one is a surgeon's decision with a consequence, so this runs on a
+    ///     slow tick and after any spike surgery rather than watching for it between ticks.
+    ///     <para>
+    ///         What a part-spiked koloss becomes is not decided yet - for now this only keeps
+    ///         Ruin's reading honest, so a koloss with two spikes left does not still read as a
+    ///         thing with four.
+    ///     </para>
+    /// </remarks>
+    public static void ReconcileSpikes(Pawn pawn) {
+        if (pawn.health?.hediffSet == null) return;
+        if (!IsKoloss(pawn)) return;
+
+        Hemalurgy.HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
+    }
+
     /// <summary>
     ///     Replaces everything the pawn was with the koloss xenotype, and starts the clock.
     /// </summary>

@@ -77,6 +77,9 @@
   <!-- Four spikes. Pull one and there is nothing holding the mind in. -->
   <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
     <defName>Cosmere_Scadrial_Gene_SpikeBound</defName>
+    <!-- Records the four spikes that made it, so there is something to pull and something for
+         Ruin to speak through. -->
+    <geneClass>Cosmere.System.Scadrial.Gene.SpikeBound</geneClass>
     <label>spike-bound</label>
     <labelShortAdj>spiked</labelShortAdj>
     <description>Four hemalurgic spikes hold this creature together - iron, steel, tin and pewter, driven through in one sitting. Remove any of them and what is left stops being a koloss, and then stops being anything.</description>

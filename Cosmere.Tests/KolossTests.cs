@@ -109,4 +109,31 @@ public class KolossTests {
             "The property is lossy in both directions; the backing field is not."
         );
     }
+
+    /// <summary>
+    ///     The gene's own description says four spikes driven in at once, but nothing recorded
+    ///     them - so a koloss from a raid or the dev menu had nothing in its body to pull out, and
+    ///     nothing for Ruin to speak through.
+    /// </summary>
+    [TestMethod]
+    public void AKolossCarriesTheFourSpikesThatMadeIt() {
+        XElement bound = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_SpikeBound");
+
+        Assert.AreEqual("Cosmere.System.Scadrial.Gene.SpikeBound", bound.Element("geneClass")?.Value);
+
+        string gene = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "SpikeBound.cs"
+        ));
+
+        Assert.IsTrue(gene.Contains("public const int SpikeCount = 4;", StringComparison.Ordinal));
+        Assert.IsTrue(
+            gene.Contains("if (KolossUtility.SpikeCount(pawn) > 0) return;", StringComparison.Ordinal),
+            "SetXenotype calls AddGene per gene and nothing dedupes, so a second Become would drive four more in."
+        );
+        Assert.IsTrue(
+            gene.Contains("corePart", StringComparison.Ordinal),
+            "Only 6 of 49 vanilla BodyDefs have a part called Torso."
+        );
+    }
 }

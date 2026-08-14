@@ -32,7 +32,11 @@ public class BodyAbsorption : Shapeshifter {
 
         CompKandraForms? forms = Forms;
         if (forms == null) yield break;
-        if (!pawn.IsColonistPlayerControlled) yield break;
+
+        // Not IsColonistPlayerControlled, which also wants MentalStateDef to be null. A kandra
+        // that breaks down while wearing a wolf would otherwise have no way back out of it, and
+        // the shape is the thing making the colony treat it as an animal.
+        if (!pawn.IsColonist || pawn.Downed) yield break;
 
         // Half-blessed and mistwraiths cannot hold a shape, so there is nothing to offer. The
         // buttons go rather than grey out: a mistwraith is not a colonist waiting on a cooldown.

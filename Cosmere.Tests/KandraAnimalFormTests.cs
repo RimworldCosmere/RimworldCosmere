@@ -482,4 +482,40 @@ public class KandraAnimalFormTests {
             "A shaped kandra is humanlike, so anything over two world units is cropped when zoomed out."
         );
     }
+
+    /// <summary>
+    ///     Fixing the Torso lookups made surgery reachable on a shaped kandra, which is what lets
+    ///     a spike come out - and also opened the full human operations list on a wolf.
+    /// </summary>
+    [TestMethod]
+    public void AShapeIsNotOfferedHumanSurgeryOrClothes() {
+        string gates = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "ShapedBodyGatesPatch.cs"
+        ));
+
+        Assert.IsTrue(gates.Contains("DrawMedOperationsTab", StringComparison.Ordinal));
+        Assert.IsTrue(gates.Contains("HasPartsToWear", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     IsColonistPlayerControlled wants MentalStateDef to be null, so a kandra that broke down
+    ///     while wearing a wolf had no way back out of the thing making the colony treat it as an
+    ///     animal.
+    /// </summary>
+    [TestMethod]
+    public void ABreakingKandraCanStillChangeShape() {
+        string gene = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs"
+        ));
+
+        Assert.IsFalse(gene.Contains("if (!pawn.IsColonistPlayerControlled) yield break;", StringComparison.Ordinal));
+        Assert.IsTrue(gene.Contains("if (!pawn.IsColonist || pawn.Downed) yield break;", StringComparison.Ordinal));
+    }
 }

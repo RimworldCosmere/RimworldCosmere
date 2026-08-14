@@ -3,6 +3,7 @@ using Cosmere.Core.Need;
 using Cosmere.Core.Quickstart;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
+using Cosmere.System.Scadrial.Hemalurgy;
 using RimWorld;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
@@ -45,6 +46,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         }
 
         SpawnRashek(pawns[0]);
+        LayOutTheKolossBench(pawns[0]);
     }
 
     /// <summary>
@@ -124,6 +126,52 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         }
 
         GenSpawn.Spawn(rashek, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 5), map);
+    }
+
+    /// <summary>
+    ///     Everything the make-koloss bill needs, on the ground next to the colony.
+    /// </summary>
+    /// <remarks>
+    ///     The bill wants four charged iron spikes and somewhere to lie down, and building both by
+    ///     hand is several minutes of setup before the thing under test can be reached at all.
+    ///     Charged with stolen human strength, which is what iron takes and what a koloss is made
+    ///     out of - an uncharged spike is refused by the bill on purpose.
+    /// </remarks>
+    private static void LayOutTheKolossBench(Pawn nearby) {
+        Map? map = nearby.Map;
+        if (map == null) return;
+
+        ThingDef? spikeDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Scadrial_Thing_HemalurgicSpike");
+        ThingDef? iron = DefDatabase<ThingDef>.GetNamedSilentFail("Iron");
+
+        if (spikeDef != null && iron != null) {
+            for (int i = 0; i < 4; i++) {
+                Verse.Thing spike = ThingMaker.MakeThing(spikeDef, iron);
+                spike.TryGetComp<Hemalurgy.Comp.Thing.HemalurgicSpike>()?.Charge(new HemalurgicChargeData {
+                    stealType = HemalurgicStealType.HumanStrength,
+                    strength = 1f,
+                    chargedTick = Find.TickManager?.TicksGame ?? 0,
+                });
+
+                GenPlace.TryPlaceThing(
+                    spike,
+                    CellFinder.RandomClosewalkCellNear(nearby.Position, map, 4),
+                    map,
+                    ThingPlaceMode.Near
+                );
+            }
+        }
+
+        ThingDef? bedDef = DefDatabase<ThingDef>.GetNamedSilentFail("HospitalBed");
+        if (bedDef == null) return;
+
+        ThingDef stuff = GenStuff.DefaultStuffFor(bedDef);
+        Verse.Thing bed = ThingMaker.MakeThing(bedDef, stuff);
+        GenSpawn.Spawn(bed, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 6), map, Rot4.South);
+        bed.SetFaction(Faction.OfPlayer);
+
+        // A hospital bed still has to be flagged medical, or no surgery bill will ever be taken to it.
+        if (bed is Building_Bed built) built.Medical = true;
     }
 
     private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, float? fixedAge = null) {

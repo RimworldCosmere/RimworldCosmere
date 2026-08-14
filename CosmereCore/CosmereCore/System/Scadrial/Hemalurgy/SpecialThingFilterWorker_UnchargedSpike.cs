@@ -22,9 +22,11 @@ public class SpecialThingFilterWorker_UnchargedSpike : SpecialThingFilterWorker 
         // medicine out of the same bill.
         if (!CanEverMatch(t.def)) return false;
 
+        // isCharged rather than a null check: a spike can carry charge data that is not valid,
+        // and the comp already knows the difference.
         HemalurgicSpike? spike = t.TryGetComp<HemalurgicSpike>();
 
-        return spike?.chargeData == null;
+        return spike is not { isCharged: true };
     }
 
     public override bool CanEverMatch(ThingDef def) {

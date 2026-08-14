@@ -25,14 +25,13 @@ public class SpikeBound : Verse.Gene {
     public const int SpikeCount = 4;
 
     /// <summary>
-    ///     What the four are made of.
+    ///     What the four are made of, which is iron, four times.
     /// </summary>
     /// <remarks>
-    ///     The physical metals: strength, speed, senses and reflex. A koloss is built out of the
-    ///     body's own attributes taken from somebody else, which is why it is enormous and why it
-    ///     is stupid - nothing here steals a mind, because there is no mental metal among them.
+    ///     Iron steals human strength. Four of them is why a koloss is enormous, and the absence of
+    ///     any mental metal among them is why there is so little left inside it.
     /// </remarks>
-    private static readonly string[] metals = ["Iron", "Steel", "Tin", "Pewter"];
+    private const string Metal = "Iron";
 
     public override void PostAdd() {
         base.PostAdd();
@@ -48,10 +47,10 @@ public class SpikeBound : Verse.Gene {
             : pawn.health.hediffSet.GetNotMissingParts()
                 .FirstOrDefault(p => p.def == pawn.RaceProps.body.corePart.def);
 
-        for (int i = 0; i < metals.Length; i++) {
+        for (int i = 0; i < SpikeCount; i++) {
             HemalurgicImplantUtility.AddToUnifiedHediff(
                 pawn,
-                new ImplantedSpikeData { metalDefName = metals[i], chargeStrength = 1f },
+                new ImplantedSpikeData { metalDefName = Metal, chargeStrength = 1f },
                 core
             );
         }

@@ -414,7 +414,9 @@ public class KolossTests {
             .First(li => li.Descendants("thingDefs").Any(t =>
                 t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
 
-        List<string> disallowed = spikes.Descendants("disallowedSpecialFilters")
+        // specialFiltersToDisallow, matching the kandra recipe that already works.
+        // disallowedSpecialFilters is not the field, and using it silently excluded everything.
+        List<string> disallowed = spikes.Descendants("specialFiltersToDisallow")
             .Elements("li").Select(li => li.Value).ToList();
 
         CollectionAssert.Contains(disallowed, "Cosmere_Scadrial_SpecialFilter_NotSpikeIron");
@@ -439,10 +441,36 @@ public class KolossTests {
             "SpecialThingFilterWorker_UnchargedSpike.cs"
         ));
 
-        Assert.IsTrue(worker.Contains("spike?.chargeData == null", StringComparison.Ordinal));
+        Assert.IsTrue(worker.Contains("spike is not { isCharged: true }", StringComparison.Ordinal));
         Assert.IsTrue(
             worker.Contains("if (!CanEverMatch(t.def)) return false;", StringComparison.Ordinal),
             "Matching anything but a spike would quietly drop the medicine out of the same bill."
+        );
+    }
+
+    /// <summary>
+    ///     Iron takes human strength, and a koloss is four of those. Any other metal steals
+    ///     something a koloss has no use for, and the recipe description has to say the same thing
+    ///     the code does.
+    /// </summary>
+    [TestMethod]
+    public void AllFourSpikesAreIron() {
+        string gene = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "SpikeBound.cs"
+        ));
+
+        Assert.IsTrue(gene.Contains("Metal = \"Iron\"", StringComparison.Ordinal));
+        Assert.IsFalse(
+            gene.Contains("Steel", StringComparison.Ordinal) || gene.Contains("Pewter", StringComparison.Ordinal),
+            "Four iron, not one of each."
+        );
+
+        string recipes = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Hemalurgy", "KolossRecipes.xml"
+        ));
+        Assert.IsFalse(
+            recipes.Contains("iron, steel, tin and pewter", StringComparison.Ordinal),
+            "The description has to agree with the ingredients."
         );
     }
 }

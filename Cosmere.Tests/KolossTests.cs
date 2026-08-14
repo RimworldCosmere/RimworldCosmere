@@ -623,4 +623,31 @@ public class KolossTests {
             }
         }
     }
+
+    /// <summary>
+    ///     Swinging at rock is the same motion as swinging at a person. A koloss is built for one
+    ///     of those and is just as strong at the other, so mining gets half the melee buff - and
+    ///     only the speed, because a koloss is no more careful about ore than about anything else.
+    /// </summary>
+    [TestMethod]
+    public void AKolossMinesAtHalfWhatItFightsAt() {
+        XDocument genes = Defs("Races", "Genes", "Koloss.xml");
+
+        foreach ((string def, double melee, double mining) in new[] {
+            ("Cosmere_Scadrial_Gene_KolossHeritage", 2.5, 1.75),
+            ("Cosmere_Scadrial_Gene_KolossBlooded", 1.25, 1.125),
+        }) {
+            XElement factors = genes.Descendants("GeneDef")
+                .First(d => d.Element("defName")?.Value == def)
+                .Element("statFactors")!;
+
+            Assert.AreEqual(melee, double.Parse(factors.Element("MeleeDamageFactor")!.Value), 0.001);
+            Assert.AreEqual(mining, double.Parse(factors.Element("MiningSpeed")!.Value), 0.001);
+
+            // Half the buff, not half the factor: a 2.5 factor is +150%, so half is +75%.
+            Assert.AreEqual((melee - 1d) / 2d, mining - 1d, 0.001);
+
+            Assert.IsNull(factors.Element("MiningYield"), "A koloss is not more careful, only faster.");
+        }
+    }
 }

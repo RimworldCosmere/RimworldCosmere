@@ -35,6 +35,10 @@
       <MoveSpeed>1.35</MoveSpeed>
       <CarryingCapacity>4.0</CarryingCapacity>
       <MeleeDamageFactor>2.5</MeleeDamageFactor>
+      <!-- Half the melee buff. Swinging at rock is the same motion as swinging at a person, and a
+           koloss is built for exactly one of those - it is just as strong at the other and no more
+           careful about it, so the speed moves and the yield does not. -->
+      <MiningSpeed>1.75</MiningSpeed>
     </statFactors>
     <statOffsets>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>
@@ -154,6 +158,7 @@
     <statFactors>
       <CarryingCapacity>1.5</CarryingCapacity>
       <MeleeDamageFactor>1.25</MeleeDamageFactor>
+      <MiningSpeed>1.125</MiningSpeed>
     </statFactors>
     <statOffsets>
       <ComfyTemperatureMin>-6</ComfyTemperatureMin>

@@ -12,7 +12,17 @@
     <defaultLabelColor>(0.55, 0.65, 0.75)</defaultLabelColor>
     <isBad>true</isBad>
     <everCurableByItem>false</everCurableByItem>
+    <!-- Explicit. HediffDef.initialSeverity defaults to 0.5 and Hediff.PostMake does
+         Severity = Max(Severity, def.initialSeverity), so without this every koloss is born forty
+         percent of the way to splitting - and renders oversized on its first frame. The clock
+         starts at the spikes, not at birth. -->
+    <initialSeverity>0</initialSeverity>
     <maxSeverity>1.0</maxSeverity>
+
+    <!-- lifeThreatening kills nothing on its own; it only feeds TendPriority, the alert and the
+         caravan-banish check. Hediff.IsLethal reads lethalSeverity, and it is also what puts a
+         percentage in the health tab so the player can see it coming. -->
+    <lethalSeverity>1.0</lethalSeverity>
     <comps>
       <!-- Eight years from spiking to splitting. ScadrialModSettings.kolossGrowthYears
            rewrites this at startup and whenever the settings window closes, so this value is

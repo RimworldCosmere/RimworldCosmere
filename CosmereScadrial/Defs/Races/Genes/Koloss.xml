@@ -9,6 +9,8 @@
        render node scales the whole thing past what a person can be. -->
   <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
     <defName>Cosmere_Scadrial_Gene_KolossHeritage</defName>
+    <!-- Starts the growth clock on every path a koloss can come from, not just the surgery. -->
+    <geneClass>Cosmere.System.Scadrial.Gene.KolossHeritage</geneClass>
     <label>koloss</label>
     <labelShortAdj>koloss</labelShortAdj>
     <description>Four spikes made this thing out of a person. It is larger than any man, blue-grey, and remembers almost nothing of who it used to be.</description>

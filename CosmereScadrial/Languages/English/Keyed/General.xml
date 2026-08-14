@@ -15,4 +15,5 @@
 	<CS_Deflare>de-flare</CS_Deflare>
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
+    <CS_Koloss_Name>koloss</CS_Koloss_Name>
 </LanguageData>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -48,9 +49,45 @@ public static class KolossUtility {
             for (int i = 0; i < pawn.skills.skills.Count; i++) {
                 SkillRecord skill = pawn.skills.skills[i];
                 bool physical = skill.def == RimWorld.SkillDefOf.Melee || skill.def == RimWorld.SkillDefOf.Shooting;
-                skill.Level = physical ? Mathf.Max(0, skill.Level - 2) : 0;
+
+                // levelInt, not Level. The getter returns 0 for a skill the pawn is currently
+                // incapable of and adds trait and gene aptitude on top of what is stored, so
+                // reading through it would take two off a number that was never there.
+                skill.levelInt = physical ? Mathf.Max(0, skill.levelInt - 2) : 0;
                 skill.passion = Passion.None;
             }
+        }
+
+        Forget(pawn);
+    }
+
+    /// <summary>
+    ///     Takes the person away and leaves the thing.
+    /// </summary>
+    /// <remarks>
+    ///     Become's own message says whoever they were did not come back, and the koloss childhood
+    ///     backstory says it does not remember the name it had. Until now the code disagreed with
+    ///     both: the name, the ideoligion, the traits and every relationship survived intact, so a
+    ///     colonist's husband could be made into a koloss and stay her husband.
+    ///     <para>
+    ///         The faction is deliberately left alone. Whether a made koloss is still yours is a
+    ///         question about the colony, not about what it is.
+    ///     </para>
+    /// </remarks>
+    private static void Forget(Pawn pawn) {
+        pawn.Name = new NameSingle("CS_Koloss_Name".Translate(), true);
+
+        pawn.ideo?.SetIdeo(null);
+
+        if (pawn.story?.traits != null) {
+            List<Trait> had = [.. pawn.story.traits.allTraits];
+            for (int i = 0; i < had.Count; i++) {
+                pawn.story.traits.RemoveTrait(had[i]);
+            }
+        }
+
+        if (pawn.relations != null) {
+            pawn.relations.ClearAllRelations();
         }
     }
 }

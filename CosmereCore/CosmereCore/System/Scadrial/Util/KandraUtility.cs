@@ -338,8 +338,18 @@ public static class KandraUtility {
         int whole = CompleteBlessingsOn(pawn).Count;
 
         if (whole > 0) {
+            // Only a kandra that was actually broken is being repaired. This runs on a slow tick
+            // for every healthy kandra in the colony, and the restore below used to fire every
+            // time - so a colonist wearing a face the player chose had it taken off on a timer,
+            // roughly every two thousand ticks, for no reason it could see.
+            bool wasBroken =
+                pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed)
+                || pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
+
             Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed);
             Remove(pawn, HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
+
+            if (!wasBroken) return;
 
             CompKandraForms? forms = pawn.TryGetComp<CompKandraForms>();
             KandraForm? worn = forms?.Mind.Shape;
@@ -347,12 +357,9 @@ public static class KandraUtility {
             forms?.Mind.Restore(pawn);
 
             // A repaired kandra picks its old face back up. Coming out of it grey and nameless
-            // would make every recovery feel like a different person walking in.
-            if (worn != null) {
-                KandraShapeshift.Wear(pawn, worn);
-            } else if (forms != null) {
-                KandraShapeshift.Revert(pawn);
-            }
+            // would make every recovery feel like a different person walking in. Nothing stored
+            // means it had no face when it broke, and it keeps whichever one it has now.
+            if (worn != null) KandraShapeshift.Wear(pawn, worn);
 
             return;
         }

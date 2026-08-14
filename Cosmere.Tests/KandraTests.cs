@@ -857,4 +857,27 @@ public class KandraTests {
             "Losing the spikes must lower it again."
         );
     }
+
+    /// <summary>
+    ///     ReconcileSpikes runs on a slow tick for every healthy kandra in the colony. Its repair
+    ///     branch used to fire every time, so a colonist wearing a face the player chose had it
+    ///     taken off roughly every two thousand ticks, with nothing on screen to explain it.
+    /// </summary>
+    [TestMethod]
+    public void AHealthyKandraIsNotRepairedOverAndOver() {
+        string source = Source("Util", "KandraUtility.cs");
+        int start = source.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0);
+
+        string body = source[start..];
+        int guard = body.IndexOf("if (!wasBroken) return;", StringComparison.Ordinal);
+        int restore = body.IndexOf("Mind.Restore(pawn)", StringComparison.Ordinal);
+
+        Assert.IsTrue(guard >= 0, "The repair path has to know whether anything was broken.");
+        Assert.IsTrue(guard < restore, "And bail before restoring, not after.");
+        Assert.IsFalse(
+            body[..restore].Contains("KandraShapeshift.Revert(pawn)", StringComparison.Ordinal),
+            "Nothing on a timer may take a colonist's chosen face off."
+        );
+    }
 }

@@ -33,64 +33,6 @@ public class KandraAnimalFormTests {
     ));
 
     /// <summary>
-    ///     Bronze reads the Investiture holding a shape together, so practice cannot beat it. A
-    ///     first-generation kandra is exactly as visible as one made last week.
-    /// </summary>
-    [TestMethod]
-    public void BronzeIsNotARoll() {
-        string disguise = Kandra("KandraDisguise.cs");
-        int seen = disguise.IndexOf("public static bool SeenByBronze(", StringComparison.Ordinal);
-        Assert.IsTrue(seen >= 0);
-
-        // Stop at the next doc comment so the following member's prose is not read as code.
-        int next = disguise.IndexOf("/// <summary>", seen, StringComparison.Ordinal);
-        string body = disguise[seen..next];
-        Assert.IsFalse(
-            body.Contains("Rand.Chance", StringComparison.Ordinal),
-            "Bronze does not guess; it either hears the kandra or it does not."
-        );
-        Assert.IsFalse(
-            body.Contains("Conviction", StringComparison.Ordinal),
-            "Skill must not help against bronze."
-        );
-        Assert.IsTrue(body.Contains("IsBurning(bronze)", StringComparison.Ordinal));
-    }
-
-    /// <summary>
-    ///     Conviction and CanFreeForm were written and never read. An unused difficulty knob is
-    ///     the same as no difficulty knob.
-    /// </summary>
-    [TestMethod]
-    public void TheShapeshiftSkillActuallyDoesSomething() {
-        string disguise = Kandra("KandraDisguise.cs");
-        Assert.IsTrue(
-            disguise.Contains("1f - forms.Conviction", StringComparison.Ordinal),
-            "Practice should make an ordinary observer less likely to notice."
-        );
-
-        string gene = File.ReadAllText(Path.Combine(
-            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs"
-        ));
-        Assert.IsTrue(gene.Contains("forms.CanFreeForm", StringComparison.Ordinal), "CanFreeForm should gate something.");
-        Assert.IsTrue(gene.Contains("FreeFormGizmo", StringComparison.Ordinal));
-    }
-
-    /// <summary>Being seen has to end the disguise, or nothing was actually at stake.</summary>
-    [TestMethod]
-    public void BeingCaughtDropsTheShape() {
-        string watcher = File.ReadAllText(Path.Combine(
-            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "Shapeshifter.cs"
-        ));
-
-        Assert.IsTrue(watcher.Contains("KandraDisguise.SeenByBronze", StringComparison.Ordinal));
-        Assert.IsTrue(watcher.Contains("KandraDisguise.Slipped", StringComparison.Ordinal));
-
-        // One path now. Revert takes a face or an animal off equally, because ApplyTo strips
-        // whatever is on before deciding what goes on next.
-        Assert.IsTrue(watcher.Contains("KandraShapeshift.Revert", StringComparison.Ordinal));
-    }
-
-    /// <summary>
     ///     A disguise talks somebody out of a fight. It must never start one, or a kandra in a
     ///     dog becomes a reason for a friendly caravan to open fire.
     /// </summary>

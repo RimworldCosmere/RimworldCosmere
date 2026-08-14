@@ -55,4 +55,38 @@ public static class KandraAppearanceReport {
                + $" bodyType={form.bodyType?.defName ?? "NULL"}"
                + $" hair={form.hair?.defName ?? "NULL"} gender={form.gender}";
     }
+
+    /// <summary>
+    ///     Runs the koloss transformation on whoever is under the cursor, with no bill involved.
+    /// </summary>
+    /// <remarks>
+    ///     The surgery has a lot between the player and the code - a doctor, a bed, four spikes and
+    ///     a filter. When the result is wrong, this says whether the transformation itself is at
+    ///     fault or whether the bill simply never ran.
+    /// </remarks>
+    [DebugAction(
+        "Cosmere/Core",
+        "Spike: make a koloss here",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void MakeKolossHere() {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
+            if (thing is not Pawn pawn) continue;
+            if (pawn.genes == null) continue;
+
+            XenotypeDef? koloss = DefDatabase<XenotypeDef>.GetNamedSilentFail(
+                Util.KolossUtility.KolossXenotype
+            );
+            if (koloss == null) {
+                Cosmere.Core.Logger.Warning("The koloss xenotype is missing.");
+
+                return;
+            }
+
+            Util.KolossUtility.MakeFrom(pawn, koloss);
+
+            return;
+        }
+    }
 }

@@ -143,6 +143,8 @@ public static class KolossUtility {
     ///     so both come through here.
     /// </remarks>
     public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
+        Cosmere.Core.Logger.Important($"Koloss: making one out of {subject.LabelShort}.");
+
         Corpse? corpse = subject.Corpse;
         Map? map = subject.MapHeld ?? corpse?.Map;
         IntVec3 where = corpse?.Spawned == true ? corpse.Position : subject.Position;
@@ -309,7 +311,11 @@ public static class KolossUtility {
     ///     costs nothing: both paths check for it first.
     /// </remarks>
     private static void StartGrowing(Pawn made) {
-        if (made.health?.hediffSet == null) return;
+        if (made.health?.hediffSet == null) {
+            Cosmere.Core.Logger.Warning($"Koloss: {made.LabelShort} has no health tracker, so no clock started.");
+
+            return;
+        }
 
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
         if (growth == null) {
@@ -317,7 +323,11 @@ public static class KolossUtility {
             return;
         }
 
-        if (made.health.hediffSet.GetFirstHediffOfDef(growth) != null) return;
+        if (made.health.hediffSet.GetFirstHediffOfDef(growth) != null) {
+            Cosmere.Core.Logger.Important($"Koloss: {made.LabelShort} was already growing.");
+
+            return;
+        }
 
         made.health.AddHediff(growth);
         Cosmere.Core.Logger.Important($"Koloss: {made.LabelShort} started growing.");

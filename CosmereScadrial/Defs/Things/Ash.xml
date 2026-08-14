@@ -26,6 +26,19 @@
         <thingCategories>
             <li>ResourcesRaw</li>
         </thingCategories>
+        <!-- A koloss will eat ash. It is not food and it does not pretend to be - almost no
+             nutrition, DesperateOnly so nobody walks past a meal to get at it, and a thought bad
+             enough that anyone else only does it starving. The koloss gene nullifies that thought,
+             which is the whole difference between them and everybody else. -->
+        <ingestible>
+            <foodType>Processed</foodType>
+            <preferability>DesperateOnly</preferability>
+            <nutrition>0.05</nutrition>
+            <maxNumToIngestAtOnce>20</maxNumToIngestAtOnce>
+            <ingestEffect>EatVegetarian</ingestEffect>
+            <ingestSound>RawVegetable_Eat</ingestSound>
+            <tasteThought>Cosmere_Scadrial_Thought_AteAsh</tasteThought>
+        </ingestible>
         <comps>
             <li Class="Cosmere.System.Scadrial.Comp.Thing.AshWashesAwayProperties">
                 <rainRateThreshold>0.4</rainRateThreshold>

@@ -33,7 +33,7 @@
     </renderNodeProperties>
     <statFactors>
       <MoveSpeed>1.35</MoveSpeed>
-      <CarryingCapacity>4.0</CarryingCapacity>
+      <CarryingCapacity>8.0</CarryingCapacity>
       <MeleeDamageFactor>2.5</MeleeDamageFactor>
       <!-- Half the melee buff. Swinging at rock is the same motion as swinging at a person, and a
            koloss is built for exactly one of those - it is just as strong at the other and no more
@@ -41,7 +41,10 @@
       <MiningSpeed>1.75</MiningSpeed>
     </statFactors>
     <statOffsets>
-      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <!-- Ash-choked skies and mountain cold on one side, a smelting works on the other. Very
+           little about the weather reaches something built like this. -->
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
     </statOffsets>
   </GeneDef>
 
@@ -161,7 +164,8 @@
       <MiningSpeed>1.125</MiningSpeed>
     </statFactors>
     <statOffsets>
-      <ComfyTemperatureMin>-6</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-16</ComfyTemperatureMin>
+      <ComfyTemperatureMax>12</ComfyTemperatureMax>
       <PainShockThreshold>0.1</PainShockThreshold>
     </statOffsets>
   </GeneDef>

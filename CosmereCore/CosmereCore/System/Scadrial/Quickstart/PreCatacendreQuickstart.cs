@@ -46,6 +46,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         }
 
         SpawnRashek(pawns[0]);
+        SpawnHuman(pawns[0]);
         LayOutTheKolossBench(pawns[0]);
     }
 
@@ -137,6 +138,44 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     ///     Charged with stolen human strength, which is what iron takes and what a koloss is made
     ///     out of - an uncharged spike is refused by the bill on purpose.
     /// </remarks>
+
+    /// <summary>
+    ///     Human, the koloss who took a name.
+    /// </summary>
+    /// <remarks>
+    ///     Deliberately here rather than in the scenario. He belongs to the Hero of Ages, not to a
+    ///     Pre-Catacendre colony, and a scenario roster is meant to read as the crew you started
+    ///     with. What he is for is a koloss that already exists to look at, without spending four
+    ///     spikes and a colonist to get one.
+    /// </remarks>
+    private static void SpawnHuman(Pawn nearby) {
+        Map? map = nearby.Map;
+        if (map == null) return;
+
+        PawnKindDef? kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("Cosmere_Scadrial_PawnKind_Koloss");
+        XenotypeDef? koloss = DefDatabase<XenotypeDef>.GetNamedSilentFail(
+            Util.KolossUtility.KolossXenotype
+        );
+        if (kind == null || koloss == null) return;
+
+        Pawn human = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
+            kind,
+            Faction.OfPlayer,
+            PawnGenerationContext.NonPlayer,
+            forceGenerateNewPawn: true,
+            canGeneratePawnRelations: false,
+            fixedGender: Gender.Male,
+            forcedXenotype: koloss,
+            fixedBiologicalAge: 24f,
+            fixedChronologicalAge: 0f
+        ));
+
+        // The one koloss anybody ever called anything.
+        human.Name = new NameSingle("Human", false);
+
+        GenSpawn.Spawn(human, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 6), map);
+    }
+
     private static void LayOutTheKolossBench(Pawn nearby) {
         Map? map = nearby.Map;
         if (map == null) return;

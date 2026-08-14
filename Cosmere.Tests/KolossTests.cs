@@ -650,4 +650,65 @@ public class KolossTests {
             Assert.IsNull(factors.Element("MiningYield"), "A koloss is not more careful, only faster.");
         }
     }
+
+    /// <summary>
+    ///     A koloss is a pack animal that fights. Four times a person was already a lot; the number
+    ///     that reads as "send the koloss" rather than "send two colonists" is a good deal more.
+    /// </summary>
+    [TestMethod]
+    public void AKolossCarriesFarMoreThanAPerson() {
+        XElement factors = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
+            .Element("statFactors")!;
+
+        Assert.IsTrue(
+            double.Parse(factors.Element("CarryingCapacity")!.Value) >= 8d,
+            "Hauling is one of the two things a koloss is for."
+        );
+    }
+
+    /// <summary>
+    ///     The mood side of weather was already nullified. This is the other half: hypothermia and
+    ///     heatstroke read the stat, not the thought, so a koloss that does not mind the cold still
+    ///     froze to death without this.
+    /// </summary>
+    [TestMethod]
+    public void AKolossSurvivesWeatherThatWouldKillAColonist() {
+        XElement offsets = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
+            .Element("statOffsets")!;
+
+        Assert.IsTrue(double.Parse(offsets.Element("ComfyTemperatureMin")!.Value) <= -40d);
+        Assert.IsTrue(double.Parse(offsets.Element("ComfyTemperatureMax")!.Value) >= 30d);
+    }
+
+    /// <summary>
+    ///     Ash falls on Scadrial whether anyone wants it or not, so a koloss army feeds itself. The
+    ///     gating is entirely in the thought - anyone can swallow ash, and only a koloss can do it
+    ///     without it ruining their week.
+    /// </summary>
+    [TestMethod]
+    public void OnlyAKolossEatsAshWithoutMinding() {
+        XElement food = XDocument.Load(Path.Combine(
+                RepoRoot, "CosmereScadrial", "Defs", "Things", "Ash.xml"
+            )).Descendants("ThingDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_Ash")
+            .Element("ingestible")!;
+
+        Assert.AreEqual(
+            "DesperateOnly",
+            food.Element("preferability")?.Value,
+            "Ash must never win against an actual meal."
+        );
+        Assert.IsTrue(double.Parse(food.Element("nutrition")!.Value) <= 0.1d);
+
+        XElement taste = Defs("Races", "KolossHediffs.xml").Descendants("ThoughtDef")
+            .First(d => d.Element("defName")?.Value == food.Element("tasteThought")!.Value);
+
+        Assert.IsTrue(double.Parse(taste.Descendants("baseMoodEffect").First().Value) < 0d);
+        CollectionAssert.Contains(
+            taste.Element("nullifyingGenes")!.Elements("li").Select(li => li.Value).ToList(),
+            "Cosmere_Scadrial_Gene_KolossHeritage"
+        );
+    }
 }

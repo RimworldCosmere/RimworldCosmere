@@ -147,4 +147,22 @@
     </stages>
   </ThoughtDef>
 
+
+  <!-- Eating ash. Grit and cold cinder, and it stays with you. A koloss does not register it,
+       which is what makes an ashfall a food supply for them and a famine for everyone else. -->
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_Thought_AteAsh</defName>
+    <durationDays>1</durationDays>
+    <nullifyingGenes>
+      <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
+    </nullifyingGenes>
+    <stages>
+      <li>
+        <label>ate ash</label>
+        <description>I ate ash off the ground. It was dry and it was gritty and it is still in my teeth.</description>
+        <baseMoodEffect>-12</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
 </Defs>

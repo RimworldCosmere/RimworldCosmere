@@ -145,6 +145,11 @@ public static class KolossUtility {
     public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
         Cosmere.Core.Logger.Important($"Koloss: making one out of {subject.LabelShort}.");
 
+        // Read before the subject goes. Asking afterwards always says no, which is how the kandra
+        // work lost the player's selection every single transformation.
+        bool watching = Find.Selector?.IsSelected(subject) == true
+                        || (subject.Corpse != null && Find.Selector?.IsSelected(subject.Corpse) == true);
+
         Corpse? corpse = subject.Corpse;
         Map? map = subject.MapHeld ?? corpse?.Map;
         IntVec3 where = corpse?.Spawned == true ? corpse.Position : subject.Position;
@@ -190,6 +195,13 @@ public static class KolossUtility {
         if (!subject.Destroyed) subject.Destroy(DestroyMode.Vanish);
 
         GenSpawn.Spawn(made, where, map);
+
+        // If they were watching the person, keep them watching the thing. Losing the camera at the
+        // exact moment the transformation lands is the worst possible time to lose it.
+        if (watching) {
+            Find.Selector?.ClearSelection();
+            Find.Selector?.Select(made);
+        }
 
         return made;
     }

@@ -190,4 +190,53 @@ public class KolossTests {
             "Everything that needed a mind to hold it did not survive the spikes."
         );
     }
+
+    /// <summary>
+    ///     The surgery is always available; the ritual is the same act performed in front of a
+    ///     congregation, which is how the Steel Ministry did it. Making a koloss must not require
+    ///     Ideology, so every ritual def is gated and the hemalurgy bill is not.
+    /// </summary>
+    [TestMethod]
+    public void TheRitualIsIdeologyOnlyAndTheSurgeryIsNot() {
+        XDocument rituals = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereCore", "Defs", "Ideology", "Rituals", "Scadrial_Rituals.xml"
+        ));
+
+        foreach (string def in new[] {
+            "Cosmere_RitualOutcome_MakeKoloss",
+            "Cosmere_RitualPattern_MakeKoloss",
+            "Cosmere_Ritual_MakeKoloss",
+        }) {
+            XElement node = rituals.Descendants()
+                .First(e => e.Element("defName")?.Value == def);
+            Assert.AreEqual(
+                "Ludeon.RimWorld.Ideology",
+                (string?)node.Attribute("MayRequire"),
+                $"{def} must be gated, or a colony without Ideology fails to load."
+            );
+        }
+
+        // The hemalurgy path carries no such gate.
+        string recipes = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Hemalurgy", "KolossRecipes.xml"
+        ));
+        Assert.IsFalse(recipes.Contains("Ludeon.RimWorld.Ideology", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     The sacrifice behaviour kills before the outcome fires, so the ritual path hands a
+    ///     corpse to the same code the surgery hands a living pawn. Destroying the pawn without
+    ///     its corpse leaves the body on the floor with nothing in it.
+    /// </summary>
+    [TestMethod]
+    public void TheRitualPathConsumesTheBodyToo() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("public static Pawn? MakeFrom(", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("corpse.Destroy(DestroyMode.Vanish)", StringComparison.Ordinal));
+
+        string worker = Source("Ritual", "RitualOutcomeEffectWorker_MakeKoloss.cs");
+        Assert.IsTrue(worker.Contains("FirstAssignedPawn(\"prisoner\")", StringComparison.Ordinal));
+        Assert.IsTrue(worker.Contains("KolossUtility.MakeFrom", StringComparison.Ordinal));
+    }
 }

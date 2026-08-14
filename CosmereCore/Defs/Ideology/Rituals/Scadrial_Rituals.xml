@@ -226,4 +226,64 @@
         </requiredMemes>
     </PreceptDef>
 
+    <!-- ===== MAKING A KOLOSS ===== -->
+
+    <!-- The Ministry's version of the surgery. The behaviour is the prisoner sacrifice, so the
+         victim dies on the spot and the outcome stands a koloss up over the body. Making a koloss
+         does not need Ideology - the hemalurgy bill is always there - this is the same act done
+         in front of a congregation, which is how the Steel Ministry did it. -->
+    <RitualOutcomeEffectDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_RitualOutcome_MakeKoloss</defName>
+        <label>a koloss made</label>
+        <description>The spikes go in and something else gets up.</description>
+        <workerClass>Cosmere.System.Scadrial.Ritual.RitualOutcomeEffectWorker_MakeKoloss</workerClass>
+        <effecter>ExecutionFlames</effecter>
+        <comps>
+            <li Class="RitualOutcomeComp_ParticipantCount">
+                <label>participant count</label>
+                <curve>
+                    <points>
+                        <li>(1,  0)</li>
+                        <li>(4,  0.4)</li>
+                        <li>(10, 0.6)</li>
+                    </points>
+                </curve>
+            </li>
+        </comps>
+        <outcomeChances>
+            <li>0.05</li>
+            <li>0.15</li>
+            <li>0.5</li>
+            <li>0.3</li>
+        </outcomeChances>
+    </RitualOutcomeEffectDef>
+
+    <RitualPatternDef MayRequire="Ludeon.RimWorld.Ideology" ParentName="SacrificeBase">
+        <defName>Cosmere_RitualPattern_MakeKoloss</defName>
+        <ritualBehavior>SacrificePrisoner</ritualBehavior>
+        <shortDescOverride>koloss-making</shortDescOverride>
+        <descOverride>Four spikes driven into a bound prisoner while the faithful watch. The organizer speaks, the spikes go in, and what stands up afterwards is not the person who was tied down.</descOverride>
+        <patternGroupTag />
+        <ritualOutcomeEffect>Cosmere_RitualOutcome_MakeKoloss</ritualOutcomeEffect>
+    </RitualPatternDef>
+
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_MakeKoloss</defName>
+        <label>koloss-making</label>
+        <description>A prisoner is bound and four spikes are driven in at once while the congregation watches. The Lord Ruler's armies were built this way, one person at a time, and the Ministry never pretended otherwise.</description>
+        <issue>Ritual</issue>
+        <impact>High</impact>
+        <iconPath>UI/Ideology/Cosmere/SteelMinistry</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>Cosmere_RitualPattern_MakeKoloss</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>110</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </requiredMemes>
+    </PreceptDef>
+
 </Defs>

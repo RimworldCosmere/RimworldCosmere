@@ -130,8 +130,21 @@ public static class KolossUtility {
     ///     </para>
     /// </remarks>
     public static Pawn? Make(Pawn subject, XenotypeDef koloss) {
-        Map? map = subject.Map;
-        IntVec3 where = subject.Position;
+        return MakeFrom(subject, koloss);
+    }
+
+    /// <summary>
+    ///     The same, for a subject who may already be dead.
+    /// </summary>
+    /// <remarks>
+    ///     The ritual path kills before the outcome fires, so by then the subject is a corpse
+    ///     standing in for a person. Both paths end the same way - nothing of the body is left -
+    ///     so both come through here.
+    /// </remarks>
+    public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
+        Corpse? corpse = subject.Corpse;
+        Map? map = subject.MapHeld ?? corpse?.Map;
+        IntVec3 where = corpse?.Spawned == true ? corpse.Position : subject.Position;
         if (map == null) return null;
 
         // Gender is the one thing that carries: a koloss is built out of a body, and the body
@@ -149,8 +162,11 @@ public static class KolossUtility {
         Inherit(subject, made);
 
         // Before the subject goes, so the koloss is standing where they were rather than dropped
-        // at the map edge.
-        subject.Destroy(DestroyMode.Vanish);
+        // at the map edge. A corpse has to be destroyed as well as the pawn inside it, or the body
+        // stays on the floor with nothing in it.
+        if (corpse is { Destroyed: false }) corpse.Destroy(DestroyMode.Vanish);
+        if (!subject.Destroyed) subject.Destroy(DestroyMode.Vanish);
+
         GenSpawn.Spawn(made, where, map);
 
         return made;

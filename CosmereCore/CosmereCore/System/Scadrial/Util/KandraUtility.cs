@@ -282,7 +282,7 @@ public static class KandraUtility {
             // for parts to operate on and it answers with this hediff's Part. Null there means
             // no valid parts, so "remove hemalurgic spike" silently never appears.
             BodyPartRecord? torso = pawn.health.hediffSet?.GetNotMissingParts()
-                .FirstOrDefault(part => part.def == BodyPartDefOf.Torso);
+                .FirstOrDefault(part => part.def == pawn.RaceProps.body.corePart.def);
             if (torso == null) return;
 
             set = (HemalurgicSpikes)HediffMaker.MakeHediff(

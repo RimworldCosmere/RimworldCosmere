@@ -220,7 +220,7 @@ public static class HemalurgicChargeUtility {
         }
 
         BodyPartRecord? torso = donor.health.hediffSet.GetNotMissingParts()
-            .FirstOrDefault(p => p.def == BodyPartDefOf.Torso);
+            .FirstOrDefault(p => p.def == donor.RaceProps.body.corePart.def);
         if (torso != null) {
             DamageInfo damageInfo = new DamageInfo(DamageDefOf.SurgicalCut, injurySeverity, 0f, -1f, surgeon, torso);
             donor.TakeDamage(damageInfo);

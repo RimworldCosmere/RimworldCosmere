@@ -60,7 +60,7 @@ public class GiveSpikeAction : ProgressionAction {
 
         BodyPartRecord? torso = null;
         foreach (BodyPartRecord part in pawn.health.hediffSet.GetNotMissingParts()) {
-            if (part.def != BodyPartDefOf.Torso) continue;
+            if (part.def != pawn.RaceProps.body.corePart.def) continue;
 
             torso = part;
             break;

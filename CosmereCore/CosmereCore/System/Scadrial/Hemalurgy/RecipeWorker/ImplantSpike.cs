@@ -23,7 +23,7 @@ public class ImplantSpike : Recipe_Surgery {
 
     public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe) {
         BodyPartRecord torso = pawn.health.hediffSet.GetNotMissingParts()
-            .FirstOrDefault(p => p.def == BodyPartDefOf.Torso);
+            .FirstOrDefault(p => p.def == pawn.RaceProps.body.corePart.def);
         if (torso != null) {
             yield return torso;
         }

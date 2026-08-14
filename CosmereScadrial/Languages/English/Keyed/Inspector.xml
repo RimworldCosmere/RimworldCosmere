@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CS_Kandra_Wearing>Wearing the shape of {FORM}</CS_Kandra_Wearing>
-    <CS_Kandra_WearingAnimal>{PAWN} is inside this shape</CS_Kandra_WearingAnimal>
 </LanguageData>

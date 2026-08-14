@@ -47,14 +47,6 @@ public class KandraChangeShape : Verse.AI.JobDriver {
 
         KandraForm form = forms.Known[job.count];
 
-        // An animal shape cannot be worn in place: the pawn's race is its ThingDef. The kandra
-        // steps out and a pawn of that kind steps in.
-        if (form.IsAnimal) {
-            forms.SetCurrent(form);
-            if (Kandra.KandraAnimalShape.Wear(pawn, form) == null) forms.SetCurrent(null);
-            return;
-        }
-
         KandraShapeshift.Wear(pawn, form);
     }
 }

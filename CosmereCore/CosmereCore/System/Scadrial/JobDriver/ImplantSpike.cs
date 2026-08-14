@@ -160,7 +160,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
 
             BodyPartRecord? torso = null;
             foreach (BodyPartRecord part in recipient.health.hediffSet.GetNotMissingParts()) {
-                if (part.def == BodyPartDefOf.Torso) {
+                if (part.def == pawn.RaceProps.body.corePart.def) {
                     torso = part;
                     break;
                 }

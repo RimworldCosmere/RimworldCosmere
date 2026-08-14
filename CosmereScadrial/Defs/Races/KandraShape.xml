@@ -73,28 +73,5 @@
         </renderNodeProperties>
 </HediffDef>
 
-    <!-- Its own life stage purely for silhouetteGraphicData. PawnRenderer.RenderPawnAt reads
-         CurLifeStage.silhouetteGraphicData.Graphic unguarded for any humanlike pawn, and the
-         animal life stages have none, so it threw once a frame. AnimalAdult otherwise. -->
-
-    <!-- The Animal tree is unusable here. Every node in it reads CurKindLifeStage, which
-         returns null for a humanlike pawn by design and logs an error saying so. This tree
-         takes its graphic from a def extension instead. -->
-    <PawnRenderTreeDef>
-        <defName>Cosmere_Scadrial_RenderTree_KandraShape</defName>
-        <root Class="PawnRenderNodeProperties_Parent">
-            <debugLabel>Root</debugLabel>
-            <tagDef>Root</tagDef>
-            <children>
-                <li>
-                    <debugLabel>Body</debugLabel>
-                    <tagDef>Body</tagDef>
-                    <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraShape</nodeClass>
-                    <workerClass>PawnRenderNodeWorker_Body</workerClass>
-                </li>
-            </children>
-        </root>
-    </PawnRenderTreeDef>
-
     
 </Defs>

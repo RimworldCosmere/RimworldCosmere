@@ -1,4 +1,3 @@
-using Cosmere.Core.Framework;
 using RimWorld;
 using Verse;
 
@@ -14,16 +13,9 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
 
     public static SpiritWeb? Instance => Current.Game?.GetComponent<SpiritWeb>();
 
-    /// <summary>
-    ///     Both ends resolve to whoever is really there before the key is built.
-    /// </summary>
-    /// <remarks>
-    ///     Every read and write goes through here, so a kandra keeps its connections while it is
-    ///     wearing something else and does not build a second set against a body it will drop.
-    /// </remarks>
     private static (string, string) NormalizeKey(ILoadReferenceable one, ILoadReferenceable two) {
-        string idOne = PawnIdentityRegistry.Real(one).GetUniqueLoadID();
-        string idTwo = PawnIdentityRegistry.Real(two).GetUniqueLoadID();
+        string idOne = one.GetUniqueLoadID();
+        string idTwo = two.GetUniqueLoadID();
 
         return string.CompareOrdinal(idOne, idTwo) < 0 ? (idOne, idTwo) : (idTwo, idOne);
     }
@@ -74,9 +66,8 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
     }
 
     public IEnumerable<Connection> GetConnections(ILoadReferenceable target) {
-        ILoadReferenceable real = PawnIdentityRegistry.Real(target);
         foreach (Connection connection in connections.Values) {
-            if (connection.OneObjectMatches(real)) yield return connection;
+            if (connection.OneObjectMatches(target)) yield return connection;
         }
     }
 

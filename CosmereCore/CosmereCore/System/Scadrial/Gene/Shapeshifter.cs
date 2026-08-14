@@ -45,12 +45,6 @@ public class Shapeshifter : Verse.Gene {
             pawn
         );
 
-        // Out of the shape, whichever kind it is.
-        if (pawn.TryGetComp<CompKandraShapePair>()?.Held != null) {
-            KandraAnimalShape.Revert(pawn);
-            return;
-        }
-
         KandraShapeshift.Revert(pawn);
     }
 }

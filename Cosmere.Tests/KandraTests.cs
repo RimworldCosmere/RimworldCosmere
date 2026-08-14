@@ -483,8 +483,9 @@ public class KandraTests {
 
         string body = source[start..];
         Assert.IsTrue(
-            body.Contains("BodyPartDefOf.Torso", StringComparison.Ordinal),
-            "The spikes hediff must be placed on a real body part."
+            body.Contains("corePart", StringComparison.Ordinal),
+            "The spikes hediff must be placed on a real body part - and only 6 of 49 vanilla"
+            + " BodyDefs have one called Torso, so the lookup has to ask the body for its core."
         );
         Assert.IsTrue(
             body.Contains("HediffMaker.MakeHediff", StringComparison.Ordinal),

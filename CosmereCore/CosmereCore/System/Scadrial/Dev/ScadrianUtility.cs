@@ -34,7 +34,7 @@ public static class ScadrianUtility {
         BodyPartRecord? torso = null;
         List<BodyPartRecord> parts = pawn.RaceProps.body.AllParts;
         for (int i = 0; i < parts.Count; i++) {
-            if (parts[i].def != BodyPartDefOf.Torso) continue;
+            if (parts[i].def != pawn.RaceProps.body.corePart.def) continue;
             torso = parts[i];
             break;
         }

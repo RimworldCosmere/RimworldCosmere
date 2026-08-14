@@ -19,10 +19,10 @@ public class KandraBonesMenuProvider : RimWorld.FloatMenuOptionProvider {
     protected override FloatMenuOption? GetSingleOptionFor(Verse.Thing clickedThing, FloatMenuContext context) {
         if (clickedThing is not Corpse corpse) return null;
 
-        // Animals count now, but only the ones we have a shape for. Eating a boomrat teaches
-        // nothing if there is no boomrat form to wear.
+        // Animals count, but only the ones a kandra can actually wear. Eating a mechanoid or a
+        // thrumbo teaches nothing it could put on afterwards.
         if (!corpse.InnerPawn.RaceProps.Humanlike
-            && KandraAnimalForms.ShapeFor(corpse.InnerPawn.kindDef) == null) {
+            && !Kandra.KandraShapeEligibility.Wearable(corpse.InnerPawn.kindDef)) {
             return null;
         }
 

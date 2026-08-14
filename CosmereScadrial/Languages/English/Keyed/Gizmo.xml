@@ -9,8 +9,6 @@
     <CS_Kandra_PickForm>Take a form</CS_Kandra_PickForm>
     <CS_Kandra_FormCount>{COUNT} remembered</CS_Kandra_FormCount>
     <CS_Kandra_PickFormTip>Click to take this shape. It takes about ten seconds.</CS_Kandra_PickFormTip>
-    <CS_Kandra_LeaveAnimal>Leave this shape</CS_Kandra_LeaveAnimal>
-    <CS_Kandra_LeaveAnimalDesc>Step out of the animal and back into the kandra's own body. Whatever this shape has suffered stays with it.</CS_Kandra_LeaveAnimalDesc>
     <CS_Kandra_FreeForm>Shape a stranger</CS_Kandra_FreeForm>
     <CS_Kandra_FreeFormDesc>Put together a face nobody has ever worn. No bones needed; the kandra has done this enough times to invent one.</CS_Kandra_FreeFormDesc>
     <CS_Kandra_FreeFormLocked>Shapeshift {LEVEL} required. Until then it can only wear what it has eaten.</CS_Kandra_FreeFormLocked>

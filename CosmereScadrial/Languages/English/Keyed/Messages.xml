@@ -78,7 +78,6 @@
 
     <CS_Ruin_Compulsion_Slaughter_Title>{PAWN} is watching the animals</CS_Ruin_Compulsion_Slaughter_Title>
     <CS_Ruin_Compulsion_Slaughter_Text>{PAWN} has been standing at the pens a long while, and the animals have noticed before anyone else did.\n\nThere is enough metal in them now for {SHARD} to spend them on something small and cruel. It will, soon.\n\nTake them out of the equation before it does.</CS_Ruin_Compulsion_Slaughter_Text>
-    <CS_Kandra_TookAnimalForm>{PAWN} is a {FORM} now. Whoever needs to be fooled by that will be.</CS_Kandra_TookAnimalForm>
     <CS_Kandra_SeenByBronze_Title>{PAWN} has been read</CS_Kandra_SeenByBronze_Title>
     <CS_Kandra_SeenByBronze>Somebody nearby is burning bronze, and whatever they heard coming off {PAWN} was not a person.\n\nBronze does not guess and does not care how good the shape was. The disguise is over.</CS_Kandra_SeenByBronze>
 

@@ -45,6 +45,10 @@ public class CompKandraForms : ThingComp {
     /// <summary>The work tab as it was before a shape disabled half of it.</summary>
     private Dictionary<WorkTypeDef, int> workPriorities = [];
 
+    /// <summary>What the kandra was holding and wearing, so it all goes back the same way.</summary>
+    private List<Verse.Thing> wasEquipped = [];
+    private List<Verse.Thing> wasWorn = [];
+
     public KandraMind Mind => mind;
 
     public CompProperties_KandraForms Props => (CompProperties_KandraForms)props;
@@ -102,6 +106,12 @@ public class CompKandraForms : ThingComp {
         Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
         Scribe_Collections.Look(ref workPriorities, "workPriorities", LookMode.Def, LookMode.Value);
         workPriorities ??= [];
+
+        // By reference: the things themselves live in this pawn's inventory.
+        Scribe_Collections.Look(ref wasEquipped, "wasEquipped", LookMode.Reference);
+        Scribe_Collections.Look(ref wasWorn, "wasWorn", LookMode.Reference);
+        wasEquipped ??= [];
+        wasWorn ??= [];
         mind ??= new KandraMind();
         known ??= [];
     }
@@ -110,7 +120,10 @@ public class CompKandraForms : ThingComp {
     public void Learn(Pawn corpsePawn) {
         if (parent is not Pawn pawn) return;
 
-        PawnKindDef? shape = KandraAnimalForms.ShapeFor(corpsePawn.kindDef);
+        // The corpse's own kind, when it is an animal we can wear. ShapeFor used to answer both
+        // "which generated race" and "is this an animal at all"; only the second question is left,
+        // and reading it off RaceProps is what stops an eaten colonist becoming an animal form.
+        PawnKindDef? shape = KandraShapeEligibility.Wearable(corpsePawn.kindDef) ? corpsePawn.kindDef : null;
         KandraForm form = shape != null
             ? KandraForm.FromAnimal(corpsePawn, shape)
             : KandraForm.From(corpsePawn);
@@ -168,6 +181,20 @@ public class CompKandraForms : ThingComp {
 
     public void BlowCover() {
         coverBlown = true;
+    }
+
+    public List<Verse.Thing> WasEquipped => wasEquipped;
+
+    public List<Verse.Thing> WasWorn => wasWorn;
+
+    public void RememberGear(IEnumerable<Verse.Thing> equipped, IEnumerable<Verse.Thing> worn) {
+        wasEquipped = [.. equipped];
+        wasWorn = [.. worn];
+    }
+
+    public void ForgetGear() {
+        wasEquipped = [];
+        wasWorn = [];
     }
 
     /// <summary>Whether the kandra has raised a hand to anyone since putting this shape on.</summary>

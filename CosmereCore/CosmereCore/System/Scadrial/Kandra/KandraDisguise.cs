@@ -25,16 +25,18 @@ public static class KandraDisguise {
 
     /// <summary>Whether this pawn is currently pretending to be something else.</summary>
     public static bool IsDisguised(Pawn pawn) {
-        if (pawn.TryGetComp<CompKandraShapePair>()?.Held != null) return true;
-
         return pawn.TryGetComp<CompKandraForms>()?.IsWearingSomeoneElse == true;
     }
 
-    /// <summary>The kandra behind the shape, whichever way it is wearing one.</summary>
+    /// <summary>
+    ///     The kandra behind the shape, which is the pawn itself.
+    /// </summary>
+    /// <remarks>
+    ///     Kept as a named call rather than inlined because it says what it means at the call
+    ///     sites, and because it used to unwrap a second pawn - anything still asking is asking
+    ///     the right question.
+    /// </remarks>
     public static Pawn? Behind(Pawn pawn) {
-        Pawn? inside = pawn.TryGetComp<CompKandraShapePair>()?.Held;
-        if (inside != null) return inside;
-
         return IsDisguised(pawn) ? pawn : null;
     }
 

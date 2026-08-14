@@ -402,4 +402,47 @@ public class KolossTests {
             Assert.AreEqual("Koloss", story.Element("titleShort")?.Value);
         }
     }
+
+    /// <summary>
+    ///     Iron takes human strength, which is what a koloss is made out of. Any other metal
+    ///     steals the wrong thing, and an uncharged spike is a lump of metal - a bill that accepts
+    ///     those lets a player make a koloss out of four iron bars.
+    /// </summary>
+    [TestMethod]
+    public void OnlyChargedIronSpikesMakeAKoloss() {
+        XElement spikes = Defs("Hemalurgy", "KolossRecipes.xml").Descendants("li")
+            .First(li => li.Descendants("thingDefs").Any(t =>
+                t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
+
+        List<string> disallowed = spikes.Descendants("disallowedSpecialFilters")
+            .Elements("li").Select(li => li.Value).ToList();
+
+        CollectionAssert.Contains(disallowed, "Cosmere_Scadrial_SpecialFilter_NotSpikeIron");
+        CollectionAssert.Contains(disallowed, "Cosmere_Scadrial_SpecialFilter_SpikeUncharged");
+        Assert.AreEqual("4", spikes.Element("count")?.Value);
+    }
+
+    /// <summary>
+    ///     A ThingFilter cannot see what a thing is made of or what is in it - stuffCategories
+    ///     allows the material itself as an item. The only hook handed the actual Thing is a
+    ///     special filter's worker.
+    /// </summary>
+    [TestMethod]
+    public void TheChargeCheckLooksAtTheRealThing() {
+        string worker = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Hemalurgy",
+            "SpecialThingFilterWorker_UnchargedSpike.cs"
+        ));
+
+        Assert.IsTrue(worker.Contains("spike?.chargeData == null", StringComparison.Ordinal));
+        Assert.IsTrue(
+            worker.Contains("if (!CanEverMatch(t.def)) return false;", StringComparison.Ordinal),
+            "Matching anything but a spike would quietly drop the medicine out of the same bill."
+        );
+    }
 }

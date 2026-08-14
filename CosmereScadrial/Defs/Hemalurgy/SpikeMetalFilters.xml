@@ -65,4 +65,16 @@
         </modExtensions>
     </SpecialThingFilterDef>
 
+    <!-- A bare spike is a lump of metal. What makes one worth anything is the charge taken out of
+         somebody it was driven through. -->
+    <SpecialThingFilterDef>
+        <defName>Cosmere_Scadrial_SpecialFilter_SpikeUncharged</defName>
+        <label>spikes with nothing in them</label>
+        <description>Rejects hemalurgic spikes that have never been driven into anybody.</description>
+        <parentCategory>Cosmere_Scadrial_ThingCategory_Hemalurgy</parentCategory>
+        <allowedByDefault>true</allowedByDefault>
+        <saveKey>cosmereSpikeUncharged</saveKey>
+        <workerClass>Cosmere.System.Scadrial.Hemalurgy.SpecialThingFilterWorker_UnchargedSpike</workerClass>
+    </SpecialThingFilterDef>
+
 </Defs>

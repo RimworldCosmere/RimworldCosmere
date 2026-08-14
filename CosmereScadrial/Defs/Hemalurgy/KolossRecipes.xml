@@ -15,10 +15,18 @@
     </recipeUsers>
     <ingredients>
       <li>
+        <!-- Four iron spikes with a charge in them. Iron takes human strength, which is what a
+             koloss is made out of - an uncharged one is a lump of metal, and any other metal
+             steals the wrong thing. A ThingFilter cannot see what a thing is made of, so both
+             checks are special filters whose workers get handed the Thing. -->
         <filter>
           <thingDefs>
             <li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
           </thingDefs>
+          <disallowedSpecialFilters>
+            <li>Cosmere_Scadrial_SpecialFilter_NotSpikeIron</li>
+            <li>Cosmere_Scadrial_SpecialFilter_SpikeUncharged</li>
+          </disallowedSpecialFilters>
         </filter>
         <count>4</count>
       </li>

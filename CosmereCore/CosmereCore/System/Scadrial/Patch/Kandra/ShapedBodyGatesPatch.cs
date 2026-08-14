@@ -17,10 +17,20 @@ namespace Cosmere.System.Scadrial.Patch.Kandra;
 [Patch(typeof(HealthCardUtility))]
 public static class ShapedSurgeryPatch {
     [Inject(At.Head, "DrawMedOperationsTab")]
-    private static Control BeforeDrawMedOperationsTab(Verse.Thing thingForMedBills) {
+    private static Control BeforeDrawMedOperationsTab(
+        Verse.Thing thingForMedBills,
+        float curY,
+        ControlHandle<float> ch
+    ) {
         if (thingForMedBills is not Pawn pawn) return Control.Continue;
+        if (KandraShapeGraphicUtility.WornKind(pawn) == null) return Control.Continue;
 
-        return KandraShapeGraphicUtility.WornKind(pawn) == null ? Control.Continue : Control.Cancel;
+        // The method returns the Y it drew down to, and the caller assigns it straight back to
+        // curY. Skipping the draw means handing back the Y it was given, or the health tab's
+        // layout collapses under whatever comes next.
+        ch.ReturnValue = curY;
+
+        return Control.Cancel;
     }
 }
 

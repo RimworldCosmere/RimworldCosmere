@@ -21,7 +21,6 @@
     </skillGains>
     <workDisables>
       <li>Intellectual</li>
-      <li>Social</li>
       <li>Artistic</li>
     </workDisables>
   </BackstoryDef>
@@ -43,7 +42,6 @@
     </skillGains>
     <workDisables>
       <li>Intellectual</li>
-      <li>Social</li>
       <li>Artistic</li>
     </workDisables>
   </BackstoryDef>

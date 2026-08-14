@@ -110,16 +110,15 @@
     <statOffsets>
       <MentalBreakThreshold>0.35</MentalBreakThreshold>
     </statOffsets>
-    <!-- Nothing that needs judgement. Cooking, Crafting and Caring stay enabled deliberately:
-         a koloss can stir a pot, hammer a thing flat and hold a bandage on, and does all three
-         about as badly as a body can. Firefighting stays too - stamping out a fire is exactly
-         the kind of work a koloss is for. -->
+    <!-- Nothing that needs judgement or a trigger finger. What is left is everything a large
+         stupid body can be pointed at: fire, food, ore, walls, animals, bandages, and enough
+         presence to stand near somebody. It does all of it about as badly as a body can. -->
     <disabledWorkTags>
       <li>Intellectual</li>
-      <li>Social</li>
       <li>Artistic</li>
-      <li>Animals</li>
       <li>PlantWork</li>
+      <!-- A koloss cannot be taught which end of a gun to point. It fights with what it has. -->
+      <li>Shooting</li>
     </disabledWorkTags>
   </GeneDef>
 

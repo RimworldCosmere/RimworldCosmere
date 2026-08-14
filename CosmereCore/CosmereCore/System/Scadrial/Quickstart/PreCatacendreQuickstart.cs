@@ -162,6 +162,18 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             }
         }
 
+        ThingDef? medicine = DefDatabase<ThingDef>.GetNamedSilentFail("MedicineUltratech");
+        if (medicine != null) {
+            Verse.Thing stack = ThingMaker.MakeThing(medicine);
+            stack.stackCount = 20;
+            GenPlace.TryPlaceThing(
+                stack,
+                CellFinder.RandomClosewalkCellNear(nearby.Position, map, 4),
+                map,
+                ThingPlaceMode.Near
+            );
+        }
+
         ThingDef? bedDef = DefDatabase<ThingDef>.GetNamedSilentFail("HospitalBed");
         if (bedDef == null) return;
 

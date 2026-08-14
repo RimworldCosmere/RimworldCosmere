@@ -359,11 +359,14 @@ public class KolossTests {
 
         List<string> off = gene.Element("disabledWorkTags")!.Elements("li").Select(li => li.Value).ToList();
 
-        foreach (string allowed in new[] { "Firefighting", "Cooking", "Crafting", "Caring" }) {
+        foreach (string allowed in new[] {
+            "Firefighting", "Cooking", "Crafting", "Caring", "Social", "Animals", "Mining", "Construction",
+        }) {
             CollectionAssert.DoesNotContain(off, allowed, $"A koloss should still be able to do {allowed}.");
         }
 
-        foreach (string denied in new[] { "Intellectual", "Social", "Artistic" }) {
+        // Shooting is the one it can never be taught. Judgement and art it never had.
+        foreach (string denied in new[] { "Intellectual", "Artistic", "PlantWork", "Shooting" }) {
             CollectionAssert.Contains(off, denied);
         }
 
@@ -472,5 +475,73 @@ public class KolossTests {
             recipes.Contains("iron, steel, tin and pewter", StringComparison.Ordinal),
             "The description has to agree with the ingredients."
         );
+    }
+
+    /// <summary>
+    ///     Generation hands out whatever traits it likes, which produced koloss who were delicate
+    ///     and pyromaniac. A koloss is enormous and hard to look at, and has no personality left to
+    ///     roll one from.
+    /// </summary>
+    [TestMethod]
+    public void EveryKolossIsTheSameKindOfUgly() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("Disfigure(made)", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("made.story.traits.RemoveTrait(rolled[i])", StringComparison.Ordinal));
+        Assert.IsTrue(
+            util.Contains("new Trait(beauty, -2, true)", StringComparison.Ordinal),
+            "Degree -2 on Beauty is staggeringly ugly."
+        );
+    }
+
+    /// <summary>
+    ///     fixedChronologicalAge on the generation request does not survive, so the tracker is
+    ///     written directly. Without it the Bio tab reads "age 20" rather than "age 20 (0)",
+    ///     because AgeNumberString only shows the second number when the two differ.
+    /// </summary>
+    [TestMethod]
+    public void ItsAgeSaysHowLongItHasBeenAKoloss() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("made.ageTracker.AgeChronologicalTicks = 0", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     A backstory's workDisables cannot be undone by a gene, so Social had to come out of
+    ///     both koloss backstories as well as the gene.
+    /// </summary>
+    [TestMethod]
+    public void NothingElseSecretlyDisablesKolossWork() {
+        XDocument stories = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Backstories", "Koloss.xml"
+        ));
+
+        foreach (string def in new[] {
+            "Cosmere_Scadrial_Backstory_Koloss_Childhood",
+            "Cosmere_Scadrial_Backstory_Koloss_Adulthood",
+        }) {
+            XElement story = stories.Descendants().First(e => e.Element("defName")?.Value == def);
+            List<string> off = story.Element("workDisables")?.Elements("li").Select(li => li.Value).ToList() ?? [];
+
+            CollectionAssert.DoesNotContain(off, "Social");
+            CollectionAssert.DoesNotContain(off, "Firefighting");
+        }
+    }
+
+    /// <summary>Enough of everything to be pointed at it, and never enough to be good.</summary>
+    [TestMethod]
+    public void AKolossIsClumsyAtSevenThings() {
+        string util = Source("Util", "KolossUtility.cs");
+        int start = util.IndexOf("Clumsy = [", StringComparison.Ordinal);
+        int end = util.IndexOf("];", start, StringComparison.Ordinal);
+        string block = util[start..end];
+
+        foreach (string skill in new[] {
+            "Cooking", "Crafting", "Medicine", "Social", "Animals", "Mining", "Construction",
+        }) {
+            Assert.IsTrue(block.Contains(skill, StringComparison.Ordinal), $"{skill} should start at 1.");
+        }
+
+        Assert.IsFalse(block.Contains("Shooting", StringComparison.Ordinal), "Shooting is disabled outright.");
     }
 }

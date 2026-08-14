@@ -167,9 +167,15 @@ public static class KolossUtility {
         Inherit(subject, made);
         CarrySpikes(subject, made);
         StartGrowing(made);
+        Disfigure(made);
 
         // One name, no family. Whatever it was called belonged to somebody who is not here.
         made.Name = new NameSingle("CS_Koloss_Name".Translate(), true);
+
+        // Made today, in a body that finished growing up years ago. fixedChronologicalAge on the
+        // generation request does not survive - the tracker is written directly instead, which is
+        // what puts the (0) beside the age.
+        if (made.ageTracker != null) made.ageTracker.AgeChronologicalTicks = 0;
 
         // Before the subject goes, so the koloss is standing where they were rather than dropped
         // at the map edge. A corpse has to be destroyed as well as the pawn inside it, or the body
@@ -249,7 +255,34 @@ public static class KolossUtility {
         RimWorld.SkillDefOf.Cooking,
         RimWorld.SkillDefOf.Crafting,
         RimWorld.SkillDefOf.Medicine,
+        RimWorld.SkillDefOf.Social,
+        RimWorld.SkillDefOf.Animals,
+        RimWorld.SkillDefOf.Mining,
+        RimWorld.SkillDefOf.Construction,
     ];
+
+    /// <summary>
+    ///     Every koloss looks the same way, and none of them have a personality left to roll.
+    /// </summary>
+    /// <remarks>
+    ///     Generation hands out whatever traits it likes, which produced koloss who were delicate
+    ///     and pyromaniac. What a koloss actually is, is enormous and hard to look at - so the
+    ///     rolled ones go and the one that describes the thing goes on. Anything a gene or a hediff
+    ///     adds afterwards, such as Invested, is untouched by this.
+    /// </remarks>
+    private static void Disfigure(Pawn made) {
+        if (made.story?.traits == null) return;
+
+        List<Trait> rolled = [.. made.story.traits.allTraits];
+        for (int i = 0; i < rolled.Count; i++) {
+            made.story.traits.RemoveTrait(rolled[i]);
+        }
+
+        TraitDef? beauty = DefDatabase<TraitDef>.GetNamedSilentFail("Beauty");
+
+        // Degree -2 is "staggeringly ugly". The spikes did not leave much of the face.
+        if (beauty != null) made.story.traits.GainTrait(new Trait(beauty, -2, true));
+    }
 
     /// <summary>A body that has finished growing up, before it starts growing wrong.</summary>
     private const float AdultAge = 20f;
@@ -267,10 +300,15 @@ public static class KolossUtility {
         if (made.health?.hediffSet == null) return;
 
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
-        if (growth == null) return;
+        if (growth == null) {
+            Cosmere.Core.Logger.Warning("Koloss: the growth hediff def is missing, so nothing starts the clock.");
+            return;
+        }
+
         if (made.health.hediffSet.GetFirstHediffOfDef(growth) != null) return;
 
         made.health.AddHediff(growth);
+        Cosmere.Core.Logger.Important($"Koloss: {made.LabelShort} started growing.");
     }
 
     private static PawnKindDef? KolossKind =>

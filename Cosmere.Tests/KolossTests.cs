@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -186,8 +187,8 @@ public class KolossTests {
 
         Assert.IsTrue(util.Contains("theirMelee.levelInt", StringComparison.Ordinal));
         Assert.IsTrue(
-            util.Contains("skill.levelInt = 0;", StringComparison.Ordinal),
-            "Everything that needed a mind to hold it did not survive the spikes."
+            util.Contains("Clumsy.Contains(skill.def) ? 1 : 0", StringComparison.Ordinal),
+            "A koloss can stir a pot and hold a bandage on, terribly; everything else is gone."
         );
     }
 
@@ -311,5 +312,94 @@ public class KolossTests {
 
         Assert.IsNotNull(kind.Element("initialResistanceRange"));
         Assert.IsNotNull(kind.Element("initialWillRange"));
+    }
+
+    /// <summary>
+    ///     Made, not born. RimWorld picks the life stage off the biological age, so the body stays
+    ///     adult and the chronological age carries "came into existence today".
+    /// </summary>
+    [TestMethod]
+    public void AKolossIsNewButNotAChild() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("fixedBiologicalAge: AdultAge", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("fixedChronologicalAge: 0f", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     Gene PostAdd runs during generation, before the health tracker is worth writing to, so
+    ///     the growth hediff silently never landed and the koloss had no growth row at all.
+    /// </summary>
+    [TestMethod]
+    public void TheGrowthRowActuallyAppears() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("StartGrowing(made)", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("made.health.AddHediff(growth)", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     One name, no family. Whatever it was called belonged to somebody who is not here.
+    /// </summary>
+    [TestMethod]
+    public void AKolossHasOneNameAndNoFamily() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("made.Name = new NameSingle", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    ///     It can stamp out a fire, stir a pot, hammer a thing flat and hold a bandage on. What it
+    ///     cannot do is judge, talk, create, or ever get better at any of it.
+    /// </summary>
+    [TestMethod]
+    public void AKolossCanStillBePointedAtWork() {
+        XElement gene = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_EasilyInfluenced");
+
+        List<string> off = gene.Element("disabledWorkTags")!.Elements("li").Select(li => li.Value).ToList();
+
+        foreach (string allowed in new[] { "Firefighting", "Cooking", "Crafting", "Caring" }) {
+            CollectionAssert.DoesNotContain(off, allowed, $"A koloss should still be able to do {allowed}.");
+        }
+
+        foreach (string denied in new[] { "Intellectual", "Social", "Artistic" }) {
+            CollectionAssert.Contains(off, denied);
+        }
+
+        Assert.AreEqual("0.02", gene.Element("statFactors")?.Element("GlobalLearningFactor")?.Value);
+    }
+
+    /// <summary>
+    ///     Shapeshifting belongs to kandra and to nothing else, so a koloss should never see a row
+    ///     for it on its character card.
+    /// </summary>
+    [TestMethod]
+    public void OnlyAKandraSeesShapeshifting() {
+        XElement skill = XDocument.Load(Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Skills.xml"))
+            .Descendants("SkillDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Skill_Shapeshift");
+
+        Assert.AreEqual(
+            "Cosmere_Scadrial_Gene_BodyAbsorption",
+            skill.Descendants("requiresGene").FirstOrDefault()?.Value
+        );
+    }
+
+    /// <summary>It does not remember being anything else, so both backstories say the same word.</summary>
+    [TestMethod]
+    public void BothBackstoriesJustSayKoloss() {
+        XDocument stories = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Defs", "Backstories", "Koloss.xml"
+        ));
+
+        foreach (string def in new[] {
+            "Cosmere_Scadrial_Backstory_Koloss_Childhood",
+            "Cosmere_Scadrial_Backstory_Koloss_Adulthood",
+        }) {
+            XElement story = stories.Descendants().First(e => e.Element("defName")?.Value == def);
+            Assert.AreEqual("Koloss", story.Element("title")?.Value);
+            Assert.AreEqual("Koloss", story.Element("titleShort")?.Value);
+        }
     }
 }

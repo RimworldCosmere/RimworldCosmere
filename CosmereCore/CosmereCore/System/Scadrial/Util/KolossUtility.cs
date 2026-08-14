@@ -149,7 +149,9 @@ public static class KolossUtility {
         if (map == null) return null;
 
         // Gender is the one thing that carries: a koloss is built out of a body, and the body
-        // had a sex.
+        // had a sex. Adult in the body, new in the world - RimWorld picks the life stage off the
+        // biological age, so a literal zero there would make a baby, and "came into existence
+        // today" belongs on the chronological one.
         Pawn made = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
             KolossKind ?? RimWorld.PawnKindDefOf.Colonist,
             subject.Faction,
@@ -157,11 +159,17 @@ public static class KolossUtility {
             forceGenerateNewPawn: true,
             canGeneratePawnRelations: false,
             fixedGender: subject.gender,
-            forcedXenotype: koloss
+            forcedXenotype: koloss,
+            fixedBiologicalAge: AdultAge,
+            fixedChronologicalAge: 0f
         ));
 
         Inherit(subject, made);
         CarrySpikes(subject, made);
+        StartGrowing(made);
+
+        // One name, no family. Whatever it was called belonged to somebody who is not here.
+        made.Name = new NameSingle("CS_Koloss_Name".Translate(), true);
 
         // Before the subject goes, so the koloss is standing where they were rather than dropped
         // at the map edge. A corpse has to be destroyed as well as the pawn inside it, or the body
@@ -194,12 +202,14 @@ public static class KolossUtility {
 
         if (made.skills?.skills == null) return;
 
-        // Everything that needed a mind to hold it did not survive the spikes.
+        // Everything that needed a mind to hold it is gone, but a koloss is not an object: it can
+        // stamp out a fire, stir a pot and hold a bandage on. Badly, and it will never get better
+        // at any of it.
         for (int i = 0; i < made.skills.skills.Count; i++) {
             SkillRecord skill = made.skills.skills[i];
             if (skill.def == RimWorld.SkillDefOf.Melee) continue;
 
-            skill.levelInt = 0;
+            skill.levelInt = Clumsy.Contains(skill.def) ? 1 : 0;
             skill.passion = Passion.None;
         }
     }
@@ -232,6 +242,35 @@ public static class KolossUtility {
         // The total is what Ruin speaks through, so it has to be recomputed after the carry rather
         // than left at whatever the four alone were worth.
         Hemalurgy.HemalurgicImplantUtility.UpdateRuinsInfluence(made);
+    }
+
+    /// <summary>The handful of things a koloss can still be pointed at, badly.</summary>
+    private static readonly HashSet<SkillDef> Clumsy = [
+        RimWorld.SkillDefOf.Cooking,
+        RimWorld.SkillDefOf.Crafting,
+        RimWorld.SkillDefOf.Medicine,
+    ];
+
+    /// <summary>A body that has finished growing up, before it starts growing wrong.</summary>
+    private const float AdultAge = 20f;
+
+    /// <summary>
+    ///     Makes sure the clock is running.
+    /// </summary>
+    /// <remarks>
+    ///     <c>KolossHeritage.PostAdd</c> is meant to cover this, but gene PostAdd runs during
+    ///     generation, before the health tracker is in a state worth writing to - so the hediff
+    ///     silently never landed and the koloss had no growth row at all. Adding it here as well
+    ///     costs nothing: both paths check for it first.
+    /// </remarks>
+    private static void StartGrowing(Pawn made) {
+        if (made.health?.hediffSet == null) return;
+
+        HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
+        if (growth == null) return;
+        if (made.health.hediffSet.GetFirstHediffOfDef(growth) != null) return;
+
+        made.health.AddHediff(growth);
     }
 
     private static PawnKindDef? KolossKind =>

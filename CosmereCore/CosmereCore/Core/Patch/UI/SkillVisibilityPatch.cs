@@ -55,7 +55,16 @@ public static class SkillVisibilityPatch {
         if (pawn.skills == null || pawn.genes == null || pawn.story == null) return true;
 
         InvestitureSkillExtension? ext = skillDef.GetModExtension<InvestitureSkillExtension>();
-        if (ext == null || string.IsNullOrEmpty(ext.requiresInvestitureSystem)) return true;
+        if (ext == null) return true;
+
+        // A skill can be gated on carrying a particular gene. Shapeshifting belongs to kandra and
+        // to nothing else, so a koloss should never see a row for it.
+        if (!string.IsNullOrEmpty(ext.requiresGene)) {
+            GeneDef? required = DefDatabase<GeneDef>.GetNamedSilentFail(ext.requiresGene);
+            if (required == null || !pawn.genes.HasActiveGene(required)) return false;
+        }
+
+        if (string.IsNullOrEmpty(ext.requiresInvestitureSystem)) return true;
 
         return InvestitureProviderRegistry.IsInvestedIn(pawn, ext.requiresInvestitureSystem);
     }

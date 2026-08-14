@@ -8,8 +8,8 @@
   <BackstoryDef>
     <defName>Cosmere_Scadrial_Backstory_Koloss_Childhood</defName>
     <slot>Childhood</slot>
-    <title>made, not born</title>
-    <titleShort>made</titleShort>
+    <title>Koloss</title>
+    <titleShort>Koloss</titleShort>
     <description>[PAWN_nameDef] was somebody once. Four spikes went in, and afterwards there was this instead. [PAWN_pronoun] does not remember the name [PAWN_pronoun] had, or the people who used it.</description>
     <spawnCategories>
       <li>Cosmere_Koloss</li>
@@ -29,8 +29,8 @@
   <BackstoryDef>
     <defName>Cosmere_Scadrial_Backstory_Koloss_Adulthood</defName>
     <slot>Adulthood</slot>
-    <title>kept in a pen</title>
-    <titleShort>penned</titleShort>
+    <title>Koloss</title>
+    <titleShort>Koloss</titleShort>
     <description>[PAWN_nameDef] has spent every year since the spikes in a walled yard outside some city, waiting to be pointed at something. The waiting is most of it. The pointing does not last long.</description>
     <spawnCategories>
       <li>Cosmere_Koloss</li>

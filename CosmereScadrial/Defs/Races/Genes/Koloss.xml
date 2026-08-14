@@ -105,21 +105,21 @@
     <statFactors>
       <SocialImpact>0.2</SocialImpact>
       <NegotiationAbility>0.1</NegotiationAbility>
+      <GlobalLearningFactor>0.02</GlobalLearningFactor>
     </statFactors>
     <statOffsets>
       <MentalBreakThreshold>0.35</MentalBreakThreshold>
     </statOffsets>
-    <!-- Nothing that needs a mind. They fight, they carry, they clear ground. -->
+    <!-- Nothing that needs judgement. Cooking, Crafting and Caring stay enabled deliberately:
+         a koloss can stir a pot, hammer a thing flat and hold a bandage on, and does all three
+         about as badly as a body can. Firefighting stays too - stamping out a fire is exactly
+         the kind of work a koloss is for. -->
     <disabledWorkTags>
       <li>Intellectual</li>
       <li>Social</li>
       <li>Artistic</li>
-      <li>Crafting</li>
-      <li>Cooking</li>
-      <li>Caring</li>
       <li>Animals</li>
       <li>PlantWork</li>
-      <li>Firefighting</li>
     </disabledWorkTags>
   </GeneDef>
 

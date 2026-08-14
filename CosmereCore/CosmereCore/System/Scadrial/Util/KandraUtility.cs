@@ -142,12 +142,9 @@ public static class KandraUtility {
         return null;
     }
 
+    /// <summary>Counting spikes moved to Hemalurgy, which is whose question it always was.</summary>
     public static int SpikeCount(Pawn? pawn) {
-        Hediff? spiked = pawn?.health?.hediffSet?.GetFirstHediffOfDef(
-            Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
-        );
-
-        return spiked is HemalurgicSpikes set ? set.spikeCount : 0;
+        return Hemalurgy.HemalurgicSpikeUtility.SpikeCount(pawn);
     }
 
     /// <summary>

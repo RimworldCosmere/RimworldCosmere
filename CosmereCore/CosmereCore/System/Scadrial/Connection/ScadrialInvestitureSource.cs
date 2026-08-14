@@ -1,6 +1,7 @@
 using Cosmere.Core.Def;
 using Cosmere.Core.Framework;
 using Cosmere.Core.ShardConnection;
+using Cosmere.System.Scadrial.Hemalurgy;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Connection;
@@ -20,12 +21,25 @@ namespace Cosmere.System.Scadrial.Connection;
 public class ScadrialInvestitureSource : IConnectionInvestitureSource {
     public int InvestitureStrength(Pawn pawn, ShardDef shard) {
         if (shard.defName is not ("Preservation" or "Ruin")) return 0;
-        if (pawn.genes == null) return 0;
+
+        // Above the genes guard on purpose: spikes are in the body, not the genome, and a kandra
+        // has no Allomancy at all. Ruin only - Preservation would drag Harmony up with it, since
+        // Core derives Harmony as the lower of the two.
+        int spikes = shard.defName == "Ruin"
+            ? ConnectionMath.StrengthFromSpikes(HemalurgicSpikeUtility.SpikeCount(pawn))
+            : 0;
+
+        if (pawn.genes == null) return spikes;
 
         bool full = pawn.IsMistborn() || pawn.IsFullFeruchemist();
-        if (full) return ConnectionMath.FullInvestitureBonus;
+        int invested = full
+            ? ConnectionMath.FullInvestitureBonus
+            : HasAnySingleInvestiture(pawn) ? ConnectionMath.SingleInvestitureBonus : 0;
 
-        return HasAnySingleInvestiture(pawn) ? ConnectionMath.SingleInvestitureBonus : 0;
+        // The registry takes the highest reading across sources rather than the sum, so these two
+        // are compared here rather than added - and a Mistborn kandra reads as whichever of the
+        // two is worth more.
+        return global::System.Math.Max(spikes, invested);
     }
 
     /// <summary>

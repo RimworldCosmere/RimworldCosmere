@@ -33,6 +33,31 @@ public static class ConnectionMath {
     /// <summary>A Mistborn or a Full Feruchemist.</summary>
     public const int FullInvestitureBonus = 20;
 
+    /// <summary>What one hemalurgic spike is worth toward Ruin.</summary>
+    public const int SpikeBonus = 10;
+
+    /// <summary>
+    ///     The ceiling for anyone who is not holding a Shard.
+    /// </summary>
+    /// <remarks>
+    ///     Ascendant is reserved for a Shardholder. A kandra wearing all four Blessings carries
+    ///     eight spikes, which would otherwise walk straight through the top of the scale.
+    /// </remarks>
+    public const int OrdinaryMax = 99;
+
+    /// <summary>
+    ///     What a body full of Ruin's metal is worth on its own.
+    /// </summary>
+    /// <remarks>
+    ///     Hemalurgy is Ruin's alone, so this never reads against Preservation - and must not,
+    ///     because Harmony is derived as the lower of the two and would rise with it.
+    /// </remarks>
+    public static int StrengthFromSpikes(int spikes) {
+        if (spikes <= 0) return 0;
+
+        return global::System.Math.Min(spikes * SpikeBonus, OrdinaryMax - AncestryFloor);
+    }
+
     public static ConnectionTier TierOf(int strength) {
         if (strength >= Max) return ConnectionTier.Ascendant;
         if (strength >= InvestedThreshold) return ConnectionTier.Invested;

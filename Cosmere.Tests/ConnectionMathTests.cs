@@ -439,4 +439,26 @@ public class ConnectionMathTests {
             return dir!.FullName;
         }
     }
+
+    /// <summary>
+    ///     Hemalurgy is Ruin's alone. Every spike is worth ten, composed on the ancestry floor a
+    ///     Scadrian xenotype already carries, and capped short of Ascendant - which is reserved
+    ///     for a Shardholder.
+    /// </summary>
+    [TestMethod]
+    public void EverySpikeIsWorthTenTowardRuin() {
+        Assert.AreEqual(0, ConnectionMath.StrengthFromSpikes(0));
+        Assert.AreEqual(20, ConnectionMath.StrengthFromSpikes(2));
+        Assert.AreEqual(50, ConnectionMath.StrengthFromSpikes(5));
+
+        // Five spikes on a Scadrian: 30 ancestry composed with 50 of spike.
+        int five = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(5), 0);
+        Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(five));
+
+        // A kandra wearing all four Blessings carries eight, and still must not read as a
+        // Shardholder.
+        int eight = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(8), 0);
+        Assert.IsTrue(eight <= ConnectionMath.OrdinaryMax);
+        Assert.AreNotEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(eight));
+    }
 }

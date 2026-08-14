@@ -10,8 +10,11 @@ namespace Cosmere.System.Scadrial.Gene;
 /// <remarks>
 ///     A shape is only worth wearing if it can fail. Bronze finds a kandra outright and does not
 ///     care how good it is; everyone else gets a periodic look, and a practised kandra passes it
-///     almost every time. Being noticed is loud on purpose: the colony finding out is the story
-///     beat, not a quiet stat change.
+///     almost every time.
+///     <para>
+///         Being noticed costs the kandra its cover, never its shape. Which face a colonist wears
+///         is the player's decision, and a kandra nobody is playing is always wearing one.
+///     </para>
 /// </remarks>
 public class Shapeshifter : Verse.Gene {
     public override void TickInterval(int delta) {
@@ -19,6 +22,16 @@ public class Shapeshifter : Verse.Gene {
 
         if (!pawn.Spawned) return;
         if (!pawn.IsHashIntervalTick(KandraDisguise.LookInterval, delta)) return;
+
+        // A kandra nobody is playing is always somebody else. Its own shape is the one thing it
+        // never shows, so one caught without a face puts one on rather than standing in front of
+        // the colony as what it is.
+        if (!pawn.IsColonist) {
+            if (!KandraDisguise.IsDisguised(pawn)) KandraShapeshift.WearAnyFace(pawn);
+
+            return;
+        }
+
         if (!KandraDisguise.IsDisguised(pawn)) return;
 
         if (KandraDisguise.SeenByBronze(pawn)) {
@@ -33,18 +46,24 @@ public class Shapeshifter : Verse.Gene {
     ///     Somebody worked out what they are looking at.
     /// </summary>
     /// <remarks>
-    ///     The shape drops. A kandra that has been seen is not fooling that room any more, and
-    ///     holding the face afterwards would be pretending at the player rather than at anybody
-    ///     in the world.
+    ///     The cover goes and the shape stays. Dropping the face here read as the honest
+    ///     consequence until it was played: a colonist shed a disguise the player had chosen,
+    ///     mid-job, at random, with no way to refuse. The room knowing is the beat; what to do
+    ///     about it belongs to whoever is playing.
     /// </remarks>
     private static void Exposed(Pawn pawn, string key) {
+        CompKandraForms? forms = pawn.TryGetComp<CompKandraForms>();
+
+        // Once per shape. Being spotted a second time by the same bronze is not a second event.
+        if (forms == null || forms.CoverBlown) return;
+
+        forms.BlowCover();
+
         Find.LetterStack.ReceiveLetter(
             (key + "_Title").Translate(pawn.NameShortColored.Named("PAWN")),
             key.Translate(pawn.NameShortColored.Named("PAWN")),
             LetterDefOf.NegativeEvent,
             pawn
         );
-
-        KandraShapeshift.Revert(pawn);
     }
 }

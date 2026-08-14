@@ -518,4 +518,42 @@ public class KandraAnimalFormTests {
         Assert.IsFalse(gene.Contains("if (!pawn.IsColonistPlayerControlled) yield break;", StringComparison.Ordinal));
         Assert.IsTrue(gene.Contains("if (!pawn.IsColonist || pawn.Downed) yield break;", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     Which face a colonist wears is the player's decision. Being spotted used to strip the
+    ///     shape at random, mid-job, with no way to refuse - so now it costs the kandra its cover
+    ///     and nothing else.
+    /// </summary>
+    [TestMethod]
+    public void BeingSpottedCostsCoverNotTheShape() {
+        string watcher = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "Shapeshifter.cs"
+        ));
+
+        Assert.IsTrue(watcher.Contains("forms.BlowCover();", StringComparison.Ordinal));
+        Assert.IsFalse(
+            watcher.Contains("KandraShapeshift.Revert", StringComparison.Ordinal),
+            "Nothing automatic may take a colonist's chosen face off."
+        );
+    }
+
+    /// <summary>
+    ///     A kandra is a thing that impersonates. One the player does not control should never be
+    ///     standing around in its own shape where the colony can see it.
+    /// </summary>
+    [TestMethod]
+    public void AKandraNobodyPlaysIsAlwaysWearingAFace() {
+        string watcher = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "Shapeshifter.cs"
+        ));
+
+        Assert.IsTrue(watcher.Contains("if (!pawn.IsColonist)", StringComparison.Ordinal));
+        Assert.IsTrue(watcher.Contains("KandraShapeshift.WearAnyFace(pawn)", StringComparison.Ordinal));
+
+        string shift = Kandra("KandraShapeshift.cs");
+        Assert.IsTrue(
+            shift.Contains("public static void WearAnyFace", StringComparison.Ordinal),
+            "And it needs a way in that does not go through the player's skill gate."
+        );
+    }
 }

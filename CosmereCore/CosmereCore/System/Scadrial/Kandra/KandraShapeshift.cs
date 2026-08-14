@@ -190,6 +190,30 @@ public static class KandraShapeshift {
     }
 
     /// <summary>
+    ///     Puts any face at all on a kandra that has none.
+    /// </summary>
+    /// <remarks>
+    ///     For kandra the player does not control. An NPC kandra is always impersonating somebody
+    ///     - that is what a kandra is - so one found in its own shape wears a face it has eaten,
+    ///     or invents one if it has eaten nobody. No skill gate: hiding is not a reward for an
+    ///     NPC, it is the baseline.
+    /// </remarks>
+    public static void WearAnyFace(Pawn kandra) {
+        CompKandraForms? forms = kandra.TryGetComp<CompKandraForms>();
+        if (forms == null || forms.IsWearingSomeoneElse) return;
+        if (!Util.KandraUtility.CanHoldAShape(kandra)) return;
+
+        for (int i = 0; i < forms.Known.Count; i++) {
+            if (forms.Known[i].IsAnimal) continue;
+
+            Wear(kandra, forms.Known[i]);
+            return;
+        }
+
+        Invent(kandra, forms);
+    }
+
+    /// <summary>
     ///     Builds a face nobody has ever worn.
     /// </summary>
     /// <remarks>
@@ -201,6 +225,11 @@ public static class KandraShapeshift {
         CompKandraForms? forms = kandra.TryGetComp<CompKandraForms>();
         if (forms == null || !forms.CanFreeForm) return;
 
+        Invent(kandra, forms);
+    }
+
+    /// <summary>The making of a stranger, without the skill gate the player's version has.</summary>
+    private static void Invent(Pawn kandra, CompKandraForms forms) {
         forms.RememberTrueBody();
 
         KandraForm invented = new KandraForm {

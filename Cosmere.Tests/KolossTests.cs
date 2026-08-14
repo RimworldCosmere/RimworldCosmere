@@ -277,4 +277,39 @@ public class KolossTests {
         ));
         Assert.IsTrue(gene.Contains("SpikeCount = 4", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     RitualOutcomeEffectWorker_FromQuality picks an outcome by quality and RimWorld rejects
+    ///     the def at load if the chances do not total exactly one. Bare floats do not parse into
+    ///     the list at all, which reads as a total of zero.
+    /// </summary>
+    [TestMethod]
+    public void TheRitualOutcomeChancesAddUp() {
+        XDocument rituals = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereCore", "Defs", "Ideology", "Rituals", "Scadrial_Rituals.xml"
+        ));
+        XElement outcome = rituals.Descendants()
+            .First(e => e.Element("defName")?.Value == "Cosmere_RitualOutcome_MakeKoloss");
+
+        double total = outcome.Descendants("chance").Sum(c => double.Parse(c.Value));
+        Assert.AreEqual(1.0, total, 0.0001);
+
+        Assert.IsFalse(
+            outcome.Descendants("effecter").Any(),
+            "ExecutionFlames is not a real EffecterDef; an invented one fails cross-reference at load."
+        );
+    }
+
+    /// <summary>
+    ///     RimWorld rejects a humanlike PawnKindDef without a resistance range at load time, not
+    ///     when one is first generated.
+    /// </summary>
+    [TestMethod]
+    public void TheKolossKindCanBeGenerated() {
+        XElement kind = Defs("Races", "PawnKinds.xml").Descendants("PawnKindDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_PawnKind_Koloss");
+
+        Assert.IsNotNull(kind.Element("initialResistanceRange"));
+        Assert.IsNotNull(kind.Element("initialWillRange"));
+    }
 }

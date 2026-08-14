@@ -139,5 +139,9 @@
         <apparelMoney>40~120</apparelMoney>
         <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
         <gearHealthRange>0.1~0.4</gearHealthRange>
+        <!-- Required for any humanlike kind, and RimWorld says so at load rather than at use. A
+             koloss barely has a will to break, which is what the low numbers say. -->
+        <initialResistanceRange>2~6</initialResistanceRange>
+        <initialWillRange>0.5~1.5</initialWillRange>
     </PawnKindDef>
 </Defs>

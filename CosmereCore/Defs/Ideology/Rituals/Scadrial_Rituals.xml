@@ -237,7 +237,6 @@
         <label>a koloss made</label>
         <description>The spikes go in and something else gets up.</description>
         <workerClass>Cosmere.System.Scadrial.Ritual.RitualOutcomeEffectWorker_MakeKoloss</workerClass>
-        <effecter>ExecutionFlames</effecter>
         <comps>
             <li Class="RitualOutcomeComp_ParticipantCount">
                 <label>participant count</label>
@@ -250,11 +249,34 @@
                 </curve>
             </li>
         </comps>
+        <!-- RitualOutcomeEffectWorker_FromQuality picks one of these by quality, and the chances
+             must total exactly 1. A koloss gets made either way; what varies is what the
+             congregation makes of having watched it. -->
         <outcomeChances>
-            <li>0.05</li>
-            <li>0.15</li>
-            <li>0.5</li>
-            <li>0.3</li>
+            <li>
+                <label>Botched</label>
+                <chance>0.1</chance>
+                <description>The {0} was botched. The spikes went in wrong and the thing that got up was a mess.</description>
+                <positivityIndex>-2</positivityIndex>
+            </li>
+            <li>
+                <label>Grim</label>
+                <chance>0.3</chance>
+                <description>The {0} was grim work, done without ceremony.</description>
+                <positivityIndex>-1</positivityIndex>
+            </li>
+            <li>
+                <label>Proper</label>
+                <chance>0.4</chance>
+                <description>The {0} was done properly. The faithful watched the Lord Ruler's work carried out as it should be.</description>
+                <positivityIndex>1</positivityIndex>
+            </li>
+            <li>
+                <label>Exalted</label>
+                <chance>0.2</chance>
+                <description>The {0} was exalted. Every spike struck true, and what rose was worthy of the Ministry.</description>
+                <positivityIndex>2</positivityIndex>
+            </li>
         </outcomeChances>
     </RitualOutcomeEffectDef>
 

@@ -21,16 +21,6 @@
     <bodyType>Hulk</bodyType>
     <skinColorOverride>(96, 122, 148)</skinColorOverride>
     <skinIsHairColor>false</skinIsHairColor>
-    <renderNodeProperties>
-      <li>
-        <debugLabel>KolossBulk</debugLabel>
-        <nodeClass>PawnRenderNode</nodeClass>
-        <workerClass>Cosmere.System.Scadrial.Rendering.PawnRenderNodeWorker_KolossBulk</workerClass>
-        <baseLayer>4</baseLayer>
-        <rotDrawMode>Fresh, Rotting</rotDrawMode>
-        <parentTagDef>Body</parentTagDef>
-      </li>
-    </renderNodeProperties>
     <statFactors>
       <MoveSpeed>1.35</MoveSpeed>
       <CarryingCapacity>8.0</CarryingCapacity>
@@ -43,7 +33,7 @@
     <statOffsets>
       <!-- Ash-choked skies and mountain cold on one side, a smelting works on the other. Very
            little about the weather reaches something built like this. -->
-      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-21</ComfyTemperatureMin>
       <ComfyTemperatureMax>30</ComfyTemperatureMax>
     </statOffsets>
   </GeneDef>
@@ -164,7 +154,7 @@
       <MiningSpeed>1.125</MiningSpeed>
     </statFactors>
     <statOffsets>
-      <ComfyTemperatureMin>-16</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-9</ComfyTemperatureMin>
       <ComfyTemperatureMax>12</ComfyTemperatureMax>
       <PainShockThreshold>0.1</PainShockThreshold>
     </statOffsets>

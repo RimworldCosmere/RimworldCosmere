@@ -173,6 +173,12 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         // The one koloss anybody ever called anything.
         human.Name = new NameSingle("Human", false);
 
+        // fixedChronologicalAge on the request does not survive generation - the tracker has to be
+        // written afterwards. Four years a koloss, in a body that was already grown when he got it.
+        if (human.ageTracker != null) {
+            human.ageTracker.AgeChronologicalTicks = 4 * GenDate.TicksPerYear;
+        }
+
         GenSpawn.Spawn(human, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 6), map);
     }
 

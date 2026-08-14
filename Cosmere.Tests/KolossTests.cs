@@ -678,7 +678,10 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
             .Element("statOffsets")!;
 
-        Assert.IsTrue(double.Parse(offsets.Element("ComfyTemperatureMin")!.Value) <= -40d);
+        // Clothing already pushes a colonist's floor down about 25 degrees, so the offset is not
+        // the number on the stat line. -21 reads as -30 on a dressed koloss; -40 read as -49,
+        // which is colder than anywhere the game generates.
+        Assert.AreEqual(-21d, double.Parse(offsets.Element("ComfyTemperatureMin")!.Value), 0.001);
         Assert.IsTrue(double.Parse(offsets.Element("ComfyTemperatureMax")!.Value) >= 30d);
     }
 
@@ -716,5 +719,90 @@ public class KolossTests {
             taste.Element("nullifyingGenes")!.Elements("li").Select(li => li.Value).ToList(),
             "Cosmere_Scadrial_Gene_KolossHeritage"
         );
+    }
+
+    /// <summary>
+    ///     Carried mass is BodySize * 35 in vanilla and nothing else reaches it - not a stat, not a
+    ///     gene, not a hediff. The eightfold CarryingCapacity governs stack size, which is a
+    ///     different number, so a koloss sat at a colonist's 35kg until this patch existed.
+    /// </summary>
+    [TestMethod]
+    public void AKolossCarriesMoreMassThanItsBodySizeWouldAllow() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Rendering",
+            "KolossScalePatches.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("typeof(MassUtility)"), "The cap lives in MassUtility.");
+        Assert.IsTrue(patch.Contains("nameof(MassUtility.Capacity)"), "Capacity is the method that caps it.");
+        Assert.IsTrue(patch.Contains("KolossBulk.HaulingBuild"), "Growth alone does not reach twice a person.");
+    }
+
+    /// <summary>
+    ///     Scaling the body node alone would have dressed a giant in a colonist's coat. Every node
+    ///     goes through the base worker, and the one subclass that overrides ScaleFor calls base
+    ///     first, so patching the base catches body, head, hair and each piece of apparel together.
+    /// </summary>
+    [TestMethod]
+    public void EveryPartOfAKolossGrowsTogether() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Rendering",
+            "KolossScalePatches.cs"
+        ));
+
+        Assert.IsTrue(
+            patch.Contains(": PawnRenderNodeWorker {"),
+            "The patch must sit on the base worker, not on one node's worker."
+        );
+        Assert.IsTrue(patch.Contains("nameof(ScaleFor)"));
+    }
+
+    /// <summary>
+    ///     The gene used to hang a render node off the Body tag carrying the scaling worker. That
+    ///     node had no graphic, so it drew nothing and scaled nothing, and every koloss stood at
+    ///     exactly a colonist's size while the code that would have grown it ran every frame.
+    /// </summary>
+    [TestMethod]
+    public void TheGeneDoesNotCarryARenderNodeThatDrawsNothing() {
+        XElement heritage = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage");
+
+        Assert.IsNull(
+            heritage.Element("renderNodeProperties"),
+            "A node with no graphic cannot be scaled into anything."
+        );
+    }
+
+    /// <summary>
+    ///     Size is read on every node of every pawn on every frame, so it cannot walk the hediff
+    ///     list each time. Growth moves about two thousandths of a point per day, which no refresh
+    ///     interval this short can miss.
+    /// </summary>
+    [TestMethod]
+    public void SizeIsCachedRatherThanRecountedEveryFrame() {
+        string bulk = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Util",
+            "KolossBulk.cs"
+        ));
+
+        Assert.IsTrue(bulk.Contains("Cached.TryGetValue"), "Repeat lookups must hit the cache.");
+        Assert.IsTrue(bulk.Contains("Cached.Clear()"), "Dead pawns must not pile up in it.");
     }
 }

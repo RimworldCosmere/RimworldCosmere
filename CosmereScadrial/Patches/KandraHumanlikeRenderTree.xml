@@ -40,4 +40,24 @@
     </value>
   </Operation>
 
+  <!-- The mental-break warning icon lives under Head, so vetoing Head takes it with it and the
+       player loses the break warning on exactly the colonist they are least likely to be watching.
+       It is a PawnRenderNodeProperties_Overlay at baseLayer 100 with its own positioning worker
+       and no parentTagDef, so it survives being re-parented to Root. -->
+
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[debugLabel="Head"]/children/li[debugLabel="Status overlay"]</xpath>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children</xpath>
+    <value>
+      <li Class="PawnRenderNodeProperties_Overlay">
+        <debugLabel>Status overlay</debugLabel>
+        <workerClass>PawnRenderNodeWorker_OverlayStatus</workerClass>
+        <baseLayer>100</baseLayer>
+      </li>
+    </value>
+  </Operation>
+
 </Patch>

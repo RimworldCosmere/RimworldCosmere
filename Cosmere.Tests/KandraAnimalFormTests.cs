@@ -819,4 +819,51 @@ public class KandraAnimalFormTests {
             "Shaping twice without reverting would snapshot the already-zeroed tab."
         );
     }
+
+    /// <summary>
+    ///     A human fist at power 8.2 survives VerbUtility's 25%-of-best-DPS prune against a wolf
+    ///     bite at power 12, so a shaped kandra punches about as often as it bites and the combat
+    ///     log says so.
+    /// </summary>
+    [TestMethod]
+    public void AShapedKandraFightsWithTheAnimalsMouthOnly() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Kandra",
+            "ShapedMeleeVerbsPatch.cs"
+        ));
+
+        Assert.IsTrue(patch.Contains("entries.RemoveAll(e => e.verb?.DirectOwner is Verse.Pawn)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            patch.Contains("if (borrowed == 0) return;", StringComparison.Ordinal),
+            "Stripping the last melee verb makes ChooseMeleeVerb log an error on every swing."
+        );
+    }
+
+    /// <summary>
+    ///     The mental-break warning icon is parented under Head, so vetoing Head to hide the human
+    ///     face also hides the warning on exactly the colonist least likely to be watched.
+    /// </summary>
+    [TestMethod]
+    public void TheBreakWarningSurvivesBeingShaped() {
+        XDocument patch = XDocument.Load(Path.Combine(
+            RepoRoot, "CosmereScadrial", "Patches", "KandraHumanlikeRenderTree.xml"
+        ));
+
+        Assert.IsTrue(
+            patch.Descendants("Operation")
+                .Any(o => (string?)o.Attribute("Class") == "PatchOperationRemove"
+                          && o.Element("xpath")!.Value.Contains("Status overlay")),
+            "It has to come out from under Head."
+        );
+        Assert.IsTrue(
+            patch.Descendants("li").Any(li => li.Element("debugLabel")?.Value == "Status overlay"),
+            "And go back on at the root, or the warning is simply gone."
+        );
+    }
 }

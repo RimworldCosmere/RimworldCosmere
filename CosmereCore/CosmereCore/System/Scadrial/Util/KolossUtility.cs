@@ -160,7 +160,7 @@ public static class KolossUtility {
             canGeneratePawnRelations: false,
             fixedGender: subject.gender,
             forcedXenotype: koloss,
-            fixedBiologicalAge: AdultAge,
+            fixedBiologicalAge: Rand.Range(MinAdultAge, MaxAdultAge),
             fixedChronologicalAge: 0f
         ));
 
@@ -169,8 +169,12 @@ public static class KolossUtility {
         StartGrowing(made);
         Disfigure(made);
 
-        // One name, no family. Whatever it was called belonged to somebody who is not here.
-        made.Name = new NameSingle("CS_Koloss_Name".Translate(), true);
+        // One name, no family. Whatever it was called belonged to somebody who is not here, and
+        // what answers to this one is not that person - but it still needs something to be called.
+        made.Name = new NameSingle(
+            PawnBioAndNameGenerator.GeneratePawnName(made, NameStyle.Full).ToStringShort,
+            true
+        );
 
         // Made today, in a body that finished growing up years ago. fixedChronologicalAge on the
         // generation request does not survive - the tracker is written directly instead, which is
@@ -284,8 +288,16 @@ public static class KolossUtility {
         if (beauty != null) made.story.traits.GainTrait(new Trait(beauty, -2, true));
     }
 
-    /// <summary>A body that has finished growing up, before it starts growing wrong.</summary>
-    private const float AdultAge = 20f;
+    /// <summary>
+    ///     A body that has finished growing up, before it starts growing wrong.
+    /// </summary>
+    /// <remarks>
+    ///     Rolled rather than fixed. Every koloss coming out of the slab at exactly twenty read as
+    ///     a template rather than a person something was done to.
+    /// </remarks>
+    private const float MinAdultAge = 18f;
+
+    private const float MaxAdultAge = 42f;
 
     /// <summary>
     ///     Makes sure the clock is running.

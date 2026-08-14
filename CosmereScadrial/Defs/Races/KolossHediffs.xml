@@ -12,11 +12,12 @@
     <defaultLabelColor>(0.55, 0.65, 0.75)</defaultLabelColor>
     <isBad>true</isBad>
     <everCurableByItem>false</everCurableByItem>
-    <!-- Explicit. HediffDef.initialSeverity defaults to 0.5 and Hediff.PostMake does
-         Severity = Max(Severity, def.initialSeverity), so without this every koloss is born forty
-         percent of the way to splitting - and renders oversized on its first frame. The clock
-         starts at the spikes, not at birth. -->
-    <initialSeverity>0</initialSeverity>
+    <!-- A hair above zero, and both halves of that matter. The default is 0.5 and Hediff.PostMake
+         does Severity = Max(Severity, initialSeverity), so leaving it alone starts every koloss
+         forty percent of the way to splitting. But Hediff.ShouldRemove is `Severity <= 0f`, so a
+         literal zero makes the hediff delete itself on the next tick and the koloss has no growth
+         clock at all - which is exactly what it did. -->
+    <initialSeverity>0.001</initialSeverity>
     <maxSeverity>1.0</maxSeverity>
 
     <!-- lifeThreatening kills nothing on its own; it only feeds TendPriority, the alert and the

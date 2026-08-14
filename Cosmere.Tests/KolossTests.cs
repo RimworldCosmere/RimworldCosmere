@@ -42,7 +42,11 @@ public class KolossTests {
         XElement growth = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth");
 
-        Assert.AreEqual("0", growth.Element("initialSeverity")?.Value);
+        // A hair above zero, not zero: Hediff.ShouldRemove is `Severity <= 0f`, so a literal zero
+        // makes the hediff delete itself on the next tick and the koloss has no growth clock.
+        double initial = double.Parse(growth.Element("initialSeverity")!.Value);
+        Assert.IsTrue(initial > 0, "Zero makes the hediff remove itself.");
+        Assert.IsTrue(initial < 0.01, "And anything much above zero starts the koloss part-grown.");
     }
 
     /// <summary>
@@ -322,7 +326,7 @@ public class KolossTests {
     public void AKolossIsNewButNotAChild() {
         string util = Source("Util", "KolossUtility.cs");
 
-        Assert.IsTrue(util.Contains("fixedBiologicalAge: AdultAge", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("Rand.Range(MinAdultAge, MaxAdultAge)", StringComparison.Ordinal));
         Assert.IsTrue(util.Contains("fixedChronologicalAge: 0f", StringComparison.Ordinal));
     }
 
@@ -346,6 +350,10 @@ public class KolossTests {
         string util = Source("Util", "KolossUtility.cs");
 
         Assert.IsTrue(util.Contains("made.Name = new NameSingle", StringComparison.Ordinal));
+        Assert.IsTrue(
+            util.Contains("PawnBioAndNameGenerator.GeneratePawnName", StringComparison.Ordinal),
+            "A rolled name, not the literal word Koloss."
+        );
     }
 
     /// <summary>

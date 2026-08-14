@@ -108,4 +108,26 @@
             <skipChance>1</skipChance>
         </inventoryOptions>
     </PawnKindDef>
+
+    <!-- What a made koloss is generated from. Its genes come from the forced xenotype, so this
+         only has to supply the backstory, the age and something to fight with. -->
+    <PawnKindDef ParentName="BasePlayerPawnKind">
+        <defName>Cosmere_Scadrial_PawnKind_Koloss</defName>
+        <label>koloss</label>
+        <race>Human</race>
+        <combatPower>90</combatPower>
+        <useFactionXenotypes>false</useFactionXenotypes>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Scadrial_Xenotype_Koloss>1</Cosmere_Scadrial_Xenotype_Koloss>
+            </xenotypeChances>
+        </xenotypeSet>
+        <backstoryFiltersOverride>
+            <li>
+                <categories>
+                    <li>Cosmere_Koloss</li>
+                </categories>
+            </li>
+        </backstoryFiltersOverride>
+    </PawnKindDef>
 </Defs>

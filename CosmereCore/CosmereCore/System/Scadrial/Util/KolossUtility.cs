@@ -114,4 +114,78 @@ public static class KolossUtility {
             pawn.relations.ClearAllRelations();
         }
     }
+
+    /// <summary>
+    ///     Consumes a person and stands a koloss up where they were.
+    /// </summary>
+    /// <remarks>
+    ///     A new pawn rather than the old one rewritten. Mutating the subject meant unpicking every
+    ///     gene of whatever xenotype it used to be, by hand, on a live colonist - and RimWorld has
+    ///     no ClearEndogenes, so that was a reverse-index loop over RemoveGene firing trait,
+    ///     passion and graphics side effects per gene. Generating instead is both safer and truer:
+    ///     what gets up is not the person who lay down.
+    ///     <para>
+    ///         Nothing is left of the body. The flesh went into the thing standing over it, so
+    ///         there is no corpse to bury and no spikes to take back out of one.
+    ///     </para>
+    /// </remarks>
+    public static Pawn? Make(Pawn subject, XenotypeDef koloss) {
+        Map? map = subject.Map;
+        IntVec3 where = subject.Position;
+        if (map == null) return null;
+
+        // Gender is the one thing that carries: a koloss is built out of a body, and the body
+        // had a sex.
+        Pawn made = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
+            KolossKind ?? RimWorld.PawnKindDefOf.Colonist,
+            subject.Faction,
+            PawnGenerationContext.NonPlayer,
+            forceGenerateNewPawn: true,
+            canGeneratePawnRelations: false,
+            fixedGender: subject.gender,
+            forcedXenotype: koloss
+        ));
+
+        Inherit(subject, made);
+
+        // Before the subject goes, so the koloss is standing where they were rather than dropped
+        // at the map edge.
+        subject.Destroy(DestroyMode.Vanish);
+        GenSpawn.Spawn(made, where, map);
+
+        return made;
+    }
+
+    /// <summary>
+    ///     What the subject's body was worth.
+    /// </summary>
+    /// <remarks>
+    ///     Not the mind - a koloss has none to speak of, and the backstory says it does not
+    ///     remember its name. What survives is what the muscle knew: a fighter makes a better
+    ///     koloss than a clerk does, which is the only reason to care who goes on the table.
+    /// </remarks>
+    private static void Inherit(Pawn subject, Pawn made) {
+        SkillRecord? theirMelee = subject.skills?.GetSkill(RimWorld.SkillDefOf.Melee);
+        SkillRecord? ourMelee = made.skills?.GetSkill(RimWorld.SkillDefOf.Melee);
+
+        // levelInt, not Level. The getter returns 0 for a skill the pawn is incapable of and adds
+        // aptitude on top of what is stored.
+        if (theirMelee != null && ourMelee != null) {
+            ourMelee.levelInt = Mathf.Clamp(theirMelee.levelInt, ourMelee.levelInt, 20);
+        }
+
+        if (made.skills?.skills == null) return;
+
+        // Everything that needed a mind to hold it did not survive the spikes.
+        for (int i = 0; i < made.skills.skills.Count; i++) {
+            SkillRecord skill = made.skills.skills[i];
+            if (skill.def == RimWorld.SkillDefOf.Melee) continue;
+
+            skill.levelInt = 0;
+            skill.passion = Passion.None;
+        }
+    }
+
+    private static PawnKindDef? KolossKind =>
+        DefDatabase<PawnKindDef>.GetNamedSilentFail("Cosmere_Scadrial_PawnKind_Koloss");
 }

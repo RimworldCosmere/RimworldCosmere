@@ -58,11 +58,16 @@ public class MakeKoloss : Recipe_Surgery {
             return;
         }
 
-        KolossUtility.Become(pawn, koloss);
+        // The name has to be read before the subject is consumed, because afterwards there is
+        // nobody left to ask.
+        TaggedString who = pawn.NameShortColored;
+
+        Pawn? made = KolossUtility.Make(pawn, koloss);
+        if (made == null) return;
 
         Messages.Message(
-            "CS_BecameKoloss".Translate(pawn.NameShortColored.Named("PAWN")),
-            pawn,
+            "CS_BecameKoloss".Translate(who.Named("PAWN")),
+            made,
             MessageTypeDefOf.NeutralEvent,
             false
         );

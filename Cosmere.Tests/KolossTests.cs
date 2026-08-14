@@ -136,4 +136,58 @@ public class KolossTests {
             "Only 6 of 49 vanilla BodyDefs have a part called Torso."
         );
     }
+
+    /// <summary>
+    ///     A koloss is a new thing built out of a person, not that person enlarged. Generating one
+    ///     also sidesteps the riskiest edit in the plan: RimWorld has no ClearEndogenes, so
+    ///     rewriting the subject meant a hand-rolled reverse-index loop over RemoveGene firing
+    ///     trait, passion and graphics side effects per gene, on a live colonist.
+    /// </summary>
+    [TestMethod]
+    public void MakingAKolossGeneratesAPawnRatherThanRewritingOne() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("PawnGenerator.GeneratePawn", StringComparison.Ordinal));
+        Assert.IsTrue(
+            util.Contains("forcedXenotype: koloss", StringComparison.Ordinal),
+            "The genes come from the xenotype rather than being hand-applied."
+        );
+        Assert.IsTrue(
+            util.Contains("fixedGender: subject.gender", StringComparison.Ordinal),
+            "Gender is the one thing that carries - a koloss is built out of a body."
+        );
+    }
+
+    /// <summary>
+    ///     The flesh went into the thing standing over it, so there is no corpse to bury and no
+    ///     spikes to take back out of one.
+    /// </summary>
+    [TestMethod]
+    public void NothingIsLeftOfTheSubject() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("subject.Destroy(DestroyMode.Vanish)", StringComparison.Ordinal));
+
+        int destroy = util.IndexOf("subject.Destroy(", StringComparison.Ordinal);
+        int spawn = util.IndexOf("GenSpawn.Spawn(made", StringComparison.Ordinal);
+        Assert.IsTrue(
+            destroy < spawn,
+            "The subject leaves before the koloss arrives, or two things stand on one tile."
+        );
+    }
+
+    /// <summary>
+    ///     A fighter makes a better koloss than a clerk does, which is the only reason to care who
+    ///     goes on the table. Nothing that needed a mind survives.
+    /// </summary>
+    [TestMethod]
+    public void TheSubjectsBuildIsWhatCarries() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("theirMelee.levelInt", StringComparison.Ordinal));
+        Assert.IsTrue(
+            util.Contains("skill.levelInt = 0;", StringComparison.Ordinal),
+            "Everything that needed a mind to hold it did not survive the spikes."
+        );
+    }
 }

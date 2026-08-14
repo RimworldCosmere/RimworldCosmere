@@ -596,4 +596,31 @@ public class KolossTests {
         Assert.AreEqual("Cosmere_Scadrial_Hediff_KolossGrowth", thought.Element("hediff")?.Value);
         Assert.AreEqual("15", thought.Descendants("baseMoodEffect").First().Value);
     }
+
+    /// <summary>
+    ///     Nullifying the thoughts stopped a koloss complaining; removing the needs stops it having
+    ///     the opinion at all. CurStage decides, and a koloss is in one of the four from its first
+    ///     tick, so every stage carries the list.
+    /// </summary>
+    [TestMethod]
+    public void AKolossHasNoOpinionAboutWhereItIs() {
+        XElement growth = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth");
+
+        List<XElement> stages = growth.Element("stages")!.Elements("li").ToList();
+        Assert.AreEqual(4, stages.Count);
+
+        foreach (XElement stage in stages) {
+            List<string> gone = stage.Element("disablesNeeds")?.Elements("li")
+                .Select(li => li.Value).ToList() ?? [];
+
+            foreach (string need in new[] { "Beauty", "Comfort", "RoomSize", "Outdoors" }) {
+                CollectionAssert.Contains(
+                    gone,
+                    need,
+                    $"Stage '{stage.Element("label")?.Value}' still leaves it caring about {need}."
+                );
+            }
+        }
+    }
 }

@@ -36,6 +36,14 @@
       <li>
         <label>young</label>
         <minSeverity>0</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
         <statFactors>
           <MeleeDamageFactor>1.0</MeleeDamageFactor>
         </statFactors>
@@ -43,6 +51,14 @@
       <li>
         <label>grown</label>
         <minSeverity>0.25</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
         <statFactors>
           <MeleeDamageFactor>1.25</MeleeDamageFactor>
         </statFactors>
@@ -56,6 +72,14 @@
       <li>
         <label>overgrown</label>
         <minSeverity>0.55</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
         <painOffset>0.10</painOffset>
         <statFactors>
           <MeleeDamageFactor>1.5</MeleeDamageFactor>
@@ -74,6 +98,14 @@
       <li>
         <label>splitting</label>
         <minSeverity>0.80</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
         <painOffset>0.25</painOffset>
         <lifeThreatening>true</lifeThreatening>
         <statFactors>

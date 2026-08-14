@@ -239,4 +239,42 @@ public class KolossTests {
         Assert.IsTrue(worker.Contains("FirstAssignedPawn(\"prisoner\")", StringComparison.Ordinal));
         Assert.IsTrue(worker.Contains("KolossUtility.MakeFrom", StringComparison.Ordinal));
     }
+
+    /// <summary>
+    ///     The four that make a koloss are added by SpikeBound during generation. Anything the
+    ///     subject was already carrying - a Misting made by hemalurgy, a kandra, an Inquisitor
+    ///     part-way through - is physically in the body being used, so it comes across too.
+    /// </summary>
+    [TestMethod]
+    public void WhateverWasAlreadyDrivenInComesAcross() {
+        string util = Source("Util", "KolossUtility.cs");
+
+        Assert.IsTrue(util.Contains("CarrySpikes(subject, made)", StringComparison.Ordinal));
+        Assert.IsTrue(util.Contains("AddToUnifiedHediff(made, carried[i], core)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            util.Contains("UpdateRuinsInfluence(made)", StringComparison.Ordinal),
+            "Ruin speaks through the total, so it is recomputed after the carry."
+        );
+    }
+
+    /// <summary>
+    ///     Four, everywhere. The recipe asks for four, the gene and xenotype prose both say four,
+    ///     and canon is four - so a change to five is a change to all of them at once, not a
+    ///     number edited in one place.
+    /// </summary>
+    [TestMethod]
+    public void FourSpikesMakeAKolossEverywhereItIsWritten() {
+        // MakeKoloss inherits its ingredients from the abstract base above it, so the count lives
+        // there rather than on the recipe itself.
+        XElement spikes = Defs("Hemalurgy", "KolossRecipes.xml").Descendants("li")
+            .First(li => li.Descendants("thingDefs").Any(t =>
+                t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
+
+        Assert.AreEqual("4", spikes.Element("count")?.Value);
+
+        string gene = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "SpikeBound.cs"
+        ));
+        Assert.IsTrue(gene.Contains("SpikeCount = 4", StringComparison.Ordinal));
+    }
 }

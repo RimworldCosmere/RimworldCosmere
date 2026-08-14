@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -160,6 +161,7 @@ public static class KolossUtility {
         ));
 
         Inherit(subject, made);
+        CarrySpikes(subject, made);
 
         // Before the subject goes, so the koloss is standing where they were rather than dropped
         // at the map edge. A corpse has to be destroyed as well as the pawn inside it, or the body
@@ -200,6 +202,36 @@ public static class KolossUtility {
             skill.levelInt = 0;
             skill.passion = Passion.None;
         }
+    }
+
+    /// <summary>
+    ///     Whatever was already driven into the subject comes across with it.
+    /// </summary>
+    /// <remarks>
+    ///     The four that make a koloss are added by <c>SpikeBound</c> during generation. These are
+    ///     the ones the subject already had - a Misting made by hemalurgy, a kandra, an Inquisitor
+    ///     part-way through. Those spikes are physically in the body that is being used, so they do
+    ///     not fall out because the body changed shape, and Ruin's hold reads the total.
+    /// </remarks>
+    private static void CarrySpikes(Pawn subject, Pawn made) {
+        Verse.Hediff? had = subject.health?.hediffSet?.GetFirstHediffOfDef(
+            Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
+        );
+        if (had is not Hemalurgy.Hediff.HemalurgicSpikes theirs || theirs.spikes.Count == 0) return;
+
+        BodyPartRecord? core = made.RaceProps?.body?.corePart == null
+            ? null
+            : made.health?.hediffSet?.GetNotMissingParts()
+                .FirstOrDefault(p => p.def == made.RaceProps.body.corePart.def);
+
+        List<Hemalurgy.ImplantedSpikeData> carried = [.. theirs.spikes];
+        for (int i = 0; i < carried.Count; i++) {
+            Hemalurgy.HemalurgicImplantUtility.AddToUnifiedHediff(made, carried[i], core);
+        }
+
+        // The total is what Ruin speaks through, so it has to be recomputed after the carry rather
+        // than left at whatever the four alone were worth.
+        Hemalurgy.HemalurgicImplantUtility.UpdateRuinsInfluence(made);
     }
 
     private static PawnKindDef? KolossKind =>

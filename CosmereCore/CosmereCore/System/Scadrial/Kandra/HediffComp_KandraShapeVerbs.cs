@@ -38,6 +38,17 @@ public class HediffComp_KandraShapeVerbs : HediffComp_VerbGiver, IVerbOwner {
     private List<Tool>? borrowed;
     private PawnKindDef? borrowedFrom;
 
+    /// <summary>
+    ///     Reads as the animal's own body, not as a piece of equipment.
+    /// </summary>
+    /// <remarks>
+    ///     <c>HediffComp_VerbGiver</c> reports <c>ImplementOwnerTypeDefOf.Hediff</c>, and
+    ///     <c>BattleLogEntry_MeleeCombat</c> builds its grammar from that - which produced
+    ///     "OreSeur, wielding his wearing an animal deftly, nipped the turkey". Bodypart is what a
+    ///     real animal's bite uses, and drops the wielding clause entirely.
+    /// </remarks>
+    ImplementOwnerTypeDef IVerbOwner.ImplementOwnerTypeDef => ImplementOwnerTypeDefOf.Bodypart;
+
     /// <summary>The animal's attacks, re-anchored to a part the wearer actually has.</summary>
     public new List<Tool>? Tools {
         get {

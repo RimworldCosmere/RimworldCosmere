@@ -866,4 +866,20 @@ public class KandraAnimalFormTests {
             "And go back on at the root, or the warning is simply gone."
         );
     }
+
+    /// <summary>
+    ///     BattleLogEntry_MeleeCombat builds its grammar from the verb owner's
+    ///     ImplementOwnerTypeDef, and HediffComp_VerbGiver reports Hediff - which produced
+    ///     "OreSeur, wielding his wearing an animal deftly, nipped the turkey". Bodypart is what a
+    ///     real animal's bite uses and drops the wielding clause.
+    /// </summary>
+    [TestMethod]
+    public void TheShapesBiteReadsAsABodyPart() {
+        string verbs = Kandra("HediffComp_KandraShapeVerbs.cs");
+
+        Assert.IsTrue(
+            verbs.Contains("ImplementOwnerTypeDef => ImplementOwnerTypeDefOf.Bodypart", StringComparison.Ordinal),
+            "Otherwise the combat log names the hediff as if it were a weapon."
+        );
+    }
 }

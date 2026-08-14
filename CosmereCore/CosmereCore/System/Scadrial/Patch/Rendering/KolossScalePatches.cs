@@ -20,11 +20,19 @@ namespace Cosmere.System.Scadrial.Patch.Rendering;
 ///         subclass that overrides <c>ScaleFor</c> and it calls base first. Scaling only the body
 ///         would have dressed a giant in a colonist's coat.
 ///     </para>
+///     <para>
+///         Only the root node is touched. <c>PawnRenderTree.TryGetMatrix</c> walks a node's whole
+///         ancestor chain and applies every scale it finds along the way, so a factor applied at
+///         each level comes out as factor-to-the-depth. Hair sits four deep, which is why the
+///         first attempt drew a koloss whose hair was twice the size of its body.
+///     </para>
 /// </remarks>
 [Patch]
 public abstract class KolossScalePatch : PawnRenderNodeWorker {
     [Inject(At.Return, nameof(ScaleFor))]
     private void AfterScaleFor(PawnRenderNode node, PawnDrawParms parms, ControlHandle<Vector3> ch) {
+        if (node?.tree == null || node.tree.rootNode != node) return;
+
         float grown = KolossBulk.For(parms.pawn);
         if (grown != 1f) ch.ReturnValue *= grown;
     }

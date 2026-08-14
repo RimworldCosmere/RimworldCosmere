@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using UnityEngine;
 using Verse;
 
@@ -21,7 +21,9 @@ public static class KolossBulk {
     /// <summary>Size the moment the spikes go in. Barely more than the man they were.</summary>
     public const float NewlyMade = 1.05f;
 
-    /// <summary>Size when the skin finally fails. Twice a man across the shoulders.</summary>
+    /// <summary>
+    ///     Size when the skin finally fails. A grown koloss stands about twelve feet.
+    /// </summary>
     public const float FullyGrown = 1.75f;
 
     /// <summary>
@@ -35,7 +37,10 @@ public static class KolossBulk {
 
     private const int RefreshInterval = 250;
 
-    private static readonly Dictionary<int, float> Cached = [];
+    // Concurrent because portraits render off the main thread. A plain Dictionary here threw
+    // "operations that change non-concurrent collections must have exclusive access" seventeen
+    // hundred times in one session.
+    private static readonly ConcurrentDictionary<int, float> Cached = new();
     private static int CachedAt = -99999;
 
     /// <summary>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -678,11 +679,11 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
             .Element("statOffsets")!;
 
-        // Clothing already pushes a colonist's floor down about 25 degrees, so the offset is not
-        // the number on the stat line. -21 reads as -30 on a dressed koloss; -40 read as -49,
-        // which is colder than anywhere the game generates.
-        Assert.AreEqual(-21d, double.Parse(offsets.Element("ComfyTemperatureMin")!.Value), 0.001);
-        Assert.IsTrue(double.Parse(offsets.Element("ComfyTemperatureMax")!.Value) >= 30d);
+        // A bare human reads 16C to 26C, so an offset only means something after it clears that.
+        // -46 and +19 put an unclothed koloss at -30C to 45C. Reading the offsets as if they were
+        // the stat line is how this landed at -5C to 56C.
+        Assert.AreEqual(-46d, double.Parse(offsets.Element("ComfyTemperatureMin")!.Value), 0.001);
+        Assert.AreEqual(19d, double.Parse(offsets.Element("ComfyTemperatureMax")!.Value), 0.001);
     }
 
     /// <summary>
@@ -804,5 +805,52 @@ public class KolossTests {
 
         Assert.IsTrue(bulk.Contains("Cached.TryGetValue"), "Repeat lookups must hit the cache.");
         Assert.IsTrue(bulk.Contains("Cached.Clear()"), "Dead pawns must not pile up in it.");
+    }
+
+    /// <summary>
+    ///     PawnRenderTree.TryGetMatrix walks a node's whole ancestor chain and applies every scale
+    ///     it finds, so scaling at each level multiplies out to factor-to-the-depth. Hair sits four
+    ///     deep. Applying the growth factor everywhere drew a koloss with hair twice its body size.
+    /// </summary>
+    [TestMethod]
+    public void GrowthIsAppliedOnceRatherThanOncePerAncestor() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Rendering",
+            "KolossScalePatches.cs"
+        ));
+
+        Assert.IsTrue(
+            patch.Contains("node.tree.rootNode != node"),
+            "Every node but the root must return before the factor is applied."
+        );
+    }
+
+    /// <summary>
+    ///     Portraits render off the main thread, so a plain Dictionary here is a real crash, not a
+    ///     theoretical one. It threw seventeen hundred times in a single session.
+    /// </summary>
+    [TestMethod]
+    public void TheSizeCacheSurvivesBeingReadFromTwoThreads() {
+        string bulk = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Util",
+            "KolossBulk.cs"
+        ));
+
+        Assert.IsTrue(bulk.Contains("ConcurrentDictionary"), "The render path is not single-threaded.");
+        Assert.IsFalse(
+            Regex.IsMatch(bulk, @"\bnew Dictionary<"),
+            "A plain Dictionary in here corrupts under concurrent access."
+        );
     }
 }

@@ -33,8 +33,8 @@
     <statOffsets>
       <!-- Ash-choked skies and mountain cold on one side, a smelting works on the other. Very
            little about the weather reaches something built like this. -->
-      <ComfyTemperatureMin>-21</ComfyTemperatureMin>
-      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <ComfyTemperatureMin>-46</ComfyTemperatureMin>
+      <ComfyTemperatureMax>19</ComfyTemperatureMax>
     </statOffsets>
   </GeneDef>
 
@@ -154,8 +154,8 @@
       <MiningSpeed>1.125</MiningSpeed>
     </statFactors>
     <statOffsets>
-      <ComfyTemperatureMin>-9</ComfyTemperatureMin>
-      <ComfyTemperatureMax>12</ComfyTemperatureMax>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>8</ComfyTemperatureMax>
       <PainShockThreshold>0.1</PainShockThreshold>
     </statOffsets>
   </GeneDef>

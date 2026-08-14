@@ -3,6 +3,7 @@ using Cosmere.Core;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Extension;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Kandra;
@@ -20,8 +21,14 @@ public static class KandraDisguise {
     /// <summary>How often an unaided observer gets a chance to notice. Once a game hour.</summary>
     public const int LookInterval = 2500;
 
-    /// <summary>Chance per look at zero skill. Practice takes this to nothing.</summary>
+    /// <summary>Chance per look at zero skill, with somebody watching. Practice takes it down.</summary>
     public const float BaseSuspicion = 0.08f;
+
+    /// <summary>How close a stranger has to be to notice anything, at zero skill.</summary>
+    public const float NoticeRange = 20f;
+
+    /// <summary>How much closer they have to get per point of practice.</summary>
+    public const float NoticeRangePerSkill = 0.75f;
 
     /// <summary>Whether this pawn is currently pretending to be something else.</summary>
     public static bool IsDisguised(Pawn pawn) {
@@ -90,7 +97,66 @@ public static class KandraDisguise {
         CompKandraForms? forms = Behind(disguised)?.TryGetComp<CompKandraForms>();
         if (forms == null) return false;
 
+        // Somebody has to be there to notice. A kandra alone in its own base is not being
+        // scrutinised by anybody, and rolling against nothing is what made a face come off in an
+        // empty room.
+        if (!Watched(disguised)) return false;
+
         return Rand.Chance(BaseSuspicion * (1f - forms.Conviction));
+    }
+
+    /// <summary>
+    ///     Whether a stranger is close enough to see something wrong.
+    /// </summary>
+    /// <remarks>
+    ///     Colonists and the player's own factions are excluded: they are the people the disguise
+    ///     is being kept up in front of every day, and if they were going to work it out they
+    ///     would have. Allies get the same pass. What is left is hostiles and strangers, who are
+    ///     the ones actually looking.
+    ///     <para>
+    ///         Animals do not count. Nothing without a person's judgement is going to conclude
+    ///         that the colonist over there is wearing somebody.
+    ///     </para>
+    /// </remarks>
+    public static bool Watched(Pawn disguised) {
+        if (!disguised.Spawned) return false;
+
+        float range = RangeFor(disguised);
+        Faction player = Faction.OfPlayer;
+
+        IReadOnlyList<Pawn> nearby = disguised.Map?.mapPawns?.AllPawnsSpawned ?? [];
+        for (int i = 0; i < nearby.Count; i++) {
+            Pawn watcher = nearby[i];
+            if (watcher == disguised || watcher.Dead || watcher.Downed) continue;
+            if (!watcher.RaceProps.Humanlike) continue;
+            if (watcher.IsColonist || watcher.Faction == player) continue;
+
+            // An ally is not a stranger. Everyone else is, factionless wanderers included.
+            if (watcher.Faction != null && !watcher.Faction.HostileTo(player)
+                && watcher.Faction.RelationKindWith(player) == FactionRelationKind.Ally) {
+                continue;
+            }
+
+            if (!watcher.Position.InHorDistOf(disguised.Position, range)) continue;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    ///     How close a stranger has to be. Practice shrinks it.
+    /// </summary>
+    /// <remarks>
+    ///     Twenty cells for a kandra that has just learned to hold a face, down to five for one
+    ///     that has been doing it for centuries - so an old kandra is only ever caught by somebody
+    ///     standing next to it, and even then rarely.
+    /// </remarks>
+    public static float RangeFor(Pawn disguised) {
+        int skill = disguised.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_Shapeshift)?.Level ?? 0;
+
+        return Mathf.Max(5f, NoticeRange - (skill * NoticeRangePerSkill));
     }
 
     /// <summary>

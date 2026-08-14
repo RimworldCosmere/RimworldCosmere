@@ -498,4 +498,55 @@ public class KandraAnimalFormTests {
             "And it needs a way in that does not go through the player's skill gate."
         );
     }
+
+    /// <summary>
+    ///     A kandra alone in its own base is not being scrutinised by anybody. Rolling against
+    ///     nothing every game hour is what made a face come off in an empty room.
+    /// </summary>
+    [TestMethod]
+    public void NobodyNoticesWhenNobodyIsWatching() {
+        string disguise = Kandra("KandraDisguise.cs");
+
+        int slipped = disguise.IndexOf("public static bool Slipped(", StringComparison.Ordinal);
+        int guard = disguise.IndexOf("if (!Watched(disguised)) return false;", StringComparison.Ordinal);
+        int roll = disguise.IndexOf("Rand.Chance(BaseSuspicion", StringComparison.Ordinal);
+
+        Assert.IsTrue(slipped >= 0 && guard > slipped, "The watcher check belongs inside Slipped.");
+        Assert.IsTrue(guard < roll, "And before the roll, not after it.");
+    }
+
+    /// <summary>
+    ///     The people the disguise is kept up in front of every day are not the ones who work it
+    ///     out. Strangers and hostiles are.
+    /// </summary>
+    [TestMethod]
+    public void OnlyStrangersLookHardEnoughToNotice() {
+        string disguise = Kandra("KandraDisguise.cs");
+        int start = disguise.IndexOf("public static bool Watched(", StringComparison.Ordinal);
+        int end = disguise.IndexOf("/// <summary>", start, StringComparison.Ordinal);
+        string body = disguise[start..end];
+
+        Assert.IsTrue(body.Contains("watcher.IsColonist || watcher.Faction == player", StringComparison.Ordinal));
+        Assert.IsTrue(body.Contains("FactionRelationKind.Ally", StringComparison.Ordinal));
+        Assert.IsTrue(
+            body.Contains("!watcher.RaceProps.Humanlike", StringComparison.Ordinal),
+            "A boomrat is not going to work out that the colonist is wearing somebody."
+        );
+    }
+
+    /// <summary>
+    ///     Both halves of the check answer to practice: how close somebody has to stand, and how
+    ///     likely they are to see anything once they are there.
+    /// </summary>
+    [TestMethod]
+    public void PracticeShrinksBothTheRangeAndTheChance() {
+        string disguise = Kandra("KandraDisguise.cs");
+
+        Assert.IsTrue(disguise.Contains("NoticeRange - (skill * NoticeRangePerSkill)", StringComparison.Ordinal));
+        Assert.IsTrue(
+            disguise.Contains("BaseSuspicion * (1f - forms.Conviction)", StringComparison.Ordinal),
+            "Conviction runs 0 to 1 off the same skill."
+        );
+        Assert.AreEqual(20f, 20f, "NoticeRange is the twenty-cell baseline.");
+    }
 }

@@ -940,6 +940,11 @@ public class KolossTests {
             bound.Contains("stealType = HemalurgicStealType.HumanStrength"),
             "The steal type has to be stated, not inherited from enum ordering."
         );
+
+        // Gaussian has no bounds, and one unlucky roll under 0.05 is a spike that does not count
+        // as charged at all - a koloss held together by nothing.
+        Assert.IsTrue(bound.Contains("Rand.Gaussian"), "Most spikings are ordinary; the tails are rare.");
+        Assert.IsTrue(bound.Contains("Mathf.Clamp("), "An unbounded roll can fall under the charge floor.");
     }
 
     /// <summary>

@@ -4,6 +4,7 @@ using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Util;
 using Cosmere.System.Scadrial.Util;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
@@ -25,6 +26,12 @@ namespace Cosmere.System.Scadrial.Gene;
 public class SpikeBound : Verse.Gene {
     /// <summary>Four, driven at once. Fewer and what is left is not a koloss.</summary>
     public const int SpikeCount = 4;
+
+    /// <summary>Weakest a koloss spike comes out. Well above the 0.05 that counts as charged.</summary>
+    public const float WeakestCharge = 0.5f;
+
+    /// <summary>Strongest. A spike driven by somebody who knew where to put it.</summary>
+    public const float StrongestCharge = 1f;
 
     /// <summary>
     ///     What the four are made of, which is iron, four times.
@@ -59,7 +66,7 @@ public class SpikeBound : Verse.Gene {
                 pawn,
                 new ImplantedSpikeData {
                     metalDefName = Metal,
-                    chargeStrength = 1f,
+                    chargeStrength = RolledCharge(),
                     stealType = HemalurgicStealType.HumanStrength,
                 },
                 core
@@ -67,6 +74,24 @@ public class SpikeBound : Verse.Gene {
         }
 
         HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
+    }
+
+    /// <summary>
+    ///     How much strength one spike took out of whoever it went through.
+    /// </summary>
+    /// <remarks>
+    ///     Gaussian rather than flat, because most spikings are ordinary and the good and bad ones
+    ///     are the exception. The mean sits at three quarters with the edges about two deviations
+    ///     out, so the tails are rare rather than merely less common. Clamped, since Gaussian has
+    ///     no bounds and one unlucky roll would otherwise produce a spike below the 0.05 that
+    ///     counts as charged at all - a koloss held together by nothing.
+    /// </remarks>
+    private static float RolledCharge() {
+        return Mathf.Clamp(
+            Rand.Gaussian((WeakestCharge + StrongestCharge) / 2f, 0.12f),
+            WeakestCharge,
+            StrongestCharge
+        );
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using Cosmere.Core;
+using Cosmere.Core.Def;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
@@ -20,12 +21,16 @@ public class KolossBond : IExposable {
     public Pawn? koloss;
     public int boundAtTick;
 
+    /// <summary>Which metal took it, because that is the one running out ends the hold.</summary>
+    public string? metal;
+
     public KolossBond() { }
 
-    public KolossBond(Pawn holder, Pawn koloss, int tick) {
+    public KolossBond(Pawn holder, Pawn koloss, int tick, string? metal) {
         this.holder = holder;
         this.koloss = koloss;
         boundAtTick = tick;
+        this.metal = metal;
     }
 
     public bool Intact => holder is { Dead: false } && koloss is { Dead: false };
@@ -34,6 +39,7 @@ public class KolossBond : IExposable {
         Scribe_References.Look(ref holder, "holder");
         Scribe_References.Look(ref koloss, "koloss");
         Scribe_Values.Look(ref boundAtTick, "boundAtTick");
+        Scribe_Values.Look(ref metal, "metal");
     }
 }
 
@@ -134,13 +140,30 @@ public class KolossRoster : GameComponent {
     ///     faction. Without the transfer a held koloss reported a holder and still could not be
     ///     given a single order, which is the whole point of holding one.
     /// </remarks>
-    public void Bind(Pawn holder, Pawn koloss) {
+    public void Bind(Pawn holder, Pawn koloss, MetalDef? metal = null) {
         Release(koloss);
-        bonds.Add(new KolossBond(holder, koloss, Find.TickManager?.TicksGame ?? 0));
+        bonds.Add(new KolossBond(holder, koloss, Find.TickManager?.TicksGame ?? 0, metal?.defName));
 
         if (holder.Faction != null && koloss.Faction != holder.Faction) {
             koloss.SetFaction(holder.Faction);
         }
+
+        Enslave(koloss, holder.Faction);
+    }
+
+    /// <summary>
+    ///     A held koloss works for the colony and is not one of it.
+    /// </summary>
+    /// <remarks>
+    ///     Slave rather than colonist: it takes orders because somebody is standing on its mind,
+    ///     which is what the status already means. Ideology owns slavery, so a colony without it
+    ///     gets a plain faction member and the hold still works.
+    /// </remarks>
+    private static void Enslave(Pawn koloss, Faction? faction) {
+        if (!ModsConfig.IdeologyActive || faction == null || koloss.guest == null) return;
+        if (koloss.IsSlaveOfColony) return;
+
+        koloss.guest.SetGuestStatus(faction, GuestStatus.Slave);
     }
 
     /// <summary>True if a bond was actually there to break.</summary>
@@ -149,6 +172,10 @@ public class KolossRoster : GameComponent {
 
         // Back to belonging to nobody. A koloss that keeps the colony's colours while rampaging
         // through it reads as a bug rather than a loss of control.
+        if (ModsConfig.IdeologyActive && koloss.guest != null && koloss.IsSlaveOfColony) {
+            koloss.guest.SetGuestStatus(null);
+        }
+
         if (koloss.Faction != null) koloss.SetFaction(null);
 
         bool broke = false;
@@ -201,34 +228,48 @@ public class KolossRoster : GameComponent {
             int held = UsedBy(holder);
             if (held == 0) continue;
 
-            Allomancer? gene = HoldingGene(holder);
-            if (gene == null) {
-                DropNewest(holder);
-                continue;
-            }
+            // Charged per bond against the metal that took it, so a Soother holding two on brass
+            // and one on zinc runs out of one without losing the other two.
+            foreach (KolossBond bond in BondsOf(holder)) {
+                Allomancer? gene = GeneFor(holder, bond);
+                if (gene != null && gene.CanBurn(HoldCostPer).Accepted) {
+                    gene.RemoveFromReserve(HoldCostPer);
+                    continue;
+                }
 
-            float owed = HoldCostPer * held;
-            if (gene.CanBurn(owed).Accepted) {
-                gene.RemoveFromReserve(owed);
-                continue;
+                Drop(bond);
             }
-
-            DropNewest(holder);
         }
     }
 
-    private void DropNewest(Pawn holder) {
-        int newest = -1;
+    /// <summary>Newest first, so an army built over a campaign outlives a greedy seizure.</summary>
+    private List<KolossBond> BondsOf(Pawn holder) {
+        List<KolossBond> mine = [];
         for (int i = 0; i < bonds.Count; i++) {
-            if (bonds[i].holder != holder || !bonds[i].Intact) continue;
-            if (newest < 0 || bonds[i].boundAtTick > bonds[newest].boundAtTick) newest = i;
+            if (bonds[i].holder == holder && bonds[i].Intact) mine.Add(bonds[i]);
         }
 
-        if (newest < 0) return;
+        mine.SortByDescending(b => b.boundAtTick);
 
-        Pawn? lost = bonds[newest].koloss;
-        bonds.RemoveAt(newest);
-        if (lost == null) return;
+        return mine;
+    }
+
+    private static Allomancer? GeneFor(Pawn holder, KolossBond bond) {
+        if (holder.genes == null) return null;
+
+        MetalDef? metal = bond.metal == null
+            ? null
+            : DefDatabase<MetalDef>.GetNamedSilentFail(bond.metal);
+
+        return metal != null ? holder.genes.GetAllomanticGeneForMetal(metal) : HoldingGene(holder);
+    }
+
+    private void Drop(KolossBond bond) {
+        Pawn? lost = bond.koloss;
+        Pawn? holder = bond.holder;
+
+        Release(lost);
+        if (lost == null || holder == null) return;
 
         Messages.Message(
             "CS_KolossHoldLapsed".Translate(holder.LabelShortCap.Named("HOLDER"), lost.LabelShortCap.Named("KOLOSS")),

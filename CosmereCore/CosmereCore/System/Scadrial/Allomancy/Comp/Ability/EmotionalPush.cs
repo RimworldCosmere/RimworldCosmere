@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Hediff;
 using Cosmere.System.Scadrial.Allomancy.Ability;
@@ -12,19 +13,24 @@ namespace Cosmere.System.Scadrial.Allomancy.Comp.Ability;
 ///     Shared reach for the one-shot emotional pushes.
 /// </summary>
 /// <remarks>
-///     SetNextStatus only runs from QueueCastingJob, which is the confirm and not the hover, so
-///     both nextStatus and status.power read zero while the player is still choosing a target.
-///     Asking plainly reports every push as strength zero, which is what made the koloss readout
-///     say 0.0 and refuse every seizure.
+///     Three places hold a number and none of them is reliable alone. BurnToggle puts flaring on
+///     the live status as power 2. QueueCastingJob then hardcodes power 1 into nextStatus, which
+///     throws that flare away. And during targeting neither is set at all, because SetNextStatus
+///     only runs on the confirm, so asking plainly reported every push as strength zero.
+///     <para>
+///         Taking the highest of the three reads the flare at the hover and again at the cast, and
+///         never falls below the one QueueCastingJob would have used. SteelJumpRange already
+///         matches the default the same way, for the same reason.
+///     </para>
 /// </remarks>
 public abstract class EmotionalPush : CompAbilityEffect {
     protected new AllomancyAbility parent => (AllomancyAbility)base.parent;
 
     protected float Reach {
         get {
-            float chosen = parent.GetStrength(parent.nextStatus);
+            int power = Math.Max(parent.status.power, parent.nextStatus?.power ?? 0);
 
-            return chosen > 0f ? chosen : parent.GetStrength((Status)1);
+            return parent.GetStrength((Status)Math.Max(power, 1));
         }
     }
 }

@@ -1,3 +1,5 @@
+using Cosmere.Core;
+using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Comp.Game;
 using RimWorld;
 using Verse;
@@ -29,7 +31,7 @@ public static class KolossControl {
     ///     reads as a broken button, and the player has no way to learn that duralumin is the
     ///     answer.
     /// </remarks>
-    public static AcceptanceReport TryBind(Pawn holder, Pawn koloss, float reach) {
+    public static AcceptanceReport TryBind(Pawn holder, Pawn koloss, float reach, MetalDef? metal = null) {
         KolossRoster? roster = KolossRoster.Current;
         if (roster == null) return "CS_KolossBind_NoGame".Translate();
 
@@ -56,7 +58,7 @@ public static class KolossControl {
             );
         }
 
-        roster.Bind(holder, koloss);
+        roster.Bind(holder, koloss, metal);
         Calm(koloss);
 
         return AcceptanceReport.WasAccepted;

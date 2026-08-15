@@ -119,11 +119,6 @@ public class KolossControlTests {
 
         string push = CodeOnly("System", "Scadrial", "Allomancy", "Comp", "Ability", "EmotionalPush.cs");
 
-        Assert.IsTrue(
-            push.Contains("parent.GetStrength(parent.nextStatus)"),
-            "GetStrength reads (desiredStatus ?? status).power, and status.power is zero until the "
-            + "burn starts. Asking without nextStatus reported every seizure as reach 0.0."
-        );
         Assert.IsFalse(
             Regex.IsMatch(push, @"GetStrength\(\)"),
             "A bare GetStrength here is the reach 0.0 bug."
@@ -132,9 +127,15 @@ public class KolossControlTests {
         // SetNextStatus only runs from QueueCastingJob, which is the confirm and not the hover, so
         // nextStatus is null while the player is still picking a target. Without a floor the
         // readout says 0.0 and teaches the player the ability is broken.
+        // BurnToggle puts flaring on the live status as power 2, and QueueCastingJob then writes
+        // power 1 into nextStatus, throwing it away. Reading either alone lost the flare.
         Assert.IsTrue(
-            push.Contains("GetStrength((Status)1)"),
-            "The readout needs a power to assume before one has been chosen."
+            Regex.IsMatch(push, @"Math\.Max\(parent\.status\.power, parent\.nextStatus\?\.power"),
+            "Flaring lives on the live status and the cast default lives on nextStatus."
+        );
+        Assert.IsTrue(
+            push.Contains("Math.Max(power, 1)"),
+            "And neither is set at all during targeting, which reported reach 0.0."
         );
         Assert.IsFalse(
             Regex.IsMatch(seize, @"Duralumin|SurgeCharge"),
@@ -187,11 +188,16 @@ public class KolossControlTests {
     /// </summary>
     [TestMethod]
     public void AnArmyIsLimitedByCapacityAndMetal() {
-        string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
+        // CodeOnly, because the file explains the wrong defName it used to use and a plain grep
+        // reads that explanation as the thing it warns about.
+        string roster = CodeOnly("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
         Assert.IsTrue(roster.Contains("Cosmere_Scadrial_Stat_AllomanticPower"), "Slots come off power.");
         Assert.IsTrue(roster.Contains("CanBurn") && roster.Contains("RemoveFromReserve"), "Holding costs metal.");
-        Assert.IsTrue(roster.Contains("DropNewest"), "The newest bond is the one that goes.");
+        Assert.IsTrue(
+            roster.Contains("SortByDescending(b => b.boundAtTick)"),
+            "Newest first, so a force built over a campaign outlives a greedy seizure."
+        );
 
         // The gene is called MistingZinc. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc"
         // matched nothing, so billing found no gene and dropped every bond on the next tick - a
@@ -201,8 +207,8 @@ public class KolossControlTests {
             "Never guess a gene defName; ask the metal for it."
         );
         Assert.IsFalse(
-            roster.Contains("GetNamedSilentFail"),
-            "A defName that matches nothing fails silently and looks like a balance problem."
+            Regex.IsMatch(roster, @"""Cosmere_Scadrial_Gene_"),
+            "A hand-written gene defName that matches nothing fails silently and reads as balance."
         );
         Assert.IsTrue(roster.Contains("Scribe_References"), "A hold that drops on reload is worse than none.");
     }
@@ -218,6 +224,24 @@ public class KolossControlTests {
 
         Assert.IsTrue(roster.Contains("koloss.SetFaction(holder.Faction)"), "Holding one makes it yours.");
         Assert.IsTrue(roster.Contains("koloss.SetFaction(null)"), "Losing it hands it back to nobody.");
+
+        // Slave rather than colonist: it takes orders because somebody is standing on its mind,
+        // which is what the status already means. Ideology owns slavery, so a colony without it
+        // still gets a working hold, just a plain faction member.
+        Assert.IsTrue(roster.Contains("GuestStatus.Slave"), "A held koloss works for the colony.");
+        Assert.IsTrue(roster.Contains("ModsConfig.IdeologyActive"), "Slavery is gated on the DLC.");
+    }
+
+    /// <summary>
+    ///     Each bond remembers the metal that took it, so a Soother holding two on brass and one on
+    ///     zinc runs out of one without losing the other two.
+    /// </summary>
+    [TestMethod]
+    public void RunningOutOfOneMetalOnlyDropsWhatThatMetalHeld() {
+        string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
+
+        Assert.IsTrue(roster.Contains("Scribe_Values.Look(ref metal"), "The metal has to survive a reload.");
+        Assert.IsTrue(roster.Contains("GeneFor(holder, bond)"), "Each bond bills its own metal.");
     }
 
     /// <summary>

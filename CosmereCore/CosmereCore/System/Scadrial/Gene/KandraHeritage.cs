@@ -45,6 +45,28 @@ public class KandraHeritage : Verse.Gene {
     /// <summary>1.0 for the first generation, tailing to 0.0 for the tenth.</summary>
     public float Seniority => 1f - ((Generation - Earliest) / (float)(Latest - Earliest));
 
+    /// <summary>Years the first generation has been walking around. Made at the Ascension.</summary>
+    private const float OldestYears = 1000f;
+
+    /// <summary>Years the tenth has. The Contract was still making them late in the Empire.</summary>
+    private const float YoungestYears = 40f;
+
+    /// <summary>
+    ///     How long this kandra has existed, which follows its generation and nothing else.
+    /// </summary>
+    /// <remarks>
+    ///     Jitter comes off the pawn's own id rather than a roll, so it is the same on every call
+    ///     and two third-generation kandra still differ. A roll here would change the answer every
+    ///     tick, because the enforcement below runs forever.
+    /// </remarks>
+    public float ChronologicalYears {
+        get {
+            float spread = 0.9f + (Mathf.Abs(pawn.thingIDNumber) % 21) / 100f;
+
+            return Mathf.Lerp(YoungestYears, OldestYears, Seniority) * spread;
+        }
+    }
+
     public override void PostAdd() {
         base.PostAdd();
         Roll();
@@ -81,6 +103,7 @@ public class KandraHeritage : Verse.Gene {
         if (pawn.Dead) return;
 
         if (pawn.IsHashIntervalTick(HealInterval, delta)) HealWounds();
+        if (pawn.IsHashIntervalTick(RegrowInterval, delta)) ApplyAge();
         if (pawn.IsHashIntervalTick(RegrowInterval, delta)) RegrowOnePart();
     }
 
@@ -148,7 +171,27 @@ public class KandraHeritage : Verse.Gene {
     /// <summary>
     ///     Older kandra carry more of everything they have had centuries to practise.
     /// </summary>
+    /// <summary>
+    ///     Ages the kandra to match its generation, without touching how old its body looks.
+    /// </summary>
+    /// <remarks>
+    ///     Enforced from the tick rather than set once. PostAdd runs partway through pawn
+    ///     generation and anything written to the age tracker there gets overwritten before the
+    ///     pawn is finished - the same trap that left the quickstart koloss reading a plain 24.
+    ///     Raising only, so a kandra never gets younger and an old save corrects itself.
+    /// </remarks>
+    private void ApplyAge() {
+        if (pawn.ageTracker == null) return;
+
+        long target = (long)(ChronologicalYears * GenDate.TicksPerYear);
+        if (pawn.ageTracker.AgeChronologicalTicks >= target) return;
+
+        pawn.ageTracker.AgeChronologicalTicks = target;
+    }
+
     private void Apply() {
+        ApplyAge();
+
         if (pawn.skills?.skills == null) return;
 
         int bonus = Mathf.RoundToInt(Seniority * 6f);

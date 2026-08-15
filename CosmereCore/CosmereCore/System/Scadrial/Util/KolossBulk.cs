@@ -1,31 +1,23 @@
 using System.Collections.Concurrent;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Util;
 
 /// <summary>
-///     How much bigger than a man this koloss has got.
+///     How far along its growth a koloss is, and which body that means it is drawn from.
 /// </summary>
 /// <remarks>
 ///     A koloss never stops growing, so its size is not a property of being a koloss - it is a
-///     reading of how long this one has been alive. The growth hediff's severity is that reading,
-///     and one number drives both what the player sees and what the thing can pick up.
+///     reading of how long this one has been alive. The growth hediff's severity is that reading.
 ///     <para>
-///         Every render node of every pawn asks for this on every frame, so the answer is cached.
-///         Growth runs at about two thousandths of a point per day, which is far slower than the
-///         refresh below - a koloss cannot change size between two checks.
+///         Concurrent and cached because CurLifeStage is asked on every render frame and by hunger,
+///         health scale and BodySize besides, and portraits render off the main thread. Growth runs
+///         at about two thousandths of a point per day, which is far slower than the refresh below.
 ///     </para>
 /// </remarks>
 public static class KolossBulk {
-    /// <summary>Size the moment the spikes go in. Barely more than the man they were.</summary>
-    public const float NewlyMade = 1.05f;
-
-    /// <summary>
-    ///     Size when the skin finally fails. A grown koloss stands about twelve feet.
-    /// </summary>
-    public const float FullyGrown = 1.75f;
-
     /// <summary>
     ///     Mass a koloss hauls over what its size alone would say, before growth is counted.
     /// </summary>
@@ -37,42 +29,66 @@ public static class KolossBulk {
 
     private const int RefreshInterval = 250;
 
-    // Concurrent because portraits render off the main thread. A plain Dictionary here threw
-    // "operations that change non-concurrent collections must have exclusive access" seventeen
-    // hundred times in one session.
-    private static readonly ConcurrentDictionary<int, float> Cached = new();
+    private static readonly ConcurrentDictionary<int, LifeStageDef?> CachedBody = new();
     private static int CachedAt = -99999;
 
     /// <summary>
-    ///     1.0 for anything that is not a koloss, so callers can multiply without asking first.
+    ///     Same answer as <see cref="BodyFor" />, cached.
     /// </summary>
-    public static float For(Pawn? pawn) {
-        if (pawn == null) return 1f;
+    /// <remarks>
+    ///     Pawn_AgeTracker.CurLifeStage is read on every render frame and by hunger, health scale
+    ///     and BodySize besides, so the patch that swaps this in cannot walk the hediff list each
+    ///     time. Growth moves about two thousandths of a point per day; the refresh below is far
+    ///     faster than a koloss can change band.
+    /// </remarks>
+    public static LifeStageDef? CachedBodyFor(Pawn? pawn) {
+        if (pawn == null) return null;
 
-        int now = Find.TickManager?.TicksGame ?? 0;
+        Refresh();
 
-        // Wholesale rather than per-entry, so dead and despawned pawns cannot pile up in here.
-        if (now - CachedAt >= RefreshInterval) {
-            Cached.Clear();
-            CachedAt = now;
-        }
+        if (CachedBody.TryGetValue(pawn.thingIDNumber, out LifeStageDef? known)) return known;
 
-        if (Cached.TryGetValue(pawn.thingIDNumber, out float known)) return known;
+        LifeStageDef? body = BodyFor(pawn);
+        CachedBody[pawn.thingIDNumber] = body;
 
-        float size = Measure(pawn);
-        Cached[pawn.thingIDNumber] = size;
-
-        return size;
+        return body;
     }
 
-    private static float Measure(Pawn pawn) {
-        Verse.Hediff? growth = pawn.health?.hediffSet?.GetFirstHediffOfDef(
+    private static void Refresh() {
+        int now = Find.TickManager?.TicksGame ?? 0;
+        if (now - CachedAt < RefreshInterval) return;
+
+        CachedBody.Clear();
+        CachedAt = now;
+    }
+
+    /// <summary>
+    ///     How far along the eight years this one is, or -1 for anything that is not a koloss.
+    /// </summary>
+    public static float GrowthOf(Pawn? pawn) {
+        Verse.Hediff? growth = pawn?.health?.hediffSet?.GetFirstHediffOfDef(
             HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth
         );
-        if (growth == null) return 1f;
 
-        // Height only tracks width. A koloss gets thicker as much as it gets taller, and scaling
-        // the two apart made it read as a stretched human rather than a bigger thing.
-        return Mathf.Lerp(NewlyMade, FullyGrown, Mathf.Clamp01(growth.Severity));
+        return growth == null ? -1f : Mathf.Clamp01(growth.Severity);
+    }
+
+    /// <summary>
+    ///     The body a koloss this far along is drawn from, or null for anything that is not one.
+    /// </summary>
+    /// <remarks>
+    ///     Banded rather than smooth because bodyWidth is a def field, and it is bodyWidth that
+    ///     decides how large a tile the pawn texture atlas cuts. The bands line up with the growth
+    ///     hediff's own stages, which is where the player already sees it change.
+    /// </remarks>
+    public static LifeStageDef? BodyFor(Pawn? pawn) {
+        float along = GrowthOf(pawn);
+        if (along < 0f) return null;
+
+        if (along >= 0.80f) return KolossLifeStageDefOf.Cosmere_Scadrial_LifeStage_KolossSplitting;
+        if (along >= 0.55f) return KolossLifeStageDefOf.Cosmere_Scadrial_LifeStage_KolossOvergrown;
+        if (along >= 0.25f) return KolossLifeStageDefOf.Cosmere_Scadrial_LifeStage_KolossGrown;
+
+        return KolossLifeStageDefOf.Cosmere_Scadrial_LifeStage_KolossYoung;
     }
 }

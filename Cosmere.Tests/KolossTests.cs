@@ -746,6 +746,31 @@ public class KolossTests {
     }
 
     /// <summary>
+    ///     Scaling the body node alone would have dressed a giant in a colonist's coat. Every node
+    ///     goes through the base worker, and the one subclass that overrides ScaleFor calls base
+    ///     first, so patching the base catches body, head, hair and each piece of apparel together.
+    /// </summary>
+    [TestMethod]
+    public void EveryPartOfAKolossGrowsTogether() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Rendering",
+            "KolossScalePatches.cs"
+        ));
+
+        Assert.IsTrue(
+            patch.Contains(": PawnRenderNodeWorker {"),
+            "The patch must sit on the base worker, not on one node's worker."
+        );
+        Assert.IsTrue(patch.Contains("nameof(ScaleFor)"));
+    }
+
+    /// <summary>
     ///     The gene used to hang a render node off the Body tag carrying the scaling worker. That
     ///     node had no graphic, so it drew nothing and scaled nothing, and every koloss stood at
     ///     exactly a colonist's size while the code that would have grown it ran every frame.
@@ -778,8 +803,32 @@ public class KolossTests {
             "KolossBulk.cs"
         ));
 
-        Assert.IsTrue(bulk.Contains("CachedBody.TryGetValue"), "Repeat lookups must hit the cache.");
-        Assert.IsTrue(bulk.Contains("CachedBody.Clear()"), "Dead pawns must not pile up in it.");
+        Assert.IsTrue(bulk.Contains("Cached.TryGetValue"), "Repeat lookups must hit the cache.");
+        Assert.IsTrue(bulk.Contains("Cached.Clear()"), "Dead pawns must not pile up in it.");
+    }
+
+    /// <summary>
+    ///     PawnRenderTree.TryGetMatrix walks a node's whole ancestor chain and applies every scale
+    ///     it finds, so scaling at each level multiplies out to factor-to-the-depth. Hair sits four
+    ///     deep. Applying the growth factor everywhere drew a koloss with hair twice its body size.
+    /// </summary>
+    [TestMethod]
+    public void GrowthIsAppliedOnceRatherThanOncePerAncestor() {
+        string patch = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Patch",
+            "Rendering",
+            "KolossScalePatches.cs"
+        ));
+
+        Assert.IsTrue(
+            patch.Contains("node.tree.rootNode != node"),
+            "Every node but the root must return before the factor is applied."
+        );
     }
 
     /// <summary>
@@ -916,104 +965,5 @@ public class KolossTests {
 
         Assert.IsTrue(tuning.Contains("AllMapsWorldAndTemporary_Alive"), "Live pawns have to be walked.");
         Assert.IsTrue(tuning.Contains("comp.severityPerDay ="), "And the comp's own field written.");
-    }
-
-    /// <summary>
-    ///     A koloss is drawn from a mesh its own size, not a person's mesh scaled up.
-    /// </summary>
-    /// <remarks>
-    ///     Past a camera zoom of 18 RimWorld stops drawing humanlikes and blits a picture baked
-    ///     into a shared atlas whose tile is cut for a person, so a scaled transform worked close
-    ///     up and cropped the koloss at the knees when zoomed out. bodyWidth is what sizes the
-    ///     mesh and therefore the tile.
-    /// </remarks>
-    [TestMethod]
-    public void AKolossIsDrawnFromABodyItsOwnSize() {
-        List<XElement> bands = Defs("Races", "KolossLifeStages.xml").Descendants("LifeStageDef")
-            .Where(d => d.Element("defName") != null)
-            .ToList();
-
-        Assert.AreEqual(4, bands.Count, "One band per growth stage.");
-
-        double width = 0d;
-        double size = 0d;
-        foreach (XElement band in bands) {
-            double nextWidth = double.Parse(band.Element("bodyWidth")!.Value);
-            double nextSize = double.Parse(band.Element("bodySizeFactor")!.Value);
-
-            Assert.IsTrue(nextWidth > width, "Each band has to be wider than the one before.");
-            Assert.IsTrue(nextSize > size, "And heavier.");
-
-            width = nextWidth;
-            size = nextSize;
-        }
-
-        // 1.5 is what HumanlikeBodyWidthForPawn falls back to, so anything at or under it is a
-        // person-sized tile and the crop comes straight back.
-        Assert.IsTrue(
-            double.Parse(bands[0].Element("bodyWidth")!.Value) > 1.5d,
-            "Even the smallest koloss needs a bigger tile than a person."
-        );
-    }
-
-    /// <summary>
-    ///     Adult is load-bearing. A koloss reading as anything else loses adult apparel, adult work
-    ///     and adult social interactions, none of which would look like a life stage problem.
-    /// </summary>
-    [TestMethod]
-    public void AKolossStaysAnAdultWhateverSizeItIs() {
-        XElement abstractBase = Defs("Races", "KolossLifeStages.xml").Descendants("LifeStageDef")
-            .First(d => d.Attribute("Abstract")?.Value == "True");
-
-        Assert.AreEqual("Adult", abstractBase.Element("developmentalStage")?.Value);
-    }
-
-    /// <summary>
-    ///     CurLifeStage is read on every render frame and by hunger, health scale and BodySize
-    ///     besides, so the swap cannot walk the hediff list each time it is asked.
-    /// </summary>
-    [TestMethod]
-    public void TheBodySwapIsCachedRatherThanRecountedEveryFrame() {
-        string patch = File.ReadAllText(Path.Combine(
-            RepoRoot,
-            "CosmereCore",
-            "CosmereCore",
-            "System",
-            "Scadrial",
-            "Patch",
-            "Rendering",
-            "KolossBodyPatch.cs"
-        ));
-
-        Assert.IsTrue(patch.Contains("CachedBodyFor"), "The uncached lookup is not for the hot path.");
-        Assert.IsTrue(patch.Contains("nameof(CurLifeStage)"));
-    }
-
-    /// <summary>
-    ///     bodySizeFactor already carries growth into BodySize, and BodySize is the only input to
-    ///     MassUtility.Capacity. Applying growth in the mass patch as well counts it twice.
-    /// </summary>
-    [TestMethod]
-    public void GrowthReachesCarriedMassExactlyOnce() {
-        string patch = File.ReadAllText(Path.Combine(
-            RepoRoot,
-            "CosmereCore",
-            "CosmereCore",
-            "System",
-            "Scadrial",
-            "Patch",
-            "Rendering",
-            "KolossScalePatches.cs"
-        ));
-
-        Assert.IsFalse(
-            patch.Contains("KolossBulk.For("),
-            "The life stages carry growth now; multiplying by it here counts it twice."
-        );
-        Assert.IsFalse(
-            patch.Contains("PawnRenderNodeWorker"),
-            "The transform scale is gone - the mesh is the right size on its own."
-        );
-        Assert.IsTrue(patch.Contains("KolossBulk.HaulingBuild"), "The flat build multiplier stays.");
     }
 }

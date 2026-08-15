@@ -68,7 +68,7 @@
           <li>RoomSize</li>
           <li>Outdoors</li>
         </disablesNeeds>
-        <hungerRateFactor>1.15</hungerRateFactor>
+        <hungerRateFactor>1.4</hungerRateFactor>
         <statFactors>
           <MeleeDamageFactor>1.25</MeleeDamageFactor>
         </statFactors>
@@ -105,7 +105,7 @@
           <li>Outdoors</li>
         </disablesNeeds>
         <painOffset>0.10</painOffset>
-        <hungerRateFactor>1.3</hungerRateFactor>
+        <hungerRateFactor>1.9</hungerRateFactor>
         <!-- The splits stop closing. This is what makes the gene's InjuryHealingFactor 0.7 mean
              anything - until now it only slowed healing that still finished. -->
         <naturalHealingFactor>0.35</naturalHealingFactor>
@@ -147,7 +147,7 @@
         </disablesNeeds>
         <painOffset>0.25</painOffset>
         <lifeThreatening>true</lifeThreatening>
-        <hungerRateFactor>1.5</hungerRateFactor>
+        <hungerRateFactor>2.6</hungerRateFactor>
         <naturalHealingFactor>0</naturalHealingFactor>
         <!-- lethalSeverity is the backstop and lands on the exact day the clock runs out, which
              for a batch spiked together is the same day for all of them. This kills them a little

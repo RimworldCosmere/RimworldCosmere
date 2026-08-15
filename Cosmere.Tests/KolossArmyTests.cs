@@ -30,6 +30,11 @@ public class KolossArmyTests {
         [RepoRoot, "CosmereScadrial", "Defs", .. parts]
     ));
 
+    private static readonly string[] KolossFactions = [
+        "Cosmere_Scadrial_Faction_Ruin",
+        "Cosmere_Scadrial_Faction_Koloss",
+    ];
+
     private static List<XElement> KolossMakers => Defs("Factions", "GreatHouses.xml")
         .Descendants("li")
         .Where(li => li.Element("options")?.Elements()
@@ -52,7 +57,7 @@ public class KolossArmyTests {
         Assert.AreEqual(3, raids.Count, "Straff from the north, Cett from the south, koloss from the east.");
 
         XElement east = raids.First(r => r.Element("edge")?.Value == "East");
-        Assert.AreEqual("Cosmere_Scadrial_Faction_HouseLekal", east.Element("faction")?.Value);
+        Assert.AreEqual("Cosmere_Scadrial_Faction_Koloss", east.Element("faction")?.Value);
     }
 
     /// <summary>
@@ -63,7 +68,7 @@ public class KolossArmyTests {
     /// </summary>
     [TestMethod]
     public void KolossNeverShareAGroupMakerWithCheaperKinds() {
-        Assert.AreEqual(2, KolossMakers.Count, "One for Ruin, one for Lekal.");
+        Assert.AreEqual(2, KolossMakers.Count, "One for Ruin, one for the koloss themselves.");
 
         foreach (XElement maker in KolossMakers) {
             List<string> kinds = maker.Element("options")!.Elements().Select(o => o.Name.LocalName).ToList();
@@ -112,7 +117,7 @@ public class KolossArmyTests {
             .Select(d => int.Parse(d.Element("combatPower")?.Value ?? "0"))
             .Max();
 
-        foreach (string faction in new[] { "Cosmere_Scadrial_Faction_Ruin", "Cosmere_Scadrial_Faction_HouseLekal" }) {
+        foreach (string faction in KolossFactions) {
             XElement def = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
                 .First(d => d.Element("defName")?.Value == faction);
 
@@ -132,7 +137,7 @@ public class KolossArmyTests {
     /// </summary>
     [TestMethod]
     public void NobodyFieldsChildKoloss() {
-        foreach (string faction in new[] { "Cosmere_Scadrial_Faction_Ruin", "Cosmere_Scadrial_Faction_HouseLekal" }) {
+        foreach (string faction in KolossFactions) {
             XElement def = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
                 .First(d => d.Element("defName")?.Value == faction);
 
@@ -204,5 +209,29 @@ public class KolossArmyTests {
             Assert.IsTrue(next > power, "An older koloss has to cost a raid more.");
             power = next;
         }
+    }
+
+    /// <summary>
+    ///     There is no such thing as a friendly koloss army.
+    /// </summary>
+    /// <remarks>
+    ///     This is why they are their own faction rather than a group maker on House Lekal, which
+    ///     bought them. A house can be allied, and an allied house sends its Combat group as
+    ///     friendly reinforcements.
+    /// </remarks>
+    [TestMethod]
+    public void KolossAreNeverOnYourSide() {
+        XElement koloss = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Faction_Koloss");
+
+        Assert.AreEqual("true", koloss.Element("permanentEnemy")?.Value);
+
+        XElement lekal = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Faction_HouseLekal");
+
+        Assert.IsNull(
+            lekal.Element("pawnGroupMakers"),
+            "Lekal is a house that can be allied; it must not be able to field koloss."
+        );
     }
 }

@@ -139,7 +139,7 @@
                RaidAction creates the faction when the world lacks one, so this works from any
                start. -->
           <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
-            <faction>Cosmere_Scadrial_Faction_HouseLekal</faction>
+            <faction>Cosmere_Scadrial_Faction_Koloss</faction>
             <armyNameKey>CS_Progression_Army_Koloss</armyNameKey>
             <edge>East</edge>
             <pointsFactor>1.3</pointsFactor>

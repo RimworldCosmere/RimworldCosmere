@@ -932,6 +932,14 @@ public class KolossTests {
         Assert.IsTrue(bound.Contains("Notify_PawnDied"), "Dying is the other way a koloss ends.");
         Assert.IsTrue(bound.Contains("GenPlace.TryPlaceThing"), "They have to land somewhere reachable.");
         Assert.IsTrue(bound.Contains("comp.Charge("), "A spike keeps what it took. Dying does not undo it.");
+
+        // isValid needs one of six things true, and the only one a koloss spike satisfies is
+        // IsHumanAttribute(stealType). Left to default that held only because HumanStrength is the
+        // first member of the enum - reorder it and every koloss drops spikes the bill refuses.
+        Assert.IsTrue(
+            bound.Contains("stealType = HemalurgicStealType.HumanStrength"),
+            "The steal type has to be stated, not inherited from enum ordering."
+        );
     }
 
     /// <summary>

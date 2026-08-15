@@ -49,10 +49,19 @@ public class SpikeBound : Verse.Gene {
             : pawn.health.hediffSet.GetNotMissingParts()
                 .FirstOrDefault(p => p.def == pawn.RaceProps.body.corePart.def);
 
+        // stealType is stated rather than left to default. HemalurgicChargeData.isValid needs one
+        // of six things to be true, and the only one these satisfy is IsHumanAttribute - which held
+        // only because HumanStrength happens to be the first member of the enum. Reorder it and
+        // every koloss quietly drops uncharged spikes the make-koloss bill then refuses. Iron
+        // steals strength; say so.
         for (int i = 0; i < SpikeCount; i++) {
             HemalurgicImplantUtility.AddToUnifiedHediff(
                 pawn,
-                new ImplantedSpikeData { metalDefName = Metal, chargeStrength = 1f },
+                new ImplantedSpikeData {
+                    metalDefName = Metal,
+                    chargeStrength = 1f,
+                    stealType = HemalurgicStealType.HumanStrength,
+                },
                 core
             );
         }

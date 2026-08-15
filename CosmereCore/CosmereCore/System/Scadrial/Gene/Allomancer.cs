@@ -258,21 +258,8 @@ public class Allomancer : Metalborn {
                 held.Select(one => one.LabelShortCap).ToCommaList().Named("HELD")
             ),
             icon = def.Icon,
-            action = () => Find.WindowStack.Add(new FloatMenu(ReleaseOptions(held))),
+            action = () => Find.WindowStack.Add(new UI.Dialog_KolossRoster(pawn, metal)),
         };
-    }
-
-    private static List<FloatMenuOption> ReleaseOptions(List<Pawn> held) {
-        List<FloatMenuOption> options = [];
-        for (int i = 0; i < held.Count; i++) {
-            Pawn one = held[i];
-            options.Add(new FloatMenuOption(
-                "CS_KolossRoster_Release".Translate(one.LabelShortCap.Named("KOLOSS")),
-                () => Util.KolossControl.Release(one)
-            ));
-        }
-
-        return options;
     }
 
     public static string ThresholdDisplayLabel(Allomancer gene) {

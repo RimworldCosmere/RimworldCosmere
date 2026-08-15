@@ -264,7 +264,20 @@ public class KolossControlTests {
 
         Assert.IsTrue(gene.Contains("HeldOnMetal"), "Each metal answers for its own holds.");
         Assert.IsTrue(gene.Contains("CS_KolossRoster_Label"), "The count belongs on a gizmo.");
-        Assert.IsTrue(gene.Contains("KolossControl.Release"), "And releasing one has to be reachable.");
+        Assert.IsTrue(gene.Contains("Dialog_KolossRoster"), "The gizmo opens the roster.");
+
+        string window = Core("System", "Scadrial", "UI", "Dialog_KolossRoster.cs");
+
+        // Every interactive rect owes the player three things within one frame of hover: that it
+        // is clickable, what it does, and a sound. Missing any of them reads as a dead panel.
+        foreach (string owed in new[] { "DrawHighlightIfMouseover", "MouseoverSounds.DoRegion", "TipRegion" }) {
+            Assert.IsTrue(window.Contains(owed), $"Interactive rects need {owed}.");
+        }
+
+        // GameFont.Large does not exist, and a scroll view that ignores the scrollbar clips.
+        Assert.IsFalse(window.Contains("GameFont.Large"), "There are only Tiny, Small and Medium.");
+        Assert.IsTrue(window.Contains("ScrollbarWidth"), "A scroll view has to deduct the scrollbar.");
+        Assert.IsTrue(window.Contains("Event.current.shift"), "Shift extends the selection.");
     }
 
     /// <summary>

@@ -20,16 +20,16 @@ namespace Cosmere.System.Scadrial.Util;
 /// </remarks>
 public static class EmotionalResistance {
     /// <summary>What a freshly spiked koloss asks for.</summary>
-    private const float KolossFloor = 2f;
+    private const float KolossFloor = 1f;
 
     /// <summary>What one about to split its skin asks for.</summary>
-    private const float KolossCeiling = 8f;
+    private const float KolossCeiling = 5f;
 
     /// <summary>What a tenth generation kandra asks for, at about forty years old.</summary>
-    private const float KandraFloor = 3f;
+    private const float KandraFloor = 1.5f;
 
     /// <summary>What a first generation asks for, at about a thousand.</summary>
-    private const float KandraCeiling = 12f;
+    private const float KandraCeiling = 7f;
 
     /// <summary>Years a kandra has to reach before it resists like a first generation.</summary>
     private const float KandraOldestYears = 1000f;

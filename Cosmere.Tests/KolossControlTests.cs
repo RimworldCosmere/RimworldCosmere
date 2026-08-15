@@ -126,6 +126,14 @@ public class KolossControlTests {
             Regex.IsMatch(seize, @"GetStrength\(\)"),
             "A bare GetStrength here is the reach 0.0 bug."
         );
+
+        // SetNextStatus only runs from QueueCastingJob, which is the confirm and not the hover, so
+        // nextStatus is null while the player is still picking a target. Without a floor the
+        // readout says 0.0 and teaches the player the ability is broken.
+        Assert.IsTrue(
+            seize.Contains("GetStrength((Status)1)"),
+            "The readout needs a power to assume before one has been chosen."
+        );
         Assert.IsFalse(
             Regex.IsMatch(seize, @"Duralumin|SurgeCharge"),
             "Duralumin already lands through GetStrength; special-casing it here would double it."

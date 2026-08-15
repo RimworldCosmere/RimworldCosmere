@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
@@ -41,7 +42,18 @@ public class SeizeKoloss : CompAbilityEffect {
     ///         and GetStrength then reads the live status, which is what we want by that point.
     ///     </para>
     /// </remarks>
-    private float Reach => parent.GetStrength(parent.nextStatus);
+    private float Reach {
+        get {
+            float chosen = parent.GetStrength(parent.nextStatus);
+            if (chosen > 0f) return chosen;
+
+            // Nothing picked yet. SetNextStatus only runs from QueueCastingJob, which is the
+            // confirm, not the hover - so both nextStatus and status.power are zero while the
+            // player is still choosing a target, and asking plainly reports reach 0.0. One is what
+            // QueueCastingJob passes by default, so it is the honest number to show.
+            return parent.GetStrength((Status)1);
+        }
+    }
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);

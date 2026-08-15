@@ -44,6 +44,10 @@ public static class KolossControl {
             );
         }
 
+        Cosmere.Core.Logger.Verbose(
+            $"Koloss seize: {holder.LabelShort} reach {reach:F2} against {koloss.LabelShort} needing {needed:F2}."
+        );
+
         if (reach < needed) {
             return "CS_KolossBind_TooWeak".Translate(
                 koloss.LabelShortCap.Named("TARGET"),

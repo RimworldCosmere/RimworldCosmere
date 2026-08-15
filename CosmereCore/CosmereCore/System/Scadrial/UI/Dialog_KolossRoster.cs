@@ -83,7 +83,7 @@ public class Dialog_KolossRoster : Window {
         }
 
         Rect header = inRect.TopPartPixels(Unit * 3f);
-        Rect footer = inRect.BottomPartPixels(Unit * 2.5f);
+        Rect footer = inRect.BottomPartPixels(Unit * 2f);
         Rect body = new(
             inRect.x,
             header.yMax + Unit,
@@ -245,18 +245,47 @@ public class Dialog_KolossRoster : Window {
     }
 
     private void DrawFooter(Rect rect, List<Pawn> held) {
-        Rect jump = rect.LeftPartPixels(Unit * 10f);
-        if (Widgets.ButtonText(jump, "CS_KolossRoster_Jump".Translate())) {
-            Select(picked.Count > 0 ? picked.ToList() : held, true);
+        float width = (rect.width - (Unit * 2f)) / 3f;
+
+        Rect all = new(rect.x, rect.y, width, rect.height);
+        if (Widgets.ButtonText(all, "CS_KolossRoster_SelectAll".Translate())) {
+            Select(held, true);
             Close();
         }
 
-        Rect letAll = rect.RightPartPixels(Unit * 10f);
+        // One button for both directions, because a band that is half drafted has one obvious next
+        // move and it is not "draft the ones already drafted".
+        List<Pawn> draftable = Draftable(held);
+        bool anyIdle = draftable.Any(one => one.drafter?.Drafted != true);
+
+        Rect draftAll = new(all.xMax + Unit, rect.y, width, rect.height);
+        TaggedString label = anyIdle
+            ? "CS_KolossRoster_DraftAll".Translate()
+            : "CS_KolossRoster_UndraftAll".Translate();
+
+        if (draftable.Count == 0) {
+            Widgets.ButtonText(draftAll, label, active: false);
+            TooltipHandler.TipRegion(draftAll, "CS_KolossRoster_CannotDraft".Translate());
+        } else if (Widgets.ButtonText(draftAll, label)) {
+            for (int i = 0; i < draftable.Count; i++) draftable[i].drafter!.Drafted = anyIdle;
+        }
+
+        Rect letAll = new(draftAll.xMax + Unit, rect.y, width, rect.height);
         if (!Widgets.ButtonText(letAll, "CS_KolossRoster_LetAll".Translate())) return;
 
         foreach (Pawn one in held) KolossControl.Release(one);
 
         picked.Clear();
+    }
+
+    /// <summary>Only the ones somebody is actually holding. A loose koloss takes no orders.</summary>
+    private static List<Pawn> Draftable(List<Pawn> held) {
+        List<Pawn> can = [];
+        for (int i = 0; i < held.Count; i++) {
+            if (held[i].drafter != null && held[i].IsColonistPlayerControlled) can.Add(held[i]);
+        }
+
+        return can;
     }
 
     /// <summary>

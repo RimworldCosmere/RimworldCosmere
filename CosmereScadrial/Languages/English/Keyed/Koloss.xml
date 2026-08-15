@@ -33,7 +33,9 @@
   <CS_KolossRoster_DraftTip>Take direct command of this one.</CS_KolossRoster_DraftTip>
   <CS_KolossRoster_CannotDraft>Nothing is holding this one. It takes no orders until somebody takes it again.</CS_KolossRoster_CannotDraft>
   <CS_KolossRoster_LetTip>Let this one go. Everything else stays held.\n\nIt will turn on whatever is nearest once the grace period passes.</CS_KolossRoster_LetTip>
-  <CS_KolossRoster_Jump>Select</CS_KolossRoster_Jump>
+  <CS_KolossRoster_SelectAll>Select all</CS_KolossRoster_SelectAll>
+  <CS_KolossRoster_DraftAll>Draft all</CS_KolossRoster_DraftAll>
+  <CS_KolossRoster_UndraftAll>Undraft all</CS_KolossRoster_UndraftAll>
   <CS_KolossRoster_LetAll>Release all</CS_KolossRoster_LetAll>
   <CS_KolossRoster_StateLoose>Loose. Attacking whatever is nearest.</CS_KolossRoster_StateLoose>
   <CS_KolossRoster_StateDrafted>Drafted. {JOB}</CS_KolossRoster_StateDrafted>

@@ -5,6 +5,7 @@ using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
 using Cosmere.System.Scadrial.Hemalurgy;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 
@@ -129,18 +130,11 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         GenSpawn.Spawn(rashek, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 5), map);
     }
 
-    /// <summary>
-    ///     Everything the make-koloss bill needs, on the ground next to the colony.
-    /// </summary>
-    /// <remarks>
-    ///     The bill wants four charged iron spikes and somewhere to lie down, and building both by
-    ///     hand is several minutes of setup before the thing under test can be reached at all.
-    ///     Charged with stolen human strength, which is what iron takes and what a koloss is made
-    ///     out of - an uncharged spike is refused by the bill on purpose.
-    /// </remarks>
+    /// <summary>How many to stand up. One tells you nothing about a band of them.</summary>
+    private const int Band = 10;
 
     /// <summary>
-    ///     Human, the koloss who took a name.
+    ///     Human, the koloss who took a name, and nine who did not.
     /// </summary>
     /// <remarks>
     ///     Deliberately here rather than in the scenario. He belongs to the Hero of Ages, not to a
@@ -158,32 +152,60 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         );
         if (kind == null || koloss == null) return;
 
-        // No faction. A koloss in the colony is already somebody's, and the whole point of having
-        // him standing there is to seize him - which needs him to belong to nobody first.
-        Pawn human = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
-            kind,
-            null,
-            PawnGenerationContext.NonPlayer,
-            forceGenerateNewPawn: true,
-            canGeneratePawnRelations: false,
-            fixedGender: Gender.Male,
-            forcedXenotype: koloss,
-            fixedBiologicalAge: 24f,
-            fixedChronologicalAge: 0f
-        ));
+        // Ten of them, spread across the whole growth range, because one koloss says nothing about
+        // what a band of them looks like - and size is the thing that varies most.
+        for (int i = 0; i < Band; i++) {
+            // No faction. A koloss in the colony is already somebody's, and the point of having
+            // them stand there is to seize them - which needs them to belong to nobody first.
+            Pawn one = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
+                kind,
+                null,
+                PawnGenerationContext.NonPlayer,
+                forceGenerateNewPawn: true,
+                canGeneratePawnRelations: false,
+                fixedGender: Gender.Male,
+                forcedXenotype: koloss,
+                fixedBiologicalAge: 24f
+            ));
 
-        // The one koloss anybody ever called anything.
-        human.Name = new NameSingle("Human", false);
+            // The one koloss anybody ever called anything, and nine nobody did.
+            if (i == 0) one.Name = new NameSingle("Human", false);
 
-        // fixedChronologicalAge on the request does not survive generation - the tracker has to be
-        // written afterwards. Four years a koloss, in a body that was already grown when he got it.
-        if (human.ageTracker != null) {
-            human.ageTracker.AgeChronologicalTicks = 4 * GenDate.TicksPerYear;
+            // fixedChronologicalAge on the request does not survive generation - the tracker has
+            // to be written afterwards. Years a koloss, in a body that was grown when it got it.
+            if (one.ageTracker != null) {
+                one.ageTracker.AgeChronologicalTicks = (i + 1) * GenDate.TicksPerYear;
+            }
+
+            Grow(one, Band == 1 ? 0.5f : i / (float)(Band - 1));
+
+            GenSpawn.Spawn(one, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 10), map);
         }
-
-        GenSpawn.Spawn(human, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 6), map);
     }
 
+    /// <summary>
+    ///     Ages one forward, so the band shows the whole range from newly spiked to about to split.
+    /// </summary>
+    private static void Grow(Pawn koloss, float along) {
+        Verse.Hediff? growth = koloss.health?.hediffSet?.GetFirstHediffOfDef(
+            HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth
+        );
+        if (growth == null) return;
+
+        // Never a literal zero. Hediff.ShouldRemove is Severity <= 0f, so the hediff would delete
+        // itself on the next tick and the koloss would have no growth at all.
+        growth.Severity = Mathf.Max(0.001f, along);
+    }
+
+    /// <summary>
+    ///     Everything the make-koloss bill needs, on the ground next to the colony.
+    /// </summary>
+    /// <remarks>
+    ///     The bill wants four charged iron spikes and somewhere to lie down, and building both by
+    ///     hand is several minutes of setup before the thing under test can be reached at all.
+    ///     Charged with stolen human strength, which is what iron takes and what a koloss is made
+    ///     out of - an uncharged spike is refused by the bill on purpose.
+    /// </remarks>
     private static void LayOutTheKolossBench(Pawn nearby) {
         Map? map = nearby.Map;
         if (map == null) return;

@@ -250,7 +250,7 @@ public class Dialog_KolossRoster : Window {
     private void DrawFooter(Rect rect, List<Pawn> held) {
         Rect jump = rect.LeftPartPixels(Unit * 10f);
         if (Widgets.ButtonText(jump, "CS_KolossRoster_Jump".Translate())) {
-            Select(picked.Count > 0 ? picked.ToList() : held);
+            Select(picked.Count > 0 ? picked.ToList() : held, true);
             Close();
         }
 
@@ -284,13 +284,28 @@ public class Dialog_KolossRoster : Window {
         Select(picked.ToList());
     }
 
-    private static void Select(List<Pawn> pawns) {
+    /// <summary>
+    ///     Selects them, and takes the camera there.
+    /// </summary>
+    /// <remarks>
+    ///     Selecting alone did happen and looked like nothing, because the koloss was somewhere
+    ///     else on the map and the window was covering the bit of screen that would have shown it.
+    ///     A jump is what the button was always promising.
+    /// </remarks>
+    private static void Select(List<Pawn> pawns, bool jump = false) {
         if (pawns.Count == 0) return;
 
         Find.Selector?.ClearSelection();
+
+        Pawn? first = null;
         for (int i = 0; i < pawns.Count; i++) {
-            if (pawns[i].Spawned) Find.Selector?.Select(pawns[i], false);
+            if (!pawns[i].Spawned) continue;
+
+            Find.Selector?.Select(pawns[i], false);
+            first ??= pawns[i];
         }
+
+        if (jump && first != null) CameraJumper.TryJump(first);
     }
 
     private static string StateOf(Pawn koloss, bool loose) {

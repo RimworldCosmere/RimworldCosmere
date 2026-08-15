@@ -13,9 +13,7 @@
     <label>koloss sword</label>
     <description>A slab of iron beaten into something a koloss can hold and swing. The edge is uneven and the balance is wrong for any hand smaller than the one that carried it last. It is not made so much as inherited.</description>
     <graphicData>
-      <!-- Vanilla's until the koloss weapon art lands. A missing texPath here logs and draws a
-           placeholder rather than throwing, unlike the xenotype icon, but it still looks broken. -->
-      <texPath>Things/Item/Equipment/WeaponMelee/Club</texPath>
+      <texPath>Things/Item/Equipment/WeaponMelee/KolossSword</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.3</drawSize>
     </graphicData>

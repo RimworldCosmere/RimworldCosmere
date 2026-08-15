@@ -117,7 +117,15 @@ public class KolossControlTests {
     public void ReachComesFromTheAbilityRatherThanBeingRecomputed() {
         string seize = CodeOnly("System", "Scadrial", "Allomancy", "Comp", "Ability", "SeizeKoloss.cs");
 
-        Assert.IsTrue(seize.Contains("parent.GetStrength()"), "Reach must come off the ability.");
+        Assert.IsTrue(
+            seize.Contains("parent.GetStrength(parent.nextStatus)"),
+            "GetStrength reads (desiredStatus ?? status).power, and status.power is zero until the "
+            + "burn starts. Asking without nextStatus reported every seizure as reach 0.0."
+        );
+        Assert.IsFalse(
+            Regex.IsMatch(seize, @"GetStrength\(\)"),
+            "A bare GetStrength here is the reach 0.0 bug."
+        );
         Assert.IsFalse(
             Regex.IsMatch(seize, @"Duralumin|SurgeCharge"),
             "Duralumin already lands through GetStrength; special-casing it here would double it."

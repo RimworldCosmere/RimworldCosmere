@@ -28,12 +28,27 @@ public class SeizeKolossProperties : CompProperties_AbilityEffect {
 public class SeizeKoloss : CompAbilityEffect {
     private new AllomancyAbility parent => (AllomancyAbility)base.parent;
 
+    /// <summary>
+    ///     How hard this Allomancer is about to push, rather than how hard they are pushing.
+    /// </summary>
+    /// <remarks>
+    ///     GetStrength reads <c>(desiredStatus ?? status).power</c>, and status.power is zero until
+    ///     the burn actually starts. Asking without a status therefore reported every seizure as
+    ///     reach 0.0 - the readout said the Allomancer could not lift anything, and every attempt
+    ///     failed. MetalCost solves the same problem the same way.
+    ///     <para>
+    ///         The null fallback is load-bearing: once the burn has begun nextStatus is cleared,
+    ///         and GetStrength then reads the live status, which is what we want by that point.
+    ///     </para>
+    /// </remarks>
+    private float Reach => parent.GetStrength(parent.nextStatus);
+
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);
 
         if (target.Pawn is not { } koloss) return;
 
-        AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, parent.GetStrength());
+        AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, Reach);
         if (report.Accepted) {
             Messages.Message(
                 "CS_KolossBound".Translate(
@@ -69,7 +84,7 @@ public class SeizeKoloss : CompAbilityEffect {
         if (needed <= 0f) return null;
 
         return "CS_KolossBind_Readout".Translate(
-            parent.GetStrength().ToString("F1").Named("REACH"),
+            Reach.ToString("F1").Named("REACH"),
             needed.ToString("F1").Named("NEEDED")
         );
     }

@@ -166,7 +166,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
         if (EmotionalResistance.Of(target) <= 0f) return;
         if (KolossControl.IsHeld(target)) return;
 
-        KolossControl.TryBind(Pawn, target, ((AllomancyAbility)ability!).GetStrength());
+        AllomancyAbility burning = (AllomancyAbility)ability!;
+        KolossControl.TryBind(Pawn, target, burning.GetStrength(burning.nextStatus));
     }
 
     private void Act(Pawn? target) {

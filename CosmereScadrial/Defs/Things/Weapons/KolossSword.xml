@@ -28,6 +28,12 @@
     <!-- Not craftable and not traded. Every one of these came off a dead koloss, which is also
          the only way a player gets one. -->
     <tradeability>None</tradeability>
+    <!-- The art is greyscale, so the game tints it by material the way it does every other melee
+         weapon. A koloss sword is whatever somebody beat it out of. -->
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>140</costStuffCount>
     <statBases>
       <Mass>7</Mass>
       <MarketValue>90</MarketValue>

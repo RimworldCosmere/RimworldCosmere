@@ -158,9 +158,11 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         );
         if (kind == null || koloss == null) return;
 
+        // No faction. A koloss in the colony is already somebody's, and the whole point of having
+        // him standing there is to seize him - which needs him to belong to nobody first.
         Pawn human = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
             kind,
-            Faction.OfPlayer,
+            null,
             PawnGenerationContext.NonPlayer,
             forceGenerateNewPawn: true,
             canGeneratePawnRelations: false,

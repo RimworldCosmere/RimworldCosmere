@@ -38,6 +38,13 @@ public class Dialog_KolossRoster : Window {
     private static readonly Color PortraitBack = new(0.16f, 0.17f, 0.19f);
     private static readonly Color PortraitEdge = new(0.35f, 0.42f, 0.48f);
 
+    /// <summary>
+    ///     Vanilla's release-to-wild command. Letting a koloss go is not deleting it - it walks
+    ///     off and becomes a problem - and the trash icon said the opposite.
+    /// </summary>
+    private static readonly Texture2D LetGo =
+        ContentFinder<Texture2D>.Get("UI/Commands/ReleaseAnimals", false) ?? TexButton.Delete;
+
     private readonly MetalDef metal;
     private readonly Pawn holder;
     private readonly HashSet<Pawn> picked = [];
@@ -211,7 +218,7 @@ public class Dialog_KolossRoster : Window {
         }
 
         Rect release = new(rect.x + (third * 2f) + inset, top, IconSize, IconSize);
-        if (!Draw(release, TexButton.Delete, "CS_KolossRoster_LetTip".Translate(), true)) return;
+        if (!Draw(release, LetGo, "CS_KolossRoster_LetTip".Translate(), true)) return;
 
         foreach (Pawn one in picked.Contains(koloss) ? picked.ToList() : [koloss]) {
             KolossControl.Release(one);

@@ -12,7 +12,10 @@ Hostile or neutral targets grow tense, anxious, or unstable — their emotions s
         <hediff>Cosmere_Scadrial_Hediff_ZincAura</hediff>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
-    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+    <!-- One push, not a channel. AbstractToggleTargetBurnAbility runs
+         Cosmere_Scadrial_Job_MaintainAllomanticTarget, which walks the caster to the target and
+         holds them there - a leash, on the one mechanic built to have none. -->
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_ZincTarget</defName>
         <label>riot target</label>
         <description>The Rioter channels Zinc to incite emotion in a single target.
@@ -36,6 +39,7 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
              The comp answers with both numbers when the target resists, so the player can see how
              far short they fell and that duralumin closes it. -->
         <comps>
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.InciteBreakProperties" />
             <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.SeizeKolossProperties" />
         </comps>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>

@@ -18,4 +18,9 @@
   <CS_KolossInspect_Loose>Held by: nobody</CS_KolossInspect_Loose>
   <CS_KolossInspect_Held>Held by: {HOLDER}</CS_KolossInspect_Held>
 
+  <CS_Riot_Reason>Somebody is pushing on their emotions.</CS_Riot_Reason>
+  <CS_Riot_NothingToBreak>{TARGET} has nothing left to push on.</CS_Riot_NothingToBreak>
+  <CS_Soothe_Calmed>{TARGET} settles.</CS_Soothe_Calmed>
+  <CS_Soothe_CannotReach>{TARGET} cannot be soothed out of this. Nothing is holding it.</CS_Soothe_CannotReach>
+
 </LanguageData>

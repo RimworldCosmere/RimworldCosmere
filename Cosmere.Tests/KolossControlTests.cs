@@ -117,13 +117,15 @@ public class KolossControlTests {
     public void ReachComesFromTheAbilityRatherThanBeingRecomputed() {
         string seize = CodeOnly("System", "Scadrial", "Allomancy", "Comp", "Ability", "SeizeKoloss.cs");
 
+        string push = CodeOnly("System", "Scadrial", "Allomancy", "Comp", "Ability", "EmotionalPush.cs");
+
         Assert.IsTrue(
-            seize.Contains("parent.GetStrength(parent.nextStatus)"),
+            push.Contains("parent.GetStrength(parent.nextStatus)"),
             "GetStrength reads (desiredStatus ?? status).power, and status.power is zero until the "
             + "burn starts. Asking without nextStatus reported every seizure as reach 0.0."
         );
         Assert.IsFalse(
-            Regex.IsMatch(seize, @"GetStrength\(\)"),
+            Regex.IsMatch(push, @"GetStrength\(\)"),
             "A bare GetStrength here is the reach 0.0 bug."
         );
 
@@ -131,7 +133,7 @@ public class KolossControlTests {
         // nextStatus is null while the player is still picking a target. Without a floor the
         // readout says 0.0 and teaches the player the ability is broken.
         Assert.IsTrue(
-            seize.Contains("GetStrength((Status)1)"),
+            push.Contains("GetStrength((Status)1)"),
             "The readout needs a power to assume before one has been chosen."
         );
         Assert.IsFalse(
@@ -256,5 +258,49 @@ public class KolossControlTests {
 
         Assert.IsTrue(gene.Contains("CS_KolossRelease_Label"), "The player needs a per-pawn release.");
         Assert.IsTrue(gene.Contains("KolossControl.Release(pawn)"), "Release takes one pawn, not a holder.");
+    }
+
+    /// <summary>
+    ///     A targeted riot or soothe is one push, not a channel.
+    /// </summary>
+    /// <remarks>
+    ///     AbstractToggleTargetBurnAbility runs Cosmere_Scadrial_Job_MaintainAllomanticTarget,
+    ///     which calls MaintainProximityTo and cuts the burn rate to zero past the verb's range.
+    ///     That walks the caster to the target and pins them there, which is a leash - on the one
+    ///     mechanic built to have none.
+    /// </remarks>
+    [TestMethod]
+    public void ATargetedPushIsOneActRatherThanAChannel() {
+        foreach (string metal in new[] { "Zinc", "Brass" }) {
+            XElement ability = XDocument.Load(Path.Combine(
+                    RepoRoot, "CosmereScadrial", "Defs", "Allomancy", metal, "Abilities.xml"
+                )).Descendants()
+                .First(d => d.Element("defName")?.Value == $"Cosmere_Scadrial_Ability_{metal}Target");
+
+            Assert.AreEqual(
+                "AbstractTargetBurnAbility",
+                ability.Attribute("ParentName")?.Value,
+                $"{metal} target must not inherit the maintain-proximity job."
+            );
+
+            List<string> comps = ability.Element("comps")!.Elements("li")
+                .Select(li => li.Attribute("Class")!.Value).ToList();
+
+            Assert.IsTrue(comps.Any(c => c.EndsWith("SeizeKolossProperties")), "Either metal holds one.");
+        }
+    }
+
+    /// <summary>
+    ///     Rioting pushes somebody over; soothing pulls them back. A koloss in bloodlust is neither
+    ///     - it is loose, and the registry keeps a deliberate soothe off it the same way it keeps
+    ///     the passive one off.
+    /// </summary>
+    [TestMethod]
+    public void SoothingCannotReachALooseKoloss() {
+        string push = Core("System", "Scadrial", "Allomancy", "Comp", "Ability", "EmotionalPush.cs");
+
+        Assert.IsTrue(push.Contains("UnbreakableStateRegistry.Guards"), "The deliberate soothe needs the guard too.");
+        Assert.IsTrue(push.Contains("state.RecoverFromState()"), "Soothing ends the state it can reach.");
+        Assert.IsTrue(push.Contains("MentalBreakDefOf.Berserk"), "Rioting starts one.");
     }
 }

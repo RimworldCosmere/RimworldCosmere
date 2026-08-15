@@ -26,35 +26,7 @@ public class SeizeKolossProperties : CompProperties_AbilityEffect {
 ///         the expensive act; the roster bills the cheap one.
 ///     </para>
 /// </remarks>
-public class SeizeKoloss : CompAbilityEffect {
-    private new AllomancyAbility parent => (AllomancyAbility)base.parent;
-
-    /// <summary>
-    ///     How hard this Allomancer is about to push, rather than how hard they are pushing.
-    /// </summary>
-    /// <remarks>
-    ///     GetStrength reads <c>(desiredStatus ?? status).power</c>, and status.power is zero until
-    ///     the burn actually starts. Asking without a status therefore reported every seizure as
-    ///     reach 0.0 - the readout said the Allomancer could not lift anything, and every attempt
-    ///     failed. MetalCost solves the same problem the same way.
-    ///     <para>
-    ///         The null fallback is load-bearing: once the burn has begun nextStatus is cleared,
-    ///         and GetStrength then reads the live status, which is what we want by that point.
-    ///     </para>
-    /// </remarks>
-    private float Reach {
-        get {
-            float chosen = parent.GetStrength(parent.nextStatus);
-            if (chosen > 0f) return chosen;
-
-            // Nothing picked yet. SetNextStatus only runs from QueueCastingJob, which is the
-            // confirm, not the hover - so both nextStatus and status.power are zero while the
-            // player is still choosing a target, and asking plainly reports reach 0.0. One is what
-            // QueueCastingJob passes by default, so it is the honest number to show.
-            return parent.GetStrength((Status)1);
-        }
-    }
-
+public class SeizeKoloss : EmotionalPush {
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);
 

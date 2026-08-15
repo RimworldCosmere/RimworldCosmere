@@ -1,3 +1,4 @@
+using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
@@ -125,14 +126,30 @@ public class KolossRoster : GameComponent {
         return held;
     }
 
+    /// <summary>
+    ///     Takes hold, and hands the thing over to whoever took it.
+    /// </summary>
+    /// <remarks>
+    ///     Drafting gates on IsColonistPlayerControlled, which needs the pawn in the player
+    ///     faction. Without the transfer a held koloss reported a holder and still could not be
+    ///     given a single order, which is the whole point of holding one.
+    /// </remarks>
     public void Bind(Pawn holder, Pawn koloss) {
         Release(koloss);
         bonds.Add(new KolossBond(holder, koloss, Find.TickManager?.TicksGame ?? 0));
+
+        if (holder.Faction != null && koloss.Faction != holder.Faction) {
+            koloss.SetFaction(holder.Faction);
+        }
     }
 
     /// <summary>True if a bond was actually there to break.</summary>
     public bool Release(Pawn? koloss) {
         if (koloss == null) return false;
+
+        // Back to belonging to nobody. A koloss that keeps the colony's colours while rampaging
+        // through it reads as a bug rather than a loss of control.
+        if (koloss.Faction != null) koloss.SetFaction(null);
 
         bool broke = false;
         for (int i = bonds.Count - 1; i >= 0; i--) {
@@ -227,13 +244,11 @@ public class KolossRoster : GameComponent {
     public static Allomancer? HoldingGene(Pawn? holder) {
         if (holder?.genes == null) return null;
 
-        foreach (string metal in new[] { "Zinc", "Brass" }) {
-            GeneDef? def = DefDatabase<GeneDef>.GetNamedSilentFail($"Cosmere_Scadrial_Gene_Allomancy_{metal}");
-            if (def == null) continue;
-
-            if (holder.genes.GetGene(def) is Allomancer gene) return gene;
-        }
-
-        return null;
+        // GetAllomanticGeneForMetal goes through MetalDef.GetMistingGene, which knows the real
+        // names. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc" matched nothing - the gene is
+        // called MistingZinc - so billing found no gene and dropped every bond on the next tick.
+        // A hold lasted about four seconds.
+        return holder.genes.GetAllomanticGeneForMetal(MetalDefOf.Zinc)
+               ?? holder.genes.GetAllomanticGeneForMetal(MetalDefOf.Brass);
     }
 }

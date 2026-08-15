@@ -192,7 +192,32 @@ public class KolossControlTests {
         Assert.IsTrue(roster.Contains("Cosmere_Scadrial_Stat_AllomanticPower"), "Slots come off power.");
         Assert.IsTrue(roster.Contains("CanBurn") && roster.Contains("RemoveFromReserve"), "Holding costs metal.");
         Assert.IsTrue(roster.Contains("DropNewest"), "The newest bond is the one that goes.");
+
+        // The gene is called MistingZinc. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc"
+        // matched nothing, so billing found no gene and dropped every bond on the next tick - a
+        // hold lasted about four seconds. GetAllomanticGeneForMetal knows the real names.
+        Assert.IsTrue(
+            roster.Contains("GetAllomanticGeneForMetal"),
+            "Never guess a gene defName; ask the metal for it."
+        );
+        Assert.IsFalse(
+            roster.Contains("GetNamedSilentFail"),
+            "A defName that matches nothing fails silently and looks like a balance problem."
+        );
         Assert.IsTrue(roster.Contains("Scribe_References"), "A hold that drops on reload is worse than none.");
+    }
+
+    /// <summary>
+    ///     Drafting gates on IsColonistPlayerControlled, which needs the pawn in the player
+    ///     faction. Without the transfer a held koloss named its holder and still could not be
+    ///     given one order, which is the entire point of holding it.
+    /// </summary>
+    [TestMethod]
+    public void AHeldKolossBelongsToWhoeverHoldsIt() {
+        string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
+
+        Assert.IsTrue(roster.Contains("koloss.SetFaction(holder.Faction)"), "Holding one makes it yours.");
+        Assert.IsTrue(roster.Contains("koloss.SetFaction(null)"), "Losing it hands it back to nobody.");
     }
 
     /// <summary>

@@ -33,7 +33,10 @@
       </li>
       <!-- Eight years is long enough that a koloss reaching its last stage with no warning reads
            as the game hiding it. One message per rung. -->
-      <li Class="HediffCompProperties_MessageStageIncreased">
+      <!-- Ours rather than vanilla's HediffCompProperties_MessageStageIncreased, which does
+           Props.message.Formatted(Pawn) and never translates - hand it a key and it prints the
+           key. Its one use in the whole game puts a literal English sentence in the def. -->
+      <li Class="Cosmere.System.Scadrial.Comp.Hediff.StageMessageProperties">
         <message>CS_KolossGrew</message>
         <messageType>NegativeEvent</messageType>
       </li>

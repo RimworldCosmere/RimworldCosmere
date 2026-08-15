@@ -1,4 +1,5 @@
 using Cosmere.Core.Ability.Autocast;
+using Cosmere.Core.Comp.Hediff;
 using Cosmere.Core.Framework;
 using Cosmere.Core.Savant;
 using Cosmere.Core.ScenarioPart;
@@ -20,6 +21,10 @@ namespace Cosmere.System.Scadrial.UI;
 [StaticConstructorOnStartup]
 public static class ScadrialUIRegistration {
     static ScadrialUIRegistration() {
+        // A koloss off its leash must not be soothed back by a passing Allomancer. Core rolls
+        // against every mental state alike and cannot be told what a koloss is.
+        UnbreakableStateRegistry.Register(MentalStateDefOf.Cosmere_Scadrial_MentalState_KolossBloodlust);
+
         // What a Misting or a Mistborn is worth toward Ruin and Preservation. Core cannot work
         // this out for itself and must not learn how.
         ConnectionInvestitureRegistry.Register(new ScadrialInvestitureSource());

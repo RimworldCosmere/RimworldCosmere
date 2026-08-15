@@ -59,6 +59,7 @@ public class MentalBreakHandler : HediffComp {
 
     protected virtual void HandleMentalBreakAddFactor(float mentalBreakAddFactor) {
         if (parent.pawn.InMentalState) return;
+        if (UnbreakableStateRegistry.Guards(parent.pawn)) return;
         if (Rand.Value > mentalBreakAddFactor) return;
 
         MentalBreakDef? breakDef = MentalBreakDefOf.Berserk;
@@ -69,6 +70,11 @@ public class MentalBreakHandler : HediffComp {
 
     protected virtual void HandleMentalBreakRemoveFactor(float mentalBreakRemoveFactor) {
         if (!parent.pawn.InMentalState) return;
+
+        // Reset() below clears whatever state the pawn is in, and a koloss in bloodlust is loose
+        // because nobody holds it - not because it is upset. Soothing it back would cure the
+        // mechanic.
+        if (UnbreakableStateRegistry.Guards(parent.pawn)) return;
         if (Rand.Value > mentalBreakRemoveFactor) return;
 
         parent.pawn.mindState.mentalStateHandler.Reset();

@@ -32,5 +32,11 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
             </targetParams>
         </verbProperties>
         <maxPower>2</maxPower>
+        <!-- Seizing a koloss or a kandra is the same push, aimed at something that can be owned.
+             The comp answers with both numbers when the target resists, so the player can see how
+             far short they fell and that duralumin closes it. -->
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.SeizeKolossProperties" />
+        </comps>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

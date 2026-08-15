@@ -7,6 +7,7 @@ using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Comp.Hediff;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -95,6 +96,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         foreach (Pawn pawn in nearbyPawns) {
             Act(pawn);
+            TrySeize(pawn);
         }
 
         List<Pawn> toRemove = [];
@@ -144,6 +146,27 @@ public class AllomancyAuraHediffGiver : HediffComp {
             Vector3.zero,
             moteScale
         );
+    }
+
+    /// <summary>
+    ///     Picks up a koloss the aura happens to sweep, if this Allomancer can manage it.
+    /// </summary>
+    /// <remarks>
+    ///     The deliberate seizure is the act the player reaches for; this is the same act happening
+    ///     without ceremony when an emotional Allomancer walks through a pen. Same roster, same
+    ///     slot, same threshold - convenience, not an easier route.
+    ///     <para>
+    ///         Silent on failure. This runs once a second on everything in range, and a koloss the
+    ///         Allomancer is too weak to take would otherwise say so once a second forever.
+    ///     </para>
+    /// </remarks>
+    private void TrySeize(Pawn? target) {
+        if (target == null || ability == null) return;
+        if (parent.metal != MetallicArtsMetalDefOf.Zinc && parent.metal != MetallicArtsMetalDefOf.Brass) return;
+        if (EmotionalResistance.Of(target) <= 0f) return;
+        if (KolossControl.IsHeld(target)) return;
+
+        KolossControl.TryBind(Pawn, target, ((AllomancyAbility)ability!).GetStrength());
     }
 
     private void Act(Pawn? target) {

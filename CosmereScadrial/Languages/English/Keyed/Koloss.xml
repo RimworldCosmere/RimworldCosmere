@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <CS_KolossBound>{HOLDER} takes hold of {KOLOSS}.</CS_KolossBound>
+  <CS_KolossLapsed>Nobody is holding {KOLOSS} any more. It has turned on whatever is nearest.</CS_KolossLapsed>
+  <CS_KolossHoldLapsed>{HOLDER} no longer has the metal to hold {KOLOSS}.</CS_KolossHoldLapsed>
+  <CS_KolossBloodlust_Reason>Nothing is telling {KOLOSS} what to do.</CS_KolossBloodlust_Reason>
+
+  <CS_KolossBind_NoGame>There is no game to bind anything in.</CS_KolossBind_NoGame>
+  <CS_KolossBind_NotBindable>{TARGET} is not a thing that can be held this way.</CS_KolossBind_NotBindable>
+  <CS_KolossBind_NoCapacity>{HOLDER} can hold {CAPACITY} at once and is already holding that many.</CS_KolossBind_NoCapacity>
+  <CS_KolossBind_TooWeak>{TARGET} resists. Your reach is {REACH} against its {NEEDED}. Duralumin would carry you past it.</CS_KolossBind_TooWeak>
+  <CS_KolossBind_Readout>Reach {REACH} against {NEEDED}</CS_KolossBind_Readout>
+
+  <CS_KolossRelease_Label>Release koloss</CS_KolossRelease_Label>
+  <CS_KolossRelease_Desc>Let this one go. {HOLDER} keeps hold of everything else.\n\nIt will turn on whatever is nearest once the grace period passes.</CS_KolossRelease_Desc>
+
+  <CS_KolossInspect_Loose>Held by: nobody</CS_KolossInspect_Loose>
+  <CS_KolossInspect_Held>Held by: {HOLDER}</CS_KolossInspect_Held>
+
+</LanguageData>

@@ -66,7 +66,7 @@ public class GoldBurn : HediffComp {
             }
 
             Pawn.mindState.mentalStateHandler.TryStartMentalState(
-                MentalStateDefOf.Wander_OwnRoom,
+                RimWorld.MentalStateDefOf.Wander_OwnRoom,
                 "Gold vision triggered a break",
                 true
             );

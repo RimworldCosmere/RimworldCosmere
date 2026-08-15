@@ -92,6 +92,9 @@
   <!-- Emotional Allomancy is the leash. Without one they attack whatever is closest. -->
   <GeneDef ParentName="Cosmere_Scadrial_KolossGeneBase">
     <defName>Cosmere_Scadrial_Gene_EasilyInfluenced</defName>
+    <!-- Watches the roster, gives the player the release gizmo, and starts the bloodlust when
+         nobody is holding this thing any more. -->
+    <geneClass>Cosmere.System.Scadrial.Gene.EasilyInfluenced</geneClass>
     <label>easily influenced</label>
     <labelShortAdj>biddable</labelShortAdj>
     <description>Whatever the spikes left behind is easy to push on. A Rioter or a Soother can hold a koloss steady with almost no effort, and a koloss with nobody holding it will find something to kill.</description>
@@ -99,6 +102,9 @@
     <displayOrderInCategory>104</displayOrderInCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>
+    <!-- Not blocksMentalBreaks. A koloss that cracks should come apart, not go quiet, so the
+         threshold stays low and any break that does happen is pushed toward an aggro one. -->
+    <aggroMentalBreakSelectionChanceFactor>10</aggroMentalBreakSelectionChanceFactor>
     <statFactors>
       <SocialImpact>0.2</SocialImpact>
       <NegotiationAbility>0.1</NegotiationAbility>

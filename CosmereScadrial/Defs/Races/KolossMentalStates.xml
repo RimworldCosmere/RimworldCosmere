@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Declared standalone rather than with ParentName="Berserk". Inheriting drags in Berserk's
+       maxTicksBeforeRecovery of 60000, which would quietly end the bloodlust after a day whatever
+       minTicksBeforeRecovery says. The field's own default is already 99999999.
+
+       category Aggro is load-bearing, not decoration. AttackTargetFinder.BestAttackTarget skips
+       its score-weighted ranged path when searcherPawn.InAggroMentalState and falls through to
+       GenClosest.ClosestThingReachable, which is what makes a koloss go for whatever is nearest
+       instead of picking a sensible target. A koloss off its leash does not pick. -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>Cosmere_Scadrial_MentalState_KolossBloodlust</defName>
+    <label>bloodlust</label>
+    <stateClass>MentalState_Berserk</stateClass>
+    <category>Aggro</category>
+    <minTicksBeforeRecovery>99999999</minTicksBeforeRecovery>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <nameColor>(0.72, 0.24, 0.24)</nameColor>
+    <baseInspectLine>Mental state: Bloodlust</baseInspectLine>
+  </MentalStateDef>
+
+</Defs>

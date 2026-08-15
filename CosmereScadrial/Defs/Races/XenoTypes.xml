@@ -77,7 +77,10 @@
         <description>Four spikes, driven in at once, and what walks away is not the person who lay down. A koloss is enormous, blue-grey and slow of thought, and it grows for the rest of its life until its own skin gives out.</description>
         <displayPriority>5100</displayPriority>
         <inheritable>false</inheritable>
-        <iconPath>UI/Icons/Xenotype/Koloss</iconPath>
+        <!-- Skaa until the koloss icon is drawn. A missing texture is not a blank square here:
+             Widgets.DefIcon hands null to DrawTextureFitted and the whole info card throws, once
+             per frame, for as long as it is open. -->
+        <iconPath>UI/Icons/Xenotype/Skaa</iconPath>
         <genes>
             <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
             <li>Cosmere_Scadrial_Gene_NeverStopsGrowing</li>

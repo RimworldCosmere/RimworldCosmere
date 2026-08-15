@@ -27,13 +27,16 @@ namespace Cosmere.System.Scadrial.UI;
 /// </remarks>
 public class Dialog_KolossRoster : Window {
     private const float Unit = 16f;
-    private const float RowHeight = Unit * 2.5f;
+    private const float RowHeight = Unit * 3.5f;
     private const float ScrollbarWidth = 20f;
+    private const float IconSize = Unit * 1.5f;
 
     private static readonly Color Steel = new(0.45f, 0.58f, 0.68f);
     private static readonly Color SelectedRow = new(0.45f, 0.58f, 0.68f, 0.22f);
     private static readonly Color Loose = new(0.72f, 0.31f, 0.28f);
     private static readonly Color Faint = new(0.62f, 0.60f, 0.57f);
+    private static readonly Color PortraitBack = new(0.16f, 0.17f, 0.19f);
+    private static readonly Color PortraitEdge = new(0.35f, 0.42f, 0.48f);
 
     private readonly MetalDef metal;
     private readonly Pawn holder;
@@ -130,19 +133,22 @@ public class Dialog_KolossRoster : Window {
         if (picked.Contains(koloss)) Widgets.DrawBoxSolid(rect, SelectedRow);
 
         Rect row = rect.ContractedBy(Unit / 4f);
-        Rect buttons = row.RightPartPixels(Unit * 9f);
+        Rect buttons = row.RightPartPixels(Unit * 8f);
         Rect text = new(row.x, row.y, row.width - buttons.width - Unit, row.height);
 
         Rect portrait = text.LeftPartPixels(RowHeight);
-        Widgets.ThingIcon(portrait, koloss);
+        DrawPortrait(portrait, koloss);
 
         Rect name = new(portrait.xMax + (Unit / 2f), text.y, text.width - portrait.width - (Unit / 2f), text.height);
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft)) {
+        bool loose = koloss.InMentalState;
+
+        using (new TextBlock(GameFont.Small, TextAnchor.LowerLeft)) {
             Widgets.Label(name.TopHalf(), koloss.LabelShortCap);
         }
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft)) {
-            bool loose = koloss.InMentalState;
+        // What it is doing right now, which is the question the window exists to answer. A koloss
+        // that says "Hauling steel" is working; one that says it is loose is a problem.
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft)) {
             GUI.color = loose ? Loose : Faint;
             Widgets.Label(name.BottomHalf(), StateOf(koloss, loose));
             GUI.color = Color.white;
@@ -159,56 +165,74 @@ public class Dialog_KolossRoster : Window {
         if (Widgets.ButtonInvisible(text)) Pick(koloss, index);
     }
 
+    /// <summary>
+    ///     The colonist bar's shape - a dark plate with a lit edge, and the portrait sitting whole
+    ///     inside it rather than cropped to a square.
+    /// </summary>
+    private static void DrawPortrait(Rect rect, Pawn koloss) {
+        Widgets.DrawBoxSolid(rect, PortraitBack);
+
+        GUI.color = PortraitEdge;
+        Widgets.DrawBox(rect);
+        GUI.color = Color.white;
+
+        // A portrait rather than a thing icon. ThingIcon squares the pawn off at the shoulders,
+        // which on something drawn at 1.75 times a person clips its head.
+        Rect inside = rect.ContractedBy(1f);
+        GUI.DrawTexture(
+            inside,
+            PortraitsCache.Get(koloss, inside.size, Rot4.South, default, 1.1f),
+            ScaleMode.ScaleToFit
+        );
+    }
+
     private void DrawRowButtons(Rect rect, Pawn koloss) {
         float third = rect.width / 3f;
+        float inset = (third - IconSize) / 2f;
+        float top = rect.y + ((rect.height - IconSize) / 2f);
 
-        Rect info = new(rect.x, rect.y, third, rect.height);
-        if (Draw(info, "CS_KolossRoster_Info".Translate(), "CS_KolossRoster_InfoTip".Translate())) {
+        Rect info = new(rect.x + inset, top, IconSize, IconSize);
+        if (Draw(info, TexButton.Info, "CS_KolossRoster_InfoTip".Translate(), true)) {
             Find.WindowStack.Add(new Dialog_InfoCard(koloss));
         }
 
-        Rect draft = new(info.xMax, rect.y, third, rect.height);
+        Rect draft = new(rect.x + third + inset, top, IconSize, IconSize);
         bool drafted = koloss.drafter?.Drafted == true;
         bool canDraft = koloss.drafter != null && koloss.IsColonistPlayerControlled;
-        TaggedString draftLabel = drafted
-            ? "CS_KolossRoster_Undraft".Translate()
-            : "CS_KolossRoster_Draft".Translate();
 
-        if (canDraft) {
-            if (Draw(draft, draftLabel, "CS_KolossRoster_DraftTip".Translate())) {
-                koloss.drafter!.Drafted = !drafted;
-            }
-        } else {
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
-                GUI.color = Faint;
-                Widgets.Label(draft, draftLabel);
-                GUI.color = Color.white;
-            }
+        // The reason matters more than a greyed button. A koloss in bloodlust is not yours to send
+        // anywhere, and saying so is the difference between a rule and a bug.
+        TaggedString draftTip = canDraft
+            ? drafted ? "CS_KolossRoster_Undraft".Translate() : "CS_KolossRoster_DraftTip".Translate()
+            : "CS_KolossRoster_CannotDraft".Translate();
 
-            // The reason matters more than the greyed button. A koloss in bloodlust is not yours.
-            TooltipHandler.TipRegion(draft, "CS_KolossRoster_CannotDraft".Translate());
+        if (Draw(draft, TexCommand.Draft, draftTip, canDraft) && canDraft) {
+            koloss.drafter!.Drafted = !drafted;
         }
 
-        Rect release = new(draft.xMax, rect.y, third, rect.height);
-        if (Draw(release, "CS_KolossRoster_Let".Translate(), "CS_KolossRoster_LetTip".Translate())) {
-            foreach (Pawn one in picked.Contains(koloss) ? picked.ToList() : [koloss]) {
-                KolossControl.Release(one);
-            }
+        Rect release = new(rect.x + (third * 2f) + inset, top, IconSize, IconSize);
+        if (!Draw(release, TexButton.Delete, "CS_KolossRoster_LetTip".Translate(), true)) return;
 
-            picked.Clear();
+        foreach (Pawn one in picked.Contains(koloss) ? picked.ToList() : [koloss]) {
+            KolossControl.Release(one);
         }
+
+        picked.Clear();
     }
 
-    private static bool Draw(Rect rect, TaggedString label, TaggedString tip) {
-        Widgets.DrawHighlightIfMouseover(rect);
-        MouseoverSounds.DoRegion(rect);
+    private static bool Draw(Rect rect, Texture2D icon, TaggedString tip, bool live) {
         TooltipHandler.TipRegion(rect, tip);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
-            Widgets.Label(rect, label);
+        if (live) {
+            Widgets.DrawHighlightIfMouseover(rect);
+            MouseoverSounds.DoRegion(rect);
         }
 
-        return Widgets.ButtonInvisible(rect);
+        GUI.color = live ? Color.white : Faint;
+        GUI.DrawTexture(rect, icon);
+        GUI.color = Color.white;
+
+        return live && Widgets.ButtonInvisible(rect);
     }
 
     private void DrawFooter(Rect rect, List<Pawn> held) {
@@ -260,8 +284,11 @@ public class Dialog_KolossRoster : Window {
     private static string StateOf(Pawn koloss, bool loose) {
         if (loose) return "CS_KolossRoster_StateLoose".Translate();
 
+        string job = koloss.jobs?.curDriver?.GetReport()?.CapitalizeFirst() ?? string.Empty;
+        if (job.NullOrEmpty()) job = "CS_KolossRoster_StateIdle".Translate();
+
         return koloss.drafter?.Drafted == true
-            ? "CS_KolossRoster_StateDrafted".Translate()
-            : "CS_KolossRoster_StateHeld".Translate(koloss.jobs?.curDriver?.GetReport() ?? string.Empty).Resolve();
+            ? "CS_KolossRoster_StateDrafted".Translate(job.Named("JOB")).Resolve()
+            : job;
     }
 }

@@ -29,18 +29,15 @@
   <CS_KolossRoster_Title>Held</CS_KolossRoster_Title>
   <CS_KolossRoster_Subtitle>{HOLDER}, on {METAL}</CS_KolossRoster_Subtitle>
   <CS_KolossRoster_RowTip>Click to select. Shift to extend, Ctrl to add.</CS_KolossRoster_RowTip>
-  <CS_KolossRoster_Info>Info</CS_KolossRoster_Info>
   <CS_KolossRoster_InfoTip>Open the character card.</CS_KolossRoster_InfoTip>
-  <CS_KolossRoster_Draft>Draft</CS_KolossRoster_Draft>
-  <CS_KolossRoster_Undraft>Undraft</CS_KolossRoster_Undraft>
+  <CS_KolossRoster_Undraft>Take back direct command.</CS_KolossRoster_Undraft>
   <CS_KolossRoster_DraftTip>Take direct command of this one.</CS_KolossRoster_DraftTip>
   <CS_KolossRoster_CannotDraft>Nothing is holding this one. It takes no orders until somebody takes it again.</CS_KolossRoster_CannotDraft>
-  <CS_KolossRoster_Let>Release</CS_KolossRoster_Let>
   <CS_KolossRoster_LetTip>Let this one go. Everything else stays held.\n\nIt will turn on whatever is nearest once the grace period passes.</CS_KolossRoster_LetTip>
   <CS_KolossRoster_Jump>Select</CS_KolossRoster_Jump>
   <CS_KolossRoster_LetAll>Release all</CS_KolossRoster_LetAll>
   <CS_KolossRoster_StateLoose>Loose. Attacking whatever is nearest.</CS_KolossRoster_StateLoose>
-  <CS_KolossRoster_StateDrafted>Drafted</CS_KolossRoster_StateDrafted>
-  <CS_KolossRoster_StateHeld>{JOB}</CS_KolossRoster_StateHeld>
+  <CS_KolossRoster_StateDrafted>Drafted. {JOB}</CS_KolossRoster_StateDrafted>
+  <CS_KolossRoster_StateIdle>Standing about</CS_KolossRoster_StateIdle>
 
 </LanguageData>

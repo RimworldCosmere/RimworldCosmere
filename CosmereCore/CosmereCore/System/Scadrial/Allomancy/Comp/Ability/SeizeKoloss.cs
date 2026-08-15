@@ -32,7 +32,7 @@ public class SeizeKoloss : EmotionalPush {
 
         if (target.Pawn is not { } koloss) return;
 
-        AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, Reach, parent.def.metal);
+        AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, Reach, parent.def.metal, parent.def);
         if (report.Accepted) {
             Messages.Message(
                 "CS_KolossBound".Translate(

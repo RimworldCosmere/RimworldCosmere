@@ -23,4 +23,8 @@
   <CS_Soothe_Calmed>{TARGET} settles.</CS_Soothe_Calmed>
   <CS_Soothe_CannotReach>{TARGET} cannot be soothed out of this. Nothing is holding it.</CS_Soothe_CannotReach>
 
+  <CS_KolossRoster_Label>Holding {COUNT}/{CAPACITY}</CS_KolossRoster_Label>
+  <CS_KolossRoster_Desc>Held on {METAL}: {HELD}\n\nUpkeep runs while they are held. Click to let one go.</CS_KolossRoster_Desc>
+  <CS_KolossRoster_Release>Release {KOLOSS}</CS_KolossRoster_Release>
+
 </LanguageData>

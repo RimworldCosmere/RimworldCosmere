@@ -1,6 +1,7 @@
 using Cosmere.Core;
-using Cosmere.Core.Def;
+using Cosmere.Core.Investiture;
 using Cosmere.Core.Util;
+using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -21,16 +22,20 @@ public class KolossBond : IExposable {
     public Pawn? koloss;
     public int boundAtTick;
 
-    /// <summary>Which metal took it, because that is the one running out ends the hold.</summary>
+    /// <summary>Which metal took it, because that one running out ends the hold.</summary>
     public string? metal;
+
+    /// <summary>The push that took it, which is also what the upkeep is measured against.</summary>
+    public string? ability;
 
     public KolossBond() { }
 
-    public KolossBond(Pawn holder, Pawn koloss, int tick, string? metal) {
+    public KolossBond(Pawn holder, Pawn koloss, int tick, string? metal, string? ability) {
         this.holder = holder;
         this.koloss = koloss;
         boundAtTick = tick;
         this.metal = metal;
+        this.ability = ability;
     }
 
     public bool Intact => holder is { Dead: false } && koloss is { Dead: false };
@@ -40,6 +45,7 @@ public class KolossBond : IExposable {
         Scribe_References.Look(ref koloss, "koloss");
         Scribe_Values.Look(ref boundAtTick, "boundAtTick");
         Scribe_Values.Look(ref metal, "metal");
+        Scribe_Values.Look(ref ability, "ability");
     }
 }
 
@@ -64,10 +70,16 @@ public class KolossBond : IExposable {
 ///     </para>
 /// </remarks>
 public class KolossRoster : GameComponent {
-    /// <summary>Metal a single held koloss costs its holder per billing interval.</summary>
-    public const float HoldCostPer = 0.02f;
+    /// <summary>
+    ///     What holding costs against what seizing cost, per koloss.
+    /// </summary>
+    /// <remarks>
+    ///     Taking hold is the hard part and keeping hold is not. A tenth means an Allomancer can
+    ///     seize far fewer than they can carry, which is the shape the whole mechanic wants.
+    /// </remarks>
+    public const float HoldFraction = 0.1f;
 
-    /// <summary>How often the holder pays. Long enough not to matter, short enough to notice.</summary>
+    /// <summary>How often the roster re-reads itself. The metal is charged by the gene.</summary>
     public const int BillingInterval = 250;
 
     /// <summary>Slots the weakest Allomancer gets. Everyone who can Soothe at all can hold one.</summary>
@@ -140,9 +152,31 @@ public class KolossRoster : GameComponent {
     ///     faction. Without the transfer a held koloss reported a holder and still could not be
     ///     given a single order, which is the whole point of holding one.
     /// </remarks>
-    public void Bind(Pawn holder, Pawn koloss, MetalDef? metal = null) {
+    /// <summary>Everything this Allomancer holds on one particular metal.</summary>
+    public List<Pawn> HeldOnMetal(Pawn? holder, Cosmere.Core.Def.MetalDef metal) {
+        List<Pawn> held = [];
+        if (holder == null) return held;
+
+        for (int i = 0; i < bonds.Count; i++) {
+            KolossBond bond = bonds[i];
+            if (bond.holder != holder || !bond.Intact || bond.koloss == null) continue;
+            if (bond.metal != metal.defName) continue;
+
+            held.Add(bond.koloss);
+        }
+
+        return held;
+    }
+
+    public void Bind(Pawn holder, Pawn koloss, Cosmere.Core.Def.MetalDef? metal = null, Cosmere.Core.Def.AbilityDef? through = null) {
         Release(koloss);
-        bonds.Add(new KolossBond(holder, koloss, Find.TickManager?.TicksGame ?? 0, metal?.defName));
+        bonds.Add(new KolossBond(
+            holder,
+            koloss,
+            Find.TickManager?.TicksGame ?? 0,
+            metal?.defName,
+            through?.defName
+        ));
 
         if (holder.Faction != null && koloss.Faction != holder.Faction) {
             koloss.SetFaction(holder.Faction);
@@ -218,6 +252,16 @@ public class KolossRoster : GameComponent {
     ///     Newest first, so an army built up over a campaign survives a bad moment and the koloss
     ///     seized one second before the metal ran out is the one that goes.
     /// </remarks>
+    /// <summary>
+    ///     Publishes what every hold costs, and drops the ones nobody can pay for.
+    /// </summary>
+    /// <remarks>
+    ///     The reserve is not touched here. Allomancer.BurnTickInterval already charges the sum of
+    ///     its drain sources and wipes them all when it cannot, so taking the metal by hand as well
+    ///     charged twice and never showed a rate - the gene read Idle at 0.00%/s while the reserve
+    ///     quietly fell. Registering a source instead puts the hold on the same footing as any
+    ///     other burn, and the player can see it.
+    /// </remarks>
     private void Bill() {
         HashSet<Pawn> holders = [];
         for (int i = 0; i < bonds.Count; i++) {
@@ -225,21 +269,37 @@ public class KolossRoster : GameComponent {
         }
 
         foreach (Pawn holder in holders) {
-            int held = UsedBy(holder);
-            if (held == 0) continue;
+            // One source per push, summed, because DrainSource compares on its def alone and a
+            // second entry for the same ability would replace the first rather than add to it.
+            Dictionary<Cosmere.Core.Def.AbilityDef, float> owed = [];
 
-            // Charged per bond against the metal that took it, so a Soother holding two on brass
-            // and one on zinc runs out of one without losing the other two.
             foreach (KolossBond bond in BondsOf(holder)) {
                 Allomancer? gene = GeneFor(holder, bond);
-                if (gene != null && gene.CanBurn(HoldCostPer).Accepted) {
-                    gene.RemoveFromReserve(HoldCostPer);
+                Cosmere.Core.Def.AbilityDef? through = AbilityFor(bond);
+
+                if (gene == null || through == null || gene.Value <= gene.MinimumAmount) {
+                    Drop(bond);
                     continue;
                 }
 
-                Drop(bond);
+                owed.TryGetValue(through, out float running);
+                owed[through] = running + (through.beuPerTick * HoldFraction);
+            }
+
+            foreach ((Cosmere.Core.Def.AbilityDef through, float rate) in owed) {
+                GeneFor(holder, through)?.UpdateDrainSource(new DrainSource(through, rate));
             }
         }
+    }
+
+    private static Cosmere.Core.Def.AbilityDef? AbilityFor(KolossBond bond) {
+        return bond.ability == null ? null : DefDatabase<Cosmere.Core.Def.AbilityDef>.GetNamedSilentFail(bond.ability);
+    }
+
+    private static Allomancer? GeneFor(Pawn holder, Cosmere.Core.Def.AbilityDef through) {
+        return through is AllomanticAbilityDef allomantic
+            ? holder.genes?.GetAllomanticGeneForMetal(allomantic.metal)
+            : null;
     }
 
     /// <summary>Newest first, so an army built over a campaign outlives a greedy seizure.</summary>
@@ -257,9 +317,9 @@ public class KolossRoster : GameComponent {
     private static Allomancer? GeneFor(Pawn holder, KolossBond bond) {
         if (holder.genes == null) return null;
 
-        MetalDef? metal = bond.metal == null
+        Cosmere.Core.Def.MetalDef? metal = bond.metal == null
             ? null
-            : DefDatabase<MetalDef>.GetNamedSilentFail(bond.metal);
+            : DefDatabase<Cosmere.Core.Def.MetalDef>.GetNamedSilentFail(bond.metal);
 
         return metal != null ? holder.genes.GetAllomanticGeneForMetal(metal) : HoldingGene(holder);
     }
@@ -267,6 +327,13 @@ public class KolossRoster : GameComponent {
     private void Drop(KolossBond bond) {
         Pawn? lost = bond.koloss;
         Pawn? holder = bond.holder;
+
+        // Stop billing for it before letting go, or the gene keeps paying upkeep on a hold that
+        // no longer exists.
+        Cosmere.Core.Def.AbilityDef? through = AbilityFor(bond);
+        if (holder != null && through != null) {
+            GeneFor(holder, through)?.UpdateDrainSource(new DrainSource(through, 0f));
+        }
 
         Release(lost);
         if (lost == null || holder == null) return;
@@ -285,7 +352,7 @@ public class KolossRoster : GameComponent {
     public static Allomancer? HoldingGene(Pawn? holder) {
         if (holder?.genes == null) return null;
 
-        // GetAllomanticGeneForMetal goes through MetalDef.GetMistingGene, which knows the real
+        // GetAllomanticGeneForMetal goes through Cosmere.Core.Def.MetalDef.GetMistingGene, which knows the real
         // names. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc" matched nothing - the gene is
         // called MistingZinc - so billing found no gene and dropped every bond on the next tick.
         // A hold lasted about four seconds.

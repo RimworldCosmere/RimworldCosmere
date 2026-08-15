@@ -193,7 +193,7 @@ public class KolossControlTests {
         string roster = CodeOnly("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
         Assert.IsTrue(roster.Contains("Cosmere_Scadrial_Stat_AllomanticPower"), "Slots come off power.");
-        Assert.IsTrue(roster.Contains("CanBurn") && roster.Contains("RemoveFromReserve"), "Holding costs metal.");
+        Assert.IsTrue(roster.Contains("DrainSource"), "Holding costs metal, the same way any burn does.");
         Assert.IsTrue(
             roster.Contains("SortByDescending(b => b.boundAtTick)"),
             "Newest first, so a force built over a campaign outlives a greedy seizure."
@@ -242,6 +242,29 @@ public class KolossControlTests {
 
         Assert.IsTrue(roster.Contains("Scribe_Values.Look(ref metal"), "The metal has to survive a reload.");
         Assert.IsTrue(roster.Contains("GeneFor(holder, bond)"), "Each bond bills its own metal.");
+
+        // Allomancer.BurnTickInterval already charges the sum of its drain sources and wipes them
+        // all when it cannot pay. Taking the metal by hand as well charged twice and never showed
+        // a rate - the gene read Idle at 0.00%/s while the reserve quietly fell.
+        Assert.IsTrue(roster.Contains("UpdateDrainSource"), "The hold has to be a visible burn.");
+        Assert.IsFalse(
+            roster.Contains("RemoveFromReserve"),
+            "The gene charges its own sources; taking it by hand charges twice and shows nothing."
+        );
+        Assert.IsTrue(roster.Contains("HoldFraction"), "Holding costs a fraction of the seizure.");
+    }
+
+    /// <summary>
+    ///     The roster was a save file and nothing else. A koloss could name its owner while the
+    ///     Allomancer had no way to see what they were carrying or what it cost them.
+    /// </summary>
+    [TestMethod]
+    public void TheHolderCanSeeWhatTheyAreCarrying() {
+        string gene = Core("System", "Scadrial", "Gene", "Allomancer.cs");
+
+        Assert.IsTrue(gene.Contains("HeldOnMetal"), "Each metal answers for its own holds.");
+        Assert.IsTrue(gene.Contains("CS_KolossRoster_Label"), "The count belongs on a gizmo.");
+        Assert.IsTrue(gene.Contains("KolossControl.Release"), "And releasing one has to be reachable.");
     }
 
     /// <summary>

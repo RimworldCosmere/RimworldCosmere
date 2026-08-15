@@ -234,8 +234,45 @@ public class Allomancer : Metalborn {
         return Value >= GetMetalNeededForBreathEquivalentUnits(breathEquivalentUnits);
     }
 
+    /// <summary>
+    ///     What this metal is holding, and a way to let any one of them go.
+    /// </summary>
+    /// <remarks>
+    ///     The roster was a save file and nothing else - the koloss could say who owned it, but the
+    ///     Allomancer had no way to see what they were carrying or what it was costing them. Living
+    ///     on the metal's own gene means zinc and brass each answer for their own, which is also
+    ///     how the upkeep is billed.
+    /// </remarks>
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
-        return [];
+        Comp.Game.KolossRoster? roster = Comp.Game.KolossRoster.Current;
+        List<Pawn> held = roster?.HeldOnMetal(pawn, metal) ?? [];
+        if (held.Count == 0) yield break;
+
+        yield return new Command_Action {
+            defaultLabel = "CS_KolossRoster_Label".Translate(
+                held.Count.Named("COUNT"),
+                Comp.Game.KolossRoster.CapacityOf(pawn).Named("CAPACITY")
+            ),
+            defaultDesc = "CS_KolossRoster_Desc".Translate(
+                metal.LabelCap.Named("METAL"),
+                held.Select(one => one.LabelShortCap).ToCommaList().Named("HELD")
+            ),
+            icon = def.Icon,
+            action = () => Find.WindowStack.Add(new FloatMenu(ReleaseOptions(held))),
+        };
+    }
+
+    private static List<FloatMenuOption> ReleaseOptions(List<Pawn> held) {
+        List<FloatMenuOption> options = [];
+        for (int i = 0; i < held.Count; i++) {
+            Pawn one = held[i];
+            options.Add(new FloatMenuOption(
+                "CS_KolossRoster_Release".Translate(one.LabelShortCap.Named("KOLOSS")),
+                () => Util.KolossControl.Release(one)
+            ));
+        }
+
+        return options;
     }
 
     public static string ThresholdDisplayLabel(Allomancer gene) {

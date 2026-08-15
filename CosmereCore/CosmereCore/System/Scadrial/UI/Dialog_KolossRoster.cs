@@ -39,11 +39,16 @@ public class Dialog_KolossRoster : Window {
     private static readonly Color PortraitEdge = new(0.35f, 0.42f, 0.48f);
 
     /// <summary>
-    ///     Vanilla's release-to-wild command. Letting a koloss go is not deleting it - it walks
-    ///     off and becomes a problem - and the trash icon said the opposite.
+    ///     The hand opening to let a bird go. Letting a koloss go is not deleting it - it walks
+    ///     off and becomes somebody's problem - and a trash icon said the opposite.
     /// </summary>
+    /// <remarks>
+    ///     A designator rather than a command, which is why it is not under UI/Commands with the
+    ///     rest of them. UI/Commands/ReleaseAnimals is the sic-your-animals-on-them button, which
+    ///     is close to the opposite of this.
+    /// </remarks>
     private static readonly Texture2D LetGo =
-        ContentFinder<Texture2D>.Get("UI/Commands/ReleaseAnimals", false) ?? TexButton.Delete;
+        ContentFinder<Texture2D>.Get("UI/Designators/ReleaseToTheWild", false) ?? TexButton.Delete;
 
     private readonly MetalDef metal;
     private readonly Pawn holder;

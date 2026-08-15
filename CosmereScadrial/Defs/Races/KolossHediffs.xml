@@ -31,6 +31,12 @@
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>0.00208333</severityPerDay>
       </li>
+      <!-- Eight years is long enough that a koloss reaching its last stage with no warning reads
+           as the game hiding it. One message per rung. -->
+      <li Class="HediffCompProperties_MessageStageIncreased">
+        <message>CS_KolossGrew</message>
+        <messageType>NegativeEvent</messageType>
+      </li>
     </comps>
     <stages>
       <li>
@@ -59,6 +65,7 @@
           <li>RoomSize</li>
           <li>Outdoors</li>
         </disablesNeeds>
+        <hungerRateFactor>1.4</hungerRateFactor>
         <statFactors>
           <MeleeDamageFactor>1.25</MeleeDamageFactor>
         </statFactors>
@@ -68,6 +75,20 @@
             <offset>-0.05</offset>
           </li>
         </capMods>
+        <!-- The skin stops keeping up here. HediffGiver_Random rolls against mtbDays on the
+             hediff's own tick, so this is the first stage where the body starts failing rather
+             than merely aching. -->
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>45</mtbDays>
+          </li>
+        </hediffGivers>
       </li>
       <li>
         <label>overgrown</label>
@@ -81,9 +102,24 @@
           <li>Outdoors</li>
         </disablesNeeds>
         <painOffset>0.10</painOffset>
+        <hungerRateFactor>1.9</hungerRateFactor>
+        <!-- The splits stop closing. This is what makes the gene's InjuryHealingFactor 0.7 mean
+             anything - until now it only slowed healing that still finished. -->
+        <naturalHealingFactor>0.35</naturalHealingFactor>
         <statFactors>
           <MeleeDamageFactor>1.5</MeleeDamageFactor>
         </statFactors>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>18</mtbDays>
+          </li>
+        </hediffGivers>
         <capMods>
           <li>
             <capacity>Moving</capacity>
@@ -108,9 +144,26 @@
         </disablesNeeds>
         <painOffset>0.25</painOffset>
         <lifeThreatening>true</lifeThreatening>
+        <hungerRateFactor>2.6</hungerRateFactor>
+        <naturalHealingFactor>0</naturalHealingFactor>
+        <!-- lethalSeverity is the backstop and lands on the exact day the clock runs out, which
+             for a batch spiked together is the same day for all of them. This kills them a little
+             apart, which is the difference between a loss and a cliff. -->
+        <deathMtbDays>25</deathMtbDays>
         <statFactors>
           <MeleeDamageFactor>1.7</MeleeDamageFactor>
         </statFactors>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>6</mtbDays>
+          </li>
+        </hediffGivers>
         <capMods>
           <li>
             <capacity>Moving</capacity>
@@ -164,5 +217,35 @@
       </li>
     </stages>
   </ThoughtDef>
+
+  <!-- What "the skin does not keep up" actually looks like. Bleeds, can be tended, and on the
+       late stages does not close on its own - so an old koloss is a thing being kept alive rather
+       than a thing that happens to be large. -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>Cosmere_Scadrial_Hediff_SplitSkin</defName>
+    <label>split skin</label>
+    <description>The muscle underneath went on growing and the skin over it did not. It has given way, and what is beneath is open to the air.</description>
+    <defaultLabelColor>(0.66, 0.32, 0.30)</defaultLabelColor>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>bound</labelTendedWell>
+        <labelTendedWellInner>closed</labelTendedWellInner>
+        <labelSolidTendedWell>bound</labelSolidTendedWell>
+      </li>
+      <li Class="HediffCompProperties_Infecter">
+        <infectionChance>0.15</infectionChance>
+      </li>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>scarred over</permanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.0125</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00625</averagePainPerSeverityPermanent>
+      <bleedRate>0.06</bleedRate>
+      <canMerge>true</canMerge>
+    </injuryProps>
+  </HediffDef>
 
 </Defs>

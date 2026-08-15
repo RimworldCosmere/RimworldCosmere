@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Hemalurgy;
+using Cosmere.System.Scadrial.Hemalurgy.Util;
 using Cosmere.System.Scadrial.Util;
 using Verse;
 
@@ -56,6 +58,63 @@ public class SpikeBound : Verse.Gene {
         }
 
         HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
+    }
+
+    /// <summary>
+    ///     Drops the four when the thing they were holding together finally comes apart.
+    /// </summary>
+    /// <remarks>
+    ///     Koloss make new koloss out of the spikes of their dead, and without this a koloss raid
+    ///     was pure attrition on the player's spike supply - four went in, nothing ever came back,
+    ///     and there was no way to break even on one. Surgery already returns them; this is the
+    ///     other way a koloss ends.
+    ///     <para>
+    ///         They keep whatever charge they had. A spike that has been driven through somebody
+    ///         is worth something on the strength of that, and dying does not undo it.
+    ///     </para>
+    /// </remarks>
+    public override void Notify_PawnDied(DamageInfo? dinfo, Verse.Hediff? culprit = null) {
+        base.Notify_PawnDied(dinfo, culprit);
+
+        if (pawn.health?.hediffSet?.GetFirstHediffOfDef(
+                HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
+            ) is not Hemalurgy.Hediff.HemalurgicSpikes set) {
+            return;
+        }
+
+        Map? map = pawn.MapHeld;
+        IntVec3 where = pawn.PositionHeld;
+        if (map == null || !where.IsValid) return;
+
+        List<ImplantedSpikeData> falling = [.. set.spikes];
+        for (int i = 0; i < falling.Count; i++) {
+            Drop(falling[i], map, where);
+        }
+    }
+
+    private static void Drop(ImplantedSpikeData spike, Map map, IntVec3 where) {
+        MetalDef? metal = DefDatabase<MetalDef>.GetNamedSilentFail(spike.metalDefName);
+        if (metal?.Item == null) return;
+
+        Verse.Thing made = ThingMaker.MakeThing(
+            spike.isThinNeedle
+                ? HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle
+                : HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicSpike,
+            metal.Item
+        );
+
+        if (made.TryGetComp(out Hemalurgy.Comp.Thing.HemalurgicSpike? comp) && comp != null) {
+            comp.Charge(new HemalurgicChargeData {
+                chargedTick = Find.TickManager?.TicksGame ?? 0,
+                stealType = spike.stealType,
+                stolenDefName = spike.stolenDefName,
+                stolenDefNames = [.. spike.stolenDefNames],
+                storedInvestiture = spike.storedInvestiture,
+                strength = spike.chargeStrength,
+            });
+        }
+
+        GenPlace.TryPlaceThing(made, where, map, ThingPlaceMode.Near);
     }
 
     /// <summary>

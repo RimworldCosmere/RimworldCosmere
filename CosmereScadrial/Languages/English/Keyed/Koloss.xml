@@ -41,4 +41,6 @@
   <CS_KolossRoster_StateDrafted>Drafted. {JOB}</CS_KolossRoster_StateDrafted>
   <CS_KolossRoster_StateIdle>Standing about</CS_KolossRoster_StateIdle>
 
+  <CS_KolossGrew>{0} has grown. Its skin is falling further behind.</CS_KolossGrew>
+
 </LanguageData>

@@ -853,4 +853,104 @@ public class KolossTests {
             "A plain Dictionary in here corrupts under concurrent access."
         );
     }
+
+    /// <summary>
+    ///     Growth was pure upside until the day it killed you. Every stage now eats more, so an
+    ///     overgrown koloss is visibly expensive and letting one die is a real decision.
+    /// </summary>
+    [TestMethod]
+    public void AnOlderKolossCostsMoreToKeep() {
+        List<XElement> stages = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth")
+            .Element("stages")!.Elements("li").ToList();
+
+        double last = 0d;
+        for (int i = 1; i < stages.Count; i++) {
+            double hunger = double.Parse(stages[i].Element("hungerRateFactor")!.Value);
+            Assert.IsTrue(hunger > last, $"Stage {i} must cost more to feed than the one before.");
+            last = hunger;
+        }
+    }
+
+    /// <summary>
+    ///     lethalSeverity lands on the exact day the clock runs out, which for a batch spiked
+    ///     together is one day for all of them. deathMtbDays spreads that out.
+    /// </summary>
+    [TestMethod]
+    public void ABatchSpikedTogetherDoesNotDieTogether() {
+        XElement splitting = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth")
+            .Element("stages")!.Elements("li").Last();
+
+        Assert.IsTrue(double.Parse(splitting.Element("deathMtbDays")!.Value) > 0d);
+        Assert.AreEqual(0d, double.Parse(splitting.Element("naturalHealingFactor")!.Value), 0.001);
+    }
+
+    /// <summary>
+    ///     The skin failing is what the whole design is named after, and until now SkinTooSmall and
+    ///     the gene's InjuryHealingFactor 0.7 meant nothing at all.
+    /// </summary>
+    [TestMethod]
+    public void TheSkinGivesWayFasterAsItGrows() {
+        XDocument doc = Defs("Races", "KolossHediffs.xml");
+
+        Assert.IsTrue(
+            doc.Descendants("HediffDef").Any(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_SplitSkin"),
+            "The wound has to exist before a stage can hand it out."
+        );
+
+        List<double> rates = doc.Descendants("HediffGiver_Random")
+            .Concat(doc.Descendants("li").Where(li => li.Attribute("Class")?.Value == "HediffGiver_Random"))
+            .Select(li => double.Parse(li.Element("mtbDays")!.Value))
+            .Distinct()
+            .ToList();
+
+        Assert.IsTrue(rates.Count >= 3, "Three late stages should each hand it out.");
+
+        // Lower mtbDays is more often, so a tightening interval means a falling number.
+        for (int i = 1; i < rates.Count; i++) {
+            Assert.IsTrue(rates[i] < rates[i - 1], "Splits have to come faster as it grows.");
+        }
+    }
+
+    /// <summary>
+    ///     Four spikes went in and nothing ever came back, so a koloss raid was pure attrition on
+    ///     the player's supply and breaking even on one was impossible.
+    /// </summary>
+    [TestMethod]
+    public void AKolossGivesItsSpikesBackWhenItDies() {
+        string bound = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Gene",
+            "SpikeBound.cs"
+        ));
+
+        Assert.IsTrue(bound.Contains("Notify_PawnDied"), "Dying is the other way a koloss ends.");
+        Assert.IsTrue(bound.Contains("GenPlace.TryPlaceThing"), "They have to land somewhere reachable.");
+        Assert.IsTrue(bound.Contains("comp.Charge("), "A spike keeps what it took. Dying does not undo it.");
+    }
+
+    /// <summary>
+    ///     HediffComp_SeverityPerDay copies Props into its own scribed field once and never reads
+    ///     Props again, so moving the setting only ever affected koloss made afterwards.
+    /// </summary>
+    [TestMethod]
+    public void ChangingTheGrowthSettingReachesKolossThatAlreadyExist() {
+        string tuning = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Util",
+            "KolossGrowthTuning.cs"
+        ));
+
+        Assert.IsTrue(tuning.Contains("AllMapsWorldAndTemporary_Alive"), "Live pawns have to be walked.");
+        Assert.IsTrue(tuning.Contains("comp.severityPerDay ="), "And the comp's own field written.");
+    }
 }

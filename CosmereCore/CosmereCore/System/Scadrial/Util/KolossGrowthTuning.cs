@@ -30,6 +30,33 @@ public static class KolossGrowthTuning {
         Apply();
     }
 
+    /// <summary>
+    ///     Rewrites the rate on every koloss that already exists.
+    /// </summary>
+    /// <remarks>
+    ///     HediffComp_SeverityPerDay copies Props.CalculateSeverityPerDay() into its own public
+    ///     field in CompPostPostAdd, scribes that, and never reads Props again. So changing the
+    ///     setting moved the def and nothing else: koloss made before the change kept growing at
+    ///     the old rate for the rest of their lives, and the setting looked like it did nothing.
+    /// </remarks>
+    private static int Retune(float severityPerDay) {
+        if (Current.Game == null) return 0;
+
+        int retuned = 0;
+        foreach (Pawn pawn in PawnsFinder.AllMapsWorldAndTemporary_Alive) {
+            Verse.Hediff? growth = pawn.health?.hediffSet?.GetFirstHediffOfDef(
+                HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth
+            );
+
+            if (growth?.TryGetComp(out HediffComp_SeverityPerDay? comp) != true || comp == null) continue;
+
+            comp.severityPerDay = severityPerDay;
+            retuned++;
+        }
+
+        return retuned;
+    }
+
     public static void Apply() {
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
         if (growth?.comps == null) return;
@@ -44,9 +71,11 @@ public static class KolossGrowthTuning {
             // of days in that span.
             perDay.severityPerDay = 1f / (years * GenDate.DaysPerYear);
 
+            int retuned = Retune(perDay.severityPerDay);
+
             Cosmere.Core.Logger.Verbose(
                 $"KolossGrowthTuning: growth set to {years:0.#} years " +
-                $"({perDay.severityPerDay:0.000000} severity/day)."
+                $"({perDay.severityPerDay:0.000000} severity/day), {retuned} already alive retuned."
             );
 
             return;

@@ -287,6 +287,19 @@ public class KolossControlTests {
                 .Select(li => li.Attribute("Class")!.Value).ToList();
 
             Assert.IsTrue(comps.Any(c => c.EndsWith("SeizeKolossProperties")), "Either metal holds one.");
+
+            // CastAllomanticAbilityAtTarget is the iron and steel driver. It calls MoveThing and
+            // physically throws the target, and it never runs an ability comp - so rioting a pawn
+            // launched them across the map and took hold of nothing.
+            Assert.AreEqual(
+                "CastAbilityOnThing",
+                ability.Element("jobDef")?.Value,
+                $"{metal} target must not run the physical push driver."
+            );
+            Assert.IsTrue(
+                comps.Any(c => c.EndsWith("MetalCostProperties")),
+                "Vanilla's job does not spend the metal, so the cost has to be a comp."
+            );
         }
     }
 

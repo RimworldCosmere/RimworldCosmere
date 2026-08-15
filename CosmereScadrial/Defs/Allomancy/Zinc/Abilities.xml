@@ -17,6 +17,12 @@ Hostile or neutral targets grow tense, anxious, or unstable — their emotions s
          holds them there - a leash, on the one mechanic built to have none. -->
     <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_ZincTarget</defName>
+        <!-- Vanilla's ability job, not the allomantic one. AbstractTargetBurnAbility runs
+             CastAllomanticAbilityAtTarget, which is the iron and steel driver - it calls MoveThing
+             and physically throws whatever you aimed at, and never runs a single ability comp.
+             Rioting somebody sent them flying and took hold of nothing. CastAbilityOnThing goes
+             through Verb_CastAbility, which is what actually applies the comps below. -->
+        <jobDef>CastAbilityOnThing</jobDef>
         <label>riot target</label>
         <description>The Rioter channels Zinc to incite emotion in a single target.
 
@@ -39,6 +45,9 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
              The comp answers with both numbers when the target resists, so the player can see how
              far short they fell and that duralumin closes it. -->
         <comps>
+            <!-- The allomantic driver used to spend the metal. Vanilla's does not, so the cost
+                 comes back as a comp, the way Steelpush already does it. -->
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.MetalCostProperties" />
             <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.InciteBreakProperties" />
             <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.SeizeKolossProperties" />
         </comps>

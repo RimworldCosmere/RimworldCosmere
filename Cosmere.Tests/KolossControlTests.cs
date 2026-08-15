@@ -158,7 +158,10 @@ public class KolossControlTests {
 
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
         Assert.IsTrue(control.Contains("CS_KolossBind_TooWeak"));
-        Assert.IsTrue(control.Contains("CS_KolossBind_NoCapacity"));
+        Assert.IsFalse(
+            control.Contains("CapacityOf"),
+            "Nothing caps how many are held any more; the metal running out is the only limit."
+        );
     }
 
     /// <summary>
@@ -183,16 +186,15 @@ public class KolossControlTests {
     }
 
     /// <summary>
-    ///     Capacity and metal are what limit an army. Newest goes first, so a force built over a
-    ///     campaign survives a bad moment and the greedy seizure is the one that fails.
+    ///     Metal is the only limit. Newest goes first, so a force built over a campaign survives a
+    ///     bad moment and the greedy seizure is the one that fails.
     /// </summary>
     [TestMethod]
-    public void AnArmyIsLimitedByCapacityAndMetal() {
+    public void AnArmyIsLimitedByMetalAlone() {
         // CodeOnly, because the file explains the wrong defName it used to use and a plain grep
         // reads that explanation as the thing it warns about.
         string roster = CodeOnly("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
-        Assert.IsTrue(roster.Contains("Cosmere_Scadrial_Stat_AllomanticPower"), "Slots come off power.");
         Assert.IsTrue(roster.Contains("DrainSource"), "Holding costs metal, the same way any burn does.");
         Assert.IsTrue(
             roster.Contains("SortByDescending(b => b.boundAtTick)"),

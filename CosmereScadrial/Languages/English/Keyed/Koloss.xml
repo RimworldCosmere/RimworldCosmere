@@ -8,7 +8,6 @@
 
   <CS_KolossBind_NoGame>There is no game to bind anything in.</CS_KolossBind_NoGame>
   <CS_KolossBind_NotBindable>{TARGET} is not a thing that can be held this way.</CS_KolossBind_NotBindable>
-  <CS_KolossBind_NoCapacity>{HOLDER} can hold {CAPACITY} at once and is already holding that many.</CS_KolossBind_NoCapacity>
   <CS_KolossBind_TooWeak>{TARGET} resists. Your reach is {REACH} against its {NEEDED}. Duralumin would carry you past it.</CS_KolossBind_TooWeak>
   <CS_KolossBind_Readout>Reach {REACH} against {NEEDED}</CS_KolossBind_Readout>
 
@@ -23,7 +22,7 @@
   <CS_Soothe_Calmed>{TARGET} settles.</CS_Soothe_Calmed>
   <CS_Soothe_CannotReach>{TARGET} cannot be soothed out of this. Nothing is holding it.</CS_Soothe_CannotReach>
 
-  <CS_KolossRoster_Label>Holding {COUNT}/{CAPACITY}</CS_KolossRoster_Label>
+  <CS_KolossRoster_Label>Holding {COUNT}</CS_KolossRoster_Label>
   <CS_KolossRoster_Desc>Held on {METAL}: {HELD}\n\nUpkeep runs while they are held. Click to let one go.</CS_KolossRoster_Desc>
 
   <CS_KolossRoster_Title>Held</CS_KolossRoster_Title>

@@ -43,14 +43,6 @@ public static class KolossControl {
         float needed = EmotionalResistance.Of(koloss);
         if (needed <= 0f) return "CS_KolossBind_NotBindable".Translate(koloss.LabelShortCap.Named("TARGET"));
 
-        int capacity = KolossRoster.CapacityOf(holder);
-        if (roster.HolderOf(koloss) != holder && roster.UsedBy(holder) >= capacity) {
-            return "CS_KolossBind_NoCapacity".Translate(
-                holder.LabelShortCap.Named("HOLDER"),
-                capacity.Named("CAPACITY")
-            );
-        }
-
         Cosmere.Core.Logger.Verbose(
             $"Koloss seize: {holder.LabelShort} reach {reach:F2} against {koloss.LabelShort} needing {needed:F2}."
         );

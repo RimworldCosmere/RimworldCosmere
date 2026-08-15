@@ -74,19 +74,14 @@ public class KolossRoster : GameComponent {
     ///     What holding costs against what seizing cost, per koloss.
     /// </summary>
     /// <remarks>
-    ///     Taking hold is the hard part and keeping hold is not. A tenth means an Allomancer can
-    ///     seize far fewer than they can carry, which is the shape the whole mechanic wants.
+    ///     Taking hold is the hard part and keeping hold is not. Nothing caps how many an
+    ///     Allomancer can carry any more - the metal running out is the only limit there is, so
+    ///     this number is the whole balance of the mechanic.
     /// </remarks>
-    public const float HoldFraction = 0.1f;
+    public const float HoldFraction = 0.01f;
 
     /// <summary>How often the roster re-reads itself. The metal is charged by the gene.</summary>
     public const int BillingInterval = 250;
-
-    /// <summary>Slots the weakest Allomancer gets. Everyone who can Soothe at all can hold one.</summary>
-    private const int BaseSlots = 1;
-
-    /// <summary>Allomantic Power that buys one more slot.</summary>
-    private const float PowerPerSlot = 1.5f;
 
     private List<KolossBond> bonds = [];
 
@@ -97,26 +92,6 @@ public class KolossRoster : GameComponent {
     public override void ExposeData() {
         Scribe_Collections.Look(ref bonds, "bonds", LookMode.Deep);
         bonds ??= [];
-    }
-
-    /// <summary>How many koloss this Allomancer can keep hold of at once.</summary>
-    public static int CapacityOf(Pawn? holder) {
-        if (holder == null) return 0;
-
-        float power = holder.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
-
-        return BaseSlots + Mathf.FloorToInt(Mathf.Max(0f, power) / PowerPerSlot);
-    }
-
-    public int UsedBy(Pawn? holder) {
-        if (holder == null) return 0;
-
-        int used = 0;
-        for (int i = 0; i < bonds.Count; i++) {
-            if (bonds[i].holder == holder && bonds[i].Intact) used++;
-        }
-
-        return used;
     }
 
     /// <summary>The Allomancer holding this koloss, or nobody.</summary>

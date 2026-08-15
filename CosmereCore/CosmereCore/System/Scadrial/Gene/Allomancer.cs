@@ -249,10 +249,7 @@ public class Allomancer : Metalborn {
         if (held.Count == 0) yield break;
 
         yield return new Command_Action {
-            defaultLabel = "CS_KolossRoster_Label".Translate(
-                held.Count.Named("COUNT"),
-                Comp.Game.KolossRoster.CapacityOf(pawn).Named("CAPACITY")
-            ),
+            defaultLabel = "CS_KolossRoster_Label".Translate(held.Count.Named("COUNT")),
             defaultDesc = "CS_KolossRoster_Desc".Translate(
                 metal.LabelCap.Named("METAL"),
                 held.Select(one => one.LabelShortCap).ToCommaList().Named("HELD")

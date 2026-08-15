@@ -116,10 +116,7 @@ public class Dialog_KolossRoster : Window {
             using (new TextBlock(TextAnchor.MiddleRight)) {
                 Widgets.Label(
                     count,
-                    "CS_KolossRoster_Label".Translate(
-                        held.Count.Named("COUNT"),
-                        KolossRoster.CapacityOf(holder).Named("CAPACITY")
-                    )
+                    "CS_KolossRoster_Label".Translate(held.Count.Named("COUNT"))
                 );
             }
 

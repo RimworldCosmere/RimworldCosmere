@@ -153,6 +153,98 @@
       <li>(0.45, 0.30, 0.20)</li>
       <li>(0.65, 0.45, 0.30)</li>
     </colorSpectrum>
+    <!-- Jastes Lekal bought the Luthadel koloss army with counterfeit coin and marched it on the
+         city. This is that army, alongside the house troops every great house fields.
+
+         The house makers are repeated here rather than inherited because naming pawnGroupMakers on
+         a child replaces the parent's list outright rather than adding to it - doing this without
+         them left Lekal with no traders, no settlements, and no leader for FactionTick to find. -->
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>18</Cosmere_Scadrial_PawnKind_Skaa>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>30</Cosmere_Scadrial_PawnKind_Skaa>
+          <Villager>4</Villager>
+          <Town_Guard>4</Town_Guard>
+          <Town_Councilman>2</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Town_Trader>1</Town_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Alpaca>3</Alpaca>
+        </carriers>
+        <guards>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>40</Cosmere_Scadrial_PawnKind_Skaa>
+          <Villager>6</Villager>
+          <Town_Guard>5</Town_Guard>
+          <Mercenary_Elite>3</Mercenary_Elite>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+      <!-- Its own maker, never mixed into the mercenary list above. ChoosePawnGenOptionsByPoints
+           weights each option through PawnWeightFactorByMostExpensivePawnCostFractionCurve, which
+           returns 0.01 below a fifth of the priciest kind present - so a 300-power koloss sharing
+           a list with a 60-power pirate erases the pirate at a hundred to one. Separate makers
+           means the storyteller picks a koloss raid or a mercenary raid, which is also what the
+           fiction wants: they do not march together.
+
+           Siege is disallowed because koloss do not operate mortars. -->
+      <li>
+        <kindDef>Combat</kindDef>
+        <!-- Stated, because PawnGroupMaker.commonality defaults to 100 and the mercenary maker
+             above takes that default. Setting this to 1 would have made a koloss raid one in a
+             hundred and one, which reads as the feature not working. -->
+        <commonality>100</commonality>
+        <disallowedStrategies>
+          <li>Siege</li>
+        </disallowedStrategies>
+        <options>
+          <Cosmere_Scadrial_PawnKind_KolossYoung>10</Cosmere_Scadrial_PawnKind_KolossYoung>
+          <Cosmere_Scadrial_PawnKind_KolossGrown>6</Cosmere_Scadrial_PawnKind_KolossGrown>
+          <Cosmere_Scadrial_PawnKind_KolossOvergrown>2</Cosmere_Scadrial_PawnKind_KolossOvergrown>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <!-- The base caps one pawn at 150 even at 1300 raid points, so an overgrown koloss at 300
+         could never be selected and the maker silently fell back to mercenaries. -->
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0, 60)</li>
+        <li>(70, 120)</li>
+        <li>(700, 320)</li>
+        <li>(1300, 500)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <!-- RaidAgeRestrictionWorker.ShouldApplyToKind is true for anything Humanlike, so without this
+         child koloss roll at two and a half percent from day fifteen. -->
+    <disallowedRaidAgeRestrictions>
+      <li>Children</li>
+    </disallowedRaidAgeRestrictions>
   </FactionDef>
 
   <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
@@ -251,7 +343,57 @@
           <Pirate>10</Pirate>
         </options>
       </li>
+      <!-- Its own maker, never mixed into the mercenary list above. ChoosePawnGenOptionsByPoints
+           weights each option through PawnWeightFactorByMostExpensivePawnCostFractionCurve, which
+           returns 0.01 below a fifth of the priciest kind present - so a 300-power koloss sharing
+           a list with a 60-power pirate erases the pirate at a hundred to one. Separate makers
+           means the storyteller picks a koloss raid or a mercenary raid, which is also what the
+           fiction wants: they do not march together.
+
+           Siege is disallowed because koloss do not operate mortars. -->
+      <li>
+        <kindDef>Combat</kindDef>
+        <!-- Stated, because PawnGroupMaker.commonality defaults to 100 and the mercenary maker
+             above takes that default. Setting this to 1 would have made a koloss raid one in a
+             hundred and one, which reads as the feature not working. -->
+        <commonality>100</commonality>
+        <disallowedStrategies>
+          <li>Siege</li>
+        </disallowedStrategies>
+        <options>
+          <Cosmere_Scadrial_PawnKind_KolossYoung>10</Cosmere_Scadrial_PawnKind_KolossYoung>
+          <Cosmere_Scadrial_PawnKind_KolossGrown>6</Cosmere_Scadrial_PawnKind_KolossGrown>
+          <Cosmere_Scadrial_PawnKind_KolossOvergrown>2</Cosmere_Scadrial_PawnKind_KolossOvergrown>
+        </options>
+      </li>
     </pawnGroupMakers>
+    <!-- The base caps one pawn at 150 even at 1300 raid points, so an overgrown koloss at 300
+         could never be selected and the maker silently fell back to mercenaries. -->
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0, 60)</li>
+        <li>(70, 120)</li>
+        <li>(700, 320)</li>
+        <li>(1300, 500)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <!-- RaidAgeRestrictionWorker.ShouldApplyToKind is true for anything Humanlike, so without this
+         child koloss roll at two and a half percent from day fifteen. -->
+    <disallowedRaidAgeRestrictions>
+      <li>Children</li>
+    </disallowedRaidAgeRestrictions>
+    <!-- Ruin had none, so from the moment a scenario's CreateFactionAction fires it raided at full
+         weight at every point level. Shaped like vanilla Mechanoid's: nothing early, climbing as
+         the colony becomes worth destroying. -->
+    <raidCommonalityFromPointsCurve>
+      <points>
+        <li>(0, 0)</li>
+        <li>(300, 0)</li>
+        <li>(800, 0.6)</li>
+        <li>(2000, 1)</li>
+      </points>
+    </raidCommonalityFromPointsCurve>
     <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
   </FactionDef>
 

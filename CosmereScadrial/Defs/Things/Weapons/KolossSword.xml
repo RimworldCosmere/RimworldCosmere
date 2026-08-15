@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- A koloss carries an enormous crude sword it took off a dead koloss, and gets a bigger one
+       the same way. Nobody forges these to a pattern - they are beaten out of whatever was to
+       hand and passed along by inheritance, which is why they are heavy, blunt-edged and far too
+       large for a person to swing properly.
+
+       Its own weaponTag matters twice over: it keeps koloss out of the industrial weapon pools
+       every other faction draws from, and it means the sword drops when the koloss does. -->
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp">
+    <defName>Cosmere_Scadrial_Thing_KolossSword</defName>
+    <label>koloss sword</label>
+    <description>A slab of iron beaten into something a koloss can hold and swing. The edge is uneven and the balance is wrong for any hand smaller than the one that carried it last. It is not made so much as inherited.</description>
+    <graphicData>
+      <!-- Vanilla's until the koloss weapon art lands. A missing texPath here logs and draws a
+           placeholder rather than throwing, unlike the xenotype icon, but it still looks broken. -->
+      <texPath>Things/Item/Equipment/WeaponMelee/Club</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <uiIconScale>1.2</uiIconScale>
+    <techLevel>Medieval</techLevel>
+    <weaponTags>
+      <li>Cosmere_Scadrial_KolossWeapon</li>
+    </weaponTags>
+    <weaponClasses>
+      <li>Melee</li>
+    </weaponClasses>
+    <!-- Not craftable and not traded. Every one of these came off a dead koloss, which is also
+         the only way a player gets one. -->
+    <tradeability>None</tradeability>
+    <statBases>
+      <Mass>7</Mass>
+      <MarketValue>90</MarketValue>
+    </statBases>
+    <equippedAngleOffset>-55</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.4</cooldownTime>
+      </li>
+      <li>
+        <label>edge</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+      <li>
+        <label>flat</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

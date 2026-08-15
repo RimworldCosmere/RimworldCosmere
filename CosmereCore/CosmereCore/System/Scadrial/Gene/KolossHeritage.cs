@@ -1,4 +1,5 @@
 using Cosmere.System.Scadrial.Util;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
@@ -24,6 +25,15 @@ public class KolossHeritage : Verse.Gene {
         if (growth == null) return;
         if (pawn.health.hediffSet.GetFirstHediffOfDef(growth) != null) return;
 
-        pawn.health.AddHediff(growth);
+        Verse.Hediff made = pawn.health.AddHediff(growth);
+
+        // A koloss made by surgery starts at nothing, because the clock starts at the spikes. One
+        // that marched out of the east has been somebody's for years, and a raid of newborns reads
+        // as a raid of large men. The kind says which it is.
+        if (pawn.kindDef?.GetModExtension<Def.KolossGrowthExtension>() is not { } aged) return;
+
+        // Never a literal zero: Hediff.ShouldRemove is Severity <= 0f, so the hediff would delete
+        // itself on the next tick and the koloss would have no growth at all.
+        made.Severity = Mathf.Max(0.001f, aged.growth.RandomInRange);
     }
 }

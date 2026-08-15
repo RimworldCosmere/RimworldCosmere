@@ -111,7 +111,7 @@
 
     <!-- What a made koloss is generated from. Its genes come from the forced xenotype, so this
          only has to supply the backstory, the age and something to fight with. -->
-    <PawnKindDef ParentName="BasePlayerPawnKind">
+    <PawnKindDef Name="Cosmere_Scadrial_PawnKind_KolossBase" ParentName="BasePlayerPawnKind">
         <defName>Cosmere_Scadrial_PawnKind_Koloss</defName>
         <label>koloss</label>
         <race>Human</race>
@@ -139,9 +139,56 @@
         <apparelMoney>40~120</apparelMoney>
         <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
         <gearHealthRange>0.1~0.4</gearHealthRange>
+        <!-- Its own tag, so a koloss never draws from the industrial pools every other faction
+             uses, and so the sword drops when the koloss does. Shooting is disabled on
+             EasilyInfluenced, so there is no way for this to hand one a gun. -->
+        <weaponTags>
+            <li>Cosmere_Scadrial_KolossWeapon</li>
+        </weaponTags>
+        <!-- Wide enough to cover quality. The sword is worth 90 at Normal and more above it, and
+             a budget that cannot afford the only weapon in the tag makes the koloss arrive empty
+             handed - PawnWeaponGenerator returns without complaint when nothing fits. -->
+        <weaponMoney>200~400</weaponMoney>
         <!-- Required for any humanlike kind, and RimWorld says so at load rather than at use. A
              koloss barely has a will to break, which is what the low numbers say. -->
         <initialResistanceRange>2~6</initialResistanceRange>
         <initialWillRange>0.5~1.5</initialWillRange>
+    </PawnKindDef>
+
+    <!-- Three ages of the same creature. They differ by how long somebody has had them, which is
+         the only thing that varies about a koloss - size, reach and what it costs a raid to field.
+
+         combatPower has to climb steeply, because ChoosePawnGenOptionsByPoints weights each option
+         through PawnWeightFactorByMostExpensivePawnCostFractionCurve, which returns 0.01 below a
+         fifth of the most expensive kind in the list. Anything cheap sharing a list with these is
+         erased at a hundred to one, which is why they live in their own group makers. -->
+    <PawnKindDef ParentName="Cosmere_Scadrial_PawnKind_KolossBase">
+        <defName>Cosmere_Scadrial_PawnKind_KolossYoung</defName>
+        <combatPower>110</combatPower>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Def.KolossGrowthExtension">
+                <growth>0.02~0.22</growth>
+            </li>
+        </modExtensions>
+    </PawnKindDef>
+
+    <PawnKindDef ParentName="Cosmere_Scadrial_PawnKind_KolossBase">
+        <defName>Cosmere_Scadrial_PawnKind_KolossGrown</defName>
+        <combatPower>190</combatPower>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Def.KolossGrowthExtension">
+                <growth>0.28~0.52</growth>
+            </li>
+        </modExtensions>
+    </PawnKindDef>
+
+    <PawnKindDef ParentName="Cosmere_Scadrial_PawnKind_KolossBase">
+        <defName>Cosmere_Scadrial_PawnKind_KolossOvergrown</defName>
+        <combatPower>300</combatPower>
+        <modExtensions>
+            <li Class="Cosmere.System.Scadrial.Def.KolossGrowthExtension">
+                <growth>0.58~0.78</growth>
+            </li>
+        </modExtensions>
     </PawnKindDef>
 </Defs>

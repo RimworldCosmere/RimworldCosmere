@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -41,14 +42,14 @@ public class PawnKindApparelTests {
     public void EveryPlayerPawnKindCanBeClothed() {
         List<string> naked = new List<string>();
 
-        foreach (XElement kind in PlayerPawnKinds()) {
-            string defName = kind.Element("defName")?.Value ?? "(unnamed)";
-            bool hasTags = kind.Element("apparelTags")?.Elements("li") is { } tags && HasAny(tags);
-            bool hasMoney = !string.IsNullOrWhiteSpace(kind.Element("apparelMoney")?.Value);
+        List<XElement> kinds = PlayerPawnKinds();
 
-            if (!hasTags || !hasMoney) {
-                naked.Add(defName);
-            }
+        foreach (XElement kind in kinds) {
+            string defName = kind.Element("defName")?.Value ?? "(unnamed)";
+
+            if (Clothed(kind, kinds)) continue;
+
+            naked.Add(defName);
         }
 
         Assert.AreEqual(
@@ -56,6 +57,29 @@ public class PawnKindApparelTests {
             naked.Count,
             $"These kinds have no apparel budget or tags, so they generate naked: {string.Join(", ", naked)}"
         );
+    }
+
+    /// <summary>
+    ///     Whether this kind ends up dressed, following ParentName as far as it goes in this file.
+    /// </summary>
+    /// <remarks>
+    ///     A kind that names a parent inherits the parent's apparel, so reading the def on its own
+    ///     reports every derived kind as naked. The raid koloss tiers are three of them - they
+    ///     carry only what differs from the kind they descend from.
+    /// </remarks>
+    private static bool Clothed(XElement? kind, List<XElement> all) {
+        while (kind != null) {
+            bool hasTags = kind.Element("apparelTags")?.Elements("li") is { } tags && HasAny(tags);
+            bool hasMoney = !string.IsNullOrWhiteSpace(kind.Element("apparelMoney")?.Value);
+            if (hasTags && hasMoney) return true;
+
+            string? parent = kind.Attribute("ParentName")?.Value;
+            kind = parent == null
+                ? null
+                : all.FirstOrDefault(other => other.Attribute("Name")?.Value == parent);
+        }
+
+        return false;
     }
 
     [TestMethod]

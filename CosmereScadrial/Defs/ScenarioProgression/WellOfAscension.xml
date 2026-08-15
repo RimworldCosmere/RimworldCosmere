@@ -116,8 +116,8 @@
         </triggers>
         <actions>
           <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
-            <title>Both Armies Move</title>
-            <text>The waiting ends the way everyone knew it would. Cett moved first, or Straff did - afterwards nobody agrees which, and it stops mattering within the hour.\n\nNeither of them can afford to let the other take the city intact, so neither of them waits any longer. Two assaults, opposite walls, the same night. Whatever they were watching each other for, they have stopped.</text>
+            <title>The Armies Move</title>
+            <text>The waiting ends the way everyone knew it would. Cett moved first, or Straff did - afterwards nobody agrees which, and it stops mattering within the hour.\n\nNeither of them can afford to let the other take the city intact, so neither of them waits any longer. Two assaults, opposite walls, the same night.\n\nThen the scouts come in from the east, and what they report is not an army. Jastes Lekal bought the koloss with coin that was never worth anything, and they have worked out what he paid them in.</text>
             <letterDef>ThreatBig</letterDef>
           </li>
           <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
@@ -133,6 +133,17 @@
             <edge>South</edge>
             <pointsFactor>0.9</pointsFactor>
             <minPoints>1000</minPoints>
+          </li>
+          <!-- The beat is called koloss_march and the scenario's opening text promises "Koloss
+               from the east", and until now it sent two armies of men and no koloss at all.
+               RaidAction creates the faction when the world lacks one, so this works from any
+               start. -->
+          <li Class="Cosmere.Core.ScenarioPart.Action.RaidAction">
+            <faction>Cosmere_Scadrial_Faction_HouseLekal</faction>
+            <armyNameKey>CS_Progression_Army_Koloss</armyNameKey>
+            <edge>East</edge>
+            <pointsFactor>1.3</pointsFactor>
+            <minPoints>1400</minPoints>
           </li>
         </actions>
       </li>

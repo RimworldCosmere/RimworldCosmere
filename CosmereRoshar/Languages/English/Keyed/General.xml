@@ -8,4 +8,17 @@
     <CRO_LightweavingDecoy_Inspect>Illusory decoy made of woven light.</CRO_LightweavingDecoy_Inspect>
     <CRO_LightweavingDecoy_CasterLabel>Created by {PAWN}</CRO_LightweavingDecoy_CasterLabel>
     <CRO_LightweavingDecoy_TimeLeft>Fading in: {0}</CRO_LightweavingDecoy_TimeLeft>
+
+    <CRO_Highstorm_Span_Days>{0} days</CRO_Highstorm_Span_Days>
+    <CRO_Highstorm_Span_Hours>{0} hours</CRO_Highstorm_Span_Hours>
+    <CRO_Highstorm_Readout_Storm>Highstorm</CRO_Highstorm_Readout_Storm>
+    <CRO_Highstorm_Readout_Weeping>The Weeping</CRO_Highstorm_Readout_Weeping>
+    <CRO_Highstorm_Readout_Imminent>Stormwall Imminent</CRO_Highstorm_Readout_Imminent>
+    <CRO_Highstorm_Readout_Countdown>Highstorm: {0}</CRO_Highstorm_Readout_Countdown>
+    <CRO_Highstorm_Readout_AfterWeeping>Highstorm: {0}, past the Weeping</CRO_Highstorm_Readout_AfterWeeping>
+    <CRO_Highstorm_Tip_Storm>A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.</CRO_Highstorm_Tip_Storm>
+    <CRO_Highstorm_Tip_Weeping>The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.</CRO_Highstorm_Tip_Weeping>
+    <CRO_Highstorm_Tip_Imminent>The stormwall draws near. Those caught in the open will not survive.</CRO_Highstorm_Tip_Imminent>
+    <CRO_Highstorm_Tip_Countdown>The next highstorm will arrive in approximately {0}.\nHighstorms sweep from east to west, carrying debris with enough force to shatter bone. Seek shelter behind solid eastern walls.\nSeasonal intensity: {1}</CRO_Highstorm_Tip_Countdown>
+    <CRO_Highstorm_Tip_AfterWeeping>The Weeping falls before the next highstorm. The skies will weep for weeks, and no storm will cross them until it ends.\nThe next highstorm will arrive in approximately {0}.\nSeasonal intensity: {1}</CRO_Highstorm_Tip_AfterWeeping>
 </LanguageData>

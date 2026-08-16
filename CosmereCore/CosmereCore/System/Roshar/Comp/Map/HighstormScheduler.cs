@@ -8,12 +8,15 @@ using Logger = Cosmere.Core.Logger;
 namespace Cosmere.System.Roshar.Comp.Map;
 
 public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
-    private const int WeepingStartDay = 46;
-    private const int DaysPerYear = 60;
+    private const int WeepingStartDay = WeepingSchedule.StartDay;
+    private const int DaysPerYear = WeepingSchedule.DaysPerYear;
+
+    private static readonly Color WeepingBlue = new Color(0.5f, 0.7f, 0.9f);
 
     private int lastHighstormTick = -1;
 
     private int nextHighstormTick = -1;
+    private bool pushedPastWeeping;
     private float seasonalIntensity = 1f;
     private bool stormActive;
     private bool warningShown;
@@ -148,12 +151,13 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         nextHighstormTick = lastHighstormTick + intervalTicks;
 
-        if (Mod.enableWeeping && IsTickDuringWeeping(nextHighstormTick)) {
-            int dayOfYear = GenLocalDate.DayOfYear(map);
-            int daysUntilNewYear = DaysPerYear - dayOfYear;
-            nextHighstormTick = ticksNow +
-                                daysUntilNewYear * GenDate.TicksPerDay +
-                                Rand.Range(0, 2) * GenDate.TicksPerDay;
+        // Measured from the storm's own date, not from now: the storm is being moved out of the
+        // Weeping it landed in, so what matters is how much of that year it still has to clear.
+        pushedPastWeeping = Mod.enableWeeping && IsTickDuringWeeping(nextHighstormTick);
+        if (pushedPastWeeping) {
+            int daysLeftInYear = WeepingSchedule.DaysToClearWeeping(DayOfYearAt(nextHighstormTick));
+            nextHighstormTick += daysLeftInYear * GenDate.TicksPerDay +
+                                 Rand.Range(0, 2) * GenDate.TicksPerDay;
         }
 
         warningShown = false;
@@ -199,57 +203,78 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         Scribe_Values.Look(ref warningShown, "warningShown");
         Scribe_Values.Look(ref seasonalIntensity, "seasonalIntensity", 1f);
         Scribe_Values.Look(ref weepingActive, "weepingActive");
+        Scribe_Values.Look(ref pushedPastWeeping, "pushedPastWeeping");
     }
 
     public static string? GetStatusText(Verse.Map map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
-        if (scheduler.stormActive) return "Highstorm".Colorize(ColorLibrary.RedReadable);
-        if (Mod.enableWeeping && IsWeeping(map)) return "The Weeping".Colorize(new Color(0.5f, 0.7f, 0.9f));
+        if (scheduler.stormActive) return "CRO_Highstorm_Readout_Storm".Translate().Colorize(ColorLibrary.RedReadable);
+        if (Mod.enableWeeping && IsWeeping(map)) return "CRO_Highstorm_Readout_Weeping".Translate().Colorize(WeepingBlue);
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
-        if (ticksLeft <= 0) return "Stormwall Imminent".Colorize(ColorLibrary.RedReadable);
+        if (ticksLeft <= 0) return "CRO_Highstorm_Readout_Imminent".Translate().Colorize(ColorLibrary.RedReadable);
 
-        float days = ticksLeft / (float)GenDate.TicksPerDay;
-        if (days >= 1f) return $"Highstorm: {days:F1} days";
+        string span = DescribeSpan(ticksLeft);
 
-        float hours = ticksLeft / (float)GenDate.TicksPerHour;
-        return $"Highstorm: {hours:F1} hours";
+        // The wait reads as a broken timer without this. A storm rolled into the Weeping gets moved
+        // past it, so the countdown jumps by weeks on a day that still looks ordinary.
+        return scheduler.pushedPastWeeping
+            ? "CRO_Highstorm_Readout_AfterWeeping".Translate(span)
+            : "CRO_Highstorm_Readout_Countdown".Translate(span);
     }
 
     public static string? GetTooltipText(Verse.Map map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
-        if (scheduler.stormActive) {
-            return
-                "A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.";
-        }
-
-        if (Mod.enableWeeping && IsWeeping(map)) {
-            return
-                "The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.";
-        }
+        if (scheduler.stormActive) return "CRO_Highstorm_Tip_Storm".Translate();
+        if (Mod.enableWeeping && IsWeeping(map)) return "CRO_Highstorm_Tip_Weeping".Translate();
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
-        if (ticksLeft <= 0) return "The stormwall draws near. Those caught in the open will not survive.";
+        if (ticksLeft <= 0) return "CRO_Highstorm_Tip_Imminent".Translate();
 
-        float days = ticksLeft / (float)GenDate.TicksPerDay;
-        float hours = ticksLeft / (float)GenDate.TicksPerHour;
-        string timeStr = days >= 1f ? $"{days:F1} days" : $"{hours:F1} hours";
-        return
-            $"The next highstorm will arrive in approximately {timeStr}.\nHighstorms sweep from east to west, carrying debris with enough force to shatter bone. Seek shelter behind solid eastern walls.\nSeasonal intensity: {scheduler.seasonalIntensity:P0}";
+        string span = DescribeSpan(ticksLeft);
+        string intensity = scheduler.seasonalIntensity.ToStringPercent();
+
+        return scheduler.pushedPastWeeping
+            ? "CRO_Highstorm_Tip_AfterWeeping".Translate(span, intensity)
+            : "CRO_Highstorm_Tip_Countdown".Translate(span, intensity);
+    }
+
+    private static string DescribeSpan(int ticks) {
+        float days = ticks / (float)GenDate.TicksPerDay;
+        if (days >= 1f) return "CRO_Highstorm_Span_Days".Translate(days.ToString("F1"));
+
+        float hours = ticks / (float)GenDate.TicksPerHour;
+        return "CRO_Highstorm_Span_Hours".Translate(hours.ToString("F1"));
     }
 
     public static bool IsWeeping(Verse.Map map) {
-        return GenLocalDate.DayOfYear(map) >= WeepingStartDay;
+        return WeepingSchedule.IsWeepingDay(GenLocalDate.DayOfYear(map));
+    }
+
+    /// <summary>
+    ///     The map's local day of year at a future game tick.
+    /// </summary>
+    /// <remarks>
+    ///     Not <c>tick / TicksPerDay % DaysPerYear</c>. That reads days since the game started,
+    ///     which is a different calendar from the one <see cref="IsWeeping" /> uses: local dates
+    ///     run off <c>TicksAbs</c> and carry both the starting date and a longitude offset. The two
+    ///     disagreed by however far into a year the colony landed, so the Weeping could be dodged
+    ///     on a day nowhere near it and push the next storm most of a year out.
+    /// </remarks>
+    /// <param name="tick">A game tick, on the same clock as <c>TickManager.TicksGame</c>.</param>
+    /// <returns>The day of year, 0 to <see cref="DaysPerYear" /> - 1.</returns>
+    private int DayOfYearAt(int tick) {
+        TickManager ticks = Find.TickManager;
+        long absTick = tick + (ticks.TicksAbs - ticks.TicksGame);
+        return GenDate.DayOfYear(absTick, Find.WorldGrid.LongLatOf(map.Tile).x);
     }
 
     private bool IsTickDuringWeeping(int tick) {
-        long absTick = tick;
-        int dayOfYear = (int)(absTick / GenDate.TicksPerDay % DaysPerYear);
-        return dayOfYear >= WeepingStartDay;
+        return WeepingSchedule.IsWeepingDay(DayOfYearAt(tick));
     }
 
     private static float GetSeasonalIntensityMultiplier(Verse.Map map) {

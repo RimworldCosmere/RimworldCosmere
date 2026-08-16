@@ -17,11 +17,11 @@
       <graphicClass>Graphic_Single</graphicClass>
       <!-- Vanilla weapons sit in a 64x64 square and take the default 1.0, but their blades are
            about one to four. This one is one to eight, so at the same canvas it reads half the
-           height and looks like a toy. Drawn at three and a half tiles - a koloss weapon is
-           meant to be absurd in a human hand, and at anything smaller it reads as a machete. -->
-      <drawSize>3.5</drawSize>
+           height and looks like a toy. The canvas is also padded to the left rather than centred,
+           so the grip lands near the middle and the pawn holds the handle instead of the blade -
+           the same trick the Shardblade uses. drawSize covers both the lean ratio and the padding. -->
+      <drawSize>6.0</drawSize>
     </graphicData>
-    <uiIconScale>1.1</uiIconScale>
     <techLevel>Medieval</techLevel>
     <weaponTags>
       <li>Cosmere_Scadrial_KolossWeapon</li>

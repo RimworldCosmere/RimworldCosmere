@@ -7,7 +7,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Quickstart;
 
 public class TrueDesolationQuickstart : AbstractQuickstart {
-    public override int mapSize => 50;
+    public override int mapSize => 100;
 
     public override TaggedString description => "Used to test True Desolation pawns";
 
@@ -15,11 +15,11 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
 
-    public override IReadOnlyList<string> shards => ["Honor", "Cultivation", "Odium"];
+    public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Roshar_Scenario_TrueDesolation;
 
-    public override void PostApplyConfiguration() {
-        Find.GameInitData.startingPawnCount = 5;
-    }
+    // Nothing beyond what the scenario itself sets, which is Honor, Cultivation and Odium. Naming
+    // them here as well is how this quickstart used to run without the scenario at all.
+    public override IReadOnlyList<string> shards => [];
 
     public override void PostStart() {
         DebugSettings.godMode = true;
@@ -32,75 +32,54 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         Current.Game?.researchManager.DebugSetAllProjectsFinished();
     }
 
+    /// <summary>
+    ///     Tops the roster up and lays out gems to test with.
+    /// </summary>
+    /// <remarks>
+    ///     Deliberately leaves names, genders, orders and Ideals alone. The scenario's own
+    ///     ScenPart_NamedPawns already sets a radiantOrder and idealLevel per pawn, and this used
+    ///     to overwrite all of it - rewriting backstories on everyone, then popping pawns off the
+    ///     front to hand out orders the roster had already assigned.
+    /// </remarks>
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
 
-        BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
-        BackstoryDef adult = DefDatabase<BackstoryDef>.GetNamed("CivilEngineer2");
         for (int i = 0; i < pawns.Count; i++) {
-            pawns[i].story.Childhood = child;
-            pawns[i].story.Adulthood = adult;
+            InvestitureHolder? investiture = pawns[i].GetInvestiture();
+            if (investiture != null) investiture.currentInvestitureSelf = 1000;
         }
 
+        LayOutGems(pawns[0]);
+        GiveSpherePouch(pawns[0]);
+        Find.Selector.Select(pawns[0], false);
+    }
+
+    /// <summary>One filled stack of every gem, on the ground where the colony lands.</summary>
+    private static void LayOutGems(Pawn pawn) {
         foreach (GemDef gemDef in DefDatabase<GemDef>.AllDefsListForReading) {
             Verse.Thing gem = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Mark, gemDef.Item);
             gem.stackCount = 25;
-            gem.TryGetComp<InvestitureHolder>().FillInvestiture();
-            GenPlace.TryPlaceThing(gem, pawns[0].Position, pawns[0].Map, ThingPlaceMode.Near);
+            gem.TryGetComp<InvestitureHolder>()?.FillInvestiture();
+            GenPlace.TryPlaceThing(gem, pawn.Position, pawn.Map, ThingPlaceMode.Near);
+        }
+    }
+
+    /// <summary>A worn pouch holding one charged broam, so Stormlight is on tap immediately.</summary>
+    private static void GiveSpherePouch(Pawn pawn) {
+        Apparel pouch = (Apparel)ThingMaker.MakeThing(
+            ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
+            GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
+        );
+
+        Verse.Thing broam = ThingMaker.MakeThing(
+            ThingDefOf.Cosmere_Roshar_Thing_Broam,
+            Core.ThingDefOf.RawEmerald
+        );
+        if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
+            broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
         }
 
-        if (pawns.TryPopFront(out Pawn? pawn)) {
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
-            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 20;
-
-            Apparel pouch = (Apparel)ThingMaker.MakeThing(
-                ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
-                GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
-            );
-            Verse.Thing broam = ThingMaker.MakeThing(
-                ThingDefOf.Cosmere_Roshar_Thing_Broam,
-                Core.ThingDefOf.RawEmerald
-            );
-            if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
-                broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
-            }
-
-            pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
-            pawn.apparel.Wear(pouch);
-            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
-
-            Find.Selector.Select(pawn, false);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            pawn.story.traits.GainTrait(new Trait(RimWorld.TraitDefOf.Pyromaniac));
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantSkybreaker, 1);
-            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 10;
-            pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ArrestsMade, 5);
-            pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ZoneComplianceDays, 30);
-            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            pawn.story.traits.GainTrait(new Trait(RimWorld.TraitDefOf.Pyromaniac));
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer);
-            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
-            pawn.records.AddTo(RimWorld.RecordDefOf.KillsHumanlikes, 10);
-            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
-            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
-            pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_PatientsSaved, 5);
-            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 3);
-            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
-            pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 5);
-            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
-        }
+        pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
+        pawn.apparel.Wear(pouch);
     }
 }

@@ -185,9 +185,11 @@
             </li>
             <li Class="Cosmere.Core.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>
-                <maxItems>25</maxItems>
+                <investitureThreshold>true</investitureThreshold>
+                <thresholdLabel>CRO_Storage_StormlightBand</thresholdLabel>
+                <maxStacks>30</maxStacks>
                 <defaultStorageSettings>
-                    <priority>Critical</priority>
+                    <priority>Normal</priority>
                     <filter>
                         <categories>
                             <li>Cosmere_Roshar_ThingCategory_Sphere</li>

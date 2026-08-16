@@ -129,4 +129,8 @@
     <CC_Connection_Group_Unclaimed>Beyond these worlds</CC_Connection_Group_Unclaimed>
     <CC_Connection_RowTip>{SHARD}\n\n{TIER} ({VALUE} of 100).\n\nConnection decides who may use a god metal of this Shard, and who may take on new power from it. Thirty is enough for either.</CC_Connection_RowTip>
     <CC_Connection_AbsentTip>{SHARD} holds nothing here. No one in this cosmere can be tied to a Shard that is not part of it.</CC_Connection_AbsentTip>
+    <CC_Storage_InvestitureBand>{0} Investiture</CC_Storage_InvestitureBand>
+    <CC_Storage_InvestitureBand_Tip>Only store things charged within this share of what they can hold. Anything that holds no Investiture is unaffected.</CC_Storage_InvestitureBand_Tip>
+    <CC_Storage_InvestitureBand_Eject>Eject when out of range</CC_Storage_InvestitureBand_Eject>
+    <CC_Storage_InvestitureBand_Eject_Tip>Stored charge drains over time. With this set, anything that falls outside the range is ejected and set down nearby instead of being kept.</CC_Storage_InvestitureBand_Eject_Tip>
 </LanguageData>

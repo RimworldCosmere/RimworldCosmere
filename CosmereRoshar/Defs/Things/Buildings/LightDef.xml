@@ -31,6 +31,8 @@
             <li Class="CompProperties_Styleable" />
             <li Class="Cosmere.Core.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>
+                <investitureThreshold>true</investitureThreshold>
+                <thresholdLabel>CRO_Storage_StormlightBand</thresholdLabel>
                 <maxItems>25</maxItems>
                 <defaultStorageSettings>
                     <priority>Critical</priority>

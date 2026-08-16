@@ -1,3 +1,4 @@
+using Cosmere.Core;
 using Cosmere.System.Scadrial.Gene;
 using UnityEngine;
 using Verse;
@@ -35,6 +36,12 @@ public static class EmotionalResistance {
     private const float KandraOldestYears = 1000f;
 
     /// <summary>
+    ///     Scales every resistance at once, so a colony can decide whether koloss come easily.
+    /// </summary>
+    private static float Scaling =>
+        Mathf.Max(0.01f, Mod.kolossResistance);
+
+    /// <summary>
     ///     Zero for anything that cannot be bound at all, so callers can test the number rather
     ///     than the species.
     /// </summary>
@@ -45,13 +52,13 @@ public static class EmotionalResistance {
             HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth
         );
         if (growth != null) {
-            return Mathf.Lerp(KolossFloor, KolossCeiling, Mathf.Clamp01(growth.Severity));
+            return Mathf.Lerp(KolossFloor, KolossCeiling, Mathf.Clamp01(growth.Severity)) * Scaling;
         }
 
         if (KandraOf(pawn) is { } kandra) {
             float aged = Mathf.Clamp01(kandra.ChronologicalYears / KandraOldestYears);
 
-            return Mathf.Lerp(KandraFloor, KandraCeiling, aged);
+            return Mathf.Lerp(KandraFloor, KandraCeiling, aged) * Scaling;
         }
 
         return 0f;

@@ -36,4 +36,13 @@
     <CS_Settings_Category_Koloss>Koloss</CS_Settings_Category_Koloss>
     <CS_Settings_KolossGrowthYears_Label>Years before a koloss outgrows its skin</CS_Settings_KolossGrowthYears_Label>
     <CS_Settings_KolossGrowthYears_Tooltip>A koloss never stops growing, and the growing is what kills it. This is how long one lives between the fourth spike going in and its skin failing for good.\n\nEight years fits the arc inside a long colony. Twenty is closer to the books, but most games end before a koloss finishes growing.</CS_Settings_KolossGrowthYears_Tooltip>
+  <CS_Settings_KolossGrace_Label>Grace before bloodlust</CS_Settings_KolossGrace_Label>
+  <CS_Settings_KolossGrace_Tooltip>How long a koloss stands loose before it turns on whatever is nearest.\n\nLong enough to notice and put another Allomancer on it. At zero, losing a hold is immediate.</CS_Settings_KolossGrace_Tooltip>
+
+  <CS_Settings_KolossHold_Label>Cost of holding</CS_Settings_KolossHold_Label>
+  <CS_Settings_KolossHold_Tooltip>What keeping hold of one koloss costs, against what seizing it cost.\n\nThis is the only limit on how many a single Allomancer can carry. At zero, an army is free.</CS_Settings_KolossHold_Tooltip>
+
+  <CS_Settings_KolossResistance_Label>Resistance to being held</CS_Settings_KolossResistance_Label>
+  <CS_Settings_KolossResistance_Tooltip>How hard a koloss or kandra is to take hold of in the first place.\n\nBelow one they come easily. Above it, duralumin stops being optional.</CS_Settings_KolossResistance_Tooltip>
+
 </LanguageData>

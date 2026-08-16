@@ -331,8 +331,11 @@ public class KolossControlTests {
         Assert.IsTrue(gene.Contains("pawn.InMentalState"), "Starting a state on top of one gets a pawn stuck.");
         Assert.IsTrue(gene.Contains("KolossControl.Calm"), "Retaking one mid-rampage has to end the rampage.");
 
+        // The window is a setting now, not a constant - how forgiving a lost hold should be is
+        // the kind of thing one colony wants tense and another wants survivable.
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
-        Assert.AreEqual(600, int.Parse(Regex.Match(control, @"GraceTicks = (\d+)").Groups[1].Value));
+        Assert.IsTrue(control.Contains("Mod.kolossGraceSeconds"), "Grace comes from settings.");
+        Assert.IsTrue(control.Contains("Mathf.Max(0,"), "A negative window would turn it instantly.");
     }
 
     /// <summary>

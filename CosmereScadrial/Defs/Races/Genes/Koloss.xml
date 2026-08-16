@@ -22,7 +22,11 @@
     <skinColorOverride>(96, 122, 148)</skinColorOverride>
     <skinIsHairColor>false</skinIsHairColor>
     <statFactors>
-      <MoveSpeed>1.35</MoveSpeed>
+      <!-- Just over a person's, and the growth stages take it back - a splitting koloss shaves
+           0.30 off Moving and ends up slower than the colonist running from it. Young ones are
+           quick and weak, old ones slow and lethal. Above about 1.2 there is no answer to a lost
+           hold except killing it. -->
+      <MoveSpeed>1.15</MoveSpeed>
       <CarryingCapacity>8.0</CarryingCapacity>
       <MeleeDamageFactor>2.5</MeleeDamageFactor>
       <!-- Half the melee buff. Swinging at rock is the same motion as swinging at a person, and a
@@ -84,9 +88,6 @@
     <displayOrderInCategory>103</displayOrderInCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>
-    <statFactors>
-      <PsychicSensitivity>2.0</PsychicSensitivity>
-    </statFactors>
   </GeneDef>
 
   <!-- Emotional Allomancy is the leash. Without one they attack whatever is closest. -->
@@ -120,6 +121,12 @@
       <li>Intellectual</li>
       <li>Artistic</li>
       <li>PlantWork</li>
+      <!-- They fight, they carry, they clear ground. Constructing let one raise a hospital,
+           ManualSkilled let one do fine work, and Hunting is a rifle by another name. Violent
+           stays on deliberately - without it a koloss cannot be drafted at all. -->
+      <li>Constructing</li>
+      <li>ManualSkilled</li>
+      <li>Hunting</li>
       <!-- A koloss cannot be taught which end of a gun to point. It fights with what it has. -->
       <li>Shooting</li>
     </disabledWorkTags>

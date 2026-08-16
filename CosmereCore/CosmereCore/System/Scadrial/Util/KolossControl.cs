@@ -1,6 +1,7 @@
 using Cosmere.Core;
 using Cosmere.System.Scadrial.Comp.Game;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -15,8 +16,16 @@ namespace Cosmere.System.Scadrial.Util;
 ///     two is happening.
 /// </remarks>
 public static class KolossControl {
-    /// <summary>Ticks a koloss stands loose before it turns. Long enough to fix a mistake.</summary>
-    public const int GraceTicks = 600;
+    /// <summary>
+    ///     Ticks a koloss stands loose before it turns. Long enough to fix a mistake.
+    /// </summary>
+    /// <remarks>
+    ///     Read from settings rather than fixed, because how forgiving a lost hold should be is
+    ///     the kind of thing one colony wants tense and another wants survivable.
+    /// </remarks>
+    public static int GraceTicks =>
+        Mathf.Max(0, Mathf.RoundToInt(Mod.kolossGraceSeconds
+                                      * GenTicks.TicksPerRealSecond));
 
     public static bool IsHeld(Pawn? koloss) {
         return KolossRoster.Current?.HolderOf(koloss) != null;

@@ -24,6 +24,24 @@ public class ScadrialModSettings : CosmereModSettings {
     ///     hediff's rate - see KolossGrowthTuning.
     /// </summary>
     public float kolossGrowthYears = 8f;
+
+    /// <summary>
+    ///     Seconds a koloss stands loose before it turns. Long enough to notice and put another
+    ///     Allomancer on it; short enough that losing a hold still costs something.
+    /// </summary>
+    public float kolossGraceSeconds = 10f;
+
+    /// <summary>
+    ///     What holding one costs per interval, against what seizing it cost. The only limit on
+    ///     how many a single Allomancer can carry - see KolossRoster.
+    /// </summary>
+    public float kolossHoldFraction = 0.05f;
+
+    /// <summary>
+    ///     Multiplies how hard a koloss or kandra is to seize. Below one they come easily; above
+    ///     it, duralumin stops being optional.
+    /// </summary>
+    public float kolossResistance = 1f;
     public bool mistsArrivalLetter = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
@@ -186,6 +204,48 @@ public class ScadrialModSettings : CosmereModSettings {
                             value => value.ToString("0")
                         )
                     ),
+                    new SettingDescriptor(
+                        "koloss-grace-seconds",
+                        "CS_Settings_KolossGrace_Label",
+                        "CS_Settings_KolossGrace_Tooltip",
+                        new SliderControl(
+                            () => kolossGraceSeconds,
+                            updated => kolossGraceSeconds = Mathf.Round(updated),
+                            10f,
+                            0f,
+                            60f,
+                            1f,
+                            value => value.ToString("0")
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "koloss-hold-fraction",
+                        "CS_Settings_KolossHold_Label",
+                        "CS_Settings_KolossHold_Tooltip",
+                        new SliderControl(
+                            () => kolossHoldFraction,
+                            updated => kolossHoldFraction = updated,
+                            0.05f,
+                            0f,
+                            0.5f,
+                            0.01f,
+                            value => value.ToStringPercent("0.#")
+                        )
+                    ),
+                    new SettingDescriptor(
+                        "koloss-resistance",
+                        "CS_Settings_KolossResistance_Label",
+                        "CS_Settings_KolossResistance_Tooltip",
+                        new SliderControl(
+                            () => kolossResistance,
+                            updated => kolossResistance = updated,
+                            1f,
+                            0.25f,
+                            3f,
+                            0.05f,
+                            value => value.ToStringPercent("0")
+                        )
+                    ),
                 ]
             ),
         ];
@@ -200,6 +260,9 @@ public class ScadrialModSettings : CosmereModSettings {
 
     public override void ExposeData() {
         Scribe_Values.Look(ref kolossGrowthYears, "kolossGrowthYears", 8f);
+        Scribe_Values.Look(ref kolossGraceSeconds, "kolossGraceSeconds", 10f);
+        Scribe_Values.Look(ref kolossHoldFraction, "kolossHoldFraction", 0.05f);
+        Scribe_Values.Look(ref kolossResistance, "kolossResistance", 1f);
         Scribe_Values.Look(ref enableMists, "enableMists", true);
         Scribe_Values.Look(ref mistsFrequency, "mistsFrequency");
         Scribe_Values.Look(ref pawnsKeepMetalmindsWhenDowned, "pawnsKeepMetalmindsWhenDowned", true);

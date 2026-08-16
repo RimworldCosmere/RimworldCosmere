@@ -121,11 +121,14 @@
       <li>Intellectual</li>
       <li>Artistic</li>
       <li>PlantWork</li>
-      <!-- They fight, they carry, they clear ground. Constructing let one raise a hospital,
-           ManualSkilled let one do fine work, and Hunting is a rifle by another name. Violent
-           stays on deliberately - without it a koloss cannot be drafted at all. -->
+      <!-- They fight, they carry, they clear ground. Constructing let one raise a hospital and
+           Hunting is a rifle by another name.
+
+           NOT ManualSkilled, which the spec asked for: RimWorld's Mining work type carries that
+           tag, so disabling it would have taken mining with it - from the one creature whose gene
+           buffs MiningSpeed by three quarters. Violent stays on for the same kind of reason;
+           without it a koloss cannot be drafted at all. -->
       <li>Constructing</li>
-      <li>ManualSkilled</li>
       <li>Hunting</li>
       <!-- A koloss cannot be taught which end of a gun to point. It fights with what it has. -->
       <li>Shooting</li>

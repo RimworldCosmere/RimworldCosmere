@@ -406,4 +406,62 @@ public class KolossControlTests {
         Assert.IsTrue(push.Contains("state.RecoverFromState()"), "Soothing ends the state it can reach.");
         Assert.IsTrue(push.Contains("MentalBreakDefOf.Berserk"), "Rioting starts one.");
     }
+
+    /// <summary>
+    ///     Losing a koloss is the moment the player most needs telling what happened, and the
+    ///     moment every other control on the pawn disappears - Pawn.GetGizmos gates the draft
+    ///     button on IsColonistPlayerControlled, which a koloss in bloodlust is not.
+    /// </summary>
+    /// <remarks>
+    ///     Gene gizmos are emitted OUTSIDE that guard, which is what lets this one survive - and
+    ///     is also why it has to guard itself, or it shows up on raid koloss too.
+    /// </remarks>
+    [TestMethod]
+    public void ALooseKolossStillTellsYouWhatHappened() {
+        string gene = Core("System", "Scadrial", "Gene", "EasilyInfluenced.cs");
+
+        Assert.IsTrue(gene.Contains("CS_KolossLoose_Label"), "The loose state needs its own gizmo.");
+        Assert.IsTrue(
+            gene.Contains("pawn.Faction is not { IsPlayer: true }"),
+            "Gene gizmos skip the colonist guard, so this one has to bring its own."
+        );
+    }
+
+    /// <summary>
+    ///     A held koloss is a slave, so the ordinary draft-and-click loop does not reach it. The
+    ///     count goes in the label because sending an army is worth being sure about.
+    /// </summary>
+    [TestMethod]
+    public void AHolderCanPointItsKolossAtSomething() {
+        string orders = Core("System", "Scadrial", "UI", "Command_SendKoloss.cs");
+
+        Assert.IsTrue(orders.Contains("Command_Target"), "Targeting, not a plain button.");
+        Assert.IsTrue(orders.Contains("CS_KolossSend_Label"), "The label carries the count.");
+        Assert.IsTrue(orders.Contains("one.InMentalState"), "A loose koloss takes no orders.");
+        Assert.IsTrue(orders.Contains("CanReach"), "A click nothing can reach is refused, not ignored.");
+    }
+
+    /// <summary>
+    ///     Every number Phase 2 hard-coded is now the player's to move. The radius settings the
+    ///     spec asked for do not exist, because the hold stopped caring about distance.
+    /// </summary>
+    [TestMethod]
+    public void TheNumbersThatDecideAnArmyAreSettings() {
+        string mod = File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Mod.cs"
+        ));
+
+        foreach (string knob in new[] {
+            "kolossGraceSeconds", "kolossHoldFraction", "kolossResistance",
+        }) {
+            Assert.IsTrue(mod.Contains(knob), $"{knob} is not exposed.");
+        }
+
+        // Read live rather than captured at startup, or changing one does nothing until restart.
+        Assert.IsTrue(
+            Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs")
+                .Contains("Mod.kolossHoldFraction"),
+            "A const would ignore the setting."
+        );
+    }
 }

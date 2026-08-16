@@ -66,8 +66,33 @@ public class EasilyInfluenced : Verse.Gene {
             foreach (Verse.Gizmo gizmo in inherited) yield return gizmo;
         }
 
+        // Self-guarded on purpose. Pawn.GetGizmos emits gene gizmos OUTSIDE the
+        // IsColonistPlayerControlled check, which is what lets this survive bloodlust when the
+        // draft button does not - but it also means nothing else will stop it appearing on a
+        // koloss belonging to a raid.
+        if (!pawn.Spawned || pawn.Faction is not { IsPlayer: true }) yield break;
+
         Pawn? holder = Holder;
-        if (holder == null || !holder.IsColonistPlayerControlled) yield break;
+
+        // The one gizmo that stays through bloodlust. Losing a koloss is the moment the player
+        // most needs to be told what happened and what it would take to get it back, and it is
+        // exactly the moment every other control on the pawn disappears.
+        if (holder == null) {
+            yield return new Command_Action {
+                defaultLabel = "CS_KolossLoose_Label".Translate(),
+                defaultDesc = "CS_KolossLoose_Desc".Translate(
+                    EmotionalResistance.Of(pawn).ToString("F1").Named("NEEDED")
+                ),
+                icon = TexCommand.Attack,
+                action = () => { },
+                Disabled = true,
+                disabledReason = "CS_KolossLoose_Reason".Translate(),
+            };
+
+            yield break;
+        }
+
+        if (!holder.IsColonistPlayerControlled) yield break;
 
         yield return new Command_Action {
             defaultLabel = "CS_KolossRelease_Label".Translate(),

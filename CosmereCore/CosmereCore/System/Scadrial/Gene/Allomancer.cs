@@ -257,6 +257,8 @@ public class Allomancer : Metalborn {
             icon = def.Icon,
             action = () => Find.WindowStack.Add(new UI.Dialog_KolossRoster(pawn, metal)),
         };
+
+        foreach (Verse.Gizmo order in UI.KolossOrders.For(pawn)) yield return order;
     }
 
     public static string ThresholdDisplayLabel(Allomancer gene) {

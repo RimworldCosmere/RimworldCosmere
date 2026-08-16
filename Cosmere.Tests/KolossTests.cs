@@ -966,4 +966,56 @@ public class KolossTests {
         Assert.IsTrue(tuning.Contains("AllMapsWorldAndTemporary_Alive"), "Live pawns have to be walked.");
         Assert.IsTrue(tuning.Contains("comp.severityPerDay ="), "And the comp's own field written.");
     }
+
+    /// <summary>
+    ///     They fight, they carry, they clear ground - and the gene now says so instead of only
+    ///     claiming it in a comment.
+    /// </summary>
+    /// <remarks>
+    ///     ManualSkilled is deliberately absent even though the spec asked for it: RimWorld's
+    ///     Mining work type carries that tag, so disabling it would take mining with it, from the
+    ///     one creature whose gene buffs MiningSpeed by three quarters.
+    /// </remarks>
+    [TestMethod]
+    public void AKolossCannotBuildAHospitalButCanStillMine() {
+        List<string> off = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_EasilyInfluenced")
+            .Element("disabledWorkTags")!.Elements("li")
+            .Select(li => li.Value)
+            .ToList();
+
+        foreach (string gone in new[] { "Constructing", "Hunting", "Shooting", "Intellectual" }) {
+            CollectionAssert.Contains(off, gone);
+        }
+
+        CollectionAssert.DoesNotContain(off, "ManualSkilled", "Mining carries that tag.");
+        CollectionAssert.DoesNotContain(off, "Violent", "Without it a koloss cannot be drafted.");
+        CollectionAssert.DoesNotContain(off, "Hauling", "Carrying is most of what they are for.");
+        CollectionAssert.DoesNotContain(off, "Mining", "So is clearing ground.");
+    }
+
+    /// <summary>
+    ///     Nothing in either mod reads PsychicSensitivity, emotional Allomancy is not psychic
+    ///     sensitivity, and the stat only moves Royalty content the project avoids.
+    /// </summary>
+    [TestMethod]
+    public void SpikesDoNotMakeAKolossPsychic() {
+        XElement bound = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_SpikeBound");
+
+        Assert.IsNull(bound.Element("statFactors")?.Element("PsychicSensitivity"));
+    }
+
+    /// <summary>
+    ///     Above about 1.2 there is no answer to a lost hold except killing it, and a berserk
+    ///     koloss also ignores pain and hits two and a half times as hard.
+    /// </summary>
+    [TestMethod]
+    public void ALooseKolossCanBeOutrun() {
+        double speed = double.Parse(Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
+            .Element("statFactors")!.Element("MoveSpeed")!.Value);
+
+        Assert.IsTrue(speed <= 1.2d, $"At {speed} a colonist cannot break away from one.");
+    }
 }

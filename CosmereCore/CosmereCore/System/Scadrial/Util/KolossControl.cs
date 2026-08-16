@@ -65,7 +65,6 @@ public static class KolossControl {
         }
 
         roster.Bind(holder, koloss, metal, through);
-        Calm(koloss);
 
         return AcceptanceReport.WasAccepted;
     }
@@ -78,30 +77,32 @@ public static class KolossControl {
     }
 
     /// <summary>
-    ///     Turns a loose koloss on whatever is nearest.
+    ///     Hands a koloss nobody is holding back to the koloss.
     /// </summary>
     /// <remarks>
-    ///     transitionSilently kills the letter, the tale and the TimesInMentalState increment more
-    ///     cleanly than blanking def fields, but it also skips the recover-from-previous
-    ///     transition, which is why this checks InMentalState first.
+    ///     It changes sides rather than going berserk. A berserk state made it attack the nearest
+    ///     thing, which meant a band of loose koloss tore each other apart in the field - and
+    ///     koloss do not fight koloss, they march with them. Joining a permanently hostile faction
+    ///     gets everything the mental state was for, keeps them dangerous to the colony, and lets
+    ///     them behave like an army instead of a riot.
     ///     <para>
-    ///         No undrafting or dropping here. TryStartMentalState does both itself - it clears
-    ///         Drafted, calls StopAll, and drops whatever the pawn was carrying - so the koloss
-    ///         will not walk a colonist's corpse into the fight it is about to start.
+    ///         Undraft and drop first, because neither happens on a faction change the way it does
+    ///         inside TryStartMentalState. Without it the koloss walks off carrying a colonist.
     ///     </para>
     /// </remarks>
     public static void Lapse(Pawn koloss) {
-        if (koloss.InMentalState) return;
+        Faction? theirs = Faction.OfPlayerSilentFail == null
+            ? null
+            : Find.FactionManager?.FirstFactionOfDef(
+                DefDatabase<FactionDef>.GetNamedSilentFail(KolossFaction)
+            );
+        if (theirs == null || koloss.Faction == theirs) return;
 
-        bool started = koloss.mindState?.mentalStateHandler?.TryStartMentalState(
-            MentalStateDefOf.Cosmere_Scadrial_MentalState_KolossBloodlust,
-            "CS_KolossBloodlust_Reason".Translate(koloss.LabelShortCap.Named("KOLOSS")).Resolve(),
-            true,
-            true,
-            transitionSilently: true
-        ) ?? false;
+        koloss.drafter?.Drafted = false;
+        koloss.carryTracker?.TryDropCarriedThing(koloss.PositionHeld, ThingPlaceMode.Near, out _);
+        koloss.jobs?.EndCurrentJob(JobCondition.InterruptForced);
 
-        if (!started) return;
+        koloss.SetFaction(theirs);
 
         Messages.Message(
             "CS_KolossLapsed".Translate(koloss.LabelShortCap.Named("KOLOSS")),
@@ -110,21 +111,6 @@ public static class KolossControl {
         );
     }
 
-    /// <summary>
-    ///     Ends a bloodlust and stops the swing that was already coming.
-    /// </summary>
-    /// <remarks>
-    ///     RecoverFromState only when the current state is ours, or taking hold of a koloss would
-    ///     also cure a berserk colonist standing next to it. JobGiver_Berserk sets an expiry of
-    ///     420 to 900 ticks, so without ending the job and clearing the target the koloss lands
-    ///     another one to three hits after the Allomancer has it back.
-    /// </remarks>
-    public static void Calm(Pawn koloss) {
-        MentalState? state = koloss.MentalState;
-        if (state == null || state.def != MentalStateDefOf.Cosmere_Scadrial_MentalState_KolossBloodlust) return;
-
-        state.RecoverFromState();
-        koloss.jobs?.EndCurrentJob(JobCondition.InterruptForced);
-        if (koloss.mindState != null) koloss.mindState.enemyTarget = null;
-    }
+    /// <summary>The faction a koloss belongs to when nobody is holding it.</summary>
+    public const string KolossFaction = "Cosmere_Scadrial_Faction_Koloss";
 }

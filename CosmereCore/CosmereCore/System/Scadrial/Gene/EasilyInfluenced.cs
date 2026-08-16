@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cosmere.System.Scadrial.Comp.Game;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
@@ -41,16 +42,11 @@ public class EasilyInfluenced : Verse.Gene {
         if (Holder != null) {
             looseFor = 0;
 
-            // Taking hold of one already in bloodlust has to end it, or a koloss seized mid-rampage
-            // keeps swinging with an owner.
-            KolossControl.Calm(pawn);
-
             return;
         }
 
-        // InMentalState first, because transitionSilently skips the recover-from-previous
-        // transition and starting a second state on top of one is how a pawn gets stuck.
-        if (pawn.InMentalState) return;
+        // Already theirs. Nothing left to count down.
+        if (pawn.Faction?.def.defName == KolossControl.KolossFaction) return;
 
         looseFor += PollInterval;
         if (looseFor < KolossControl.GraceTicks) return;
@@ -67,20 +63,21 @@ public class EasilyInfluenced : Verse.Gene {
         }
 
         // Self-guarded on purpose. Pawn.GetGizmos emits gene gizmos OUTSIDE the
-        // IsColonistPlayerControlled check, which is what lets this survive bloodlust when the
-        // draft button does not - but it also means nothing else will stop it appearing on a
-        // koloss belonging to a raid.
+        // IsColonistPlayerControlled check, so nothing else stops this appearing on a raider.
         if (!pawn.Spawned || pawn.Faction is not { IsPlayer: true }) yield break;
 
         Pawn? holder = Holder;
 
-        // The one gizmo that stays through bloodlust. Losing a koloss is the moment the player
-        // most needs to be told what happened and what it would take to get it back, and it is
-        // exactly the moment every other control on the pawn disappears.
+        // Nobody holding it, but still wearing the colony's colours - the grace window. This is
+        // the only moment the player can do anything about it, and every other control on the
+        // pawn has already gone quiet, so the warning has to carry the countdown itself.
         if (holder == null) {
+            int left = Mathf.Max(0, KolossControl.GraceTicks - looseFor);
+
             yield return new Command_Action {
                 defaultLabel = "CS_KolossLoose_Label".Translate(),
                 defaultDesc = "CS_KolossLoose_Desc".Translate(
+                    left.ToStringSecondsFromTicks().Named("LEFT"),
                     EmotionalResistance.Of(pawn).ToString("F1").Named("NEEDED")
                 ),
                 icon = TexCommand.Attack,

@@ -57,44 +57,6 @@ public class KolossControlTests {
     }
 
     /// <summary>
-    ///     Inheriting from Berserk drags in its maxTicksBeforeRecovery of 60000, which would end the
-    ///     bloodlust after a day whatever minTicksBeforeRecovery said. Aggro is what makes it go for
-    ///     the nearest thing: AttackTargetFinder skips its ranged scoring path for aggro states.
-    /// </summary>
-    [TestMethod]
-    public void BloodlustIsPermanentAndGoesForWhateverIsNearest() {
-        XElement state = XDocument.Load(Path.Combine(
-                RepoRoot, "CosmereScadrial", "Defs", "Races", "KolossMentalStates.xml"
-            )).Descendants("MentalStateDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_MentalState_KolossBloodlust");
-
-        Assert.AreEqual(
-            "BaseMentalState",
-            state.Attribute("ParentName")?.Value,
-            "Inheriting from Berserk brings its 60000 tick recovery ceiling with it."
-        );
-        Assert.AreEqual("Aggro", state.Element("category")?.Value);
-        Assert.AreEqual("MentalState_Berserk", state.Element("stateClass")?.Value);
-        Assert.AreEqual(99999999, int.Parse(state.Element("minTicksBeforeRecovery")!.Value));
-    }
-
-    /// <summary>
-    ///     ThinkNode_ConditionalMentalState.Satisfied compares by reference, so a custom state
-    ///     matches none of vanilla's branches. Without the patch a koloss enters bloodlust and then
-    ///     stands there with no job giver, which reads as the state doing nothing at all.
-    /// </summary>
-    [TestMethod]
-    public void BloodlustHasAThinkTreeBranchOfItsOwn() {
-        string patch = File.ReadAllText(Path.Combine(
-            RepoRoot, "CosmereScadrial", "Patches", "KolossBloodlustThinkTree.xml"
-        ));
-
-        Assert.IsTrue(patch.Contains("MentalStateCritical"));
-        Assert.IsTrue(patch.Contains("Cosmere_Scadrial_MentalState_KolossBloodlust"));
-        Assert.IsTrue(patch.Contains("JobGiver_Berserk"));
-    }
-
-    /// <summary>
     ///     Resistance is age read two ways. A koloss that has grown twenty years is harder to take
     ///     than one spiked this morning, and a first generation kandra has nine hundred years of
     ///     being itself to argue with.
@@ -225,7 +187,10 @@ public class KolossControlTests {
         string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
         Assert.IsTrue(roster.Contains("koloss.SetFaction(holder.Faction)"), "Holding one makes it yours.");
-        Assert.IsTrue(roster.Contains("koloss.SetFaction(null)"), "Losing it hands it back to nobody.");
+
+        // Not on release. Losing the hold starts a grace window during which the koloss is still
+        // nominally the colony's - which is what the player selects, and what the warning sits on.
+        Assert.IsFalse(roster.Contains("SetFaction(null)"), "Release must not strip the faction.");
 
         // Slave rather than colonist: it takes orders because somebody is standing on its mind,
         // which is what the status already means. Ideology owns slavery, so a colony without it
@@ -283,42 +248,6 @@ public class KolossControlTests {
     }
 
     /// <summary>
-    ///     HandleMentalBreakRemoveFactor calls Reset, which clears whatever state a pawn is in. A
-    ///     koloss in bloodlust is loose because nobody holds it, not because it is upset, so a
-    ///     passing Soother would otherwise cure the mechanic and throw a green mote doing it.
-    /// </summary>
-    [TestMethod]
-    public void APassingSootherCannotCalmALooseKoloss() {
-        string handler = File.ReadAllText(Path.Combine(
-            RepoRoot, "CosmereCore", "CosmereCore", "Core", "Comp", "Hediff", "CustomStatDef.cs"
-        ));
-
-        Assert.AreEqual(
-            2,
-            Regex.Matches(handler, @"UnbreakableStateRegistry\.Guards").Count,
-            "Both the add and the remove handler need the guard."
-        );
-
-        // Core must not learn what a koloss is, so the def arrives through the registry.
-        Assert.IsFalse(handler.Contains("Cosmere.System"), "Core must not import a shard.");
-    }
-
-    /// <summary>
-    ///     SnapEventsPatches rolls a Snap on every successful TryStartMentalState. Without the def
-    ///     guard, every koloss coming off its leash rolled somebody a one-in-sixteen chance of
-    ///     becoming a Misting, which is a strange reward for losing control of an army.
-    /// </summary>
-    [TestMethod]
-    public void AKolossLapsingDoesNotSnapAnybody() {
-        string patches = Core("System", "Scadrial", "Patch", "Allomancy", "SnapEventsPatches.cs");
-
-        Assert.IsTrue(
-            patches.Contains("stateDef == MentalStateDefOf.Cosmere_Scadrial_MentalState_KolossBloodlust"),
-            "The snap roll must skip the bloodlust."
-        );
-    }
-
-    /// <summary>
     ///     The grace window exists so a holder running dry does not turn a koloss murderous in the
     ///     same tick the player notices. It also has to check InMentalState first, because
     ///     transitionSilently skips the recover-from-previous transition.
@@ -328,8 +257,7 @@ public class KolossControlTests {
         string gene = Core("System", "Scadrial", "Gene", "EasilyInfluenced.cs");
 
         Assert.IsTrue(gene.Contains("KolossControl.GraceTicks"));
-        Assert.IsTrue(gene.Contains("pawn.InMentalState"), "Starting a state on top of one gets a pawn stuck.");
-        Assert.IsTrue(gene.Contains("KolossControl.Calm"), "Retaking one mid-rampage has to end the rampage.");
+        Assert.IsTrue(gene.Contains("KolossControl.KolossFaction"), "Already theirs means nothing left to count.");
 
         // The window is a setting now, not a constant - how forgiving a lost hold should be is
         // the kind of thing one colony wants tense and another wants survivable.
@@ -463,5 +391,26 @@ public class KolossControlTests {
                 .Contains("Mod.kolossHoldFraction"),
             "A const would ignore the setting."
         );
+    }
+
+    /// <summary>
+    ///     A koloss nobody holds changes sides rather than going berserk.
+    /// </summary>
+    /// <remarks>
+    ///     A berserk state sent it at the nearest thing, so a band of loose koloss tore each other
+    ///     apart in the field. Koloss do not fight koloss - they march with them. A permanently
+    ///     hostile faction gets everything the mental state was for and lets them behave like an
+    ///     army instead of a riot.
+    /// </remarks>
+    [TestMethod]
+    public void ALostKolossJoinsTheOthersRatherThanTurningOnThem() {
+        string control = CodeOnly("System", "Scadrial", "Util", "KolossControl.cs");
+
+        Assert.IsTrue(control.Contains("koloss.SetFaction(theirs)"), "It changes sides.");
+        Assert.IsFalse(control.Contains("TryStartMentalState"), "And does not go berserk doing it.");
+
+        // Neither happens on a faction change the way it does inside TryStartMentalState.
+        Assert.IsTrue(control.Contains("TryDropCarriedThing"), "Or it walks off carrying a colonist.");
+        Assert.IsTrue(control.Contains("Drafted = false"), "Or stays drafted to a faction it left.");
     }
 }

@@ -179,13 +179,12 @@ public class KolossRoster : GameComponent {
     public bool Release(Pawn? koloss) {
         if (koloss == null) return false;
 
-        // Back to belonging to nobody. A koloss that keeps the colony's colours while rampaging
-        // through it reads as a bug rather than a loss of control.
+        // Slavery ends here, but the faction does not change yet. Losing the hold starts a grace
+        // window, and the koloss is still nominally the colony's until that runs out - which is
+        // what gives the player something to select, and something to warn them on.
         if (ModsConfig.IdeologyActive && koloss.guest != null && koloss.IsSlaveOfColony) {
             koloss.guest.SetGuestStatus(null);
         }
-
-        if (koloss.Faction != null) koloss.SetFaction(null);
 
         bool broke = false;
         for (int i = bonds.Count - 1; i >= 0; i--) {

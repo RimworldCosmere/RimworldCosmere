@@ -51,17 +51,9 @@ public abstract class SnapFromMentalBreakPatch : MentalStateHandler {
 
     protected SnapFromMentalBreakPatch(Pawn pawn) : base(pawn) { }
 
-    /// <remarks>
-    ///     A koloss lapsing is not a person snapping. Without the stateDef guard every koloss that
-    ///     came off its leash rolled somebody a one-in-sixteen chance of turning into a Misting,
-    ///     which is a strange way to be rewarded for losing control of an army.
-    /// </remarks>
     [Inject(At.Return, nameof(TryStartMentalState))]
-    private void AfterTryStartMentalState(MentalStateDef stateDef, ControlHandle<bool> ch) {
-        if (!ch.ReturnValue) return;
-        if (stateDef == MentalStateDefOf.Cosmere_Scadrial_MentalState_KolossBloodlust) return;
-
-        SnapEvents.Snap(trackedPawn, 16);
+    private void AfterTryStartMentalState(ControlHandle<bool> ch) {
+        if (ch.ReturnValue) SnapEvents.Snap(trackedPawn, 16);
     }
 }
 

@@ -2,9 +2,8 @@
 <LanguageData>
 
   <CS_KolossBound>{HOLDER} takes hold of {KOLOSS}.</CS_KolossBound>
-  <CS_KolossLapsed>Nobody is holding {KOLOSS} any more. It has turned on whatever is nearest.</CS_KolossLapsed>
+  <CS_KolossLapsed>{KOLOSS} has stopped being yours. It has gone to join the koloss.</CS_KolossLapsed>
   <CS_KolossHoldLapsed>{HOLDER} no longer has the metal to hold {KOLOSS}.</CS_KolossHoldLapsed>
-  <CS_KolossBloodlust_Reason>Nothing is telling {KOLOSS} what to do.</CS_KolossBloodlust_Reason>
 
   <CS_KolossBind_NoGame>There is no game to bind anything in.</CS_KolossBind_NoGame>
   <CS_KolossBind_NotBindable>{TARGET} is not a thing that can be held this way.</CS_KolossBind_NotBindable>
@@ -44,8 +43,8 @@
   <CS_KolossGrew>{PAWN} has grown {STAGE}. Its skin is falling further behind.</CS_KolossGrew>
 
   <CS_KolossLoose_Label>Loose</CS_KolossLoose_Label>
-  <CS_KolossLoose_Desc>Nobody is holding this one. It attacks whatever is nearest, including the people who made it.\n\nTaking it back needs a reach of {NEEDED} on zinc or brass. Duralumin carries an Allomancer past what they could manage alone.</CS_KolossLoose_Desc>
-  <CS_KolossLoose_Reason>It takes no orders from anyone.</CS_KolossLoose_Reason>
+  <CS_KolossLoose_Desc>Nobody is holding this one. In {LEFT} it stops being yours and walks off to join the rest of them.\n\nTaking it back needs a reach of {NEEDED} on zinc or brass. Duralumin carries an Allomancer past what they could manage alone.</CS_KolossLoose_Desc>
+  <CS_KolossLoose_Reason>It is not listening to anybody. Take hold of it again or lose it.</CS_KolossLoose_Reason>
 
   <CS_KolossSend_Label>Send {COUNT} koloss</CS_KolossSend_Label>
   <CS_KolossSend_Desc>Point everything you are holding at one target.\n\nThey close on foot and beat it down. A held koloss takes no other kind of order.</CS_KolossSend_Desc>

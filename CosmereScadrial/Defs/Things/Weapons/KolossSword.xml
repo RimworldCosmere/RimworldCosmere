@@ -15,6 +15,11 @@
     <graphicData>
       <texPath>Things/Item/Equipment/WeaponMelee/KolossSword</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <!-- Vanilla weapons sit in a 64x64 square and take the default 1.0, but their blades are
+           about one to four. This one is one to eight, so at the same canvas it reads half the
+           height and looks like a toy. Drawn larger than a tile, which a koloss weapon should be
+           regardless - it is meant to be too big for a person. -->
+      <drawSize>1.7</drawSize>
     </graphicData>
     <uiIconScale>1.1</uiIconScale>
     <techLevel>Medieval</techLevel>

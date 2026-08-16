@@ -11,7 +11,7 @@
   <CS_KolossBind_Readout>Reach {REACH} against {NEEDED}</CS_KolossBind_Readout>
 
   <CS_KolossRelease_Label>Release koloss</CS_KolossRelease_Label>
-  <CS_KolossRelease_Desc>Let this one go. {HOLDER} keeps hold of everything else.\n\nIt will turn on whatever is nearest once the grace period passes.</CS_KolossRelease_Desc>
+  <CS_KolossRelease_Desc>Let this one go. {HOLDER} keeps hold of everything else.\n\nIt stops being yours the moment you do, and goes to join the rest of them.</CS_KolossRelease_Desc>
 
   <CS_KolossInspect_Loose>Held by: nobody</CS_KolossInspect_Loose>
   <CS_KolossInspect_Held>Held by: {HOLDER}</CS_KolossInspect_Held>
@@ -31,7 +31,7 @@
   <CS_KolossRoster_Undraft>Take back direct command.</CS_KolossRoster_Undraft>
   <CS_KolossRoster_DraftTip>Take direct command of this one.</CS_KolossRoster_DraftTip>
   <CS_KolossRoster_CannotDraft>Nothing is holding this one. It takes no orders until somebody takes it again.</CS_KolossRoster_CannotDraft>
-  <CS_KolossRoster_LetTip>Let this one go. Everything else stays held.\n\nIt will turn on whatever is nearest once the grace period passes.</CS_KolossRoster_LetTip>
+  <CS_KolossRoster_LetTip>Let this one go. Everything else stays held.\n\nIt stops being yours the moment you do, and goes to join the rest of them.</CS_KolossRoster_LetTip>
   <CS_KolossRoster_SelectAll>Select all</CS_KolossRoster_SelectAll>
   <CS_KolossRoster_DraftAll>Draft all</CS_KolossRoster_DraftAll>
   <CS_KolossRoster_UndraftAll>Undraft all</CS_KolossRoster_UndraftAll>
@@ -42,9 +42,6 @@
 
   <CS_KolossGrew>{PAWN} has grown {STAGE}. Its skin is falling further behind.</CS_KolossGrew>
 
-  <CS_KolossLoose_Label>Loose</CS_KolossLoose_Label>
-  <CS_KolossLoose_Desc>Nobody is holding this one. In {LEFT} it stops being yours and walks off to join the rest of them.\n\nTaking it back needs a reach of {NEEDED} on zinc or brass. Duralumin carries an Allomancer past what they could manage alone.</CS_KolossLoose_Desc>
-  <CS_KolossLoose_Reason>It is not listening to anybody. Take hold of it again or lose it.</CS_KolossLoose_Reason>
 
   <CS_KolossSend_Label>Send {COUNT} koloss</CS_KolossSend_Label>
   <CS_KolossSend_Desc>Point everything you are holding at one target.\n\nThey close on foot and beat it down. A held koloss takes no other kind of order.</CS_KolossSend_Desc>

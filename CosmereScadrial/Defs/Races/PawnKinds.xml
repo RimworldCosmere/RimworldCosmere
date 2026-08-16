@@ -151,6 +151,9 @@
         <weaponMoney>200~400</weaponMoney>
         <!-- Required for any humanlike kind, and RimWorld says so at load rather than at use. A
              koloss barely has a will to break, which is what the low numbers say. -->
+        <!-- Never. Health cannot fall below zero, so the check never fires. A koloss has nothing
+             in it that decides the fight is going badly. -->
+        <fleeHealthThresholdRange>-1~-1</fleeHealthThresholdRange>
         <initialResistanceRange>2~6</initialResistanceRange>
         <initialWillRange>0.5~1.5</initialWillRange>
     </PawnKindDef>

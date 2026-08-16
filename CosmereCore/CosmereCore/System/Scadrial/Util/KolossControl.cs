@@ -74,6 +74,11 @@ public static class KolossControl {
     /// </summary>
     public static void Release(Pawn koloss) {
         KolossRoster.Current?.Release(koloss);
+
+        // Immediately. Letting one go is a decision the player made, so it takes effect when they
+        // make it - the grace window is for the metal running out, which they could not have
+        // prevented and might still fix.
+        Lapse(koloss);
     }
 
     /// <summary>

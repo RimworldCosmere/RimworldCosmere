@@ -67,29 +67,7 @@ public class EasilyInfluenced : Verse.Gene {
         if (!pawn.Spawned || pawn.Faction is not { IsPlayer: true }) yield break;
 
         Pawn? holder = Holder;
-
-        // Nobody holding it, but still wearing the colony's colours - the grace window. This is
-        // the only moment the player can do anything about it, and every other control on the
-        // pawn has already gone quiet, so the warning has to carry the countdown itself.
-        if (holder == null) {
-            int left = Mathf.Max(0, KolossControl.GraceTicks - looseFor);
-
-            yield return new Command_Action {
-                defaultLabel = "CS_KolossLoose_Label".Translate(),
-                defaultDesc = "CS_KolossLoose_Desc".Translate(
-                    left.ToStringSecondsFromTicks().Named("LEFT"),
-                    EmotionalResistance.Of(pawn).ToString("F1").Named("NEEDED")
-                ),
-                icon = TexCommand.Attack,
-                action = () => { },
-                Disabled = true,
-                disabledReason = "CS_KolossLoose_Reason".Translate(),
-            };
-
-            yield break;
-        }
-
-        if (!holder.IsColonistPlayerControlled) yield break;
+        if (holder == null || !holder.IsColonistPlayerControlled) yield break;
 
         yield return new Command_Action {
             defaultLabel = "CS_KolossRelease_Label".Translate(),

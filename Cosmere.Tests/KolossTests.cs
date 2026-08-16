@@ -1018,4 +1018,17 @@ public class KolossTests {
 
         Assert.IsTrue(speed <= 1.2d, $"At {speed} a colonist cannot break away from one.");
     }
+
+    /// <summary>
+    ///     A koloss has nothing in it that decides the fight is going badly. Health cannot fall
+    ///     below zero, so a negative threshold is never reached.
+    /// </summary>
+    [TestMethod]
+    public void AKolossNeverRuns() {
+        XElement kind = Defs("Races", "PawnKinds.xml").Descendants("PawnKindDef")
+            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_PawnKind_Koloss");
+
+        string[] range = kind.Element("fleeHealthThresholdRange")!.Value.Split('~');
+        Assert.IsTrue(double.Parse(range[1]) < 0d, "A reachable threshold means it runs.");
+    }
 }

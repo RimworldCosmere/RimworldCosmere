@@ -336,26 +336,6 @@ public class KolossControlTests {
     }
 
     /// <summary>
-    ///     Losing a koloss is the moment the player most needs telling what happened, and the
-    ///     moment every other control on the pawn disappears - Pawn.GetGizmos gates the draft
-    ///     button on IsColonistPlayerControlled, which a koloss in bloodlust is not.
-    /// </summary>
-    /// <remarks>
-    ///     Gene gizmos are emitted OUTSIDE that guard, which is what lets this one survive - and
-    ///     is also why it has to guard itself, or it shows up on raid koloss too.
-    /// </remarks>
-    [TestMethod]
-    public void ALooseKolossStillTellsYouWhatHappened() {
-        string gene = Core("System", "Scadrial", "Gene", "EasilyInfluenced.cs");
-
-        Assert.IsTrue(gene.Contains("CS_KolossLoose_Label"), "The loose state needs its own gizmo.");
-        Assert.IsTrue(
-            gene.Contains("pawn.Faction is not { IsPlayer: true }"),
-            "Gene gizmos skip the colonist guard, so this one has to bring its own."
-        );
-    }
-
-    /// <summary>
     ///     A held koloss is a slave, so the ordinary draft-and-click loop does not reach it. The
     ///     count goes in the label because sending an army is worth being sure about.
     /// </summary>
@@ -412,5 +392,12 @@ public class KolossControlTests {
         // Neither happens on a faction change the way it does inside TryStartMentalState.
         Assert.IsTrue(control.Contains("TryDropCarriedThing"), "Or it walks off carrying a colonist.");
         Assert.IsTrue(control.Contains("Drafted = false"), "Or stays drafted to a faction it left.");
+
+        // Letting one go is a decision the player made, so it lands when they make it. The grace
+        // window is for the metal running out, which they could not have prevented.
+        Assert.IsTrue(
+            Regex.IsMatch(control, @"Release\(Pawn koloss\) \{[^}]*Lapse\(koloss\)", RegexOptions.Singleline),
+            "A deliberate release has to be immediate."
+        );
     }
 }

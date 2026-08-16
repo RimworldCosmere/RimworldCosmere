@@ -22,6 +22,9 @@
            the same trick the Shardblade uses. drawSize covers both the lean ratio and the padding. -->
       <drawSize>6.0</drawSize>
     </graphicData>
+    <!-- Its own icon rather than one derived from the world graphic, which inherits drawSize and
+         spills straight out of the gizmo box. Pre-rotated and fitted to a square. -->
+    <uiIconPath>UI/Icons/Weapons/KolossSword</uiIconPath>
     <techLevel>Medieval</techLevel>
     <weaponTags>
       <li>Cosmere_Scadrial_KolossWeapon</li>
@@ -42,7 +45,7 @@
       <Mass>7</Mass>
       <MarketValue>90</MarketValue>
     </statBases>
-    <equippedAngleOffset>-55</equippedAngleOffset>
+    <equippedAngleOffset>-45</equippedAngleOffset>
     <tools>
       <li>
         <label>grip</label>

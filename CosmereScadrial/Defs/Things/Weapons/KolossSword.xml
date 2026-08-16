@@ -15,9 +15,8 @@
     <graphicData>
       <texPath>Things/Item/Equipment/WeaponMelee/KolossSword</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>1.25</drawSize>
     </graphicData>
-    <uiIconScale>1.2</uiIconScale>
+    <uiIconScale>1.1</uiIconScale>
     <techLevel>Medieval</techLevel>
     <weaponTags>
       <li>Cosmere_Scadrial_KolossWeapon</li>

@@ -18,6 +18,17 @@ namespace Cosmere.System.Scadrial.Patch.World;
 ///         koloss and a human produce the same thing, and refusing that would leave a child
 ///         whose father is visibly a koloss looking like nobody's.
 ///     </para>
+///     <para>
+///         SetXenotype rather than SetXenotypeDirect. The latter is four field assignments and no
+///         genes at all - vanilla gets away with it because ApplyBirthOutcome passes
+///         forcedEndogenes into the generation request before calling it, and this runs at the
+///         return, long after. The child was a baseliner wearing the name.
+///     </para>
+///     <para>
+///         The koloss-blooded xenotype is inheritable, so SetXenotype adds its genes as endogenes
+///         rather than xenogenes. That matters one generation further out: GetInheritedGenes walks
+///         endogenes only, so xenogenes would leave the grandchildren baseliners again.
+///     </para>
 /// </remarks>
 [Patch(typeof(PregnancyUtility))]
 public static class KolossBirthPatch {
@@ -33,12 +44,16 @@ public static class KolossBirthPatch {
 
         if (!KolossUtility.IsKoloss(geneticMother) && !KolossUtility.IsKoloss(father)) return;
 
+        // Before the Catacendre a koloss fathers nothing. Era rather than Shard: a sandbox
+        // Pre-Catacendre start with Harmony toggled on is still a world of Rashek's koloss.
+        if (!KolossFertility.CanBreedNow()) return;
+
         XenotypeDef? blooded = DefDatabase<XenotypeDef>.GetNamedSilentFail(
             KolossUtility.KolossBloodedXenotype
         );
         if (blooded == null) return;
 
-        child.genes.SetXenotypeDirect(blooded);
+        child.genes.SetXenotype(blooded);
 
         Cosmere.Core.Logger.Verbose(
             $"KolossBirthPatch: {child.LabelShort} born koloss-blooded."

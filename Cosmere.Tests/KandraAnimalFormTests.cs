@@ -135,8 +135,15 @@ public class KandraAnimalFormTests {
             .Select(e => e.Value)
             .ToList();
 
-        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Kandra"));
-        Assert.IsTrue(listed.Contains("Cosmere_Scadrial_Xenotype_Koloss"));
+        // Every xenotype made on Scadrial has to be here, or WorldForXenotype returns null and
+        // AncestryFloor gives it zero - the pawn reads as Connected to nothing.
+        foreach (string made in new[] {
+            "Cosmere_Scadrial_Xenotype_Kandra",
+            "Cosmere_Scadrial_Xenotype_Koloss",
+            "Cosmere_Scadrial_Xenotype_KolossBlooded",
+        }) {
+            Assert.IsTrue(listed.Contains(made), $"{made} has no world, so it has no ancestry.");
+        }
     }
 
     /// <summary>

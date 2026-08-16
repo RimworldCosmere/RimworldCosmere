@@ -49,10 +49,12 @@
       <li>Cosmere_Scadrial_Xenotype_Skaa</li>
       <li>Cosmere_Scadrial_Xenotype_Noble</li>
       <li>Cosmere_Scadrial_Xenotype_Terris</li>
-      <!-- Both are made on Scadrial out of Scadrians. Leaving them off meant WorldForXenotype
-           returned null, so a kandra had no ancestry floor and read as Connected to nothing. -->
+      <!-- All three are made on Scadrial out of Scadrians. Leaving them off meant WorldForXenotype
+           returned null, so a kandra had no ancestry floor and read as Connected to nothing.
+           Koloss-blooded was missed when the other two were added, and inherits the same bug. -->
       <li>Cosmere_Scadrial_Xenotype_Kandra</li>
       <li>Cosmere_Scadrial_Xenotype_Koloss</li>
+      <li>Cosmere_Scadrial_Xenotype_KolossBlooded</li>
     </xenotypes>
     <climateProfile>Scadrial_PreCatacendre</climateProfile>
   </Cosmere.Core.Def.CosmereWorldDef>

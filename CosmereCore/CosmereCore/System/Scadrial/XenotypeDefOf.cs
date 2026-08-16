@@ -22,6 +22,10 @@ public static class XenotypeDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static XenotypeDef Cosmere_Scadrial_Xenotype_Terris;
 
+    /// <summary>What a koloss leaves behind, once Harmony let it leave anything.</summary>
+    [MayRequire("Cosmere.Scadrial")]
+    public static XenotypeDef Cosmere_Scadrial_Xenotype_KolossBlooded;
+
     static XenotypeDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(XenotypeDefOf));
     }

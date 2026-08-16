@@ -43,9 +43,13 @@ public static class ScadrialXenotypePatch {
             return;
         }
 
-        ch.ReturnValue = new[] {
-            XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
-            XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian,
-        }.RandomElement();
+        // Weighted rather than an even pick, because koloss-blooded are a thinning of the line
+        // rather than a people. The gene's own description says their blood spread in the
+        // generations after Harmony - spread, not took over.
+        ch.ReturnValue = new (XenotypeDef xenotype, float weight)[] {
+            (XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian, 60f),
+            (XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris, 35f),
+            (XenotypeDefOf.Cosmere_Scadrial_Xenotype_KolossBlooded, 5f),
+        }.RandomElementByWeight(entry => entry.weight).xenotype;
     }
 }

@@ -16,25 +16,6 @@ public class Nicrosil : HediffWithComps {
 
     private Feruchemist? nicrosil => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 
-    // Applied per rare tick here, unlike the gene's per-second store and tap, so
-    // it keeps its own figure rather than sharing one across two cadences.
-    private const float ChangePerRareTick = 1f / 18f;
-
-    private float changePerTick =>
-        ChangePerRareTick * CompoundedTap.Scale(def, Severity) * (isTapping ? -1 : 1);
-
-    // There's a little bit of a race condition here that i'm not 100% sure how to fix.
-    // Continuing to store/tap nicrosil will slowly increase how much investiture you have
-    private bool shouldResetNicrosil {
-        get {
-            if (investiture == null) return false;
-            float nextCurLevel = Mathf.Clamp(investiture.CurLevel - changePerTick, 0, investiture.MaxLevel);
-            if (isTapping && nextCurLevel >= Investiture.MaxInvestiture) return true;
-
-            return isStoring && nextCurLevel <= 0;
-        }
-    }
-
     public override void PostMake() {
         base.PostMake();
 
@@ -47,21 +28,29 @@ public class Nicrosil : HediffWithComps {
         if (nicrosil == null) {
             Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
             pawn.health.RemoveHediff(this);
-            return;
         }
-
-        if (shouldResetNicrosil) nicrosil.Reset();
     }
 
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
-
         if (investiture == null) return;
-        investiture.CurLevel = Mathf.Clamp(investiture.CurLevel - changePerTick, 0, investiture.MaxLevel);
-        if (shouldResetNicrosil) {
-            nicrosil?.Reset();
-        }
+
+        Feruchemist? gene = nicrosil;
+        if (gene == null) return;
+
+        // Two hediffs can share this gene; only the one matching its net direction may drain it.
+        bool matchesDirection = isStoring ? gene.TransferRatePerSecond > 0f : gene.TransferRatePerSecond < 0f;
+        if (!matchesDirection) return;
+
+        // Draining rather than reading stops a faster tick applying the same second twice.
+        float moved = gene.DrainChargeMoved();
+        if (Mathf.Approximately(moved, 0f)) return;
+
+        investiture.CurLevel = Mathf.Clamp(
+            investiture.CurLevel - moved * ScadrialMetallurgyConstants.NicrosilBeuPerCharge,
+            0f,
+            investiture.MaxLevel
+        );
     }
 }

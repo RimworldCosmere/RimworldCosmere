@@ -120,14 +120,18 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
+    // A nicrosilmind holds Investiture itself, so it mirrors at nicrosil's own rate
+    // instead of the generic per-attribute conversion every other metalmind uses.
+    private float BeuPerUnit => Metal?.defName == "Nicrosil"
+        ? ScadrialMetallurgyConstants.NicrosilBeuPerCharge
+        : ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
+
     private void SyncInvestitureMirror() {
-        investitureHolder.currentInvestitureSelf =
-            TotalOccupied * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
+        investitureHolder.currentInvestitureSelf = TotalOccupied * BeuPerUnit;
 
         // Max is mirrored here too, not just at PostPostMake: quality is stamped on after
         // the thing is made, and compounding shrinks capacity later in the item's life.
-        investitureHolder.maxInvestitureSelf =
-            MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
+        investitureHolder.maxInvestitureSelf = MaxAmount * BeuPerUnit;
     }
 
     public MetalDef? Metal {

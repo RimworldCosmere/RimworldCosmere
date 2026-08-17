@@ -191,7 +191,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     /// Drawing compounded charge eats the metalmind that carried it. Capacity drops
     /// by what was spent, so the two run out together.
-    public float ConsumeCompounded(float amount) {
+    public float ConsumeCompounded(float amount, DuraluminLedger? ledger = null) {
         if (!CanTapCompounded) return 0f;
         if (!ValidateOwner()) return 0f;
 
@@ -202,6 +202,13 @@ public class Metalmind : ThingComp, IMetalmindSource {
         StoredAmount -= spent - fromCompounded;
 
         capacityLostInt += spent;
+
+        // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
+        float fromStored = spent - fromCompounded;
+        if (fromStored > 0f) {
+            if (ledger != null) RecordConsumed(ledger.Value, fromStored);
+            else ChargeAttribution.Drain(chargeByLedger, fromStored);
+        }
 
         return spent;
     }

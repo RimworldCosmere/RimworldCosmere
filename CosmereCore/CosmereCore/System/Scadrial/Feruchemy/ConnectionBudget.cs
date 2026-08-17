@@ -45,4 +45,19 @@ public static class ConnectionBudget {
 
         return Math.Max(0f, Math.Min(storedCharge, ChargeForPoints(headroomPoints)));
     }
+
+    /// <summary>
+    ///     What one side of a finished transfer still owes the other, in charge. Positive when the
+    ///     metalmind moved more than the pawn paid for, negative when the pawn moved more.
+    /// </summary>
+    public static float Settlement(float chargeMoved, float pointsMoved) {
+        if (chargeMoved < 0f || pointsMoved < 0f) return 0f;
+
+        return chargeMoved - ChargeForPoints(pointsMoved);
+    }
+
+    /// <summary>The part of a running ask worth whole points, signed like the ask. A sub-point ask is worth nothing yet.</summary>
+    public static float WholeCharge(float carry) {
+        return ChargeForPoints((float)Math.Truncate(carry / ChargePerPoint));
+    }
 }

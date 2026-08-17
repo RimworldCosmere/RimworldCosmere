@@ -50,7 +50,7 @@ public interface IMetalmindSource {
 
     float AddCompounded(float amount);
 
-    float ConsumeCompounded(float amount);
+    float ConsumeCompounded(float amount, DuraluminLedger? ledger = null);
 
     // Charge on this metalmind attributed to that ledger; 0 if it never has.
     float StoredFor(DuraluminLedger ledger);

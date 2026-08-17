@@ -72,4 +72,69 @@ public class ConnectionBudgetTests {
         Assert.AreEqual(0f, ConnectionBudget.Storable(1000f, 0f, DuraluminLedger.Social));
         Assert.AreEqual(0f, ConnectionBudget.Tappable(1000f, 500f, DuraluminLedger.Social));
     }
+
+    // 90 charge is 10 points, so a pawn who moved 10 points owes nothing and is owed nothing.
+    [TestMethod]
+    public void NothingIsOwedWhenBothSidesMovedTheSame() {
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(90f, 10f), Tolerance);
+    }
+
+    // The metalmind banked 90 charge but the pawn only gave up 8 points' worth, so 18 was never paid for.
+    [TestMethod]
+    public void TheMetalmindGivesBackChargeThePawnDidNotPayFor() {
+        Assert.AreEqual(18f, ConnectionBudget.Settlement(90f, 8f), Tolerance);
+    }
+
+    // The mirror: the pawn moved 10 points against a 45-charge move, so 45 charge of it is owed back to them.
+    [TestMethod]
+    public void ThePawnGetsBackConnectionTheMetalmindNeverTook() {
+        Assert.AreEqual(-45f, ConnectionBudget.Settlement(45f, 10f), Tolerance);
+    }
+
+    [TestMethod]
+    public void AMoveThatOnlyOneSideMadeIsOwedWhole() {
+        Assert.AreEqual(9f, ConnectionBudget.Settlement(9f, 0f), Tolerance);
+        Assert.AreEqual(-9f, ConnectionBudget.Settlement(0f, 1f), Tolerance);
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(0f, 0f), Tolerance);
+    }
+
+    [TestMethod]
+    public void NonsenseInputIsNoCorrectionRatherThanABackwardsOne() {
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(-90f, 10f));
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(90f, -10f));
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(-90f, -10f));
+    }
+
+    // The point of the whole exercise: apply the correction and the two sides agree.
+    [TestMethod]
+    public void ApplyingTheCorrectionLeavesNothingOwed() {
+        float owed = ConnectionBudget.Settlement(90f, 8f);
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(90f - owed, 8f), Tolerance);
+
+        float owedToPawn = ConnectionBudget.Settlement(45f, 10f);
+        float repaidPoints = 10f + ConnectionBudget.PointsForCharge(owedToPawn);
+        Assert.AreEqual(0f, ConnectionBudget.Settlement(45f, repaidPoints), Tolerance);
+    }
+
+    [TestMethod]
+    public void AnAskWorthLessThanOnePointIsWorthNothingYet() {
+        Assert.AreEqual(0f, ConnectionBudget.WholeCharge(8.9f), Tolerance);
+        Assert.AreEqual(0f, ConnectionBudget.WholeCharge(-8.9f), Tolerance);
+        Assert.AreEqual(0f, ConnectionBudget.WholeCharge(0f), Tolerance);
+    }
+
+    // 19 charge is two whole points plus a remainder the bank keeps.
+    [TestMethod]
+    public void OnlyWholePointsComeOutOfTheBankAndTheSignSurvives() {
+        Assert.AreEqual(18f, ConnectionBudget.WholeCharge(19f), Tolerance);
+        Assert.AreEqual(-18f, ConnectionBudget.WholeCharge(-19f), Tolerance);
+    }
+
+    // What the tick asks a ledger for: a 14-charge move buys one point, and the odd 5 goes back.
+    [TestMethod]
+    public void APartOfAPointIsNeverAskedForAndNeverPaidFor() {
+        float ask = ConnectionBudget.PointsForCharge(ConnectionBudget.WholeCharge(14f));
+        Assert.AreEqual(1f, ask, Tolerance);
+        Assert.AreEqual(5f, ConnectionBudget.Settlement(14f, ask), Tolerance);
+    }
 }

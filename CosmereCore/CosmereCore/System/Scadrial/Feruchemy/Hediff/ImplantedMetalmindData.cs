@@ -154,7 +154,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     /// Drawing compounded charge spends the metalmind that carries it: capacity falls by
     /// what was drawn, so the metal runs out exactly when the charge does.
-    public float ConsumeCompounded(float amount) {
+    public float ConsumeCompounded(float amount, DuraluminLedger? ledger = null) {
         if (!CanTapCompounded) return 0f;
 
         float spent = Mathf.Min(amount, TotalStored);
@@ -164,6 +164,13 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         storedAmountInt -= spent - fromCompounded;
 
         maxAmountInt = Mathf.Max(0f, maxAmountInt - spent);
+
+        // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
+        float fromStored = spent - fromCompounded;
+        if (fromStored > 0f) {
+            if (ledger != null) RecordConsumed(ledger.Value, fromStored);
+            else ChargeAttribution.Drain(chargeByLedger, fromStored);
+        }
 
         return spent;
     }

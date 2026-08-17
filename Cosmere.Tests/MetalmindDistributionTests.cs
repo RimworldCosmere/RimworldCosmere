@@ -77,7 +77,7 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
         return 0f;
     }
 
-    public float ConsumeCompounded(float amount) {
+    public float ConsumeCompounded(float amount, DuraluminLedger? ledger = null) {
         return 0f;
     }
 

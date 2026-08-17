@@ -8,10 +8,6 @@ using Logger = Cosmere.Core.Logger;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Nicrosil : HediffWithComps {
-    private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);
-
-    private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreNicrosil);
-
     private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
 
     private Feruchemist? nicrosil => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
@@ -28,6 +24,7 @@ public class Nicrosil : HediffWithComps {
         if (nicrosil == null) {
             Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
             pawn.health.RemoveHediff(this);
+            return;
         }
     }
 
@@ -39,11 +36,7 @@ public class Nicrosil : HediffWithComps {
         Feruchemist? gene = nicrosil;
         if (gene == null) return;
 
-        // Two hediffs can share this gene; only the one matching its net direction may drain it.
-        bool matchesDirection = isStoring ? gene.TransferRatePerSecond > 0f : gene.TransferRatePerSecond < 0f;
-        if (!matchesDirection) return;
-
-        // Draining rather than reading stops a faster tick applying the same second twice.
+        // Draining zeroes the shared accumulator, so a second hediff reading it this tick finds nothing.
         float moved = gene.DrainChargeMoved();
         if (Mathf.Approximately(moved, 0f)) return;
 

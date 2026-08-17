@@ -301,8 +301,6 @@ public class Feruchemist : Metalborn {
     private DuraluminLedger resolvedFor;
     private string resolvedForShard = string.Empty;
 
-    private bool shardTargetSeeded;
-
     /// The ledger the dial names, or none for a ledger with no capacity and for a Shard this save
     /// does not have. Cached, because the dock reads it every frame through the capacity readout.
     public IConnectionLedger? SelectedLedger {
@@ -358,9 +356,8 @@ public class Feruchemist : Metalborn {
     /// Picked once and scribed, so charge banked against one Shard is only ever given back to that
     /// Shard. The player retargets it from the selector; this is only the opening guess.
     private void EnsureShardTarget() {
-        if (shardTargetSeeded || !storesConnection || !string.IsNullOrEmpty(targetShardDefName)) return;
+        if (!storesConnection || !string.IsNullOrEmpty(targetShardDefName)) return;
 
-        shardTargetSeeded = true;
         CosmereWorldDef? world = WorldUtility.Primary;
         if (world == null) return;
 

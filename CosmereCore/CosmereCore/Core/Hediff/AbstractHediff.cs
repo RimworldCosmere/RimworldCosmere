@@ -4,6 +4,7 @@ using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Hediff;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Gene;
+using Cosmere.Core.Util;
 using Verse;
 
 namespace Cosmere.Core.Hediff;
@@ -36,6 +37,16 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
     where TGene : Invested {
     protected IAbility<TGene, IHediff<TGene>> ability = null!;
     private TGene geneInt = null!;
+
+    /// <summary>Which ability on each holder, so the right one comes back rather than the first.</summary>
+    private List<string> sourceAbilityDefs = null!;
+
+    /// <summary>Who was holding this when the game was saved.</summary>
+    /// <remarks>
+    ///     A field rather than a local, because pawn references stay null until the cross-reference
+    ///     pass and the rebuild has to wait for PostLoadInit to read them.
+    /// </remarks>
+    private List<Pawn> sourcePawns = null!;
 
     protected AbstractHediff() { }
 
@@ -100,42 +111,65 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
     public override void ExposeData() {
         base.ExposeData();
 
-        List<Pawn> sourcePawns = null!;
         Scribe_References.Look(ref geneInt, "gene");
         Scribe_References.Look(ref ability, "ability");
 
         if (Scribe.mode == LoadSaveMode.Saving) {
-            HashSet<Pawn> seen = [];
             sourcePawns = [];
+            sourceAbilityDefs = [];
             foreach (IAbility<TGene, IHediff<TGene>> source in SourceAbilities) {
-                if (source is RimWorld.Ability abilityRef && seen.Add(abilityRef.pawn)) {
-                    sourcePawns.Add(abilityRef.pawn);
-                }
+                if (source is not RimWorld.Ability sourceAbility) continue;
+
+                sourcePawns.Add(sourceAbility.pawn);
+                sourceAbilityDefs.Add(sourceAbility.def.defName);
             }
         }
 
         Scribe_Collections.Look(ref sourcePawns, "sourcePawns", LookMode.Reference);
+        Scribe_Collections.Look(ref sourceAbilityDefs, "sourceAbilityDefs", LookMode.Value);
 
-        if (Scribe.mode != LoadSaveMode.LoadingVars) {
+        if (Scribe.mode != LoadSaveMode.PostLoadInit) {
             return;
         }
 
+        RestoreSources();
+    }
+
+    /// <summary>
+    ///     Puts back the abilities that were holding this hediff when the game was saved.
+    /// </summary>
+    /// <remarks>
+    ///     Runs in PostLoadInit because the saved pawns are cross-references, and those are still
+    ///     null through LoadingVars - which is where this used to run, walking a list of nulls and
+    ///     restoring nothing. Each holder is then matched by the ability's own def instead of by
+    ///     taking whatever sat first in their roster, which on a Mistborn is an arbitrary metal.
+    /// </remarks>
+    private void RestoreSources() {
         SourceAbilities.Clear();
 
-        if (sourcePawns == null) {
+        if (sourcePawns == null || sourceAbilityDefs == null) {
             return;
         }
 
-        foreach (Pawn? localPawn in sourcePawns) {
-            foreach (RimWorld.Ability? ability in localPawn?.abilities?.abilities ?? []) {
-                if (ability is not AbstractAbility<TGene, AbstractHediff<TGene>> aa) {
-                    continue;
-                }
+        int count = Math.Min(sourcePawns.Count, sourceAbilityDefs.Count);
+        List<string> rosterDefs = [];
+        for (int i = 0; i < count; i++) {
+            List<RimWorld.Ability> roster = sourcePawns[i]?.abilities?.abilities ?? [];
 
-                SourceAbilities.Add(aa);
-                break;
+            rosterDefs.Clear();
+            for (int j = 0; j < roster.Count; j++) {
+                rosterDefs.Add(roster[j].def.defName);
             }
+
+            int match = SourceAbilityMatch.IndexOf(rosterDefs, sourceAbilityDefs[i]);
+            if (match < 0) continue;
+            if (roster[match] is not AbstractAbility<TGene, AbstractHediff<TGene>> restored) continue;
+
+            SourceAbilities.Add(restored);
         }
+
+        sourcePawns = null!;
+        sourceAbilityDefs = null!;
     }
 
     public override string DebugString() {

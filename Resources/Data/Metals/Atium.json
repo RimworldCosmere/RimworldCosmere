@@ -32,23 +32,23 @@
       "description": "This pawn is storing youth in an atium metalmind, aging their body unnaturally. Their joints ache, their reflexes slow, and their strength wanes. They sacrifice vitality now to reclaim it later, if they survive.",
       "capacityMods": {
         "Consciousness": {
-          "factor": -0.01
+          "factor": 0.333333
         },
         "Manipulation": {
-          "factor": -0.01
+          "factor": 0.333333
         },
         "Sight": {
-          "factor": -0.02
+          "factor": 0.333333
         },
         "Hearing": {
-          "factor": -0.02
+          "factor": 0.333333
         }
       },
       "statFactors": {
-        "MoveSpeed": -0.01,
-        "ImmunityGainSpeed": -0.02,
-        "PainShockThreshold": -0.01,
-        "LifespanFactor": -0.03
+        "MoveSpeed": 0.333333,
+        "ImmunityGainSpeed": 0.333333,
+        "PainShockThreshold": 0.333333,
+        "LifespanFactor": 0.333333
       }
     },
     "tap": {

@@ -31,35 +31,35 @@
     "store": {
       "description": "Storing steel draws kinetic energy from the body into a metalmind. Every movement feels sluggish, as if pushing through water. The pawn conserves speed for later use, willingly enduring slow steps and dulled reflexes.",
       "statFactors": {
-        "Ability_Duration": 0.03,
-        "Ability_CastingTime": 0.03,
-        "StaggerDurationFactor": 0.03,
-        "AimingDelayFactor": 0.03,
-        "MeleeCooldownFactor": 0.03,
-        "RangedCooldownFactor": 0.03,
-        "EatingSpeed": -0.03,
-        "MoveSpeed": -0.03,
-        "CrawlSpeed": -0.03,
-        "CleaningSpeed": -0.03,
-        "MiningSpeed": -0.03,
-        "WorkSpeedGlobal": -0.03
+        "Ability_Duration": 10,
+        "Ability_CastingTime": 10,
+        "StaggerDurationFactor": 10,
+        "AimingDelayFactor": 10,
+        "MeleeCooldownFactor": 10,
+        "RangedCooldownFactor": 10,
+        "EatingSpeed": 0.1,
+        "MoveSpeed": 0.1,
+        "CrawlSpeed": 0.1,
+        "CleaningSpeed": 0.1,
+        "MiningSpeed": 0.1,
+        "WorkSpeedGlobal": 0.1
       }
     },
     "tap": {
       "description": "Tapping steel unleashes a sudden burst of kinetic energy from the metalmind, drastically increasing the pawn's movement speed. Muscles respond faster, steps blur with unnatural agility, and the world seems to slow as they move with Feruchemical swiftness.",
       "statFactors": {
-        "Ability_Duration": -0.03,
-        "Ability_CastingTime": -0.03,
-        "StaggerDurationFactor": -0.03,
-        "AimingDelayFactor": -0.03,
-        "MeleeCooldownFactor": -0.03,
-        "RangedCooldownFactor": -0.03,
-        "EatingSpeed": 0.03,
-        "MoveSpeed": 0.03,
-        "CrawlSpeed": 0.03,
-        "CleaningSpeed": 0.03,
-        "MiningSpeed": 0.03,
-        "WorkSpeedGlobal": 0.03
+        "Ability_Duration": 0.1,
+        "Ability_CastingTime": 0.1,
+        "StaggerDurationFactor": 0.1,
+        "AimingDelayFactor": 0.1,
+        "MeleeCooldownFactor": 0.1,
+        "RangedCooldownFactor": 0.1,
+        "EatingSpeed": 10,
+        "MoveSpeed": 10,
+        "CrawlSpeed": 10,
+        "CleaningSpeed": 10,
+        "MiningSpeed": 10,
+        "WorkSpeedGlobal": 10
       }
     }
   },

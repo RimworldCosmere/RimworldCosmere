@@ -31,15 +31,21 @@
     "description": "Stores weight, allowing the user to become lighter or heavier.",
     "attribute": "weight",
     "store": {
-      "description": "This pawn is storing physical weight in an iron metalmind, becoming unnaturally light. They move slightly faster and become easier to knock around, but they store their mass for future use. Stored weight makes them poor at resisting external force, like explosions or Allomantic pushes.",
+      "description": "This pawn is storing physical weight in an iron metalmind, becoming unnaturally light. They move faster and tire less on their feet, but a body with no mass behind it lands weak blows and is knocked off balance by anything that touches it.",
       "statFactors": {
-        "Mass": -0.0499
+        "Mass": 0.1,
+        "MoveSpeed": 4,
+        "MeleeDamageFactor": 0.2,
+        "StaggerDurationFactor": 5
       }
     },
     "tap": {
-      "description": "This pawn is tapping an iron metalmind, dramatically increasing their weight. They move more slowly but become far harder to move or stagger, and deal greater impact force when colliding with objects. They resist external force and can push through enemies with mass alone.",
+      "description": "This pawn is tapping an iron metalmind, dramatically increasing their weight. Every step costs them, but a blow carrying that much mass lands like a falling wall, and almost nothing can knock them off their feet.",
       "statFactors": {
-        "Mass": 0.0499
+        "Mass": 10,
+        "MoveSpeed": 0.25,
+        "MeleeDamageFactor": 5,
+        "StaggerDurationFactor": 0.2
       }
     }
   },

@@ -101,9 +101,7 @@ public class FeruchemyInfo {
 
     public FeruchemyAbilityInfo? Tap { get; set; }
 
-    public float? StoreRateMultiplier { get; set; }
-
-    public float? TapRateMultiplier { get; set; }
+    public float? RateMultiplier { get; set; }
 }
 
 public class FeruchemyAbilityInfo {

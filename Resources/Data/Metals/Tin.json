@@ -33,30 +33,30 @@
       "description": "This pawn is storing sensory perception in a tin metalmind, numbing themselves to the world. Sight and hearing are muted, impairing awareness and coordination. It’s harder to aim, react, or interact effectively, but sensory clarity is being saved for later.",
       "capacityMods": {
         "Sight": {
-          "factor": -0.05
+          "factor": 0.2
         },
         "Hearing": {
-          "factor": -0.05
+          "factor": 0.2
         }
       },
       "statFactors": {
-        "ShootingAccuracyPawn": -0.049,
-        "MeleeHitChance": -0.049
+        "ShootingAccuracyPawn": 0.2,
+        "MeleeHitChance": 0.2
       }
     },
     "tap": {
       "description": "This pawn is tapping a tin metalmind, flooding their body with enhanced sensory input. Their vision and hearing sharpen dramatically, improving combat awareness and task efficiency. However, overstimulation may lead to distraction or sensitivity.",
       "capacityMods": {
         "Sight": {
-          "factor": 0.05
+          "factor": 5
         },
         "Hearing": {
-          "factor": 0.05
+          "factor": 5
         }
       },
       "statFactors": {
-        "ShootingAccuracyPawn": 0.049,
-        "MeleeHitChance": 0.049
+        "ShootingAccuracyPawn": 5,
+        "MeleeHitChance": 5
       }
     }
   },

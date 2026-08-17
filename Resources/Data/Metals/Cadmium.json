@@ -33,22 +33,22 @@
       "description": "This pawn is storing breath in a cadmium metalmind, constricting their airflow. They breathe shallowly, tire more easily, and may suffer from shortness of breath during strenuous activity, but the stored air may save them later.",
       "capacityMods": {
         "Breathing": {
-          "factor": -0.035
+          "factor": 0.333333
         }
       },
       "statFactors": {
-        "VacuumResistance:Ludeon.RimWorld.Odyssey": -0.05
+        "VacuumResistance:Ludeon.RimWorld.Odyssey": 0.333333
       }
     },
     "tap": {
       "description": "This pawn is tapping a cadmium metalmind, drawing on stored reserves of air. They can function without breathing for extended periods, shrug off smoke or gas effects, and resist asphyxiation far longer than normal.",
       "capacityMods": {
         "Breathing": {
-          "factor": 0.035
+          "factor": 3
         }
       },
       "statFactors": {
-        "VacuumResistance:Ludeon.RimWorld.Odyssey": 0.05
+        "VacuumResistance:Ludeon.RimWorld.Odyssey": 3
       }
     }
   },

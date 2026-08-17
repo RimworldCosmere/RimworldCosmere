@@ -27,25 +27,25 @@
     "store": {
       "description": "This pawn is storing strength into a pewter metalmind, leaving their body frail and sluggish. They tire easily, move slowly, and struggle with physical tasks, but bank immense power for future use.",
       "statFactors": {
-        "ToxicEnvironmentResistance": -0.03,
-        "StaggerDurationFactor": 0.03,
-        "PainShockThreshold": -0.03,
-        "MiningSpeed": -0.045,
-        "DeepDrillingSpeed": -0.045,
-        "MeleeDamageFactor": -0.045,
-        "CarryingCapacity": -0.04
+        "ToxicEnvironmentResistance": 0.2,
+        "StaggerDurationFactor": 5,
+        "PainShockThreshold": 0.2,
+        "MiningSpeed": 0.1,
+        "DeepDrillingSpeed": 0.1,
+        "MeleeDamageFactor": 0.1,
+        "CarryingCapacity": 0.1
       }
     },
     "tap": {
       "description": "This pawn is tapping a pewter metalmind, enhancing their strength, endurance, and physical resilience. Their blows hit harder, they shrug off injuries more easily, and their muscles propel them faster across the battlefield.",
       "statFactors": {
-        "ToxicEnvironmentResistance": 0.03,
-        "StaggerDurationFactor": -0.03,
-        "PainShockThreshold": 0.03,
-        "MiningSpeed": 0.045,
-        "DeepDrillingSpeed": 0.045,
-        "MeleeDamageFactor": 0.045,
-        "CarryingCapacity": 0.04
+        "ToxicEnvironmentResistance": 5,
+        "StaggerDurationFactor": 0.2,
+        "PainShockThreshold": 5,
+        "MiningSpeed": 10,
+        "DeepDrillingSpeed": 10,
+        "MeleeDamageFactor": 10,
+        "CarryingCapacity": 10
       }
     }
   },

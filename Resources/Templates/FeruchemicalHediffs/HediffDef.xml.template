@@ -11,28 +11,28 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor ../stages}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>
                         <capacity>{{withoutRequire @key}}</capacity>
                         {{#if factor}}
-                        <postFactor>{{getFactorForStage @time factor}}</postFactor>
+                        <postFactor>{{getCapacityFactorForStage @time factor ../../stages}}</postFactor>
                         {{/if}}
-                        {{#if offset}}<offset>{{getStatForStage @time offset}}</offset>{{/if}}
+                        {{#if offset}}<offset>{{getOffsetForStage @time offset}}</offset>{{/if}}
                     </li>
                     {{/each}}
                 </capMods>
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value ../../stages}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
                 <statOffsets>
                     {{#each ../statOffsets as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getOffsetForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statOffsets>
                 {{/if}}
@@ -57,29 +57,29 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getFactorForStage @time ../hungerRateFactor ../stages}}</hungerRateFactor>{{/if}}
                 {{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>
                         <capacity>{{withoutRequire @key}}</capacity>
                         {{#if this.factor}}
-                        <postFactor>{{getFactorForStage @time this.factor}}</postFactor>
+                        <postFactor>{{getCapacityFactorForStage @time this.factor ../../stages}}</postFactor>
                         {{/if}}
-                        {{#if this.offset}}<offset>{{getStatForStage @time this.offset}}</offset>{{/if}}
+                        {{#if this.offset}}<offset>{{getOffsetForStage @time this.offset}}</offset>{{/if}}
                     </li>
                     {{/each}}
                 </capMods>
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getFactorForStage @time value ../../stages}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
                 <statOffsets>
                     {{#each ../statOffsets as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getOffsetForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statOffsets>
                 {{/if}}
@@ -104,14 +104,14 @@
             <li>
                 {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getCompoundedStatForStage @time ../hungerRateFactor 0}}</hungerRateFactor>{{/if}}
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getCompoundedStatForStage @time ../hungerRateFactor ../stages}}</hungerRateFactor>{{/if}}
                 {{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
                     <li{{{mayRequire @key}}}>
                         <capacity>{{withoutRequire @key}}</capacity>
                         {{#if this.factor}}
-                        <postFactor>{{getCompoundedStatForStage @time this.factor}}</postFactor>
+                        <postFactor>{{getCompoundedStatForStage @time this.factor ../../stages}}</postFactor>
                         {{/if}}
                         {{#if this.offset}}<offset>{{getCompoundedOffsetForStage @time this.offset}}</offset>{{/if}}
                     </li>
@@ -120,7 +120,7 @@
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getCompoundedStatForStage @time value}}</{{withoutRequire attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getCompoundedStatForStage @time value ../../stages}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}

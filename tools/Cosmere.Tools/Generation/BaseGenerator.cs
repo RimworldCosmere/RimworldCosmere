@@ -6,7 +6,26 @@ using HandlebarsDotNet;
 namespace Cosmere.Tools.Generation;
 
 public abstract class BaseGenerator : IGenerator {
-    private const double MinimumFactor = 0.001;
+    // A stat floored at a thousandth is off; a capacity floored there is a pawn who
+    // cannot see, hear or stand. Tin storing all the way down should cost a colonist
+    // their senses, not their ability to be a colonist.
+    private const double MinimumCapacityFactor = 0.15;
+
+    // What a compounded burn pays over an ordinary tap.
+    private const double FactorAmplification = 10.0;
+    private const double OffsetAmplification = 3.0;
+
+    /// <summary>Where a ladder sits at one rung, given the peak its top rung reaches.</summary>
+    /// <remarks>
+    ///     Geometric, so the storing ladder is the tapping one inverted and the pair multiplies
+    ///     back to 1 at every rung. It also never reaches zero, which is what lets a peak of ten
+    ///     exist at all - the linear form would need the storing side to pass through it.
+    /// </remarks>
+    private static double FactorForStage(double peak, int stage, int stages) {
+        if (peak <= 0 || stages <= 0) return 1;
+
+        return Math.Pow(peak, (stage + 1) / (double)stages);
+    }
 
     protected readonly GeneratorOptions Options;
     protected readonly IFileSystem FileSystem;
@@ -152,11 +171,14 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        Handlebars.RegisterHelper("getStatForStage", (writer, context, parameters) => {
+        // Offsets sit on zero, not one. Sharing the factor helper meant brass shipped
+        // a stored ComfyTemperatureMin of +101 instead of +100 - and every stage below
+        // it was off by the same one.
+        Handlebars.RegisterHelper("getOffsetForStage", (writer, context, parameters) => {
             if (parameters.Length >= 2 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
                 double.TryParse(parameters[1]?.ToString(), out var step)) {
-                var result = 1 + step * (stage + 1);
+                var result = step * (stage + 1);
 
                 // Format with up to 8 decimal places, then trim trailing zeros
                 var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
@@ -164,64 +186,62 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        // Factors multiply, so a linear step that lands on 0 switches the stat off
-        // entirely - Tin's top store stage would leave a pawn blind and deaf. Offsets
-        // keep using getStatForStage, where negatives are the whole point.
-        // Pass a third argument to override the floor; hunger wants a true 0.
+        // A factor ladder is geometric, not linear. The metal names the peak its top rung
+        // reaches and each rung takes an even fraction of the way there, so tapping to x10
+        // pairs with storing to exactly 1/10 - the two sides multiply back to 1 at every
+        // rung, which is what conservation means for a multiplier. A linear ladder cannot
+        // reach a peak like that at all: the storing side would need to pass through zero.
         Handlebars.RegisterHelper("getFactorForStage", (writer, context, parameters) => {
-            if (parameters.Length >= 2 &&
+            if (parameters.Length >= 3 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
-                double.TryParse(parameters[1]?.ToString(), out var step)) {
-                var floor = MinimumFactor;
-                if (parameters.Length > 2 && double.TryParse(parameters[2]?.ToString(), out var given)) {
-                    floor = given;
-                }
-
-                var result = Math.Max(1 + step * (stage + 1), floor);
+                double.TryParse(parameters[1]?.ToString(), out var peak) &&
+                int.TryParse(parameters[2]?.ToString(), out var stages)) {
+                var result = FactorForStage(peak, stage, stages);
 
                 var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
                 writer.WriteSafeString(formatted);
             }
         });
 
-        // Compounded charge pays out ten times harder. Naively scaling the step
-        // drives "lower is better" stats negative - Gold's IncomingDamageFactor
-        // would reach -8.6, i.e. damage that heals - so amplify the benefit each
-        // factor represents rather than the step itself.
+        Handlebars.RegisterHelper("getCapacityFactorForStage", (writer, context, parameters) => {
+            if (parameters.Length >= 3 &&
+                int.TryParse(parameters[0]?.ToString(), out var stage) &&
+                double.TryParse(parameters[1]?.ToString(), out var peak) &&
+                int.TryParse(parameters[2]?.ToString(), out var stages)) {
+                var result = Math.Max(FactorForStage(peak, stage, stages), MinimumCapacityFactor);
+
+                var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
+                writer.WriteSafeString(formatted);
+            }
+        });
+
+        // Compounded charge pays out ten times harder. Reading that off the factor itself
+        // drives "lower is better" stats negative - Gold's IncomingDamageFactor would reach
+        // damage that heals - so amplify the benefit the factor represents and invert back.
         Handlebars.RegisterHelper("getCompoundedStatForStage", (writer, context, parameters) => {
-            if (parameters.Length >= 2 &&
+            if (parameters.Length >= 3 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
-                double.TryParse(parameters[1]?.ToString(), out var step)) {
-                const double amplification = 10.0;
-                var floor = MinimumFactor;
-                if (parameters.Length > 2 && double.TryParse(parameters[2]?.ToString(), out var given)) {
-                    floor = given;
-                }
+                double.TryParse(parameters[1]?.ToString(), out var peak) &&
+                int.TryParse(parameters[2]?.ToString(), out var stages)) {
+                var ordinary = FactorForStage(peak, stage, stages);
 
-                double result;
-
-                if (step >= 0) {
-                    result = 1 + step * amplification * (stage + 1);
-                } else {
-                    // Benefit of a sub-1 factor is (1/v - 1); scale that, then invert
-                    // back. Stays positive and monotonic for every metal.
-                    var ordinary = 1 + step * (stage + 1);
-                    result = ordinary <= 0
-                        ? floor
-                        : Math.Max(1.0 / (1.0 + amplification * (1.0 / ordinary - 1.0)), floor);
-                }
+                var result = ordinary >= 1
+                    ? 1 + (ordinary - 1) * FactorAmplification
+                    : 1.0 / (1.0 + FactorAmplification * (1.0 / ordinary - 1.0));
 
                 var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
                 writer.WriteSafeString(formatted);
             }
         });
 
-        // Offsets have no reciprocal reading, so they scale their step directly.
+        // Offsets have no reciprocal reading, so the tenfold a factor gets would run
+        // straight off the end of any real scale - brass reached a comfort band 300
+        // degrees below zero. Three is what an absolute number can carry.
         Handlebars.RegisterHelper("getCompoundedOffsetForStage", (writer, context, parameters) => {
             if (parameters.Length >= 2 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
                 double.TryParse(parameters[1]?.ToString(), out var step)) {
-                var result = 1 + step * 10.0 * (stage + 1);
+                var result = step * OffsetAmplification * (stage + 1);
                 var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
                 writer.WriteSafeString(formatted);
             }

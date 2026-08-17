@@ -33,25 +33,25 @@
     "store": {
       "description": "This pawn is storing health into a gold metalmind, weakening their body’s immune and regenerative systems. They recover from injuries more slowly and are more vulnerable to disease while storing, sacrificing present vitality for future survival.",
       "statFactors": {
-        "InjuryHealingFactor": -0.045,
-        "ImmunityGainSpeed": -0.045,
-        "PainShockThreshold": -0.045,
-        "ToxicResistance": -0.045,
-        "ToxicEnvironmentResistance": -0.045,
-        "IncomingDamageFactor": 0.048,
-        "StaggerDurationFactor": 0.048
+        "InjuryHealingFactor": 0.1,
+        "ImmunityGainSpeed": 0.1,
+        "PainShockThreshold": 0.1,
+        "ToxicResistance": 0.1,
+        "ToxicEnvironmentResistance": 0.1,
+        "IncomingDamageFactor": 10,
+        "StaggerDurationFactor": 10
       }
     },
     "tap": {
       "description": "This pawn is tapping a gold metalmind, accelerating their body’s natural healing to supernatural levels. Wounds close within hours, infections are purged, and the body fights off disease with startling speed. The effect can be life-saving, but drains reserves quickly.",
       "statFactors": {
-        "InjuryHealingFactor": 0.95,
-        "ImmunityGainSpeed": 0.045,
-        "PainShockThreshold": 0.045,
-        "ToxicResistance": 0.045,
-        "ToxicEnvironmentResistance": 0.045,
-        "IncomingDamageFactor": -0.048,
-        "StaggerDurationFactor": -0.048
+        "InjuryHealingFactor": 10,
+        "ImmunityGainSpeed": 10,
+        "PainShockThreshold": 10,
+        "ToxicResistance": 10,
+        "ToxicEnvironmentResistance": 10,
+        "IncomingDamageFactor": 0.1,
+        "StaggerDurationFactor": 0.1
       }
     }
   },

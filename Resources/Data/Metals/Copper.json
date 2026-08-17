@@ -32,17 +32,17 @@
     "store": {
       "description": "This pawn is storing memories in a copper metalmind, causing their thoughts to blur. Learning slows, task focus falters, and they struggle to retain information, all sacrificed in the name of long-term clarity.",
       "statFactors": {
-        "GlobalLearningFactor": -0.05,
-        "ResearchSpeed": -0.05,
-        "MentalBreakThreshold": 0.02
+        "GlobalLearningFactor": 0.2,
+        "ResearchSpeed": 0.2,
+        "MentalBreakThreshold": 5
       }
     },
     "tap": {
       "description": "This pawn is tapping a copper metalmind, unlocking stored memories with razor-sharp clarity. Their mind is focused, efficient, and highly receptive, making research, learning, and complex tasks faster and easier.",
       "statFactors": {
-        "GlobalLearningFactor": 0.05,
-        "ResearchSpeed": 0.05,
-        "MentalBreakThreshold": -0.02
+        "GlobalLearningFactor": 5,
+        "ResearchSpeed": 5,
+        "MentalBreakThreshold": 0.2
       }
     }
   },

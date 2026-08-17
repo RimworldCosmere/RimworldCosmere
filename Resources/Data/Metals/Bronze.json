@@ -27,13 +27,13 @@
     "store": {
       "description": "This pawn is storing wakefulness in a bronze metalmind, leaving them lethargic and constantly tired. They sleep more and work less efficiently, trading present alertness for the ability to function longer later. Prolonged storing can lead to microsleeps or reduced productivity.",
       "statFactors": {
-        "RestFallRateFactor": 0.05
+        "RestFallRateFactor": 3
       }
     },
     "tap": {
       "description": "This pawn is tapping a bronze metalmind, flooding their body with stored wakefulness. They feel intensely alert and energized, allowing them to work longer without sleep. Sustained tapping may mask exhaustion but can lead to burnout once reserves run dry.",
       "statFactors": {
-        "RestFallRateFactor": -0.05
+        "RestFallRateFactor": 0.333333
       }
     }
   },

@@ -33,19 +33,19 @@
     "store": {
       "description": "This pawn is storing mental speed in a zinc metalmind, dulling their cognition to a sluggish pace. Reactions are delayed, thoughts come slowly, and decision-making is impaired. While this frees up zinc for later tapping, it severely hampers their performance in mentally intensive tasks.",
       "statFactors": {
-        "ReadingSpeed": -0.05,
-        "HackingSpeed": -0.05,
-        "GlobalLearningFactor": -0.05,
-        "ResearchSpeed": -0.05
+        "ReadingSpeed": 0.2,
+        "HackingSpeed": 0.2,
+        "GlobalLearningFactor": 0.2,
+        "ResearchSpeed": 0.2
       }
     },
     "tap": {
       "description": "This pawn is tapping a zinc metalmind, dramatically enhancing their mental speed. Their thoughts race, reflexes sharpen, and decisions come swiftly. This heightened cognitive state improves work involving research, crafting, and strategic reaction time, but may come with increased mental strain if maintained for too long.",
       "statFactors": {
-        "ReadingSpeed": 0.05,
-        "HackingSpeed": 0.05,
-        "GlobalLearningFactor": 0.05,
-        "ResearchSpeed": 0.05
+        "ReadingSpeed": 5,
+        "HackingSpeed": 5,
+        "GlobalLearningFactor": 5,
+        "ResearchSpeed": 5
       }
     }
   },

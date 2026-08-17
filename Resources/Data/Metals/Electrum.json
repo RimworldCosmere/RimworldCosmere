@@ -27,15 +27,15 @@
     "store": {
       "description": "This pawn is storing determination in an electrum metalmind. Their will falters, and their resistance to pain, fear, and mental strain weakens. They’re more likely to break under pressure, but the strength they lose now will return in full.",
       "statFactors": {
-        "PainShockThreshold": -0.045,
-        "MentalBreakThreshold": 0.045
+        "PainShockThreshold": 0.2,
+        "MentalBreakThreshold": 5
       }
     },
     "tap": {
       "description": "This pawn is tapping an electrum metalmind, flooding their spirit with raw determination. Their pain tolerance surges, their focus sharpens, and they can shrug off mental strain with ease. Breaking them now would take a miracle.",
       "statFactors": {
-        "PainShockThreshold": 0.045,
-        "MentalBreakThreshold": -0.045
+        "PainShockThreshold": 5,
+        "MentalBreakThreshold": 0.2
       }
     }
   },

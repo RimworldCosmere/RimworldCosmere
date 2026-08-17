@@ -1,0 +1,75 @@
+using Cosmere.System.Scadrial.Feruchemy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Cosmere.Tests;
+
+/// <summary>
+///     The arithmetic behind duralumin: how much Connection charge may move between a pawn and a
+///     metalmind, bounded by what the pawn holds, the ledger's capacity, and what it already holds.
+/// </summary>
+[TestClass]
+public class ConnectionBudgetTests {
+    private const float Tolerance = 1e-3f;
+
+    [TestMethod]
+    public void EachLedgerReportsItsCapacity() {
+        Assert.AreEqual(30, ConnectionBudget.Capacity(DuraluminLedger.Residence));
+        Assert.AreEqual(30, ConnectionBudget.Capacity(DuraluminLedger.Bonds));
+        Assert.AreEqual(40, ConnectionBudget.Capacity(DuraluminLedger.Shard));
+        Assert.AreEqual(0, ConnectionBudget.Capacity(DuraluminLedger.Social));
+    }
+
+    [TestMethod]
+    public void PointsAndChargeRoundTrip() {
+        foreach (float points in new[] { 0f, 1f, 10f, 33.5f, 100f }) {
+            float charge = ConnectionBudget.ChargeForPoints(points);
+            Assert.AreEqual(points, ConnectionBudget.PointsForCharge(charge), Tolerance);
+        }
+    }
+
+    [TestMethod]
+    public void StorableIsBoundedByWhatThePawnHolds() {
+        Assert.AreEqual(90f, ConnectionBudget.Storable(10f, 0f, DuraluminLedger.Shard), Tolerance);
+    }
+
+    // 50 points is worth 450 charge, but Residence only ever holds 30 points' worth.
+    [TestMethod]
+    public void StorableIsBoundedByTheLedgersCapacity() {
+        Assert.AreEqual(270f, ConnectionBudget.Storable(50f, 0f, DuraluminLedger.Residence), Tolerance);
+    }
+
+    // Residence caps at 270 charge; 100 already stored leaves only 170 of room.
+    [TestMethod]
+    public void StorableIsBoundedByWhatTheLedgerAlreadyHolds() {
+        Assert.AreEqual(170f, ConnectionBudget.Storable(50f, 100f, DuraluminLedger.Residence), Tolerance);
+    }
+
+    [TestMethod]
+    public void TappableCannotExceedWhatTheLedgerRecords() {
+        Assert.AreEqual(50f, ConnectionBudget.Tappable(1000f, 50f, DuraluminLedger.Shard), Tolerance);
+    }
+
+    // 2 points of headroom is 18 charge, well under the 100 the ledger holds.
+    [TestMethod]
+    public void TappableCannotExceedThePawnsHeadroom() {
+        Assert.AreEqual(18f, ConnectionBudget.Tappable(2f, 100f, DuraluminLedger.Shard), Tolerance);
+    }
+
+    [TestMethod]
+    public void NegativeInputsAndOverfullLedgersReturnZeroRatherThanNegative() {
+        Assert.AreEqual(0f, ConnectionBudget.Storable(-10f, 0f, DuraluminLedger.Shard));
+        Assert.AreEqual(0f, ConnectionBudget.Tappable(-10f, 50f, DuraluminLedger.Shard));
+        Assert.AreEqual(
+            0f,
+            ConnectionBudget.Storable(50f, 1000f, DuraluminLedger.Shard),
+            "An over-full ledger has no room left, not negative room."
+        );
+    }
+
+    [TestMethod]
+    public void SocialCanNeverTakeOrGiveCharge() {
+        Assert.AreEqual(0f, ConnectionBudget.Storable(0f, 0f, DuraluminLedger.Social));
+        Assert.AreEqual(0f, ConnectionBudget.Storable(1000f, 0f, DuraluminLedger.Social));
+        Assert.AreEqual(0f, ConnectionBudget.Tappable(1000f, 500f, DuraluminLedger.Social));
+    }
+}

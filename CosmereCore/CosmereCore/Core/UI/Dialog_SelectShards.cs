@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cosmere.Core.Def;
 using Cosmere.Core.Util;
 using RimWorld;
@@ -17,12 +18,28 @@ namespace Cosmere.Core.UI;
 ///     hardcoded English string.
 /// </remarks>
 public class Dialog_SelectShards : Verse.Window {
-    private readonly List<ShardDef> shards;
+    private const float TitleHeight = 40f;
+    private const float PlanetHeaderHeight = 40f;
+    private const float CheckboxIndent = 32f;
+    private const float TextPadding = 12f;
+    private const float RightMargin = 20f;
+    private const float LabelHeight = 24f;
+    private const float RowTopPad = 6f;
+    private const float RowBottomPad = 12f;
+    private const float ScrollbarWidth = 16f;
+
+    private readonly List<IGrouping<string?, ShardDef>> grouped;
     private readonly HashSet<string> required;
     private Vector2 scrollPos = Vector2.zero;
 
     public Dialog_SelectShards(List<ShardDef> permitted, IEnumerable<string>? requiredShards = null) {
-        shards = permitted;
+        // Grouped once here rather than in DoWindowContents, which ran it every OnGUI frame.
+        grouped = permitted
+            .GroupBy(s => s.planet)
+            .OrderBy(g => g.Key == "N/A" ? 0 : 1)
+            .ThenBy(g => g.Key)
+            .ToList();
+
         required = requiredShards == null ? [] : [..requiredShards];
 
         forcePause = true;
@@ -35,25 +52,8 @@ public class Dialog_SelectShards : Verse.Window {
     public override Vector2 InitialSize => new Vector2(640f, 620f);
 
     public override void DoWindowContents(Rect inRect) {
-        const float TitleHeight = 40f;
-        const float RowHeight = 70f;
-        const float PlanetHeaderHeight = 40f;
-        const float CheckTextPadding = 12f;
-        const float ScrollbarWidth = 16f;
-
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(inRect.TopPartPixels(TitleHeight), "CC_SelectShard_Label".Translate());
-        }
-
-        List<IGrouping<string?, ShardDef>> grouped = shards
-            .GroupBy(s => s.planet)
-            .OrderBy(g => g.Key == "N/A" ? 0 : 1)
-            .ThenBy(g => g.Key)
-            .ToList();
-
-        float totalHeight = 0f;
-        for (int i = 0; i < grouped.Count; i++) {
-            totalHeight += grouped[i].Count() * RowHeight + PlanetHeaderHeight;
         }
 
         // CloseButSize leaves room for the close button the window draws for us.
@@ -63,31 +63,50 @@ public class Dialog_SelectShards : Verse.Window {
             inRect.width,
             inRect.height - TitleHeight - 10f - CloseButSize.y - 10f
         );
-        Rect viewRect = new Rect(0f, 0f, scrollArea.width - ScrollbarWidth, totalHeight);
+
+        float viewWidth = scrollArea.width - ScrollbarWidth;
+        float totalHeight = 0f;
+        for (int i = 0; i < grouped.Count; i++) {
+            totalHeight += PlanetHeaderHeight;
+            foreach (ShardDef shard in grouped[i]) {
+                totalHeight += RowHeight(shard, viewWidth);
+            }
+        }
+
+        Rect viewRect = new Rect(0f, 0f, viewWidth, totalHeight);
 
         Widgets.BeginScrollView(scrollArea, ref scrollPos, viewRect);
         float y = 0f;
 
-        foreach (IGrouping<string?, ShardDef> group in grouped) {
+        for (int i = 0; i < grouped.Count; i++) {
             using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
-                Widgets.Label(new Rect(0f, y, viewRect.width, PlanetHeaderHeight), group.Key);
+                Widgets.Label(new Rect(0f, y, viewRect.width, PlanetHeaderHeight), grouped[i].Key);
             }
 
             y += PlanetHeaderHeight;
             Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
 
-            foreach (ShardDef shard in group) {
-                y = DrawShardRow(shard, y, viewRect.width, RowHeight, CheckTextPadding, required.Contains(shard.defName));
+            foreach (ShardDef shard in grouped[i]) {
+                y = DrawShardRow(shard, y, viewRect.width, required.Contains(shard.defName));
             }
         }
 
         Widgets.EndScrollView();
     }
 
-    private static float DrawShardRow(
-        ShardDef shard, float y, float width, float rowHeight, float padding, bool isRequired
-    ) {
-        Rect checkRect = new Rect(8f, y + 10f, 24f, 24f);
+    private static float TextWidth(float rowWidth) {
+        return rowWidth - CheckboxIndent - RightMargin;
+    }
+
+    private static float RowHeight(ShardDef shard, float rowWidth) {
+        float descHeight = UIText.WrappedHeight(shard.description, TextWidth(rowWidth), GameFont.Tiny);
+
+        return RowTopPad + LabelHeight + descHeight + RowBottomPad;
+    }
+
+    private static float DrawShardRow(ShardDef shard, float y, float width, bool isRequired) {
+        float textWidth = TextWidth(width);
+        float rowHeight = RowHeight(shard, width);
 
         bool isEnabled = ShardUtility.AreAnyEnabled(shard);
         bool blocked = !isEnabled && shard.mutuallyExclusiveWith.Any(ShardUtility.IsEnabled);
@@ -97,7 +116,7 @@ public class Dialog_SelectShards : Verse.Window {
         bool wasGuiEnabled = GUI.enabled;
         GUI.enabled = !blocked && !isRequired;
 
-        Rect labelRect = new Rect(checkRect.xMax + padding, y + 6f, width - checkRect.xMax - 20f, 24f);
+        Rect labelRect = new Rect(CheckboxIndent + TextPadding, y + RowTopPad, textWidth, LabelHeight);
         bool toggled = isEnabled;
         Widgets.CheckboxLabeled(labelRect, shard.LabelCap, ref toggled, blocked || isRequired);
 
@@ -111,9 +130,10 @@ public class Dialog_SelectShards : Verse.Window {
 
         GUI.enabled = wasGuiEnabled;
 
-        Rect descRect = new Rect(checkRect.xMax + padding, y + 30f, width - checkRect.xMax - 20f, 30f);
+        Rect descRect = new Rect(labelRect.x, labelRect.yMax, textWidth, rowHeight - RowTopPad - LabelHeight);
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, ColoredText.SubtleGrayColor)) {
-            Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f));
+            Text.WordWrap = true;
+            Widgets.Label(descRect, shard.description);
         }
 
         if (isRequired) {

@@ -34,6 +34,17 @@ public static class UIText {
         }
     }
 
+    /// <summary>How tall <paramref name="text" /> will be once wrapped to <paramref name="width" />.</summary>
+    public static float WrappedHeight(string? text, float width, GameFont font) {
+        if (text.NullOrEmpty()) return 0f;
+
+        using (new TextBlock(font)) {
+            Text.WordWrap = true;
+
+            return Text.CalcHeight(text, width);
+        }
+    }
+
     public static void EllipsisLabel(Rect rect, string text, GameFont font, TextAnchor anchor, Color color) {
         using (new TextBlock(font, anchor, color)) {
             if (Text.CalcSize(text).x <= rect.width) {

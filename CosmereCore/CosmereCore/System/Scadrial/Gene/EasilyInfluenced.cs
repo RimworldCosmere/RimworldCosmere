@@ -72,7 +72,7 @@ public class EasilyInfluenced : Verse.Gene {
         yield return new Command_Action {
             defaultLabel = "CS_KolossRelease_Label".Translate(),
             defaultDesc = "CS_KolossRelease_Desc".Translate(holder.LabelShortCap.Named("HOLDER")),
-            icon = TexCommand.Attack,
+            icon = UI.Dialog_KolossRoster.LetGo,
             action = () => KolossControl.Release(pawn),
         };
     }

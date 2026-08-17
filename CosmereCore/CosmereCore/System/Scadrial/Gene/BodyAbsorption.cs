@@ -18,7 +18,7 @@ namespace Cosmere.System.Scadrial.Gene;
 public class BodyAbsorption : Shapeshifter {
     // Textures have to be pulled on the main thread at startup, never from a gizmo draw.
     private static readonly Texture2D Icon =
-        ContentFinder<Texture2D>.Get("UI/Icons/Genes/Gene_BodyAbsorption", false) ?? BaseContent.BadTex;
+        ContentFinder<Texture2D>.Get("UI/Icons/Gizmos/Kandra_BodyAbsorption", false) ?? BaseContent.BadTex;
 
     private CompKandraForms? Forms => pawn.TryGetComp<CompKandraForms>();
 

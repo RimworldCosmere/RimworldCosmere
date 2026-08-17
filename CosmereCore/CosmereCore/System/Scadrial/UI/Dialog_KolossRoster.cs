@@ -25,6 +25,7 @@ namespace Cosmere.System.Scadrial.UI;
 ///         shouting over it.
 ///     </para>
 /// </remarks>
+[StaticConstructorOnStartup]
 public class Dialog_KolossRoster : Window {
     private const float Unit = 16f;
     private const float RowHeight = Unit * 3.5f;
@@ -47,7 +48,7 @@ public class Dialog_KolossRoster : Window {
     ///     rest of them. UI/Commands/ReleaseAnimals is the sic-your-animals-on-them button, which
     ///     is close to the opposite of this.
     /// </remarks>
-    private static readonly Texture2D LetGo =
+    internal static readonly Texture2D LetGo =
         ContentFinder<Texture2D>.Get("UI/Designators/ReleaseToTheWild", false) ?? TexButton.Delete;
 
     private readonly MetalDef metal;

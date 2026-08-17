@@ -80,7 +80,7 @@
         <!-- Skaa until the koloss icon is drawn. A missing texture is not a blank square here:
              Widgets.DefIcon hands null to DrawTextureFitted and the whole info card throws, once
              per frame, for as long as it is open. -->
-        <iconPath>UI/Icons/Xenotype/Skaa</iconPath>
+        <iconPath>UI/Icons/Xenotype/Koloss</iconPath>
         <genes>
             <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
             <li>Cosmere_Scadrial_Gene_NeverStopsGrowing</li>

@@ -33,6 +33,7 @@ public class Feruchemist : Metalborn {
     private int metalmindsLastCachedTick = -1;
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
+    private float pendingChargeMoved;
 
     // The compounded pool has its own dial: below idle it taps, above idle it
     // compounds, burning allomantic reserve to fill itself.
@@ -481,6 +482,7 @@ public class Feruchemist : Metalborn {
         Scribe_Values.Look(ref targetMetalmindId, "targetMetalmindId", string.Empty);
         Scribe_Values.Look(ref compounding, "compounding");
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
+        Scribe_Values.Look(ref pendingChargeMoved, "pendingChargeMoved");
     }
 
     public override void TickInterval(int delta) {
@@ -553,9 +555,9 @@ public class Feruchemist : Metalborn {
         if (ordinary > 0f) {
             float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
             if (targetValue > IdleTarget && canStore) {
-                AddToStore(perSecond);
+                pendingChargeMoved += AddToStore(perSecond);
             } else if (targetValue < IdleTarget && canTap) {
-                RemoveFromStore(perSecond);
+                pendingChargeMoved -= RemoveFromStore(perSecond);
             }
         }
 
@@ -570,9 +572,9 @@ public class Feruchemist : Metalborn {
         if (compoundedTargetValue > IdleTarget) {
             // Filling is ordinary storing. Nothing about the charge is special; the
             // burn on the way out is what compounds it.
-            if (canStore) AddToStore(compoundedPerSecond);
+            if (canStore) pendingChargeMoved += AddToStore(compoundedPerSecond);
         } else if (canTapCompounded) {
-            RemoveCompoundedFromStore(compoundedPerSecond);
+            pendingChargeMoved -= RemoveCompoundedFromStore(compoundedPerSecond);
         }
     }
 
@@ -594,11 +596,25 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    public bool AddToStore(float amount) {
+    /// <summary>Charge moved since someone last asked, positive in and negative out.</summary>
+    /// <remarks>
+    ///     Nicrosil moves the Investiture need by exactly what the metalmind took or gave. Reading
+    ///     it off one number is what keeps the two conserved - computing it a second time is the
+    ///     bug this replaces. It accumulates rather than reporting one tick, because the reader
+    ///     ticks on its own schedule and must neither miss a second nor apply one twice.
+    /// </remarks>
+    public float DrainChargeMoved() {
+        float moved = pendingChargeMoved;
+        pendingChargeMoved = 0f;
+
+        return moved;
+    }
+
+    public float AddToStore(float amount) {
         return Distribute(amount, static m => m.CanStore, static (m, a) => m.AddStored(a), static m => m.FreeSpace);
     }
 
-    public bool AddCompoundedToStore(float amount) {
+    public float AddCompoundedToStore(float amount) {
         return Distribute(
             amount,
             static m => m.CanStoreCompounded,
@@ -607,20 +623,20 @@ public class Feruchemist : Metalborn {
         );
     }
 
-    public bool RemoveCompoundedFromStore(float amount) {
+    public float RemoveCompoundedFromStore(float amount) {
         // Burning draws on everything the metalmind holds, so the room left to take
         // is its whole charge. Reading the compounded pool here left nothing to
         // take, which both stalled the burn and span the sweep below every tick.
-        bool result = Distribute(
+        float moved = Distribute(
             amount,
             static m => m.CanTapCompounded,
             static (m, a) => m.ConsumeCompounded(a),
             static m => m.TotalStored
         );
 
-        if (result) SweepBurnedOut();
+        if (moved > 0f) SweepBurnedOut();
 
-        return result;
+        return moved;
     }
 
     // A metalmind emptied of compounded charge has no capacity left, so it is gone.
@@ -632,15 +648,15 @@ public class Feruchemist : Metalborn {
 
     // Carries the remainder across sources. Dumping the full amount into the first
     // eligible metalmind let its clamp discard the overflow silently.
-    private bool Distribute(
+    private float Distribute(
         float amount,
         Func<IMetalmindSource, bool> eligible,
         Action<IMetalmindSource, float> apply,
         Func<IMetalmindSource, float> room
     ) {
-        if (amount <= 0f) return false;
+        if (amount <= 0f) return 0f;
 
-        bool moved = false;
+        float moved = 0f;
         float remaining = amount;
         List<IMetalmindSource> mms = metalminds;
 
@@ -656,13 +672,13 @@ public class Feruchemist : Metalborn {
 
             apply(mms[i], take);
             remaining -= take;
-            moved = true;
+            moved += take;
         }
 
         return moved;
     }
 
-    public bool RemoveFromStore(float amount) {
+    public float RemoveFromStore(float amount) {
         return Distribute(amount, static m => m.CanTap, static (m, a) => m.ConsumeStored(a), static m => m.StoredAmount);
     }
 

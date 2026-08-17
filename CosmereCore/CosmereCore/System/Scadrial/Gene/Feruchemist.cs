@@ -286,8 +286,8 @@ public class Feruchemist : Metalborn {
         return storesInvestiture ? perSecond * CompoundedTap.EffectMultiplier : perSecond;
     }
 
-    // Charge the pawn still has in them to give. You cannot store what you no longer have,
-    // and no other metal is bounded by its owner, so theirs is unlimited.
+    // Charge the pawn still has in them to give. You cannot store what you no longer have.
+    // Every other metal stores something notional, so its owner bounds nothing.
     private float storableFromPawn {
         get {
             Investiture? need = investitureNeed;
@@ -698,8 +698,8 @@ public class Feruchemist : Metalborn {
         Action<IMetalmindSource, float> apply,
         Func<IMetalmindSource, float> room
     ) {
-        // The target is read fresh every pass rather than cached: a metalmind can burn out
-        // mid-tick, and a target that no longer exists falls back to spreading the charge.
+        // The target is read fresh every pass rather than cached, because a metalmind can
+        // burn out mid-tick and take the dial's chosen target with it.
         return MetalmindDistribution.Carry(metalminds, targetMetalmindId, amount, eligible, apply, room);
     }
 

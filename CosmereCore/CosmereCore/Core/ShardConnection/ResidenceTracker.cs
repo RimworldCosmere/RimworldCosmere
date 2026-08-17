@@ -73,6 +73,13 @@ public class ResidenceTracker : Verse.GameComponent {
         return next - had;
     }
 
+    /// <summary>Raw ticks resident, with no shard-ancestry gate. The read half of <see cref="AdjustTicks" />.</summary>
+    public int TicksFor(Pawn? pawn) {
+        if (pawn == null) return 0;
+
+        return ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks) ? ticks : 0;
+    }
+
     public override void GameComponentTick() {
         if (Find.TickManager.TicksGame % TickInterval != 0) return;
         if (NaturalisingWorld() == null) return;

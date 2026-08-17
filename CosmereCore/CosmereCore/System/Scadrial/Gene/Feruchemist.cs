@@ -36,25 +36,24 @@ public class Feruchemist : Metalborn {
     private float savantDecayOffset;
     private readonly ChargeLedger chargeLedger = new ChargeLedger();
 
-    // The compounded pool has its own dial: below idle it taps, above idle it
-    // compounds, burning allomantic reserve to fill itself.
+    /// The compounded pool has its own dial: below idle it taps, above idle it
+    /// compounds, burning allomantic reserve to fill itself.
     public float compoundedTargetValue = IdleTarget;
 
-    // The target vocabulary lives with the matcher that reads it. These keep the gene's
-    // own callers spelling it the way they always have.
+    /// The target vocabulary lives with the matcher that reads it. These keep the gene's
+    /// own callers spelling it the way they always have.
     public const string TargetAll = MetalmindDistribution.TargetAll;
 
     public const string TargetExternal = MetalmindDistribution.TargetExternal;
 
     public const string TargetInternal = MetalmindDistribution.TargetInternal;
 
-    // Which metalmind the dials act on: one of the group tokens above, or a
-    // single metalmind's SourceId.
+    /// Which metalmind the dials act on: one of the group tokens above, or a
+    /// single metalmind's SourceId.
     public string targetMetalmindId = TargetAll;
 
-    // Whether the dial is pointed at the compounded pool. Held here rather than in
-    // the panel so gameplay can switch it off - a metal that stops paying out has
-    // to be able to end the mode, not just park the dial under it.
+    /// Whether the dial is pointed at the compounded pool. Held here, not the panel,
+    /// so a metal that stops paying out can end the mode instead of just parking it.
     public bool compounding;
 
     // How hard the dial is calling for compounding, nought to one.
@@ -104,17 +103,14 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    // Whether everything the dials can currently reach is implanted, which is the
-    // condition for compounding. True for a single implant and for the internal
-    // group alike.
+    /// Whether everything the dials can currently reach is implanted, which is
+    /// the condition for compounding. True for a single implant or the internal group.
     public bool TargetIsInternalOnly {
         get {
             if (SelectedSource is { IsImplanted: true }) return true;
             if (targetMetalmindId != TargetInternal) return false;
 
-            // Burning consumes implants, so the group can empty out entirely. An
-            // empty group is not something to compound into, and saying otherwise
-            // leaves the panel stuck in a mode nothing can act on.
+            // burning can empty the group entirely; an empty group is not something to compound into.
             List<IMetalmindSource> mms = metalminds;
             for (int i = 0; i < mms.Count; i++) {
                 if (mms[i].IsImplanted) return true;
@@ -128,10 +124,8 @@ public class Feruchemist : Metalborn {
         return MetalmindDistribution.IsGroupTarget(target);
     }
 
-    // A metal is declared twice - once as MetalDef and again as the richer
-    // MetallicArtsMetalDef - so the two live in separate databases and are never
-    // the same object. Metalminds resolve the plain one while the gene holds the
-    // arts one, which made every implant invisible to its own gene.
+    /// A metal is declared twice, as MetalDef and as the richer MetallicArtsMetalDef,
+    /// so the two are never the same object. Compare by defName, not reference.
     private bool SameMetal(Core.Def.MetalDef? candidate) {
         return candidate != null && candidate.defName == metal.defName;
     }
@@ -174,8 +168,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    // Room in the one metalmind compounding is filling right now. Deposits go in
-    // order, so this is the first that will accept charge.
+    /// Room in the one metalmind compounding is filling right now. Deposits go in
+    /// order, so this is the first that will accept charge.
     public float CurrentCompoundedFreeSpace {
         get {
             List<IMetalmindSource> mms = metalminds;
@@ -231,9 +225,7 @@ public class Feruchemist : Metalborn {
                     }
                 }
 
-                // Setting the resource directly has to be able to reach zero, so it
-                // falls through to compounded charge once ordinary runs out. The
-                // gameplay tap path deliberately does not - that stays explicit.
+                // setting Value directly must reach zero, so it falls through to compounded once ordinary runs out; the gameplay tap path deliberately does not.
                 bool drewCompounded = false;
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanTapCompounded) continue;
@@ -274,20 +266,20 @@ public class Feruchemist : Metalborn {
     private HediffDef? permanentHediffDef =>
         cachedPermanentHediffDef ??= ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(metal);
 
-    // Nicrosil's charge is the pawn's own Investiture rather than a notional attribute, so
-    // the pawn sits at the far end of every transfer this gene makes.
+    /// Nicrosil's charge is the pawn's own Investiture rather than a notional attribute, so
+    /// the pawn sits at the far end of every transfer this gene makes.
     private bool storesInvestiture => metal == MetallicArtsMetalDefOf.Nicrosil;
 
     private Investiture? investitureNeed => storesInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
 
-    // Nicrosil gets no stage ladder for a compounded burn to amplify through, so its burn
-    // pays out faster instead of larger: the same charge, in a tenth of the time.
+    /// Nicrosil gets no stage ladder for a compounded burn to amplify through, so its burn
+    /// pays out faster instead of larger: the same charge, in a tenth of the time.
     private float CompoundedBurnRate(float perSecond) {
         return storesInvestiture ? perSecond * CompoundedTap.EffectMultiplier : perSecond;
     }
 
-    // Charge the pawn still has in them to give. You cannot store what you no longer have.
-    // Every other metal stores something notional, so its owner bounds nothing.
+    /// Charge the pawn still has to give; every other metal stores something notional,
+    /// so only nicrosil's owner bounds it.
     private float storableFromPawn {
         get {
             Investiture? need = investitureNeed;
@@ -379,23 +371,20 @@ public class Feruchemist : Metalborn {
 
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
 
-    // The compounded dial is off its rest point in either direction. Filling that
-    // pool is ordinary feruchemical storing; the amplification lives in the burn.
+    /// The compounded dial is off its rest point in either direction. Filling that
+    /// pool is ordinary feruchemical storing; the amplification lives in the burn.
     public bool isCompounding => compoundedTargetValue != IdleTarget;
 
-    // Compounding pours charge into a metalmind exactly as storing does, so it
-    // counts as storing - mirroring isTapping, which already covers both the
-    // ordinary and the compounded channel.
+    /// Compounding pours charge into a metalmind exactly as storing does, so it counts
+    /// as storing too - mirroring isTapping, which already covers both channels.
     public bool isStoringAny => isStoring || (compoundedTargetValue > IdleTarget && canStoreCompounded);
 
-    // Per-metal pacing, applied to every path that moves charge so the dial readout
-    // and the actual drain cannot drift apart. One figure for both directions - a
-    // metalmind returns exactly what it was given.
+    /// Per-metal pacing, applied to every path that moves charge so the dial readout
+    /// and the actual drain cannot drift apart. One figure for both directions.
     public float RateMultiplier => metal.feruchemy?.rateMultiplier ?? 1f;
 
-    // Skill and strength buy duration, not magnitude: the ladder pays the same for
-    // everyone, but a master draws on it more slowly and so runs longer on one
-    // metalmind. Filling slows by the same factor, which is what keeps it honest.
+    /// Skill and strength buy duration, not magnitude: the ladder pays the same for
+    /// everyone, but a master draws on it more slowly and runs longer on one metalmind.
     public float Efficiency {
         get {
             SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
@@ -408,10 +397,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    // Charge moved per real second at the current dial setting, negative while
-    // tapping. Zero when the dial sits in its dead band or the direction is shut.
-    // What the compounded dial is moving, negative while tapping it and positive
-    // while compounding into it.
+    /// What the compounded dial is moving: negative while tapping it, positive
+    /// while compounding into it. Zero inside the dead band.
     public float CompoundedRatePerSecond {
         get {
             float severity = SeverityForTarget(compoundedTargetValue);
@@ -427,8 +414,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    // Both dials move charge at once, so the readout carries the pair or it
-    // understates what is happening.
+    /// Both dials move charge at once, so the readout carries the pair or it
+    /// understates what is happening.
     public float TransferRatePerSecond => dialRatePerSecond + CompoundedRatePerSecond;
 
     private float dialRatePerSecond {
@@ -446,9 +433,8 @@ public class Feruchemist : Metalborn {
     private const float DeadBand = 2f;
     private const float CurveExponent = 2.5f;
 
-    // One step per severity point, which is also one step per rung of the hediff
-    // ladder - the dial cannot land between two stages and pay for a stage it is not
-    // getting.
+    /// One step per severity point, which is also one step per rung of the hediff
+    /// ladder - the dial cannot land between two stages and pay for one it does not get.
     public const float RateQuantum = FeruchemyRate.AmountPerSecond;
 
     private static float SeverityQuantum => RateQuantum / FeruchemyRate.AmountPerSecond;
@@ -482,9 +468,7 @@ public class Feruchemist : Metalborn {
         float floor = SeverityForTarget(IdleTarget + (storing ? DeadBand : -DeadBand));
         float ceiling = SeverityForTarget(storing ? 100f : 0f);
 
-        // Clamped to the dead band's own severity, not up to the next whole step - a
-        // quantum of one used to round the lowest setting away and leave the first rung
-        // of every ladder unreachable.
+        // clamp to the dead band's own severity: rounding up to the next whole step left the first rung of every ladder unreachable.
         snapped = Mathf.Clamp(snapped, floor, ceiling);
 
         return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
@@ -526,9 +510,7 @@ public class Feruchemist : Metalborn {
 
         TickCopper();
 
-        // Compounding needs an implant to act on, and burning destroys them. Ending
-        // the mode here rather than in the panel means it holds whether or not the
-        // player happens to be looking at it.
+        // compounding needs an implant to act on; end the mode here so it holds even when the player isnt looking at the panel.
         if (compounding && !TargetIsInternalOnly) {
             compounding = false;
             compoundedTargetValue = IdleTarget;
@@ -551,9 +533,7 @@ public class Feruchemist : Metalborn {
     }
 
     private void TickSeverityHediffs() {
-        // No early out on the stored dial: each pool decides for itself below, and
-        // gating both on the stored one let compounded charge drain with no hediff
-        // to show for it.
+        // no early out on the stored dial: gating both pools on it let compounded charge drain with no hediff to show for it.
         float ordinary = SeverityForTarget(targetValue);
         if (targetValue < IdleTarget && canTap && ordinary > 0f) {
             TryRemoveHediffByDef(storeHediffDef);
@@ -566,8 +546,7 @@ public class Feruchemist : Metalborn {
             TryRemoveHediffByDef(storeHediffDef);
         }
 
-        // The compounded pool runs alongside rather than instead, so both ladders
-        // can be lit at once and each pays out on its own terms.
+        // the compounded pool runs alongside rather than instead, so both ladders can be lit at once.
         float compounded = SeverityForTarget(compoundedTargetValue);
         if (compoundedTargetValue < IdleTarget && canTapCompounded && compounded > 0f) {
             if (tapCompoundedHediffDef != null) {
@@ -579,14 +558,11 @@ public class Feruchemist : Metalborn {
     }
 
     private void TickStoreOrTap() {
-        // Reads the curve rather than the hediff's severity. Compounded tapping
-        // amplifies through its own stage ladder, so if the drain read severity
-        // back it would move ten times the charge as well.
+        // reads the curve, not the hediff severity: compounded tapping amplifies severity tenfold, so reading it back would double-apply the multiplier.
         float efficiency = Efficiency;
         float rateMultiplier = RateMultiplier;
 
-        // What the pawn can still trade. The park in TickInterval stops the dial once a
-        // budget is spent; this stops the tick that spends it from overshooting.
+        // what the pawn can still trade this tick, so it cannot overshoot the budget TickInterval parks the dial on.
         float storable = storableFromPawn;
         float tappable = tappableToPawn;
 
@@ -604,16 +580,12 @@ public class Feruchemist : Metalborn {
             }
         }
 
-        // The compounded pool fills at the ordinary storing rate and costs the same
-        // attribute. What makes it compounding is the burn on the way out, which
-        // pays ten times over and consumes the metalmind with it.
+        // the compounded pool fills at the ordinary storing rate; the burn on the way out is what compounds it, paying ten times over and consuming the metalmind.
         float compounded = SeverityForTarget(compoundedTargetValue);
         if (compounded > 0f) {
             float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
 
             if (compoundedTargetValue > IdleTarget) {
-                // Filling is ordinary storing. Nothing about the charge is special; the
-                // burn on the way out is what compounds it.
                 if (canStore) chargeLedger.Stored(AddToStore(Mathf.Min(compoundedPerSecond, storable)));
             } else if (canTapCompounded) {
                 chargeLedger.Tapped(
@@ -622,13 +594,12 @@ public class Feruchemist : Metalborn {
             }
         }
 
-        // Drained here rather than from a hediff, which compound-fill leaves the pawn
-        // without: the gene ticks whether or not anything is lit up on the health tab.
+        // drained from the ledger, not a hediff: compound-fill leaves the pawn without one, and the gene still has to tick.
         MirrorToInvestiture(chargeLedger.Drain());
     }
 
-    // Nicrosil's charge is the pawn's own Investiture, so what the metalmind gains is
-    // exactly what the pawn gives up. Every other metal stores a notional attribute.
+    /// Nicrosil's charge is the pawn's own Investiture, so what the metalmind gains is
+    /// exactly what the pawn gives up. Every other metal stores a notional attribute.
     private void MirrorToInvestiture(float chargeMoved) {
         if (chargeMoved == 0f) return;
 
@@ -645,8 +616,7 @@ public class Feruchemist : Metalborn {
     private void TickXPGain(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
 
-        // Burning a metalmind is the allomantic half, so only the compounded tap
-        // teaches allomancy. Filling the pool is ordinary feruchemy.
+        // burning is the allomantic half, so only the compounded tap teaches allomancy; filling the pool is ordinary feruchemy.
         if (compoundedTargetValue < IdleTarget && canTapCompounded) {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
                 .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
@@ -674,9 +644,7 @@ public class Feruchemist : Metalborn {
     }
 
     public float RemoveCompoundedFromStore(float amount) {
-        // Burning draws on everything the metalmind holds, so the room left to take
-        // is its whole charge. Reading the compounded pool here left nothing to
-        // take, which both stalled the burn and span the sweep below every tick.
+        // burning draws on the whole charge, not just the compounded pool: reading only that left nothing to take and stalled the burn.
         float moved = Distribute(
             amount,
             static m => m.CanTapCompounded,
@@ -689,8 +657,8 @@ public class Feruchemist : Metalborn {
         return moved;
     }
 
-    // A metalmind emptied of compounded charge has no capacity left, so it is gone.
-    // The cache is dropped because the sweep can remove entries it holds.
+    /// A metalmind emptied of compounded charge has no capacity left, so it is gone.
+    /// The cache is dropped because the sweep can remove entries it holds.
     private void SweepBurnedOut() {
         MetalmindBurnout.Sweep(pawn);
         cachedMetalminds = null;
@@ -702,8 +670,7 @@ public class Feruchemist : Metalborn {
         Func<IMetalmindSource, float, float> apply,
         Func<IMetalmindSource, float> room
     ) {
-        // The target is read fresh every pass rather than cached, because a metalmind can
-        // burn out mid-tick and take the dial's chosen target with it.
+        // read fresh, not cached: a metalmind can burn out mid-tick and take the dial's chosen target with it.
         return MetalmindDistribution.Carry(metalminds, targetMetalmindId, amount, eligible, apply, room);
     }
 

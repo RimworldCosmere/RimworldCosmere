@@ -54,9 +54,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     public bool CanTap => Equipped && StoredAmount > 0f;
 
-    // Burning draws on whatever the metalmind holds. Charge stored by hand is the
-    // same charge - what makes it compounding is setting the metal alight rather
-    // than drawing it out, so there is no separate pool to fill first.
+    /// Burning draws on whatever the metalmind holds; stored-by-hand charge is the
+    /// same charge, just set alight rather than drawn out normally.
     public bool CanTapCompounded => Equipped && TotalStored > 0f;
 
     public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
@@ -120,8 +119,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return new Dictionary<string, float>(chargeByLedger);
     }
 
-    // Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
-    // after load to keep the two pools inside a capacity that may have changed.
+    /// Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
+    /// after load to keep the two pools inside a capacity that may have changed.
     public void ReconcileCapacity() {
         if (storedAmountInt + compoundedAmountInt > maxAmountInt) {
             compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
@@ -153,11 +152,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return compoundedAmountInt - before;
     }
 
-    // Drawing compounded charge eats the metalmind that carried it. Capacity
-    // drops by what was spent, so the two run out together and a metalmind filled
-    // entirely by compounding is used up exactly when it empties.
-    // Spends the metalmind itself along with its charge. Capacity falls by what
-    // was drawn, so the metal runs out exactly when the charge does.
+    /// Drawing compounded charge spends the metalmind that carries it: capacity falls by
+    /// what was drawn, so the metal runs out exactly when the charge does.
     public float ConsumeCompounded(float amount) {
         if (!CanTapCompounded) return 0f;
 

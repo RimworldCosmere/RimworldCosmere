@@ -23,8 +23,7 @@ public class BodyAbsorption : Shapeshifter {
     private CompKandraForms? Forms => pawn.TryGetComp<CompKandraForms>();
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
-        // Gene.GetGizmos returns null rather than an empty sequence, so this cannot be foreached
-        // directly. Doing so throws every frame the pawn is selected.
+        // base.GetGizmos can return null; foreaching it directly throws every frame while selected.
         IEnumerable<Verse.Gizmo>? inherited = base.GetGizmos();
         if (inherited != null) {
             foreach (Verse.Gizmo gizmo in inherited) yield return gizmo;
@@ -33,13 +32,10 @@ public class BodyAbsorption : Shapeshifter {
         CompKandraForms? forms = Forms;
         if (forms == null) yield break;
 
-        // Not IsColonistPlayerControlled, which also wants MentalStateDef to be null. A kandra
-        // that breaks down while wearing a wolf would otherwise have no way back out of it, and
-        // the shape is the thing making the colony treat it as an animal.
+        // not IsColonistPlayerControlled: that also requires no MentalStateDef, blocking revert mid-break.
         if (!pawn.IsColonist || pawn.Downed) yield break;
 
-        // Half-blessed and mistwraiths cannot hold a shape, so there is nothing to offer. The
-        // buttons go rather than grey out: a mistwraith is not a colonist waiting on a cooldown.
+        // buttons vanish rather than grey out: a mistwraith isn't a colonist on cooldown, it just cant.
         if (!Util.KandraUtility.CanHoldAShape(pawn)) yield break;
 
         yield return WearGizmo(forms);

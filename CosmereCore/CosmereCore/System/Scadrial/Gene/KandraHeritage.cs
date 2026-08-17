@@ -112,8 +112,7 @@ public class KandraHeritage : Verse.Gene {
         pawn.health?.hediffSet?.GetHediffs(ref injuries, injury => injury.CanHealNaturally());
         if (injuries.Count == 0) return;
 
-        // Spread the budget over everything rather than picking one, which is the whole
-        // difference between this and the vanilla trickle.
+        // spreads the heal budget over every wound at once; vanilla picks one at random.
         float each = HealPerInterval / injuries.Count;
         for (int i = 0; i < injuries.Count; i++) injuries[i].Heal(each);
     }
@@ -160,8 +159,7 @@ public class KandraHeritage : Verse.Gene {
     private void Roll() {
         if (generation != 0) return;
 
-        // Highest of two rolls, which skews late. The Contract made far more tenth-generation
-        // kandra than firsts, and an even roll would put an ancient in every colony.
+        // highest of two rolls skews toward tenth-gen; an even roll would put an ancient in every colony.
         generation = Mathf.Max(
             Rand.RangeInclusive(Earliest, Latest),
             Rand.RangeInclusive(Earliest, Latest)

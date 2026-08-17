@@ -5,8 +5,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Feruchemy;
 
-// Compounding spends the metalmind along with its charge, so anything drained to
-// nothing has to be cleared out rather than left as an empty husk.
+/// Compounding spends the metalmind along with its charge, so anything drained to
+/// nothing has to be cleared out rather than left as an empty husk.
 public static class MetalmindBurnout {
     public static void Sweep(Pawn pawn) {
         SweepImplants(pawn);

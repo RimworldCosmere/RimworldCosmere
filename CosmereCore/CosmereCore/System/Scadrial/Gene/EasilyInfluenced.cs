@@ -55,15 +55,13 @@ public class EasilyInfluenced : Verse.Gene {
     }
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
-        // Gene.GetGizmos returns null rather than an empty sequence, so this cannot be foreached
-        // without a check first.
+        // base.GetGizmos can return null, not empty, so this needs the check first.
         IEnumerable<Verse.Gizmo>? inherited = base.GetGizmos();
         if (inherited != null) {
             foreach (Verse.Gizmo gizmo in inherited) yield return gizmo;
         }
 
-        // Self-guarded on purpose. Pawn.GetGizmos emits gene gizmos OUTSIDE the
-        // IsColonistPlayerControlled check, so nothing else stops this appearing on a raider.
+        // self-guarded: Pawn.GetGizmos emits gene gizmos outside the IsColonistPlayerControlled check.
         if (!pawn.Spawned || pawn.Faction is not { IsPlayer: true }) yield break;
 
         Pawn? holder = Holder;

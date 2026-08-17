@@ -87,9 +87,7 @@ public class Allomancer : Metalborn {
     }
 
     public bool TryBurnMetalForInvestiture(float requiredBreathEquivalentUnits) {
-        // CanLowerReserve takes breath equivalent units and converts them itself.
-        // Handing it the already-converted metal made every burn demand more than
-        // three times the reserve it actually spends.
+        // CanLowerReserve converts BEU itself; passing pre-converted metal tripled the reserve demand.
         if (!CanLowerReserve(requiredBreathEquivalentUnits)) return false;
 
         float metalNeeded = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);

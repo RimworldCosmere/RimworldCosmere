@@ -6,8 +6,8 @@ using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
-// The gene applies the Investiture mirror, because it ticks whether or not a hediff is
-// alive to see the charge move. What is left here is the readout and its preconditions.
+/// The gene applies the Investiture mirror since it ticks even without this hediff alive.
+/// This class only handles the readout and its preconditions.
 public class Nicrosil : HediffWithComps {
     private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
 

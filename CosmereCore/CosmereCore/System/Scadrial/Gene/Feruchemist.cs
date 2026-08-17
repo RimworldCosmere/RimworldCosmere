@@ -596,13 +596,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// <summary>Charge moved since someone last asked, positive in and negative out.</summary>
-    /// <remarks>
-    ///     Nicrosil moves the Investiture need by exactly what the metalmind took or gave. Reading
-    ///     it off one number is what keeps the two conserved - computing it a second time is the
-    ///     bug this replaces. It accumulates rather than reporting one tick, because the reader
-    ///     ticks on its own schedule and must neither miss a second nor apply one twice.
-    /// </remarks>
+    /// <summary>Charge moved since the last drain, positive into the metalmind and negative out.
+    /// Nicrosil reads it to keep the Investiture need conserved.</summary>
     public float DrainChargeMoved() {
         float moved = pendingChargeMoved;
         pendingChargeMoved = 0f;

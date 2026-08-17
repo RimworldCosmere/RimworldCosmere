@@ -280,6 +280,12 @@ public class Feruchemist : Metalborn {
 
     private Investiture? investitureNeed => storesInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
 
+    // Nicrosil gets no stage ladder for a compounded burn to amplify through, so its burn
+    // pays out faster instead of larger: the same charge, in a tenth of the time.
+    private float CompoundedBurnRate(float perSecond) {
+        return storesInvestiture ? perSecond * CompoundedTap.EffectMultiplier : perSecond;
+    }
+
     // Charge the pawn still has in them to give. You cannot store what you no longer have,
     // and no other metal is bounded by its owner, so theirs is unlimited.
     private float storableFromPawn {
@@ -413,7 +419,7 @@ public class Feruchemist : Metalborn {
                 return canStoreCompounded ? perSecond : 0f;
             }
 
-            return canTapCompounded ? -perSecond : 0f;
+            return canTapCompounded ? -CompoundedBurnRate(perSecond) : 0f;
         }
     }
 
@@ -606,7 +612,9 @@ public class Feruchemist : Metalborn {
                 // burn on the way out is what compounds it.
                 if (canStore) chargeLedger.Stored(AddToStore(Mathf.Min(compoundedPerSecond, storable)));
             } else if (canTapCompounded) {
-                chargeLedger.Tapped(RemoveCompoundedFromStore(Mathf.Min(compoundedPerSecond, tappable)));
+                chargeLedger.Tapped(
+                    RemoveCompoundedFromStore(Mathf.Min(CompoundedBurnRate(compoundedPerSecond), tappable))
+                );
             }
         }
 

@@ -11,31 +11,37 @@ namespace Cosmere.Tests;
 public class ConnectionKeyTests {
     [TestMethod]
     public void TheLedgersWithOneStoreKeepTheirPlainName() {
-        Assert.AreEqual("Residence", ConnectionKey.For(DuraluminLedger.Residence, "Ruin"));
-        Assert.AreEqual("Bonds", ConnectionKey.For(DuraluminLedger.Bonds, "Ruin"));
-        Assert.AreEqual("Social", ConnectionKey.For(DuraluminLedger.Social, "Ruin"));
+        Assert.AreEqual("Residence", ConnectionKey.For(DuraluminLedger.Residence, "Ruin").Name);
+        Assert.AreEqual("Bonds", ConnectionKey.For(DuraluminLedger.Bonds, "Ruin").Name);
+        Assert.AreEqual("Social", ConnectionKey.For(DuraluminLedger.Social, "Ruin").Name);
     }
 
     [TestMethod]
     public void TwoShardsNeverShareAKey() {
-        Assert.AreEqual("Shard:Ruin", ConnectionKey.For(DuraluminLedger.Shard, "Ruin"));
+        Assert.AreEqual("Shard:Ruin", ConnectionKey.For(DuraluminLedger.Shard, "Ruin").Name);
         Assert.AreNotEqual(
-            ConnectionKey.For(DuraluminLedger.Shard, "Ruin"),
-            ConnectionKey.For(DuraluminLedger.Shard, "Preservation")
+            ConnectionKey.For(DuraluminLedger.Shard, "Ruin").Name,
+            ConnectionKey.For(DuraluminLedger.Shard, "Preservation").Name
         );
     }
 
     [TestMethod]
     public void AShardKeyIsNeverConfusedWithAnotherLedger() {
         Assert.AreNotEqual(
-            ConnectionKey.For(DuraluminLedger.Shard, "Ruin"),
-            ConnectionKey.For(DuraluminLedger.Residence, "Ruin")
+            ConnectionKey.For(DuraluminLedger.Shard, "Ruin").Name,
+            ConnectionKey.For(DuraluminLedger.Residence, "Ruin").Name
         );
+    }
+
+    // A key nobody built names nothing, so it can never collide with one that does.
+    [TestMethod]
+    public void ADefaultKeyNamesNothing() {
+        Assert.AreEqual(string.Empty, default(ConnectionKey).Name);
     }
 
     [TestMethod]
     public void NamingNoShardFallsBackToThePlainName() {
-        Assert.AreEqual("Shard", ConnectionKey.For(DuraluminLedger.Shard, null));
-        Assert.AreEqual("Shard", ConnectionKey.For(DuraluminLedger.Shard, string.Empty));
+        Assert.AreEqual("Shard", ConnectionKey.For(DuraluminLedger.Shard, null).Name);
+        Assert.AreEqual("Shard", ConnectionKey.For(DuraluminLedger.Shard, string.Empty).Name);
     }
 }

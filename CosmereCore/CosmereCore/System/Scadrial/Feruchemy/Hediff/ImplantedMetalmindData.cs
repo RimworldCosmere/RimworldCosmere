@@ -72,7 +72,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         }
     }
 
-    public float AddStored(float amount, string? ledgerKey = null) {
+    public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanStore) return 0f;
 
         float before = storedAmountInt;
@@ -83,7 +83,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return moved;
     }
 
-    public float ConsumeStored(float amount, string? ledgerKey = null) {
+    public float ConsumeStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTap) return 0f;
 
         float before = storedAmountInt;
@@ -91,26 +91,27 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         float moved = before - storedAmountInt;
 
         if (moved != 0f) {
-            if (ledgerKey != null) RecordConsumed(ledgerKey, moved);
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, moved);
             else ChargeAttribution.Drain(chargeByLedger, moved);
         }
 
         return moved;
     }
 
-    public float StoredFor(string ledgerKey) {
-        return chargeByLedger.TryGetValue(ledgerKey, out float amount) ? amount : 0f;
+    public float StoredFor(ConnectionKey ledgerKey) {
+        return chargeByLedger.TryGetValue(ledgerKey.Name, out float amount) ? amount : 0f;
     }
 
-    private void RecordStored(string? ledgerKey, float moved) {
+    private void RecordStored(ConnectionKey? ledgerKey, float moved) {
         if (ledgerKey == null || moved == 0f) return;
 
-        chargeByLedger.TryGetValue(ledgerKey, out float existing);
-        chargeByLedger[ledgerKey] = existing + moved;
+        string key = ledgerKey.Value.Name;
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
     }
 
-    private void RecordConsumed(string ledgerKey, float moved) {
-        ChargeAttribution.DrainNamed(chargeByLedger, ledgerKey, moved);
+    private void RecordConsumed(ConnectionKey ledgerKey, float moved) {
+        ChargeAttribution.DrainNamed(chargeByLedger, ledgerKey.Name, moved);
     }
 
     // Copy of the current attribution map, for handing charge across on explant.
@@ -153,7 +154,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     /// Drawing compounded charge spends the metalmind that carries it: capacity falls by
     /// what was drawn, so the metal runs out exactly when the charge does.
-    public float ConsumeCompounded(float amount, string? ledgerKey = null) {
+    public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTapCompounded) return 0f;
 
         float spent = Mathf.Min(amount, TotalStored);
@@ -167,7 +168,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
         float fromStored = spent - fromCompounded;
         if (fromStored > 0f) {
-            if (ledgerKey != null) RecordConsumed(ledgerKey, fromStored);
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, fromStored);
             else ChargeAttribution.Drain(chargeByLedger, fromStored);
         }
 

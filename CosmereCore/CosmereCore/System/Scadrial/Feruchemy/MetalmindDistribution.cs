@@ -34,19 +34,50 @@ public static class MetalmindDistribution {
         };
     }
 
-    /// <summary>Spreads one transfer across the matching sources, and reports how much moved.</summary>
+    /// <summary>Spreads one transfer into the matching sources, and reports how much landed.</summary>
+    public static float Fill(
+        List<IMetalmindSource> sources,
+        string target,
+        ConnectionKey? ledgerKey,
+        float amount,
+        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
+        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
+        Func<IMetalmindSource, ConnectionKey?, float> room
+    ) {
+        return Carry(sources, target, ledgerKey, amount, eligible, apply, room, false);
+    }
+
+    /// <summary>Draws from the matching sources, never taking more from one than it holds under this key.</summary>
+    /// <remarks>
+    ///     Every keyed withdrawal goes through here rather than through a per-caller bound, because
+    ///     splitting by physical charge let the attribution drain fall through onto another ledger.
+    /// </remarks>
+    public static float Draw(
+        List<IMetalmindSource> sources,
+        string target,
+        ConnectionKey? ledgerKey,
+        float amount,
+        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
+        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
+        Func<IMetalmindSource, ConnectionKey?, float> room
+    ) {
+        return Carry(sources, target, ledgerKey, amount, eligible, apply, room, true);
+    }
+
+    /// <summary>Walks the matching sources handing each what it will take, and reports the total.</summary>
     /// <remarks>
     ///     Dumping the full amount into the first eligible metalmind let its own clamp discard
     ///     the overflow silently, so the remainder is carried to the next one instead.
     /// </remarks>
-    public static float Carry(
+    private static float Carry(
         List<IMetalmindSource> sources,
         string target,
-        string? ledgerKey,
+        ConnectionKey? ledgerKey,
         float amount,
-        Func<IMetalmindSource, string?, bool> eligible,
-        Func<IMetalmindSource, string?, float, float> apply,
-        Func<IMetalmindSource, string?, float> room
+        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
+        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
+        Func<IMetalmindSource, ConnectionKey?, float> room,
+        bool withdrawing
     ) {
         if (amount <= 0f) return 0f;
 
@@ -58,6 +89,13 @@ public static class MetalmindDistribution {
             if (!eligible(sources[i], ledgerKey)) continue;
 
             float space = room(sources[i], ledgerKey);
+
+            // the bound the whole feature rides on: a keyed draw cannot reach another key's charge.
+            if (withdrawing && ledgerKey.HasValue) {
+                float attributed = sources[i].StoredFor(ledgerKey.Value);
+                if (attributed < space) space = attributed;
+            }
+
             float take = space < remaining ? space : remaining;
             if (take <= 0f) continue;
 
@@ -70,22 +108,5 @@ public static class MetalmindDistribution {
         }
 
         return moved;
-    }
-
-    /// <summary>Takes charge back out of what one key is recorded as holding, never out of another key's.</summary>
-    /// <remarks>
-    ///     Bounding the ask by the key's own balance is what stops a correction falling through to a
-    ///     second ledger, which would mint one tie by destroying another.
-    /// </remarks>
-    public static float Reclaim(List<IMetalmindSource> sources, string target, string ledgerKey, float amount) {
-        return Carry(
-            sources,
-            target,
-            ledgerKey,
-            amount,
-            static (m, k) => k != null && m.CanTap && m.StoredFor(k) > 0f,
-            static (m, k, a) => m.ConsumeStored(a, k),
-            static (m, k) => k == null ? 0f : m.StoredFor(k)
-        );
     }
 }

@@ -44,14 +44,14 @@ public interface IMetalmindSource {
     // What the target picker calls this one.
     string SourceLabel { get; }
 
-    float AddStored(float amount, string? ledgerKey = null);
+    float AddStored(float amount, ConnectionKey? ledgerKey = null);
 
-    float ConsumeStored(float amount, string? ledgerKey = null);
+    float ConsumeStored(float amount, ConnectionKey? ledgerKey = null);
 
     float AddCompounded(float amount);
 
-    float ConsumeCompounded(float amount, string? ledgerKey = null);
+    float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null);
 
     // Charge on this metalmind filed under that key; 0 if it never has been.
-    float StoredFor(string ledgerKey);
+    float StoredFor(ConnectionKey ledgerKey);
 }

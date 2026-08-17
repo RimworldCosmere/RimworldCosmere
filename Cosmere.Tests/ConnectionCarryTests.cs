@@ -60,7 +60,7 @@ public class ConnectionCarryTests {
     public void ANegativeBudgetMovesNothingAndKeepsTheBank() {
         float carry = 20f;
 
-        Assert.AreEqual(0f, ConnectionCarry.Bank(ref carry, 1f, -5f, true), Tolerance);
+        Assert.AreEqual(0f, ConnectionCarry.Bank(ref carry, 1f, -20f, true), Tolerance);
         Assert.AreEqual(21f, carry, Tolerance);
     }
 

@@ -15,4 +15,5 @@
   <CS_MetalmindCompounded>({COMPOUNDED} compounded)</CS_MetalmindCompounded>
   <CS_Duralumin_LedgerHasNoCapacity>Nothing of this tie can be moved into metal.</CS_Duralumin_LedgerHasNoCapacity>
   <CS_Duralumin_NoShardSelected>No Shard chosen. Pick one before storing a tie to it.</CS_Duralumin_NoShardSelected>
+  <CS_Duralumin_ShardUnreachable>{SHARD} is no longer part of this cosmere. Nothing tied to it can move.</CS_Duralumin_ShardUnreachable>
 </LanguageData>

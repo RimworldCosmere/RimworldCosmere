@@ -280,8 +280,33 @@ public class Feruchemist : Metalborn {
 
     private Investiture? investitureNeed => storesInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
 
+    // Charge the pawn still has in them to give. You cannot store what you no longer have,
+    // and no other metal is bounded by its owner, so theirs is unlimited.
+    private float storableFromPawn {
+        get {
+            Investiture? need = investitureNeed;
+
+            return need == null
+                ? float.PositiveInfinity
+                : Mathf.Max(0f, need.CurLevel) / ScadrialMetallurgyConstants.NicrosilBeuPerCharge;
+        }
+    }
+
+    // The mirror of that floor: charge the pawn has room to take back.
+    private float tappableToPawn {
+        get {
+            Investiture? need = investitureNeed;
+
+            return need == null
+                ? float.PositiveInfinity
+                : Mathf.Max(0f, need.MaxLevel - need.CurLevel) / ScadrialMetallurgyConstants.NicrosilBeuPerCharge;
+        }
+    }
+
     public bool canTap {
         get {
+            if (tappableToPawn <= 0f) return false;
+
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
@@ -295,6 +320,8 @@ public class Feruchemist : Metalborn {
 
     public bool canTapCompounded {
         get {
+            if (tappableToPawn <= 0f) return false;
+
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
@@ -308,6 +335,8 @@ public class Feruchemist : Metalborn {
 
     public bool canStoreCompounded {
         get {
+            if (storableFromPawn <= 0f) return false;
+
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
@@ -325,6 +354,8 @@ public class Feruchemist : Metalborn {
 
     public bool canStore {
         get {
+            if (storableFromPawn <= 0f) return false;
+
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
@@ -544,13 +575,22 @@ public class Feruchemist : Metalborn {
         float efficiency = Efficiency;
         float rateMultiplier = RateMultiplier;
 
+        // What the pawn can still trade. The park in TickInterval stops the dial once a
+        // budget is spent; this stops the tick that spends it from overshooting.
+        float storable = storableFromPawn;
+        float tappable = tappableToPawn;
+
         float ordinary = SeverityForTarget(targetValue);
         if (ordinary > 0f) {
             float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
             if (targetValue > IdleTarget && canStore) {
-                chargeLedger.Stored(AddToStore(perSecond));
+                float moved = AddToStore(Mathf.Min(perSecond, storable));
+                storable -= moved;
+                chargeLedger.Stored(moved);
             } else if (targetValue < IdleTarget && canTap) {
-                chargeLedger.Tapped(RemoveFromStore(perSecond));
+                float moved = RemoveFromStore(Mathf.Min(perSecond, tappable));
+                tappable -= moved;
+                chargeLedger.Tapped(moved);
             }
         }
 
@@ -564,9 +604,9 @@ public class Feruchemist : Metalborn {
             if (compoundedTargetValue > IdleTarget) {
                 // Filling is ordinary storing. Nothing about the charge is special; the
                 // burn on the way out is what compounds it.
-                if (canStore) chargeLedger.Stored(AddToStore(compoundedPerSecond));
+                if (canStore) chargeLedger.Stored(AddToStore(Mathf.Min(compoundedPerSecond, storable)));
             } else if (canTapCompounded) {
-                chargeLedger.Tapped(RemoveCompoundedFromStore(compoundedPerSecond));
+                chargeLedger.Tapped(RemoveCompoundedFromStore(Mathf.Min(compoundedPerSecond, tappable)));
             }
         }
 

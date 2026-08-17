@@ -104,7 +104,13 @@ public static class KolossControl {
         if (theirs == null || koloss.Faction == theirs) return;
 
         koloss.drafter?.Drafted = false;
-        koloss.carryTracker?.TryDropCarriedThing(koloss.PositionHeld, ThingPlaceMode.Near, out _);
+
+        // Guarded on the carried thing, not just the tracker: TryDropCarriedThing on a koloss with
+        // empty hands asks vanilla to drop null, which it logs an error about.
+        if (koloss.carryTracker?.CarriedThing != null) {
+            koloss.carryTracker.TryDropCarriedThing(koloss.PositionHeld, ThingPlaceMode.Near, out _);
+        }
+
         koloss.jobs?.EndCurrentJob(JobCondition.InterruptForced);
 
         koloss.SetFaction(theirs);

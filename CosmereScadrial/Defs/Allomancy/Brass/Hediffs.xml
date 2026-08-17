@@ -6,23 +6,120 @@
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
             <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff> 
+                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff>
                 <moteDef>Cosmere_Scadrial_Mote_BrassAura</moteDef>
                 <verb>soothed</verb>
             </li>
         </comps>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <SocialImpact>1.2</SocialImpact>
-                    <NegotiationAbility>1.2</NegotiationAbility>
-                    <PawnBeauty>1.2</PawnBeauty>
-                    <TradePriceImprovement>1.2</TradePriceImprovement>
-                    <TameAnimalChance>1.2</TameAnimalChance>
-                    <TrainAnimalChance>1.2</TrainAnimalChance>
-                    <BondAnimalChanceFactor>1.2</BondAnimalChanceFactor>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>SocialImpact</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>NegotiationAbility</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>PawnBeauty</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>TradePriceImprovement</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>TameAnimalChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>TrainAnimalChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>BondAnimalChanceFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
         <modExtensions>
@@ -31,7 +128,6 @@
             </li>
         </modExtensions>
     </HediffDef>
-    
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_Soothed</defName>
         <label>soothed</label>
@@ -39,7 +135,7 @@
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps Inherit="False">
             <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
-               <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+                <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
@@ -49,28 +145,180 @@
         </comps>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>0.85</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>PainShockThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.0857)</li>
+                                <li>(1, 1.15)</li>
+                                <li>(2, 1.24)</li>
+                                <li>(4, 1.3429)</li>
+                                <li>(8, 1.4364)</li>
+                                <li>(20, 1.5217)</li>
+                                <li>(100, 1.5825)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestRateMultiplier</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.0857)</li>
+                                <li>(1, 1.15)</li>
+                                <li>(2, 1.24)</li>
+                                <li>(4, 1.3429)</li>
+                                <li>(8, 1.4364)</li>
+                                <li>(20, 1.5217)</li>
+                                <li>(100, 1.5825)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>JoyFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
-                <statOffsets>
-                    <Cosmere_Mental_Break_Remove_Factor>0.05</Cosmere_Mental_Break_Remove_Factor>
-                </statOffsets>
-                <statFactors>
-                    <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>0.85</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
-                </statFactors>
+                <statOffsetsBySeverity>
+                    <li>
+                        <stat>Cosmere_Mental_Break_Remove_Factor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 0.0286)</li>
+                                <li>(1, 0.05)</li>
+                                <li>(2, 0.08)</li>
+                                <li>(4, 0.1143)</li>
+                                <li>(8, 0.1455)</li>
+                                <li>(20, 0.1739)</li>
+                                <li>(100, 0.1942)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statOffsetsBySeverity>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>PainShockThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.0857)</li>
+                                <li>(1, 1.15)</li>
+                                <li>(2, 1.24)</li>
+                                <li>(4, 1.3429)</li>
+                                <li>(8, 1.4364)</li>
+                                <li>(20, 1.5217)</li>
+                                <li>(100, 1.5825)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestRateMultiplier</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.0857)</li>
+                                <li>(1, 1.15)</li>
+                                <li>(2, 1.24)</li>
+                                <li>(4, 1.3429)</li>
+                                <li>(8, 1.4364)</li>
+                                <li>(20, 1.5217)</li>
+                                <li>(100, 1.5825)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>JoyFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.9084)</li>
+                                <li>(1, 0.85)</li>
+                                <li>(2, 0.7798)</li>
+                                <li>(4, 0.7126)</li>
+                                <li>(8, 0.6608)</li>
+                                <li>(20, 0.6197)</li>
+                                <li>(100, 0.5934)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>

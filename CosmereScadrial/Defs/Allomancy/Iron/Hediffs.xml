@@ -11,12 +11,53 @@ These lines shimmer with the tension of potential force, visible only to those b
         </comps>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MeleeCooldownFactor>1.2</MeleeCooldownFactor>
-                    <MeleeHitChance>1.2</MeleeHitChance>
-                    <MeleeDodgeChance>1.2</MeleeDodgeChance>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>MeleeCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeHitChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeDodgeChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
         <modExtensions>

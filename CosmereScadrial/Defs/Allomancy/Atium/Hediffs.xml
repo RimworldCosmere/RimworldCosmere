@@ -3,16 +3,71 @@
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_AtiumBuff</defName>
         <label>burning atium</label>
-        <description>The Allomancer is burning atium, perceiving the near future and reacting with impossible speed and precision.</description>    
+        <description>The Allomancer is burning atium, perceiving the near future and reacting with impossible speed and precision.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MeleeHitChance>4</MeleeHitChance>
-                    <MeleeDodgeChance>4</MeleeDodgeChance>
-                    <ShootingAccuracyPawn>4</ShootingAccuracyPawn>
-                    <MeleeCooldownFactor>0.75</MeleeCooldownFactor>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>MeleeHitChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.7143)</li>
+                                <li>(1, 4)</li>
+                                <li>(2, 5.8)</li>
+                                <li>(4, 7.8571)</li>
+                                <li>(8, 9.7273)</li>
+                                <li>(20, 11.4348)</li>
+                                <li>(100, 12.6505)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeDodgeChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.7143)</li>
+                                <li>(1, 4)</li>
+                                <li>(2, 5.8)</li>
+                                <li>(4, 7.8571)</li>
+                                <li>(8, 9.7273)</li>
+                                <li>(20, 11.4348)</li>
+                                <li>(100, 12.6505)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ShootingAccuracyPawn</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.7143)</li>
+                                <li>(1, 4)</li>
+                                <li>(2, 5.8)</li>
+                                <li>(4, 7.8571)</li>
+                                <li>(8, 9.7273)</li>
+                                <li>(20, 11.4348)</li>
+                                <li>(100, 12.6505)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.84)</li>
+                                <li>(1, 0.75)</li>
+                                <li>(2, 0.6522)</li>
+                                <li>(4, 0.5676)</li>
+                                <li>(8, 0.5077)</li>
+                                <li>(20, 0.4631)</li>
+                                <li>(100, 0.4358)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
         <modExtensions>

@@ -6,7 +6,6 @@
         <description>Empowered senses from burning Tin.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <painFactor>1.25</painFactor>
                 <capMods>
                     <li>
@@ -18,19 +17,88 @@
                         <postFactor>1.2</postFactor>
                     </li>
                 </capMods>
-                <statOffsets>
-                    <MentalBreakThreshold>-.10</MentalBreakThreshold>
-                    <PainShockThreshold>-.25</PainShockThreshold>
-                    <ComfyTemperatureMin>2</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>-2</ComfyTemperatureMax>
-                </statOffsets>
-                <statFactors>
-                    <AimingDelayFactor>0.5</AimingDelayFactor>
-                </statFactors>
+                <statOffsetsBySeverity>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -0.0571)</li>
+                                <li>(1, -0.1)</li>
+                                <li>(2, -0.16)</li>
+                                <li>(4, -0.2286)</li>
+                                <li>(8, -0.2909)</li>
+                                <li>(20, -0.3478)</li>
+                                <li>(100, -0.3883)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>PainShockThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -0.1429)</li>
+                                <li>(1, -0.25)</li>
+                                <li>(2, -0.4)</li>
+                                <li>(4, -0.5714)</li>
+                                <li>(8, -0.7273)</li>
+                                <li>(20, -0.8696)</li>
+                                <li>(100, -0.9709)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMin</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 1.1429)</li>
+                                <li>(1, 2)</li>
+                                <li>(2, 3.2)</li>
+                                <li>(4, 4.5714)</li>
+                                <li>(8, 5.8182)</li>
+                                <li>(20, 6.9565)</li>
+                                <li>(100, 7.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMax</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -1.1429)</li>
+                                <li>(1, -2)</li>
+                                <li>(2, -3.2)</li>
+                                <li>(4, -4.5714)</li>
+                                <li>(8, -5.8182)</li>
+                                <li>(20, -6.9565)</li>
+                                <li>(100, -7.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statOffsetsBySeverity>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>AimingDelayFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.6364)</li>
+                                <li>(1, 0.5)</li>
+                                <li>(2, 0.3846)</li>
+                                <li>(4, 0.3043)</li>
+                                <li>(8, 0.2558)</li>
+                                <li>(20, 0.2233)</li>
+                                <li>(100, 0.2048)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
             <li>
                 <minSeverity>1.5</minSeverity>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <painFactor>2.0</painFactor>
                 <capMods>
                     <li>
@@ -42,19 +110,88 @@
                         <postFactor>1.5</postFactor>
                     </li>
                 </capMods>
-                <statOffsets>
-                    <MentalBreakThreshold>-.20</MentalBreakThreshold>
-                    <PainShockThreshold>-.5</PainShockThreshold>
-                    <ComfyTemperatureMin>4</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>-4</ComfyTemperatureMax>
-                </statOffsets>
-                <statFactors>
-                    <AimingDelayFactor>0.25</AimingDelayFactor>
-                </statFactors>
+                <statOffsetsBySeverity>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -0.1143)</li>
+                                <li>(1, -0.2)</li>
+                                <li>(2, -0.32)</li>
+                                <li>(4, -0.4571)</li>
+                                <li>(8, -0.5818)</li>
+                                <li>(20, -0.6957)</li>
+                                <li>(100, -0.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>PainShockThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -0.2857)</li>
+                                <li>(1, -0.5)</li>
+                                <li>(2, -0.8)</li>
+                                <li>(4, -1.1429)</li>
+                                <li>(8, -1.4545)</li>
+                                <li>(20, -1.7391)</li>
+                                <li>(100, -1.9417)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMin</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 2.2857)</li>
+                                <li>(1, 4)</li>
+                                <li>(2, 6.4)</li>
+                                <li>(4, 9.1429)</li>
+                                <li>(8, 11.6364)</li>
+                                <li>(20, 13.913)</li>
+                                <li>(100, 15.534)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMax</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -2.2857)</li>
+                                <li>(1, -4)</li>
+                                <li>(2, -6.4)</li>
+                                <li>(4, -9.1429)</li>
+                                <li>(8, -11.6364)</li>
+                                <li>(20, -13.913)</li>
+                                <li>(100, -15.534)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statOffsetsBySeverity>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>AimingDelayFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.3684)</li>
+                                <li>(1, 0.25)</li>
+                                <li>(2, 0.1724)</li>
+                                <li>(4, 0.1273)</li>
+                                <li>(8, 0.1028)</li>
+                                <li>(20, 0.0875)</li>
+                                <li>(100, 0.079)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>
-    
     <HediffDef>
         <defName>Cosmere_Scadrial_Hediff_TinDrag</defName>
         <label>tin overstim</label>
@@ -71,16 +208,70 @@
         </comps>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <painFactor>.75</painFactor>
-                <statFactors>
-                </statFactors>
-                <statOffsets>
-                    <MentalBreakThreshold>0.10</MentalBreakThreshold>
-                    <PainShockThreshold>0.25</PainShockThreshold>
-                    <ComfyTemperatureMin>-2</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>2</ComfyTemperatureMax>
-                </statOffsets>
+                <statFactorsBySeverity />
+                <statOffsetsBySeverity>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 0.0571)</li>
+                                <li>(1, 0.1)</li>
+                                <li>(2, 0.16)</li>
+                                <li>(4, 0.2286)</li>
+                                <li>(8, 0.2909)</li>
+                                <li>(20, 0.3478)</li>
+                                <li>(100, 0.3883)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>PainShockThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 0.1429)</li>
+                                <li>(1, 0.25)</li>
+                                <li>(2, 0.4)</li>
+                                <li>(4, 0.5714)</li>
+                                <li>(8, 0.7273)</li>
+                                <li>(20, 0.8696)</li>
+                                <li>(100, 0.9709)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMin</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, -1.1429)</li>
+                                <li>(1, -2)</li>
+                                <li>(2, -3.2)</li>
+                                <li>(4, -4.5714)</li>
+                                <li>(8, -5.8182)</li>
+                                <li>(20, -6.9565)</li>
+                                <li>(100, -7.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ComfyTemperatureMax</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 0)</li>
+                                <li>(0.5, 1.1429)</li>
+                                <li>(1, 2)</li>
+                                <li>(2, 3.2)</li>
+                                <li>(4, 4.5714)</li>
+                                <li>(8, 5.8182)</li>
+                                <li>(20, 6.9565)</li>
+                                <li>(100, 7.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statOffsetsBySeverity>
                 <capMods>
                     <li>
                         <capacity>Consciousness</capacity>

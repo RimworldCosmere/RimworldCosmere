@@ -5,11 +5,9 @@
         <label>burning gold</label>
         <description>The Allomancer is burning gold, experiencing visions of what they might have become. These revelations are powerful... and dangerous.</description>
         <comps>
-            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.GoldBurnProperties"/>
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.GoldBurnProperties" />
         </comps>
     </HediffDef>
-    
-    
     <HediffDef>
         <defName>Cosmere_Scadrial_Hediff_PostGold</defName>
         <hediffClass>HediffWithComps</hediffClass>
@@ -17,7 +15,8 @@
         <description>The Allomancer carries the lingering weight of their vision — strengthened by clarity, burdened by memory.</description>
         <comps>
             <li Class="HediffCompProperties_Disappears">
-                <disappearsAfterTicks>60000</disappearsAfterTicks> <!-- 1 in-game day -->
+                <disappearsAfterTicks>60000</disappearsAfterTicks>
+                <!-- 1 in-game day -->
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_PostGold_Afterglow</thought>
@@ -25,11 +24,38 @@
         </comps>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MentalBreakThreshold>1.2</MentalBreakThreshold> <!-- Less likely to break -->
-                    <GlobalLearningFactor>1.15</GlobalLearningFactor> <!-- They reflect and learn -->
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>MentalBreakThreshold</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.1143)</li>
+                                <li>(1, 1.2)</li>
+                                <li>(2, 1.32)</li>
+                                <li>(4, 1.4571)</li>
+                                <li>(8, 1.5818)</li>
+                                <li>(20, 1.6957)</li>
+                                <li>(100, 1.7767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>GlobalLearningFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.0857)</li>
+                                <li>(1, 1.15)</li>
+                                <li>(2, 1.24)</li>
+                                <li>(4, 1.3429)</li>
+                                <li>(8, 1.4364)</li>
+                                <li>(20, 1.5217)</li>
+                                <li>(100, 1.5825)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>

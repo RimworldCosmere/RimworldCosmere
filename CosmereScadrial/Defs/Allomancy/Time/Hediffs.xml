@@ -8,28 +8,293 @@
         <tendable>false</tendable>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>false</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <DeteriorationRate>0.33333</DeteriorationRate>
-                    <Ability_Duration>3.0</Ability_Duration>
-                    <Ability_CastingTime>3.0</Ability_CastingTime>
-                    <StaggerDurationFactor>3.0</StaggerDurationFactor>
-                    <AimingDelayFactor>3.0</AimingDelayFactor>
-                    <ShootingAccuracyPawn>0.1</ShootingAccuracyPawn>
-                    <InjuryHealingFactor>0.33333</InjuryHealingFactor>
-                    <RestFallRateFactor>0.33333</RestFallRateFactor>
-                    <RestRateMultiplier>0.33333</RestRateMultiplier>
-                    <EatingSpeed>0.33333</EatingSpeed>
-                    <MeleeCooldownFactor>3</MeleeCooldownFactor>
-                    <RangedCooldownFactor>3</RangedCooldownFactor>
-                    <MoveSpeed>0.33333</MoveSpeed>
-                    <CrawlSpeed>0.33333</CrawlSpeed>
-                    <CleaningSpeed>0.33333</CleaningSpeed>
-                    <ReadingSpeed>0.33333</ReadingSpeed>
-                    <ImmunityGainSpeed>0.33333</ImmunityGainSpeed>
-                    <WorkSpeedGlobal>0.33333</WorkSpeedGlobal>
-                    <Cosmere_Time_Dilation_Factor>0.33333</Cosmere_Time_Dilation_Factor>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>DeteriorationRate</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Ability_Duration</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Ability_CastingTime</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>StaggerDurationFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>AimingDelayFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ShootingAccuracyPawn</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.1628)</li>
+                                <li>(1, 0.1)</li>
+                                <li>(2, 0.0649)</li>
+                                <li>(4, 0.0464)</li>
+                                <li>(8, 0.0368)</li>
+                                <li>(20, 0.031)</li>
+                                <li>(100, 0.0278)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>InjuryHealingFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestRateMultiplier</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>EatingSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RangedCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MoveSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>CrawlSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>CleaningSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ReadingSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ImmunityGainSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>WorkSpeedGlobal</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Cosmere_Time_Dilation_Factor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>
@@ -41,27 +306,278 @@
         <tendable>false</tendable>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>false</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <DeteriorationRate>3.0</DeteriorationRate>
-                    <ShootingAccuracyPawn>0.1</ShootingAccuracyPawn>
-                    <Ability_CastingTime>0.33333</Ability_CastingTime>
-                    <Ability_Duration>0.33333</Ability_Duration>
-                    <StaggerDurationFactor>0.33333</StaggerDurationFactor>
-                    <InjuryHealingFactor>3.0</InjuryHealingFactor>
-                    <RestFallRateFactor>3.0</RestFallRateFactor>
-                    <RestRateMultiplier>3.0</RestRateMultiplier>
-                    <EatingSpeed>3.0</EatingSpeed>
-                    <MeleeCooldownFactor>0.33333</MeleeCooldownFactor>
-                    <RangedCooldownFactor>0.33333</RangedCooldownFactor>
-                    <MoveSpeed>3.0</MoveSpeed>
-                    <CrawlSpeed>3.0</CrawlSpeed>
-                    <CleaningSpeed>3.0</CleaningSpeed>
-                    <ReadingSpeed>3.0</ReadingSpeed>
-                    <ImmunityGainSpeed>3.0</ImmunityGainSpeed>
-                    <WorkSpeedGlobal>3.0</WorkSpeedGlobal>
-                    <Cosmere_Time_Dilation_Factor>3.0</Cosmere_Time_Dilation_Factor>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>DeteriorationRate</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ShootingAccuracyPawn</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.1628)</li>
+                                <li>(1, 0.1)</li>
+                                <li>(2, 0.0649)</li>
+                                <li>(4, 0.0464)</li>
+                                <li>(8, 0.0368)</li>
+                                <li>(20, 0.031)</li>
+                                <li>(100, 0.0278)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Ability_CastingTime</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Ability_Duration</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>StaggerDurationFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>InjuryHealingFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestFallRateFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RestRateMultiplier</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>EatingSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>RangedCooldownFactor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 0.4667)</li>
+                                <li>(1, 0.3333)</li>
+                                <li>(2, 0.2381)</li>
+                                <li>(4, 0.1795)</li>
+                                <li>(8, 0.1467)</li>
+                                <li>(20, 0.1257)</li>
+                                <li>(100, 0.1141)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MoveSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>CrawlSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>CleaningSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ReadingSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>ImmunityGainSpeed</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>WorkSpeedGlobal</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>Cosmere_Time_Dilation_Factor</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 2.1429)</li>
+                                <li>(1, 3)</li>
+                                <li>(2, 4.2)</li>
+                                <li>(4, 5.5714)</li>
+                                <li>(8, 6.8182)</li>
+                                <li>(20, 7.9565)</li>
+                                <li>(100, 8.767)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>

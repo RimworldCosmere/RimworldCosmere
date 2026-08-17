@@ -10,10 +10,6 @@ namespace Cosmere.System.Scadrial.UI.Feruchemy;
 public sealed class FeruchemyDialWidget {
     private const float IdleTarget = 50f;
 
-    private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
-    private static readonly Color StoreFill = new Color(0.373f, 0.549f, 0.627f);
-    private static readonly Color CompoundTint = new Color(0.851f, 0.667f, 0.286f);
-
     private string? draggingDial;
 
     // Compounding is only offered on an implanted metalmind, because burning one
@@ -54,7 +50,7 @@ public sealed class FeruchemyDialWidget {
         if (!DockButton.Draw(
                 rect,
                 label,
-                CompoundTint,
+                FeruchemyPalette.CompoundTint,
                 kind: on ? DockButtonKind.Active : DockButtonKind.Primary,
                 enabled: report.Accepted && eligible
             )) {
@@ -94,10 +90,10 @@ public sealed class FeruchemyDialWidget {
         float delta = gene.compoundedTargetValue - IdleTarget;
         if (delta < 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
-            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), FeruchemyPalette.TapFill);
         } else if (delta > 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
-            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), CompoundTint);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), FeruchemyPalette.CompoundTint);
         }
 
         Widgets.DrawBoxSolid(
@@ -167,10 +163,10 @@ public sealed class FeruchemyDialWidget {
         float delta = gene.targetValue - IdleTarget;
         if (delta < 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
-            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), FeruchemyPalette.TapFill);
         } else if (delta > 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
-            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), StoreFill);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), FeruchemyPalette.StoreFill);
         }
 
         Widgets.DrawBoxSolid(

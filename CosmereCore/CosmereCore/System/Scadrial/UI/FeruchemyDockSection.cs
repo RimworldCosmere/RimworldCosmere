@@ -21,17 +21,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
-    private const float TargetRowHeight = 20f;
-
     private static float StripHeight =>
         StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
-        TargetRowHeight + 32f;
+        DockDropdownRow.Height + 32f;
 
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
-    private static readonly Color StoreFill = new Color(0.373f, 0.549f, 0.627f);
-    private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
-    private static readonly Color CompoundTint = new Color(0.851f, 0.667f, 0.286f);
 
     private readonly ScadrialCrest crest = new ScadrialCrest(true);
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
@@ -131,11 +126,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
                     : MetalTileState.Idle;
 
         Color tint = compounding
-            ? CompoundTint
+            ? FeruchemyPalette.CompoundTint
             : gene is { isStoring: true }
-                ? StoreFill
+                ? FeruchemyPalette.StoreFill
                 : gene is { isTapping: true }
-                    ? TapFill
+                    ? FeruchemyPalette.TapFill
                     : ActiveTint;
 
         MetalTile.Draw(
@@ -148,7 +143,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             state,
             tint,
             capacity.CompoundedFraction,
-            capacity.CanStoreCompounded || capacity.Internal > 0f ? CompoundTint : null,
+            capacity.CanStoreCompounded || capacity.Internal > 0f ? FeruchemyPalette.CompoundTint : null,
             SavantStageFor(pawn, cell),
             revealedMetal == cell.SubsystemId
         );
@@ -178,11 +173,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         bool compounding = gene.isCompounding;
         bool hot = compounding || gene.isTapping || gene.isStoring;
         Color tint = compounding
-            ? CompoundTint
+            ? FeruchemyPalette.CompoundTint
             : gene.isStoring
-                ? StoreFill
+                ? FeruchemyPalette.StoreFill
                 : gene.isTapping
-                    ? TapFill
+                    ? FeruchemyPalette.TapFill
                     : ActiveTint;
         Panel.DrawNotchedTop(
             rect,
@@ -237,7 +232,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
             (compounded ? capacity.CanTapCompounded : capacity.CanTap)
-                ? compounded ? CompoundTint : new Color(0.498f, 0.541f, 0.565f)
+                ? compounded ? FeruchemyPalette.CompoundTint : new Color(0.498f, 0.541f, 0.565f)
                 : new Color(0.310f, 0.286f, 0.255f)
         );
         UIText.EllipsisLabel(
@@ -246,7 +241,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             (compounded ? capacity.CanStoreCompounded : capacity.CanStore)
-                ? compounded ? CompoundTint : new Color(0.498f, 0.541f, 0.565f)
+                ? compounded ? FeruchemyPalette.CompoundTint : new Color(0.498f, 0.541f, 0.565f)
                 : new Color(0.310f, 0.286f, 0.255f)
         );
 
@@ -257,15 +252,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             GameFont.Tiny,
             TextAnchor.MiddleCenter,
             gene.isCompounding
-                ? CompoundTint
+                ? FeruchemyPalette.CompoundTint
                 : Mathf.Approximately(rate, 0f)
                     ? new Color(0.376f, 0.353f, 0.318f)
                     : rate < 0f
-                        ? TapFill
-                        : StoreFill
+                        ? FeruchemyPalette.TapFill
+                        : FeruchemyPalette.StoreFill
         );
 
-        float afterTarget = DrawTargetRow(inner, endsRect.yMax + 6f, gene);
+        float afterTarget = FeruchemyTargetRow.Draw(inner, endsRect.yMax + 6f, gene);
         float buttonY = dial.DrawCompoundToggle(inner, afterTarget + 6f, pawn, gene, StripButtonHeight) + 8f;
 
         if (DockButton.Draw(
@@ -277,144 +272,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             gene.Reset();
             Event.current?.Use();
         }
-    }
-
-    // Which metalmind the dials act on. A pawn wearing a band and carrying three
-    // implants needs to say which one they mean before compounding makes sense,
-    // since burning one destroys it.
-    private static float DrawTargetRow(Rect inner, float y, Feruchemist gene) {
-        Rect row = new Rect(inner.x, y, inner.width, TargetRowHeight);
-        string label = TargetLabel(gene);
-
-        Widgets.DrawBoxSolid(row, new Color(0.055f, 0.063f, 0.071f));
-        Widgets.DrawHighlightIfMouseover(row);
-        TooltipHandler.TipRegion(
-            row,
-            "CC_Dock_Feruchemy_TargetTip".Translate(TargetUnits(gene).Named("UNITS"))
-        );
-
-        UIText.EllipsisLabel(
-            new Rect(row.x + 6f, row.y, row.width - 26f, row.height),
-            "CC_Dock_Feruchemy_TargetLabel".Translate(label.Named("TARGET")),
-            GameFont.Tiny,
-            TextAnchor.MiddleLeft,
-            new Color(0.604f, 0.659f, 0.678f)
-        );
-        UIText.EllipsisLabel(
-            new Rect(row.xMax - 20f, row.y, 14f, row.height),
-            "v",
-            GameFont.Tiny,
-            TextAnchor.MiddleCenter,
-            new Color(0.435f, 0.478f, 0.498f)
-        );
-
-        if (Widgets.ButtonInvisible(row)) {
-            OpenTargetMenu(gene);
-            Event.current?.Use();
-        }
-
-        return row.yMax;
-    }
-
-    // The raw figures behind the percentage, for the hover.
-    private static string TargetUnits(Feruchemist gene) {
-        float held = 0f;
-        float max = 0f;
-
-        List<IMetalmindSource> sources = gene.metalminds;
-        for (int i = 0; i < sources.Count; i++) {
-            if (!MatchesDisplayTarget(gene, sources[i])) continue;
-
-            held += sources[i].TotalStored;
-            max += sources[i].MaxAmount;
-        }
-
-        return $"{held:0} / {max:0}";
-    }
-
-    private static bool MatchesDisplayTarget(Feruchemist gene, IMetalmindSource source) {
-        return gene.targetMetalmindId switch {
-            Feruchemist.TargetAll => true,
-            Feruchemist.TargetInternal => source.IsImplanted,
-            Feruchemist.TargetExternal => !source.IsImplanted,
-            _ => source.SourceId == gene.targetMetalmindId,
-        };
-    }
-
-    private static string Percent(float held, float max) {
-        return max > 0f ? $"{held / max * 100f:0}%" : "0%";
-    }
-
-    // What the row reads while pointed at a group, or at one metalmind.
-    private static string TargetLabel(Feruchemist gene) {
-        if (!Feruchemist.IsGroupTarget(gene.targetMetalmindId)) {
-            IMetalmindSource? selected = gene.SelectedSource;
-
-            return selected == null
-                ? "CC_Dock_Feruchemy_TargetAll".Translate().Resolve()
-                : $"{selected.SourceLabel} ({Percent(selected.TotalStored, selected.MaxAmount)})";
-        }
-
-        string key = gene.targetMetalmindId switch {
-            Feruchemist.TargetInternal => "CC_Dock_Feruchemy_TargetInternal",
-            Feruchemist.TargetExternal => "CC_Dock_Feruchemy_TargetExternal",
-            _ => "CC_Dock_Feruchemy_TargetAll",
-        };
-
-        return GroupSummary(gene, key, gene.targetMetalmindId);
-    }
-
-    // Groups carry their own running total, so choosing one does not hide how much
-    // is actually in there.
-    private static string GroupSummary(Feruchemist gene, string key, string target) {
-        float stored = 0f;
-        float max = 0f;
-        int count = 0;
-
-        List<IMetalmindSource> sources = gene.metalminds;
-        for (int i = 0; i < sources.Count; i++) {
-            bool internalOnly = target == Feruchemist.TargetInternal;
-            bool externalOnly = target == Feruchemist.TargetExternal;
-            if (internalOnly && !sources[i].IsImplanted) continue;
-            if (externalOnly && sources[i].IsImplanted) continue;
-
-            stored += sources[i].TotalStored;
-            max += sources[i].MaxAmount;
-            count++;
-        }
-
-        return $"{key.Translate(count.Named("COUNT")).Resolve()} ({Percent(stored, max)})";
-    }
-
-    private static void OpenTargetMenu(Feruchemist gene) {
-        List<FloatMenuOption> options = [
-            new FloatMenuOption(
-                GroupSummary(gene, "CC_Dock_Feruchemy_TargetAll", Feruchemist.TargetAll),
-                () => gene.targetMetalmindId = Feruchemist.TargetAll
-            ),
-            new FloatMenuOption(
-                GroupSummary(gene, "CC_Dock_Feruchemy_TargetInternal", Feruchemist.TargetInternal),
-                () => gene.targetMetalmindId = Feruchemist.TargetInternal
-            ),
-            new FloatMenuOption(
-                GroupSummary(gene, "CC_Dock_Feruchemy_TargetExternal", Feruchemist.TargetExternal),
-                () => gene.targetMetalmindId = Feruchemist.TargetExternal
-            ),
-        ];
-
-        List<IMetalmindSource> sources = gene.metalminds;
-        for (int i = 0; i < sources.Count; i++) {
-            IMetalmindSource source = sources[i];
-            string id = source.SourceId;
-            options.Add(
-                new FloatMenuOption(
-                    $"{source.SourceLabel} ({Percent(source.TotalStored, source.MaxAmount)})",
-                    () => gene.targetMetalmindId = id
-                )
-            );
-        }
-
-        Find.WindowStack.Add(new FloatMenu(options));
     }
 
     private string Tooltip(Pawn pawn, InvestitureCell cell, FeruchemyCapacity capacity) {

@@ -147,7 +147,10 @@ public static class PawnExtension {
     }
 
     public static float GetRawAllomanticPower(this Pawn pawn, MetalDef? metal = null) {
-        float power = Mathf.Clamp01(pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower));
+        // The stat's own ceiling is 2, not 1. Clamping to one threw away everything
+        // Lerasium grants a pawn who already had gear behind them - the strongest
+        // Allomancer in a colony read exactly as strong as a merely good one.
+        float power = Mathf.Clamp(pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower), 0f, 2f);
         float skill = Mathf.Clamp(
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level,
             0.1f,

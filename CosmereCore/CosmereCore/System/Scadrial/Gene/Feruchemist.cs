@@ -294,7 +294,7 @@ public class Feruchemist : Metalborn {
 
             return need == null
                 ? float.PositiveInfinity
-                : Mathf.Max(0f, need.CurLevel) / ScadrialMetallurgyConstants.NicrosilBeuPerCharge;
+                : InvestitureBudget.Storable(need.CurLevel, ScadrialMetallurgyConstants.NicrosilBeuPerCharge);
         }
     }
 
@@ -305,7 +305,11 @@ public class Feruchemist : Metalborn {
 
             return need == null
                 ? float.PositiveInfinity
-                : Mathf.Max(0f, need.MaxLevel - need.CurLevel) / ScadrialMetallurgyConstants.NicrosilBeuPerCharge;
+                : InvestitureBudget.Tappable(
+                    need.CurLevel,
+                    need.MaxLevel,
+                    ScadrialMetallurgyConstants.NicrosilBeuPerCharge
+                );
         }
     }
 

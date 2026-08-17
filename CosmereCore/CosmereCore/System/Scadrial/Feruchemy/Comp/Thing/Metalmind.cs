@@ -86,14 +86,18 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
 
-    public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalStored);
+    // Memories and attribute charge share one piece of metal. A coppermind full of a
+    // childhood has no room left for mental speed, and vice versa.
+    public float TotalOccupied => TotalStored + UsedMemorySpace;
+
+    public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalOccupied);
 
     // Both pools draw on the same space, so filling either is bounded by the total.
-    public bool CanStore => !IsCoppermind && Equipped && FreeSpace > 0f;
+    public bool CanStore => Equipped && FreeSpace > 0f;
 
-    public bool CanTap => !IsCoppermind && Equipped && StoredAmount > 0f;
+    public bool CanTap => Equipped && StoredAmount > 0f;
 
-    public bool CanTapCompounded => !IsCoppermind && Equipped && TotalStored > 0f;
+    public bool CanTapCompounded => Equipped && TotalStored > 0f;
 
     // Worn metalminds can hold compounded charge but cannot be compounded into.
     public bool CanStoreCompounded => false;
@@ -118,12 +122,12 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     private void SyncInvestitureMirror() {
         investitureHolder.currentInvestitureSelf =
-            TotalStored * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+            TotalOccupied * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
 
         // Max is mirrored here too, not just at PostPostMake: quality is stamped on after
         // the thing is made, and compounding shrinks capacity later in the item's life.
         investitureHolder.maxInvestitureSelf =
-            MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+            MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
     }
 
     public MetalDef? Metal {
@@ -148,7 +152,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (!CanStore) return;
         if (!ValidateOwner()) return;
 
-        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount);
+        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount - UsedMemorySpace);
     }
 
     public void ConsumeStored(float amount) {
@@ -162,7 +166,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (!CanStore) return;
         if (!ValidateOwner()) return;
 
-        CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount);
+        CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount - UsedMemorySpace);
     }
 
     // Drawing compounded charge eats the metalmind that carried it. Capacity drops
@@ -181,23 +185,19 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     public bool CanFitMemory(float magnitude) {
-        return UsedMemorySpace + magnitude <= MaxAmount;
+        return UsedMemorySpace + magnitude <= MaxAmount - TotalStored;
     }
 
     public void StoreMemory(StoredMemory memory) {
         storedMemoriesInt.Add(memory);
-        if (IsCoppermind) {
-            storedAmountInt = UsedMemorySpace;
-        }
+        SyncInvestitureMirror();
     }
 
     public StoredMemory? RemoveStoredMemoryAt(int index) {
         if (index < 0 || index >= storedMemoriesInt.Count) return null;
         StoredMemory removed = storedMemoriesInt[index];
         storedMemoriesInt.RemoveAt(index);
-        if (IsCoppermind) {
-            storedAmountInt = UsedMemorySpace;
-        }
+        SyncInvestitureMirror();
 
         return removed;
     }
@@ -292,13 +292,14 @@ public class Metalmind : ThingComp, IMetalmindSource {
             storedMemoriesInt ??= [];
 
             // A save written when this metalmind held more capacity would load over-full
-            // once both pools are counted. Capacity can shrink because compounding burnt
+            // once every pool is counted. Capacity can shrink because compounding burnt
             // it, or because a save predates quality scaling and this metalmind is
-            // below-normal quality. Compounded charge is spent first, then the plain
-            // store, so the cheaper pool absorbs the loss.
-            if (storedAmountInt + compoundedAmountInt > MaxAmount) {
-                compoundedAmountInt = Mathf.Max(0f, MaxAmount - storedAmountInt);
-                storedAmountInt = Mathf.Min(storedAmountInt, MaxAmount);
+            // below-normal quality. Memories are never dropped - a lost childhood is
+            // worse than a lost charge - so compounded goes first, then the plain store.
+            float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);
+            if (storedAmountInt + compoundedAmountInt > roomForCharge) {
+                compoundedAmountInt = Mathf.Max(0f, roomForCharge - storedAmountInt);
+                storedAmountInt = Mathf.Min(storedAmountInt, roomForCharge);
             }
 
             SyncInvestitureMirror();
@@ -310,7 +311,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
         NamedArgument coloredMetal = Metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
-        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalStored:F1} / {MaxAmount:F1}");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalOccupied:F1} / {MaxAmount:F1}");
         if (compoundedAmountInt > 0f) {
             sb.Append(" " + "CS_MetalmindCompounded".Translate(compoundedAmountInt.ToString("F1").Named("COMPOUNDED")));
         }

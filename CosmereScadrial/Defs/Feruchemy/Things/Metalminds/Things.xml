@@ -62,14 +62,15 @@
 
     <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
         <defName>Cosmere_Scadrial_Thing_MetalmindEarring</defName>
+        <costStuffCount>10</costStuffCount>
         <label>metalmind earring</label>
-        <description>A small earring for storing Feruchemical attributes. Stores 25 metal.</description>
+        <description>A small earring for storing Feruchemical attributes. Stores 150 metal.</description>
         <graphicData>
             <texPath>Things/Pawn/Equipment/Earring</texPath>
         </graphicData>
         <comps>
             <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
-                <maxAmount>25</maxAmount>
+                <maxAmount>150</maxAmount>
             </li>
         </comps>
         <statBases>
@@ -84,14 +85,15 @@
 
     <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
         <defName>Cosmere_Scadrial_Thing_MetalmindBracelet</defName>
+        <costStuffCount>25</costStuffCount>
         <label>metalmind bracelet</label>
-        <description>A bracelet for storing Feruchemical attributes. Stores 75 metal.</description>
+        <description>A bracelet for storing Feruchemical attributes. Stores 450 metal.</description>
         <graphicData>
             <texPath>Things/Pawn/Equipment/Bracelet</texPath>
         </graphicData>
         <comps>
             <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
-                <maxAmount>75</maxAmount>
+                <maxAmount>450</maxAmount>
             </li>
         </comps>
         <statBases>
@@ -106,14 +108,15 @@
 
     <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
         <defName>Cosmere_Scadrial_Thing_MetalmindBand</defName>
+        <costStuffCount>50</costStuffCount>
         <label>metalmind band</label>
-        <description>A large band for storing Feruchemical attributes. Stores 150 metal.</description>
+        <description>A large band for storing Feruchemical attributes. Stores 900 metal.</description>
         <graphicData>
             <texPath>Things/Pawn/Equipment/Band</texPath>
         </graphicData>
         <comps>
             <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
-                <maxAmount>150</maxAmount>
+                <maxAmount>900</maxAmount>
             </li>
         </comps>
         <statBases>
@@ -128,6 +131,7 @@
 
     <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
         <defName>Cosmere_Scadrial_Thing_MetalmindImplant</defName>
+        <costStuffCount>25</costStuffCount>
         <label>metalmind implant</label>
         <description>A smooth, compact metalmind shaped for subcutaneous implantation. Once surgically placed beneath the skin, it cannot be removed without another operation. The sealed casing protects the metal from corrosion and allows Feruchemical access through direct contact with the bearer's flesh.</description>
         <graphicData>
@@ -136,7 +140,7 @@
         </graphicData>
         <comps>
             <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
-                <maxAmount>75</maxAmount>
+                <maxAmount>450</maxAmount>
             </li>
         </comps>
         <statBases>

@@ -46,9 +46,6 @@ public readonly struct SavantProfile {
 }
 
 public static class SavantUtility {
-    public const float Stage2StorePenaltyFeruchemy = 1.5f;
-    public const float Stage3StorePenaltyFeruchemy = 2.0f;
-
     public const float WithdrawalOnsetHours = 2f;
     public const float WithdrawalSeverityGainPerDay = 0.5f;
     public const float WithdrawalSeverityLossPerDay = 1.0f;
@@ -111,14 +108,6 @@ public static class SavantUtility {
 
     public static float GetFeruchemicalPowerMultiplier(int stage) {
         return FeruchemyProfile.GetPowerMultiplier(stage);
-    }
-
-    public static float GetFeruchemyStorePenaltyMultiplier(int stage) {
-        return stage switch {
-            2 => Stage2StorePenaltyFeruchemy,
-            3 => Stage3StorePenaltyFeruchemy,
-            _ => 1f,
-        };
     }
 
     public static float SeverityForStage(int stage) {

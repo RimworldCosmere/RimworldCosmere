@@ -29,6 +29,16 @@ public static class ScadrialMetallurgyConstants {
      */
     public const float BreathEquivalentUnitsPerMetalUnit = 0.3125f;
 
+    /**
+     * A metalmind's charge is counted in its own units, six to one against an
+     * allomantic reserve. Reading the two off the same conversion would have a full
+     * band shining brighter than a Mistborn burning everything at once.
+     */
+    public const float MetalmindUnitsPerMetalUnit = 6f;
+
+    public const float BreathEquivalentUnitsPerMetalmindUnit =
+        BreathEquivalentUnitsPerMetalUnit / MetalmindUnitsPerMetalUnit;
+
     public const float VialMetalAmount = 1f;
     public const float RawMetalMetalAmount = 1f;
 

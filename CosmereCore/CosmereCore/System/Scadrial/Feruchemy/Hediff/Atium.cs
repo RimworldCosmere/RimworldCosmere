@@ -62,7 +62,7 @@ public class Atium : HediffWithComps {
         Feruchemist? gene = atium;
         if (gene == null || fraction <= 0f) return;
 
-        float refund = Feruchemist.AmountPerSecond * Severity * fraction * gene.TapRateMultiplier;
+        float refund = FeruchemyRate.PerSecond(Severity, gene.RateMultiplier, gene.Efficiency) * fraction;
         if (refund <= 0f) return;
 
         if (CompoundedTap.IsCompounded(def)) gene.AddCompoundedToStore(refund);

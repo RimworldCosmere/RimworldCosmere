@@ -21,13 +21,7 @@ public enum FeruchemyChannel {
 public class Feruchemist : Metalborn {
     // The dial's neutral point. Below it the pawn taps, above it they store.
     public const float IdleTarget = 50f;
-    public const float MaxSeverity = 20f;
-    public const float MaxTransferPerSecond = 10f;
-
-    // TickStoreOrTap runs once per real second, so this is per second - the old
-    // name said rare tick and the readout converted as if it were, which is how
-    // the reading came out four times under what the metalmind actually moved.
-    public static readonly float AmountPerSecond = MaxTransferPerSecond / MaxSeverity;
+    public const float MaxSeverity = FeruchemyRate.MaxSeverity;
 
     private List<IMetalmindSource>? cachedMetalminds;
     private HediffDef? cachedPermanentHediffDef;
@@ -359,10 +353,24 @@ public class Feruchemist : Metalborn {
     public bool isStoringAny => isStoring || (compoundedTargetValue > IdleTarget && canStoreCompounded);
 
     // Per-metal pacing, applied to every path that moves charge so the dial readout
-    // and the actual drain cannot drift apart.
-    public float StoreRateMultiplier => metal.feruchemy?.storeRateMultiplier ?? 1f;
+    // and the actual drain cannot drift apart. One figure for both directions - a
+    // metalmind returns exactly what it was given.
+    public float RateMultiplier => metal.feruchemy?.rateMultiplier ?? 1f;
 
-    public float TapRateMultiplier => metal.feruchemy?.tapRateMultiplier ?? 1f;
+    // Skill and strength buy duration, not magnitude: the ladder pays the same for
+    // everyone, but a master draws on it more slowly and so runs longer on one
+    // metalmind. Filling slows by the same factor, which is what keeps it honest.
+    public float Efficiency {
+        get {
+            SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
+
+            return FeruchemyRate.Efficiency(
+                pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower),
+                skill?.Level ?? 0,
+                SavantUtility.GetFeruchemicalPowerMultiplier(cachedSavantStage)
+            );
+        }
+    }
 
     // Charge moved per real second at the current dial setting, negative while
     // tapping. Zero when the dial sits in its dead band or the direction is shut.
@@ -373,11 +381,13 @@ public class Feruchemist : Metalborn {
             float severity = SeverityForTarget(compoundedTargetValue);
             if (severity <= 0f) return 0f;
 
+            float perSecond = FeruchemyRate.PerSecond(severity, RateMultiplier, Efficiency);
+
             if (compoundedTargetValue > IdleTarget) {
-                return canStoreCompounded ? AmountPerSecond * severity * StoreRateMultiplier : 0f;
+                return canStoreCompounded ? perSecond : 0f;
             }
 
-            return canTapCompounded ? -AmountPerSecond * severity * TapRateMultiplier : 0f;
+            return canTapCompounded ? -perSecond : 0f;
         }
     }
 
@@ -390,21 +400,22 @@ public class Feruchemist : Metalborn {
             float severity = effectiveSeverity;
             if (severity <= 0f) return 0f;
 
-            float perSecond = AmountPerSecond * severity;
+            float perSecond = FeruchemyRate.PerSecond(severity, RateMultiplier, Efficiency);
 
-            if (targetValue < IdleTarget) return canTap ? -perSecond * TapRateMultiplier : 0f;
-            return canStore ? perSecond * StoreRateMultiplier : 0f;
+            if (targetValue < IdleTarget) return canTap ? -perSecond : 0f;
+            return canStore ? perSecond : 0f;
         }
     }
 
     private const float DeadBand = 2f;
     private const float CurveExponent = 2.5f;
 
-    // The dial reads in whole units per second, so it steps in twentieths of a
-    // severity point rather than anywhere along the curve.
-    public const float RateQuantum = 0.05f;
+    // One step per severity point, which is also one step per rung of the hediff
+    // ladder - the dial cannot land between two stages and pay for a stage it is not
+    // getting.
+    public const float RateQuantum = FeruchemyRate.AmountPerSecond;
 
-    private static float SeverityQuantum => RateQuantum / AmountPerSecond;
+    private static float SeverityQuantum => RateQuantum / FeruchemyRate.AmountPerSecond;
 
     private float effectiveSeverity => SeverityForTarget(targetValue);
 
@@ -413,24 +424,13 @@ public class Feruchemist : Metalborn {
         if (Mathf.Abs(delta) < DeadBand) return 0f;
 
         float normalized = Mathf.Abs(delta) / 50f;
-        float baseSeverity = 1f + Mathf.Pow(normalized, CurveExponent) * (MaxSeverity - 1f);
 
-        if (delta > 0f) {
-            baseSeverity *= SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage);
-        }
-
-        return baseSeverity;
+        return 1f + Mathf.Pow(normalized, CurveExponent) * (MaxSeverity - 1f);
     }
 
-    // Inverse of the curve above. Lives here because the storing side carries a
-    // savant penalty, so the mapping depends on pawn state and cannot be a
-    // second copy of the arithmetic somewhere in the UI.
-    private float TargetForSeverity(float severity, bool storing) {
-        float unpenalised = storing
-            ? severity / SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage)
-            : severity;
-
-        float normalized = Mathf.Clamp01((unpenalised - 1f) / (MaxSeverity - 1f));
+    // Inverse of the curve above.
+    private static float TargetForSeverity(float severity, bool storing) {
+        float normalized = Mathf.Clamp01((severity - 1f) / (MaxSeverity - 1f));
         float delta = 50f * Mathf.Pow(normalized, 1f / CurveExponent);
 
         return IdleTarget + (storing ? delta : -delta);
@@ -445,7 +445,11 @@ public class Feruchemist : Metalborn {
 
         float floor = SeverityForTarget(IdleTarget + (storing ? DeadBand : -DeadBand));
         float ceiling = SeverityForTarget(storing ? 100f : 0f);
-        snapped = Mathf.Clamp(snapped, Mathf.Ceil(floor / SeverityQuantum) * SeverityQuantum, ceiling);
+
+        // Clamped to the dead band's own severity, not up to the next whole step - a
+        // quantum of one used to round the lowest setting away and leave the first rung
+        // of every ladder unreachable.
+        snapped = Mathf.Clamp(snapped, floor, ceiling);
 
         return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
     }
@@ -542,12 +546,16 @@ public class Feruchemist : Metalborn {
         // Reads the curve rather than the hediff's severity. Compounded tapping
         // amplifies through its own stage ladder, so if the drain read severity
         // back it would move ten times the charge as well.
+        float efficiency = Efficiency;
+        float rateMultiplier = RateMultiplier;
+
         float ordinary = SeverityForTarget(targetValue);
         if (ordinary > 0f) {
+            float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
             if (targetValue > IdleTarget && canStore) {
-                AddToStore(AmountPerSecond * ordinary * StoreRateMultiplier);
+                AddToStore(perSecond);
             } else if (targetValue < IdleTarget && canTap) {
-                RemoveFromStore(AmountPerSecond * ordinary * TapRateMultiplier);
+                RemoveFromStore(perSecond);
             }
         }
 
@@ -557,12 +565,14 @@ public class Feruchemist : Metalborn {
         float compounded = SeverityForTarget(compoundedTargetValue);
         if (compounded <= 0f) return;
 
+        float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
+
         if (compoundedTargetValue > IdleTarget) {
             // Filling is ordinary storing. Nothing about the charge is special; the
             // burn on the way out is what compounds it.
-            if (canStore) AddToStore(AmountPerSecond * compounded * StoreRateMultiplier);
+            if (canStore) AddToStore(compoundedPerSecond);
         } else if (canTapCompounded) {
-            RemoveCompoundedFromStore(AmountPerSecond * compounded * TapRateMultiplier);
+            RemoveCompoundedFromStore(compoundedPerSecond);
         }
     }
 

@@ -9,6 +9,8 @@ namespace Cosmere.Tests;
 internal sealed class FakeMetalmindSource : IMetalmindSource {
     private float stored;
 
+    private readonly Dictionary<string, float> byLedger = new Dictionary<string, float>();
+
     private readonly bool refuses;
 
     public FakeMetalmindSource(
@@ -55,34 +57,44 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 
     // The clamp the carry exists to work around: asking for more than there is room for
     // silently loses the difference, so the caller has to be told what actually landed.
-    public float AddStored(float amount, DuraluminLedger? ledger = null) {
+    public float AddStored(float amount, string? ledgerKey = null) {
         if (refuses) return 0f;
 
         float before = stored;
         stored = Math.Min(MaxAmount, stored + amount);
+        float moved = stored - before;
+        if (ledgerKey != null && moved != 0f) {
+            byLedger.TryGetValue(ledgerKey, out float existing);
+            byLedger[ledgerKey] = existing + moved;
+        }
 
-        return stored - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount, DuraluminLedger? ledger = null) {
+    public float ConsumeStored(float amount, string? ledgerKey = null) {
         if (refuses) return 0f;
 
         float before = stored;
         stored = Math.Max(0f, stored - amount);
+        float moved = before - stored;
+        if (moved != 0f) {
+            if (ledgerKey != null) ChargeAttribution.DrainNamed(byLedger, ledgerKey, moved);
+            else ChargeAttribution.Drain(byLedger, moved);
+        }
 
-        return before - stored;
+        return moved;
     }
 
     public float AddCompounded(float amount) {
         return 0f;
     }
 
-    public float ConsumeCompounded(float amount, DuraluminLedger? ledger = null) {
+    public float ConsumeCompounded(float amount, string? ledgerKey = null) {
         return 0f;
     }
 
-    public float StoredFor(DuraluminLedger ledger) {
-        return 0f;
+    public float StoredFor(string ledgerKey) {
+        return byLedger.TryGetValue(ledgerKey, out float amount) ? amount : 0f;
     }
 }
 
@@ -92,15 +104,64 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 /// </summary>
 [TestClass]
 public class MetalmindDistributionTests {
+    private const float Tolerance = 1e-3f;
+
     private static float Store(List<IMetalmindSource> sources, float amount, string target = MetalmindDistribution.TargetAll) {
         return MetalmindDistribution.Carry(
             sources,
             target,
+            null,
             amount,
-            static m => m.CanStore,
-            static (m, a) => m.AddStored(a),
-            static m => m.FreeSpace
+            static (m, _) => m.CanStore,
+            static (m, k, a) => m.AddStored(a, k),
+            static (m, _) => m.FreeSpace
         );
+    }
+
+    private static float StoreFor(
+        List<IMetalmindSource> sources,
+        string ledgerKey,
+        float amount,
+        string target = MetalmindDistribution.TargetAll
+    ) {
+        return MetalmindDistribution.Carry(
+            sources,
+            target,
+            ledgerKey,
+            amount,
+            static (m, _) => m.CanStore,
+            static (m, k, a) => m.AddStored(a, k),
+            static (m, _) => m.FreeSpace
+        );
+    }
+
+    /// <summary>
+    ///     A settlement correction must come out of the ledger that was overpaid, even when the
+    ///     transfer landed on a different metalmind than the one holding another ledger's charge.
+    /// </summary>
+    [TestMethod]
+    public void AReclaimNeverFallsThroughOntoAnotherLedgersCharge() {
+        FakeMetalmindSource full = new FakeMetalmindSource(20f, "full");
+        FakeMetalmindSource empty = new FakeMetalmindSource(20f, "empty");
+        Assert.AreEqual(20f, StoreFor([full], "Shard:Ruin", 20f), Tolerance);
+
+        Assert.AreEqual(18f, StoreFor([full, empty], "Residence", 18f), Tolerance);
+        Assert.AreEqual(5f, MetalmindDistribution.Reclaim([full, empty], MetalmindDistribution.TargetAll, "Residence", 5f), Tolerance);
+
+        Assert.AreEqual(20f, full.StoredFor("Shard:Ruin"), Tolerance, "the correction robbed a Shard tie to pay a residence one.");
+        Assert.AreEqual(13f, empty.StoredFor("Residence"), Tolerance);
+    }
+
+    // A reclaim can never take more than the key is recorded as holding, whatever the metalmind holds.
+    [TestMethod]
+    public void AReclaimIsBoundedByWhatTheKeyIsRecordedAsHolding() {
+        FakeMetalmindSource band = new FakeMetalmindSource(50f);
+        StoreFor([band], "Shard:Ruin", 30f);
+        StoreFor([band], "Residence", 10f);
+
+        Assert.AreEqual(10f, MetalmindDistribution.Reclaim([band], MetalmindDistribution.TargetAll, "Residence", 40f), Tolerance);
+        Assert.AreEqual(0f, band.StoredFor("Residence"), Tolerance);
+        Assert.AreEqual(30f, band.StoredFor("Shard:Ruin"), Tolerance);
     }
 
     [TestMethod]

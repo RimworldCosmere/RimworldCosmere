@@ -42,10 +42,11 @@ public static class MetalmindDistribution {
     public static float Carry(
         List<IMetalmindSource> sources,
         string target,
+        string? ledgerKey,
         float amount,
-        Func<IMetalmindSource, bool> eligible,
-        Func<IMetalmindSource, float, float> apply,
-        Func<IMetalmindSource, float> room
+        Func<IMetalmindSource, string?, bool> eligible,
+        Func<IMetalmindSource, string?, float, float> apply,
+        Func<IMetalmindSource, string?, float> room
     ) {
         if (amount <= 0f) return 0f;
 
@@ -54,14 +55,14 @@ public static class MetalmindDistribution {
 
         for (int i = 0; i < sources.Count && remaining > 0f; i++) {
             if (!MatchesTarget(sources[i], target)) continue;
-            if (!eligible(sources[i])) continue;
+            if (!eligible(sources[i], ledgerKey)) continue;
 
-            float space = room(sources[i]);
+            float space = room(sources[i], ledgerKey);
             float take = space < remaining ? space : remaining;
             if (take <= 0f) continue;
 
             // use what it took, not the offer: AddStored can refuse via ValidateOwner and take less.
-            float took = apply(sources[i], take);
+            float took = apply(sources[i], ledgerKey, take);
             if (took <= 0f) continue;
 
             remaining -= took;
@@ -69,5 +70,22 @@ public static class MetalmindDistribution {
         }
 
         return moved;
+    }
+
+    /// <summary>Takes charge back out of what one key is recorded as holding, never out of another key's.</summary>
+    /// <remarks>
+    ///     Bounding the ask by the key's own balance is what stops a correction falling through to a
+    ///     second ledger, which would mint one tie by destroying another.
+    /// </remarks>
+    public static float Reclaim(List<IMetalmindSource> sources, string target, string ledgerKey, float amount) {
+        return Carry(
+            sources,
+            target,
+            ledgerKey,
+            amount,
+            static (m, k) => k != null && m.CanTap && m.StoredFor(k) > 0f,
+            static (m, k, a) => m.ConsumeStored(a, k),
+            static (m, k) => k == null ? 0f : m.StoredFor(k)
+        );
     }
 }

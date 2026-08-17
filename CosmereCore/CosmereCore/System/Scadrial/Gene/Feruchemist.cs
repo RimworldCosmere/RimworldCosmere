@@ -1,6 +1,8 @@
 using System;
+using Cosmere.Core.Def;
 using Cosmere.Core.Need;
 using Cosmere.Core.Savant;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
@@ -11,6 +13,7 @@ using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Gene;
 
@@ -53,12 +56,20 @@ public class Feruchemist : Metalborn {
     /// single metalmind's SourceId.
     public string targetMetalmindId = TargetAll;
 
-    /// Which tie duralumin's dial spends. Social has no capacity, so nothing may select it.
+    /// Which tie duralumin's dial spends. A ledger with no capacity parks the dial.
     public DuraluminLedger targetLedger = DuraluminLedger.Residence;
 
-    /// Duralumin moves whole points and the dial pays out a fraction of one a second, so the ask
-    /// is banked here until it is worth a point. This holds intent, never charge.
-    private float connectionCarry;
+    // Which Shard the Shard ledger acts on. Seeded once, then the player's to change.
+    public string targetShardDefName = string.Empty;
+
+    /// Duralumin moves whole points and each dial pays out a fraction of one a second, so an ask
+    /// banks here until it is worth a point. A bank holds intent, never charge.
+    private float ordinaryCarry;
+
+    private float compoundedCarry;
+
+    // What the banks were filled for. A dial pointed somewhere new banks nothing from the old tie.
+    private string? bankedKey;
 
     /// Whether the dial is pointed at the compounded pool. Held here, not the panel,
     /// so a metal that stops paying out can end the mode instead of just parking it.
@@ -284,53 +295,141 @@ public class Feruchemist : Metalborn {
     /// the far end of every transfer the same way nicrosil does.
     private bool storesConnection => metal == MetallicArtsMetalDefOf.Duralumin;
 
-    /// The ledger the dial names, or none for Social and for a save with no Shard to act on.
+    private IConnectionLedger? cachedLedger;
+    private string? cachedLedgerKey;
+    private bool ledgerResolved;
+    private DuraluminLedger resolvedFor;
+    private string resolvedForShard = string.Empty;
+
+    /// The ledger the dial names, or none for a ledger with no capacity and for a Shard this save
+    /// does not have. Cached, because the dock reads it every frame through the capacity readout.
     public IConnectionLedger? SelectedLedger {
         get {
             if (!storesConnection) return null;
+            ResolveLedger();
 
-            switch (targetLedger) {
-                case DuraluminLedger.Residence:
-                    return new ResidenceLedger();
-                case DuraluminLedger.Bonds:
-                    return new BondLedger();
-                case DuraluminLedger.Shard:
-                    Core.Def.ShardDef? shard = WorldShard();
-
-                    return shard == null ? null : new ShardLedger(shard);
-                default:
-                    return null;
-            }
+            return cachedLedger;
         }
     }
 
-    /// The Shard this save's world is held by. Reading the world rather than the pawn keeps the
-    /// tie fixed, so charge stored against one Shard cannot be tapped back into another.
-    private static Core.Def.ShardDef? WorldShard() {
-        List<Core.Def.ShardDef> ancestral = Core.Util.WorldUtility.AncestryShards(Core.Util.WorldUtility.Primary);
-        for (int i = 0; i < ancestral.Count; i++) {
-            if (Core.Util.ShardUtility.IsEnabled(ancestral[i])) return ancestral[i];
-        }
+    // The name a transfer is filed under on the metalmind, or none when the dial reaches nothing.
+    private string? transferKey {
+        get {
+            if (!storesConnection) return null;
+            ResolveLedger();
 
-        return null;
+            return cachedLedgerKey;
+        }
     }
 
-    // The ledger a transfer is attributed to, so a duralumind records where its charge came from.
-    private DuraluminLedger? transferLedger => storesConnection ? targetLedger : null;
+    private void ResolveLedger() {
+        if (ledgerResolved && resolvedFor == targetLedger && resolvedForShard == targetShardDefName) return;
 
-    // Charge the metalminds this dial reaches already hold for the ledger it names.
+        ledgerResolved = true;
+        resolvedFor = targetLedger;
+        resolvedForShard = targetShardDefName;
+        cachedLedger = null;
+        cachedLedgerKey = null;
+        if (ConnectionBudget.Capacity(targetLedger) <= 0) return;
+
+        switch (targetLedger) {
+            case DuraluminLedger.Residence:
+                cachedLedger = new ResidenceLedger();
+                break;
+            case DuraluminLedger.Bonds:
+                cachedLedger = new BondLedger();
+                break;
+            case DuraluminLedger.Shard:
+                ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(targetShardDefName);
+                if (shard == null) return;
+
+                cachedLedger = new ShardLedger(shard);
+                break;
+            default:
+                return;
+        }
+
+        cachedLedgerKey = ConnectionKey.For(targetLedger, targetShardDefName);
+    }
+
+    /// Picked once and scribed, so charge banked against one Shard is only ever given back to that
+    /// Shard. The player retargets it from the selector; this is only the opening guess.
+    private void EnsureShardTarget() {
+        if (!storesConnection || !string.IsNullOrEmpty(targetShardDefName)) return;
+
+        CosmereWorldDef? world = WorldUtility.Primary;
+        if (world == null) return;
+
+        for (int i = 0; i < world.nativeShards.Count; i++) {
+            if (!ShardUtility.IsEnabled(world.nativeShards[i])) continue;
+
+            targetShardDefName = world.nativeShards[i].defName;
+
+            return;
+        }
+    }
+
+    /// Why duralumin's dial is parked, for the selector to show, or none when it can move. Social
+    /// has no capacity at all; a Shard the save never enabled has nothing to act on.
+    public string? LedgerBlockedReason {
+        get {
+            if (!storesConnection || SelectedLedger != null) return null;
+
+            return ConnectionBudget.Capacity(targetLedger) <= 0
+                ? "CS_Duralumin_LedgerHasNoCapacity".Translate().Resolve()
+                : "CS_Duralumin_NoShardSelected".Translate().Resolve();
+        }
+    }
+
+    // Charge the metalminds this dial reaches already hold under the key it names.
     private float storedForLedger {
         get {
+            string? key = transferKey;
+            if (key == null) return 0f;
+
             float total = 0f;
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
                 if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
-                total += mms[i].StoredFor(targetLedger);
+                total += mms[i].StoredFor(key);
             }
 
             return total;
         }
+    }
+
+    private int connectionBudgetTick = -1;
+    private DuraluminLedger connectionBudgetLedger;
+    private string connectionBudgetShard = string.Empty;
+    private float connectionStorable;
+    private float connectionTappable;
+
+    /// Both bounds come off one read of the ledger, memoized per tick. The dock's capacity readout
+    /// asks four times a frame, and the Bonds ledger walks the pawn's whole SpiritWeb each time.
+    private void RefreshConnectionBudget() {
+        int now = Find.TickManager.TicksGame;
+        if (connectionBudgetTick == now &&
+            connectionBudgetLedger == targetLedger &&
+            connectionBudgetShard == targetShardDefName) {
+            return;
+        }
+
+        connectionBudgetTick = now;
+        connectionBudgetLedger = targetLedger;
+        connectionBudgetShard = targetShardDefName;
+
+        IConnectionLedger? ledger = SelectedLedger;
+        if (ledger == null) {
+            connectionStorable = 0f;
+            connectionTappable = 0f;
+
+            return;
+        }
+
+        float stored = storedForLedger;
+        connectionStorable = ConnectionBudget.Storable(ledger.CurrentPoints(pawn), stored, targetLedger);
+        connectionTappable = ConnectionBudget.Tappable(ledger.HeadroomPoints(pawn), stored, targetLedger);
     }
 
     /// Neither nicrosil nor duralumin gets a stage ladder for a compounded burn to amplify
@@ -346,11 +445,9 @@ public class Feruchemist : Metalborn {
     private float storableFromPawn {
         get {
             if (storesConnection) {
-                IConnectionLedger? ledger = SelectedLedger;
+                RefreshConnectionBudget();
 
-                return ledger == null
-                    ? 0f
-                    : ConnectionBudget.Storable(ledger.CurrentPoints(pawn), storedForLedger, targetLedger);
+                return connectionStorable;
             }
 
             Investiture? need = investitureNeed;
@@ -365,11 +462,9 @@ public class Feruchemist : Metalborn {
     private float tappableToPawn {
         get {
             if (storesConnection) {
-                IConnectionLedger? ledger = SelectedLedger;
+                RefreshConnectionBudget();
 
-                return ledger == null
-                    ? 0f
-                    : ConnectionBudget.Tappable(ledger.HeadroomPoints(pawn), storedForLedger, targetLedger);
+                return connectionTappable;
             }
 
             Investiture? need = investitureNeed;
@@ -565,6 +660,8 @@ public class Feruchemist : Metalborn {
         targetValue = IdleTarget;
         TryRemoveHediffByDef(storeHediffDef);
         TryRemoveHediffByDef(tapHediffDef);
+        ordinaryCarry = 0f;
+        compoundedCarry = 0f;
     }
 
     protected override void PostAddOrRemove() {
@@ -579,6 +676,7 @@ public class Feruchemist : Metalborn {
         Scribe_Values.Look(ref compoundedTargetValue, "compoundedTargetValue", IdleTarget);
         Scribe_Values.Look(ref targetMetalmindId, "targetMetalmindId", string.Empty);
         Scribe_Values.Look(ref targetLedger, "targetLedger", DuraluminLedger.Residence);
+        Scribe_Values.Look(ref targetShardDefName, "targetShardDefName", string.Empty);
         Scribe_Values.Look(ref compounding, "compounding");
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
     }
@@ -589,6 +687,8 @@ public class Feruchemist : Metalborn {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
         TickCopper();
+        EnsureShardTarget();
+        SyncConnectionBank();
 
         // compounding needs an implant to act on; end the mode here so it holds even when the player isnt looking at the panel.
         if (compounding && !TargetIsInternalOnly) {
@@ -650,12 +750,12 @@ public class Feruchemist : Metalborn {
         if (ordinary > 0f) {
             float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
             if (targetValue > IdleTarget && canStore) {
-                float moved = AddToStore(TransferAsk(perSecond, storable, true));
+                float moved = AddToStore(TransferAsk(ref ordinaryCarry, perSecond, storable, true));
                 storable -= moved;
                 chargeLedger.Stored(moved);
                 SettleConnection(moved, true);
             } else if (targetValue < IdleTarget && canTap) {
-                float moved = RemoveFromStore(TransferAsk(perSecond, tappable, false));
+                float moved = RemoveFromStore(TransferAsk(ref ordinaryCarry, perSecond, tappable, false));
                 tappable -= moved;
                 chargeLedger.Tapped(moved);
                 SettleConnection(moved, false);
@@ -669,13 +769,13 @@ public class Feruchemist : Metalborn {
 
             if (compoundedTargetValue > IdleTarget) {
                 if (canStore) {
-                    float moved = AddToStore(TransferAsk(compoundedPerSecond, storable, true));
+                    float moved = AddToStore(TransferAsk(ref compoundedCarry, compoundedPerSecond, storable, true));
                     chargeLedger.Stored(moved);
                     SettleConnection(moved, true);
                 }
             } else if (canTapCompounded) {
                 float moved = RemoveCompoundedFromStore(
-                    TransferAsk(CompoundedBurnRate(compoundedPerSecond), tappable, false)
+                    TransferAsk(ref compoundedCarry, CompoundedBurnRate(compoundedPerSecond), tappable, false)
                 );
                 chargeLedger.Tapped(moved);
                 SettleConnection(moved, false);
@@ -686,18 +786,21 @@ public class Feruchemist : Metalborn {
         MirrorToInvestiture(chargeLedger.Drain());
     }
 
-    /// Every metal but duralumin passes its ask straight through. Duralumin moves whole points,
-    /// so a sub-point ask banks instead, and a change of direction has to walk the bank back.
-    private float TransferAsk(float perSecond, float budget, bool storing) {
-        if (!storesConnection) return Mathf.Min(perSecond, budget);
+    // A dial pointed somewhere new banks nothing from where it used to point.
+    private void SyncConnectionBank() {
+        string? key = transferKey;
+        if (bankedKey == key) return;
 
-        connectionCarry += storing ? perSecond : -perSecond;
-        float whole = ConnectionBudget.WholeCharge(connectionCarry);
-        if (storing ? whole <= 0f : whole >= 0f) return 0f;
+        bankedKey = key;
+        ordinaryCarry = 0f;
+        compoundedCarry = 0f;
+    }
 
-        connectionCarry -= whole;
-
-        return ConnectionBudget.WholeCharge(Mathf.Min(Mathf.Abs(whole), budget));
+    // Every metal but duralumin passes its ask straight through; duralumin banks it to a whole point.
+    private float TransferAsk(ref float carry, float perSecond, float budget, bool storing) {
+        return storesConnection
+            ? ConnectionCarry.Bank(ref carry, perSecond, budget, storing)
+            : Mathf.Min(perSecond, budget);
     }
 
     /// Moves the pawn's Connection to match what the metalmind just moved, then hands back whichever
@@ -708,22 +811,24 @@ public class Feruchemist : Metalborn {
         IConnectionLedger? ledger = SelectedLedger;
         if (ledger == null) return;
 
-        // asked in whole points, so a ledger rounding its ask can never take more than was banked.
-        float ask = ConnectionBudget.PointsForCharge(ConnectionBudget.WholeCharge(chargeMoved));
-        float signed = ledger.Move(pawn, storing ? -ask : ask);
-        float settlement = ConnectionBudget.Settlement(chargeMoved, Mathf.Max(0f, storing ? -signed : signed));
-        if (settlement == 0f) return;
+        float signed = ledger.Move(pawn, ConnectionSettlement.Ask(chargeMoved, storing));
+        ConnectionSettlement due = ConnectionSettlement.Resolve(chargeMoved, storing, signed);
 
-        // the metalmind moved more than the pawn paid for, so the difference never happened.
-        if (settlement > 0f) {
-            if (storing) RemoveFromStore(settlement);
-            else AddToStore(settlement);
-
-            return;
+        float unsettled = 0f;
+        if (due.MetalmindCharge > 0f) {
+            unsettled = due.MetalmindCharge - AddToStore(due.MetalmindCharge);
+        } else if (due.MetalmindCharge < 0f) {
+            unsettled = -due.MetalmindCharge - ReclaimFromStore(-due.MetalmindCharge);
+        } else if (due.PawnPoints != 0f) {
+            float back = ledger.Move(pawn, due.PawnPoints);
+            unsettled = ConnectionBudget.ChargeForPoints(Mathf.Abs(due.PawnPoints - back));
         }
 
-        float owed = ConnectionBudget.PointsForCharge(-settlement);
-        ledger.Move(pawn, storing ? owed : -owed);
+        if (unsettled <= 0f) return;
+
+        Logger.Warning(
+            $"Duralumin: {unsettled:F1} of a {chargeMoved:F1} charge transfer went unsettled for {pawn.LabelShort}"
+        );
     }
 
     /// Nicrosil's charge is the pawn's own Investiture, so what the metalmind gains is
@@ -759,29 +864,30 @@ public class Feruchemist : Metalborn {
     }
 
     public float AddToStore(float amount) {
-        DuraluminLedger? ledger = transferLedger;
-
-        return Distribute(amount, static m => m.CanStore, (m, a) => m.AddStored(a, ledger), static m => m.FreeSpace);
+        return Distribute(
+            amount,
+            static (m, _) => m.CanStore,
+            static (m, k, a) => m.AddStored(a, k),
+            static (m, _) => m.FreeSpace
+        );
     }
 
     public float AddCompoundedToStore(float amount) {
         return Distribute(
             amount,
-            static m => m.CanStoreCompounded,
-            static (m, a) => m.AddCompounded(a),
-            static m => m.FreeSpace
+            static (m, _) => m.CanStoreCompounded,
+            static (m, _, a) => m.AddCompounded(a),
+            static (m, _) => m.FreeSpace
         );
     }
 
     public float RemoveCompoundedFromStore(float amount) {
-        DuraluminLedger? ledger = transferLedger;
-
         // burning draws on the whole charge, not just the compounded pool: reading only that left nothing to take and stalled the burn.
         float moved = Distribute(
             amount,
-            static m => m.CanTapCompounded,
-            (m, a) => m.ConsumeCompounded(a, ledger),
-            static m => m.TotalStored
+            static (m, _) => m.CanTapCompounded,
+            static (m, k, a) => m.ConsumeCompounded(a, k),
+            static (m, _) => m.TotalStored
         );
 
         if (moved > 0f) SweepBurnedOut();
@@ -798,23 +904,29 @@ public class Feruchemist : Metalborn {
 
     private float Distribute(
         float amount,
-        Func<IMetalmindSource, bool> eligible,
-        Func<IMetalmindSource, float, float> apply,
-        Func<IMetalmindSource, float> room
+        Func<IMetalmindSource, string?, bool> eligible,
+        Func<IMetalmindSource, string?, float, float> apply,
+        Func<IMetalmindSource, string?, float> room
     ) {
         // read fresh, not cached: a metalmind can burn out mid-tick and take the dial's chosen target with it.
-        return MetalmindDistribution.Carry(metalminds, targetMetalmindId, amount, eligible, apply, room);
+        return MetalmindDistribution.Carry(metalminds, targetMetalmindId, transferKey, amount, eligible, apply, room);
     }
 
     public float RemoveFromStore(float amount) {
-        DuraluminLedger? ledger = transferLedger;
-
         return Distribute(
             amount,
-            static m => m.CanTap,
-            (m, a) => m.ConsumeStored(a, ledger),
-            static m => m.StoredAmount
+            static (m, _) => m.CanTap,
+            static (m, k, a) => m.ConsumeStored(a, k),
+            static (m, _) => m.StoredAmount
         );
+    }
+
+    /// Takes a correction back out of the charge this key is recorded as holding, never out of
+    /// another ledger's. Draining past the named key would mint one tie by destroying another.
+    private float ReclaimFromStore(float amount) {
+        string? key = transferKey;
+
+        return key == null ? 0f : MetalmindDistribution.Reclaim(metalminds, targetMetalmindId, key, amount);
     }
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {

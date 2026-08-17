@@ -74,13 +74,18 @@ public class NicrosilTransferTests {
         );
     }
 
-    // A nicrosilmind reads brighter to bronze than a steelmind holding the same charge,
-    // because its contents are Investiture. That is the point, not a rounding error.
+    // Nicrosilminds read brighter because they hold Investiture, not an attribute.
     [TestMethod]
     public void NicrosilConvertsHigherThanAnOrdinaryMetalmind() {
         Assert.IsTrue(
             ScadrialMetallurgyConstants.NicrosilBeuPerCharge >
             ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit
         );
+    }
+
+    // The four tests above pin the consequences; this pins the number they depend on.
+    [TestMethod]
+    public void TheConversionIsTheRateTheHeighteningsWereChosenAgainst() {
+        Assert.AreEqual(0.125f, ScadrialMetallurgyConstants.NicrosilBeuPerCharge);
     }
 }

@@ -30,6 +30,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
 
+    // Keyed by DuraluminLedger's member name. Only duralumin metalminds ever gain
+    // an entry - every other metal calls AddStored/ConsumeStored with no ledger.
+    private Dictionary<string, float> chargeByLedger = [];
+
     public Pawn? owner { get; private set; }
 
     private new MetalmindProperties props => (MetalmindProperties)base.props;
@@ -152,24 +156,32 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    public float AddStored(float amount) {
+    public float AddStored(float amount, DuraluminLedger? ledger = null) {
         if (!CanStore) return 0f;
         if (!ValidateOwner()) return 0f;
 
         float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount - UsedMemorySpace);
+        float moved = StoredAmount - before;
+        RecordStored(ledger, moved);
 
-        return StoredAmount - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, DuraluminLedger? ledger = null) {
         if (!CanTap) return 0f;
         if (!ValidateOwner()) return 0f;
 
         float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
+        float moved = before - StoredAmount;
 
-        return before - StoredAmount;
+        if (moved != 0f) {
+            if (ledger != null) RecordConsumed(ledger.Value, moved);
+            else ChargeAttribution.Drain(chargeByLedger, moved);
+        }
+
+        return moved;
     }
 
     public float AddCompounded(float amount) {
@@ -197,6 +209,36 @@ public class Metalmind : ThingComp, IMetalmindSource {
         capacityLostInt += spent;
 
         return spent;
+    }
+
+    public float StoredFor(DuraluminLedger ledger) {
+        return chargeByLedger.TryGetValue(ledger.ToString(), out float amount) ? amount : 0f;
+    }
+
+    private void RecordStored(DuraluminLedger? ledger, float moved) {
+        if (ledger == null || moved == 0f) return;
+
+        string key = ledger.Value.ToString();
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
+    }
+
+    private void RecordConsumed(DuraluminLedger ledger, float moved) {
+        string key = ledger.ToString();
+        if (!chargeByLedger.TryGetValue(key, out float existing)) return;
+
+        float remaining = Mathf.Max(0f, existing - moved);
+        if (remaining <= 0f) chargeByLedger.Remove(key);
+        else chargeByLedger[key] = remaining;
+    }
+
+    // Merges another metalmind's attribution in, already scaled by the caller to
+    // what actually transferred - used when explanting hands charge to a fresh item.
+    public void ReceiveAttribution(Dictionary<string, float> transferred) {
+        foreach (KeyValuePair<string, float> pair in transferred) {
+            chargeByLedger.TryGetValue(pair.Key, out float existing);
+            chargeByLedger[pair.Key] = existing + pair.Value;
+        }
     }
 
     public bool CanFitMemory(float magnitude) {
@@ -294,6 +336,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         Scribe_Values.Look(ref capacityLostInt, "capacityLost", 0f);
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
+        Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
+        chargeByLedger ??= [];
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             cachedMetal = null;
@@ -317,8 +361,24 @@ public class Metalmind : ThingComp, IMetalmindSource {
                 storedAmountInt = Mathf.Min(storedAmountInt, roomForCharge);
             }
 
+            ReconcileAttribution();
             SyncInvestitureMirror();
         }
+    }
+
+    // Duralumin only, run after the clamp above. Drops charge no ledger claims, then
+    // rescales the map to match if the clamp shrank storedAmountInt without touching it.
+    private void ReconcileAttribution() {
+        if (Metal?.defName != "Duralumin") return;
+
+        float attributed = ChargeAttribution.Total(chargeByLedger);
+        if (storedAmountInt > attributed) {
+            float discarded = storedAmountInt - attributed;
+            storedAmountInt = attributed;
+            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+        }
+
+        ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);
     }
 
     public override string CompInspectStringExtra() {

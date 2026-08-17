@@ -55,7 +55,7 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 
     // The clamp the carry exists to work around: asking for more than there is room for
     // silently loses the difference, so the caller has to be told what actually landed.
-    public float AddStored(float amount) {
+    public float AddStored(float amount, DuraluminLedger? ledger = null) {
         if (refuses) return 0f;
 
         float before = stored;
@@ -64,7 +64,7 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
         return stored - before;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, DuraluminLedger? ledger = null) {
         if (refuses) return 0f;
 
         float before = stored;
@@ -78,6 +78,10 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
     }
 
     public float ConsumeCompounded(float amount) {
+        return 0f;
+    }
+
+    public float StoredFor(DuraluminLedger ledger) {
         return 0f;
     }
 }

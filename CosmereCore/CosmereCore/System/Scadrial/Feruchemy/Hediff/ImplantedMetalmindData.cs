@@ -1,6 +1,7 @@
 using Cosmere.Core.Def;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
@@ -14,6 +15,10 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     private float compoundedAmountInt;
     private float storedAmountInt;
 
+    // Keyed by DuraluminLedger's member name. Only duralumin metalminds ever gain
+    // an entry - every other metal calls AddStored/ConsumeStored with no ledger.
+    private Dictionary<string, float> chargeByLedger = [];
+
     public void ExposeData() {
         Scribe_Values.Look(ref metalDefName, "metalDefName", string.Empty);
         Scribe_Values.Look(ref metalmindType, "metalmindType", string.Empty);
@@ -22,6 +27,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         Scribe_Values.Look(ref maxAmountInt, "maxAmount");
         Scribe_Values.Look(ref ownerName, "ownerName", string.Empty);
         Scribe_Values.Look(ref loadId, "loadId", -1);
+        Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
+        chargeByLedger ??= [];
     }
 
     public float StoredAmount {
@@ -67,29 +74,81 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         }
     }
 
-    public float AddStored(float amount) {
+    public float AddStored(float amount, DuraluminLedger? ledger = null) {
         if (!CanStore) return 0f;
 
         float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt - compoundedAmountInt);
+        float moved = storedAmountInt - before;
+        RecordStored(ledger, moved);
 
-        return storedAmountInt - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, DuraluminLedger? ledger = null) {
         if (!CanTap) return 0f;
 
         float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
+        float moved = before - storedAmountInt;
 
-        return before - storedAmountInt;
+        if (moved != 0f) {
+            if (ledger != null) RecordConsumed(ledger.Value, moved);
+            else ChargeAttribution.Drain(chargeByLedger, moved);
+        }
+
+        return moved;
+    }
+
+    public float StoredFor(DuraluminLedger ledger) {
+        return chargeByLedger.TryGetValue(ledger.ToString(), out float amount) ? amount : 0f;
+    }
+
+    private void RecordStored(DuraluminLedger? ledger, float moved) {
+        if (ledger == null || moved == 0f) return;
+
+        string key = ledger.Value.ToString();
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
+    }
+
+    private void RecordConsumed(DuraluminLedger ledger, float moved) {
+        string key = ledger.ToString();
+        if (!chargeByLedger.TryGetValue(key, out float existing)) return;
+
+        float remaining = Mathf.Max(0f, existing - moved);
+        if (remaining <= 0f) chargeByLedger.Remove(key);
+        else chargeByLedger[key] = remaining;
+    }
+
+    // Copy of the current attribution map, for handing charge across on explant.
+    public Dictionary<string, float> AttributionSnapshot() {
+        return new Dictionary<string, float>(chargeByLedger);
     }
 
     // Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
     // after load to keep the two pools inside a capacity that may have changed.
     public void ReconcileCapacity() {
-        if (storedAmountInt + compoundedAmountInt <= maxAmountInt) return;
-        compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
+        if (storedAmountInt + compoundedAmountInt > maxAmountInt) {
+            compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
+        }
+
+        ReconcileAttribution();
+    }
+
+    // Duralumin only. The clamp above never touches storedAmountInt, so this mostly
+    // discards pre-feature charge; rescale is a no-op safety net for other drift.
+    private void ReconcileAttribution() {
+        if (Metal?.defName != "Duralumin") return;
+
+        float attributed = ChargeAttribution.Total(chargeByLedger);
+        if (storedAmountInt > attributed) {
+            float discarded = storedAmountInt - attributed;
+            storedAmountInt = attributed;
+            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+        }
+
+        ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);
     }
 
     public float AddCompounded(float amount) {

@@ -45,11 +45,15 @@ public interface IMetalmindSource {
     // What the target picker calls this one.
     string SourceLabel { get; }
 
-    float AddStored(float amount);
+    float AddStored(float amount, DuraluminLedger? ledger = null);
 
-    float ConsumeStored(float amount);
+    float ConsumeStored(float amount, DuraluminLedger? ledger = null);
 
     float AddCompounded(float amount);
 
     float ConsumeCompounded(float amount);
+
+    // Charge on this metalmind attributed to that ledger. 0 for a ledger it has
+    // never stored charge under.
+    float StoredFor(DuraluminLedger ledger);
 }

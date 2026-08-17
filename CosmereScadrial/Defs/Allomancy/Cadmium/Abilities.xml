@@ -7,7 +7,7 @@
         <metal>Cadmium</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <abilityClass>Cosmere.System.Scadrial.Allomancy.Ability.TimeAbility</abilityClass>
-        <beuPerTick>.005</beuPerTick>
+        <beuPerTick>0.005</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

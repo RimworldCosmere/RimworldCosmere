@@ -71,6 +71,7 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.002</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
@@ -95,6 +96,7 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.002</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

@@ -9,6 +9,7 @@
         <metal>Pewter</metal>
         <hediff>Cosmere_Scadrial_Hediff_PewterBuff</hediff>
         <dragHediff>Cosmere_Scadrial_Hediff_PewterDrag</dragHediff>
+        <beuPerTick>0.002</beuPerTick>
         <maxPower>2</maxPower>
         <autoUseWhileDowned>true</autoUseWhileDowned>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>

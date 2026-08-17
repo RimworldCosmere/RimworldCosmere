@@ -7,6 +7,7 @@
         <metal>Atium</metal>
         <hediff>Cosmere_Scadrial_Hediff_AtiumBuff</hediff>
         <activeMote>Cosmere_Scadrial_Mote_AtiumShimmer</activeMote>
+        <beuPerTick>0.01</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

@@ -10,6 +10,7 @@ Hostile or neutral targets grow tense, anxious, or unstable — their emotions s
         <metal>Zinc</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_ZincAura</hediff>
+        <beuPerTick>0.0008</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
     <!-- One push, not a channel. AbstractToggleTargetBurnAbility runs
@@ -40,6 +41,7 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
                 <canTargetMechs>false</canTargetMechs>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.0008</beuPerTick>
         <maxPower>2</maxPower>
         <!-- Seizing a koloss or a kandra is the same push, aimed at something that can be owned.
              The comp answers with both numbers when the target resists, so the player can see how

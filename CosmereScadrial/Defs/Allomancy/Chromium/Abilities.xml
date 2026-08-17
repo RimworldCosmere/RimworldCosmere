@@ -16,6 +16,7 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.002</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

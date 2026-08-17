@@ -7,6 +7,7 @@
         <metal>Brass</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_BrassAura</hediff>
+        <beuPerTick>0.0008</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
     <!-- One push, not a channel. AbstractToggleTargetBurnAbility runs
@@ -33,6 +34,7 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.0008</beuPerTick>
         <maxPower>2</maxPower>
         <!-- Seizing a koloss or a kandra is the same push, aimed at something that can be owned.
              The comp answers with both numbers when the target resists, so the player can see how

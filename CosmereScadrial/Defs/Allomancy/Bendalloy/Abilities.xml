@@ -7,7 +7,7 @@
         <metal>Bendalloy</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <abilityClass>Cosmere.System.Scadrial.Allomancy.Ability.TimeAbility</abilityClass>
-        <beuPerTick>.01</beuPerTick>
+        <beuPerTick>0.01</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

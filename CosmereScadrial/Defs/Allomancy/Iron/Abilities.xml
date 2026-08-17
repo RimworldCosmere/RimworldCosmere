@@ -33,6 +33,7 @@ These lines shimmer with the tension of potential force, visible only to those b
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <beuPerTick>0.002</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

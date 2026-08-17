@@ -60,6 +60,22 @@ public class ResidenceTracker : Verse.GameComponent {
         );
     }
 
+    /// <summary>Moves a pawn's residence and reports how much actually moved.</summary>
+    /// <remarks>
+    ///     Feruchemical duralumin stores the tie to a world as readily as any other, so this has to
+    ///     run backwards as well as forwards.
+    /// </remarks>
+    public int AdjustTicks(Pawn? pawn, int delta) {
+        if (pawn == null || delta == 0) return 0;
+
+        int id = pawn.thingIDNumber;
+        int had = ticksByPawn.TryGetValue(id, out int ticks) ? ticks : 0;
+        int next = global::System.Math.Max(0, global::System.Math.Min(had + delta, ConnectionMath.TicksPerYear));
+        ticksByPawn[id] = next;
+
+        return next - had;
+    }
+
     public override void GameComponentTick() {
         if (Find.TickManager.TicksGame % TickInterval != 0) return;
         if (NaturalisingWorld() == null) return;

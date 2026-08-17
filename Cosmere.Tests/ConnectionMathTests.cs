@@ -300,6 +300,22 @@ public class ConnectionMathTests {
         Assert.AreEqual(0, ConnectionMath.ResidenceFrom(-1), "Negative time is nothing, not a wrap-around.");
     }
 
+    [TestMethod]
+    public void ResidenceTicksAreTheInverseOfResidenceStrength() {
+        for (int strength = 0; strength <= ConnectionMath.AncestryFloor; strength++) {
+            int ticks = ConnectionMath.TicksForResidence(strength);
+            Assert.AreEqual(strength, ConnectionMath.ResidenceFrom(ticks), $"strength {strength}");
+        }
+    }
+
+    [TestMethod]
+    public void ResidenceTicksClampToAYear() {
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(0));
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(-5));
+        Assert.AreEqual(ConnectionMath.TicksPerYear, ConnectionMath.TicksForResidence(ConnectionMath.AncestryFloor));
+        Assert.AreEqual(ConnectionMath.TicksPerYear, ConnectionMath.TicksForResidence(999));
+    }
+
     /// <summary>
     ///     A native who has also lived there stays at 30. Residence and ancestry are two routes
     ///     to the same baseline, and Compose already takes the larger - this guards the pairing.

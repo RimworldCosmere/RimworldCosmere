@@ -139,6 +139,14 @@ public static class ConnectionMath {
         return (int)((long)ticksResident * AncestryFloor / TicksPerYear);
     }
 
+    /// <summary>How long a pawn must have lived here to read at this strength.</summary>
+    public static int TicksForResidence(int strength) {
+        if (strength <= 0) return 0;
+        if (strength >= AncestryFloor) return TicksPerYear;
+
+        return (int)((long)strength * TicksPerYear / AncestryFloor);
+    }
+
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>
     public static int FromEdge(float edgeValue) {
         return Clamp((int)global::System.Math.Round(edgeValue * Max));

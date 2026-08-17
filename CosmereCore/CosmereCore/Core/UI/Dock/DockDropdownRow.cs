@@ -5,13 +5,9 @@ using Verse;
 namespace Cosmere.Core.UI.Dock;
 
 /// <summary>
-///     A row that reads as a value and opens a menu when clicked.
+///     A dropdown row: displays a label and opens a menu when clicked.
+///     Generic utility for dock sections that need value selection.
 /// </summary>
-/// <remarks>
-///     Built out of the feruchemy dock's metalmind selector, which was the only one of these
-///     until duralumin needed a second. It knows a label, a tooltip and how to build a menu -
-///     nothing about what is being selected.
-/// </remarks>
 public static class DockDropdownRow {
     public const float Height = 20f;
 

@@ -9,7 +9,6 @@ public interface IConnectionLedger {
 
     float HeadroomPoints(Pawn pawn);
 
-    // Signed: negative takes Connection off the pawn, positive gives it back.
-    // Returns what actually moved, not what was asked.
+    // Signed, negative takes and positive gives; returns what moved, not what was asked.
     float Move(Pawn pawn, float points);
 }

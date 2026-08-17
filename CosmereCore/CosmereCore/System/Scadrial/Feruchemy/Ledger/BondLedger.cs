@@ -6,8 +6,7 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Ledger;
 
-// Alias must live inside the namespace body - Cosmere.System.Scadrial.Connection is a
-// sibling namespace, and it beats a compilation-unit-scoped alias for the bare name.
+// Must sit here, below the namespace - a sibling Cosmere.System.Scadrial.Connection wins over an outer-scoped alias.
 using Connection = Cosmere.Core.Comp.Game.Connection;
 
 /// <summary>
@@ -49,8 +48,7 @@ public class BondLedger : IConnectionLedger {
             ? BondDistribution.Drain(values, -points)
             : BondDistribution.Restore(values, points);
 
-        // AdjustConnection clamps Connection.Value itself, so read each edge before and
-        // after and sum the real differences rather than trusting the computed delta.
+        // AdjustConnection clamps Connection.Value, so sum real before/after differences, not the ask.
         float movedEdge = 0f;
         for (int i = 0; i < edges.Count; i++) {
             if (deltas[i] == 0f) continue;
@@ -60,7 +58,8 @@ public class BondLedger : IConnectionLedger {
             movedEdge += edges[i].Value - before;
         }
 
-        int movedPoints = ConnectionMath.FromEdge(Math.Abs(movedEdge));
+        // N edges, not one - scale by Max directly; FromEdge clamps to a single edge's 0-100 range.
+        int movedPoints = (int)Math.Round(Math.Abs(movedEdge) * ConnectionMath.Max);
 
         return points < 0 ? -movedPoints : movedPoints;
     }
@@ -72,8 +71,7 @@ public class BondLedger : IConnectionLedger {
         SpiritWeb? web = SpiritWeb.Instance;
         if (web == null) return edges;
 
-        // Collected into a list before anything writes back - GetConnections is a lazy
-        // yield over the same dictionary AdjustConnection can insert into.
+        // Materialized before any write - GetConnections yields lazily over the dictionary AdjustConnection inserts into.
         foreach (Connection connection in web.GetConnections(pawn)) {
             if (FarEnd(pawn, connection) is Shard) continue;
             edges.Add(connection);

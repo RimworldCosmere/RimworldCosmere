@@ -75,6 +75,26 @@ public class BondDistributionTests {
     }
 
     [TestMethod]
+    public void DrainFromAPoolAbove100PointsMovesThePoolNotACapAt100() {
+        (float moved, float[] deltas) = BondDistribution.Drain(new[] { 0.9f, 0.9f, 0.9f }, 300f);
+
+        Assert.AreEqual(270f, moved, Tolerance, "3 edges at 0.9 is 270 points available, not a 100-point cap.");
+        Assert.AreEqual(-0.9f, deltas[0], Tolerance);
+        Assert.AreEqual(-0.9f, deltas[1], Tolerance);
+        Assert.AreEqual(-0.9f, deltas[2], Tolerance);
+    }
+
+    [TestMethod]
+    public void RestoreToAPoolAbove100PointsMovesTheHeadroomNotACapAt100() {
+        (float moved, float[] deltas) = BondDistribution.Restore(new[] { 0.1f, 0.1f, 0.1f }, 300f);
+
+        Assert.AreEqual(270f, moved, Tolerance, "3 edges with 0.9 headroom each is 270 points, not a 100-point cap.");
+        Assert.AreEqual(0.9f, deltas[0], Tolerance);
+        Assert.AreEqual(0.9f, deltas[1], Tolerance);
+        Assert.AreEqual(0.9f, deltas[2], Tolerance);
+    }
+
+    [TestMethod]
     public void NoEdgeMovesOutsideItsRangeEvenWhenTheAskIsHuge() {
         (_, float[] drainDeltas) = BondDistribution.Drain(new[] { 0.3f, 0.2f }, 1000f);
         Assert.IsTrue(0.3f + drainDeltas[0] >= 0f);

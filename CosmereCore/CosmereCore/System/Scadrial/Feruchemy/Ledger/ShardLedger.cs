@@ -29,8 +29,7 @@ public class ShardLedger : IConnectionLedger {
     public float Move(Pawn pawn, float points) {
         if (pawn == null || points == 0f) return 0f;
 
-        // Grant takes an int and returns void, so read Earned before and after
-        // rather than trusting the ask landed whole - ConnectionMath clamps.
+        // Grant returns void and ConnectionMath clamps, so read Earned before and after instead of trusting the ask.
         int before = ConnectionUtility.Earned(pawn, shard);
         ConnectionUtility.Grant(pawn, shard, (int)Math.Round(points));
         int after = ConnectionUtility.Earned(pawn, shard);

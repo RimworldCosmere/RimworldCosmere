@@ -9,10 +9,18 @@ namespace Cosmere.Tests;
 internal sealed class FakeMetalmindSource : IMetalmindSource {
     private float stored;
 
-    public FakeMetalmindSource(float maxAmount, string sourceId = "fake", bool implanted = false) {
+    private readonly bool refuses;
+
+    public FakeMetalmindSource(
+        float maxAmount,
+        string sourceId = "fake",
+        bool implanted = false,
+        bool refusesTransfers = false
+    ) {
         MaxAmount = maxAmount;
         SourceId = sourceId;
         IsImplanted = implanted;
+        refuses = refusesTransfers;
     }
 
     public float MaxAmount { get; }
@@ -47,17 +55,31 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 
     // The clamp the carry exists to work around: asking for more than there is room for
     // silently loses the difference, so the caller has to be told what actually landed.
-    public void AddStored(float amount) {
+    public float AddStored(float amount) {
+        if (refuses) return 0f;
+
+        float before = stored;
         stored = Math.Min(MaxAmount, stored + amount);
+
+        return stored - before;
     }
 
-    public void ConsumeStored(float amount) {
+    public float ConsumeStored(float amount) {
+        if (refuses) return 0f;
+
+        float before = stored;
         stored = Math.Max(0f, stored - amount);
+
+        return before - stored;
     }
 
-    public void AddCompounded(float amount) { }
+    public float AddCompounded(float amount) {
+        return 0f;
+    }
 
-    public void ConsumeCompounded(float amount) { }
+    public float ConsumeCompounded(float amount) {
+        return 0f;
+    }
 }
 
 /// <summary>
@@ -130,5 +152,27 @@ public class MetalmindDistributionTests {
         FakeMetalmindSource band = new FakeMetalmindSource(10f, "band");
 
         Assert.AreEqual(0f, Store([band], 4f, "thing:burned-out"));
+    }
+
+    // A metalmind can refuse a transfer it looked able to take - Metalmind.AddStored bails on
+    // ValidateOwner, so a band another pawn owns has room and still moves nothing.
+    [TestMethod]
+    public void AMetalmindThatRefusesTheTransferReportsNothingMoved() {
+        FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);
+
+        Assert.AreEqual(0f, Store([foreign], 8f));
+        Assert.AreEqual(0f, foreign.StoredAmount);
+    }
+
+    // And it must not eat the remainder on its way past, or the metalmind behind it never
+    // sees the charge the refusing one declined.
+    [TestMethod]
+    public void ARefusingMetalmindDoesNotSwallowTheRemainder() {
+        FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);
+        FakeMetalmindSource own = new FakeMetalmindSource(10f, "own");
+
+        Assert.AreEqual(8f, Store([foreign, own], 8f));
+        Assert.AreEqual(0f, foreign.StoredAmount);
+        Assert.AreEqual(8f, own.StoredAmount);
     }
 }

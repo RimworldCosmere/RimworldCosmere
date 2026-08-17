@@ -44,7 +44,7 @@ public static class MetalmindDistribution {
         string target,
         float amount,
         Func<IMetalmindSource, bool> eligible,
-        Action<IMetalmindSource, float> apply,
+        Func<IMetalmindSource, float, float> apply,
         Func<IMetalmindSource, float> room
     ) {
         if (amount <= 0f) return 0f;
@@ -60,9 +60,14 @@ public static class MetalmindDistribution {
             float take = space < remaining ? space : remaining;
             if (take <= 0f) continue;
 
-            apply(sources[i], take);
-            remaining -= take;
-            moved += take;
+            // What it took, not what it was offered. A metalmind can look able to take a
+            // transfer and refuse it - Metalmind.AddStored bails on ValidateOwner - and counting
+            // the offer paid the pawn for charge that never landed.
+            float took = apply(sources[i], take);
+            if (took <= 0f) continue;
+
+            remaining -= took;
+            moved += took;
         }
 
         return moved;

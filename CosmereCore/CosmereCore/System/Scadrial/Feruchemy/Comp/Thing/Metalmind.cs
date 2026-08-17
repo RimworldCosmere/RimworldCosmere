@@ -152,32 +152,41 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    public void AddStored(float amount) {
-        if (!CanStore) return;
-        if (!ValidateOwner()) return;
+    public float AddStored(float amount) {
+        if (!CanStore) return 0f;
+        if (!ValidateOwner()) return 0f;
 
+        float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount - UsedMemorySpace);
+
+        return StoredAmount - before;
     }
 
-    public void ConsumeStored(float amount) {
-        if (!CanTap) return;
-        if (!ValidateOwner()) return;
+    public float ConsumeStored(float amount) {
+        if (!CanTap) return 0f;
+        if (!ValidateOwner()) return 0f;
 
+        float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
+
+        return before - StoredAmount;
     }
 
-    public void AddCompounded(float amount) {
-        if (!CanStore) return;
-        if (!ValidateOwner()) return;
+    public float AddCompounded(float amount) {
+        if (!CanStore) return 0f;
+        if (!ValidateOwner()) return 0f;
 
+        float before = CompoundedAmount;
         CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount - UsedMemorySpace);
+
+        return CompoundedAmount - before;
     }
 
     // Drawing compounded charge eats the metalmind that carried it. Capacity drops
     // by what was spent, so the two run out together.
-    public void ConsumeCompounded(float amount) {
-        if (!CanTapCompounded) return;
-        if (!ValidateOwner()) return;
+    public float ConsumeCompounded(float amount) {
+        if (!CanTapCompounded) return 0f;
+        if (!ValidateOwner()) return 0f;
 
         float spent = Mathf.Min(amount, TotalStored);
 
@@ -186,6 +195,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         StoredAmount -= spent - fromCompounded;
 
         capacityLostInt += spent;
+
+        return spent;
     }
 
     public bool CanFitMemory(float magnitude) {

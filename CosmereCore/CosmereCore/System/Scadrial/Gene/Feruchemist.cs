@@ -695,7 +695,7 @@ public class Feruchemist : Metalborn {
     private float Distribute(
         float amount,
         Func<IMetalmindSource, bool> eligible,
-        Action<IMetalmindSource, float> apply,
+        Func<IMetalmindSource, float, float> apply,
         Func<IMetalmindSource, float> room
     ) {
         // The target is read fresh every pass rather than cached, because a metalmind can

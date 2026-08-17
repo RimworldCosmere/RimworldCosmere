@@ -67,14 +67,22 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         }
     }
 
-    public void AddStored(float amount) {
-        if (!CanStore) return;
+    public float AddStored(float amount) {
+        if (!CanStore) return 0f;
+
+        float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt - compoundedAmountInt);
+
+        return storedAmountInt - before;
     }
 
-    public void ConsumeStored(float amount) {
-        if (!CanTap) return;
+    public float ConsumeStored(float amount) {
+        if (!CanTap) return 0f;
+
+        float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
+
+        return before - storedAmountInt;
     }
 
     // Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
@@ -84,9 +92,13 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
     }
 
-    public void AddCompounded(float amount) {
-        if (!CanStore) return;
+    public float AddCompounded(float amount) {
+        if (!CanStore) return 0f;
+
+        float before = compoundedAmountInt;
         compoundedAmountInt = Mathf.Clamp(compoundedAmountInt + amount, 0, maxAmountInt - storedAmountInt);
+
+        return compoundedAmountInt - before;
     }
 
     // Drawing compounded charge eats the metalmind that carried it. Capacity
@@ -94,8 +106,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     // entirely by compounding is used up exactly when it empties.
     // Spends the metalmind itself along with its charge. Capacity falls by what
     // was drawn, so the metal runs out exactly when the charge does.
-    public void ConsumeCompounded(float amount) {
-        if (!CanTapCompounded) return;
+    public float ConsumeCompounded(float amount) {
+        if (!CanTapCompounded) return 0f;
 
         float spent = Mathf.Min(amount, TotalStored);
 
@@ -104,6 +116,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         storedAmountInt -= spent - fromCompounded;
 
         maxAmountInt = Mathf.Max(0f, maxAmountInt - spent);
+
+        return spent;
     }
 
     public bool IsBurnedOut => maxAmountInt <= 0f;

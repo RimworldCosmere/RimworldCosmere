@@ -45,11 +45,11 @@ public interface IMetalmindSource {
     // What the target picker calls this one.
     string SourceLabel { get; }
 
-    void AddStored(float amount);
+    float AddStored(float amount);
 
-    void ConsumeStored(float amount);
+    float ConsumeStored(float amount);
 
-    void AddCompounded(float amount);
+    float AddCompounded(float amount);
 
-    void ConsumeCompounded(float amount);
+    float ConsumeCompounded(float amount);
 }

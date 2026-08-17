@@ -339,7 +339,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
             owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
 
-            // reconcile on load: never drop memories, trim compounded charge before stored to fit.
+            // loads over-full when compounding burnt capacity, or when a save predates quality scaling.
             float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);
             if (storedAmountInt + compoundedAmountInt > roomForCharge) {
                 compoundedAmountInt = Mathf.Max(0f, roomForCharge - storedAmountInt);

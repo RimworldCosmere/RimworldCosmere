@@ -55,8 +55,7 @@ public class SpikeBound : Verse.Gene {
             : pawn.health.hediffSet.GetNotMissingParts()
                 .FirstOrDefault(p => p.def == pawn.RaceProps.body.corePart.def);
 
-        // stealType is explicit: default int satisfies HemalurgicChargeData.isValid's IsHumanAttribute
-        // check only because it's enum position 0. reordering silently makes every koloss spike uncharged.
+        // stealType explicit: the default passes isValid only by IsHumanAttribute being enum 0, so a reorder uncharges every koloss spike.
         for (int i = 0; i < SpikeCount; i++) {
             HemalurgicImplantUtility.AddToUnifiedHediff(
                 pawn,

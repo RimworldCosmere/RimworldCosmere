@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Need;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
@@ -33,7 +34,7 @@ public class Feruchemist : Metalborn {
     private int metalmindsLastCachedTick = -1;
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
-    private float pendingChargeMoved;
+    private readonly ChargeLedger chargeLedger = new ChargeLedger();
 
     // The compounded pool has its own dial: below idle it taps, above idle it
     // compounds, burning allomantic reserve to fill itself.
@@ -273,6 +274,12 @@ public class Feruchemist : Metalborn {
     private HediffDef? permanentHediffDef =>
         cachedPermanentHediffDef ??= ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(metal);
 
+    // Nicrosil's charge is the pawn's own Investiture rather than a notional attribute, so
+    // the pawn sits at the far end of every transfer this gene makes.
+    private bool storesInvestiture => metal == MetallicArtsMetalDefOf.Nicrosil;
+
+    private Investiture? investitureNeed => storesInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
+
     public bool canTap {
         get {
             List<IMetalmindSource> mms = metalminds;
@@ -469,7 +476,6 @@ public class Feruchemist : Metalborn {
         Scribe_Values.Look(ref targetMetalmindId, "targetMetalmindId", string.Empty);
         Scribe_Values.Look(ref compounding, "compounding");
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
-        Scribe_Values.Look(ref pendingChargeMoved, "pendingChargeMoved");
     }
 
     public override void TickInterval(int delta) {
@@ -542,9 +548,9 @@ public class Feruchemist : Metalborn {
         if (ordinary > 0f) {
             float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
             if (targetValue > IdleTarget && canStore) {
-                pendingChargeMoved += AddToStore(perSecond);
+                chargeLedger.Stored(AddToStore(perSecond));
             } else if (targetValue < IdleTarget && canTap) {
-                pendingChargeMoved -= RemoveFromStore(perSecond);
+                chargeLedger.Tapped(RemoveFromStore(perSecond));
             }
         }
 
@@ -552,17 +558,36 @@ public class Feruchemist : Metalborn {
         // attribute. What makes it compounding is the burn on the way out, which
         // pays ten times over and consumes the metalmind with it.
         float compounded = SeverityForTarget(compoundedTargetValue);
-        if (compounded <= 0f) return;
+        if (compounded > 0f) {
+            float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
 
-        float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
-
-        if (compoundedTargetValue > IdleTarget) {
-            // Filling is ordinary storing. Nothing about the charge is special; the
-            // burn on the way out is what compounds it.
-            if (canStore) pendingChargeMoved += AddToStore(compoundedPerSecond);
-        } else if (canTapCompounded) {
-            pendingChargeMoved -= RemoveCompoundedFromStore(compoundedPerSecond);
+            if (compoundedTargetValue > IdleTarget) {
+                // Filling is ordinary storing. Nothing about the charge is special; the
+                // burn on the way out is what compounds it.
+                if (canStore) chargeLedger.Stored(AddToStore(compoundedPerSecond));
+            } else if (canTapCompounded) {
+                chargeLedger.Tapped(RemoveCompoundedFromStore(compoundedPerSecond));
+            }
         }
+
+        // Drained here rather than from a hediff, which compound-fill leaves the pawn
+        // without: the gene ticks whether or not anything is lit up on the health tab.
+        MirrorToInvestiture(chargeLedger.Drain());
+    }
+
+    // Nicrosil's charge is the pawn's own Investiture, so what the metalmind gains is
+    // exactly what the pawn gives up. Every other metal stores a notional attribute.
+    private void MirrorToInvestiture(float chargeMoved) {
+        if (chargeMoved == 0f) return;
+
+        Investiture? need = investitureNeed;
+        if (need == null) return;
+
+        need.CurLevel = Mathf.Clamp(
+            need.CurLevel - chargeMoved * ScadrialMetallurgyConstants.NicrosilBeuPerCharge,
+            0f,
+            need.MaxLevel
+        );
     }
 
     private void TickXPGain(int delta) {
@@ -581,15 +606,6 @@ public class Feruchemist : Metalborn {
                     Mathf.Lerp(1, 2, effectiveSeverity) * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval
                 );
         }
-    }
-
-    /// <summary>Charge moved since the last drain, positive into the metalmind and negative out.
-    /// Nicrosil reads it to keep the Investiture need conserved.</summary>
-    public float DrainChargeMoved() {
-        float moved = pendingChargeMoved;
-        pendingChargeMoved = 0f;
-
-        return moved;
     }
 
     public float AddToStore(float amount) {

@@ -7,9 +7,8 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 ///     direction.
 /// </summary>
 /// <remarks>
-///     Verse-free so the test host can load it. Storable is bounded by what the pawn holds and by
-///     the ledger's remaining room; Tappable is bounded by what the ledger has recorded and by the
-///     pawn's headroom to take it back.
+///     Verse-free so the test host can load it. Each direction is bounded at both ends: by what
+///     the pawn has, and by what the ledger has room for.
 /// </remarks>
 public static class ConnectionBudget {
     /// <summary>900 charge fills a band and equals 100 points.</summary>

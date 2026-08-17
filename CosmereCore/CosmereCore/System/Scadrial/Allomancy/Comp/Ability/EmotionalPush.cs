@@ -33,6 +33,27 @@ public abstract class EmotionalPush : CompAbilityEffect {
             return parent.GetStrength((Status)Math.Max(power, 1));
         }
     }
+
+    /// <summary>
+    ///     Whether a coppercloud over the target swallows this push.
+    /// </summary>
+    /// <remarks>
+    ///     Said out loud, unlike the aura's version of the same check. One deliberate cast that
+    ///     quietly does nothing reads as a broken ability, and the player has no other way to learn
+    ///     that the Smoker across the room is the reason.
+    /// </remarks>
+    protected bool Blocked(Pawn target) {
+        if (!Coppercloud.Hides(parent.pawn, target, parent.def.metal)) return false;
+
+        Messages.Message(
+            "CS_Coppercloud_Blocked".Translate(target.LabelShortCap.Named("TARGET")),
+            target,
+            MessageTypeDefOf.RejectInput,
+            false
+        );
+
+        return true;
+    }
 }
 
 public class InciteBreakProperties : CompProperties_AbilityEffect {
@@ -53,6 +74,7 @@ public class InciteBreak : EmotionalPush {
         base.Apply(target, dest);
 
         if (target.Pawn is not { } victim) return;
+        if (Blocked(victim)) return;
         if (victim.InMentalState) return;
 
         MentalBreakDef breakDef = MentalBreakDefOf.Berserk;
@@ -96,6 +118,7 @@ public class QuellBreak : EmotionalPush {
         base.Apply(target, dest);
 
         if (target.Pawn is not { } troubled) return;
+        if (Blocked(troubled)) return;
 
         MentalState? state = troubled.MentalState;
         if (state == null) return;

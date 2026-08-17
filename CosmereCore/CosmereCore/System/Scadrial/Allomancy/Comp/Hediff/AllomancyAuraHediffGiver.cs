@@ -16,6 +16,16 @@ using static Cosmere.Core.Mod;
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
 public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTypeHediff {
+    /// <summary>
+    ///     Whether the Allomancer is inside their own aura.
+    /// </summary>
+    /// <remarks>
+    ///     A Rioter does not riot themself, so this is off by default. A Smoker is standing in their
+    ///     own coppercloud by definition, and leaving them out made the one pawn burning copper the
+    ///     only pawn it failed to hide - and stopped two overlapping Smokers from ever holding each
+    ///     other's source, which is what made a doubled cloud read as a single one.
+    /// </remarks>
+    public bool affectsSelf;
     public HediffDef? hediff;
     public HediffDef? hediffFriendly;
     public HediffDef? hediffHostile;
@@ -50,6 +60,16 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
+    /// <summary>
+    ///     How far the aura carries, rounded the way GetCellsAround rounds it so that anything
+    ///     asking how big the aura is gets the size it actually applied.
+    /// </summary>
+    public float Reach => Mathf.Round(props.radius * base.parent.Severity);
+
+    /// <summary>Zinc and brass reach for the mind, which is the reach copper shuts.</summary>
+    private bool isEmotional =>
+        parent.metal == MetallicArtsMetalDefOf.Zinc || parent.metal == MetallicArtsMetalDefOf.Brass;
+
     // The first source ability, or none. Written as an explicit first read
     // rather than a foreach that returns on entry, which read as a loop but
     // could never take a second pass.
@@ -76,7 +96,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
 
         base.CompPostTickInterval(ref severityAdjustment, delta);
-        float radius = props.radius * base.parent.Severity;
+        float radius = Reach;
 
         if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
             CircleRenderer.Add(this, new CircleToRender(parent.pawn, radius, parent.metal.transparentLineColor));
@@ -87,6 +107,10 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
 
         HashSet<Pawn> nearbyPawns = [];
+        if (props.affectsSelf) {
+            nearbyPawns.Add(base.parent.pawn);
+        }
+
         foreach (IntVec3 cell in base.parent.pawn.GetCellsAround(radius, true)) {
             Pawn? cellPawn = cell.GetFirstPawn(base.parent.pawn.Map);
             if (cellPawn != null && cellPawn != base.parent.pawn) {
@@ -162,7 +186,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
     /// </remarks>
     private void TrySeize(Pawn? target) {
         if (target == null || ability == null) return;
-        if (parent.metal != MetallicArtsMetalDefOf.Zinc && parent.metal != MetallicArtsMetalDefOf.Brass) return;
+        if (!isEmotional) return;
+        if (Coppercloud.Hides(Pawn, target, parent.metal)) return;
         if (EmotionalResistance.Of(target) <= 0f) return;
         if (KolossControl.IsHeld(target)) return;
 
@@ -172,6 +197,12 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private void Act(Pawn? target) {
         if (target?.mindState == null || target.Dead || ability == null) {
+            return;
+        }
+
+        // Silent, and it has to be. This runs once a second on everyone in range, so a Rioter
+        // standing beside a Smoker would otherwise narrate the same refusal forever.
+        if (isEmotional && Coppercloud.Hides(Pawn, target, parent.metal)) {
             return;
         }
 

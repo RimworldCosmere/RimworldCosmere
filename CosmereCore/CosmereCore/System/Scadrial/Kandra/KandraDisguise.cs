@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cosmere.Core;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Extension;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -71,6 +72,9 @@ public static class KandraDisguise {
             if (seeker.genes == null) continue;
             if (!seeker.IsBurning(bronze)) continue;
             if (!seeker.Position.InHorDistOf(disguised.Position, BronzeRange(seeker))) continue;
+
+            // A Smoker standing over the kandra is the one way to walk it past a Seeker.
+            if (Coppercloud.Hides(seeker, disguised, MetallicArtsMetalDefOf.Bronze)) continue;
 
             return true;
         }

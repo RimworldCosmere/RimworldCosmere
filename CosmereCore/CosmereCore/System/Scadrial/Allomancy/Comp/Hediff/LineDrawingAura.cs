@@ -5,6 +5,7 @@ using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Util;
 using UnityEngine;
 using Verse;
 using static Cosmere.Core.Mod;
@@ -87,9 +88,18 @@ public abstract class LineDrawingAura : HediffComp {
         }
 
         LineRenderer.Clear(this);
+
+        // Copper hides pulses and metal lines alike, so a burn weaker than the cloud it is looking
+        // into finds nothing there. Measured once for the whole sweep - it is one burn, and asking
+        // per cell would ask a thousand times for the same answer.
+        bool cloudy = Coppercloud.AnyOn(parent.pawn.Map);
+        float senseStrength = cloudy ? Coppercloud.BurnStrengthOf(parent.pawn, metal) : 0f;
+
         foreach (IntVec3 cell in parent.pawn.GetCellsAround(radius)) {
             IEnumerable<Verse.Thing> thingsToDrawInCell = GetThingsToDrawInCell(cell, parent.pawn.Map);
             foreach (Verse.Thing thing in thingsToDrawInCell) {
+                if (cloudy && Coppercloud.Hides(thing, senseStrength)) continue;
+
                 LineRenderer.Add(this, GetLineToRender(thing));
             }
         }

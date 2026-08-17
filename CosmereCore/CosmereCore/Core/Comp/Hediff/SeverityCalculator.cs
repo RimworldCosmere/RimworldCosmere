@@ -2,6 +2,7 @@ using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Hediff;
+using Cosmere.Core.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,6 +12,16 @@ namespace Cosmere.Core.Comp.Hediff;
 public class SeverityCalculatorProperties : HediffCompProperties {
     public float decayAmount = 0.05f;
     public int decayInterval = GenTicks.TicksPerRealSecond;
+
+    /// <summary>
+    ///     Each further source counts for half of the one before it, instead of adding whole.
+    /// </summary>
+    /// <remarks>
+    ///     For effects several Allomancers can lay on one pawn at once, where the honest sum climbs
+    ///     without limit and a colony could stack the effect to absurdity by rostering enough
+    ///     bodies. Off everywhere else, so nothing that already adds whole quietly changes.
+    /// </remarks>
+    public bool diminishingStack = false;
     public bool onPostAdd = false;
     public bool onStatusChange = true;
     public bool onTickInterval = false;
@@ -31,9 +42,19 @@ public class SeverityCalculator<TGene> : HediffComp
     public float severity {
         get {
             if (!severityDirty) return cachedSeverity;
+
             float total = parent.ExtraSeverity;
-            foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
-                total += source.GetStrength();
+            if (props.diminishingStack) {
+                List<float> sources = [];
+                foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
+                    sources.Add(source.GetStrength());
+                }
+
+                total += DiminishingStack.Combine(sources);
+            } else {
+                foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
+                    total += source.GetStrength();
+                }
             }
 
             cachedSeverity = total;

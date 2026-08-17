@@ -31,6 +31,7 @@ public class SeizeKoloss : EmotionalPush {
         base.Apply(target, dest);
 
         if (target.Pawn is not { } koloss) return;
+        if (Blocked(koloss)) return;
 
         AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, Reach, parent.def.metal, parent.def);
         if (report.Accepted) {

@@ -9,6 +9,14 @@
                 <hediff>Cosmere_Scadrial_Hediff_CopperCloud</hediff>
                 <moteDef>Cosmere_Scadrial_Mote_CopperCloud</moteDef>
                 <verb>enshrouded</verb>
+                <!-- A Smoker stands in their own cloud. Without this they were the one pawn the
+                     cloud did not hide, and two overlapping Smokers never held each other's
+                     source, so a doubled cloud measured as a single one. -->
+                <affectsSelf>true</affectsSelf>
+                <!-- Wider than the 12 every other aura inherits. A coppercloud is meant to cover a
+                     room rather than a Soother's arm's length, and a Smoker who reaches no further
+                     than the Rioter beside them protects nobody. -->
+                <radius>18</radius>
             </li>
         </comps>
         <modExtensions>
@@ -23,7 +31,15 @@
         <label>enshrouded in copper</label>
         <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to sources of Investiture.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
-        <comps>
+        <!-- Redeclared rather than appended, because the severity calculator inherited from the
+             abstract adds every Smoker whole and this one must not. Inherit="False" drops the
+             parents' comps, so both of theirs are restated here. -->
+        <comps Inherit="False">
+            <li Class="Cosmere.Core.Comp.Hediff.MentalBreakHandlerProperties" />
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+                <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+                <diminishingStack>true</diminishingStack>
+            </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Copper_Clouded</thought>
                 <moodOffset>1</moodOffset>

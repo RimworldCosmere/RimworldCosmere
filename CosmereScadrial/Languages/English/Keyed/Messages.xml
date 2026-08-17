@@ -85,4 +85,5 @@
     <CS_Kandra_Slipped>Something about {PAWN} was wrong for a moment. The wrong word, a joint bending the way no joint does.\n\nWhoever saw it will not forget, and the shape is no longer worth wearing here.</CS_Kandra_Slipped>
     <CS_KolossRite_Title>A koloss made</CS_KolossRite_Title>
     <CS_KolossRite>{PAWN} was bound, and four spikes went in at once. What stood up afterwards is not what was tied down.</CS_KolossRite>
+    <CS_Coppercloud_Blocked>{TARGET} stands inside a coppercloud. The pulse reaches them and finds nothing to take hold of.</CS_Coppercloud_Blocked>
 </LanguageData>

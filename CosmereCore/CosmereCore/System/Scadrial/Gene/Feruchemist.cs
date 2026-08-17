@@ -39,15 +39,13 @@ public class Feruchemist : Metalborn {
     // compounds, burning allomantic reserve to fill itself.
     public float compoundedTargetValue = IdleTarget;
 
-    // Every metalmind, which is what a pawn carrying a dozen wants by default.
-    public const string TargetAll = "";
+    // The target vocabulary lives with the matcher that reads it. These keep the gene's
+    // own callers spelling it the way they always have.
+    public const string TargetAll = MetalmindDistribution.TargetAll;
 
-    // Worn and carried metalminds only. Safe to draw on, since none of them can
-    // be compounded and so none of them can be burned away.
-    public const string TargetExternal = "group:external";
+    public const string TargetExternal = MetalmindDistribution.TargetExternal;
 
-    // Implanted metalminds only, which is everything compounding can reach.
-    public const string TargetInternal = "group:internal";
+    public const string TargetInternal = MetalmindDistribution.TargetInternal;
 
     // Which metalmind the dials act on: one of the group tokens above, or a
     // single metalmind's SourceId.
@@ -126,18 +124,7 @@ public class Feruchemist : Metalborn {
     }
 
     public static bool IsGroupTarget(string target) {
-        return target is TargetAll or TargetExternal or TargetInternal;
-    }
-
-    // A target that no longer resolves falls through to every metalmind rather
-    // than quietly moving nothing.
-    private static bool MatchesTarget(IMetalmindSource source, string target) {
-        return target switch {
-            TargetAll => true,
-            TargetInternal => source.IsImplanted,
-            TargetExternal => !source.IsImplanted,
-            _ => source.SourceId == target,
-        };
+        return MetalmindDistribution.IsGroupTarget(target);
     }
 
     // A metal is declared twice - once as MetalDef and again as the richer
@@ -291,7 +278,7 @@ public class Feruchemist : Metalborn {
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
-                if (!MatchesTarget(mms[i], target)) continue;
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
                 if (mms[i].CanTap) return true;
             }
 
@@ -304,7 +291,7 @@ public class Feruchemist : Metalborn {
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
-                if (!MatchesTarget(mms[i], target)) continue;
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
                 if (mms[i].CanTapCompounded) return true;
             }
 
@@ -317,7 +304,7 @@ public class Feruchemist : Metalborn {
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
-                if (!MatchesTarget(mms[i], target)) continue;
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
                 if (mms[i].CanStoreCompounded) return true;
             }
 
@@ -334,7 +321,7 @@ public class Feruchemist : Metalborn {
             List<IMetalmindSource> mms = metalminds;
             string target = targetMetalmindId;
             for (int i = 0; i < mms.Count; i++) {
-                if (!MatchesTarget(mms[i], target)) continue;
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
                 if (mms[i].CanStore) return true;
             }
 
@@ -641,36 +628,15 @@ public class Feruchemist : Metalborn {
         cachedMetalminds = null;
     }
 
-    // Carries the remainder across sources. Dumping the full amount into the first
-    // eligible metalmind let its clamp discard the overflow silently.
     private float Distribute(
         float amount,
         Func<IMetalmindSource, bool> eligible,
         Action<IMetalmindSource, float> apply,
         Func<IMetalmindSource, float> room
     ) {
-        if (amount <= 0f) return 0f;
-
-        float moved = 0f;
-        float remaining = amount;
-        List<IMetalmindSource> mms = metalminds;
-
-        // Resolved every pass rather than cached: a metalmind can burn out mid-tick,
-        // and a target that no longer exists falls back to spreading the charge.
-        string target = targetMetalmindId;
-        for (int i = 0; i < mms.Count && remaining > 0f; i++) {
-            if (!MatchesTarget(mms[i], target)) continue;
-            if (!eligible(mms[i])) continue;
-
-            float take = Mathf.Min(room(mms[i]), remaining);
-            if (take <= 0f) continue;
-
-            apply(mms[i], take);
-            remaining -= take;
-            moved += take;
-        }
-
-        return moved;
+        // The target is read fresh every pass rather than cached: a metalmind can burn out
+        // mid-tick, and a target that no longer exists falls back to spreading the charge.
+        return MetalmindDistribution.Carry(metalminds, targetMetalmindId, amount, eligible, apply, room);
     }
 
     public float RemoveFromStore(float amount) {

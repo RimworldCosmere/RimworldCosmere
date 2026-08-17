@@ -317,6 +317,24 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
+    ///     A pawn who already has residence ticks and takes a delta near int.MaxValue must clamp,
+    ///     not wrap negative from 32-bit overflow on the addition.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceTicksClampInsteadOfOverflowingOnALargeDelta() {
+        Assert.AreEqual(
+            ConnectionMath.TicksPerYear,
+            ConnectionMath.ClampResidenceTicks(100, int.MaxValue),
+            "A huge positive delta must clamp at the ceiling, not wrap past it."
+        );
+        Assert.AreEqual(
+            0,
+            ConnectionMath.ClampResidenceTicks(100, int.MinValue),
+            "A huge negative delta must clamp at zero."
+        );
+    }
+
+    /// <summary>
     ///     A native who has also lived there stays at 30. Residence and ancestry are two routes
     ///     to the same baseline, and Compose already takes the larger - this guards the pairing.
     /// </summary>

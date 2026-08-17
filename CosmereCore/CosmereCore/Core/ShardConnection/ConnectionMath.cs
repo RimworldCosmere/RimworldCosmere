@@ -147,6 +147,14 @@ public static class ConnectionMath {
         return (int)((long)strength * TicksPerYear / AncestryFloor);
     }
 
+    /// <summary>Adds delta to had and clamps to [0, TicksPerYear] without overflowing on a large delta.</summary>
+    public static int ClampResidenceTicks(int had, int delta) {
+        long next = (long)had + delta;
+        if (next < 0) return 0;
+
+        return next > TicksPerYear ? TicksPerYear : (int)next;
+    }
+
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>
     public static int FromEdge(float edgeValue) {
         return Clamp((int)global::System.Math.Round(edgeValue * Max));

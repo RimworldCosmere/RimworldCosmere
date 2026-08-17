@@ -117,4 +117,79 @@ public class ChargeAttributionTests {
 
         Assert.AreEqual(start - drained, ChargeAttribution.Total(map), Tolerance);
     }
+
+    [TestMethod]
+    public void DrainNamedTakesOnlyFromThatEntryWhenItHasEnough() {
+        Dictionary<string, float> map = Map(30f, 30f, 40f);
+
+        float drained = ChargeAttribution.DrainNamed(map, "Residence", 20f);
+
+        Assert.AreEqual(20f, drained, Tolerance);
+        Assert.AreEqual(10f, map["Residence"], Tolerance);
+        Assert.AreEqual(30f, map["Bonds"], Tolerance);
+        Assert.AreEqual(40f, map["Shard"], Tolerance);
+    }
+
+    [TestMethod]
+    public void DrainNamedRemovesTheKeyWhenItExactlyEmptiesIt() {
+        Dictionary<string, float> map = Map(30f, 30f, 40f);
+
+        ChargeAttribution.DrainNamed(map, "Residence", 30f);
+
+        Assert.IsFalse(map.ContainsKey("Residence"));
+    }
+
+    // Residence only holds 10 of the 50 asked; the other 40 drains from the rest, like Drain.
+    [TestMethod]
+    public void DrainNamedPullsAnyOverflowFromTheRestOfTheMapProportionally() {
+        Dictionary<string, float> map = Map(10f, 30f, 90f);
+
+        float drained = ChargeAttribution.DrainNamed(map, "Residence", 50f);
+
+        Assert.AreEqual(50f, drained, Tolerance);
+        Assert.IsFalse(map.ContainsKey("Residence"), "Residence's own 10 is gone entirely.");
+        Assert.AreEqual(30f - 30f * (40f / 120f), map["Bonds"], Tolerance);
+        Assert.AreEqual(90f - 90f * (40f / 120f), map["Shard"], Tolerance);
+    }
+
+    [TestMethod]
+    public void DrainNamedNeverLeavesTheMapTotalAboveWhatWasRemoved() {
+        Dictionary<string, float> map = Map(10f, 30f, 90f);
+        float start = ChargeAttribution.Total(map);
+
+        float drained = ChargeAttribution.DrainNamed(map, "Residence", 50f);
+
+        Assert.AreEqual(start - drained, ChargeAttribution.Total(map), Tolerance);
+    }
+
+    [TestMethod]
+    public void DrainNamedOnAnUnattributedKeyPullsEntirelyFromTheRest() {
+        Dictionary<string, float> map = Map(0f, 40f, 60f);
+        map.Remove("Residence");
+
+        float drained = ChargeAttribution.DrainNamed(map, "Residence", 25f);
+
+        Assert.AreEqual(25f, drained, Tolerance);
+        Assert.IsFalse(map.ContainsKey("Residence"));
+        Assert.AreEqual(75f, ChargeAttribution.Total(map), Tolerance);
+    }
+
+    [TestMethod]
+    public void DrainNamedAskingMoreThanTheWholeMapHoldsReportsWhatMoved() {
+        Dictionary<string, float> map = Map(10f, 10f, 0f);
+
+        float drained = ChargeAttribution.DrainNamed(map, "Residence", 1000f);
+
+        Assert.AreEqual(20f, drained, Tolerance, "Only the 20 the map held moved, not the 1000 asked.");
+        Assert.AreEqual(0, map.Count);
+    }
+
+    [TestMethod]
+    public void DrainNamedWithNothingToDrainIsANoOp() {
+        Dictionary<string, float> map = Map(30f, 30f, 40f);
+
+        Assert.AreEqual(0f, ChargeAttribution.DrainNamed(map, "Residence", 0f));
+        Assert.AreEqual(0f, ChargeAttribution.DrainNamed(map, "Residence", -5f));
+        Assert.AreEqual(30f, map["Residence"], Tolerance);
+    }
 }

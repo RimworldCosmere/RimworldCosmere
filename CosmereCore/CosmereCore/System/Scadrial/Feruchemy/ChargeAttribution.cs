@@ -48,4 +48,21 @@ public static class ChargeAttribution {
 
         return amount;
     }
+
+    /// <summary>Removes <paramref name="amount" /> from <paramref name="key" /> first; anything past that entry's balance drains from the rest of the map like <see cref="Drain" />. Returns what was actually removed.</summary>
+    public static float DrainNamed(Dictionary<string, float> map, string key, float amount) {
+        amount = Math.Max(0f, amount);
+        if (amount <= 0f) return 0f;
+
+        map.TryGetValue(key, out float existing);
+        float fromNamed = Math.Min(existing, amount);
+        float remainder = existing - fromNamed;
+        if (remainder <= 0f) map.Remove(key);
+        else map[key] = remainder;
+
+        float overflow = amount - fromNamed;
+        float fromRest = overflow > 0f ? Drain(map, overflow) : 0f;
+
+        return fromNamed + fromRest;
+    }
 }

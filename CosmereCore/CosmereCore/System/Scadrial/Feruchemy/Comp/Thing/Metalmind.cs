@@ -30,8 +30,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
 
-    // Keyed by DuraluminLedger's member name. Only duralumin metalminds ever gain
-    // an entry - every other metal calls AddStored/ConsumeStored with no ledger.
+    // Keyed by DuraluminLedger's member name; empty for every metal but duralumin.
     private Dictionary<string, float> chargeByLedger = [];
 
     public Pawn? owner { get; private set; }
@@ -224,16 +223,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     private void RecordConsumed(DuraluminLedger ledger, float moved) {
-        string key = ledger.ToString();
-        if (!chargeByLedger.TryGetValue(key, out float existing)) return;
-
-        float remaining = Mathf.Max(0f, existing - moved);
-        if (remaining <= 0f) chargeByLedger.Remove(key);
-        else chargeByLedger[key] = remaining;
+        ChargeAttribution.DrainNamed(chargeByLedger, ledger.ToString(), moved);
     }
 
-    // Merges another metalmind's attribution in, already scaled by the caller to
-    // what actually transferred - used when explanting hands charge to a fresh item.
+    // Merges in attribution already scaled by the caller - used on explant handover.
     public void ReceiveAttribution(Dictionary<string, float> transferred) {
         foreach (KeyValuePair<string, float> pair in transferred) {
             chargeByLedger.TryGetValue(pair.Key, out float existing);
@@ -366,8 +359,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    // Duralumin only, run after the clamp above. Drops charge no ledger claims, then
-    // rescales the map to match if the clamp shrank storedAmountInt without touching it.
+    // Duralumin only, after the clamp above: drops unclaimed charge, then rescales.
     private void ReconcileAttribution() {
         if (Metal?.defName != "Duralumin") return;
 

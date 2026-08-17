@@ -15,8 +15,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     private float compoundedAmountInt;
     private float storedAmountInt;
 
-    // Keyed by DuraluminLedger's member name. Only duralumin metalminds ever gain
-    // an entry - every other metal calls AddStored/ConsumeStored with no ledger.
+    // Keyed by DuraluminLedger's member name; empty for every metal but duralumin.
     private Dictionary<string, float> chargeByLedger = [];
 
     public void ExposeData() {
@@ -113,12 +112,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     }
 
     private void RecordConsumed(DuraluminLedger ledger, float moved) {
-        string key = ledger.ToString();
-        if (!chargeByLedger.TryGetValue(key, out float existing)) return;
-
-        float remaining = Mathf.Max(0f, existing - moved);
-        if (remaining <= 0f) chargeByLedger.Remove(key);
-        else chargeByLedger[key] = remaining;
+        ChargeAttribution.DrainNamed(chargeByLedger, ledger.ToString(), moved);
     }
 
     // Copy of the current attribution map, for handing charge across on explant.
@@ -136,8 +130,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         ReconcileAttribution();
     }
 
-    // Duralumin only. The clamp above never touches storedAmountInt, so this mostly
-    // discards pre-feature charge; rescale is a no-op safety net for other drift.
+    // Duralumin only, after the clamp above: drops unclaimed charge, then rescales.
     private void ReconcileAttribution() {
         if (Metal?.defName != "Duralumin") return;
 

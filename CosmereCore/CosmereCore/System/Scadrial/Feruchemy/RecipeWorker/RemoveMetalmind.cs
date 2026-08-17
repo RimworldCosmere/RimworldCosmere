@@ -58,8 +58,7 @@ public class RemoveMetalmind : Recipe_Surgery {
             if (removed.StoredAmount > 0f) {
                 float accepted = metalmindComp.AddStored(removed.StoredAmount);
 
-                // AddStored clamps to the item's free space, which may differ from what
-                // the implant held, so attribution is scaled to what actually landed.
+                // Scaled to what AddStored actually accepted, not to what the implant held.
                 Dictionary<string, float> transferred = removed.AttributionSnapshot();
                 ChargeAttribution.Rescale(transferred, accepted);
                 metalmindComp.ReceiveAttribution(transferred);

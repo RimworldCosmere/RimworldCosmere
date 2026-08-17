@@ -53,7 +53,6 @@ public interface IMetalmindSource {
 
     float ConsumeCompounded(float amount);
 
-    // Charge on this metalmind attributed to that ledger. 0 for a ledger it has
-    // never stored charge under.
+    // Charge on this metalmind attributed to that ledger; 0 if it never has.
     float StoredFor(DuraluminLedger ledger);
 }

@@ -39,6 +39,12 @@ public static class ScadrialMetallurgyConstants {
     public const float BreathEquivalentUnitsPerMetalmindUnit =
         BreathEquivalentUnitsPerMetalUnit / MetalmindUnitsPerMetalUnit;
 
+    /**
+     * A nicrosilmind holds Investiture itself rather than an attribute, so it converts higher than
+     * any other metalmind. A full band clears the first Heightening with a little to spare.
+     */
+    public const float NicrosilBeuPerCharge = 0.125f;
+
     public const float VialMetalAmount = 1f;
     public const float RawMetalMetalAmount = 1f;
 

@@ -9,9 +9,9 @@ namespace Cosmere.Core.ShardConnection;
 ///     How long each pawn has lived on the save's world.
 /// </summary>
 /// <remarks>
-///     A pawn who was not born to this world grows into it, reaching the ancestry floor after ten
-///     years. It is what lets an off-world refugee eventually burn atium without ever having been
-///     Scadrian.
+///     A pawn who was not born to this world grows into it, passing the ancestry floor at about
+///     six and a half years and reaching residence's own cap at ten. It is what lets an
+///     off-world refugee eventually burn atium without ever having been Scadrian.
 ///     <para>
 ///         Only a real shardworld naturalises anyone. The cross-world sentinel is nobody's home -
 ///         living on a planet no Shard ever settled teaches you nothing, so a Crashlanded colony
@@ -82,14 +82,22 @@ public class ResidenceTracker : Verse.GameComponent {
 
     public override void GameComponentTick() {
         if (Find.TickManager.TicksGame % TickInterval != 0) return;
-        if (NaturalisingWorld() == null) return;
+
+        CosmereWorldDef? world = NaturalisingWorld();
+        if (world == null) return;
 
         List<Verse.Map> maps = Find.Maps;
         for (int m = 0; m < maps.Count; m++) {
             List<Pawn> pawns = maps[m].mapPawns.FreeColonistsAndPrisonersSpawned;
             for (int i = 0; i < pawns.Count; i++) {
-                int id = pawns[i].thingIDNumber;
-                ticksByPawn[id] = (ticksByPawn.TryGetValue(id, out int had) ? had : 0) + TickInterval;
+                Pawn pawn = pawns[i];
+                int id = pawn.thingIDNumber;
+                if (ticksByPawn.TryGetValue(id, out int had)) {
+                    ticksByPawn[id] = had + TickInterval;
+                } else {
+                    bool native = world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
+                    ticksByPawn[id] = ConnectionMath.SeedTicksForAge(pawn.ageTracker.AgeBiologicalTicks, native);
+                }
             }
         }
     }

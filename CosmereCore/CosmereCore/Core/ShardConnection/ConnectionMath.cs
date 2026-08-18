@@ -155,6 +155,13 @@ public static class ConnectionMath {
         return (int)((long)strength * TicksToFullResidence / ResidenceCap);
     }
 
+    /// <summary>What a pawn has already banked by existing, which is nothing unless they are local.</summary>
+    public static int SeedTicksForAge(long ageTicks, bool native) {
+        if (!native || ageTicks <= 0) return 0;
+
+        return ageTicks >= TicksToFullResidence ? TicksToFullResidence : (int)ageTicks;
+    }
+
     /// <summary>Adds delta to had and clamps to [0, TicksToFullResidence] without overflowing.</summary>
     public static int ClampResidenceTicks(int had, int delta) {
         long next = (long)had + delta;

@@ -126,12 +126,82 @@ public class ConnectionOffsetTests {
     public void TheOffsetStoreSurvivesLoadingASaveThatHeldNothing() {
         string source = Source("ConnectionOffsets.cs");
 
-        int look = source.IndexOf("Scribe_Collections.Look(ref heldByPawn", StringComparison.Ordinal);
+        int look = source.IndexOf("Scribe_Collections.Look(ref scribed", StringComparison.Ordinal);
         Assert.IsTrue(look >= 0, "The offsets are no longer scribed, so nothing anyone stores survives a save.");
         Assert.IsTrue(
-            source.IndexOf("heldByPawn ??= []", StringComparison.Ordinal) > look,
+            source.IndexOf("scribed ??= []", StringComparison.Ordinal) > look,
             "The null guard must follow the Look, or loading a save with no offsets throws."
         );
+    }
+
+    /// <summary>
+    ///     Dropping an offset row hands a pawn back a tie whose charge is still stored elsewhere, so
+    ///     this store must never prune the way ResidenceTracker does. The signs are opposite.
+    /// </summary>
+    [TestMethod]
+    public void TheOffsetStoreNeverPrunesDepartedPawns() {
+        string source = Source("ConnectionOffsets.cs");
+
+        Assert.IsFalse(
+            source.Contains("Prune", StringComparison.Ordinal),
+            "Pruning an offset refunds a banked tie. Read the note in ExposeData before adding it back."
+        );
+        Assert.IsFalse(
+            source.Contains("mapPawns", StringComparison.Ordinal),
+            "Nothing here should care whether a pawn is still on a map; leaving does not clear a debt."
+        );
+    }
+
+    /// <summary>
+    ///     A grant tops a pawn up to a level. Measured against the reduced reading it pays out the
+    ///     set-aside portion a second time: composed 40, set aside 39, drink a 40-grant metal, read 79.
+    /// </summary>
+    [TestMethod]
+    public void ATopUpMeasuresAgainstTheTieIncludingWhatWasSetAside() {
+        string source = Source("ConnectionUtility.cs");
+
+        int grantFromMetal = source.IndexOf("public static void GrantFromMetal(", StringComparison.Ordinal);
+        Assert.IsTrue(grantFromMetal >= 0, "GrantFromMetal is gone; the top-up rule lives somewhere else now.");
+
+        int shortfall = source.IndexOf("int shortfall =", grantFromMetal, StringComparison.Ordinal);
+        Assert.IsTrue(shortfall > grantFromMetal, "GrantFromMetal no longer computes a shortfall.");
+
+        string line = source.Substring(shortfall, source.IndexOf('\n', shortfall) - shortfall);
+        Assert.IsTrue(
+            line.Contains("StrengthBeforeOffset(", StringComparison.Ordinal),
+            $"The shortfall must count what is held elsewhere, or setting a tie aside earns a grant twice: {line}"
+        );
+    }
+
+    /// <summary>
+    ///     Both readings compose the same Harmony rules over different bases. Two copies of those two
+    ///     branches would drift, and the drift would only show on Ruin, Preservation and Harmony.
+    /// </summary>
+    [TestMethod]
+    public void TheTwoReadingsShareOneHarmonyBody() {
+        string source = Source("ConnectionUtility.cs");
+
+        Assert.AreEqual(
+            1,
+            Occurrences(source, "ConnectionMath.HarmonyFrom("),
+            "The Harmony derivation is duplicated. Parameterise the one body instead."
+        );
+        Assert.AreEqual(
+            2,
+            Occurrences(source, "StrengthFrom(pawn, shard,"),
+            "StrengthOf and StrengthBeforeOffset must both delegate to the shared body."
+        );
+    }
+
+    private static int Occurrences(string source, string needle) {
+        int count = 0;
+        for (int at = source.IndexOf(needle, StringComparison.Ordinal);
+             at >= 0;
+             at = source.IndexOf(needle, at + needle.Length, StringComparison.Ordinal)) {
+            count++;
+        }
+
+        return count;
     }
 
     private static string Source(string file) {

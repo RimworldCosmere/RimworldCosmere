@@ -12,23 +12,27 @@ namespace Cosmere.Core.ShardConnection;
 ///     pawn and Shard, subtracted from the composed total, which makes the whole tie movable
 ///     without any of its parts having to become storage.
 ///     <para>
-///         Keys are strings because that is the scribe shape this codebase has proven. A held
-///         amount is meaningless without the Shard it was taken from, so the Shard is in the key.
+///         Live rows are keyed by a struct so a read allocates nothing. Saved rows are keyed by a
+///         string, which is the scribe shape this codebase has proven, and projected on the way.
 ///     </para>
 /// </remarks>
 public class ConnectionOffsets : Verse.GameComponent {
-    private Dictionary<string, float> heldByPawn = [];
+    private readonly Dictionary<(int, string), float> heldByPawn = [];
+
+    private Dictionary<string, float> scribed = [];
 
     public ConnectionOffsets(Verse.Game game) { }
 
     public override void ExposeData() {
         base.ExposeData();
 
-        // Pawns who left the story stop mattering, and their entries would accumulate forever.
-        if (Scribe.mode == LoadSaveMode.Saving) Prune();
+        // Deliberately never pruned: dropping a row hands a pawn back a tie whose charge is still stored.
+        if (Scribe.mode == LoadSaveMode.Saving) ToScribeShape();
 
-        Scribe_Collections.Look(ref heldByPawn, "connectionOffsets", LookMode.Value, LookMode.Value);
-        heldByPawn ??= [];
+        Scribe_Collections.Look(ref scribed, "connectionOffsets", LookMode.Value, LookMode.Value);
+        scribed ??= [];
+
+        if (Scribe.mode == LoadSaveMode.LoadingVars) FromScribeShape();
     }
 
     /// <summary>How much of this pawn's tie to this Shard is held elsewhere, on the 0-100 scale.</summary>
@@ -49,28 +53,27 @@ public class ConnectionOffsets : Verse.GameComponent {
 
     /// <summary>Null outside a running game, which is the right answer: nothing is held anywhere yet.</summary>
     private static ConnectionOffsets? Store() {
-        return Current.Game?.GetComponent<ConnectionOffsets>();
+        return GameComponentCache<ConnectionOffsets>.Get();
     }
 
-    private static string KeyFor(Pawn pawn, ShardDef shard) {
-        return pawn.thingIDNumber + ":" + shard.defName;
+    private static (int, string) KeyFor(Pawn pawn, ShardDef shard) {
+        return (pawn.thingIDNumber, shard.defName);
     }
 
-    /// <summary>The pawn half of a key, or -1 for anything this class did not write.</summary>
-    private static int PawnIdIn(string key) {
-        int split = key.IndexOf(':');
-
-        return split > 0 && int.TryParse(key.Substring(0, split), out int id) ? id : -1;
-    }
-
-    private void Prune() {
-        List<string> gone = [];
-        foreach (KeyValuePair<string, float> pair in heldByPawn) {
-            int id = PawnIdIn(pair.Key);
-            if (id >= 0 && Find.Maps.Any(map => map.mapPawns.AllPawns.Any(p => p.thingIDNumber == id))) continue;
-            gone.Add(pair.Key);
+    private void ToScribeShape() {
+        scribed = new Dictionary<string, float>(heldByPawn.Count);
+        foreach (KeyValuePair<(int, string), float> pair in heldByPawn) {
+            scribed[pair.Key.Item1 + ":" + pair.Key.Item2] = pair.Value;
         }
+    }
 
-        for (int i = 0; i < gone.Count; i++) heldByPawn.Remove(gone[i]);
+    private void FromScribeShape() {
+        heldByPawn.Clear();
+        foreach (KeyValuePair<string, float> pair in scribed) {
+            int split = pair.Key.IndexOf(':');
+            if (split <= 0 || !int.TryParse(pair.Key.Substring(0, split), out int id)) continue;
+
+            heldByPawn[(id, pair.Key.Substring(split + 1))] = pair.Value;
+        }
     }
 }

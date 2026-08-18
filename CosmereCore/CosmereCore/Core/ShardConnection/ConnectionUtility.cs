@@ -37,12 +37,30 @@ public static class ConnectionUtility {
     public static int StrengthOf(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
-        int own = Raw(pawn, shard);
+        return StrengthFrom(pawn, shard, false);
+    }
+
+    /// <summary>
+    ///     The same reading, counting what is held elsewhere as though the pawn still carried it.
+    /// </summary>
+    /// <remarks>
+    ///     What a top-up measures against. Setting a tie aside must not make a pawn eligible for a
+    ///     grant they already took, which is what measuring against the reduced reading allowed.
+    /// </remarks>
+    public static int StrengthBeforeOffset(Pawn? pawn, ShardDef? shard) {
+        if (pawn == null || shard == null) return 0;
+
+        return StrengthFrom(pawn, shard, true);
+    }
+
+    /// <summary>The one Harmony body. Both public readings differ only in which base they compose from.</summary>
+    private static int StrengthFrom(Pawn pawn, ShardDef shard, bool ignoreHeld) {
+        int own = Carried(pawn, shard, ignoreHeld);
 
         // Harmony holds Ruin and Preservation both, so a Harmony Connection implies the same to each.
         if (shard.defName is "Ruin" or "Preservation") {
             ShardDef? harmony = DefDatabase<ShardDef>.GetNamedSilentFail("Harmony");
-            if (harmony != null) return ConnectionMath.WithHarmony(own, Raw(pawn, harmony));
+            if (harmony != null) return ConnectionMath.WithHarmony(own, Carried(pawn, harmony, ignoreHeld));
 
             return own;
         }
@@ -55,11 +73,19 @@ public static class ConnectionUtility {
 
             return ConnectionMath.WithHarmony(
                 own,
-                ConnectionMath.HarmonyFrom(Raw(pawn, ruin), Raw(pawn, preservation))
+                ConnectionMath.HarmonyFrom(
+                    Carried(pawn, ruin, ignoreHeld),
+                    Carried(pawn, preservation, ignoreHeld)
+                )
             );
         }
 
         return own;
+    }
+
+    /// <summary>What the pawn carries toward this Shard, or would carry with everything taken back.</summary>
+    private static int Carried(Pawn pawn, ShardDef shard, bool ignoreHeld) {
+        return ignoreHeld ? Composed(pawn, shard) : Raw(pawn, shard);
     }
 
     public static ConnectionTier TierOf(Pawn? pawn, ShardDef? shard) {
@@ -132,7 +158,7 @@ public static class ConnectionUtility {
             ShardGrant entry = metal.shards[i];
             if (entry.grant <= 0) continue;
 
-            int shortfall = entry.grant - StrengthOf(pawn, entry.shard);
+            int shortfall = entry.grant - StrengthBeforeOffset(pawn, entry.shard);
             if (shortfall > 0) Grant(pawn, entry.shard, shortfall);
         }
     }
@@ -191,7 +217,7 @@ public static class ConnectionUtility {
     private static int Composed(Pawn pawn, ShardDef shard) {
         return ConnectionMath.Compose(
             AncestryFloor(pawn, shard),
-            Verse.Current.Game?.GetComponent<ResidenceTracker>()?.StrengthFor(pawn, shard) ?? 0,
+            GameComponentCache<ResidenceTracker>.Get()?.StrengthFor(pawn, shard) ?? 0,
             ConnectionInvestitureRegistry.StrengthFor(pawn, shard),
             Earned(pawn, shard)
         );

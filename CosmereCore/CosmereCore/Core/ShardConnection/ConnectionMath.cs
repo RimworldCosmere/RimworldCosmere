@@ -181,6 +181,30 @@ public static class ConnectionMath {
         return had;
     }
 
+    /// <summary>How much of a tie can be held elsewhere. Never the last point, so nobody strands themselves.</summary>
+    public static float OffsetCeiling(int composedTotal) {
+        return composedTotal <= 1 ? 0f : composedTotal - 1;
+    }
+
+    /// <summary>Applies delta to a held offset, bounded by the headroom rather than the resulting sum.</summary>
+    /// <remarks>
+    ///     The mirror of <see cref="ClampResidenceTicks" />. An offset already past its ceiling - the
+    ///     tie shrank after the fact - moves nothing rather than lurching back down to the ceiling.
+    /// </remarks>
+    public static float ClampOffset(float had, float delta, float ceiling) {
+        if (delta > 0f) {
+            float headroom = global::System.Math.Max(0f, ceiling - had);
+            return had + global::System.Math.Min(delta, headroom);
+        }
+
+        if (delta < 0f) {
+            float headroom = global::System.Math.Max(0f, had);
+            return had - global::System.Math.Min(-delta, headroom);
+        }
+
+        return had;
+    }
+
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>
     public static int FromEdge(float edgeValue) {
         return Clamp((int)global::System.Math.Round(edgeValue * Max));

@@ -15,6 +15,10 @@ namespace Cosmere.Core.ShardConnection;
 ///     That edge holds the <em>earned</em> portion only. Ancestry and Investiture are recomputed
 ///     on every read, so removing a gene or killing a spren drops the total on its own without a
 ///     save migration.
+///     <para>
+///         <see cref="ConnectionOffsets" /> holds the other half of the story: how much of the
+///         composed total is currently somewhere other than the pawn, taken off on every read.
+///     </para>
 /// </remarks>
 public static class ConnectionUtility {
     /// <summary>What the pawn has earned toward this Shard, ignoring who they were born as.</summary>
@@ -145,6 +149,24 @@ public static class ConnectionUtility {
     }
 
     /// <summary>
+    ///     Moves how much of this pawn's tie is held elsewhere, and reports how much actually moved.
+    /// </summary>
+    /// <remarks>
+    ///     Bounded below by nothing held and above by <see cref="ConnectionMath.OffsetCeiling" />, so
+    ///     the last point of a tie can never leave and a stripped pawn can always take theirs back.
+    /// </remarks>
+    public static float AdjustOffset(Pawn? pawn, ShardDef? shard, float delta) {
+        if (pawn == null || shard == null || delta == 0f) return 0f;
+
+        float had = ConnectionOffsets.Get(pawn, shard);
+        float ceiling = ConnectionMath.OffsetCeiling(Composed(pawn, shard));
+        ConnectionOffsets.Set(pawn, shard, ConnectionMath.ClampOffset(had, delta, ceiling));
+
+        // Read back rather than trust the ask: outside a running game the store swallows the write.
+        return ConnectionOffsets.Get(pawn, shard) - had;
+    }
+
+    /// <summary>
     ///     The live Shard object a connection edge points at. Null when that Shard is not
     ///     enabled in this save, which is the right answer: you cannot be tied to a Shard this
     ///     cosmere does not have.
@@ -159,6 +181,14 @@ public static class ConnectionUtility {
     }
 
     private static int Raw(Pawn pawn, ShardDef shard) {
+        int held = (int)global::System.Math.Round(ConnectionOffsets.Get(pawn, shard));
+
+        // Whatever is held elsewhere is not part of what this pawn currently carries.
+        return ConnectionMath.Clamp(Composed(pawn, shard) - held);
+    }
+
+    /// <summary>The four parts of the tie, before anything held elsewhere comes off the total.</summary>
+    private static int Composed(Pawn pawn, ShardDef shard) {
         return ConnectionMath.Compose(
             AncestryFloor(pawn, shard),
             Verse.Current.Game?.GetComponent<ResidenceTracker>()?.StrengthFor(pawn, shard) ?? 0,

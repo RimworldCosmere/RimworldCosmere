@@ -389,6 +389,22 @@ public class ConnectionMathTests {
         Assert.IsTrue(-storeMoved <= askTicks, $"A store must not move more than it asked for; moved {storeMoved}.");
     }
 
+    /// <summary>A had exactly at the ceiling has no headroom left to gain, and everything left to give.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtTheCeilingGainNothingAndStillDrain() {
+        int ceiling = ConnectionMath.TicksToFullResidence;
+
+        Assert.AreEqual(ceiling, ConnectionMath.ClampResidenceTicks(ceiling, 1_000_000));
+        Assert.AreEqual(ceiling - 1_000_000, ConnectionMath.ClampResidenceTicks(ceiling, -1_000_000));
+    }
+
+    /// <summary>A had of exactly zero has nothing left to give, and the whole ceiling left to gain.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtZeroDrainNothingAndStillGain() {
+        Assert.AreEqual(0, ConnectionMath.ClampResidenceTicks(0, -1_000_000));
+        Assert.AreEqual(1_000_000, ConnectionMath.ClampResidenceTicks(0, 1_000_000));
+    }
+
     /// <summary>
     ///     GameComponentTick's native check has no pin of its own, so a careless edit could drop it
     ///     silently - it is what stops every baseliner out of a drop pod reading as a native.

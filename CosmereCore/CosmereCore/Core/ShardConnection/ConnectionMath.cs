@@ -17,8 +17,14 @@ namespace Cosmere.Core.ShardConnection;
 public static class ConnectionMath {
     public const int Max = 100;
 
-    /// <summary>What being born to the Shard's world is worth on its own.</summary>
+    /// <summary>Being born to a world this Shard holds. What ancestry alone is worth.</summary>
     public const int AncestryFloor = 30;
+
+    /// <summary>How tied you must be before a god metal will answer. Ancestry alone clears it.</summary>
+    public const int GodMetalThreshold = 30;
+
+    /// <summary>The most that living somewhere can be worth on its own.</summary>
+    public const int ResidenceCap = 30;
 
     /// <summary>The threshold to use a god metal, or to gain a power at all.</summary>
     public const int TouchedThreshold = 1;
@@ -94,7 +100,7 @@ public static class ConnectionMath {
     ///     would make it useless to the only people it is for.
     /// </remarks>
     public static bool MayUseGodMetal(int strength) {
-        return strength >= AncestryFloor;
+        return strength >= GodMetalThreshold;
     }
 
     /// <summary>
@@ -128,22 +134,22 @@ public static class ConnectionMath {
     public const int TicksPerYear = 3600000;
 
     /// <summary>
-    ///     What living on a world is worth so far. Reaches the ancestry floor at one year and
+    ///     What living on a world is worth so far. Reaches the residence cap at one year and
     ///     stops there - naturalising makes you a local, not a native twice over.
     /// </summary>
     public static int ResidenceFrom(int ticksResident) {
         if (ticksResident <= 0) return 0;
-        if (ticksResident >= TicksPerYear) return AncestryFloor;
+        if (ticksResident >= TicksPerYear) return ResidenceCap;
 
-        return (int)((long)ticksResident * AncestryFloor / TicksPerYear);
+        return (int)((long)ticksResident * ResidenceCap / TicksPerYear);
     }
 
     /// <summary>How long a pawn must have lived here to read at this strength.</summary>
     public static int TicksForResidence(int strength) {
         if (strength <= 0) return 0;
-        if (strength >= AncestryFloor) return TicksPerYear;
+        if (strength >= ResidenceCap) return TicksPerYear;
 
-        return (int)((long)strength * TicksPerYear / AncestryFloor);
+        return (int)((long)strength * TicksPerYear / ResidenceCap);
     }
 
     /// <summary>Adds delta to had and clamps to [0, TicksPerYear] without overflowing on a large delta.</summary>

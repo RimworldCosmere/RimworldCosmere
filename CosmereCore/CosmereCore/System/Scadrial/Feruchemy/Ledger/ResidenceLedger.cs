@@ -16,7 +16,7 @@ public class ResidenceLedger : IConnectionLedger {
     }
 
     public float HeadroomPoints(Pawn pawn) {
-        return ConnectionMath.AncestryFloor - CurrentPoints(pawn);
+        return ConnectionMath.ResidenceCap - CurrentPoints(pawn);
     }
 
     public float Move(Pawn pawn, float points) {

@@ -21,6 +21,19 @@ public class ConnectionMathTests {
     private const int Mistborn = ConnectionMath.FullInvestitureBonus;
 
     [TestMethod]
+    public void TheThreeFloorsStartEqualAndMeanDifferentThings() {
+        Assert.AreEqual(30, ConnectionMath.AncestryFloor);
+        Assert.AreEqual(30, ConnectionMath.GodMetalThreshold);
+        Assert.AreEqual(30, ConnectionMath.ResidenceCap);
+    }
+
+    [TestMethod]
+    public void GodMetalNeedsTheThresholdExactly() {
+        Assert.IsFalse(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold - 1));
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold));
+    }
+
+    [TestMethod]
     public void TierBoundariesMatchTheDesign() {
         Assert.AreEqual(ConnectionTier.None, ConnectionMath.TierOf(0));
         Assert.AreEqual(ConnectionTier.Touched, ConnectionMath.TierOf(1));

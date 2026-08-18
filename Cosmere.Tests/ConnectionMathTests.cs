@@ -21,10 +21,10 @@ public class ConnectionMathTests {
     private const int Mistborn = ConnectionMath.FullInvestitureBonus;
 
     [TestMethod]
-    public void TheThreeFloorsStartEqualAndMeanDifferentThings() {
+    public void TheThreeFloorsAreIndependentlyAddressable() {
         Assert.AreEqual(30, ConnectionMath.AncestryFloor);
         Assert.AreEqual(30, ConnectionMath.GodMetalThreshold);
-        Assert.AreEqual(30, ConnectionMath.ResidenceCap);
+        Assert.AreEqual(45, ConnectionMath.ResidenceCap);
     }
 
     [TestMethod]
@@ -86,17 +86,24 @@ public class ConnectionMathTests {
 
     /// <summary>
     ///     Residence naturalises a pawn toward what being born there grants. It is another route
-    ///     to the same baseline, not a second helping of it - a year on Scadrial must not put a
-    ///     native above a native.
+    ///     to the same baseline, not a second helping of it - living there does not stack on ancestry.
     /// </summary>
     [TestMethod]
     public void ResidenceReachesTheFloorWithoutStackingOnIt() {
-        Assert.AreEqual(30, ConnectionMath.Compose(0, 30, 0, 0), "A full year of residence reaches the floor.");
-        Assert.AreEqual(15, ConnectionMath.Compose(0, 15, 0, 0), "Half a year gets halfway.");
         Assert.AreEqual(
-            30,
-            ConnectionMath.Compose(Floor, 30, 0, 0),
-            "A native who has also lived there is still 30, not 60."
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap, 0, 0),
+            "A decade of residence reaches the cap."
+        );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap / 2,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap / 2, 0, 0),
+            "Halfway there gets halfway."
+        );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(Floor, ConnectionMath.ResidenceCap, 0, 0),
+            "A native who has also lived there a decade reads 45, not 75 - the larger, never the sum."
         );
     }
 
@@ -295,36 +302,55 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
-    ///     Residence reaches the ancestry floor at a year and stops. It is how an off-worlder
-    ///     eventually burns atium without ever having been Scadrian.
+    ///     Residence takes ten years to fill, not one - a lifetime somewhere now outgrows being
+    ///     born there instead of only ever tying it.
     /// </summary>
     [TestMethod]
-    public void ResidenceReachesTheFloorInAYearAndStops() {
-        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0), "Day one is nothing.");
-        Assert.AreEqual(15, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear / 2), "Half a year, half way.");
-        Assert.AreEqual(Floor, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear), "A year reaches the floor.");
+    public void ResidenceTakesTenYearsToFill() {
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0));
+        Assert.AreEqual(4, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear));
+        Assert.AreEqual(22, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 5));
+        Assert.AreEqual(45, ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence));
+    }
+
+    // The point of the whole change: a lifetime somewhere beats being born there.
+    [TestMethod]
+    public void ResidenceOvertakesAncestryBeforeSevenYears() {
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 6) < ConnectionMath.AncestryFloor);
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 7) > ConnectionMath.AncestryFloor);
+    }
+
+    /// <summary>
+    ///     Residence never rises past the cap however long a pawn stays, and negative time never
+    ///     produces a negative reading.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceStaysAtTheCapAndNeverGoesNegative() {
         Assert.AreEqual(
-            Floor,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 10),
-            "Ten years is still the floor - naturalising makes you a local, not a native twice over."
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence * 10),
+            "A century is still the cap - naturalising makes you a local, not a native a dozen times over."
         );
         Assert.AreEqual(0, ConnectionMath.ResidenceFrom(-1), "Negative time is nothing, not a wrap-around.");
     }
 
     [TestMethod]
     public void ResidenceTicksAreTheInverseOfResidenceStrength() {
-        for (int strength = 0; strength <= ConnectionMath.AncestryFloor; strength++) {
+        for (int strength = 0; strength <= ConnectionMath.ResidenceCap; strength++) {
             int ticks = ConnectionMath.TicksForResidence(strength);
             Assert.AreEqual(strength, ConnectionMath.ResidenceFrom(ticks), $"strength {strength}");
         }
     }
 
     [TestMethod]
-    public void ResidenceTicksClampToAYear() {
+    public void ResidenceTicksClampToTenYears() {
         Assert.AreEqual(0, ConnectionMath.TicksForResidence(0));
         Assert.AreEqual(0, ConnectionMath.TicksForResidence(-5));
-        Assert.AreEqual(ConnectionMath.TicksPerYear, ConnectionMath.TicksForResidence(ConnectionMath.AncestryFloor));
-        Assert.AreEqual(ConnectionMath.TicksPerYear, ConnectionMath.TicksForResidence(999));
+        Assert.AreEqual(
+            ConnectionMath.TicksToFullResidence,
+            ConnectionMath.TicksForResidence(ConnectionMath.ResidenceCap)
+        );
+        Assert.AreEqual(ConnectionMath.TicksToFullResidence, ConnectionMath.TicksForResidence(999));
     }
 
     /// <summary>
@@ -334,7 +360,7 @@ public class ConnectionMathTests {
     [TestMethod]
     public void ResidenceTicksClampInsteadOfOverflowingOnALargeDelta() {
         Assert.AreEqual(
-            ConnectionMath.TicksPerYear,
+            ConnectionMath.TicksToFullResidence,
             ConnectionMath.ClampResidenceTicks(100, int.MaxValue),
             "A huge positive delta must clamp at the ceiling, not wrap past it."
         );
@@ -346,26 +372,30 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
-    ///     A native who has also lived there stays at 30. Residence and ancestry are two routes
-    ///     to the same baseline, and Compose already takes the larger - this guards the pairing.
+    ///     A native who has also lived there a decade reads at whichever is higher, never the sum -
+    ///     residence and ancestry are two routes to the same baseline, and Compose takes the larger.
     /// </summary>
     [TestMethod]
     public void ResidenceNeverStacksOnTopOfBeingNative() {
         int nativeWhoStayed = ConnectionMath.Compose(
             Floor,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence),
             0,
             0
         );
-        Assert.AreEqual(30, nativeWhoStayed);
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap,
+            nativeWhoStayed,
+            "Full residence now outranks the ancestry floor."
+        );
 
         int refugeeWhoStayed = ConnectionMath.Compose(
             0,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence),
             0,
             0
         );
-        Assert.AreEqual(30, refugeeWhoStayed, "A year on the ground earns what being born there grants.");
+        Assert.AreEqual(ConnectionMath.ResidenceCap, refugeeWhoStayed, "A decade on the ground earns full residence.");
         Assert.IsTrue(ConnectionMath.MayUseGodMetal(refugeeWhoStayed), "And with it, atium.");
     }
 

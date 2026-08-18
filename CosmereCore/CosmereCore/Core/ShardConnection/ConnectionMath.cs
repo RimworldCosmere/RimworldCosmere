@@ -24,7 +24,7 @@ public static class ConnectionMath {
     public const int GodMetalThreshold = 30;
 
     /// <summary>The most that living somewhere can be worth on its own.</summary>
-    public const int ResidenceCap = 30;
+    public const int ResidenceCap = 45;
 
     /// <summary>The threshold to use a god metal, or to gain a power at all.</summary>
     public const int TouchedThreshold = 1;
@@ -133,31 +133,34 @@ public static class ConnectionMath {
     /// <summary>Mirrors Verse.GenDate.TicksPerYear, which the test project cannot reference.</summary>
     public const int TicksPerYear = 3600000;
 
+    /// <summary>Ten years to belong somewhere you were not born.</summary>
+    public const int TicksToFullResidence = TicksPerYear * 10;
+
     /// <summary>
-    ///     What living on a world is worth so far. Reaches the residence cap at one year and
+    ///     What living on a world is worth so far. Reaches the residence cap at ten years and
     ///     stops there - naturalising makes you a local, not a native twice over.
     /// </summary>
     public static int ResidenceFrom(int ticksResident) {
         if (ticksResident <= 0) return 0;
-        if (ticksResident >= TicksPerYear) return ResidenceCap;
+        if (ticksResident >= TicksToFullResidence) return ResidenceCap;
 
-        return (int)((long)ticksResident * ResidenceCap / TicksPerYear);
+        return (int)((long)ticksResident * ResidenceCap / TicksToFullResidence);
     }
 
     /// <summary>How long a pawn must have lived here to read at this strength.</summary>
     public static int TicksForResidence(int strength) {
         if (strength <= 0) return 0;
-        if (strength >= ResidenceCap) return TicksPerYear;
+        if (strength >= ResidenceCap) return TicksToFullResidence;
 
-        return (int)((long)strength * TicksPerYear / ResidenceCap);
+        return (int)((long)strength * TicksToFullResidence / ResidenceCap);
     }
 
-    /// <summary>Adds delta to had and clamps to [0, TicksPerYear] without overflowing on a large delta.</summary>
+    /// <summary>Adds delta to had and clamps to [0, TicksToFullResidence] without overflowing.</summary>
     public static int ClampResidenceTicks(int had, int delta) {
         long next = (long)had + delta;
         if (next < 0) return 0;
 
-        return next > TicksPerYear ? TicksPerYear : (int)next;
+        return next > TicksToFullResidence ? TicksToFullResidence : (int)next;
     }
 
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>

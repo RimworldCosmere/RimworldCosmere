@@ -21,9 +21,14 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
-    private static float StripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
-        DockDropdownRow.Height * 2f + 38f;
+    // A closed strip never asks its gene for anything; an open one adds whatever
+    // FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
+    private static float StripHeightFor(Feruchemist? gene) {
+        if (gene == null) return 0f;
+
+        return StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
+            DockDropdownRow.Height + 32f + FeruchemyLedgerRow.HeightFor(gene);
+    }
 
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
@@ -48,7 +53,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     // Idempotent, because height is asked for several times a frame. Reveal itself only
     // advances once per frame; this just re-reads where it got to.
-    private void StepReveal() {
+    private void StepReveal(float openHeight) {
         // One panel at a time, in order: the open metal slides up, then the new one
         // slides down. Swapping the contents mid-slide makes the panel jump rows while
         // it is moving, which reads as a glitch rather than as an exchange.
@@ -57,7 +62,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             pendingMetal = null;
         }
 
-        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : StripHeight);
+        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : openHeight);
         if (expandedMetal != null) revealedMetal = expandedMetal;
         else if (revealedHeight < 1f) revealedMetal = null;
     }
@@ -89,14 +94,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
-        StepReveal();
+        StepReveal(StripHeightFor(FindGene(pawn, expandedMetal ?? pendingMetal)));
         return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
         crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
-        StepReveal();
+        StepReveal(StripHeightFor(FindGene(pawn, expandedMetal ?? pendingMetal)));
+        float revealedStripHeight = StripHeightFor(FindGene(pawn, revealedMetal));
 
         Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
@@ -105,7 +111,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             QuadHeader,
             revealedMetal,
             revealedHeight,
-            StripHeight,
+            revealedStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
             (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
@@ -329,8 +335,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return def == null ? 0 : ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, def);
     }
 
-    private static Feruchemist? FindGene(Pawn pawn, string metalDefName) {
-        if (pawn.genes == null) return null;
+    private static Feruchemist? FindGene(Pawn pawn, string? metalDefName) {
+        if (metalDefName == null || pawn.genes == null) return null;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Feruchemist f && f.metal.defName == metalDefName && !f.Overridden) return f;

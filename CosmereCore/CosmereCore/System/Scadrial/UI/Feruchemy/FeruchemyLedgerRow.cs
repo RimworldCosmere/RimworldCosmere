@@ -30,6 +30,16 @@ public static class FeruchemyLedgerRow {
         );
     }
 
+    // How much taller Draw makes the strip: nothing for a metal that isn't duralumin,
+    // one row for a non-Shard tie, two rows plus the gap between them for Shard.
+    public static float HeightFor(Feruchemist gene) {
+        if (!gene.StoresConnection) return 0f;
+
+        return gene.targetLedger == DuraluminLedger.Shard
+            ? DockDropdownRow.Height * 2f + 6f
+            : DockDropdownRow.Height;
+    }
+
     private static string Percent(float held, float max) {
         return max > 0f ? $"{held / max * 100f:0}%" : "0%";
     }

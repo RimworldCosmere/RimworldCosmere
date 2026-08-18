@@ -1,4 +1,3 @@
-using System;
 using Cosmere.Core.Def;
 using Cosmere.Core.Need;
 using Cosmere.Core.Savant;
@@ -874,31 +873,15 @@ public class Feruchemist : Metalborn {
     }
 
     public float AddToStore(float amount) {
-        return FillStore(
-            amount,
-            static (m, _) => m.CanStore,
-            static (m, k, a) => m.AddStored(a, k),
-            static (m, _) => m.FreeSpace
-        );
+        return MoveCharge(MetalmindOperation.Store, amount);
     }
 
     public float AddCompoundedToStore(float amount) {
-        return FillStore(
-            amount,
-            static (m, _) => m.CanStoreCompounded,
-            static (m, _, a) => m.AddCompounded(a),
-            static (m, _) => m.FreeSpace
-        );
+        return MoveCharge(MetalmindOperation.StoreCompounded, amount);
     }
 
     public float RemoveCompoundedFromStore(float amount) {
-        // burning draws on the whole charge, not just the compounded pool: reading only that left nothing to take and stalled the burn.
-        float moved = DrawFromStore(
-            amount,
-            static (m, _) => m.CanTapCompounded,
-            static (m, k, a) => m.ConsumeCompounded(a, k),
-            static (m, _) => m.TotalStored
-        );
+        float moved = MoveCharge(MetalmindOperation.TapCompounded, amount);
 
         if (moved > 0f) SweepBurnedOut();
 
@@ -912,34 +895,14 @@ public class Feruchemist : Metalborn {
         cachedMetalminds = null;
     }
 
-    // read fresh, not cached: a metalmind can burn out mid-tick and take the dial's chosen target with it.
-    private float FillStore(
-        float amount,
-        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
-        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
-        Func<IMetalmindSource, ConnectionKey?, float> room
-    ) {
-        return MetalmindDistribution.Fill(metalminds, targetMetalmindId, transferKey, amount, eligible, apply, room);
-    }
-
-    /// Every duralumin withdrawal goes through Draw, which bounds each metalmind's share by what it
-    /// holds under this key. That bound is the one the whole feature rides on; do not route past it.
-    private float DrawFromStore(
-        float amount,
-        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
-        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
-        Func<IMetalmindSource, ConnectionKey?, float> room
-    ) {
-        return MetalmindDistribution.Draw(metalminds, targetMetalmindId, transferKey, amount, eligible, apply, room);
+    /// The operation picks the bound as well as the work, so a tap cannot be walked unbounded.
+    /// Metalminds are read fresh: one can burn out mid-tick and take the dial's chosen target with it.
+    private float MoveCharge(MetalmindOperation operation, float amount) {
+        return MetalmindDistribution.Transfer(metalminds, operation, targetMetalmindId, transferKey, amount);
     }
 
     public float RemoveFromStore(float amount) {
-        return DrawFromStore(
-            amount,
-            static (m, _) => m.CanTap,
-            static (m, k, a) => m.ConsumeStored(a, k),
-            static (m, _) => m.StoredAmount
-        );
+        return MoveCharge(MetalmindOperation.Tap, amount);
     }
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {

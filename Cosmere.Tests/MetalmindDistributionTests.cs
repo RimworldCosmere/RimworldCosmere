@@ -89,8 +89,9 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
         return 0f;
     }
 
+    // The burn spends ordinary charge too, so the fake drains the same pool a tap does.
     public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
-        return 0f;
+        return ConsumeStored(amount, ledgerKey);
     }
 
     public float StoredFor(ConnectionKey ledgerKey) {
@@ -107,15 +108,7 @@ public class MetalmindDistributionTests {
     private const float Tolerance = 1e-3f;
 
     private static float Store(List<IMetalmindSource> sources, float amount, string target = MetalmindDistribution.TargetAll) {
-        return MetalmindDistribution.Fill(
-            sources,
-            target,
-            null,
-            amount,
-            static (m, _) => m.CanStore,
-            static (m, k, a) => m.AddStored(a, k),
-            static (m, _) => m.FreeSpace
-        );
+        return MetalmindDistribution.Transfer(sources, MetalmindOperation.Store, target, null, amount);
     }
 
     private static float StoreFor(
@@ -124,27 +117,28 @@ public class MetalmindDistributionTests {
         float amount,
         string target = MetalmindDistribution.TargetAll
     ) {
-        return MetalmindDistribution.Fill(
+        return MetalmindDistribution.Transfer(sources, MetalmindOperation.Store, target, ledgerKey, amount);
+    }
+
+    // The operation the ordinary duralumin tap uses, so these tests hit the shipped path.
+    private static float Tap(List<IMetalmindSource> sources, ConnectionKey ledgerKey, float amount) {
+        return MetalmindDistribution.Transfer(
             sources,
-            target,
+            MetalmindOperation.Tap,
+            MetalmindDistribution.TargetAll,
             ledgerKey,
-            amount,
-            static (m, _) => m.CanStore,
-            static (m, k, a) => m.AddStored(a, k),
-            static (m, _) => m.FreeSpace
+            amount
         );
     }
 
-    // The predicate triple the ordinary duralumin tap uses, so these tests hit the shipped path.
-    private static float Tap(List<IMetalmindSource> sources, ConnectionKey ledgerKey, float amount) {
-        return MetalmindDistribution.Draw(
+    // And the one the compounded burn uses, which is the other withdrawal.
+    private static float BurnCompounded(List<IMetalmindSource> sources, ConnectionKey ledgerKey, float amount) {
+        return MetalmindDistribution.Transfer(
             sources,
+            MetalmindOperation.TapCompounded,
             MetalmindDistribution.TargetAll,
             ledgerKey,
-            amount,
-            static (m, _) => m.CanTap,
-            static (m, k, a) => m.ConsumeStored(a, k),
-            static (m, _) => m.StoredAmount
+            amount
         );
     }
 
@@ -202,6 +196,30 @@ public class MetalmindDistributionTests {
         Assert.AreEqual(10f, Tap([band], residence, 40f), Tolerance);
         Assert.AreEqual(0f, band.StoredFor(residence), Tolerance);
         Assert.AreEqual(30f, band.StoredFor(ruin), Tolerance);
+    }
+
+    /// <summary>
+    ///     The compounded burn is the other withdrawal, and it takes the same bound. Deriving the
+    ///     direction from the operation has to cover both, not only the one the tests started with.
+    /// </summary>
+    [TestMethod]
+    public void ACompoundedBurnIsBoundedByWhatTheKeyIsRecordedAsHolding() {
+        FakeMetalmindSource band = new FakeMetalmindSource(50f);
+        StoreFor([band], ruin, 30f);
+        StoreFor([band], residence, 10f);
+
+        Assert.AreEqual(10f, BurnCompounded([band], residence, 40f), Tolerance);
+        Assert.AreEqual(0f, band.StoredFor(residence), Tolerance);
+        Assert.AreEqual(30f, band.StoredFor(ruin), Tolerance);
+    }
+
+    // The other half of the rule: bounding a store by the key would break every first store.
+    [TestMethod]
+    public void AStoreIsNotBoundedByWhatTheKeyAlreadyHolds() {
+        FakeMetalmindSource fresh = new FakeMetalmindSource(20f, "fresh");
+
+        Assert.AreEqual(12f, StoreFor([fresh], residence, 12f), Tolerance);
+        Assert.AreEqual(12f, fresh.StoredFor(residence), Tolerance);
     }
 
     [TestMethod]

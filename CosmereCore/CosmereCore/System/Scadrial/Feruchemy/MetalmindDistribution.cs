@@ -1,5 +1,3 @@
-using System;
-
 namespace Cosmere.System.Scadrial.Feruchemy;
 
 /// <summary>
@@ -34,50 +32,17 @@ public static class MetalmindDistribution {
         };
     }
 
-    /// <summary>Spreads one transfer into the matching sources, and reports how much landed.</summary>
-    public static float Fill(
-        List<IMetalmindSource> sources,
-        string target,
-        ConnectionKey? ledgerKey,
-        float amount,
-        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
-        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
-        Func<IMetalmindSource, ConnectionKey?, float> room
-    ) {
-        return Carry(sources, target, ledgerKey, amount, eligible, apply, room, false);
-    }
-
-    /// <summary>Draws from the matching sources, never taking more from one than it holds under this key.</summary>
-    /// <remarks>
-    ///     Every keyed withdrawal goes through here rather than through a per-caller bound, because
-    ///     splitting by physical charge let the attribution drain fall through onto another ledger.
-    /// </remarks>
-    public static float Draw(
-        List<IMetalmindSource> sources,
-        string target,
-        ConnectionKey? ledgerKey,
-        float amount,
-        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
-        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
-        Func<IMetalmindSource, ConnectionKey?, float> room
-    ) {
-        return Carry(sources, target, ledgerKey, amount, eligible, apply, room, true);
-    }
-
     /// <summary>Walks the matching sources handing each what it will take, and reports the total.</summary>
     /// <remarks>
     ///     Dumping the full amount into the first eligible metalmind let its own clamp discard
     ///     the overflow silently, so the remainder is carried to the next one instead.
     /// </remarks>
-    private static float Carry(
+    public static float Transfer(
         List<IMetalmindSource> sources,
+        MetalmindOperation operation,
         string target,
         ConnectionKey? ledgerKey,
-        float amount,
-        Func<IMetalmindSource, ConnectionKey?, bool> eligible,
-        Func<IMetalmindSource, ConnectionKey?, float, float> apply,
-        Func<IMetalmindSource, ConnectionKey?, float> room,
-        bool withdrawing
+        float amount
     ) {
         if (amount <= 0f) return 0f;
 
@@ -85,14 +50,15 @@ public static class MetalmindDistribution {
         float remaining = amount;
 
         for (int i = 0; i < sources.Count && remaining > 0f; i++) {
-            if (!MatchesTarget(sources[i], target)) continue;
-            if (!eligible(sources[i], ledgerKey)) continue;
+            IMetalmindSource source = sources[i];
+            if (!MatchesTarget(source, target)) continue;
+            if (!IsEligible(source, operation)) continue;
 
-            float space = room(sources[i], ledgerKey);
+            float space = Room(source, operation);
 
-            // the bound the whole feature rides on: a keyed draw cannot reach another key's charge.
-            if (withdrawing && ledgerKey.HasValue) {
-                float attributed = sources[i].StoredFor(ledgerKey.Value);
+            // the bound the whole feature rides on: a keyed withdrawal cannot reach another key's charge.
+            if (!IsFill(operation) && ledgerKey.HasValue) {
+                float attributed = source.StoredFor(ledgerKey.Value);
                 if (attributed < space) space = attributed;
             }
 
@@ -100,7 +66,7 @@ public static class MetalmindDistribution {
             if (take <= 0f) continue;
 
             // use what it took, not the offer: AddStored can refuse via ValidateOwner and take less.
-            float took = apply(sources[i], ledgerKey, take);
+            float took = Apply(source, operation, ledgerKey, take);
             if (took <= 0f) continue;
 
             remaining -= took;
@@ -108,5 +74,48 @@ public static class MetalmindDistribution {
         }
 
         return moved;
+    }
+
+    /// Only the stores get an unbounded walk. An operation nobody added here is bounded by the
+    /// key, so a forgotten entry under-fills where it can be seen instead of minting Connection.
+    private static bool IsFill(MetalmindOperation operation) {
+        return operation is MetalmindOperation.Store or MetalmindOperation.StoreCompounded;
+    }
+
+    private static bool IsEligible(IMetalmindSource source, MetalmindOperation operation) {
+        return operation switch {
+            MetalmindOperation.Store => source.CanStore,
+            MetalmindOperation.StoreCompounded => source.CanStoreCompounded,
+            MetalmindOperation.Tap => source.CanTap,
+            MetalmindOperation.TapCompounded => source.CanTapCompounded,
+            _ => false,
+        };
+    }
+
+    private static float Room(IMetalmindSource source, MetalmindOperation operation) {
+        return operation switch {
+            MetalmindOperation.Store => source.FreeSpace,
+            MetalmindOperation.StoreCompounded => source.FreeSpace,
+            MetalmindOperation.Tap => source.StoredAmount,
+
+            // burning draws on the whole charge; reading only the compounded pool stalled the burn.
+            MetalmindOperation.TapCompounded => source.TotalStored,
+            _ => 0f,
+        };
+    }
+
+    private static float Apply(
+        IMetalmindSource source,
+        MetalmindOperation operation,
+        ConnectionKey? ledgerKey,
+        float amount
+    ) {
+        return operation switch {
+            MetalmindOperation.Store => source.AddStored(amount, ledgerKey),
+            MetalmindOperation.StoreCompounded => source.AddCompounded(amount),
+            MetalmindOperation.Tap => source.ConsumeStored(amount, ledgerKey),
+            MetalmindOperation.TapCompounded => source.ConsumeCompounded(amount, ledgerKey),
+            _ => 0f,
+        };
     }
 }

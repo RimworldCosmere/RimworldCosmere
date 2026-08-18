@@ -11,8 +11,7 @@ public static class RadialAnchor {
     }
 
     public static Vector2 Resolve(Pawn pawn, bool preferPawn = false) {
-        // A gizmo click leaves the cursor on the command bar, so following the
-        // mouse there would open the wheel off in the corner.
+        // gizmo click leaves the cursor on the command bar; following it would open the wheel off in a corner.
         Vector2 anchor = !preferPawn && Mod.GetModSettings<Cosmere.Core.Settings.CoreModSettings>().radialAnchorMouse
             ? Verse.UI.MousePositionOnUIInverted
             : PawnScreenCenter(pawn);

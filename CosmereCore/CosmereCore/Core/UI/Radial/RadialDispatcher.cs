@@ -24,9 +24,10 @@ public static class RadialDispatcher {
         Logger.Verbose($"radial dispatch: no handler registered for action kind {leaf.Kind}");
     }
 
-    // Public because the wheel is not the only way to reach an ability any more: the
-    // dock's Surge panel lists them too, and both have to obey the same rules about
-    // toggling off, affordability and targeting.
+    /// <summary>
+    ///     Public because the wheel is not the only way to reach an ability: the dock's Surge panel
+    ///     lists them too, and both must obey the same toggle, affordability, and targeting rules.
+    /// </summary>
     public static void CastOrToggle(Pawn pawn, AbilityDef? def) {
         if (def == null) return;
         if (pawn.abilities == null) return;
@@ -34,9 +35,7 @@ public static class RadialDispatcher {
         RimWorld.Ability? ability = pawn.abilities.GetAbility(def);
         if (ability == null) return;
 
-        // Switching something off must not depend on being able to afford it. CanCast asks whether
-        // the reserve can pay the cost, and a sustained surge you can no longer pay for is exactly
-        // the one you most need to stop - gating the toggle on it left it stuck on.
+        // turning off skips CanCast: an unaffordable toggle is exactly the one that most needs to turn off.
         if (ability is IToggleableAbility { IsToggleable: true, IsActive: true } toggle) {
             toggle.TurnOff();
             return;

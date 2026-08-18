@@ -28,8 +28,7 @@ public class QuestPart_SiteMinedOut : QuestPart_CosmereActivable {
         Site? current = site;
         if (target == null || current == null || current.Destroyed) return false;
 
-        // No map means the player has not arrived yet, or is away. Either way the ground has
-        // not been emptied, and an absent map must never read as "nothing left".
+        // No map means the player hasn't arrived or is away; either way, absent must never read as "nothing left".
         Verse.Map? map = current.Map;
         if (map == null) return false;
 

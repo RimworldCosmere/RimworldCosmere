@@ -45,8 +45,7 @@ public class GenStep_SeedPawnLoot : GenStep {
         int wanted = Rand.RangeInclusive(minCarriers, maxCarriers);
         int carriers = wanted < candidates.Count ? wanted : candidates.Count;
 
-        // Fisher-Yates over the prefix only: picks distinct carriers without a full shuffle or
-        // a contains-check loop.
+        // Fisher-Yates over the prefix only: picks distinct carriers without a full shuffle or a contains-check loop.
         for (int i = 0; i < carriers; i++) {
             int swap = Rand.Range(i, candidates.Count);
             (candidates[i], candidates[swap]) = (candidates[swap], candidates[i]);

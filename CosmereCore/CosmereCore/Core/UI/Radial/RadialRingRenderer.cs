@@ -34,8 +34,7 @@ public static class RadialRingRenderer {
             i => {
                 RadialSubsection subsection = system.Subsections[i];
 
-                // A collapsed metal never reaches the ability ring, so its lit
-                // state has to come from the leaves it stands in for.
+                // collapsed metal never reaches the ability ring, so lit state comes from its leaves.
                 bool anyActive = false;
                 bool anyFlaring = false;
                 for (int leafIndex = 0; leafIndex < subsection.Leaves.Count; leafIndex++) {
@@ -116,17 +115,14 @@ public static class RadialRingRenderer {
                 : new Color(0.16f, 0.175f, 0.205f);
             bg.a = 0.97f;
 
-            // Locked or unaffordable, it cannot be used, so it does not light up under the cursor
-            // either - a wedge that highlights invites a click that will be ignored.
+            // locked or unaffordable wedges do not highlight on hover: that would invite a click that fails.
             bool disabled = isLocked || hasInsufficientResources;
 
-            // A lit metal keeps a warm fill of its own so it reads as burning
-            // even when the cursor is elsewhere; hovering still wins over it.
+            // active metal keeps a warm fill so it reads as burning even off-hover; hover still wins over it.
             if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
             if (i == hoveredIndex && !disabled) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
 
-            // Drained of colour rather than merely faded: a washed-out fill reads as unavailable at a
-            // glance, where a translucent one just looks like a different shade of the same thing.
+            // drained of colour, not just faded: washed-out reads as unavailable, translucent just looks tinted.
             if (disabled) {
                 float grey = (bg.r + bg.g + bg.b) / 3f;
                 bg = new Color(
@@ -205,8 +201,7 @@ public static class RadialRingRenderer {
                         ? Color.white
                         : new Color(0.81f, 0.85f, 0.87f);
 
-            // Wrapped rather than truncated: the wedge is short on width but has height to spare, and
-            // "Summon Sh..." tells the player nothing.
+            // wrapped, not truncated: wedge is short on width but has height, and "Summon Sh..." tells nothing.
             UIText.WrappedLabel(labelMid, labelWidth, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
         }
 

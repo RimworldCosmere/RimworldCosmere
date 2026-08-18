@@ -9,8 +9,10 @@ using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 
-// Kept for the Texture2D field: RimWorld's startup check flags any type holding one, even though
-// the icon here is loaded lazily on the main thread rather than in a static constructor.
+/// <summary>
+///     Kept for the Texture2D field: RimWorld's startup check flags any type holding one, even
+///     though the icon here loads lazily on the main thread, not in a static constructor.
+/// </summary>
 [StaticConstructorOnStartup]
 public static class HighstormGlobalControlsPatch {
     public static bool showHighstormReadout = true;
@@ -68,9 +70,7 @@ public abstract class HighstormReadoutPatch : GlobalControls {
             BindingFlags.Public | BindingFlags.Static
         )!;
 
-        // The "first match only" guard is a local, not a field: Concord recomposes the target
-        // from raw IL on every patch and unpatch, so a static flag would suppress the insert
-        // on every run after the first.
+        // guard is local, not a field: Concord rebuilds the target from raw IL every patch/unpatch
         bool inserted = false;
 
         foreach (CodeInstruction instruction in instructions) {
@@ -87,9 +87,7 @@ public abstract class HighstormReadoutPatch : GlobalControls {
             inserted = true;
         }
 
-        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
-        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
-        // it before this transpiler has run.
+        // logged here, not via ExecuteWhenFinished: that callback reads the flag before this transpiler runs
         if (!inserted) {
             Logger.Warning("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler found no DoDate call.");
         }

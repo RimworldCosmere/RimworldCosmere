@@ -10,9 +10,7 @@ using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.GameCondition;
 
-// TODO: Force the weather here?
-// TODO: Draw a warning at the top
-// TODO: Encourage pawns to go inside? Probably a workgiver?
+// TODO: force the weather, warn at the top of the screen, and nudge pawns indoors (maybe a workgiver)
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
 

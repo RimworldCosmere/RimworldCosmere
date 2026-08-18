@@ -19,9 +19,10 @@ public static class UpkeepRate {
         return ratePerCharge * TicksPerSecond / ticksPerCharge;
     }
 
-    // Allomancy spends thousandths of a breath-equivalent unit per charge, which rounds away
-    // entirely at the two decimals the strip has room for. A share of the reserve stays legible
-    // at that scale and matches the percentage already on the tile.
+    /// <summary>
+    ///     Allomancy spends thousandths of a breath-equivalent unit per charge, which rounds away
+    ///     at the two decimals the strip has room for; a reserve share stays legible at that scale.
+    /// </summary>
     public static float ReservePercentPerSecond(
         float ratePerCharge,
         int ticksPerCharge,

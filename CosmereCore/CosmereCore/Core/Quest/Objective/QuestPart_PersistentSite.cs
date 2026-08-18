@@ -34,9 +34,7 @@ public class QuestPart_PersistentSite : QuestPart_CosmereActivable {
 
         bool present = map.mapPawns.FreeColonistsSpawnedCount > 0;
 
-        // Arriving starts the clock rather than triggering an assault. Landing straight into a
-        // raid gives the player no chance to unload a caravan, and the Ministry noticing takes
-        // longer than the walk from the map edge.
+        // Arriving starts the clock, not an assault: it gives no time to unload before anyone notices.
         if (present && !playerWasPresent) {
             if (lastRaidTick < 0) lastRaidTick = Find.TickManager.TicksGame;
         } else if (present && Find.TickManager.TicksGame - lastRaidTick > raidIntervalTicks) {

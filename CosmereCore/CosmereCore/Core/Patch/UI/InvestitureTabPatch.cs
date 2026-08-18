@@ -30,9 +30,7 @@ public abstract class InvestitureTabPatch : Verse.Thing {
         if (alreadyHasTab) yield break;
         if (instance is not Pawn pawn) yield break;
 
-        // The Codex used to appear only for Invested pawns. Connection is chrome above the
-        // system switcher and every pawn has one, so the tab now opens for anyone whose
-        // Connection the player is entitled to read.
+        // every pawn has a Connection; this opens for anyone whose Connection the player may read.
         if (!ShowsConnection(pawn)) yield break;
 
         cachedTab ??= new ITab_Investiture();

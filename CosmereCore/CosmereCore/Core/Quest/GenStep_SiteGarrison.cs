@@ -32,8 +32,7 @@ public class GenStep_SiteGarrison : GenStep {
             return;
         }
 
-        // GenStep_PreciousLump sets this to the seam's bounds in ScatterAt, so this GenStep's
-        // def must be ordered after it.
+        // GenStep_PreciousLump sets this in ScatterAt; this GenStep's def must be ordered after it.
         if (!MapGenerator.TryGetVar("RectOfInterest", out CellRect rect)) {
             Logger.Warning("GenStep_SiteGarrison: no RectOfInterest. Falling back to map centre.");
             rect = CellRect.CenteredOn(map.Center, 4);

@@ -21,8 +21,7 @@ namespace Cosmere.Core.Patch.World;
 public abstract class PersistentSiteMapPatch : MapParent {
     [Inject(At.Head, nameof(CheckRemoveMapNow))]
     private Control BeforeCheckRemoveMapNow() {
-        // Cast through object: the patch class is a compile-time stand-in for MapParent, so the
-        // compiler will not accept a direct pattern match against a subclass of it.
+        // Cast through object: Site can't pattern-match directly against the compile-time MapParent stand-in.
         if ((object)this is not Site site) return Control.Continue;
 
         List<SitePart> parts = site.parts;

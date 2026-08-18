@@ -19,9 +19,7 @@ public static class BetaHubFormEncoder {
             ? report.Description + DiagnosticsText.BuildInlineFooter(facts)
             : report.Description;
 
-        // BetaHub video clips are blob uploads only, verified against the live API: every URL
-        // shaped parameter answers "video can't be blank". So the link rides in the body, where
-        // it at least renders as a link, as well as in a custom field for filtering.
+        // BetaHub video clips are blob-only; the URL rides in the body text and a custom field instead.
         if (!string.IsNullOrWhiteSpace(report.VideoUrl)) {
             description += $"\n\nVideo: {report.VideoUrl}";
         }
@@ -36,8 +34,7 @@ public static class BetaHubFormEncoder {
         Add(form, $"{root}[release_label]", facts.Revision);
         Add(form, $"{root}[source]", BetaHubConfig.SourceTag);
 
-        // discord_username is only honoured for anonymous FormUser callers, and a project
-        // token is not anonymous, so it is silently dropped. A custom field always lands.
+        // discord_username is silently dropped for a project token, which isn't anonymous; hence the custom field too.
         Add(form, $"{root}[custom][discord]", report.DiscordUsername);
         Add(form, $"{root}[custom][video_url]", report.VideoUrl);
 

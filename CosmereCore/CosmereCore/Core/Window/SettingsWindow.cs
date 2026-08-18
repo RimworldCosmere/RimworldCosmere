@@ -84,9 +84,10 @@ public sealed class SettingsWindow {
         footerRenderer.CancelConfirmation();
     }
 
-    // Tabs paginate, so the pane draws exactly one section. Falls back to the first
-    // visible section whenever the remembered one is gone, e.g. a dev-only section
-    // whose visibility delegate turned false while the window was open.
+    /// <summary>
+    ///     Tabs paginate, so the pane draws exactly one section. Falls back to the first visible
+    ///     section when the remembered one is gone, e.g. a dev-only section whose visibility turned false.
+    /// </summary>
     private string ActiveSectionKey(IReadOnlyList<SettingSection> sections) {
         string? remembered = selectedSectionBySystem.TryGetValue(selectedSystem.Name, out string? key) ? key : null;
         string? firstVisible = null;

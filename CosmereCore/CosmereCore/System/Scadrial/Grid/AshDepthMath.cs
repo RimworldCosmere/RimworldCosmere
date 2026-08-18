@@ -50,8 +50,7 @@ public static class AshDepthMath {
     ///     the ground does not come back in the same pattern it went under.
     /// </summary>
     public static int SettleDelayDays(int cellIndex, bool settling) {
-        // murmur3 finalizer on a knuth-scrambled index. Anything weaker bands adjacent cells
-        // together and the map turns over in stripes instead of patches.
+        // murmur3 finalizer on a knuth-scrambled index - anything weaker bands cells into stripes, not patches
         uint hash = (uint)cellIndex * 2654435761u;
         hash ^= settling ? 0x9E3779B9u : 0x85EBCA6Bu;
         hash ^= hash >> 15;

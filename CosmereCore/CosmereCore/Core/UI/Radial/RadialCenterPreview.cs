@@ -7,9 +7,10 @@ using Verse;
 namespace Cosmere.Core.UI.Radial;
 
 public static class RadialCenterPreview {
-    // The header hangs from the top of the hub and the bar and buttons are
-    // pinned to the bottom, so the description keeps whatever is left between
-    // them rather than every row flowing from a single stack.
+    /// <summary>
+    ///     Header hangs from the top of the hub and the bar and buttons pin to the bottom, so the
+    ///     description keeps whatever space is left rather than every row flowing from one stack.
+    /// </summary>
     private const float BreadcrumbY = -116f;
     private const float TitleGap = 22f;
     private const float ButtonRowY = 80f;
@@ -107,8 +108,7 @@ public static class RadialCenterPreview {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
                 float barHeight = tinyH + 6f;
 
-                // Pinned width: deriving it from the chord at the bar's own y
-                // would resize the bar whenever the footer moves.
+                // pinned width: deriving it from the chord at the bar's y would resize the bar as the footer moves.
                 Rect barRow = new Rect(
                     center.x - BarWidth / 2f,
                     center.y + ButtonRowY - BarGap - barHeight,
@@ -140,8 +140,7 @@ public static class RadialCenterPreview {
         }
 
         if (canFlare) {
-            // The wheel stays open on a tap but casts on release when held, so
-            // the verb has to match however this pawn's wheel was opened.
+            // wheel stays open on tap but casts on release when held; the verb must match how it opened.
             string verb = browseMode ? "CC_Radial_Verb_Click".Translate() : "CC_Radial_Verb_Release".Translate();
             bool shiftHeld = ShiftHeld();
             UIText.EllipsisLabel(
@@ -192,9 +191,10 @@ public static class RadialCenterPreview {
         }
     }
 
-    // Trims text until its wrapped height fits maxLines, appending an ellipsis.
-    // Truncate measures a single line, which does not predict how many lines the
-    // text wraps to, so long descriptions would otherwise spill past their rect.
+    /// <summary>
+    ///     Trims text to fit maxLines, appending an ellipsis. Truncate measures a single line, which
+    ///     doesn't account for wrapping, so long descriptions would otherwise spill past their rect.
+    /// </summary>
     private static string FitToLines(string text, float width, int maxLines) {
         float lineHeight = Text.LineHeightOf(GameFont.Tiny);
         float maxHeight = lineHeight * maxLines + 1f;
@@ -211,8 +211,10 @@ public static class RadialCenterPreview {
         return low <= 0 ? string.Empty : text.Substring(0, low).TrimEnd() + "...";
     }
 
-    // Draws the action title, wrapping to a second line when it will not fit,
-    // and returns how many lines it used so the rows below can shift down.
+    /// <summary>
+    ///     Draws the action title, wrapping to a second line when it does not fit, and returns how many
+    ///     lines it used so the rows below can shift down.
+    /// </summary>
     private static int DrawWrappedTitle(Vector2 center, float y, float lineHeight, string title, Color color) {
         Rect oneLine = ChordRow(center, y, lineHeight);
         float needed;
@@ -256,8 +258,7 @@ public static class RadialCenterPreview {
         Color prev = GUI.color;
         GUI.color = hovered ? Color.white : new Color(0.78f, 0.80f, 0.82f);
         if (mirrored) {
-            // Flipped through tex coords rather than ScaleAroundPivot: that pivot is in the
-            // wrong space at any UI scale above 1 and throws the icon clear of the wheel.
+            // tex-coord flip, not ScaleAroundPivot: its pivot is wrong at UI scale >1, throws icon off the wheel.
             GUI.DrawTextureWithTexCoords(iconRect, icon, new Rect(1f, 0f, -1f, 1f));
         } else {
             GUI.DrawTexture(iconRect, icon);
@@ -278,8 +279,7 @@ public static class RadialCenterPreview {
     }
 
     private static string BuildMetaLine(RadialLeaf leaf) {
-        // The cost hint doubles as the burn rate, which is shown inside the
-        // reserve bar; only surface it here when there is no bar to carry it.
+        // cost hint doubles as burn rate, shown in the reserve bar; only surface it here with no bar.
         string meta = leaf.ReserveFraction.HasValue || leaf.CostHint == null ? string.Empty : leaf.CostHint;
         if (leaf.CooldownTicksRemaining > 0) {
             float seconds = leaf.CooldownTicksRemaining / (float)GenTicks.TicksPerRealSecond;

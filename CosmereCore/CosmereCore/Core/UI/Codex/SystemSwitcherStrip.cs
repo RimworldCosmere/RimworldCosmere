@@ -12,18 +12,15 @@ public static class SystemSwitcherStrip {
     private const float OrbGap = 8f;
 
     public static void Draw(Rect railRect, Pawn pawn, CodexState state, IReadOnlyList<IInvestitureProvider> providers) {
-        // One entry is furniture. Connection always takes a slot, so a pawn with no Investiture
-        // would otherwise get a rail with a single orb and nothing to switch to.
+        // Connection always takes a slot, so a pawn with no Investiture never gets a rail with one orb.
         if (providers.Count == 0) return;
 
-        // No ground of its own: the rail is part of the window, and painting it a
-        // different shade made it look like a separate panel bolted on the side.
+        // The rail is part of the window, not its own surface - a different shade made it look bolted on.
         Widgets.DrawBoxSolid(new Rect(railRect.xMax - 1f, railRect.y, 1f, railRect.height), DockPalette.BorderSubtle);
 
         float y = railRect.y + OrbGap;
 
-        // Connection first, and a peer of the systems rather than a tab inside one of them. It
-        // is not an investiture system - it is what decides whether you may ever have one.
+        // Connection is a peer of the systems, not a tab inside one - it gates whether you get one at all.
         y = DrawConnectionOrb(railRect, state, y);
 
         for (int i = 0; i < providers.Count; i++) {
@@ -34,9 +31,7 @@ public static class SystemSwitcherStrip {
             // No box and no ring: the mark alone carries it, lit when chosen and muted otherwise.
             bool selected = !state.ShowingConnection && i == state.SelectedSystemIndex;
 
-            // A per-pawn mark wins over the system sigil, and brings its own colours with it - an
-            // order glyph is already painted in the order's colour, so filling it with an accent
-            // would multiply the two and muddy it. Tint only the flat system sigils.
+            // Per-pawn marks skip the accent tint - glyphs already carry their own colour, tinting doubles it.
             Texture2D? sigil = skin.Sigil;
             Color accent = skin.AccentColor;
             bool selfColoured = false;
@@ -55,8 +50,7 @@ public static class SystemSwitcherStrip {
             if (sigil != null) {
                 Color prev = GUI.color;
 
-                // A self-coloured mark already arrives in the right colours for its state, so it is
-                // drawn as-is; only the flat system sigils get filled with the accent.
+                // A self-coloured mark draws as-is - only the flat system sigils get filled with the accent.
                 GUI.color = selfColoured ? Color.white : mark;
                 GUI.DrawTexture(orb.ContractedBy(3f), sigil);
                 GUI.color = prev;

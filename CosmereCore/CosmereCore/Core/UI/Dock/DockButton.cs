@@ -4,20 +4,25 @@ using Verse.Sound;
 
 namespace Cosmere.Core.UI.Dock;
 
-// Which job a button is doing. The distinction is the point: a pair of identically
-// weighted buttons makes the player read both every time, where a filled primary
-// beside a ghost says which one is the ordinary move.
+/// <summary>
+///     Which job a button is doing. The distinction is the point: identically weighted buttons
+///     make the player read both every time, where a filled primary beside a ghost says which is the ordinary move.
+/// </summary>
 public enum DockButtonKind {
     Primary,
     Ghost,
     Active,
 }
 
-// A dock action. Vanilla's tan gradient fights both shardworld palettes, so these
-// take the section's own accent and the dock's rounded panel instead.
+/// <summary>
+///     A dock action. Vanilla's tan gradient fights both shardworld palettes, so these take the
+///     section's own accent and the dock's rounded panel instead.
+/// </summary>
 public static class DockButton {
-    // Slow on purpose. The metal tiles pulse at 6f for flaring, which is an alert;
-    // a moment the player has earned should breathe rather than blink.
+    /// <summary>
+    ///     Slow on purpose. The metal tiles pulse at 6f for flaring, which is an alert; a moment
+    ///     the player has earned should breathe rather than blink.
+    /// </summary>
     private const float PulseRate = 2f;
 
     private static readonly Color Disabled = new Color(0.145f, 0.157f, 0.169f);
@@ -44,8 +49,7 @@ public static class DockButton {
 
         Color border = enabled ? accent : Disabled;
 
-        // Filled buttons carry dark lettering: white on a lit accent is the one
-        // combination that goes illegible as the accent brightens.
+        // Filled buttons use dark lettering - white on a lit accent goes illegible as it brightens.
         Color text = !enabled
             ? DisabledText
             : kind == DockButtonKind.Primary

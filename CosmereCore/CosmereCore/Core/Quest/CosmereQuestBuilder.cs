@@ -31,8 +31,7 @@ public static class CosmereQuestBuilder {
         built.description = def.description;
         built.challengeRating = def.challengeRating;
 
-        // -1 is vanilla's "never expires" sentinel, which Quest.TicksUntilExpiry checks for.
-        // Only capstones may declare this; CosmereQuestDef rejects it on repeatables.
+        // -1 is vanilla's never-expires sentinel; CosmereQuestDef enforces it only on capstones.
         if (def.expireAfterDays <= 0) {
             built.acceptanceExpireTick = -1;
         } else {
@@ -77,8 +76,7 @@ public static class CosmereQuestBuilder {
 
             string outSignal = SignalFor(quest, i);
 
-            // Added before the objective's own parts so the line is already on the quest when
-            // the stage's first poll runs. Vanilla resolves it on Enable and keeps it after.
+            // Added before the objective's own parts so the description is set before the stage's first poll runs.
             string? descriptionKey = stage.descriptionKey;
             if (descriptionKey != null && descriptionKey.Length > 0) {
                 quest.AddPart(new QuestPart_DescriptionPart {
@@ -97,8 +95,7 @@ public static class CosmereQuestBuilder {
         string successSignal = previousOutSignal;
         string failSignal = $"Quest{quest.id}.Failed";
 
-        // Objectives build their own QuestPart_CosmereActivable pollers during the loop above,
-        // so failSignal can only be assigned after the fact by walking what they added.
+        // failSignal is set after the fact by walking parts; objectives build their own pollers above.
         List<QuestPart> parts = quest.PartsListForReading;
         for (int i = 0; i < parts.Count; i++) {
             if (parts[i] is QuestPart_CosmereActivable activable) {
@@ -106,12 +103,7 @@ public static class CosmereQuestBuilder {
             }
         }
 
-        // The reward part must be added before the success QuestPart_QuestEnd: Quest.
-        // Notify_SignalReceived evaluates each part's signalListenMode against the quest's
-        // *current* State as it walks the parts list in order, and QuestPart_QuestEnd.
-        // Notify_QuestSignalReceived calls Quest.End() synchronously, which flips State away
-        // from Ongoing. A part added after QuestPart_QuestEnd would find the quest already
-        // ended and never fire.
+        // Reward part must precede the success QuestPart_QuestEnd, which ends the quest synchronously.
         quest.AddPart(new QuestPart_CosmereReward {
             quest = quest,
             inSignal = successSignal,
@@ -130,8 +122,7 @@ public static class CosmereQuestBuilder {
         };
         quest.AddPart(questEnd);
 
-        // Same ordering rule applies to the failure branch: the outcome resolver has to run
-        // before the failure QuestPart_QuestEnd ends the quest.
+        // Same ordering rule for the failure branch: the outcome resolver must run before QuestPart_QuestEnd.
         quest.AddPart(new QuestPart_CosmereOutcome {
             quest = quest,
             inSignal = failSignal,

@@ -62,8 +62,7 @@ public static class AutocastSubtabRenderer {
         Rect icon = new Rect(header.x + 4f, header.y + 4f, 24f, 24f);
         if (target.Icon != null) GUI.DrawTexture(icon, target.Icon);
 
-        // The add sits on the header rather than under the group, so an empty
-        // target is one line rather than two.
+        // The add sits on the header rather than under the group, so an empty target is one line rather than two.
         Rect add = new Rect(header.xMax - 26f, header.y + 6f, 20f, 20f);
         Widgets.DrawHighlightIfMouseover(add);
         TooltipHandler.TipRegion(add, "CC_Codex_Autocast_AddRule".Translate());
@@ -97,8 +96,7 @@ public static class AutocastSubtabRenderer {
         if (striped) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
         Widgets.DrawHighlightIfMouseover(row);
 
-        // Widgets.Checkbox draws at twenty-four whatever rect you hand it, so a
-        // sixteen wide rect put everything measured off it eight pixels out.
+        // Widgets.Checkbox always draws at 24px regardless of the rect size passed in.
         const float checkSize = 24f;
         Rect enabled = new Rect(row.x + Indent, row.y + (row.height - checkSize) / 2f, checkSize, checkSize);
         Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled, checkSize);

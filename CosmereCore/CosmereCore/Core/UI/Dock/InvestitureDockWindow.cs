@@ -38,13 +38,16 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private Vector2 dragGrabOffset;
     private Vector2 dragStartMouse;
 
-    // Where the player put it, before any clamping. Kept apart from windowRect because expanding
-    // near an edge has to nudge the panel back on screen, and folding it away again should return
-    // it to where they left it rather than leaving it stranded at the nudged spot.
+    /// <summary>
+    ///     Where the player put it, before any clamping. Kept apart from windowRect because expanding
+    ///     near an edge nudges the panel back on screen, and folding away again should return it to where they left it.
+    /// </summary>
     private Vector2? desiredPosition;
 
-    // The footprint the player actually dragged. Expanding is measured against this so the panel can
-    // open away from an edge instead of shoving the whole dock along it.
+    /// <summary>
+    ///     The footprint the player actually dragged. Expanding is measured against this so the panel
+    ///     can open away from an edge instead of shoving the whole dock along it.
+    /// </summary>
     private Vector2 collapsedSize = new Vector2(CollapsedWidth, RibbonHeight);
 
     public InvestitureDockWindow() {
@@ -55,15 +58,11 @@ public sealed class InvestitureDockWindow : Verse.Window {
         closeOnCancel = false;
         preventCameraMotion = false;
 
-        // The drag is owned here rather than handed to GUI.DragWindow. That runs off IMGUI events at
-        // the tail of the window's GUI pass and gives up the moment the cursor outruns the window or
-        // the event stream skips, so a slow drag would simply stop. Tracking the button in Update
-        // instead means the dock follows the pointer until the button is actually released.
+        // Owned here, not by GUI.DragWindow - that gives up when the cursor outruns the window or an event is skipped.
         draggable = false;
         drawShadow = false;
 
-        // The dock paints its own ground when open, and when closed the ribbons
-        // carry theirs, so vanilla's window backing is only ever a box in the way.
+        // The dock and ribbons paint their own ground, so vanilla's window backing is only ever in the way.
         doWindowBackground = false;
         layer = WindowLayer.GameUI;
         focusWhenOpened = false;
@@ -111,9 +110,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         Event e = Event.current;
         if (e.type != EventType.MouseDown || e.button != 0 || !inRect.Contains(e.mousePosition)) return;
 
-        // Deliberately does not touch desiredPosition yet. A press that never moves is a click, and
-        // adopting the drawn rect here rewrote the anchor to wherever the panel had been nudged or
-        // flipped to - so closing a panel that had opened upward left it stuck at the top.
+        // Deliberately skips desiredPosition - adopting the drawn rect stuck an upward-nudged panel at the top.
         dragging = true;
         dragMoved = false;
         dragStartMouse = Verse.UI.MousePositionOnUIInverted;
@@ -121,10 +118,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
         e.Use();
     }
 
-    // Clamping and saving happen here rather than in DoWindowContents. GUI.DragWindow runs at the
-    // very end of the window's GUI pass, after DoWindowContents, so a rect written from inside that
-    // pass is immediately overwritten by the drag - the clamp was being applied and undone every
-    // frame, which is what made dragging feel like it was asking permission to move.
+    /// <summary>
+    ///     Clamping and saving happen here rather than in DoWindowContents, because GUI.DragWindow runs
+    ///     after it and would immediately overwrite a rect written there - the clamp was being applied and undone every frame.
+    /// </summary>
     public override void WindowUpdate() {
         base.WindowUpdate();
 
@@ -155,10 +152,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             ? InvestitureProviderRegistry.SnapshotsFor(pawn)
             : [];
 
-        // Sized to what it actually draws. Holding the full screen height left a
-        // tall dark slab over the map with a couple of orbs stranded at the top.
-        // Only the size is reasserted: the position belongs to the player once they
-        // have dragged it, and rewriting the whole rect each frame fought the drag.
+        // Only size is reasserted each frame - position belongs to the player once dragged.
         Rect desired = ComputeRect(pawn, snapshots);
         if (!Mathf.Approximately(windowRect.width, desired.width) ||
             !Mathf.Approximately(windowRect.height, desired.height)) {
@@ -166,22 +160,16 @@ public sealed class InvestitureDockWindow : Verse.Window {
             inRect = new Rect(0f, 0f, desired.width, desired.height);
         }
 
-        // Taken from the computed size rather than from windowRect: the two disagree on the frame a
-        // size change lands, and recording an expanded height as the collapsed footprint would
-        // permanently skew which way the panel opens.
+        // Taken from computed size, not windowRect - using windowRect could record an expanded height as collapsed.
         if (!IsExpanded()) collapsedSize = new Vector2(desired.width, desired.height);
 
         if (pawn == null || snapshots.Count == 0) return;
 
-        // Shift is the only way to move the dock, in either state, and this runs before the content
-        // so it beats the controls underneath. Both states are wall-to-wall interactive - the
-        // collapsed ribbons are buttons that open the dock, the expanded panel is sliders and
-        // headers - so a plain drag would either be impossible or would fight whatever it started on.
+        // Runs before the content, so shift-drag beats the wall-to-wall interactive controls underneath.
         TryBeginShiftDrag(inRect);
 
         if (!IsExpanded()) {
-            // Each ribbon carries its own ground, so a panel behind them would only
-            // be a box around loose strips of parchment.
+            // Each ribbon carries its own ground, so a panel behind them is unnecessary.
             DrawCollapsed(inRect, snapshots);
             return;
         }
@@ -227,16 +215,13 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             Color accent = section.Skin.AccentColor;
 
-            // Only bled past a side the dock is actually against, where the overhang and its border
-            // are clipped away and the banner reads as coming out of the edge of the screen. Dragged
-            // clear of that edge it is a floating strip, and wants its border back.
+            // Bled only past a side the dock is against - dragged clear of the edge, the ribbon wants its border back.
             Rect ribbon = BleedFlushEdges(
                 new Rect(inRect.x, y, inRect.width - RibbonGap, RibbonHeight),
                 horizontalOnly: true
             );
 
-            // Each art tints its own sheet, faintly enough that both still read as
-            // parchment rather than as coloured panels.
+            // Tinted faintly enough that it still reads as parchment, not a coloured panel.
             Color prev = GUI.color;
             GUI.color = Color.Lerp(Color.white, accent, 0.16f);
             GUI.DrawTexture(ribbon, ParchmentTex.Sheet);
@@ -253,9 +238,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Rect icon = new Rect(inRect.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
-                // White, as every mark in the dock is. Matching the lettering's cream
-                // read as part of the same inscription, but it cost contrast against
-                // the parchment, and the mark has to carry the ribbon on its own.
+                // White, not the lettering's cream - the sigil needs the contrast to carry the ribbon on its own.
                 Color prevIcon = GUI.color;
                 GUI.color = Color.white;
                 GUI.DrawTexture(icon, sigil);
@@ -309,8 +292,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             );
             Widgets.DrawHighlightIfMouseover(ribbon);
 
-            // Open onto the system that was actually clicked, not whichever
-            // section happened to be expanded last.
+            // Open onto the system that was actually clicked, not whichever section happened to be expanded last.
             if (Widgets.ButtonInvisible(ribbon)) {
                 pinned = true;
                 accordion.ExpandedSystemId = section.SystemId;
@@ -385,17 +367,16 @@ public sealed class InvestitureDockWindow : Verse.Window {
             : new Rect(0f, MarginTop, width, height);
     }
 
-    // Held fully on screen rather than merely reachable: a dock half off the edge is clipped and
-    // unusable, and a resolution change can otherwise strand it outside the view entirely. The clamp
-    // lands on windowRect only - desiredPosition keeps the unclamped intent.
+    /// <summary>
+    ///     Held fully on screen rather than merely reachable - a dock half off the edge is clipped
+    ///     and unusable. The clamp lands on windowRect only; desiredPosition keeps the unclamped intent.
+    /// </summary>
     private void ApplyPosition() {
         Vector2 anchor = desiredPosition ?? new Vector2(windowRect.x, windowRect.y);
         float width = windowRect.width;
         float height = windowRect.height;
 
-        // Open away from an edge there is no room against, keeping the far side pinned to the
-        // collapsed footprint - the dock unfolds leftward or upward the way a menu flips near a
-        // screen edge, rather than sliding bodily along the edge and appearing to jump.
+        // Opens away from a screen edge like a flipping menu, not a sliding one - far side stays pinned to footprint.
         float x = anchor.x + width <= Verse.UI.screenWidth ? anchor.x : anchor.x + collapsedSize.x - width;
         float y = anchor.y + height <= Verse.UI.screenHeight ? anchor.y : anchor.y + collapsedSize.y - height;
 
@@ -423,8 +404,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         if (snapshots.Count == 0 || pawn == null) return RibbonHeight;
 
         if (!IsExpanded()) {
-            // Gaps sit between the strips only: the first is flush with the top of the window and
-            // the last with the bottom, so the dock is exactly as tall as what it draws.
+            // Gaps sit only between strips - first and last are flush with the window, so height matches what is drawn.
             return snapshots.Count * RibbonHeight + Mathf.Max(0, snapshots.Count - 1) * RibbonGap;
         }
 
@@ -437,8 +417,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             height += section.GetHeaderHeight();
             if (accordion.ExpandedSystemId == section.SystemId) {
-                // Capped the same way the accordion caps it, or the window would size
-                // itself to a body the accordion is about to put in a scroll view.
+                // Capped the same way the accordion caps it, or the window sizes to a body about to be scrolled.
                 height += Mathf.Min(section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx), sectionMax);
             }
         }

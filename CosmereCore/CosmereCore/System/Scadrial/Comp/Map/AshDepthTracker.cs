@@ -134,9 +134,7 @@ public class AshDepthTracker : MapComponent {
             Logger.Important($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
         }
 
-        // Ash falls in the Final Empire whether or not a progression beat has fired yet, and it
-        // was already falling before the colony landed - so the arc's current pressure applies at
-        // once rather than easing up from clean air over a week.
+        // ash was already falling before landing - apply current pressure now, don't ease up from clean air
         if (severityTarget > 0f || !AshEra.CanAccumulate(map)) return;
 
         severityTarget = AshPressure.Target;
@@ -212,8 +210,7 @@ public class AshDepthTracker : MapComponent {
             Comp.Thing.CompAshGas.Exhale(map, gasVents, Stripes / (float)GenDate.TicksPerHour);
         }
 
-        // Outside the era branch on purpose: the terrain has to unwind off the draining grid, not
-        // off the era flip, or the Catacendre hands metres of ash back in a single frame.
+        // outside the era branch on purpose: terrain unwinds off the draining grid, not the era flip
         SweepTerrain(stripe);
     }
 
@@ -223,16 +220,13 @@ public class AshDepthTracker : MapComponent {
     public override void MapComponentUpdate() {
         if (map != Find.CurrentMap) return;
 
-        // The relieved figure, not the raw one. Sealing a vent that thinned the ground but left
-        // the sky as thick as ever would read as the roof having done nothing.
+        // relieved figure, not raw - a sealed vent that thinned the ground should look like it did something
         float shown = EffectiveSeverity;
         UnityEngine.Shader.SetGlobalFloat(Scadrial.Shader.AshShaderProperties.AshSeverity, shown);
 
-        // CanAccumulate, not ShouldRender: nothing new falls after the Catacendre. The ground
-        // layers keep drawing off ShouldRender until the grid empties, but the sky stops feeding.
+        // CanAccumulate not ShouldRender: nothing new falls after Catacendre, but ground drains until empty
         if (shown <= 0.01f || !AshEra.CanAccumulate(map)) {
-            // Flakes already in the air finish falling. Only drop the emitter once the ground has
-            // drained too, so the end of the ashfall reads as stopping and not as a cut.
+            // drop the emitter only once the ground drains too, so ashfall reads as stopping, not a cut
             if (veil != null && !AshEra.ShouldRender(map)) {
                 veil.Stop();
                 veil = null;
@@ -338,9 +332,7 @@ public class AshDepthTracker : MapComponent {
                 continue;
             }
 
-            // Ash does not become ground the day it gets deep enough, and it does not stop being
-            // ground the day it thins. Each cell holds for its own seven to thirty days either
-            // way, so the map turns over in patches rather than as a wave.
+            // each cell holds its own 7-30 day dwell before swapping, so the map turns over in patches
             bool settling = action == AshTerrainAction.Swap;
             if (!ignoreDwell && !settleClock.IsDue(i, today, settling)) continue;
 
@@ -360,8 +352,7 @@ public class AshDepthTracker : MapComponent {
         TerrainDef current = map.terrainGrid.TerrainAt(index);
         if (current == AshTerrain) return false;
 
-        // temporary comes first: TerrainAt hands back the temp layer, and recording that as the
-        // original would send the restore through SetTempTerrain years later.
+        // temporary check first: TerrainAt returns the temp layer, recording it would restore via SetTempTerrain
         if (current.temporary || !current.natural || current.IsWater) return false;
         if (current.passability == Traversability.Impassable) return false;
 
@@ -438,9 +429,7 @@ public class AshDepthTracker : MapComponent {
 
     /// <summary>After the Catacendre the ash goes, but over days rather than between frames.</summary>
     private void DrainStripe(int stripe) {
-        // A cell is only visited once every 64 ticks, so the per-sweep loss is well under one
-        // unit. Bank the fractions per stripe the way deposition does, or every drain rounds to
-        // zero and nothing ever clears.
+        // bank fractions per stripe like deposition does, or every drain rounds to zero and nothing clears
         drainAccrual[stripe] += AshDepthMath.DrainMmPerSweep(AshGrid.MaxDepthMm, SweepsPerDay);
         if (drainAccrual[stripe] < UnitMm) return;
 

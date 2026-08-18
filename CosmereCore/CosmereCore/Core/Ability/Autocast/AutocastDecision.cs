@@ -18,9 +18,7 @@ public static class AutocastDecision {
         bool releaseOnStop,
         bool targetRequired
     ) {
-        // A sustained ability already running has nothing to decide but whether to stop: casting it
-        // again would queue a fresh job every pass. Needing a target blocks starting one, never
-        // stopping it.
+        // active toggle only stops or does nothing; re-casting here would queue a duplicate job.
         if (toggleable && active) {
             return !triggersPass && releaseOnStop ? AutocastAction.TurnOff : AutocastAction.None;
         }

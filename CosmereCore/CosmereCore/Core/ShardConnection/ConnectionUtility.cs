@@ -35,8 +35,7 @@ public static class ConnectionUtility {
 
         int own = Raw(pawn, shard);
 
-        // Harmony holds Ruin and Preservation both, so anyone Connected to Harmony is Connected
-        // to each of them at the same value.
+        // Harmony holds Ruin and Preservation both, so a Harmony Connection implies the same to each.
         if (shard.defName is "Ruin" or "Preservation") {
             ShardDef? harmony = DefDatabase<ShardDef>.GetNamedSilentFail("Harmony");
             if (harmony != null) return ConnectionMath.WithHarmony(own, Raw(pawn, harmony));
@@ -44,10 +43,7 @@ public static class ConnectionUtility {
             return own;
         }
 
-        // And the same fact read the other way, so the two directions cannot disagree. Ancestry
-        // grants floors from a world's fallback Shards - Ruin and Preservation on Scadrial - so
-        // nothing hands a floor to Harmony, and a post-Catacendre native would otherwise read 0
-        // to the Shard their own world is held by.
+        // Inverse of above: nothing hands Harmony a floor directly, so it derives from Ruin and Preservation.
         if (shard.defName == "Harmony") {
             ShardDef? ruin = DefDatabase<ShardDef>.GetNamedSilentFail("Ruin");
             ShardDef? preservation = DefDatabase<ShardDef>.GetNamedSilentFail("Preservation");

@@ -41,8 +41,7 @@ public static class SubtabBar {
             UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
 
             if (selected) {
-                // Inset between tabs, but flush at the ends: the bar reaches the
-                // frame, so an underline stopping short of it left a notch.
+                // Flush at the frame ends - an underline stopping short there left a visible notch.
                 const float inset = 6f;
                 float left = i == 0 ? 0f : inset;
                 float right = i == buffer.Count - 1 ? 0f : inset;

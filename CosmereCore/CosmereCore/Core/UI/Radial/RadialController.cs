@@ -17,8 +17,7 @@ public static class RadialController {
 
         if (window != null && !Find.WindowStack.IsOpen(window)) window = null;
 
-        // The gizmo's hotkey opens the wheel, so this only has to time the press
-        // and decide on release whether it was a tap or a hold.
+        // gizmo hotkey opens the wheel; this just times the press and decides tap vs hold on release.
         bool isHeld = RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen.IsDown;
 
         if (isHeld && !wasHeld) pressedAt = Time.realtimeSinceStartup;
@@ -41,9 +40,10 @@ public static class RadialController {
         window = null;
     }
 
-    // Opens the wheel, or closes it when it is already up. A mouse click has no
-    // release to cast on so it lands straight in browse mode, while a keypress
-    // starts in quick mode and the release decides whether it stays open.
+    /// <summary>
+    ///     Opens the wheel, or closes it if already open. A mouse click has no release to cast on, so
+    ///     it lands in browse mode; a keypress starts in quick mode and the release decides if it stays open.
+    /// </summary>
     public static void ToggleForPawn(Pawn pawn) {
         if (window != null) {
             window.Close(false);
@@ -59,8 +59,10 @@ public static class RadialController {
         Find.WindowStack.Add(window);
     }
 
-    // Building a snapshot walks every provider and allocates, and GetGizmos
-    // runs each frame, so the answer is cached briefly per pawn.
+    /// <summary>
+    ///     Building a snapshot walks every provider and allocates, and GetGizmos runs each frame, so
+    ///     the answer is cached briefly per pawn.
+    /// </summary>
     private const int RadialCheckIntervalTicks = 60;
     private static int cachedRadialPawnId = -1;
     private static int cachedRadialTick = -1;

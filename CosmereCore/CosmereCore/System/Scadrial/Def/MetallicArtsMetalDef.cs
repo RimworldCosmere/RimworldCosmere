@@ -100,9 +100,10 @@ public class MetalFeruchemyDef {
     public Texture2D icon = null!;
     public Texture2D invertedIcon = null!;
 
-    // Scales charge moved per second. One figure, not one per direction: a metalmind
-    // hands back exactly what went in, so storing and tapping have to run at the same
-    // rate. Bendalloy sits far below 1 so a single band covers most of a week.
+    /// <summary>
+    ///     Scales charge moved per second. One figure, not one per direction: a metalmind hands back
+    ///     exactly what went in, so storing and tapping run at the same rate.
+    /// </summary>
     public float rateMultiplier = 1f;
     public string? userName;
 }

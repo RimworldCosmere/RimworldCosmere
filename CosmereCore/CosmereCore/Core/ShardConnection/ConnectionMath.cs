@@ -1,5 +1,4 @@
-// Not Cosmere.Core.Connection: that shadows the existing Connection type in
-// Cosmere.Core.Comp.Game, and every unrelated file using it stops compiling.
+// Not Cosmere.Core.Connection: that would shadow the existing type in Cosmere.Core.Comp.Game.
 namespace Cosmere.Core.ShardConnection;
 
 /// <summary>

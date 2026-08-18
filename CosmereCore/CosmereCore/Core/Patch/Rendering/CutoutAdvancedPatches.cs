@@ -223,8 +223,10 @@ public static class PawnRenderUtilityDrawEquipmentAimingPatch {
 
 [Patch]
 public abstract class GraphicDrawMeshIntPatch : Verse.Graphic {
-    // DrawMeshInt never receives the Thing being drawn, so the enclosing DrawWorker call
-    // parks it here for the duration of that call.
+    /// <summary>
+    ///     DrawMeshInt never receives the Thing being drawn, so the enclosing DrawWorker call
+    ///     parks it here for the duration of that call.
+    /// </summary>
     [ThreadStatic]
     private static Verse.Thing? drawingThing;
 

@@ -139,22 +139,18 @@ public class CompAshVent : ThingComp {
 
         Scribe_Collections.Look(ref banked, "ashVentRemainder", LookMode.Value);
 
-        // Unsaved, every load hands the vent back a fresh empty bank and pushes the next throw a
-        // full cycle out. The ordinal rides along or a save scum reshuffles which metal comes up.
+        // unsaved: next throw loses a cycle and a reload could reshuffle which metal comes up next
         Scribe_Values.Look(ref roomRemainder, "ashVentRoomRemainder");
         Scribe_Values.Look(ref throwRemainder, "ashVentThrowRemainder");
         Scribe_Values.Look(ref throwsMade, "ashVentThrowsMade");
 
-        // The sweep rebuilds this within 64 ticks, but the game loads paused, so unsaved it would
-        // hand a sealed map its full severity back for as long as the player stayed paused.
+        // unsaved, a sealed map would show full severity for as long as the player stays paused on load
         Scribe_Values.Look(ref contained, "ashVentContained");
 
-        // The spread front. A soil cell says it was reached, never whether its neighbours were,
-        // so the terrain grid stops being the record the moment the front leaves the clearing.
+        // the spread front - the terrain grid alone can't say how far it reached, so this saves it
         Scribe_Values.Look(ref soilRadius, "ashVentSoilRadius");
 
-        // The rung clock. A cell's rung is its terrain, but nothing on the ground says when it
-        // last climbed, and unsaved every reload would push the whole patch a rung further out.
+        // the rung clock - terrain alone can't say when a cell last climbed, so this saves the delay
         Scribe_Values.Look(ref soilDays, "ashVentSoilDays");
 
         if (Scribe.mode == LoadSaveMode.LoadingVars) remainder = AshPlume.RestoreBank(banked, Offsets.Count);
@@ -172,8 +168,7 @@ public class CompAshVent : ThingComp {
         float millimetres = Props.millimetresPerDay * dayFraction;
         bool changed;
 
-        // Roof the mouth and the plume has nowhere to go, so it goes into the room instead. The
-        // tracker owns the buried set, so without one there is nothing to fill a room safely with.
+        // roofed mouth fills the room instead of the map; needs the tracker for the buried set
         if (tracker != null && SealedRoom(map, grid) is { } room) {
             // Same branch, same fact: the mass stops reaching the map, so the map stops paying.
             contained = true;
@@ -234,9 +229,7 @@ public class CompAshVent : ThingComp {
             if (grid.CanHaveAsh(cell)) return null;
         }
 
-        // Position is the low corner of the mouth, and the vent's def leaves passability at
-        // standable, so the cell carries a normal region. RoomAt still hands back null on one the
-        // region grid has not rebuilt yet, and the vent drifts that cycle rather than throwing.
+        // RoomAt can return null before the region grid rebuilds; the vent just drifts that cycle instead
         Verse.Room? room = parent.Position.GetRoom(map);
         if (room == null) return null;
 
@@ -262,8 +255,7 @@ public class CompAshVent : ThingComp {
             int index = indices.CellToIndex(cell);
             if (grid.AddDepthMm(index, deposit) <= 0) continue;
 
-            // The sweep would catch these up within 64 ticks, but a room fills fast enough that a
-            // stockpile would sit visible under waist-deep ash for a tick the player can see.
+            // mark buried now - a room fills fast enough that the sweep's 64-tick catch-up would be visible
             buried.Set(index, AshDepthMath.IsBuried(grid.GetDepthMm(index), buried.IsBuried(index)));
             changed = true;
         }
@@ -277,12 +269,10 @@ public class CompAshVent : ThingComp {
     ///     the soil it is feeding stalls under ash terrain before the outer front ever ripens.
     /// </summary>
     private bool ClearOwnMouth(Verse.Map map, AshGrid grid, Map.AshDepthTracker tracker) {
-        // Position is the low corner of a 2x2 and CenterCell hands back the high one, so neither
-        // is the footprint. OccupiedRect is.
+        // OccupiedRect, not Position or CenterCell - neither one is the actual footprint
         CellRect mouth = parent.OccupiedRect();
 
-        // Last cycle's front, since SpreadSoil runs after this. A 64-tick lag on a radius that
-        // takes eight days to gain a cell is nothing.
+        // last cycle's front - SpreadSoil runs after this, and a 64-tick lag is nothing over 8 days
         float radius = Mathf.Max(Props.clearRadius, soilRadius);
         CellRect reach = mouth.ExpandedBy(Mathf.CeilToInt(radius));
         CellIndices indices = map.cellIndices;
@@ -294,8 +284,7 @@ public class CompAshVent : ThingComp {
                 IntVec3 cell = new IntVec3(x, 0, z);
                 if (!cell.InBounds(map)) continue;
 
-                // Straight-line distance out of the rect, so the falloff rounds off the corners
-                // instead of ringing the mouth in another square.
+                // straight-line distance out of the rect, so falloff rounds the corners, not another square
                 int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
                 int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
                 float distance = Mathf.Sqrt(dx * dx + dz * dz);
@@ -304,14 +293,12 @@ public class CompAshVent : ThingComp {
                 int depth = grid.GetDepthMm(index);
                 int allowed = AshPlume.AllowedDepthMm(depth, distance, radius);
 
-                // Under a whole unit is not removable, so bailing here is what stops an already
-                // thinned cell reporting a change every cycle and dirtying the mesh forever.
+                // under a whole unit is not removable - bailing stops an already-thinned cell dirtying the mesh forever
                 if (depth - allowed < AshGrid.UnitMm) continue;
 
                 grid.RemoveDepthMm(index, depth - allowed);
 
-                // Every cell whose depth moved, not just the ones that reach zero. A cell dropping
-                // from 1200 to 400 stops being buried and the set has to hear about it.
+                // every cell whose depth moved, not just ones that hit zero - 1200 to 400 also stops being buried
                 buried.Set(index, AshDepthMath.IsBuried(grid.GetDepthMm(index), buried.IsBuried(index)));
                 changed = true;
             }
@@ -344,8 +331,7 @@ public class CompAshVent : ThingComp {
                 IntVec3 cell = new IntVec3(x, 0, z);
                 if (!cell.InBounds(map)) continue;
 
-                // Out of the rect rather than off a centre, so the front rounds the corners off
-                // instead of ringing the mouth in another square. Squared, to skip the Sqrt.
+                // out of the rect, not a centre - rounds the corners, not a square; squared to skip the Sqrt
                 int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
                 int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
                 int distanceSquared = (dx * dx) + (dz * dz);
@@ -365,23 +351,19 @@ public class CompAshVent : ThingComp {
     ) {
         int index = map.cellIndices.CellToIndex(cell);
 
-        // The plume's own feather caps nothing out at the front, only inside the clearing the vent
-        // thins, so ask the grid what is really on the cell rather than what the feather allows.
+        // the feather caps nothing at the front, only inside the clearing - ask the grid, not the feather
         if (AshDepthMath.ShouldSwapToAshTerrain(tracker.Grid.GetDepthMm(index), false)) return false;
 
-        // Ash terrain standing over a remembered original. Climbing here would strand that memory,
-        // so leave it to the sweep to hand the cell back and take it on a later cycle.
+        // ash over a remembered original - climbing would strand that memory, leave it to the sweep
         if (tracker.TerrainMemory.IsSwapped(index)) return false;
 
         TerrainDef current = map.terrainGrid.TerrainAt(index);
 
-        // The same ground the ash swap accepts, for the same reason. A floor the colony laid stays
-        // theirs, and neither water nor solid rock is ground the vent can feed.
+        // same ground the ash swap accepts - a colony floor stays theirs, water and rock don't feed
         if (current.temporary || !current.natural || current.IsWater) return false;
         if (current.passability == Traversability.Impassable) return false;
 
-        // Stone, ice and anything from a mod we have never heard of have no rung above them, and
-        // ground already at the top of the chain has nowhere left to go.
+        // no rung above stone, ice, or unknown terrain - the top of the chain has nowhere left to go
         if (!Ladder.TryGetValue(current, out TerrainDef? next)) return false;
 
         if (!AshVentSoilLadder.RungIsDue(
@@ -427,8 +409,7 @@ public class CompAshVent : ThingComp {
         Verse.Thing lump = ThingMaker.MakeThing(metal);
         lump.stackCount = Props.lumpsPerThrow;
 
-        // Direct, not Near. Near spirals outward past the checks below and can settle the lump on
-        // a buried cell, and it logs an error rather than failing quietly when it runs out of room.
+        // Direct, not Near - Near spirals past the checks below and can land the lump on a buried cell
         if (!GenPlace.TryPlaceThing(lump, cell, map, ThingPlaceMode.Direct)) return false;
 
         tracker.NotifyMetalThrown(cell);
@@ -442,8 +423,7 @@ public class CompAshVent : ThingComp {
     private bool TryFindLandingCell(Verse.Map map, Map.AshDepthTracker tracker, out IntVec3 cell) {
         CellIndices indices = map.cellIndices;
 
-        // TryFindRandomCellNear clamps its square to map.Size, one past the last valid index, so
-        // InBounds has to come before anything that reads a grid.
+        // InBounds must come first - TryFindRandomCellNear clamps to map.Size, one past the last valid index
         bool Valid(IntVec3 candidate) {
             if (!candidate.InBounds(map)) return false;
             if (!candidate.Standable(map)) return false;

@@ -16,20 +16,26 @@ namespace Cosmere.System.Scadrial.Allomancy.Verb;
 ///     used to fire on stone and burn metal for nothing. IsApplicableTo is the hook that gates it.
 /// </remarks>
 public class PhysicalAllomancy : Verb_CastAbility {
-    // Lines only for metal near the cursor. The ability reaches 18 tiles, and drawing every line in
-    // that radius buries the one the player is aiming at.
+    /// <summary>
+    ///     Lines only for metal near the cursor. The ability reaches 18 tiles, and drawing every
+    ///     line in that radius buries the one the player is aiming at.
+    /// </summary>
     private const float HighlightRadius = 4f;
 
-    // The blue an Allomancer sees metal through. Same value as PhysicalExternalAura's lineColor, so
-    // the targeting preview and the burning aura read as one system.
+    /// <summary>
+    ///     The blue an Allomancer sees metal through. Same value as PhysicalExternalAura's
+    ///     lineColor, so the targeting preview and the burning aura read as one system.
+    /// </summary>
     private static readonly Color LineColor = new Color(0.3f, 0.6f, 1f, 1f);
 
     private readonly List<Verse.Thing> metalNearCursor = [];
     private Material? cachedLineMaterial;
     private int lastScanFrame = -1;
 
-    // Matches LineDrawingAuraProperties.lineMaterial. A different texture or shader here and the
-    // preview stops looking like the aura it is previewing.
+    /// <summary>
+    ///     Matches LineDrawingAuraProperties.lineMaterial. A different texture or shader here and
+    ///     the preview stops looking like the aura it is previewing.
+    /// </summary>
     private Material LineMaterial =>
         cachedLineMaterial ??= MaterialPool.MatFrom(
             GenDraw.OneSidedLineOpaqueTexPath,
@@ -73,8 +79,10 @@ public class PhysicalAllomancy : Verb_CastAbility {
         }
     }
 
-    // DrawHighlight runs every frame the targeter is open. One scan per frame is enough, and the
-    // list is reused so the sweep allocates nothing.
+    /// <summary>
+    ///     DrawHighlight runs every frame the targeter is open. One scan per frame is enough, and
+    ///     the list is reused so the sweep allocates nothing.
+    /// </summary>
     private void RefreshMetalNearCursor(Pawn caster, IntVec3 cursor) {
         if (Time.frameCount == lastScanFrame) return;
         lastScanFrame = Time.frameCount;

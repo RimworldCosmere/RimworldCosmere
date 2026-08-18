@@ -13,9 +13,10 @@ namespace Cosmere.Core.Dev;
 public static class TimeSkipUtility {
     private const int MaxSkipDays = 120;
 
-    // Dialog_Slider is a fixed 130f tall and pins its buttons to inRect.yMax - 30, but lays the
-    // slider out below the label at CalcHeight(text). Two lines of label push the slider onto
-    // the buttons, so buy the height back with the field vanilla provides for it.
+    /// <summary>
+    ///     Dialog_Slider is a fixed 130f tall and pins its buttons to inRect.yMax - 30, but the
+    ///     slider sits below the label at CalcHeight(text); two label lines push it onto the buttons.
+    /// </summary>
     private const float SliderExtraHeight = 40f;
 
     [DebugAction(

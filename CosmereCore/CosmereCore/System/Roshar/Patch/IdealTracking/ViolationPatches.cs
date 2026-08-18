@@ -7,8 +7,10 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-// Pawn.Kill gets exactly one whole-method Around, so both pre-call-state consumers ride on it:
-// the killer-violation checks below and the witness tracking in DeathWitnessTracking.
+/// <summary>
+///     Pawn.Kill gets exactly one whole-method Around, so both pre-call-state consumers ride on
+///     it: the killer-violation checks below and the witness tracking in DeathWitnessTracking.
+/// </summary>
 [Patch]
 public abstract class PawnKillPatch : Pawn {
     [Inject(At.Around, nameof(Kill))]

@@ -53,8 +53,7 @@ public static class MineableUtility {
             if (!doomed[i].Destroyed) doomed[i].Destroy(DestroyMode.Vanish);
         }
 
-        // Rock was holding the roof up. Without this the map is left under a mountain roof with
-        // nothing supporting it, and the first thing to touch it starts a collapse.
+        // rock was holding the roof up; the first thing to touch it now triggers a collapse.
         foreach (IntVec3 cell in map.AllCells) {
             if (map.roofGrid.RoofAt(cell) != null && cell.GetEdifice(map) == null) {
                 map.roofGrid.SetRoof(cell, null);

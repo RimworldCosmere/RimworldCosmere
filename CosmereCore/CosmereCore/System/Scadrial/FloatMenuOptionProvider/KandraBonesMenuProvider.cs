@@ -19,8 +19,7 @@ public class KandraBonesMenuProvider : RimWorld.FloatMenuOptionProvider {
     protected override FloatMenuOption? GetSingleOptionFor(Verse.Thing clickedThing, FloatMenuContext context) {
         if (clickedThing is not Corpse corpse) return null;
 
-        // Animals count, but only the ones a kandra can actually wear. Eating a mechanoid or a
-        // thrumbo teaches nothing it could put on afterwards.
+        // animals count, but only ones a kandra can wear - a mechanoid or thrumbo teaches nothing wearable
         if (!corpse.InnerPawn.RaceProps.Humanlike
             && !Kandra.KandraShapeEligibility.Wearable(corpse.InnerPawn.kindDef)) {
             return null;

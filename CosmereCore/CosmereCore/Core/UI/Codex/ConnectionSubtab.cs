@@ -80,8 +80,7 @@ public static class ConnectionSubtab {
             Widgets.Label(row.LeftPartPixels(LabelWidth).ContractedBy(BarInset, 0f), shard.LabelCap);
         }
 
-        // The bar is the row. A number alone makes eight pawns impossible to compare; a filled
-        // track turns the set into a profile you can read without arithmetic.
+        // The bar is the row - a filled track lets pawns be compared visually, without doing arithmetic.
         Rect track = new Rect(
             row.x + LabelWidth,
             row.y + BarInset,

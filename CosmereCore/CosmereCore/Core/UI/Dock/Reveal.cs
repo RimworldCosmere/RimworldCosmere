@@ -3,17 +3,15 @@ using UnityEngine;
 
 namespace Cosmere.Core.UI.Dock;
 
-// A height that eases toward a target rather than snapping to it. IMGUI has no tween
-// engine, so the value is stepped by hand.
-//
-// Stepping once per frame is the whole point. A dock height is asked for several times
-// in a single pass - the density probe, then the window sizing, then the draw - and
-// advancing on every one of those would run the animation at three times speed, at a
-// rate that changed with how many sections happened to be open.
+/// <summary>
+///     Height that eases toward a target, stepped by hand once per frame since IMGUI has no tween engine.
+///     Multiple calls in one pass (probe, sizing, draw) must not each step, or the animation runs too fast.
+/// </summary>
 public sealed class Reveal {
-    // A fixed span rather than a fixed speed, so a tall panel and a short one take the
-    // same time and the dock feels consistent whichever metal was clicked. Unscaled
-    // time, because the dock still has to animate while the game is paused.
+    /// <summary>
+    ///     Fixed span, not fixed speed, so a tall panel and a short one take the same time. Unscaled
+    ///     time, because the dock must still animate while the game is paused.
+    /// </summary>
     private const float Duration = 0.1f;
 
     private float from;
@@ -29,8 +27,7 @@ public sealed class Reveal {
             return current;
         }
 
-        // A new target restarts the span from wherever the last one got to, so
-        // reversing mid-slide picks up from the current height instead of snapping.
+        // new target restarts the span from the current height, so reversing mid-slide does not snap.
         if (!Mathf.Approximately(target, goal)) {
             from = current;
             goal = target;

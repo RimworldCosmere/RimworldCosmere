@@ -68,8 +68,7 @@ public static class AshDebugActions {
         AshDepthTracker? tracker = map?.GetComponent<AshDepthTracker>();
         if (tracker == null) return;
 
-        // The live sweep rations itself to eight changes a tick, which is minutes of watching on
-        // a full map. This runs the same pass with the ration off.
+        // the live sweep rations itself to 8 changes a tick; this runs the same pass with the ration off
         int swapped = tracker.RunTerrainSweepNow();
         Messages.Message($"{swapped} cells standing as deep ash.", MessageTypeDefOf.NeutralEvent, false);
     }

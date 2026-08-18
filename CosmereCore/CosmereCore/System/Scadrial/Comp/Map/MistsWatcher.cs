@@ -20,9 +20,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         get {
             if (!Mod.enableMists) return false;
 
-            // No cache: the world cannot change mid-save, and the cached shard check never
-            // invalidated - this component used to read it cached in one place and uncached in
-            // another, so it could disagree with itself.
+            // no cache: this used to cache in one place and not another, so it could disagree with itself
             return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Mists);
         }
     }

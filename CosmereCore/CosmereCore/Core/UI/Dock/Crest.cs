@@ -3,32 +3,30 @@ using Verse;
 
 namespace Cosmere.Core.UI.Dock;
 
-// No glyph tint on purpose: every mark in the dock is drawn white. The source art
-// is monochrome line work on dark panels, and any tint darker than white - a section
-// accent, an order colour, a metal's own colour - costs legibility for identity the
-// title already states in words.
+/// <summary>
+///     Every mark in the dock draws white, never tinted - the source art is monochrome line
+///     work, and any darker tint costs legibility the title already provides in words.
+/// </summary>
 public readonly record struct CrestPalette(
     Color Title,
     Color Subtitle,
     Color Rank
 );
 
-// The identity band at the top of an expanded section. The accordion header says
-// what the system is; the crest says what the pawn is - Lightweaver rather than
-// Surgebinding, Mistborn rather than Allomancy.
-//
-// A label, not a control. Anything the player can do belongs in a button that says
-// so - a clickable crest is a hidden control, and the only tooltip it could
-// honestly carry is the title it already shows.
+/// <summary>
+///     The identity band atop an expanded section - the accordion header names the system,
+///     the crest names the pawn. A label only: nothing here is clickable.
+/// </summary>
 public static class Crest {
     private const float Gap = 6f;
     private const float MarkSize = 16f;
     private const float MarkGap = 3f;
     private const float MarkRowGap = 5f;
 
-    // The headline mark is taller than the two lines of text beside it, so the crest
-    // is as tall as whichever is larger. Sizing it off the text alone let the glyph
-    // spill into the table below.
+    /// <summary>
+    ///     The headline mark is taller than the text beside it, so the crest is as tall as
+    ///     whichever is larger - sizing off the text alone let the glyph spill into the table below.
+    /// </summary>
     private static float GlyphSizeFor(GameFont titleFont) {
         return titleFont == GameFont.Medium ? 60f : 44f;
     }
@@ -43,9 +41,10 @@ public static class Crest {
         return height;
     }
 
-    // A pawn with one identity gets one mark beside the title. A pawn assembled out
-    // of several gets one mark each, on their own row - there is no honest way to
-    // squeeze a dozen into the space one sigil occupies.
+    /// <summary>
+    ///     A pawn with one identity gets one mark beside the title. One assembled out of several
+    ///     gets one mark each on their own row - a dozen will not fit in the space one sigil occupies.
+    /// </summary>
     public static void Draw(
         Rect rect,
         Texture2D? glyph,
@@ -62,8 +61,7 @@ public static class Crest {
         float textHeight = titleHeight + (subtitle.NullOrEmpty() ? 0f : Text.LineHeightOf(GameFont.Tiny));
         float band = Mathf.Max(textHeight, glyphSize);
 
-        // Both column and mark hang off the same band, so neither is pinned to the top
-        // while the other is centred.
+        // Both column and mark hang off the same band, so neither is pinned to the top while the other is centred.
         float textTop = rect.y + (band - textHeight) / 2f;
 
         float textX = rect.x;
@@ -76,8 +74,7 @@ public static class Crest {
             textX = glyphRect.xMax + Gap;
         }
 
-        // Measured rather than reserved: "3rd Ideal" and "17 metals" are different
-        // widths, and a flat reservation starves whichever title runs longest.
+        // Measured rather than reserved - a flat width would starve whichever title runs longest.
         float rankWidth = 0f;
         if (!rank.NullOrEmpty()) {
             using (new TextBlock(GameFont.Tiny)) {
@@ -121,10 +118,11 @@ public static class Crest {
         DrawMarkRow(new Rect(rect.x, y + MarkRowGap, rect.width, MarkSize), marks);
     }
 
+    /// <summary>
+    ///     Shrinks marks past capacity rather than dropping any - a mark not drawn is a metal the player
+    ///     does not know they have.
+    /// </summary>
     private static void DrawMarkRow(Rect row, IReadOnlyList<Texture2D?> marks) {
-        // Sixteen marks fit the narrowest body at this size. Past that the row would
-        // run off, so it shrinks them rather than dropping any - a mark that is not
-        // drawn is a metal the player does not know they have.
         float size = Mathf.Min(MarkSize, (row.width - MarkGap * (marks.Count - 1)) / marks.Count);
         float x = row.x;
 

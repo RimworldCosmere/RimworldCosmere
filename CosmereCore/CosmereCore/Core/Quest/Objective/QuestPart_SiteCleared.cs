@@ -12,6 +12,10 @@ namespace Cosmere.Core.Quest.Objective;
 public class QuestPart_SiteCleared : QuestPart_CosmereActivable {
     public Site? site;
 
+    /// <summary>
+    ///     countDormantPawnsAsHostile stays true so a sleeping garrison still blocks completion;
+    ///     canBeFogged stays false so an undiscovered threat does not block forever.
+    /// </summary>
     protected override bool IsSatisfied() {
         if (site == null || site.Destroyed) {
             Fail();
@@ -20,9 +24,6 @@ public class QuestPart_SiteCleared : QuestPart_CosmereActivable {
 
         if (!site.HasMap) return false;
 
-        // countDormantPawnsAsHostile: true so a sleeping garrison still blocks completion.
-        // canBeFogged stays at its default of false: a threat the player has never
-        // discovered should not block completion forever.
         return !GenHostility.AnyHostileActiveThreatTo(site.Map, Faction.OfPlayer, countDormantPawnsAsHostile: true);
     }
 

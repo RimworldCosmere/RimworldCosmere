@@ -51,8 +51,7 @@ public class FlamesprenController : DynamicSprenController {
             if (thing.TryGetComp(out CompRefuelable refuelable) && !refuelable.HasFuel) continue;
             if (thing.TryGetComp(out CompPowerTrader powerTrader) && !powerTrader.PowerOn) continue;
 
-            // Lerp particle counts based on heat output
-            // Typical values: campfire=21, heater=21, torch=7, brazier=15
+            // lerp particle count from heat output (campfire=21, heater=21, torch=7, brazier=15)
             float lerpFactor =
                 Mathf.Clamp01((heatPusher.Props.heatPerSecond - thing.AmbientTemperature - 5) / (30 - 5));
 

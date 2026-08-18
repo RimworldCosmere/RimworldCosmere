@@ -17,8 +17,7 @@ public static class InvestitureRange {
     /// <param name="maxPercent">Top of the band, 0 to 1.</param>
     /// <returns>True when the thing is allowed in.</returns>
     public static bool Within(float current, float max, float minPercent, float maxPercent) {
-        // Nothing to measure against, so the band cannot rule it out. Build materials and other
-        // things with no Investiture of their own land here and stay allowed.
+        // nothing to measure against, so the band cannot rule it out; build materials land here.
         if (max <= 0f) return true;
 
         float filled = float.IsPositiveInfinity(current) ? 1f : current / max;

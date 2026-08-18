@@ -83,8 +83,7 @@ public class ITab_Investiture : ITab {
             return;
         }
 
-        // Runs to both frame edges: a gap before the first tab and after the last
-        // made the bar look inset from the window it belongs to.
+        // Runs to both frame edges - a gap on either side made the bar look inset from the window.
         Rect subtabBar = new Rect(
             contentX,
             CodexChrome.HeaderHeight,

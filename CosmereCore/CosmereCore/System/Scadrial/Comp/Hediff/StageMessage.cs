@@ -37,12 +37,10 @@ public class StageMessage : HediffComp {
 
         if (Props.message == null || parent.CurStageIndex <= lastSpokenOf) return;
 
-        // Set before the message, so a stage that somehow fails to announce is not announced
-        // twice a tick later for the rest of the game.
+        // set before the message: a failed announce should not repeat every tick for the rest of the game
         lastSpokenOf = parent.CurStageIndex;
 
-        // Nothing to say the first time. Every koloss is born into its first stage, and a message
-        // about that is a message about existing.
+        // skip stage 0 - every pawn starts there, so announcing it just announces existing
         if (parent.CurStageIndex == 0) return;
 
         Messages.Message(

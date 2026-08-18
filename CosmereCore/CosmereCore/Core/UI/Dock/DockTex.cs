@@ -3,13 +3,10 @@ using Verse;
 
 namespace Cosmere.Core.UI.Dock;
 
-// Nine-slice sheets for rounded panels, built rather than shipped. IMGUI has no
-// rounded-rect primitive and Widgets.DrawBoxSolid draws squares, so a corner has to
-// come from a texture. Generating it keeps the radius, the stroke and the antialiasing
-// in code next to the surfaces that use them, and costs no art asset or bundle rebuild.
-//
-// Widgets.DrawAtlas takes the corner size as atlas.width * 0.25, so a 24px sheet
-// yields a 6px corner - slight, which is what these surfaces want.
+/// <summary>
+///     Nine-slice sheets for rounded panels, generated rather than shipped as art - IMGUI has no
+///     rounded-rect primitive. DrawAtlas reads the corner as atlas.width * 0.25, so this 24px sheet yields a 6px corner.
+/// </summary>
 [StaticConstructorOnStartup]
 public static class DockTex {
     public const int AtlasSize = 24;
@@ -18,8 +15,10 @@ public static class DockTex {
     // Solid inside the rounded outline. Tint it to colour a panel.
     public static readonly Texture2D RoundFill = Build(false);
 
-    // The outline alone, one pixel wide. Drawn over the fill in its own colour so a
-    // panel's body and its edge stay independently tintable.
+    /// <summary>
+    ///     The outline alone, one pixel wide. Drawn over the fill in its own colour so a panel's
+    ///     body and its edge stay independently tintable.
+    /// </summary>
     public static readonly Texture2D RoundBorder = Build(true);
 
     private static Texture2D Build(bool strokeOnly) {
@@ -34,8 +33,7 @@ public static class DockTex {
             for (int x = 0; x < AtlasSize; x++) {
                 float distance = RoundedDistance(x + 0.5f, y + 0.5f);
 
-                // Inside is negative. Half a pixel of feather either way is what keeps
-                // the corner from stair-stepping once the atlas is stretched.
+                // Inside is negative - half a pixel of feather keeps the corner from stair-stepping when stretched.
                 float alpha = strokeOnly
                     ? Mathf.Clamp01(1f - Mathf.Abs(distance + 0.5f))
                     : Mathf.Clamp01(0.5f - distance);

@@ -64,8 +64,7 @@ public static class VanillaQuicktest {
             () => {
                 Root_Play.SetupForQuickTestPlay();
 
-                // SetupForQuickTestPlay generates the world itself, so the world has to be
-                // committed inside it rather than here. See the WorldForQuicktestPatch.
+                // SetupForQuickTestPlay generates and commits the world itself. See WorldForQuicktestPatch.
                 EnableShards(shards);
                 PageUtility.InitGameStart();
             },
@@ -82,8 +81,7 @@ public static class VanillaQuicktest {
             return;
         }
 
-        // Conflicts allowed: the point of the quicktest is exercising everything at once, so
-        // Ruin and Preservation both being on is the intent rather than an accident.
+        // Conflicts allowed: exercising everything at once is the point of the quicktest.
         for (int i = 0; i < shards.Count; i++) {
             component.EnableShard(shards[i], true);
         }

@@ -13,10 +13,10 @@ public static class SkillVisibilityPatch {
     [InjectField("levelLabelWidth")]
     private static float levelLabelWidth;
 
-    // Read by reflection rather than [InjectField]: Concord only rewrites injected-field accesses
-    // inside injection method bodies, and GetHiddenSkillCount below is a plain helper called from
-    // CharacterCardUtilitySizePatch, where no rewrite happens and the declaration's own null would
-    // be read instead.
+    /// <summary>
+    ///     Read by reflection, not [InjectField]: Concord only rewrites injected-field accesses
+    ///     inside injection methods, and GetHiddenSkillCount is a plain helper called from outside one.
+    /// </summary>
     private static readonly FieldInfo SkillDefsInListOrderCachedField = typeof(SkillUI).GetField(
         "skillDefsInListOrderCached",
         BindingFlags.Static | BindingFlags.NonPublic
@@ -57,8 +57,7 @@ public static class SkillVisibilityPatch {
         InvestitureSkillExtension? ext = skillDef.GetModExtension<InvestitureSkillExtension>();
         if (ext == null) return true;
 
-        // A skill can be gated on carrying a particular gene. Shapeshifting belongs to kandra and
-        // to nothing else, so a koloss should never see a row for it.
+        // a skill can be gated on carrying a gene, e.g. shapeshifting belongs to kandra only.
         if (!string.IsNullOrEmpty(ext.requiresGene)) {
             GeneDef? required = DefDatabase<GeneDef>.GetNamedSilentFail(ext.requiresGene);
             if (required == null || !pawn.genes.HasActiveGene(required)) return false;

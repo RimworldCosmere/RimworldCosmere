@@ -13,8 +13,10 @@ namespace Cosmere.Core.Quest.Objective;
 public class QuestPart_TimedWork : QuestPart_CosmereActivable {
     private int nextReinforcementTick = -1;
 
-    // Preferred raider. Null lets the storyteller pick, which is the fallback when the quest's
-    // targetFaction is not present in this world.
+    /// <summary>
+    ///     Preferred raider. Null lets the storyteller pick - the fallback when the quest's
+    ///     targetFaction is not present in this world.
+    /// </summary>
     public Faction? reinforcementFaction;
 
     public IncidentDef? reinforcementIncident;

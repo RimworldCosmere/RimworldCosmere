@@ -92,8 +92,7 @@ public class Dialog_SelectShards : Verse.Window {
         bool isEnabled = ShardUtility.AreAnyEnabled(shard);
         bool blocked = !isEnabled && shard.mutuallyExclusiveWith.Any(ShardUtility.IsEnabled);
 
-        // A scenario's own Shards are the premise of the story it tells, so they cannot be
-        // taken away - but nothing stops a player adding more on top.
+        // A scenario's own Shards are the premise of its story, so they cannot be unchecked - only added to.
         bool wasGuiEnabled = GUI.enabled;
         GUI.enabled = !blocked && !isRequired;
 

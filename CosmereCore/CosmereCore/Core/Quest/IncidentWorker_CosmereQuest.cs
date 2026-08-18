@@ -45,10 +45,7 @@ public class IncidentWorker_CosmereQuest : IncidentWorker {
         Find.QuestManager.Add(quest);
         manager.RecordOffered(questDef.defName);
 
-        // QuestManager.Add only signals quest parts and, for already-accepted quests, calls
-        // Initiate(). It never notifies the player. Vanilla's own equivalent
-        // (IncidentWorker_GiveQuest_Map.GiveQuest) sends this explicitly after adding, so we
-        // do the same - without it the quest would appear silently in the Quests tab.
+        // QuestManager.Add never notifies the player; vanilla does this in IncidentWorker_GiveQuest_Map.GiveQuest.
         QuestUtility.SendLetterQuestAvailable(quest);
 
         return true;

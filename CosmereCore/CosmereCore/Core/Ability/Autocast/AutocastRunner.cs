@@ -8,10 +8,10 @@ namespace Cosmere.Core.Ability.Autocast;
 public sealed class AutocastRunner : GameComponent {
     private const int TickInterval = 60;
 
-    // Targets a rule has already claimed this tick. Two rules on one metal would
-    // otherwise both write the dial every tick and the last one would silently
-    // win; instead the first rule in the list holds it, so the order the player
-    // sees in the panel is the order of priority.
+    /// <summary>
+    ///     Targets a rule has already claimed this tick. Two rules on one metal would silently
+    ///     race for the last write; the first rule in list order wins, matching panel priority.
+    /// </summary>
     private static readonly HashSet<string> claimed = [];
 
     public AutocastRunner(Game game) { }
@@ -39,8 +39,7 @@ public sealed class AutocastRunner : GameComponent {
         for (int r = 0; r < rules.Count; r++) {
             AutocastRule rule = rules[r];
 
-            // A rule switched off mid-hold still has to put the dial back, so
-            // being dormant is passed along rather than skipped over.
+            // dormant rules still run: a rule switched off mid-hold must put the dial back, not just skip.
             bool dormant = !rule.Enabled || rule.Triggers.Count == 0;
 
             if (rule.Kind == AutocastRuleKind.FeruchemyDial) {
@@ -70,8 +69,7 @@ public sealed class AutocastRunner : GameComponent {
 
             if (action != AutocastAction.Cast) continue;
 
-            // Asked only on the way to a cast: CanCast is about the reserve paying to run the
-            // ability, which has nothing to do with switching one off.
+            // CanCast covers the reserve paying for the ability; switching off never needs it.
             if (!ability.CanCast) continue;
 
             ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
@@ -79,10 +77,11 @@ public sealed class AutocastRunner : GameComponent {
         }
     }
 
-    // A dial is held rather than cast, so the rule keeps setting it while its
-    // triggers pass and puts it back when they stop. It only lets go of a dial it
-    // is actually holding, so a setting the player moved by hand is left alone.
-    // Returns whether the rule is holding the dial.
+    /// <summary>
+    ///     A dial is held rather than cast: keeps setting it while triggers pass, puts it back
+    ///     when they stop, and only releases a dial it actually holds, leaving player-set values alone.
+    /// </summary>
+    /// <returns>Whether the rule is holding the dial.</returns>
     private static bool TickDialRule(Pawn pawn, AutocastRule rule, bool dormant) {
         IAutocastDial? dial = AutocastDialRegistry.For(rule.Kind);
         if (dial == null) return false;
@@ -151,9 +150,11 @@ public sealed class AutocastRunner : GameComponent {
         }
     }
 
-    // Cells to the closest pawn of the given allegiance. Returns a distance
-    // nothing can be within when there is none, so "an enemy within ten" simply
-    // fails on an empty map rather than firing.
+    /// <summary>Cells to the closest pawn of the given allegiance.</summary>
+    /// <returns>
+    ///     A distance nothing can be within when there is none, so "an enemy within ten" fails
+    ///     on an empty map instead of firing.
+    /// </returns>
     private static float NearestDistance(Pawn pawn, bool hostile) {
         Map? map = pawn.Map;
         if (map == null) return float.MaxValue;

@@ -71,9 +71,7 @@ public class MentalBreakHandler : HediffComp {
     protected virtual void HandleMentalBreakRemoveFactor(float mentalBreakRemoveFactor) {
         if (!parent.pawn.InMentalState) return;
 
-        // Reset() below clears whatever state the pawn is in, and a koloss in bloodlust is loose
-        // because nobody holds it - not because it is upset. Soothing it back would cure the
-        // mechanic.
+        // a koloss in bloodlust is loose, not upset; soothing would break the mechanic.
         if (UnbreakableStateRegistry.Guards(parent.pawn)) return;
         if (Rand.Value > mentalBreakRemoveFactor) return;
 

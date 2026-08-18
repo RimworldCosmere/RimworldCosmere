@@ -35,22 +35,26 @@ public class CoreModSettings : CosmereModSettings {
     public bool radialPausesGame;
     public bool reduceMotion;
 
-    // Where the player dragged the investiture dock to, in screen pixels. Held unclamped, so it can
-    // legitimately sit slightly outside the screen when dragged into a corner - which is why a
-    // separate flag records whether it was ever set rather than reading a sentinel out of the value.
+    /// <summary>
+    ///     Where the player dragged the investiture dock, in screen pixels. Held unclamped, since
+    ///     dragging into a corner can sit slightly outside the screen; dockPositionSet flags whether it was ever set.
+    /// </summary>
     public Vector2 dockPosition;
     public bool dockPositionSet;
 
-    // The dock grows to whatever the selected pawn carries, and a Mistborn's sixteen
-    // metals with a detail panel open runs past the bottom of most screens. Past this
-    // the open section scrolls rather than the dock getting taller.
+    /// <summary>
+    ///     The dock grows to fit whatever the selected pawn carries, and a Mistborn's sixteen metals
+    ///     with a detail panel open runs past the bottom of most screens; past this height the section scrolls instead.
+    /// </summary>
     public float dockSectionMaxHeight = DefaultDockSectionMaxHeight;
 
     public bool showDormantConnection;
     public string? testScenarioDefName;
 
-    // How often a sustained ability is charged for its upkeep. Shared by every invested
-    // system, because they all spend off the one DrainSource list on Invested.
+    /// <summary>
+    ///     How often a sustained ability is charged for its upkeep. Shared by every invested
+    ///     system, since they all spend off the one DrainSource list on Invested.
+    /// </summary>
     public UpkeepCadence upkeepCadence = UpkeepCadence.PerSecond;
 
     public bool showFeedbackButtons = true;

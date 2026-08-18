@@ -14,9 +14,10 @@ public abstract class PermanentFlightForSplinterPatch : Pawn_FlightTracker {
     [InjectField("flyingTicks")]
     private int flyingTicks;
 
-    // Pawn_FlightTracker.FlightState is a private nested enum, so its type cannot be named here.
-    // Declaring the field as object is Concord's escape hatch for exactly that: the access is
-    // still emitted against the real field, boxed on read and unboxed on write.
+    /// <summary>
+    ///     Pawn_FlightTracker.FlightState is a private nested enum, so its type can't be named
+    ///     here. object is Concord's escape hatch: boxed on read, unboxed on write, against the real field.
+    /// </summary>
     [InjectField("flightState")]
     private object flightState = null!;
 

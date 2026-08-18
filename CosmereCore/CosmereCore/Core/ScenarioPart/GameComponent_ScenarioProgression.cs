@@ -34,8 +34,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
     }
 
     private void FindActiveProgression() {
-        // An arc the story handed off to wins over the scenario's own: a Final Empire campaign
-        // that lived through the Collapse is running the Well of Ascension's beats now.
+        // An arc the story handed off to wins over the scenario's own (e.g. Final Empire to Well of Ascension).
         if (handedOffDef != null) {
             activeDef = handedOffDef;
             return;
@@ -78,8 +77,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
     public override void GameComponentTick() {
         base.GameComponentTick();
 
-        // A story fork the player has not answered outranks everything else. The window pauses
-        // the game while it is up; if anything closes it without a pick, put it straight back.
+        // A story fork the player hasn't answered outranks everything else; a closed window goes straight back.
         if (pendingChoice != null) {
             if (!Find.WindowStack.IsOpen<Dialog_ProgressionChoice>()) {
                 Find.WindowStack.Add(pendingChoice());
@@ -154,9 +152,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
 
         try {
             for (int i = 0; i < actions.Count; i++) {
-                // A fork stops the block. Era advances and handoffs sitting after it must not
-                // run while the question is still open, or the campaign moves to the next arc
-                // with the choice unanswered - which is exactly how the Well got skipped.
+                // A fork stops the block: actions after it must not run while the choice is still open.
                 if (actions[i] is ChoiceAction choice) {
                     List<ProgressionAction> tail = actions.GetRange(i + 1, actions.Count - i - 1);
                     string? outer = PendingEffects;
@@ -205,8 +201,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
             }
         }
 
-        // Caravans too: a pawn who happens to be away on a trade run when a story beat lands is
-        // still one of yours, and a beat that skipped him for it would look like a bug.
+        // Caravans too: a pawn away on a trade run is still one of yours.
         List<RimWorld.Planet.Caravan> caravans = Find.WorldObjects.Caravans;
         for (int c = 0; c < caravans.Count; c++) {
             if (!caravans[c].IsPlayerControlled) continue;

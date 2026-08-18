@@ -10,8 +10,10 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 public class Harden : SurgebindingAbility {
     private static readonly Dictionary<Building, float> hardenedBuildings = new Dictionary<Building, float>();
 
-    // The hit point multiplier a building is currently hardened by, if any.
-    // The map itself stays private so only this class can write to it.
+    /// <summary>
+    ///     The hit point multiplier a building is currently hardened by, if any. The map itself
+    ///     stays private so only this class can write to it.
+    /// </summary>
     public static bool TryGetHardenMultiplier(Building building, out float multiplier) {
         return hardenedBuildings.TryGetValue(building, out multiplier);
     }

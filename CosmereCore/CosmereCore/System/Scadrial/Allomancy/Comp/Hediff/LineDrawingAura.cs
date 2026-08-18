@@ -89,9 +89,7 @@ public abstract class LineDrawingAura : HediffComp {
 
         LineRenderer.Clear(this);
 
-        // Copper hides pulses and metal lines alike, so a burn weaker than the cloud it is looking
-        // into finds nothing there. Measured once for the whole sweep - it is one burn, and asking
-        // per cell would ask a thousand times for the same answer.
+        // computed once for the whole sweep, not per cell - it's one burn, same answer every time
         bool cloudy = Coppercloud.AnyOn(parent.pawn.Map);
         float senseStrength = cloudy ? Coppercloud.BurnStrengthOf(parent.pawn, metal) : 0f;
 

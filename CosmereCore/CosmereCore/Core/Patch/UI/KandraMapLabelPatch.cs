@@ -26,8 +26,7 @@ public static class KandraMapLabelPatch {
 
         CompKandraForms? forms = pawn.TryGetComp<CompKandraForms>();
 
-        // An animal form's "name" is its species, so the suffix would read "Jenny (wolf)". The
-        // point of the suffix is telling two impersonated colonists apart; a wolf needs no help.
+        // an animal form's name is its species; the suffix exists only to tell colonists apart.
         if (forms?.Current?.IsAnimal != false) return;
 
         string? worn = forms.WornName;

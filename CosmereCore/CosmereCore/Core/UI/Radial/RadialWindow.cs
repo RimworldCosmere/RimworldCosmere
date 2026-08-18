@@ -34,8 +34,10 @@ public sealed class RadialWindow : Verse.Window {
 
     protected override float Margin => 0f;
 
-    // Sized to the wheel rather than the screen: a fullscreen window swallows
-    // every click outside the wheel for as long as it is open.
+    /// <summary>
+    ///     Sized to the wheel, not the screen: a fullscreen window would swallow every click outside
+    ///     the wheel for as long as it stays open.
+    /// </summary>
     private static float WindowExtent => RadialLayout.AbilityRingOuter + 24f;
 
     public override Vector2 InitialSize => new Vector2(WindowExtent * 2f, WindowExtent * 2f);
@@ -67,8 +69,7 @@ public sealed class RadialWindow : Verse.Window {
             return;
         }
 
-        // The wheel acts on the selected pawn, so it has nothing to act on once
-        // the selection moves elsewhere.
+        // the wheel acts on the selected pawn; nothing left to act on once selection moves elsewhere.
         if (Find.Selector.SingleSelectedThing != snapshot.Pawn) {
             Close(false);
             return;
@@ -101,8 +102,7 @@ public sealed class RadialWindow : Verse.Window {
             }
         }
 
-        // Drawing happens in window-local space, so the wheel sits at the
-        // window's own centre rather than at the screen-space anchor.
+        // drawing is window-local, so the wheel sits at the window's own centre, not the screen anchor.
         Vector2 center = new Vector2(WindowExtent, WindowExtent);
         Vector2 mouse = Event.current.mousePosition;
 
@@ -178,9 +178,7 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     private void UpdateHover(Vector2 center, Vector2 mouse) {
-        // Inside the centre disc the last hovered wedge stays selected, so its
-        // detail and the info button remain reachable while the cursor travels
-        // in to press them.
+        // inside the centre disc, the last hovered wedge stays selected so its detail stays reachable.
         if ((mouse - center).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius) {
             return;
         }
@@ -289,10 +287,10 @@ public sealed class RadialWindow : Verse.Window {
         }
     }
 
-    // The mirror of AutoSkipOneOptionTiers. The forward path steps straight over any
-    // tier that offered a single choice, so going back has to step over the same ones -
-    // otherwise Back lands on a ring holding one wedge the player never chose from, and
-    // the only way out of it is to press Back again. Skipping past the top closes.
+    /// <summary>
+    ///     Mirrors AutoSkipOneOptionTiers: must skip the same single-choice tiers the forward path
+    ///     skipped, or Back lands on a ring holding one wedge the player never chose from.
+    /// </summary>
     private void GoBack() {
         if (state.Kind is RadialStateKind.SystemTier or RadialStateKind.Closed) {
             Close(false);
@@ -347,8 +345,7 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     private bool CursorInCentre() {
-        // Called both from inside the window, where the event is window-local,
-        // and from the hotkey poll outside it, so always measure in screen space.
+        // called both window-local (from inside) and screen-space (hotkey poll outside), so always use screen space.
         Vector2 mouse = Verse.UI.MousePositionOnUIInverted;
         return (mouse - windowRect.center).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius;
     }

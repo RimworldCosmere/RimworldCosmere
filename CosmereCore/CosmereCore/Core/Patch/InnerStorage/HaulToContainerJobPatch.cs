@@ -24,8 +24,7 @@ public static class HaulToContainerJobPatch {
 
         List<CodeInstruction> code = instructions.ToList();
 
-        // Label to skip to if cast fails. Qualified: Concord.Label collides with
-        // System.Reflection.Emit.Label, which this file needs for OpCodes.
+        // qualified: Concord.Label collides with System.Reflection.Emit.Label, needed here for OpCodes.
         Concord.Label continueLabel = context.DefineLabel();
 
         // Local, not a field: Concord reruns transpilers on every recompose of the target.
@@ -64,9 +63,7 @@ public static class HaulToContainerJobPatch {
             inserted = true;
         }
 
-        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
-        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
-        // it before this transpiler has run.
+        // reported here, not a startup callback: ExecuteWhenFinished would read the flag too early.
         if (!inserted) {
             Logger.Warning("HaulAIUtility.HaulToStorageJob transpiler found no `isinst ISlotGroupParent` to patch.");
             return instructions;

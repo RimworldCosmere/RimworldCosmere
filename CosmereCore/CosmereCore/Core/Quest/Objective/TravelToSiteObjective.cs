@@ -11,8 +11,10 @@ namespace Cosmere.Core.Quest.Objective;
 ///     stage of every travel quest in the Scadrial arc.
 /// </summary>
 public class TravelToSiteObjective : QuestObjective {
-    // Additional parts layered onto the site. A resource lump spawns no defenders on its own,
-    // so garrisoning it means pairing it with something that wants threat points.
+    /// <summary>
+    ///     Additional parts layered onto the site. A resource lump spawns no defenders on its
+    ///     own, so garrisoning it means pairing with something that wants threat points.
+    /// </summary>
     public List<SitePartDef>? extraSiteParts;
 
     /// <summary>Restricts the site to these biomes. Null means any biome will do.</summary>
@@ -24,12 +26,16 @@ public class TravelToSiteObjective : QuestObjective {
     public int maxTiles = 27;
     public int minTiles = 7;
 
-    // Must be a mineable rock def, not the resource item: GenStep_PreciousLump reads
-    // .building.mineableThing off it to size the lump.
+    /// <summary>
+    ///     Must be a mineable rock def, not the resource item: GenStep_PreciousLump reads
+    ///     .building.mineableThing off it to size the lump.
+    /// </summary>
     public ThingDef? preciousLumpResources;
 
-    // Site.Label falls back to MainSitePartDef.label, so without this the world map reads
-    // "manhunter pack" instead of the place the quest is actually about.
+    /// <summary>
+    ///     Site.Label falls back to MainSitePartDef.label, so without this the world map reads
+    ///     "manhunter pack" instead of the place the quest is actually about.
+    /// </summary>
     public string? siteLabelKey;
     public SitePartDef? sitePart;
 
@@ -61,17 +67,14 @@ public class TravelToSiteObjective : QuestObjective {
         List<SitePartDef> siteParts = new List<SitePartDef>();
         if (sitePart != null) siteParts.Add(sitePart);
 
-        // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the
-        // quest layers on.
+        // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the quest layers on.
         if (persistent) siteParts.Add(SitePartDefOf.Cosmere_SitePart_Persistent);
         if (extraSiteParts != null) {
             for (int i = 0; i < extraSiteParts.Count; i++) {
                 SitePartDef? extra = extraSiteParts[i];
                 if (extra == null) continue;
 
-                // Outpost and friends build their base from map.ParentFaction. With no faction
-                // the settlement resolver throws and the site generates empty, so skip rather
-                // than ship a garrison with nobody in it.
+                // Outpost and friends build from map.ParentFaction; skip rather than let a null faction throw.
                 if (extra.requiresFaction && faction == null) {
                     Logger.Warning(
                         $"{ctx.def?.defName}: skipping site part '{extra.defName}' - it requires a " +
@@ -106,9 +109,7 @@ public class TravelToSiteObjective : QuestObjective {
             site.customLabel = siteLabelKey.Translate().Resolve();
         }
 
-        // Quest.Notify_SignalReceived drops any tag that does not start with "Quest{id}.", and
-        // outSignal already carries that prefix, so deriving the tag from it keeps the signal
-        // routable and unique per stage.
+        // Notify_SignalReceived drops any tag not starting with "Quest{id}.", so the tag derives from outSignal.
         string siteTag = outSignal + ".Site";
         QuestUtility.AddQuestTag(ref site.questTags, siteTag);
 
@@ -125,8 +126,7 @@ public class TravelToSiteObjective : QuestObjective {
 
         if (!persistent) return;
 
-        // Enabled on the same signal as the arrival check and never completes, so it outlives
-        // every later stage and can keep the site defended and tidy it up at the end.
+        // Enabled on the same signal as the arrival check and never completes, so it outlives every later stage.
         QuestPart_PersistentSite keeper = new QuestPart_PersistentSite {
             quest = quest,
             site = site,

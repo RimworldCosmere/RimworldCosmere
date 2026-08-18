@@ -22,8 +22,7 @@ public static class WorldBeforeGenerationPatch {
     private static void BeforeGenerateWorld() {
         if (WorldUtility.Primary != null) return;
 
-        // Important, not Info: Info is filtered out of the shipped log level, and a world
-        // seeded this late is exactly what someone debugging a wrong-world save needs to see.
+        // Important, not Info: Info is filtered from the shipped log level.
         CosmereWorldDef? seeded = WorldUtility.SeedFromScenario();
         if (seeded == null) Logger.Warning("World was unset at generation and no world could be inferred.");
     }

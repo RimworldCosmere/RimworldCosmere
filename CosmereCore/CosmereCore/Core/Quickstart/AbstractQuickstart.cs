@@ -21,13 +21,16 @@ public abstract class AbstractQuickstart {
 
     public virtual ScenarioDef scenario => ScenarioDefOf.Crashlanded;
 
-    // Def names rather than ShardDefs: a Scadrial quickstart routinely wants Honor so Radiant
-    // grants stop silently no-opping, and the Roshar ShardDefOf lives in a namespace Scadrial
-    // code must not import.
+    /// <summary>
+    ///     Def names, not ShardDefs: Radiant grants need Honor even from Scadrial code, and the
+    ///     Roshar ShardDefOf lives in a namespace Scadrial must not import.
+    /// </summary>
     public virtual IReadOnlyList<string> shards => [];
 
-    // Overrides whatever ScenarioEra the scenario declares. Null defers to the scenario, which
-    // is what every quickstart that isn't deliberately cross-shard wants.
+    /// <summary>
+    ///     Overrides whatever era the scenario declares. Null defers to the scenario, which is
+    ///     what every quickstart that isn't deliberately cross-shard wants.
+    /// </summary>
     public virtual string? era => null;
 
     public virtual void PostStart() { }

@@ -12,9 +12,7 @@ public static class ConnectionPatch {
         Pawn result = ch.ReturnValue;
         if (result == null || result.NonHumanlikeOrWildMan()) return;
 
-        // Pawns are generated for throwaway purposes too - a book's author byline,
-        // for one - and those are never placed, so they have no tile and the world
-        // may not be up yet. Nothing here is worth failing generation over.
+        // throwaway pawns (a book's byline) are never placed; tile/layer may be null, which is fine here.
         result.GetOrCreateConnection(result.Tile.Layer);
 
         if (result.Faction != null && Find.World != null) {
@@ -24,8 +22,7 @@ public static class ConnectionPatch {
             }
         }
 
-        // TODO: Layers will eventually be tied to specific shards. We should loop over the shards
-        // For the layer they are on, and give connection to ONLY those shards
+        // TODO: layers will tie to shards eventually; grant only the pawn's layer's shards, not all.
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards == null) return;
 

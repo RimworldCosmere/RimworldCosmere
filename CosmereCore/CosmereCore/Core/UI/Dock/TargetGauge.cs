@@ -10,16 +10,16 @@ public readonly record struct GaugePalette(
     Color NotchIdle
 );
 
-// A reserve gauge the player can also act on. The notch is the refill threshold,
-// dragged on the track itself rather than parked on a separate slider that has to
-// explain what it does.
+/// <summary>
+///     A reserve gauge the player can act on. The notch is the refill threshold, dragged on the track
+///     itself rather than a separate slider that has to explain what it does.
+/// </summary>
 public static class TargetGauge {
     private const float NotchOverhang = 4f;
 
     private static string? draggingGauge;
 
-    // Returns the target, moved if the player dragged it, so the caller writes it
-    // back to whatever field owns it.
+    /// <summary>Returns the target, moved if the player dragged it; caller writes it back to its field.</summary>
     public static float Draw(
         Rect rect,
         float current,
@@ -43,8 +43,10 @@ public static class TargetGauge {
         return moved;
     }
 
-    // A threshold of zero is off rather than low, so the notch goes quiet instead
-    // of sitting at the far left looking like a gauge that failed to draw.
+    /// <summary>
+    ///     A threshold of zero is off, not low, so the notch goes quiet instead of sitting at the far
+    ///     left looking like a broken gauge.
+    /// </summary>
     private static void DrawNotch(Rect rect, float target, float max, GaugePalette palette) {
         if (max <= 0f) return;
 
@@ -66,8 +68,7 @@ public static class TargetGauge {
 
         if (draggingGauge != dragId) return target;
 
-        // MouseDrag only reaches a control that claimed the hot control, which a
-        // hand-drawn gauge never does, so follow the button state directly.
+        // MouseDrag never reaches a hand-drawn gauge (no hot control claimed), so poll button state directly.
         if (!Input.GetMouseButton(0)) {
             draggingGauge = null;
             return target;

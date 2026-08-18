@@ -38,8 +38,7 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
 
         List<CodeInstruction> code = instructions.ToList();
 
-        // Qualified: Concord.Label collides with System.Reflection.Emit.Label, and this file
-        // needs the latter's OpCodes.
+        // qualified: Concord.Label collides with System.Reflection.Emit.Label, needed here for OpCodes.
         Concord.Label continueLabelOne = context.DefineLabel();
         Concord.Label continueLabelTwo = context.DefineLabel();
 
@@ -111,9 +110,7 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
             patchedCount++;
         }
 
-        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
-        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
-        // it before this transpiler has run.
+        // reported here, not a startup callback: ExecuteWhenFinished would read the flag too early.
         if (patchedCount != 2) {
             Logger.Warning(
                 $"Pawn_JobTracker.TryOpportunisticJob transpiler expected 2 `isinst ISlotGroupParent` sites, found {patchedCount}."

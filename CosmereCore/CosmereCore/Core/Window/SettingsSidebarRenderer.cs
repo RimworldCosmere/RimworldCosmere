@@ -20,8 +20,7 @@ public static class SettingsSidebarRenderer {
         CosmereModSettings selectedSettings,
         ref string searchText
     ) {
-        // The divider rides the middle of the gutter rather than the sidebar's own edge,
-        // so both sides get the same air.
+        // divider rides the middle of the gutter, not the sidebar's own edge, so both sides get equal air
         Widgets.DrawBoxSolid(
             new Rect(rect.xMax + SettingsWindowLayout.SidebarGutter / 2f, rect.y, 1f, rect.height),
             new Color(1f, 1f, 1f, 0.09f)

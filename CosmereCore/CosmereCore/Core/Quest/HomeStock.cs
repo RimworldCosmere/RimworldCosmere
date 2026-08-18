@@ -37,8 +37,7 @@ public static class HomeStock {
                 outThings.Add(spawned[j]);
             }
 
-            // Player pawns only: a visiting trader's pack animals are standing on the same map
-            // and their goods are not the colony's to count, let alone destroy.
+            // Player pawns only: a visiting trader's pack animals aren't the colony's to count.
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
             for (int j = 0; j < pawns.Count; j++) {
                 Pawn pawn = pawns[j];

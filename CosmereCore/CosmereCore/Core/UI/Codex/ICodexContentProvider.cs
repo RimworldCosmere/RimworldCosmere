@@ -7,8 +7,10 @@ namespace Cosmere.Core.UI.Codex;
 public interface ICodexContentProvider {
     bool ShowsBondsSubtab { get; }
 
-    // Whether this art keeps memories at all. Allomancy has nowhere to put them,
-    // so the tab should not be offered rather than opening onto nothing.
+    /// <summary>
+    ///     Whether this art keeps memories at all. Allomancy has nowhere to put them, so the tab
+    ///     should not be offered rather than opening onto nothing.
+    /// </summary>
     bool ShowsMemoriesSubtab { get; }
 
     bool HasProgression(Pawn pawn);

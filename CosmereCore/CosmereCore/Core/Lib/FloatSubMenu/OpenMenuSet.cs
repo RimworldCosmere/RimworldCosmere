@@ -70,9 +70,7 @@ internal class OpenMenuSet {
         if (sets.TryGetValue(parent, out OpenMenuSet? set)) {
             set.Add(child);
         } else {
-            // The constructor registers both menus in `sets`, so this write is
-            // the same value again rather than new state. Kept explicit because
-            // a bare `new` that is never read looks like a mistake.
+            // the constructor already registers both menus; this write is redundant but explicit.
             sets[parent] = new OpenMenuSet(parent, child);
         }
     }

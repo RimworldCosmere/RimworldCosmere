@@ -104,10 +104,10 @@ public class Surgebinder : Invested {
         }
     }
 
-    // A pawn can hold more than one Nahel bond, and every bond draws on the same
-    // Stormlight. The most advanced one sets the ceiling, so forming a second bond
-    // can never shrink the reserve. Reading only this gene left the capacity
-    // decided by whichever Surgebinder happened to sit first in the gene list.
+    /// <summary>
+    ///     Multiple Nahel bonds share one Stormlight pool; the most advanced order sets the ceiling, so a
+    ///     second bond never shrinks it. Reading only this gene lets gene-list order decide the capacity.
+    /// </summary>
     public override float MaxInvestitureLevel {
         get {
             float ceiling = 0f;
@@ -756,8 +756,7 @@ public class Surgebinder : Invested {
     }
 
     internal void DebugSpeakOathNow() {
-        // A debug command that does nothing and says nothing is impossible to diagnose from the
-        // outside, so every path that declines to advance reports why.
+        // a silent no-op is unfixable from outside; every skip path here logs why it declined
         if (CurrentIdeal >= 4) {
             RejectIdealAdvance();
             return;

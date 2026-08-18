@@ -8,8 +8,10 @@ namespace Cosmere.System.Roshar.Patch.Surgebinding;
 
 [Patch]
 public abstract class LightweavingDecoyVanishOnDamagePatch : Pawn {
-    // Both parameters must be declared byref to match the target. Taking absorbed by value compiles
-    // the assignments to starg against a bool& slot, which the runtime rejects as invalid IL.
+    /// <summary>
+    ///     Both parameters must be declared byref to match the target. Taking absorbed by value
+    ///     compiles the assignments to starg against a bool&amp; slot, which the runtime rejects.
+    /// </summary>
     [Inject(At.Head, nameof(PreApplyDamage))]
     private Control BeforePreApplyDamage(ref DamageInfo dinfo, ref bool absorbed) {
         absorbed = false;

@@ -58,8 +58,7 @@ public class MakeKoloss : Recipe_Surgery {
             return;
         }
 
-        // The name has to be read before the subject is consumed, because afterwards there is
-        // nobody left to ask.
+        // the name has to be read before the subject is consumed - afterwards theres nobody left to ask
         TaggedString who = pawn.NameShortColored;
 
         Pawn? made = KolossUtility.Make(pawn, koloss);

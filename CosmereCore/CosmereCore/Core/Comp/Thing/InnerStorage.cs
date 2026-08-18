@@ -266,8 +266,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
             settings.CopyFrom(props.defaultStorageSettings);
         }
 
-        // The band is drawn in the hit points slider's place, so that slider has to stay
-        // configurable or vanilla never calls the method we replace.
+        // the band draws in the hit points slider's spot; vanilla skips this method if it isn't configurable.
         if (props.investitureThreshold) BandByFilter.Remove(settings.filter);
         if (props.investitureThreshold) BandByFilter.Add(settings.filter, this);
     }

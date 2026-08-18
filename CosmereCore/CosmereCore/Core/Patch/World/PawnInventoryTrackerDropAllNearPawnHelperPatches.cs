@@ -39,14 +39,7 @@ public abstract class PawnInventoryTrackerDropAllNearPawnHelperPatch : Pawn_Inve
         foreach (CodeInstruction? instruction in instructions) {
             // Find: list.AddRange(arg)
             if (instruction.Is(OpCodes.Call, addRange) || instruction.Is(OpCodes.Callvirt, addRange)) {
-                // Instead of calling AddRange(arg)
-                // transform arg => arg.Where(ShouldDrop)
-
-                // Inject:
-                // ldnull
-                // ldftn ShouldDrop
-                // newobj Func<Thing, bool>
-                // call Enumerable.Where<Thing>
+                // Transform arg into arg.Where(ShouldDrop) before the AddRange call.
                 yield return new CodeInstruction(OpCodes.Ldnull);
                 yield return new CodeInstruction(OpCodes.Ldftn, shouldDrop);
                 yield return new CodeInstruction(OpCodes.Newobj, funcCtor);

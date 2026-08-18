@@ -53,9 +53,7 @@ public class RaidAction : ProgressionAction {
             return;
         }
 
-        // Create it rather than give up. A scenario's relations block normally guarantees the
-        // faction exists, but arcs are reachable from starts that never declared one, and a
-        // story beat that says an army arrives must not quietly send nobody.
+        // Some starts never declare this faction in relations; a beat promising a raid must not send nobody.
         Faction? attacker = Find.FactionManager.FirstFactionOfDef(def);
         if (attacker == null) {
             try {
@@ -77,8 +75,7 @@ public class RaidAction : ProgressionAction {
         Map? map = Find.CurrentMap;
         if (map == null) return;
 
-        // Take the category off the incident itself rather than naming one - friendly raids
-        // are not a threat category and there is no DefOf constant for what they are.
+        // Take the category off the incident itself: friendly raids aren't a threat category with a DefOf constant.
         IncidentDef incident = friendly ? IncidentDefOf.RaidFriendly : IncidentDefOf.RaidEnemy;
 
         IncidentParms parms = StorytellerUtility.DefaultParmsNow(incident.category, map);
@@ -107,8 +104,7 @@ public class RaidAction : ProgressionAction {
             }
         }
 
-        // A story beat that says an army arrives has to produce one. An enemy raid is refused
-        // outright for a faction that is not hostile, so hostility is forced first.
+        // Enemy raids refuse to fire for a non-hostile faction, so force hostility first or the beat produces nothing.
         if (!friendly && !attacker.HostileTo(Faction.OfPlayer)) {
             attacker.TryAffectGoodwillWith(Faction.OfPlayer, -200, false, false);
         }

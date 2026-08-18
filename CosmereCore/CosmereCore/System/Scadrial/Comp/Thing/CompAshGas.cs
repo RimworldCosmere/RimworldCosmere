@@ -79,8 +79,7 @@ public class CompAshGas : ThingComp {
             pawn.health.hediffSet.TryGetHediff(ashLung, out Verse.Hediff? lung);
             if (raw <= 0f && lung == null) continue;
 
-            // Zero exposure means zero effective exposure whatever the mask is worth, so a pawn
-            // only out here to recede never pays for the stat read.
+            // skip the stat read when raw is 0 - a pawn only here to recede shouldn't pay for it
             float worn = raw > 0f ? pawn.GetStatValue(filtration) : 0f;
             float delta = AshLungMath.SeverityDeltaPerHour(raw, worn) * hours;
 

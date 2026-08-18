@@ -56,13 +56,10 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         CosmereWorld? comp = WorldUtility.component;
         if (comp == null) return;
 
-        // Seeding here rather than in Reset covers back-navigation for free: returning to the
-        // scenario page builds a fresh Game, so the component comes back null and re-seeds on
-        // the next draw.
+        // seeding here, not in Reset, covers back-navigation: a fresh Game rebuilds this as null.
         if (comp.primary == null) WorldUtility.SeedFromScenario();
 
-        // Picking a world happens in a FloatMenu callback, which runs outside this injection
-        // wrapper and so cannot reach RebuildFactionCounts. Notice the change here instead.
+        // picking a world happens outside this wrapper (a FloatMenu callback); notice the change here.
         if (!ReferenceEquals(factionsBuiltFor, comp.primary)) {
             factionsBuiltFor = comp.primary;
             RebuildFactionCounts();
@@ -72,8 +69,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         float columnWidth = (main.width - Margin) * 0.5f;
         float controlWidth = columnWidth - LabelWidth;
 
-        // Two rows at the bottom of the left column. Vanilla's own rows grow downward from the
-        // top, so this stays clear of them and of the buttons below the column.
+        // rows grow upward from the left column's bottom, clear of vanilla's rows and buttons below.
         int rowCount = comp.primary?.crossWorld == true ? 3 : 2;
         float y = main.yMax - RowPitch * rowCount;
         if (y < main.y) return;
@@ -88,8 +84,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
 
             DrawShardRow(main.x, y + RowPitch, controlWidth, comp);
 
-            // Only the cross-world save asks this. Every other world answers it for itself -
-            // you do not choose whether Roshar has highstorms.
+            // only a cross-world save asks this; every other world answers it for itself.
             if (comp.primary?.crossWorld == true) {
                 DrawFeatureRow(main.x, y + RowPitch * 2, controlWidth, locked);
             }
@@ -140,12 +135,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         Rect control = new Rect(x + LabelWidth, y, controlWidth, RowHeight);
         if (!Widgets.ButtonText(control, "CC_World_Edit".Translate())) return;
 
-        // Every Shard, not just this world's. Which Shards are active is a fact about the
-        // cosmere the save runs in; the world only decides where their magic functions and what
-        // a pawn born here is Connected to. Enabling Honor on Scadrial is how you get a Roshar
-        // to travel to later.
-        // The scenario's own Shards go in as required: a Final Empire game must keep Ruin and
-        // Preservation, but the player may still add Honor and go to Roshar later.
+        // every Shard, not just this world's: which are active is cosmere-wide state, not per-world.
         Find.WindowStack.Add(new Dialog_SelectShards(
             DefDatabase<ShardDef>.AllDefsListForReading,
             ScenarioDefUtility.AllowsChange ? null : ScenarioDefUtility.CurrentShards?.shards

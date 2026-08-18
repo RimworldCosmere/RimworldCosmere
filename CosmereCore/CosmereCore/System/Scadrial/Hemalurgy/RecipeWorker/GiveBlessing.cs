@@ -23,8 +23,7 @@ public class GiveBlessing : Recipe_Surgery {
         HediffDef? blessing = recipe?.GetModExtension<BlessingExtension>()?.blessing;
         if (blessing == null) return false;
 
-        // Not this one twice. Another Blessing on top of the ones it already has is fine, and is
-        // how a kandra ends up carrying more than one.
+        // not this one twice - another Blessing on top is fine, thats how a kandra carries more than one
         if (pawn.health?.hediffSet?.HasHediff(blessing) == true) return false;
 
         // Waking a mistwraith up, or adding to a kandra that is already awake.

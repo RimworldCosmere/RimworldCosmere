@@ -21,8 +21,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
-    // A closed strip never asks its gene for anything; an open one adds whatever
-    // FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
+    /// A closed strip never asks its gene for anything; an open one adds whatever
+    /// FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
     private static float StripHeightFor(Feruchemist? gene) {
         if (gene == null) return 0f;
 

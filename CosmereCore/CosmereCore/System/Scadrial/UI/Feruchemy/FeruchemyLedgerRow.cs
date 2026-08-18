@@ -20,7 +20,7 @@ public static class FeruchemyLedgerRow {
             () => LedgerMenu(gene)
         );
 
-        if (gene.targetLedger != DuraluminLedger.Shard) return afterLedger;
+        if (!ShowsShardRow(gene.targetLedger)) return afterLedger;
 
         return DockDropdownRow.Draw(
             new Rect(inner.x, afterLedger + 6f, inner.width, DockDropdownRow.Height),
@@ -30,12 +30,20 @@ public static class FeruchemyLedgerRow {
         );
     }
 
-    // How much taller Draw makes the strip: nothing for a metal that isn't duralumin,
-    // one row for a non-Shard tie, two rows plus the gap between them for Shard.
-    public static float HeightFor(Feruchemist gene) {
-        if (!gene.StoresConnection) return 0f;
+    private static bool ShowsShardRow(DuraluminLedger targetLedger) {
+        return targetLedger == DuraluminLedger.Shard;
+    }
 
-        return gene.targetLedger == DuraluminLedger.Shard
+    public static float HeightFor(Feruchemist gene) {
+        return HeightFor(gene.StoresConnection, gene.targetLedger);
+    }
+
+    /// How much taller the strip becomes: nothing for a metal that isn't duralumin, one row
+    /// for a non-Shard tie, two rows plus the gap between them for Shard.
+    public static float HeightFor(bool storesConnection, DuraluminLedger targetLedger) {
+        if (!storesConnection) return 0f;
+
+        return ShowsShardRow(targetLedger)
             ? DockDropdownRow.Height * 2f + 6f
             : DockDropdownRow.Height;
     }
@@ -90,10 +98,14 @@ public static class FeruchemyLedgerRow {
         return new FloatMenuOption(label, () => gene.targetLedger = ledger);
     }
 
+    /// Scoped the same way Feruchemist.StoredForLedger is, so the dropdown preview never
+    /// shows a percentage the row's own label then contradicts.
     private static float StoredFor(Feruchemist gene, ConnectionKey key) {
         float total = 0f;
         List<IMetalmindSource> sources = gene.metalminds;
+        string target = gene.targetMetalmindId;
         for (int i = 0; i < sources.Count; i++) {
+            if (!MetalmindDistribution.MatchesTarget(sources[i], target)) continue;
             total += sources[i].StoredFor(key);
         }
 

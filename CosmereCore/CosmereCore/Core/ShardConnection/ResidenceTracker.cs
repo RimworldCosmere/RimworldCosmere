@@ -9,9 +9,9 @@ namespace Cosmere.Core.ShardConnection;
 ///     How long each pawn has lived on the save's world.
 /// </summary>
 /// <remarks>
-///     A pawn who was not born to this world grows into it, reaching the ancestry floor at about
-///     a year. It is what lets an off-world refugee eventually burn atium without ever having
-///     been Scadrian.
+///     A pawn who was not born to this world grows into it, reaching the ancestry floor after ten
+///     years. It is what lets an off-world refugee eventually burn atium without ever having been
+///     Scadrian.
 ///     <para>
 ///         Only a real shardworld naturalises anyone. The cross-world sentinel is nobody's home -
 ///         living on a planet no Shard ever settled teaches you nothing, so a Crashlanded colony

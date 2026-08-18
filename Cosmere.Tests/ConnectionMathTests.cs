@@ -327,7 +327,7 @@ public class ConnectionMathTests {
     [TestMethod]
     public void ResidenceStaysAtTheCapAndNeverGoesNegative() {
         Assert.AreEqual(
-            ConnectionMath.ResidenceCap,
+            45,
             ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence * 10),
             "A century is still the cap - naturalising makes you a local, not a native a dozen times over."
         );

@@ -43,8 +43,7 @@ public class KolossTests {
         XElement growth = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth");
 
-        // A hair above zero, not zero: Hediff.ShouldRemove is `Severity <= 0f`, so a literal zero
-        // makes the hediff delete itself on the next tick and the koloss has no growth clock.
+        // a hair above zero, not zero - ShouldRemove is `Severity <= 0f`, so literal zero deletes the growth clock.
         double initial = double.Parse(growth.Element("initialSeverity")!.Value);
         Assert.IsTrue(initial > 0, "Zero makes the hediff remove itself.");
         Assert.IsTrue(initial < 0.01, "And anything much above zero starts the koloss part-grown.");
@@ -270,8 +269,7 @@ public class KolossTests {
     /// </summary>
     [TestMethod]
     public void FourSpikesMakeAKolossEverywhereItIsWritten() {
-        // MakeKoloss inherits its ingredients from the abstract base above it, so the count lives
-        // there rather than on the recipe itself.
+        // MakeKoloss inherits its ingredients from the abstract base, so the count lives there, not on the recipe.
         XElement spikes = Defs("Hemalurgy", "KolossRecipes.xml").Descendants("li")
             .First(li => li.Descendants("thingDefs").Any(t =>
                 t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
@@ -426,8 +424,7 @@ public class KolossTests {
             .First(li => li.Descendants("thingDefs").Any(t =>
                 t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
 
-        // specialFiltersToDisallow, matching the kandra recipe that already works.
-        // disallowedSpecialFilters is not the field, and using it silently excluded everything.
+        // field is specialFiltersToDisallow - disallowedSpecialFilters isn't real and silently excluded everything.
         List<string> disallowed = spikes.Descendants("specialFiltersToDisallow")
             .Elements("li").Select(li => li.Value).ToList();
 
@@ -679,9 +676,7 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
             .Element("statOffsets")!;
 
-        // A bare human reads 16C to 26C, so an offset only means something after it clears that.
-        // -46 and +19 put an unclothed koloss at -30C to 45C. Reading the offsets as if they were
-        // the stat line is how this landed at -5C to 56C.
+        // bare human reads 16C-26C; -46/+19 puts koloss at -30C to 45C, not -5C to 56C from reading offsets as stat.
         Assert.AreEqual(-46d, double.Parse(offsets.Element("ComfyTemperatureMin")!.Value), 0.001);
         Assert.AreEqual(19d, double.Parse(offsets.Element("ComfyTemperatureMax")!.Value), 0.001);
     }
@@ -699,8 +694,7 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_Ash");
         XElement food = ash.Element("ingestible")!;
 
-        // Nutrition is a stat, not an IngestibleProperties field. Putting it in the wrong place
-        // loads as zero, and zero nutrition with DesperateOnly is a config error at startup.
+        // nutrition is a stat, not an IngestibleProperties field - wrong placement loads zero, breaking DesperateOnly.
         Assert.IsNull(food.Element("nutrition"), "Nutrition belongs in statBases.");
 
         Assert.AreEqual(
@@ -933,16 +927,13 @@ public class KolossTests {
         Assert.IsTrue(bound.Contains("GenPlace.TryPlaceThing"), "They have to land somewhere reachable.");
         Assert.IsTrue(bound.Contains("comp.Charge("), "A spike keeps what it took. Dying does not undo it.");
 
-        // isValid needs one of six things true, and the only one a koloss spike satisfies is
-        // IsHumanAttribute(stealType). Left to default that held only because HumanStrength is the
-        // first member of the enum - reorder it and every koloss drops spikes the bill refuses.
+        // isValid needs one of six flags; only IsHumanAttribute(stealType) fits a koloss spike, so it must be explicit.
         Assert.IsTrue(
             bound.Contains("stealType = HemalurgicStealType.HumanStrength"),
             "The steal type has to be stated, not inherited from enum ordering."
         );
 
-        // Gaussian has no bounds, and one unlucky roll under 0.05 is a spike that does not count
-        // as charged at all - a koloss held together by nothing.
+        // Gaussian has no bounds - an unlucky roll under 0.05 is a spike that doesn't count as charged at all.
         Assert.IsTrue(bound.Contains("Rand.Gaussian"), "Most spikings are ordinary; the tails are rare.");
         Assert.IsTrue(bound.Contains("Mathf.Clamp("), "An unbounded roll can fall under the charge floor.");
     }

@@ -7,12 +7,10 @@ namespace Cosmere.System.Scadrial.Patch.Gene;
 
 [Patch(typeof(Verse.PawnGenerator))]
 public static class ScadrialXenotypePatch {
-    // A return injection rather than a head one: cancelling the original stopped whatever else
-    // it does on the way to a return value, which left vanilla generation to fail
-    // on a factionless pawn. Overriding its answer is enough.
-    //
-    // Priority 1 so this composes outermost and its answer is the one that survives, matching
-    // the Harmony Priority.Low postfix it replaces.
+    /// <summary>
+    ///     return injection, not head: cancelling the original broke generation for a factionless pawn;
+    ///     overriding the answer is enough. priority 1 composes outermost, matching the old harmony postfix.
+    /// </summary>
     [Inject(At.Return, nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn), Priority = 1)]
     private static void AfterGetXenotypeForGeneratedPawn(
         PawnGenerationRequest request,
@@ -20,14 +18,10 @@ public static class ScadrialXenotypePatch {
     ) {
         if (request.ForcedXenotype != null) return;
 
-        // A xenotype only means anything to a humanlike with a gene tracker.
-        // Forcing one onto whatever else a map generator asks for - Anomaly's
-        // monolith among them - breaks generation further down.
+        // only humanlikes with gene trackers get a xenotype; forcing one on Anomalys monolith breaks generation
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        // Not IsActive: on the cross-world sentinel every world is active at once, and two
-        // patches writing the same return value let composition order pick the xenotype.
-        // A faction that names its own people outranks the planet they stand on.
+        // not IsActive: cross-world sentinel has every world active at once; a self-naming faction outranks the planet
         if (XenotypeArbiter.FactionSpeaksForItself(request)) return;
 
         if (!XenotypeArbiter.MayAnswer(WorldDefOf.Scadrial)) return;
@@ -43,9 +37,7 @@ public static class ScadrialXenotypePatch {
             return;
         }
 
-        // Weighted rather than an even pick, because koloss-blooded are a thinning of the line
-        // rather than a people. The gene's own description says their blood spread in the
-        // generations after Harmony - spread, not took over.
+        // weighted, not even: koloss-blooded thinned the line, didnt replace it (gene desc: spread, not took over)
         ch.ReturnValue = new (XenotypeDef xenotype, float weight)[] {
             (XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian, 60f),
             (XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris, 35f),

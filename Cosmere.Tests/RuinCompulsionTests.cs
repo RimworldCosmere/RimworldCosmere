@@ -112,8 +112,7 @@ public class RuinCompulsionTests {
             "The warning letters should name the live Shard."
         );
 
-        // Braces are the grammar resolver's syntax and it runs before the substitution, so a
-        // thought label using them logs an unresolvable symbol every time the tab is drawn.
+        // braces are the grammar resolver's syntax, run before substitution - using them in a label logs unresolvable.
         string thoughtDefs = File.ReadAllText(Path.Combine(
             RepoRoot, "CosmereScadrial", "Defs", "Hemalurgy", "Thoughts.xml"
         ));

@@ -33,8 +33,7 @@ public class DiminishingStackTests {
 
     [TestMethod]
     public void TheStrongestSourceCountsFirst() {
-        // Otherwise the answer would depend on the order the map handed the sources over, and the
-        // same colony would measure differently after a save reload.
+        // otherwise the answer depends on source order, and the same colony measures differently after a save reload.
         float weakFirst = DiminishingStack.Combine([1f, 6f]);
         float strongFirst = DiminishingStack.Combine([6f, 1f]);
 
@@ -44,8 +43,7 @@ public class DiminishingStackTests {
 
     [TestMethod]
     public void StackingAlwaysBeatsStandingAlone() {
-        // The failure this guards: two Smokers reading as one, which is what a source set that only
-        // ever held one entry looked like.
+        // guards against two Smokers reading as one, which is what a source set holding only one entry looked like.
         Assert.IsTrue(DiminishingStack.Combine([3f, 3f]) > DiminishingStack.Combine([3f]));
     }
 }

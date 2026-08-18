@@ -52,8 +52,7 @@ public class MakeSavantAction : ProgressionAction {
             _ => profile.Stage3Ticks,
         };
 
-        // Burn/store time is a Time record, which AddTo refuses. Never lowers somebody who
-        // already burned their way past this on their own.
+        // RaiseTo, not AddTo: burn/store time is a Time record AddTo refuses; never lowers a pawn already past this
         RecordDef record = feruchemy
             ? RecordDefOf.GetTimeSpentStoringForMetal(metalDef)
             : RecordDefOf.GetTimeSpentBurningForMetal(metalDef);

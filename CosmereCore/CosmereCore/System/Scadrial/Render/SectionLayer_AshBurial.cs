@@ -14,8 +14,10 @@ namespace Cosmere.System.Scadrial.Render;
 /// </summary>
 [StaticConstructorOnStartup]
 public class SectionLayer_AshBurial : SectionLayer {
-    // Map/Transparent and Map/Cutout both sit at queue 2900, so the wash ties with the printed
-    // things and loses on submission order. 2910 draws it after them, still under blueprints.
+    /// <summary>
+    ///     Map/Transparent and Map/Cutout both sit at queue 2900, so the wash ties on submission order there;
+    ///     2910 draws it after them, still under blueprints.
+    /// </summary>
     private const int WashRenderQueue = 2910;
 
     private static readonly Material AshMat =
@@ -54,8 +56,7 @@ public class SectionLayer_AshBurial : SectionLayer {
                 // The set, not the depth. Recomputing here would drop the hysteresis.
                 if (!buried.IsBuried(index)) continue;
 
-                // Ramps from nothing at the unbury line to near-solid by waist deep. The grid
-                // caps at 2550mm, but ash that swallows a stack should read as solid well before.
+                // ramps from the unbury line to near-solid at waist deep; grid caps 2550mm, reads solid sooner
                 float t = Mathf.Clamp01(
                     (grid.GetDepthMm(index) - AshDepthMath.UncoveredMm) /
                     (float)(AshDepthMath.WaistMm - AshDepthMath.UncoveredMm)

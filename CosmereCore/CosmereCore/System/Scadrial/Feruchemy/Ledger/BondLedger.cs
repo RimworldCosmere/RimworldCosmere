@@ -71,7 +71,7 @@ public class BondLedger : IConnectionLedger {
         SpiritWeb? web = SpiritWeb.Instance;
         if (web == null) return edges;
 
-        // Materialized before any write - GetConnections yields lazily over the dictionary AdjustConnection inserts into.
+        // materialized first: GetConnections yields lazily over the dict AdjustConnection inserts into.
         foreach (Connection connection in web.GetConnections(pawn)) {
             if (FarEnd(pawn, connection) is Shard) continue;
             edges.Add(connection);

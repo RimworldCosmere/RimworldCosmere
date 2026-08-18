@@ -215,9 +215,7 @@ public class ConnectionMathTests {
     public void EveryGodMetalDecisionAsksAboutConnection() {
         string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
 
-        // Files that branch on godMetal without deciding whether a pawn may *use* one: a plain
-        // data holder, the dev utility that filters god metals out of a vial list, and the gene
-        // roller, which excludes them from generation rather than gating their use.
+        // exempt files branch on godMetal without deciding whether a pawn may *use* one, not gating access.
         string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs", "GeneUtility.cs"];
 
         List<string> offenders = [];
@@ -489,8 +487,7 @@ public class ConnectionMathTests {
         int five = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(5), 0);
         Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(five));
 
-        // A kandra wearing all four Blessings carries eight, and still must not read as a
-        // Shardholder.
+        // a kandra wearing all four Blessings carries eight, and still must not read as a Shardholder.
         int eight = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(8), 0);
         Assert.IsTrue(eight <= ConnectionMath.OrdinaryMax);
         Assert.AreNotEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(eight));

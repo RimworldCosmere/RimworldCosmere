@@ -87,8 +87,10 @@ public class QuickstartLookupTests {
         Assert.AreSame(typeof(Roshar.WindrunnerQuickstart), resolved);
     }
 
-    // Stand-ins for the real quickstarts, which cannot load outside RimWorld. The two same-named
-    // types in different namespaces are what makes the ambiguity case testable.
+    /// <summary>
+    ///     Stand-ins for the real quickstarts, which cannot load outside RimWorld. The two same-named
+    ///     types in different namespaces are what makes the ambiguity case testable.
+    /// </summary>
     private static class Scadrial {
         internal sealed class PreCatacendreQuickstart;
     }

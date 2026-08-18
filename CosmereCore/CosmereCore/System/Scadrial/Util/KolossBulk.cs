@@ -37,9 +37,10 @@ public static class KolossBulk {
 
     private const int RefreshInterval = 250;
 
-    // Concurrent because portraits render off the main thread. A plain Dictionary here threw
-    // "operations that change non-concurrent collections must have exclusive access" seventeen
-    // hundred times in one session.
+    /// <summary>
+    ///     Concurrent because portraits render off the main thread. A plain Dictionary here threw
+    ///     an exclusive-access exception seventeen hundred times in one session.
+    /// </summary>
     private static readonly ConcurrentDictionary<int, float> Cached = new();
     private static int CachedAt = -99999;
 
@@ -71,8 +72,7 @@ public static class KolossBulk {
         );
         if (growth == null) return 1f;
 
-        // Height only tracks width. A koloss gets thicker as much as it gets taller, and scaling
-        // the two apart made it read as a stretched human rather than a bigger thing.
+        // height tracks width too - scaling them apart made a koloss read as a stretched human, not a bigger one.
         return Mathf.Lerp(NewlyMade, FullyGrown, Mathf.Clamp01(growth.Severity));
     }
 }

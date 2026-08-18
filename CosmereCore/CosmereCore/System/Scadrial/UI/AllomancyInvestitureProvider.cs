@@ -26,8 +26,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
         return false;
     }
 
-    // Def order rather than the pawn's ability order, which is grant order and puts an
-    // arbitrary steel ability first.
+    // def order, not the pawn's grant order - grant order puts an arbitrary steel ability first.
     private static List<AllomancyAbility> AbilitiesFor(IReadOnlyList<Ability> abilities, MetallicArtsMetalDef metal) {
         List<AllomancyAbility> matched = [];
         for (int i = 0; i < abilities.Count; i++) {

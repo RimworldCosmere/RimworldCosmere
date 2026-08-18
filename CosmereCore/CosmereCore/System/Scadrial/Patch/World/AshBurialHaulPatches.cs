@@ -20,8 +20,7 @@ public static class AshBurialHaulPatch {
         if (!ch.ReturnValue) return;
         if (t.Map == null || !t.Spawned) return;
 
-        // Resolved per call. The tracker hands back a new AshBuriedCells at LoadingVars, so a
-        // cached reference would answer off the pre-load set for the rest of the session.
+        // resolved per call: tracker hands back a new AshBuriedCells at LoadingVars; caching would use stale data
         AshDepthTracker? tracker = t.Map.GetComponent<AshDepthTracker>();
         if (tracker == null || !tracker.Buried.Any) return;
 

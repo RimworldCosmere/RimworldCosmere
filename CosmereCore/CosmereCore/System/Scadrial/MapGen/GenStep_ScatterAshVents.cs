@@ -22,11 +22,7 @@ public class GenStep_ScatterAshVents : GenStep_ScatterThings {
         if (!AshEra.CanAccumulate(map)) return;
         if (ShouldSkipMap(map)) return;
 
-        // GenStep_ScatterThings.Generate never sets useFallback, so inheriting it would drop the
-        // fallback pass. Its stack splitting only matters for items, so run the scatterer's loop.
-        //
-        // clusterSize has to stay 1. Vanilla's Generate resets clusterCenter and leftInCluster on
-        // the way out and this loop cannot - both are private on GenStep_ScatterThings.
+        // clusterSize must stay 1: this loop cant reset clusterCenter/leftInCluster (both private on the base)
         useFallback = false;
         usedSpots.Clear();
 

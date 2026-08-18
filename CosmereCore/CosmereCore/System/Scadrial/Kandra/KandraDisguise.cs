@@ -101,9 +101,7 @@ public static class KandraDisguise {
         CompKandraForms? forms = Behind(disguised)?.TryGetComp<CompKandraForms>();
         if (forms == null) return false;
 
-        // Somebody has to be there to notice. A kandra alone in its own base is not being
-        // scrutinised by anybody, and rolling against nothing is what made a face come off in an
-        // empty room.
+        // somebody has to be watching - rolling with nobody there is what made a face slip in an empty room.
         if (!Watched(disguised)) return false;
 
         return Rand.Chance(BaseSuspicion * (1f - forms.Conviction));
@@ -197,8 +195,7 @@ public static class KandraDisguise {
             return false;
         }
 
-        // Wildlife and unfactioned things work out hostility their own way, and a kandra wearing
-        // a face has nothing to say to a manhunting boomrat.
+        // wildlife and unfactioned things work out hostility their own way - a kandra has nothing to say to it.
         Faction? theirs = observer.Faction;
         if (theirs == null) return false;
 

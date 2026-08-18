@@ -18,7 +18,7 @@ while IFS= read -r file; do
 done < <(find "$root" -name '*.cs' \
     -not -name '*.generated.cs' \
     -not -path '*/obj/*' -not -path '*/bin/*' \
-    -not -path '*/.worktrees/*' -not -path '*/.claude/*') > /tmp/cc0001.txt
+    -not -path '*/.worktrees/*' -not -path '*/.claude/*' -not -path '*/node_modules/*' -not -path '*/.git/*') > /tmp/cc0001.txt
 
 if [ -s /tmp/cc0001.txt ]; then
     cat /tmp/cc0001.txt

@@ -14,8 +14,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
         absorbInputAroundWindow = false;
     }
 
-    // Tall enough for the vial count beneath the second slider, which the old
-    // height cut off entirely.
+    // tall enough for the vial count beneath the second slider - the old height cut it off.
     public override Vector2 InitialSize => new Vector2(340f, 216f);
 
     public override void DoWindowContents(Rect inRect) {
@@ -39,8 +38,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
 
         y += 22f;
 
-        // The threshold is a fraction of the reserve, not an amount of it. Running
-        // the slider to gene.Max let it ask for five hundred per cent.
+        // fraction of the reserve, not gene.Max - that let the slider ask for 500%.
         Rect thresholdSliderRect = new Rect(inRect.x, y, inRect.width, 24f);
         float newThreshold = Widgets.HorizontalSlider(thresholdSliderRect, gene.targetValue, 0f, 1f, true);
         if (!Mathf.Approximately(newThreshold, gene.targetValue)) {

@@ -75,9 +75,7 @@ public static class KolossControl {
     public static void Release(Pawn koloss) {
         KolossRoster.Current?.Release(koloss);
 
-        // Immediately. Letting one go is a decision the player made, so it takes effect when they
-        // make it - the grace window is for the metal running out, which they could not have
-        // prevented and might still fix.
+        // takes effect immediately - the grace window is only for the metal running out, not a deliberate release.
         Lapse(koloss);
     }
 
@@ -105,8 +103,7 @@ public static class KolossControl {
 
         koloss.drafter?.Drafted = false;
 
-        // Guarded on the carried thing, not just the tracker: TryDropCarriedThing on a koloss with
-        // empty hands asks vanilla to drop null, which it logs an error about.
+        // guards on the carried thing - TryDropCarriedThing with empty hands drops null and logs an error.
         if (koloss.carryTracker?.CarriedThing != null) {
             koloss.carryTracker.TryDropCarriedThing(koloss.PositionHeld, ThingPlaceMode.Near, out _);
         }

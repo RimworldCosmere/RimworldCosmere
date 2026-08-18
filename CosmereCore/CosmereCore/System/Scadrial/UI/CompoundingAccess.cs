@@ -5,17 +5,19 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-// Compounding is storing into a metalmind you can also burn, so the whole of it
-// lives in the Feruchemy panel. This decides whether a pawn has earned the right
-// to burn one, which is the allomantic half of the trick.
+/// <summary>
+///     Compounding stores into a metalmind you can also burn, so it lives in the Feruchemy panel.
+///     This decides whether a pawn has earned the right to burn one, the allomantic half of the trick.
+/// </summary>
 public static class CompoundingAccess {
     public const int SkillFloor = 10;
 
     private const string ResearchDefName = "Cosmere_Scadrial_Compounding";
 
-    // Whether the pawn has any business seeing compounding controls. Deliberately
-    // looser than Gate - the controls appear once either half is earned, and then
-    // say what the other half is still missing.
+    /// <summary>
+    ///     Whether the pawn has any business seeing compounding controls.
+    ///     Looser than <see cref="Gate"/>: controls appear once either half is earned, then say what's missing.
+    /// </summary>
     public static bool Discovered(Pawn pawn) {
         if (Research is { IsFinished: true }) return true;
 
@@ -38,10 +40,7 @@ public static class CompoundingAccess {
             return "CC_Dock_Feruchemy_CompoundNoAllomancy".Translate(gene.metal.label.Named("METAL"));
         }
 
-        // Deliberately not gated on there being room right now. This only points the
-        // dial at the compounded pool; the dial's own halves grey themselves when
-        // there is nothing to give or take, and a button that vanishes because a
-        // metalmind happens to be full reads as broken.
+        // not gated on room right now - the dial greys itself out instead of vanishing, which reads as broken.
         return true;
     }
 

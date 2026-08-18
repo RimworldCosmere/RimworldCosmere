@@ -52,23 +52,27 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private readonly Reveal reveal = new Reveal();
     private string? expandedMetal;
 
-    // Which strip is on screen, which is not the same as which one the player has open:
-    // a closing strip has to keep drawing until it has finished sliding away.
+    /// <summary>
+    ///     Which strip is on screen - not the same as which one the player has open. A closing
+    ///     strip keeps drawing until it finishes sliding away.
+    /// </summary>
     private string? revealedMetal;
     private float revealedHeight;
 
-    // Picked while another metal is still open, and held until that one has finished
-    // sliding away.
+    /// <summary>
+    ///     Picked while another metal is still open, held until that one finishes sliding away.
+    /// </summary>
     private string? pendingMetal;
     private IReadOnlyList<MetalGroup>? cachedGroups;
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
 
-    // Idempotent, because height is asked for several times a frame. Reveal itself only
-    // advances once per frame; this just re-reads where it got to.
+    /// <summary>
+    ///     Idempotent - height gets asked for several times a frame. Reveal only advances once per
+    ///     frame; this just re-reads where it got to.
+    /// </summary>
     private void StepReveal(float openHeight) {
-        // One panel at a time: the open metal finishes closing before the queued
-        // one opens, so mid-slide contents never jump rows.
+        // one panel at a time: open metal finishes closing before the queued one opens, so mid-slide never jumps rows
         if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
             expandedMetal = pendingMetal;
             pendingMetal = null;
@@ -89,8 +93,9 @@ public sealed class AllomancyDockSection : DockSectionBase {
         return null;
     }
 
-    // Clicking the open metal closes it; clicking a different one closes it first and
-    // queues the new one behind it.
+    /// <summary>
+    ///     Clicking the open metal closes it; clicking a different one closes it first and queues behind.
+    /// </summary>
     private void ToggleMetal(string subsystemId) {
         if (expandedMetal == subsystemId) {
             expandedMetal = null;
@@ -189,9 +194,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         // Nothing to draw for a metal this pawn cannot burn.
         if (FindGene(pawn, cell.SubsystemId) == null) return;
 
-        // Same fill and stroke as the tile, opened along the tile's span: the two are
-        // one merged surface. A lit metal carries its accent down through the join as
-        // well, so the pair reads as burning rather than as a lit tile on a dead panel.
+        // tile and strip merge into one surface; a lit metals accent carries through the join so it reads as burning
         bool hot = cell.IsActive || cell.IsFlaring;
         Color tint = cell.IsFlaring ? FlaringTint : BurningTint;
         Panel.DrawNotchedTop(
@@ -213,8 +216,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
                 ? "CC_Dock_State_Burning".Translate()
                 : "CC_Dock_Feruchemy_Idle".Translate();
 
-        // The metal's own name is already on the tile this strip opened from, so
-        // repeating it here spends the row on something the player just clicked.
+        // metals name is already on the tile this strip opened from; repeating it would waste the row
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
             state,
@@ -223,8 +225,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             new Color(0.780f, 0.718f, 0.596f)
         );
 
-        // Always shown, zero included. A readout that vanishes when idle makes the
-        // row change shape every time a metal lights, which reads as a glitch.
+        // always shown, zero included: a readout that vanishes when idle makes the row change shape, reads as a glitch
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
             "CC_Dock_Allomancy_BurnRate".Translate(
@@ -377,8 +378,10 @@ public sealed class AllomancyDockSection : DockSectionBase {
         );
     }
 
-    // What burning this metal actually does, in the metal def's own words. The
-    // tooltip described the click rather than the power before this.
+    /// <summary>
+    ///     What burning this metal actually does, in the metal defs own words. Before this, the
+    ///     tooltip described the click rather than the power.
+    /// </summary>
     private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
         MetallicArtsMetalDef? metal =
             DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);

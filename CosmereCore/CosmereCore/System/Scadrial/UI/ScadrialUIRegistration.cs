@@ -21,8 +21,7 @@ namespace Cosmere.System.Scadrial.UI;
 [StaticConstructorOnStartup]
 public static class ScadrialUIRegistration {
     static ScadrialUIRegistration() {
-        // What a Misting or a Mistborn is worth toward Ruin and Preservation. Core cannot work
-        // this out for itself and must not learn how.
+        // what a Misting/Mistborn is worth toward Ruin/Preservation - Core cannot work this out, must not learn how.
         ConnectionInvestitureRegistry.Register(new ScadrialInvestitureSource());
 
         InvestitureBlockingHediffRegistry.Register(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab);
@@ -59,8 +58,7 @@ public static class ScadrialUIRegistration {
         RadialActionRegistry.Register(new AllomancyRadialHandler());
         RadialActionRegistry.Register(new FeruchemyRadialHandler());
 
-        // Drafted is the closest thing to "in combat" the trigger set has, so the burn stops
-        // again on undrafting rather than eating the reserve all day.
+        // drafted is the closest thing to "in combat" here - burn stops again on undrafting, not all day.
         AutocastDefaults.Register(
             "Cosmere_Scadrial_Ability_Pewter",
             [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],

@@ -148,8 +148,7 @@ public class AshEruptionTests {
             foreach (int count in counts) {
                 int fired = 0;
 
-                // Inclusive: a condition is not expired until the tick AFTER its duration runs out,
-                // so the closing tick really does get a GameConditionTick.
+                // inclusive - not expired until the tick after duration runs out, so the closing tick still ticks.
                 for (int tick = 0; tick <= duration; tick++) {
                     if (AshEruption.DueOn(tick, duration, count)) fired++;
                 }

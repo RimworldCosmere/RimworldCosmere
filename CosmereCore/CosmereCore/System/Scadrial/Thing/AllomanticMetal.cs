@@ -20,8 +20,7 @@ public class AllomanticMetal : AllomanticVial {
             // Nothing to give, so nothing happens and no letter is sent.
             if (!metal.CanBeIngested) return;
 
-            // The float menu already refuses this, but it is not the only way in - a dev spawn
-            // or a scripted beat reaches PostIngested directly.
+            // float menu already blocks this, but a dev spawn or scripted beat can still reach PostIngested directly
             if (!ConnectionUtility.MayUseMetal(ingester, metal)) {
                 Messages.Message(
                     "CS_NotConnectedToShard".Translate(
@@ -88,8 +87,7 @@ public class AllomanticMetal : AllomanticVial {
                 StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
             }
 
-            // After the powers, not before: the grant tops the pawn up to a total, and the
-            // Mistborn gene it just handed out is worth Investiture in its own right.
+            // after the powers, not before: the grant tops up to a total, and the Mistborn gene just granted counts too
             ConnectionUtility.GrantFromMetal(ingester, metal);
 
             Find.LetterStack.ReceiveLetter(

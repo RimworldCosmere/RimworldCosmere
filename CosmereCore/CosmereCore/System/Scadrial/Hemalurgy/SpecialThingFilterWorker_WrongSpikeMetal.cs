@@ -50,8 +50,7 @@ public class SpecialThingFilterWorker_WrongSpikeMetal : SpecialThingFilterWorker
         string? wanted = Metal;
         if (string.IsNullOrEmpty(wanted)) return false;
 
-        // Only ever an opinion about spikes. Everything else the filter allows is none of its
-        // business, and matching it would quietly drop medicine from the same bill.
+        // only spikes are this worker's business - matching anything else would drop medicine from the bill.
         if (t.def != HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicSpike
             && t.def != HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle) {
             return false;

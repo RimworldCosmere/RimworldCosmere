@@ -14,9 +14,10 @@ public static class GeneUtility {
 
     private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
-    // Genes are assigned before the pawn is named, so reading a name here throws
-    // on anything freshly generated. Only pawns being redressed already have one,
-    // which is why this failed on some generations and not others.
+    /// <summary>
+    ///     Genes are assigned before the pawn is named, so a fresh generation has none yet - only a
+    ///     pawn being redressed already has a name to read.
+    /// </summary>
     private static string GenerationLabel(Pawn pawn) {
         return pawn.Name?.ToStringShort ?? pawn.kindDef?.defName ?? "unnamed";
     }
@@ -69,8 +70,7 @@ public static class GeneUtility {
             if (!isRuin) return;
             if (!isTerris) return;
 
-            // Full Feruchemists were way more common, from what I can tell
-            // Most Terris were Full, or nothing. There was a small chance for Ferrings, but it was rare.
+            // Full Feruchemists were far more common than Ferrings among Terris - most were Full, or nothing.
             success = RollChance(16, out roll);
             Logger.Verbose(
                 $"Trying for full feruchemist. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
@@ -137,8 +137,7 @@ public static class GeneUtility {
         List<MetallicArtsMetalDef> allDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
         List<MetallicArtsMetalDef> candidates = [];
         for (int i = 0; i < allDefs.Count; i++) {
-            // God metals are never rolled. An atium Misting is not something you are born as -
-            // it is what swallowing atium, lerasium or leratium makes of you.
+            // God metals are never rolled - swallowing atium, lerasium or leratium makes an atium Misting, not birth.
             if (allDefs[i].godMetal) continue;
             if (allDefs[i].allomancy != null) candidates.Add(allDefs[i]);
         }

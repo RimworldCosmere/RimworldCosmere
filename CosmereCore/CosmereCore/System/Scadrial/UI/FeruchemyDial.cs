@@ -5,8 +5,9 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-// Lets an autocast rule hold a feruchemical dial without Core having to know
-// what a metalmind is.
+/// <summary>
+///     Lets an autocast rule hold a feruchemical dial without Core having to know what a metalmind is.
+/// </summary>
 public sealed class FeruchemyDial : IAutocastDial {
     public AutocastRuleKind Kind => AutocastRuleKind.FeruchemyDial;
 

@@ -55,8 +55,10 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 
     public string SourceLabel => SourceId;
 
-    // The clamp the carry exists to work around: asking for more than there is room for
-    // silently loses the difference, so the caller has to be told what actually landed.
+    /// <summary>
+    ///     The clamp the carry exists to work around: asking for more than there is room for
+    ///     silently loses the difference, so the caller has to be told what actually landed.
+    /// </summary>
     public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
         if (refuses) return 0f;
 
@@ -277,8 +279,10 @@ public class MetalmindDistributionTests {
         Assert.AreEqual(0f, Store([band], 4f, "thing:burned-out"));
     }
 
-    // A metalmind can refuse a transfer it looked able to take - Metalmind.AddStored bails on
-    // ValidateOwner, so a band another pawn owns has room and still moves nothing.
+    /// <summary>
+    ///     A metalmind can refuse a transfer it looked able to take - Metalmind.AddStored bails on
+    ///     ValidateOwner, so a band another pawn owns has room and still moves nothing.
+    /// </summary>
     [TestMethod]
     public void AMetalmindThatRefusesTheTransferReportsNothingMoved() {
         FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);
@@ -287,8 +291,10 @@ public class MetalmindDistributionTests {
         Assert.AreEqual(0f, foreign.StoredAmount);
     }
 
-    // And it must not eat the remainder on its way past, or the metalmind behind it never
-    // sees the charge the refusing one declined.
+    /// <summary>
+    ///     And it must not eat the remainder on its way past, or the metalmind behind it never sees
+    ///     the charge the refusing one declined.
+    /// </summary>
     [TestMethod]
     public void ARefusingMetalmindDoesNotSwallowTheRemainder() {
         FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);

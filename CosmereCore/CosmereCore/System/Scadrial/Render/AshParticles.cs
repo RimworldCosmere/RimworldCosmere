@@ -44,9 +44,7 @@ public class AshParticles {
     public AshParticles(int mapId) {
         host = new GameObject($"cosmere_ash_particles_{Mathf.Abs(mapId)}");
 
-        // Unity tears this down on scene load and leaves a dangling reference behind, which
-        // shows up as an NRE on host.transform and a particle system that silently resets
-        // every frame.
+        // Unity tears this down on scene load, leaving a dangling ref that NREs on host.transform each frame
         Object.DontDestroyOnLoad(host);
         system = host.AddComponent<UnityEngine.ParticleSystem>();
         ParticleSystemRenderer renderer = host.GetComponent<ParticleSystemRenderer>();
@@ -78,15 +76,12 @@ public class AshParticles {
         UnityEngine.ParticleSystem.ShapeModule shape = system.shape;
         shape.scale = new Vector3(width, 1f, height);
 
-        // Emission tracks both severity and how much sky is on screen, so zooming out does not
-        // thin the fall out to nothing.
+        // emission tracks severity and screen area so zooming out doesnt thin the fall to nothing
         float area = width * height / 2500f;
         float rate = Mathf.Lerp(MinEmissionRate, MaxEmissionRate, Mathf.Pow(severity, EmissionExponent)) *
                      Mathf.Clamp(area, 0.4f, 4f);
 
-        // Fall is always downward-dominant. WindSpeed is unsigned, so the lean comes from a
-        // slowly drifting signed heading - the result reads as top-down, top-down-left or
-        // top-down-right, and never as sideways drift.
+        // fall stays downward-dominant: WindSpeed is unsigned, so lean comes from a drifting signed heading instead
         float wind = map.windManager.WindSpeed;
         float heading = Mathf.Sin(Find.TickManager.TicksGame / 4200f) +
                         0.35f * Mathf.Sin(Find.TickManager.TicksGame / 1150f);
@@ -94,18 +89,12 @@ public class AshParticles {
         float fallMin = -2.4f - severity * 3.0f;
         float fallMax = -4.6f - severity * 6.0f;
 
-        // Capped against the fall rate so the vertical component always dominates.
-        // One shared slant across the whole field, drifting slowly - that is what reads as snow.
-        // Per-particle random sideways motion reads as swirling instead, however small it is.
+        // one shared, slowly drifting slant reads as snow; per-particle random sideways motion reads as swirling
         float lean = Mathf.Clamp(heading, -1f, 1f) * (0.22f + wind * 0.30f) * Mathf.Abs(fallMin);
 
-        // velocityOverLifetime silently refused to apply Z here - measured totalVelocity showed
-        // only the noise contribution on X. Setting velocity per particle at emit time is
-        // deterministic and takes the module out of the equation entirely.
+        // velocityOverLifetime silently dropped Z here (measured); setting velocity per-emit is deterministic instead
 
-        // RimWorld never ticks a particle system it did not create, so rateOverTime emits nothing
-        // and the simulation never advances. Spren hit this too - see Builder.cs. Emit and step
-        // it by hand instead.
+        // RimWorld never ticks a system it didnt make; rateOverTime is a no-op. emit by hand (see Builder.cs)
         LastRate = rate;
 
         float dt = Mathf.Min(Time.deltaTime, 0.1f);
@@ -130,8 +119,7 @@ public class AshParticles {
             system.Emit(p, 1);
         }
 
-        // No Simulate() call: it pauses the system and wipes particles before they can travel.
-        // Velocity is baked in at emit, so Unity's own update is all that is needed.
+        // no Simulate() call: it pauses the system and wipes particles before they travel; velocity is baked in at emit
         if (!system.isPlaying) system.Play();
     }
 
@@ -142,15 +130,12 @@ public class AshParticles {
     private void Configure() {
         UnityEngine.ParticleSystem.MainModule main = system.main;
 
-        // World space is the whole point: particles are anchored in the world, so panning the
-        // camera moves you through the field instead of dragging it along.
+        // world space is the point: particles anchor in the world, so panning moves you through the field, not with it
         main.simulationSpace = ParticleSystemSimulationSpace.World;
         main.loop = true;
         main.startLifetime = new UnityEngine.ParticleSystem.MinMaxCurve(3.5f, 11f);
 
-        // Zero on purpose: startSpeed fires along the emitter's forward axis (+Z, up the
-        // screen) and would fight velocityOverLifetime, which is the only thing that should
-        // decide direction.
+        // zero on purpose: startSpeed fires along the emitters forward axis and would fight velocityOverLifetime
         main.startSpeed = 0f;
 
         // Several size bands rather than one. Small flakes read as distant, large as near.
@@ -160,8 +145,7 @@ public class AshParticles {
         main.maxParticles = 3000;
         main.gravityModifier = 0f;
 
-        // RimWorld loads paused and Time.timeScale goes to zero, which freezes a particle system
-        // solid. Vanilla weather keeps animating while paused, so ash should too.
+        // RimWorld loads paused (Time.timeScale 0), which freezes particles; vanilla weather keeps animating though
         main.useUnscaledTime = true;
         main.playOnAwake = true;
 
@@ -174,9 +158,7 @@ public class AshParticles {
         shape.shapeType = ParticleSystemShapeType.Box;
         shape.randomDirectionAmount = 0.12f;
 
-        // Noise perturbs the fall, it must never compete with it. At comparable strength to the
-        // fall rate the particles swirl in place instead of coming down. Low frequency makes it a
-        // slow wander rather than a tight eddy.
+        // noise must stay weak vs the fall rate or particles swirl in place; low frequency keeps it a wander
         UnityEngine.ParticleSystem.NoiseModule noise = system.noise;
         noise.enabled = true;
         noise.quality = ParticleSystemNoiseQuality.Medium;
@@ -185,9 +167,7 @@ public class AshParticles {
         noise.scrollSpeed = 0.18f;
         noise.damping = true;
 
-        // Separate axes with Z pinned to zero. Uniform noise perturbs the fall axis too, and any
-        // upward component at all will occasionally beat gravity at the slow end of the range.
-        // Ash never rises, so the fall axis simply gets no noise.
+        // Z pinned to zero: noise on the fall axis occasionally beats gravity at the slow end, so ash would rise
         noise.separateAxes = true;
         noise.strengthX = new UnityEngine.ParticleSystem.MinMaxCurve(0.02f, 0.09f);
         noise.strengthY = 0f;

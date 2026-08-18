@@ -50,8 +50,7 @@ public class SectionLayer_Ash : SectionLayer {
                 float depth = grid.GetFraction(indices.CellToIndex(cell));
                 if (depth < 0.01f) continue;
 
-                // Density climbs with depth. A fixed anchor rate leaves the map looking like
-                // scattered patches however deep it gets, which is not what burial looks like.
+                // density climbs with depth; a fixed anchor rate would look like scattered patches no matter how deep
                 uint h = Hash(cell);
                 float spread = Mathf.Clamp01(depth * 2.6f);
                 if (h % 8u >= (uint)Mathf.CeilToInt(spread * 8f)) continue;

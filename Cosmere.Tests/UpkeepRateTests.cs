@@ -40,8 +40,10 @@ public class UpkeepRateTests {
         Assert.AreEqual(0f, UpkeepRate.PerSecond(2f, -60));
     }
 
-    // The bug this class exists for: every allomantic cost divided down to a rare tick lands
-    // below 0.005, so a two-decimal readout could only ever print 0.00.
+    /// <summary>
+    ///     The bug this class exists for: every allomantic cost divided down to a rare tick lands
+    ///     below 0.005, so a two-decimal readout could only ever print 0.00.
+    /// </summary>
     [TestMethod]
     public void TheCheapestBurnStaysVisibleAsAPercentage() {
         float percent = UpkeepRate.ReservePercentPerSecond(

@@ -63,8 +63,10 @@ public abstract class KolossAtlasBypassPatch : PawnRenderer {
             .Compile();
     }
 
-    // Raising the threshold rather than clearing useCached outright: the flag is assigned inside a
-    // private method whose return type is private too, so it cannot be reached from here.
+    /// <summary>
+    ///     raises the threshold rather than clearing useCached: that flag is set inside a private method whose
+    ///     return type is private too, so it cant be reached from here.
+    /// </summary>
     [Inject("ParallelGetPreRenderResults", 18f, At.Constant)]
     private float SkipAtlasForGrownPawn(float minZoom) {
         Pawn? pawn = ReadPawn?.Invoke(this);

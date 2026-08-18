@@ -80,8 +80,7 @@ public sealed class FeedbackDialog : BaseWindow {
     }
 
     protected override void DrawBodyContent(FoundationListing listing) {
-        // bodyPadding only indents horizontally, so the first label would otherwise sit flush
-        // against the header.
+        // bodyPadding only indents horizontally; without this gap the first label sits flush against the header.
         listing.Gap(Spacing.Get(1));
 
         if (result != null) {
@@ -90,8 +89,7 @@ public sealed class FeedbackDialog : BaseWindow {
             return;
         }
 
-        // The client holds the report by reference while a submit is in flight, so editing
-        // during a send would mutate the payload already on its way out.
+        // report is held by reference during a send; editing while sending would mutate the payload in flight.
         bool locked = sending;
 
         listing.Label("CC_BetaHub_Field_Title".Translate());
@@ -209,8 +207,7 @@ public sealed class FeedbackDialog : BaseWindow {
         if (ok) {
             if (string.IsNullOrEmpty(finished.IssueUrl)) return;
 
-            // Printed rather than left behind the button: OpenURL reaches no browser in a
-            // container or on a locked-down machine, and the player still needs the address.
+            // printed, not just linked: OpenURL reaches no browser in a container or a locked-down machine.
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
                 listing.Label(finished.IssueUrl!);
             }
@@ -254,8 +251,7 @@ public sealed class FeedbackDialog : BaseWindow {
         Rect sendRect = inner.RightPartPixels(buttonWidth);
         string sendLabel = sending ? "CC_BetaHub_Sending".Translate() : "CC_BetaHub_Submit".Translate();
 
-        // Send stays enabled when the form is incomplete so the click can say what is missing.
-        // A disabled button gives the player nothing to act on.
+        // stays enabled when incomplete so the click can say what's missing; disabled gives no feedback.
         if (Widgets.ButtonText(sendRect, sendLabel, active: !sending)) {
             if (FeedbackValidator.IsComplete(report.Kind, report.Title, report.Description, report.StepsToReproduce)) {
                 Submit();
@@ -322,8 +318,7 @@ public sealed class FeedbackDialog : BaseWindow {
             if (string.IsNullOrEmpty(finished.IssueUrl)) return;
 
             if (Widgets.ButtonText(actionRect, "CC_BetaHub_ViewOnline".Translate())) {
-                // Copied as well as opened. OpenURL fails silently where no browser is
-                // reachable, and the window stays open so the address is still readable.
+                // copied too: OpenURL fails silently with no browser reachable, so this stays readable.
                 GUIUtility.systemCopyBuffer = finished.IssueUrl;
                 Application.OpenURL(finished.IssueUrl!);
                 Messages.Message("CC_BetaHub_LinkCopied".Translate(), RimWorld.MessageTypeDefOf.TaskCompletion, false);

@@ -67,8 +67,7 @@ public static class KolossGrowthTuning {
         for (int i = 0; i < growth.comps.Count; i++) {
             if (growth.comps[i] is not HediffCompProperties_SeverityPerDay perDay) continue;
 
-            // Severity runs 0 to 1 over the whole life, so the daily step is one over the number
-            // of days in that span.
+            // severity runs 0 to 1 over the whole life, so the daily step is one over the number of days in that span.
             perDay.severityPerDay = 1f / (years * GenDate.DaysPerYear);
 
             int retuned = Retune(perDay.severityPerDay);

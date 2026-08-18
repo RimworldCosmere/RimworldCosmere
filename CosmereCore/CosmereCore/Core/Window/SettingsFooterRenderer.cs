@@ -72,8 +72,10 @@ public sealed class SettingsFooterRenderer {
         }
     }
 
-    // The footer is taller than the row it holds, so the buttons ride its centre line
-    // rather than hanging off the divider at the top.
+    /// <summary>
+    ///     The footer is taller than the row it holds, so buttons ride its centre line
+    ///     rather than hanging off the divider at the top.
+    /// </summary>
     private static float ButtonY(Rect rect) {
         return rect.y + (rect.height - ButtonHeight) / 2f;
     }

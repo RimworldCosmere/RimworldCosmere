@@ -86,11 +86,7 @@ public class KolossControlTests {
             "A bare GetStrength here is the reach 0.0 bug."
         );
 
-        // SetNextStatus only runs from QueueCastingJob, which is the confirm and not the hover, so
-        // nextStatus is null while the player is still picking a target. Without a floor the
-        // readout says 0.0 and teaches the player the ability is broken.
-        // BurnToggle puts flaring on the live status as power 2, and QueueCastingJob then writes
-        // power 1 into nextStatus, throwing it away. Reading either alone lost the flare.
+        // status.power holds flaring; nextStatus.power holds the cast default and is null before a target is picked.
         Assert.IsTrue(
             Regex.IsMatch(push, @"Math\.Max\(parent\.status\.power, parent\.nextStatus\?\.power"),
             "Flaring lives on the live status and the cast default lives on nextStatus."
@@ -153,8 +149,7 @@ public class KolossControlTests {
     /// </summary>
     [TestMethod]
     public void AnArmyIsLimitedByMetalAlone() {
-        // CodeOnly, because the file explains the wrong defName it used to use and a plain grep
-        // reads that explanation as the thing it warns about.
+        // CodeOnly - the file's comments mention the old wrong defName, which a plain grep reads as still using it.
         string roster = CodeOnly("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
         Assert.IsTrue(roster.Contains("DrainSource"), "Holding costs metal, the same way any burn does.");
@@ -163,9 +158,7 @@ public class KolossControlTests {
             "Newest first, so a force built over a campaign outlives a greedy seizure."
         );
 
-        // The gene is called MistingZinc. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc"
-        // matched nothing, so billing found no gene and dropped every bond on the next tick - a
-        // hold lasted about four seconds. GetAllomanticGeneForMetal knows the real names.
+        // guessing "Cosmere_Scadrial_Gene_Allomancy_Zinc" matched nothing, billing found no gene, dropped bonds in ~4s.
         Assert.IsTrue(
             roster.Contains("GetAllomanticGeneForMetal"),
             "Never guess a gene defName; ask the metal for it."
@@ -188,13 +181,10 @@ public class KolossControlTests {
 
         Assert.IsTrue(roster.Contains("koloss.SetFaction(holder.Faction)"), "Holding one makes it yours.");
 
-        // Not on release. Losing the hold starts a grace window during which the koloss is still
-        // nominally the colony's - which is what the player selects, and what the warning sits on.
+        // not on release - losing the hold starts a grace window where the koloss is still nominally the colony's.
         Assert.IsFalse(roster.Contains("SetFaction(null)"), "Release must not strip the faction.");
 
-        // Slave rather than colonist: it takes orders because somebody is standing on its mind,
-        // which is what the status already means. Ideology owns slavery, so a colony without it
-        // still gets a working hold, just a plain faction member.
+        // slave, not colonist - it takes orders because someone holds its mind; Ideology gates status, not the hold.
         Assert.IsTrue(roster.Contains("GuestStatus.Slave"), "A held koloss works for the colony.");
         Assert.IsTrue(roster.Contains("ModsConfig.IdeologyActive"), "Slavery is gated on the DLC.");
     }
@@ -210,9 +200,7 @@ public class KolossControlTests {
         Assert.IsTrue(roster.Contains("Scribe_Values.Look(ref metal"), "The metal has to survive a reload.");
         Assert.IsTrue(roster.Contains("GeneFor(holder, bond)"), "Each bond bills its own metal.");
 
-        // Allomancer.BurnTickInterval already charges the sum of its drain sources and wipes them
-        // all when it cannot pay. Taking the metal by hand as well charged twice and never showed
-        // a rate - the gene read Idle at 0.00%/s while the reserve quietly fell.
+        // BurnTickInterval already drains its sources; billing by hand double-charged and showed Idle at 0.00%/s.
         Assert.IsTrue(roster.Contains("UpdateDrainSource"), "The hold has to be a visible burn.");
         Assert.IsFalse(
             roster.Contains("RemoveFromReserve"),
@@ -235,8 +223,7 @@ public class KolossControlTests {
 
         string window = Core("System", "Scadrial", "UI", "Dialog_KolossRoster.cs");
 
-        // Every interactive rect owes the player three things within one frame of hover: that it
-        // is clickable, what it does, and a sound. Missing any of them reads as a dead panel.
+        // every interactive rect owes hover feedback, a description, and a sound within one frame, or it reads as dead.
         foreach (string owed in new[] { "DrawHighlightIfMouseover", "MouseoverSounds.DoRegion", "TipRegion" }) {
             Assert.IsTrue(window.Contains(owed), $"Interactive rects need {owed}.");
         }
@@ -259,8 +246,7 @@ public class KolossControlTests {
         Assert.IsTrue(gene.Contains("KolossControl.GraceTicks"));
         Assert.IsTrue(gene.Contains("KolossControl.KolossFaction"), "Already theirs means nothing left to count.");
 
-        // The window is a setting now, not a constant - how forgiving a lost hold should be is
-        // the kind of thing one colony wants tense and another wants survivable.
+        // the window is a setting now, not a constant - how forgiving a lost hold should be varies by colony.
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
         Assert.IsTrue(control.Contains("Mod.kolossGraceSeconds"), "Grace comes from settings.");
         Assert.IsTrue(control.Contains("Mathf.Max(0,"), "A negative window would turn it instantly.");
@@ -306,9 +292,7 @@ public class KolossControlTests {
 
             Assert.IsTrue(comps.Any(c => c.EndsWith("SeizeKolossProperties")), "Either metal holds one.");
 
-            // CastAllomanticAbilityAtTarget is the iron and steel driver. It calls MoveThing and
-            // physically throws the target, and it never runs an ability comp - so rioting a pawn
-            // launched them across the map and took hold of nothing.
+            // CastAllomanticAbilityAtTarget throws via MoveThing and runs no ability comp - the iron/steel driver.
             Assert.AreEqual(
                 "CastAbilityOnThing",
                 ability.Element("jobDef")?.Value,
@@ -393,8 +377,7 @@ public class KolossControlTests {
         Assert.IsTrue(control.Contains("TryDropCarriedThing"), "Or it walks off carrying a colonist.");
         Assert.IsTrue(control.Contains("Drafted = false"), "Or stays drafted to a faction it left.");
 
-        // Letting one go is a decision the player made, so it lands when they make it. The grace
-        // window is for the metal running out, which they could not have prevented.
+        // a deliberate release lands immediately; the grace window is only for running out of metal.
         Assert.IsTrue(
             Regex.IsMatch(control, @"Release\(Pawn koloss\) \{[^}]*Lapse\(koloss\)", RegexOptions.Singleline),
             "A deliberate release has to be immediate."

@@ -14,10 +14,10 @@ using Verse.Sound;
 
 namespace Cosmere.System.Roshar.UI;
 
-// Surge marks ship as flat gold line art, and GUI.color multiplies - white is the
-// identity, so tinting a gold mark white leaves it gold. Repainting the pixels is
-// the only way. Built on demand rather than at startup because SurgeDef resolves its
-// icon inside a LongEventHandler callback, so there is no ordering to rely on.
+/// <summary>
+///     Surge marks ship gold; GUI.color tinting a gold mark white still leaves it gold, so
+///     pixels get repainted. Built on demand, since SurgeDef resolves its icon inside a LongEventHandler.
+/// </summary>
 internal static class SurgeMarks {
     private static readonly Dictionary<string, Texture2D?> Cache = new Dictionary<string, Texture2D?>();
 
@@ -34,10 +34,10 @@ internal static class SurgeMarks {
 public sealed class SurgebindingDockSection : DockSectionBase {
     private const float HeaderHeight = 28f;
 
-    // The dock body is 346px at its narrowest, once the accordion's padding and a
-    // scrollbar come off, so the single 16f unit the UI rules suggest is too coarse
-    // to use everywhere. Three steps instead: lines that belong together, blocks
-    // that do not, and the break before the buttons.
+    /// <summary>
+    ///     Dock body is 346px at its narrowest, too tight for the usual 16f spacing unit.
+    ///     Three steps instead: Pad/LineGap within a block, BlockGap between, ButtonGap before buttons.
+    /// </summary>
     private const float Pad = 8f;
     private const float LineGap = 4f;
     private const float BlockGap = 12f;
@@ -59,22 +59,27 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     private static readonly Color LockedText = new Color(0.325f, 0.361f, 0.412f);
     private static readonly Color SecondaryAccent = new Color(0.302f, 0.396f, 0.478f);
 
-    // Matched to the Metallic Arts tables rather than invented: a translucent wash so
-    // the panel still shows through, a muted border, and an open cell marked by an
-    // accent tint plus an edge bar - not by swapping the background out from under it.
+    /// <summary>
+    ///     Matched to the Metallic Arts tables, not invented: translucent wash, muted border.
+    ///     An open cell gets an accent tint plus an edge bar, never a background swap.
+    /// </summary>
     private const float CellPad = 6f;
     private const float StripPad = 6f;
     private const float ActiveWash = 0.18f;
 
-    // The open Surge cell runs down through this gap into its detail panel, so the
-    // panel clears the other Surge rather than butting against the whole row.
+    /// <summary>
+    ///     The open Surge cell runs down through this gap into its detail panel, so the
+    ///     panel clears the other Surge rather than butting against the whole row.
+    /// </summary>
     private const float JoinGap = LineGap;
 
     private static readonly Color CellBack = new Color(0.055f, 0.075f, 0.110f, 0.38f);
     private static readonly Color CellBorder = new Color(0.220f, 0.286f, 0.353f);
 
-    // A step darker than the cell, because the ability rows sit inside a panel drawn
-    // in the cell's own fill - matching it would leave them invisible against it.
+    /// <summary>
+    ///     A step darker than the cell, because the ability rows sit inside a panel drawn
+    ///     in the cell's own fill - matching it would leave them invisible against it.
+    /// </summary>
     private static readonly Color AbilityBack = new Color(0.047f, 0.063f, 0.090f, 0.45f);
     private static readonly Color AbilityBorder = new Color(0.204f, 0.259f, 0.318f);
     private static readonly Color HoverBorder = new Color(0.443f, 0.541f, 0.639f);
@@ -93,16 +98,20 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     private string? selectedOrder;
     private string? expandedSurge;
 
-    // Which panel is on screen, which is not the same as which Surge the player has
-    // open: a closing panel keeps drawing until it has finished sliding away.
+    /// <summary>
+    ///     Which panel is on screen, which is not the same as which Surge the player has
+    ///     open: a closing panel keeps drawing until it has finished sliding away.
+    /// </summary>
     private string? revealedSurge;
     private float revealedHeight;
 
     // Picked while another Surge was still open, and held until that one has gone.
     private string? pendingSurge;
 
-    // Where the open cell was drawn this frame. The panel needs it to know which span
-    // of its own top edge to leave open.
+    /// <summary>
+    ///     Where the open cell was drawn this frame. The panel needs it to know which span
+    ///     of its own top edge to leave open.
+    /// </summary>
     private Rect revealedCell;
 
     public override string SystemId => "Surgebinding";
@@ -173,9 +182,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             new CrestPalette(Color.white, MutedText, Skin.AccentColor)
         );
 
-        // Stormlight is Stormlight in every order, so the fill stays on the Roshar
-        // accent. The order's own colour runs from near-black to near-white across
-        // the ten, which no fill or body text can survive.
+        // gauge fill stays roshar-accent, not order colour - orders run near-black to near-white across the ten.
         Rect gaugeRect = new Rect(inner.x, crestRect.yMax + BlockGap, inner.width, GaugeHeight);
         float target = TargetGauge.Draw(
             gaugeRect,
@@ -206,11 +213,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             MutedText
         );
 
-        // The live numbers share the first line - what is in the reserve and how fast
-        // it is going. The refill threshold drops to the second, next to the ceiling
-        // caption, because it is a setting the player chose rather than a reading. The
-        // sign is carried by the number format rather than the key, so a reserve that
-        // is not draining reads "0.00/s" instead of a nonsensical "-0.00/s".
+        // sign comes from the number format, not the key: a reserve that isn't draining reads "0.00/s", not "-0.00/s".
         UIText.EllipsisLabel(
             readingRect,
             "CC_Dock_Gauge_Rate".Translate(gene.DrainPerSecond.ToString("-0.00;-0.00;0.00")),
@@ -233,19 +236,14 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         DrawSurgeRow(surgeRow, pawn, order);
         y = surgeRow.yMax;
 
-        // The clicked Surge opens beneath the pair rather than replacing them, so the
-        // player never loses sight of which one they opened. It unfolds from the cell
-        // itself: the open cell runs down through the join gap into the panel, and the
-        // panel leaves its top edge open across that cell's span.
+        // clicked surge opens beneath the pair, not replacing them, so the player keeps sight of which cell opened it.
         SurgeDef? shown = SurgeByName(revealedSurge);
         if (shown != null && revealedHeight > 0.5f) {
             Rect strip = new Rect(inner.x, y + JoinGap, inner.width, revealedHeight);
             float full = StripHeightFor(shown);
 
             if (revealedHeight < full - 0.5f) {
-                // Mid-reveal. Drawn at its finished size inside a clip only as tall as
-                // it has opened, so it slides out from under the cell rather than
-                // squashing the ability rows into a sliver.
+                // mid-reveal: drawn at full size in a clip only as tall as it's opened, so it slides out, not squashes.
                 Widgets.BeginGroup(strip);
                 DrawAbilityStrip(
                     new Rect(0f, 0f, strip.width, full),
@@ -265,8 +263,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
 
         y += BlockGap;
 
-        // Abilities the Oaths granted rather than either Surge. They belong to the
-        // Radiant, not to a power, so they sit outside the Surge pair.
+        // oath-granted abilities belong to the radiant, not a surge, so they sit outside the surge pair.
         DrawAbilityGrid(
             new Rect(inner.x, y, inner.width, AbilityGridHeight(cachedGeneral.Count)),
             pawn,
@@ -307,12 +304,12 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         return AbilityGridHeight(surge.abilities.Count) + StripPad * 2f;
     }
 
-    // Idempotent, because height is asked for several times a frame. Reveal itself only
-    // advances once per frame; this just re-reads where it got to. Must run after
-    // RefreshAbilities, since the panel's finished height is an ability count.
+    /// <summary>
+    ///     Idempotent - height is asked for several times a frame, but Reveal only advances once.
+    ///     Must run after RefreshAbilities, since the panel's finished height depends on ability count.
+    /// </summary>
     private void StepReveal() {
-        // One panel at a time, in order: the open Surge rolls up, then the new one
-        // drops. Swapping the contents mid-slide reads as a glitch rather than a swap.
+        // one panel at a time: the open surge rolls up before the new one drops, or the swap reads as a glitch.
         if (expandedSurge == null && pendingSurge != null && revealedHeight < 1f) {
             expandedSurge = pendingSurge;
             pendingSurge = null;
@@ -324,8 +321,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         else if (revealedHeight < 1f) revealedSurge = null;
     }
 
-    // Clicking the open Surge closes it; clicking the other closes it first and queues
-    // the new one behind it.
+    /// <summary>
+    ///     Clicking the open Surge closes it; clicking the other closes it first and queues
+    ///     the new one behind it.
+    /// </summary>
     private void ToggleSurge(string defName) {
         if (expandedSurge == defName) {
             CloseSurge();
@@ -347,10 +346,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         pendingSurge = null;
     }
 
-    // A pawn can hold more than one Nahel bond. They share a single Stormlight
-    // reserve but nothing else, so the body shows one bond at a time rather than
-    // leaving the reading, the ceiling and the buttons pointing at whichever gene
-    // happened to come first.
+    /// <summary>
+    ///     A pawn can hold more than one Nahel bond, sharing one Stormlight reserve and nothing else.
+    ///     The body shows one bond at a time, not whichever gene happened to come first in the list.
+    /// </summary>
     private Surgebinder? ActiveBond(Pawn pawn) {
         bonds.Clear();
         if (pawn.genes == null) return null;
@@ -366,8 +365,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             if (bonds[i].radiantOrderDef.defName == selectedOrder) return bonds[i];
         }
 
-        // Either nothing is chosen yet, or the chosen bond is gone - broken, or this
-        // is simply a different pawn than the one last looked at.
+        // nothing chosen yet, the chosen bond broke, or this is a different pawn than last time.
         selectedOrder = bonds[0].radiantOrderDef.defName;
         CloseSurge();
 
@@ -411,8 +409,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
     }
 
-    // The spren is the other half of the bond, so it belongs under the order name
-    // rather than buried in a dialog. An unbonded Surgebinder simply loses the line.
+    /// <summary>
+    ///     The spren is the other half of the bond, so it belongs under the order name
+    ///     rather than buried in a dialog. An unbonded Surgebinder simply loses the line.
+    /// </summary>
     private static string? SubtitleFor(Surgebinder gene) {
         string? name = gene.bondedSpren?.Name?.ToStringShort;
         if (name.NullOrEmpty()) name = gene.godsprenName.NullOrEmpty() ? null : gene.godsprenName;
@@ -421,14 +421,18 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         return "CC_Dock_Crest_BondedTo".Translate(name!.Named("SPREN")).Resolve();
     }
 
-    // One key per Ideal rather than a computed ordinal: "Third Ideal" is how the
-    // books say it, and ordinals do not survive translation as arithmetic.
+    /// <summary>
+    ///     One key per Ideal rather than a computed ordinal: "Third Ideal" is how the
+    ///     books say it, and ordinals do not survive translation as arithmetic.
+    /// </summary>
     private static string IdealLabel(int display) {
         return ("CC_Dock_Crest_Ideal" + Mathf.Clamp(display, 1, 5)).Translate().Resolve();
     }
 
-    // A threshold of zero is off, not low. Saying "refill below 0%" reads as a
-    // broken control rather than as a setting the player has not chosen yet.
+    /// <summary>
+    ///     A threshold of zero is off, not low. Saying "refill below 0%" reads as a
+    ///     broken control rather than as a setting the player has not chosen yet.
+    /// </summary>
     private static string RefillLabel(Surgebinder gene) {
         return gene.targetValue <= 0f || gene.Max <= 0f
             ? "CC_Dock_Gauge_NoRefill".Translate()
@@ -437,8 +441,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             );
     }
 
-    // Capacity rises with each Ideal, so what the next Oath is worth is worth
-    // stating. The gauge itself stays honest and to scale.
+    /// <summary>
+    ///     Capacity rises with each Ideal, so what the next Oath is worth is worth
+    ///     stating. The gauge itself stays honest and to scale.
+    /// </summary>
     private static string CeilingCaption(Surgebinder gene, RadiantOrderDef order) {
         int next = gene.CurrentIdeal + 1;
         if (next >= order.ideals.Count || order.ideals[next].stormlightMax <= 0) {
@@ -459,8 +465,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         );
     }
 
-    // Two Surges per order, always. Clicking one opens what it can actually do -
-    // the counts say how many, which is no use when you want to know which.
+    /// <summary>
+    ///     Two Surges per order, always. Clicking one opens what it can actually do -
+    ///     the counts say how many, which is no use when you want to know which.
+    /// </summary>
     private void DrawSurgeRow(Rect row, Pawn pawn, RadiantOrderDef order) {
         if (cachedSurges.Count == 0) return;
 
@@ -470,8 +478,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             SurgeCount surge = cachedSurges[i];
             Rect cell = new Rect(row.x + i * (cellWidth + LineGap), row.y, cellWidth, row.height);
 
-            // Tracked against what is on screen rather than what is selected, so a
-            // closing cell stays merged for the whole of its panel's slide away.
+            // tracked against what's on screen, not selected, so a closing cell stays merged while it slides away.
             bool open = surge.Def.defName == revealedSurge;
 
             if (open) {
@@ -551,8 +558,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
     }
 
-    // Two across, because one ability per full-width row wastes most of the panel and
-    // makes four abilities look like a wall.
+    /// <summary>
+    ///     Two across, because one ability per full-width row wastes most of the panel and
+    ///     makes four abilities look like a wall.
+    /// </summary>
     private static float AbilityGridHeight(int count) {
         if (count == 0) return 0f;
 
@@ -568,12 +577,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         RadiantOrderDef order,
         List<AbilityDef> abilities
     ) {
-        // Same fill and stroke as the Surge cell, with its top edge left open across
-        // that cell's span. The two are one surface the Surge unfolded into, not a
-        // second box parked underneath it.
-        // No edge rail. On a metal the rail reports burning, a live state worth
-        // catching at a glance; a Surge has no such state, so here it would only be
-        // restating that the panel the player just opened is open.
+        // no edge rail: unlike a metal's live burning state, a surge has none to flag - one here would just be noise.
         Panel.DrawNotchedTop(
             rect,
             CellBack,
@@ -608,9 +612,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
     }
 
-    // One ability: what it is, whether the pawn can actually use it right now, and a
-    // way to use it. A locked ability still shows, because knowing what is an Oath away
-    // is the point - it just does not answer the mouse.
+    /// <summary>
+    ///     Draws one ability: what it is, whether the pawn can use it now, and a way to use it.
+    ///     A locked ability still shows - knowing what's an Oath away is the point, it just won't click.
+    /// </summary>
     private void DrawAbilityCell(
         Rect row,
         Pawn pawn,
@@ -623,8 +628,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         int minIdeal = def is SurgebindingAbilityDef surgeDef ? surgeDef.GetMinIdealForOrder(order.defName) : 0;
         bool locked = gene.CurrentIdeal < minIdeal;
 
-        // A toggleable ability that is running is a live state, so it takes the accent
-        // and the edge rail - the same language a burning metal uses.
+        // a running toggleable ability is a live state, so it gets the accent and edge rail, like a burning metal.
         bool running = pawn.abilities?.GetAbility(def) is IToggleableAbility {
             IsToggleable: true,
             IsActive: true,
@@ -675,9 +679,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
 
         if (!def.description.NullOrEmpty()) TooltipHandler.TipRegion(row, def.description);
 
-        // Locked abilities are shown for information only, so they take no click. The
-        // rest go through the same dispatcher the ability wheel uses, which is what
-        // keeps toggling off, affordability and targeting behaving identically here.
+        // locked abilities show for info only; unlocked ones share the ability wheel's dispatcher.
         if (locked) return;
 
         MouseoverSounds.DoRegion(hit);
@@ -704,8 +706,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         return string.Empty;
     }
 
-    // Surge counts and the Oath-granted list only move when an Oath is spoken, so
-    // both are cached against the order and the Ideal.
+    /// <summary>
+    ///     Surge counts and the Oath-granted list only move when an Oath is spoken, so
+    ///     both are cached against the order and the Ideal.
+    /// </summary>
     private void RefreshAbilities(Surgebinder gene, RadiantOrderDef order) {
         if (cachedOrder == order.defName && cachedIdeal == gene.CurrentIdeal) return;
 
@@ -728,8 +732,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             cachedSurges.Add(new SurgeCount(surges[i], unlocked, abilities.Count));
         }
 
-        // The order's own list plus everything the Oaths have granted so far. Neither
-        // belongs to a Surge, which is what makes them the general set.
+        // general set = the order's own list plus everything oaths have granted; neither belongs to a surge.
         for (int i = 0; i < order.abilities.Count; i++) cachedGeneral.Add(order.abilities[i]);
 
         for (int i = 0; i <= Mathf.Min(gene.CurrentIdeal, order.ideals.Count - 1); i++) {

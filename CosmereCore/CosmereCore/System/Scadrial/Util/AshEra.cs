@@ -23,9 +23,7 @@ public static class AshEra {
         if (map == null) return false;
         if (!Mod.enableAshfall) return false;
 
-        // World and era, deliberately not Shard. The Ashmounts are Rashek's engineering, not a
-        // Shard's doing - the ash falls because of what he built and stops when the Catacendre
-        // undoes it, whichever Shards happen to be held.
+        // world/era gated, not Shard - the Ashmounts are Rashek's engineering, run regardless of which Shards are held.
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) return false;
 
         return IsAshEra(CosmereQuestManager.FindActiveEra());

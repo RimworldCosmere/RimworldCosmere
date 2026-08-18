@@ -4,10 +4,10 @@ using Verse;
 
 namespace Cosmere.Core.Window;
 
-// Dialog_ModSettings hands DoWindowContents a rect already contracted by Window.Margin
-// and opens a group that clips anything drawn back outside, so a surface that paints its
-// own crest, sidebar and footer to the edge cannot be built inside it. This window exists
-// to own that edge.
+/// <summary>
+///     Owns the window edge itself: Dialog_ModSettings clips drawing to a rect inside its own
+///     margin, so a surface that paints its own crest, sidebar, and footer to the edge cannot live inside it.
+/// </summary>
 public sealed class CosmereSettingsDialog : global::Verse.Window {
     private readonly Core.Mod mod;
 
@@ -41,8 +41,9 @@ public sealed class CosmereSettingsDialog : global::Verse.Window {
         }
     }
 
-    // Dialog_ModSettings persisted on close and nothing else does, so this window carries
-    // that responsibility now.
+    /// <summary>
+    ///     Persists settings on close. Dialog_ModSettings did this and nothing else does now.
+    /// </summary>
     public override void PreClose() {
         base.PreClose();
         mod.ClearSettingsResetConfirmation();

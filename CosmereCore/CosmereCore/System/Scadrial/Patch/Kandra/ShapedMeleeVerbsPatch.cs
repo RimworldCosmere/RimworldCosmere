@@ -37,15 +37,13 @@ public abstract class ShapedMeleeVerbsPatch : Pawn_MeleeVerbs {
         if (entries[0].verb?.caster is not Verse.Pawn caster) return;
         if (KandraShapeGraphicUtility.WornKind(caster) == null) return;
 
-        // Anything a hediff or a weapon lent the pawn has a different owner; only its own race
-        // tools hang directly off the pawn.
+        // hediff/weapon-lent verbs have a different owner; only the pawns own race tools hang directly off it
         int borrowed = 0;
         for (int i = 0; i < entries.Count; i++) {
             if (entries[i].verb?.DirectOwner is not Verse.Pawn) borrowed++;
         }
 
-        // Never strip the last option. A pawn with no melee verb at all makes ChooseMeleeVerb
-        // log an error every time anything swings at it.
+        // never strip the last verb: a pawn with none makes ChooseMeleeVerb log an error on every swing
         if (borrowed == 0) return;
 
         entries.RemoveAll(e => e.verb?.DirectOwner is Verse.Pawn);

@@ -68,16 +68,13 @@ public static class KolossUtility {
             pawn.health?.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth);
         }
 
-        // Nothing it knew survives in a form it can still use. Combat is muscle memory and
-        // stays; everything that needed a mind to hold it does not.
+        // nothing it knew survives in a usable form - combat is muscle memory and stays, everything else does not.
         if (pawn.skills?.skills != null) {
             for (int i = 0; i < pawn.skills.skills.Count; i++) {
                 SkillRecord skill = pawn.skills.skills[i];
                 bool physical = skill.def == RimWorld.SkillDefOf.Melee || skill.def == RimWorld.SkillDefOf.Shooting;
 
-                // levelInt, not Level. The getter returns 0 for a skill the pawn is currently
-                // incapable of and adds trait and gene aptitude on top of what is stored, so
-                // reading through it would take two off a number that was never there.
+                // levelInt, not Level - the getter returns 0 when incapable and adds aptitude on top.
                 skill.levelInt = physical ? Mathf.Max(0, skill.levelInt - 2) : 0;
                 skill.passion = Passion.None;
             }
@@ -145,8 +142,7 @@ public static class KolossUtility {
     public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
         Cosmere.Core.Logger.Important($"Koloss: making one out of {subject.LabelShort}.");
 
-        // Read before the subject goes. Asking afterwards always says no, which is how the kandra
-        // work lost the player's selection every single transformation.
+        // must read before the subject goes - asking after always says no, losing the player's selection.
         bool watching = Find.Selector?.IsSelected(subject) == true
                         || (subject.Corpse != null && Find.Selector?.IsSelected(subject.Corpse) == true);
 
@@ -155,10 +151,7 @@ public static class KolossUtility {
         IntVec3 where = corpse?.Spawned == true ? corpse.Position : subject.Position;
         if (map == null) return null;
 
-        // Gender is the one thing that carries: a koloss is built out of a body, and the body
-        // had a sex. Adult in the body, new in the world - RimWorld picks the life stage off the
-        // biological age, so a literal zero there would make a baby, and "came into existence
-        // today" belongs on the chronological one.
+        // gender carries from the body, but biological age must stay adult - zero there makes a baby, not a koloss.
         Pawn made = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
             KolossKind ?? RimWorld.PawnKindDefOf.Colonist,
             subject.Faction,
@@ -176,28 +169,22 @@ public static class KolossUtility {
         StartGrowing(made);
         Disfigure(made);
 
-        // One name, no family. Whatever it was called belonged to somebody who is not here, and
-        // what answers to this one is not that person - but it still needs something to be called.
+        // one name, no family - whatever it was called belonged to somebody who is not here anymore.
         made.Name = new NameSingle(
             PawnBioAndNameGenerator.GeneratePawnName(made, NameStyle.Full).ToStringShort,
             true
         );
 
-        // Made today, in a body that finished growing up years ago. fixedChronologicalAge on the
-        // generation request does not survive - the tracker is written directly instead, which is
-        // what puts the (0) beside the age.
+        // fixedChronologicalAge on the generation request does not survive - the tracker is set directly instead.
         if (made.ageTracker != null) made.ageTracker.AgeChronologicalTicks = 0;
 
-        // Before the subject goes, so the koloss is standing where they were rather than dropped
-        // at the map edge. A corpse has to be destroyed as well as the pawn inside it, or the body
-        // stays on the floor with nothing in it.
+        // destroys corpse and pawn both before spawning, or the body stays on the floor with nothing in it.
         if (corpse is { Destroyed: false }) corpse.Destroy(DestroyMode.Vanish);
         if (!subject.Destroyed) subject.Destroy(DestroyMode.Vanish);
 
         GenSpawn.Spawn(made, where, map);
 
-        // If they were watching the person, keep them watching the thing. Losing the camera at the
-        // exact moment the transformation lands is the worst possible time to lose it.
+        // keeps the camera on the koloss if it was on the person - losing it at the transformation is the worst time.
         if (watching) {
             Find.Selector?.ClearSelection();
             Find.Selector?.Select(made);
@@ -218,17 +205,14 @@ public static class KolossUtility {
         SkillRecord? theirMelee = subject.skills?.GetSkill(RimWorld.SkillDefOf.Melee);
         SkillRecord? ourMelee = made.skills?.GetSkill(RimWorld.SkillDefOf.Melee);
 
-        // levelInt, not Level. The getter returns 0 for a skill the pawn is incapable of and adds
-        // aptitude on top of what is stored.
+        // levelInt, not Level - the getter returns 0 when incapable and adds aptitude on top of the stored value.
         if (theirMelee != null && ourMelee != null) {
             ourMelee.levelInt = Mathf.Clamp(theirMelee.levelInt, ourMelee.levelInt, 20);
         }
 
         if (made.skills?.skills == null) return;
 
-        // Everything that needed a mind to hold it is gone, but a koloss is not an object: it can
-        // stamp out a fire, stir a pot and hold a bandage on. Badly, and it will never get better
-        // at any of it.
+        // a koloss is not an object - it can stamp out a fire or hold a bandage on, badly, and never gets better at it.
         for (int i = 0; i < made.skills.skills.Count; i++) {
             SkillRecord skill = made.skills.skills[i];
             if (skill.def == RimWorld.SkillDefOf.Melee) continue;
@@ -263,8 +247,7 @@ public static class KolossUtility {
             Hemalurgy.HemalurgicImplantUtility.AddToUnifiedHediff(made, carried[i], core);
         }
 
-        // The total is what Ruin speaks through, so it has to be recomputed after the carry rather
-        // than left at whatever the four alone were worth.
+        // Ruin speaks through the total, so it must be recomputed after the carry, not left at the four alone.
         Hemalurgy.HemalurgicImplantUtility.UpdateRuinsInfluence(made);
     }
 

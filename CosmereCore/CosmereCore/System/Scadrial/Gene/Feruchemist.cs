@@ -243,7 +243,7 @@ public class Feruchemist : Metalborn {
                     }
                 }
 
-                // setting Value directly must reach zero, so it falls through to compounded once ordinary runs out; the gameplay tap path deliberately does not.
+                // setting Value directly must reach zero, so it falls through to compounded; the tap path does not.
                 bool drewCompounded = false;
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanTapCompounded) continue;
@@ -339,7 +339,7 @@ public class Feruchemist : Metalborn {
                 cachedLedger = new BondLedger();
                 break;
             case DuraluminLedger.Shard:
-                // a Shard this save has turned off reads 0 earned but full headroom, which would spin the tap dial forever.
+                // a disabled Shard reads 0 earned but full headroom, which would spin the tap dial forever.
                 ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(targetShardDefName);
                 if (shard == null || !ShardUtility.IsEnabled(shard)) return;
 
@@ -651,7 +651,7 @@ public class Feruchemist : Metalborn {
         float floor = SeverityForTarget(IdleTarget + (storing ? DeadBand : -DeadBand));
         float ceiling = SeverityForTarget(storing ? 100f : 0f);
 
-        // clamp to the dead band's own severity: rounding up to the next whole step left the first rung of every ladder unreachable.
+        // clamp to the dead band's severity: rounding up left every ladder's first rung unreachable.
         snapped = Mathf.Clamp(snapped, floor, ceiling);
 
         return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
@@ -699,7 +699,7 @@ public class Feruchemist : Metalborn {
         EnsureShardTarget();
         SyncConnectionBank();
 
-        // compounding needs an implant to act on; end the mode here so it holds even when the player isnt looking at the panel.
+        // compounding needs an implant; ended here so it holds when the panel is closed.
         if (compounding && !TargetIsInternalOnly) {
             compounding = false;
             compoundedTargetValue = IdleTarget;
@@ -722,7 +722,7 @@ public class Feruchemist : Metalborn {
     }
 
     private void TickSeverityHediffs() {
-        // no early out on the stored dial: gating both pools on it let compounded charge drain with no hediff to show for it.
+        // no early out on the stored dial: it let compounded charge drain with no hediff to show.
         float ordinary = SeverityForTarget(targetValue);
         if (targetValue < IdleTarget && canTap && ordinary > 0f) {
             TryRemoveHediffByDef(storeHediffDef);
@@ -747,7 +747,7 @@ public class Feruchemist : Metalborn {
     }
 
     private void TickStoreOrTap() {
-        // reads the curve, not the hediff severity: compounded tapping amplifies severity tenfold, so reading it back would double-apply the multiplier.
+        // reads the curve, not hediff severity: reading it back would apply the 10x twice.
         float efficiency = Efficiency;
         float rateMultiplier = RateMultiplier;
 
@@ -771,7 +771,7 @@ public class Feruchemist : Metalborn {
             }
         }
 
-        // the compounded pool fills at the ordinary storing rate; the burn on the way out is what compounds it, paying ten times over and consuming the metalmind.
+        // fills at the ordinary rate; the burn out is what compounds, and it eats the metalmind.mind.
         float compounded = SeverityForTarget(compoundedTargetValue);
         if (compounded > 0f) {
             float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
@@ -791,7 +791,7 @@ public class Feruchemist : Metalborn {
             }
         }
 
-        // drained from the ledger, not a hediff: compound-fill leaves the pawn without one, and the gene still has to tick.
+        // drained from the ledger, not a hediff: compound-fill leaves the pawn without one.
         MirrorToInvestiture(chargeLedger.Drain());
     }
 
@@ -858,7 +858,7 @@ public class Feruchemist : Metalborn {
     private void TickXPGain(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
 
-        // burning is the allomantic half, so only the compounded tap teaches allomancy; filling the pool is ordinary feruchemy.
+        // burning is the allomantic half, so only the compounded tap teaches allomancy.
         if (compoundedTargetValue < IdleTarget && canTapCompounded) {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
                 .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);

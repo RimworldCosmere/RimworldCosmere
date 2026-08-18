@@ -12,17 +12,14 @@ public sealed class FeruchemyDialWidget {
 
     private string? draggingDial;
 
-    // Compounding is only offered on an implanted metalmind, because burning one
-    // destroys it and a worn band is not what the pawn is setting alight. The
-    // toggle parks the other pool so only one is ever moving.
+    /// Compounding is only offered on an implanted metalmind - burning one destroys it, and a worn
+    /// band is not what the pawn means to set alight. The toggle parks the other pool so only one moves.
     internal float DrawCompoundToggle(Rect inner, float y, Pawn pawn, Feruchemist gene, float buttonHeight) {
-        // The internal group is every implant, so compounding reaches it just as it
-        // reaches a single one.
+        // internal group is every implant - compounding reaches it the same as a single one.
         bool eligible = gene.TargetIsInternalOnly;
         AcceptanceReport report = CompoundingAccess.Gate(pawn, gene);
 
-        // Losing the implant or the gate mid-compound parks the pool rather than
-        // leaving it draining behind a control the player can no longer see.
+        // losing the implant or gate mid-compound parks the pool, not drains it behind a hidden control.
         if (gene.compounding && (!eligible || !report.Accepted)) {
             gene.compounding = false;
             gene.compoundedTargetValue = IdleTarget;
@@ -57,9 +54,7 @@ public sealed class FeruchemyDialWidget {
             return rect.yMax;
         }
 
-        // Carry whatever the dial was set to across, and no further. The rate is the
-        // player's to choose, so an idle dial stays idle rather than being pegged
-        // somewhere on their behalf.
+        // carries the dial's value across and no further - rate is the player's choice, not pegged for them.
         if (on) {
             gene.compounding = false;
             gene.targetValue = gene.compoundedTargetValue;
@@ -102,8 +97,8 @@ public sealed class FeruchemyDialWidget {
         );
     }
 
-    // Hand-drawn so the dial keeps the section's chrome. The vanilla slider
-    // brings its own tan gradient, which fights everything around it.
+    /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider brings its own
+    /// tan gradient, which fights everything around it.
     internal void DrawDial(Rect rect, string metalId, Feruchemist gene, FeruchemyCapacity capacity, bool compounded) {
         if (compounded) DrawCompoundedDialBacking(rect, gene, capacity);
         else DrawDialBacking(rect, gene, capacity);
@@ -118,8 +113,8 @@ public sealed class FeruchemyDialWidget {
         HandleDialDrag(rect, metalId, gene, capacity, compounded);
     }
 
-    // Shared by both dials. Compounded runs tap-only, so its reachable span stops
-    // at the idle point rather than continuing into the store half.
+    /// Shared by both dials. Compounded runs tap-only, so its reachable span stops at the
+    /// idle point rather than continuing into the store half.
     private void HandleDialDrag(Rect rect, string dialId, Feruchemist gene, FeruchemyCapacity capacity, bool compounded) {
         float min = (compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded)
             ? 0f
@@ -136,8 +131,7 @@ public sealed class FeruchemyDialWidget {
 
         if (draggingDial != dialId) return;
 
-        // MouseDrag only reaches a control that claimed the hot control, which a
-        // hand-drawn dial never does, so follow the button state directly.
+        // MouseDrag needs the hot control claimed, which a hand-drawn dial never does - poll the button instead.
         if (!Input.GetMouseButton(0)) {
             draggingDial = null;
             return;

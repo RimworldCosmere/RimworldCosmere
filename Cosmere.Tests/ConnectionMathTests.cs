@@ -372,6 +372,50 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
+    ///     A had already past the ceiling must not let delta move it further, or flip the sign of
+    ///     the caller's intent - the bug that let a 10-point store silently move 22.
+    /// </summary>
+    [TestMethod]
+    public void ClampResidenceTicksNeverOvershootsOrInvertsWhenHadIsAlreadyPastTheCeiling() {
+        const int had = 54_000_000;
+        const int askTicks = 8_000_000; // TicksForResidence(10), what a 10-point move asks for
+
+        int tapMoved = ConnectionMath.ClampResidenceTicks(had, askTicks) - had;
+        Assert.IsTrue(tapMoved >= 0, $"A positive delta must not decrease had; moved {tapMoved}.");
+        Assert.IsTrue(tapMoved <= askTicks, $"A tap must not move more than it asked for; moved {tapMoved}.");
+
+        int storeMoved = ConnectionMath.ClampResidenceTicks(had, -askTicks) - had;
+        Assert.IsTrue(storeMoved <= 0, $"A negative delta must not increase had; moved {storeMoved}.");
+        Assert.IsTrue(-storeMoved <= askTicks, $"A store must not move more than it asked for; moved {storeMoved}.");
+    }
+
+    /// <summary>
+    ///     GameComponentTick's native check has no pin of its own, so a careless edit could drop it
+    ///     silently - it is what stops every baseliner out of a drop pod reading as a native.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceOnlyReadsNativeFromTheXenotype() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", "ResidenceTracker.cs"
+            )
+        );
+
+        int method = source.IndexOf("public override void GameComponentTick", StringComparison.Ordinal);
+        Assert.IsTrue(method >= 0, "Expected GameComponentTick to exist.");
+
+        string body = source[method..];
+        int end = body.IndexOf("\n    }", StringComparison.Ordinal);
+        if (end > 0) body = body[..end];
+
+        Assert.IsTrue(
+            body.Contains("world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype)", StringComparison.Ordinal),
+            "A newly-seen pawn must be checked against the xenotype's world, or every baseliner out "
+            + "of a drop pod reads as a native."
+        );
+    }
+
+    /// <summary>
     ///     A native who has also lived there a decade reads at whichever is higher, never the sum -
     ///     residence and ancestry are two routes to the same baseline, and Compose takes the larger.
     /// </summary>

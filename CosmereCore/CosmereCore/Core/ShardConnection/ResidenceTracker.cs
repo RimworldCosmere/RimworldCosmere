@@ -93,7 +93,7 @@ public class ResidenceTracker : Verse.GameComponent {
                 Pawn pawn = pawns[i];
                 int id = pawn.thingIDNumber;
                 if (ticksByPawn.TryGetValue(id, out int had)) {
-                    ticksByPawn[id] = had + TickInterval;
+                    ticksByPawn[id] = ConnectionMath.ClampResidenceTicks(had, TickInterval);
                 } else {
                     bool native = world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
                     ticksByPawn[id] = ConnectionMath.SeedTicksForAge(pawn.ageTracker.AgeBiologicalTicks, native);

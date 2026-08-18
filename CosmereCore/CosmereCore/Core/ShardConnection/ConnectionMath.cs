@@ -162,12 +162,23 @@ public static class ConnectionMath {
         return ageTicks >= TicksToFullResidence ? TicksToFullResidence : (int)ageTicks;
     }
 
-    /// <summary>Adds delta to had and clamps to [0, TicksToFullResidence] without overflowing.</summary>
+    /// <summary>Applies delta to had, bounded by the ceiling's headroom rather than the resulting sum.</summary>
+    /// <remarks>
+    ///     A had already outside [0, TicksToFullResidence] must not let delta push it further out
+    ///     or flip sign - AdjustTicks reports next - had straight back to whoever asked for the move.
+    /// </remarks>
     public static int ClampResidenceTicks(int had, int delta) {
-        long next = (long)had + delta;
-        if (next < 0) return 0;
+        if (delta > 0) {
+            long headroom = global::System.Math.Max(0L, TicksToFullResidence - (long)had);
+            return (int)(had + global::System.Math.Min((long)delta, headroom));
+        }
 
-        return next > TicksToFullResidence ? TicksToFullResidence : (int)next;
+        if (delta < 0) {
+            long headroom = global::System.Math.Max(0L, (long)had);
+            return (int)(had - global::System.Math.Min(-(long)delta, headroom));
+        }
+
+        return had;
     }
 
     /// <summary>Converts a stored SpiritWeb edge, which is 0..1, into this scale.</summary>

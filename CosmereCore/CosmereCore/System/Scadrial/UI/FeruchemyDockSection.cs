@@ -23,7 +23,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     private static float StripHeight =>
         StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
-        DockDropdownRow.Height + 32f;
+        DockDropdownRow.Height * 2f + 38f;
 
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
@@ -261,6 +261,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float afterTarget = FeruchemyTargetRow.Draw(inner, endsRect.yMax + 6f, gene);
+        afterTarget = FeruchemyLedgerRow.Draw(inner, afterTarget, gene);
         float buttonY = dial.DrawCompoundToggle(inner, afterTarget + 6f, pawn, gene, StripButtonHeight) + 8f;
 
         if (DockButton.Draw(

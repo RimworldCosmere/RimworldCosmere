@@ -18,7 +18,6 @@ public static class ConnectionBudget {
     public static int Capacity(DuraluminLedger ledger) {
         return ledger switch {
             DuraluminLedger.Residence => 30,
-            DuraluminLedger.Bonds => 30,
             DuraluminLedger.Shard => 40,
             _ => 0,
         };

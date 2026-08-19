@@ -4,6 +4,7 @@
         <xpath>Defs/ThingDef[@Name="BasePawn"]/comps</xpath>
         <value>
             <li><compClass>Cosmere.Core.Comp.Thing.DormantConnection</compClass></li>
+            <li><compClass>Cosmere.Core.Comp.Thing.PawnConnectionStats</compClass></li>
         </value>
     </Operation>
 </Patch>

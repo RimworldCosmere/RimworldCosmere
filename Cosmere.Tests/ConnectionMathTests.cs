@@ -28,6 +28,19 @@ public class ConnectionMathTests {
     }
 
     [TestMethod]
+    public void PlanetaryConnectionSourcesStayOnTheSharedScale() {
+        int strength = ConnectionMath.ComposeWorld(
+            ConnectionMath.AncestryFloor,
+            ConnectionMath.ResidenceCap,
+            0,
+            0
+        );
+
+        Assert.AreEqual(75, strength);
+        Assert.IsTrue(strength <= ConnectionMath.Max);
+    }
+
+    [TestMethod]
     public void GodMetalNeedsTheThresholdExactly() {
         Assert.IsFalse(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold - 1));
         Assert.IsTrue(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold));
@@ -84,12 +97,8 @@ public class ConnectionMathTests {
         Assert.IsTrue(ConnectionMath.MayUseGodMetal(100));
     }
 
-    /// <summary>
-    ///     Residence naturalises a pawn toward what being born there grants. It is another route
-    ///     to the same baseline, not a second helping of it - living there does not stack on ancestry.
-    /// </summary>
     [TestMethod]
-    public void ResidenceReachesTheFloorWithoutStackingOnIt() {
+    public void ResidenceSetsTheShardWorldTie() {
         Assert.AreEqual(
             ConnectionMath.ResidenceCap,
             ConnectionMath.Compose(0, ConnectionMath.ResidenceCap, 0, 0),
@@ -103,8 +112,13 @@ public class ConnectionMathTests {
         Assert.AreEqual(
             ConnectionMath.ResidenceCap,
             ConnectionMath.Compose(Floor, ConnectionMath.ResidenceCap, 0, 0),
-            "A native who has also lived there a decade reads 45, not 75 - the larger, never the sum."
+            "The stronger world tie sets the Shard baseline."
         );
+    }
+
+    [TestMethod]
+    public void ShardConnectionDoesNotDoubleCountTheWorldTie() {
+        Assert.AreEqual(65, ConnectionMath.Compose(30, 45, 20, 0));
     }
 
     /// <summary>Harmony holds both, so Connection to Harmony is Connection to each.</summary>
@@ -431,32 +445,10 @@ public class ConnectionMathTests {
         );
     }
 
-    /// <summary>
-    ///     A native who has also lived there a decade reads at whichever is higher, never the sum -
-    ///     residence and ancestry are two routes to the same baseline, and Compose takes the larger.
-    /// </summary>
     [TestMethod]
-    public void ResidenceNeverStacksOnTopOfBeingNative() {
-        int nativeWhoStayed = ConnectionMath.Compose(
-            Floor,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence),
-            0,
-            0
-        );
-        Assert.AreEqual(
-            ConnectionMath.ResidenceCap,
-            nativeWhoStayed,
-            "Full residence now outranks the ancestry floor."
-        );
-
-        int refugeeWhoStayed = ConnectionMath.Compose(
-            0,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence),
-            0,
-            0
-        );
-        Assert.AreEqual(ConnectionMath.ResidenceCap, refugeeWhoStayed, "A decade on the ground earns full residence.");
-        Assert.IsTrue(ConnectionMath.MayUseGodMetal(refugeeWhoStayed), "And with it, atium.");
+    public void PlanetConnectionAddsEachIndependentSource() {
+        Assert.AreEqual(90, ConnectionMath.ComposeWorld(30, 45, 10, 5));
+        Assert.AreEqual(ConnectionMath.Max, ConnectionMath.ComposeWorld(30, 45, 20, 10));
     }
 
     /// <summary>

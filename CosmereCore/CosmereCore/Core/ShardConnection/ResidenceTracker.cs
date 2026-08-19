@@ -55,9 +55,7 @@ public class ResidenceTracker : Verse.GameComponent {
 
         if (!belongs) return 0;
 
-        return ConnectionMath.ResidenceFrom(
-            ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks) ? ticks : 0
-        );
+        return ConnectionMath.ResidenceFrom(TicksFor(pawn));
     }
 
     /// <summary>Moves a pawn's residence and reports how much actually moved.</summary>
@@ -77,7 +75,16 @@ public class ResidenceTracker : Verse.GameComponent {
     public int TicksFor(Pawn? pawn) {
         if (pawn == null) return 0;
 
-        return ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks) ? ticks : 0;
+        if (ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks)) return ticks;
+
+        CosmereWorldDef? world = NaturalisingWorld();
+        if (world == null) return 0;
+
+        bool native = world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
+        int seeded = ConnectionMath.SeedTicksForAge(pawn.ageTracker.AgeBiologicalTicks, native);
+        ticksByPawn[pawn.thingIDNumber] = seeded;
+
+        return seeded;
     }
 
     public override void GameComponentTick() {

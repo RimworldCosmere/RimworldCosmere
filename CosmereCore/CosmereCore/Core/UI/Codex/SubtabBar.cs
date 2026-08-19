@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Model;
 using UnityEngine;
@@ -27,24 +28,38 @@ public static class SubtabBar {
             state.Subtab = buffer[0].tab;
         }
 
-        float tabWidth = rect.width / buffer.Count;
-        for (int i = 0; i < buffer.Count; i++) {
-            Rect tab = new Rect(rect.x + i * tabWidth, rect.y, tabWidth, rect.height);
-            bool selected = state.Subtab == buffer[i].tab;
+        if (Draw(rect, buffer, state.Subtab, accent, out CodexSubtab clicked)) {
+            state.Subtab = clicked;
+        }
+    }
 
-            if (!selected && Mouse.IsOver(tab)) {
+    public static bool Draw<T>(
+        Rect rect,
+        IReadOnlyList<(T tab, string labelKey)> tabs,
+        T selected,
+        Color accent,
+        out T clicked
+    )
+        where T : struct, Enum {
+        clicked = selected;
+        float tabWidth = rect.width / tabs.Count;
+        for (int i = 0; i < tabs.Count; i++) {
+            Rect tab = new Rect(rect.x + i * tabWidth, rect.y, tabWidth, rect.height);
+            bool isSelected = EqualityComparer<T>.Default.Equals(selected, tabs[i].tab);
+
+            if (!isSelected && Mouse.IsOver(tab)) {
                 Widgets.DrawBoxSolid(tab, new Color(1f, 1f, 1f, 0.04f));
             }
 
-            string label = (string)buffer[i].labelKey.Translate();
-            Color textColor = selected ? new Color(0.88f, 0.73f, 0.42f) : new Color(0.55f, 0.50f, 0.41f);
+            string label = tabs[i].labelKey.Translate();
+            Color textColor = isSelected ? new Color(0.88f, 0.73f, 0.42f) : new Color(0.55f, 0.50f, 0.41f);
             UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
 
-            if (selected) {
+            if (isSelected) {
                 // Flush at the frame ends - an underline stopping short there left a visible notch.
                 const float inset = 6f;
                 float left = i == 0 ? 0f : inset;
-                float right = i == buffer.Count - 1 ? 0f : inset;
+                float right = i == tabs.Count - 1 ? 0f : inset;
                 float width = tab.width - left - right;
 
                 Rect glow = new Rect(tab.x + left, tab.yMax - 4f, width, 4f);
@@ -56,8 +71,11 @@ public static class SubtabBar {
 
             MouseoverSounds.DoRegion(tab);
             if (Widgets.ButtonInvisible(tab)) {
-                state.Subtab = buffer[i].tab;
+                clicked = tabs[i].tab;
+                return true;
             }
         }
+
+        return false;
     }
 }

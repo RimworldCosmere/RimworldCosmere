@@ -18,9 +18,8 @@
   <CS_Duralumin_ShardUnreachable>{SHARD} is no longer part of this cosmere. Nothing tied to it can move.</CS_Duralumin_ShardUnreachable>
   <CS_Duralumin_LedgerEmpty>{TIE}: nothing left to store or tap.</CS_Duralumin_LedgerEmpty>
   <CS_Duralumin_LedgerLabel>{LEDGER}</CS_Duralumin_LedgerLabel>
-  <CS_Duralumin_LedgerTip>Holding {UNITS}.\n\nChoose which tie duralumin's dial fills or draws from: the world you call home, the bonds you have made, or a Shard's regard. Social cannot be reached at all.</CS_Duralumin_LedgerTip>
+  <CS_Duralumin_LedgerTip>Holding {UNITS}.\n\nResidence is the world you live on. Shard Connection is selected separately below.</CS_Duralumin_LedgerTip>
   <CS_Duralumin_Ledger_Residence>Residence</CS_Duralumin_Ledger_Residence>
-  <CS_Duralumin_Ledger_Bonds>Bonds</CS_Duralumin_Ledger_Bonds>
   <CS_Duralumin_Ledger_Shard>Shard</CS_Duralumin_Ledger_Shard>
   <CS_Duralumin_ShardLabel>{SHARD}</CS_Duralumin_ShardLabel>
   <CS_Duralumin_ShardTip>Which Shard the Shard tie answers to. Only Shards active in this save can be chosen.</CS_Duralumin_ShardTip>

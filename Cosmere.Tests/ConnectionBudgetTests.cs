@@ -14,7 +14,6 @@ public class ConnectionBudgetTests {
     [TestMethod]
     public void EachLedgerReportsItsCapacity() {
         Assert.AreEqual(30, ConnectionBudget.Capacity(DuraluminLedger.Residence));
-        Assert.AreEqual(30, ConnectionBudget.Capacity(DuraluminLedger.Bonds));
         Assert.AreEqual(40, ConnectionBudget.Capacity(DuraluminLedger.Shard));
         Assert.AreEqual(0, ConnectionBudget.Capacity(DuraluminLedger.Social));
     }

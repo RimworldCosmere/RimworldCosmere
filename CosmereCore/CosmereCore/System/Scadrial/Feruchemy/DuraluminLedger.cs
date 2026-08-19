@@ -1,12 +1,8 @@
 namespace Cosmere.System.Scadrial.Feruchemy;
 
-/// <summary>
-///     The four things duralumin can move Connection between a pawn and a metalmind. Social is
-///     declared but unreachable - opinion is computed from thoughts and relations, not stored.
-/// </summary>
+/// <summary>The ledger keys used for duralumin charge.</summary>
 public enum DuraluminLedger {
-    Residence,
-    Bonds,
-    Shard,
-    Social,
+    Residence = 0,
+    Shard = 2,
+    Social = 3,
 }

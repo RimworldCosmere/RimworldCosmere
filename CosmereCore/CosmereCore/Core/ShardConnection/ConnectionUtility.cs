@@ -40,6 +40,29 @@ public static class ConnectionUtility {
         return StrengthFrom(pawn, shard, false);
     }
 
+    public static ConnectionBreakdown BreakdownFor(Pawn? pawn, ShardDef? shard) {
+        if (pawn == null || shard == null) return default;
+
+        int ancestry = AncestryFloor(pawn, shard);
+        int residence = GameComponentCache<ResidenceTracker>.Get()?.StrengthFor(pawn, shard) ?? 0;
+        int investiture = ConnectionInvestitureRegistry.StrengthFor(pawn, shard);
+        int earned = Earned(pawn, shard);
+        int composed = ConnectionMath.Compose(ancestry, residence, investiture, earned);
+        int held = (int)global::System.Math.Round(ConnectionOffsets.Get(pawn, shard));
+        int carried = ConnectionMath.Clamp(composed - held);
+        int total = StrengthOf(pawn, shard);
+
+        return new ConnectionBreakdown(
+            ancestry,
+            residence,
+            investiture,
+            earned,
+            held,
+            global::System.Math.Max(0, total - carried),
+            total
+        );
+    }
+
     /// <summary>
     ///     The same reading, counting what is held elsewhere as though the pawn still carried it.
     /// </summary>

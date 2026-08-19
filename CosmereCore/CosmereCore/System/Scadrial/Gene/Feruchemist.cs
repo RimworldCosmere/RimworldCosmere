@@ -322,6 +322,10 @@ public class Feruchemist : Metalborn {
     }
 
     private void ResolveLedger() {
+        if (targetLedger != DuraluminLedger.Residence && targetLedger != DuraluminLedger.Shard) {
+            targetLedger = DuraluminLedger.Residence;
+        }
+
         if (ledgerResolved && resolvedFor == targetLedger && resolvedForShard == targetShardDefName) return;
 
         ledgerResolved = true;
@@ -334,9 +338,6 @@ public class Feruchemist : Metalborn {
         switch (targetLedger) {
             case DuraluminLedger.Residence:
                 cachedLedger = new ResidenceLedger();
-                break;
-            case DuraluminLedger.Bonds:
-                cachedLedger = new BondLedger();
                 break;
             case DuraluminLedger.Shard:
                 // a disabled Shard reads 0 earned but full headroom, which would spin the tap dial forever.
@@ -380,7 +381,6 @@ public class Feruchemist : Metalborn {
 
                 string tie = targetLedger switch {
                     DuraluminLedger.Residence => "CS_Duralumin_Ledger_Residence".Translate().Resolve(),
-                    DuraluminLedger.Bonds => "CS_Duralumin_Ledger_Bonds".Translate().Resolve(),
                     DuraluminLedger.Shard => DefDatabase<ShardDef>
                         .GetNamedSilentFail(targetShardDefName)?.LabelCap ?? targetShardDefName,
                     _ => string.Empty,
@@ -427,8 +427,8 @@ public class Feruchemist : Metalborn {
     private float connectionStorable;
     private float connectionTappable;
 
-    /// Both bounds come off one read of the ledger, memoized per tick. The dock's capacity readout
-    /// asks four times a frame, and the Bonds ledger walks the pawn's whole SpiritWeb each time.
+    /// Both bounds come off one read of the ledger, memoized per tick because the dock's capacity
+    /// readout asks four times a frame.
     private void RefreshConnectionBudget() {
         int now = Find.TickManager.TicksGame;
         if (connectionBudgetTick == now &&

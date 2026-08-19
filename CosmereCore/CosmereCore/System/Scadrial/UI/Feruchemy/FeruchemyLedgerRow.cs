@@ -60,7 +60,6 @@ public static class FeruchemyLedgerRow {
     private static string LedgerName(DuraluminLedger ledger) {
         return ledger switch {
             DuraluminLedger.Residence => "CS_Duralumin_Ledger_Residence".Translate().Resolve(),
-            DuraluminLedger.Bonds => "CS_Duralumin_Ledger_Bonds".Translate().Resolve(),
             DuraluminLedger.Shard => "CS_Duralumin_Ledger_Shard".Translate().Resolve(),
             _ => string.Empty,
         };
@@ -83,11 +82,9 @@ public static class FeruchemyLedgerRow {
         return "CS_Duralumin_LedgerTip".Translate(units.Named("UNITS")).Resolve();
     }
 
-    // Every ledger but Social, whose capacity is zero and which nothing can reach.
     private static List<FloatMenuOption> LedgerMenu(Feruchemist gene) {
         return [
             LedgerOption(gene, DuraluminLedger.Residence),
-            LedgerOption(gene, DuraluminLedger.Bonds),
             LedgerOption(gene, DuraluminLedger.Shard),
         ];
     }

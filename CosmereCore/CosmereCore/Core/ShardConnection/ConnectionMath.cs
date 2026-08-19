@@ -72,18 +72,16 @@ public static class ConnectionMath {
         return ConnectionTier.None;
     }
 
-    /// <summary>
-    ///     Composes one pawn's strength toward one Shard.
-    /// </summary>
-    /// <remarks>
-    ///     Ancestry and residence are two routes to the same base rather than two additions:
-    ///     naturalising on a world you were not born to eventually reaches what being born there
-    ///     grants, and does not exceed it. Investiture and earned strength stack on top of that.
-    /// </remarks>
+    /// <summary>Composes a Shard tie from one world baseline plus the independent sources.</summary>
     public static int Compose(int ancestry, int residence, int investiture, int earned) {
-        int baseline = ancestry > residence ? ancestry : residence;
+        int worldTie = ancestry > residence ? ancestry : residence;
 
-        return Clamp(baseline + investiture + earned);
+        return Clamp(worldTie + investiture + earned);
+    }
+
+    /// <summary>Adds the independent sources of Connection to a world.</summary>
+    public static int ComposeWorld(int ancestry, int residence, int investiture, int earned) {
+        return Clamp(ancestry + residence + investiture + earned);
     }
 
     public static int Clamp(int strength) {

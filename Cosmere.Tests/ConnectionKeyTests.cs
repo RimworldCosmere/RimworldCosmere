@@ -12,7 +12,6 @@ public class ConnectionKeyTests {
     [TestMethod]
     public void TheLedgersWithOneStoreKeepTheirPlainName() {
         Assert.AreEqual("Residence", ConnectionKey.For(DuraluminLedger.Residence, "Ruin").Name);
-        Assert.AreEqual("Bonds", ConnectionKey.For(DuraluminLedger.Bonds, "Ruin").Name);
         Assert.AreEqual("Social", ConnectionKey.For(DuraluminLedger.Social, "Ruin").Name);
     }
 

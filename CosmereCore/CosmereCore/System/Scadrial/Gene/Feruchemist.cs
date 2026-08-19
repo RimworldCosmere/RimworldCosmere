@@ -369,11 +369,26 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Why duralumin's dial is parked, for the selector to show, or none when it can move. Social
-    /// has no capacity; a Shard can be unchosen, or gone from a cosmere that once had it.
+    /// Why duralumin's dial is parked, for the selector to show, or none when it can move. Covers
+    /// invalid choices and a valid tie with nothing left in either direction.
     public string? LedgerBlockedReason {
         get {
-            if (!StoresConnection || SelectedLedger != null) return null;
+            if (!StoresConnection) return null;
+            if (SelectedLedger != null) {
+                RefreshConnectionBudget();
+                if (connectionStorable > 0f || connectionTappable > 0f) return null;
+
+                string tie = targetLedger switch {
+                    DuraluminLedger.Residence => "CS_Duralumin_Ledger_Residence".Translate().Resolve(),
+                    DuraluminLedger.Bonds => "CS_Duralumin_Ledger_Bonds".Translate().Resolve(),
+                    DuraluminLedger.Shard => DefDatabase<ShardDef>
+                        .GetNamedSilentFail(targetShardDefName)?.LabelCap ?? targetShardDefName,
+                    _ => string.Empty,
+                };
+
+                return "CS_Duralumin_LedgerEmpty".Translate(tie.Named("TIE")).Resolve();
+            }
+
             if (ConnectionBudget.Capacity(targetLedger) <= 0) {
                 return "CS_Duralumin_LedgerHasNoCapacity".Translate().Resolve();
             }

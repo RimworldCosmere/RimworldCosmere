@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Cosmere.Core.UI.Dock;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.UI.Feruchemy;
@@ -32,5 +34,51 @@ public class FeruchemyLedgerRowTests {
             FeruchemyLedgerRow.HeightFor(true, DuraluminLedger.Shard),
             Tolerance
         );
+    }
+
+    [TestMethod]
+    public void AResolvedEmptyLedgerExplainsWhyItCannotMove() {
+        string gene = File.ReadAllText(
+            Path.Combine(
+                RepoRoot,
+                "CosmereCore",
+                "CosmereCore",
+                "System",
+                "Scadrial",
+                "Gene",
+                "Feruchemist.cs"
+            )
+        );
+        string language = File.ReadAllText(
+            Path.Combine(RepoRoot, "CosmereScadrial", "Languages", "English", "Keyed", "Feruchemy.xml")
+        );
+
+        Assert.IsTrue(gene.Contains("RefreshConnectionBudget();", StringComparison.Ordinal));
+        Assert.IsFalse(
+            gene.Contains("if (!StoresConnection || SelectedLedger != null) return null;", StringComparison.Ordinal),
+            "A resolved ledger must reach its zero-budget check."
+        );
+        Assert.IsTrue(
+            gene.Contains("connectionStorable > 0f || connectionTappable > 0f", StringComparison.Ordinal),
+            "A resolved ledger must stay blocked only when neither direction can move."
+        );
+        Assert.IsTrue(gene.Contains("CS_Duralumin_LedgerEmpty", StringComparison.Ordinal));
+        Assert.IsTrue(gene.Contains("tie.Named(\"TIE\")", StringComparison.Ordinal));
+        Assert.IsTrue(gene.Contains("DuraluminLedger.Residence => \"CS_Duralumin_Ledger_Residence\"", StringComparison.Ordinal));
+        Assert.IsTrue(gene.Contains("DuraluminLedger.Bonds => \"CS_Duralumin_Ledger_Bonds\"", StringComparison.Ordinal));
+        Assert.IsTrue(gene.Contains("GetNamedSilentFail(targetShardDefName)?.LabelCap", StringComparison.Ordinal));
+        Assert.IsTrue(language.Contains("<CS_Duralumin_LedgerEmpty>{TIE}:", StringComparison.Ordinal));
+    }
+
+    private static string RepoRoot {
+        get {
+            DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "CosmereScadrial", "Defs"))) {
+                dir = dir.Parent;
+            }
+
+            Assert.IsNotNull(dir, "Could not locate the repo root above the test output directory.");
+            return dir!.FullName;
+        }
     }
 }

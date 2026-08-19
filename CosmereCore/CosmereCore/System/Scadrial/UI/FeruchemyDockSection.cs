@@ -26,7 +26,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private static float StripHeightFor(Feruchemist? gene) {
         if (gene == null) return 0f;
 
-        return StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
+        float compoundToggleHeight =
+            FeruchemyDialWidget.ShowsCompoundToggle(gene) ? StripButtonHeight : 0f;
+        return StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + compoundToggleHeight +
             DockDropdownRow.Height + 32f + FeruchemyLedgerRow.HeightFor(gene);
     }
 

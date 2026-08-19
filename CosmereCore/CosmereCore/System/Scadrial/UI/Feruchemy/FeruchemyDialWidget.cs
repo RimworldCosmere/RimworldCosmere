@@ -12,11 +12,13 @@ public sealed class FeruchemyDialWidget {
 
     private string? draggingDial;
 
+    internal static bool ShowsCompoundToggle(Feruchemist gene) => gene.TargetIsInternalOnly;
+
     /// Compounding is only offered on an implanted metalmind - burning one destroys it, and a worn
     /// band is not what the pawn means to set alight. The toggle parks the other pool so only one moves.
     internal float DrawCompoundToggle(Rect inner, float y, Pawn pawn, Feruchemist gene, float buttonHeight) {
         // internal group is every implant - compounding reaches it the same as a single one.
-        bool eligible = gene.TargetIsInternalOnly;
+        bool eligible = ShowsCompoundToggle(gene);
         AcceptanceReport report = CompoundingAccess.Gate(pawn, gene);
 
         // losing the implant or gate mid-compound parks the pool, not drains it behind a hidden control.

@@ -142,6 +142,12 @@ public class ConnectionOffsetTests {
     public void TheOffsetStoreNeverPrunesDepartedPawns() {
         string source = Source("ConnectionOffsets.cs");
 
+        int expose = source.IndexOf("public override void ExposeData()", StringComparison.Ordinal);
+        int get = source.IndexOf("public static float Get(", expose, StringComparison.Ordinal);
+        Assert.IsTrue(expose >= 0 && get > expose, "Expected ExposeData before Get.");
+
+        string body = source.Substring(expose, get - expose);
+
         Assert.IsFalse(
             source.Contains("Prune", StringComparison.Ordinal),
             "Pruning an offset refunds a banked tie. Read the note in ExposeData before adding it back."
@@ -149,6 +155,27 @@ public class ConnectionOffsetTests {
         Assert.IsFalse(
             source.Contains("mapPawns", StringComparison.Ordinal),
             "Nothing here should care whether a pawn is still on a map; leaving does not clear a debt."
+        );
+        Assert.IsFalse(
+            body.Contains("heldByPawn.Clear()", StringComparison.Ordinal)
+            || body.Contains("heldByPawn.Remove(", StringComparison.Ordinal),
+            "ExposeData must not drop live rows before saving them."
+        );
+    }
+
+    /// <summary>A clamped or swallowed write reports the stored movement, never the request.</summary>
+    [TestMethod]
+    public void AdjustOffsetReportsWhatTheStoreAccepted() {
+        string source = Source("ConnectionUtility.cs");
+
+        int adjust = source.IndexOf("public static float AdjustOffset(", StringComparison.Ordinal);
+        int entity = source.IndexOf("private static Cosmere.Core.Entity.Shard? Entity(", adjust, StringComparison.Ordinal);
+        Assert.IsTrue(adjust >= 0 && entity > adjust, "Expected AdjustOffset before Entity.");
+
+        string body = source.Substring(adjust, entity - adjust);
+        Assert.IsTrue(
+            body.Contains("return ConnectionOffsets.Get(pawn, shard) - had;", StringComparison.Ordinal),
+            "AdjustOffset must report what the store accepted after clamping or swallowing the write."
         );
     }
 

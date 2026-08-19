@@ -47,7 +47,7 @@ public static class ConnectionUtility {
     ///     What a top-up measures against. Setting a tie aside must not make a pawn eligible for a
     ///     grant they already took, which is what measuring against the reduced reading allowed.
     /// </remarks>
-    public static int StrengthBeforeOffset(Pawn? pawn, ShardDef? shard) {
+    private static int StrengthBeforeOffset(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
         return StrengthFrom(pawn, shard, true);

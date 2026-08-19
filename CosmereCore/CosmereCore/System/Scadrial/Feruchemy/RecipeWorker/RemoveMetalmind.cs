@@ -55,7 +55,15 @@ public class RemoveMetalmind : Recipe_Surgery {
         Verse.Thing metalmindItem = ThingMaker.MakeThing(metalmindDef, stuffDef);
         Metalmind? metalmindComp = metalmindItem.TryGetComp<Metalmind>();
         if (metalmindComp != null) {
-            if (removed.StoredAmount > 0f) metalmindComp.AddStored(removed.StoredAmount);
+            if (removed.StoredAmount > 0f) {
+                float accepted = metalmindComp.AddStored(removed.StoredAmount);
+
+                // Scaled to what AddStored actually accepted, not to what the implant held.
+                Dictionary<string, float> transferred = removed.AttributionSnapshot();
+                ChargeAttribution.Rescale(transferred, accepted);
+                metalmindComp.ReceiveAttribution(transferred);
+            }
+
             if (removed.CompoundedAmount > 0f) metalmindComp.AddCompounded(removed.CompoundedAmount);
         }
 

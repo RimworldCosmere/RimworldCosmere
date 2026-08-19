@@ -4,12 +4,13 @@ using Verse;
 
 namespace Cosmere.Core.Ability.Autocast;
 
-// One line describing what a rule does, so a pawn with several rules against the
-// same metal can be told apart at a glance without opening each one.
+/// <summary>
+///     One line describing what a rule does, so a pawn with several rules against the same
+///     metal can be told apart at a glance without opening each one.
+/// </summary>
 public static class AutocastRuleSummary {
     public static string Describe(AutocastRule rule) {
-        // A rule with no triggers never runs, so it says so rather than claiming
-        // a condition it does not have.
+        // a rule with no triggers never runs, so it says so instead of claiming a condition it lacks.
         bool idle = rule.Triggers.Count == 0;
 
         if (rule.Kind != AutocastRuleKind.FeruchemyDial) {

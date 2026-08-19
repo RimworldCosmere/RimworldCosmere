@@ -151,8 +151,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         nextHighstormTick = lastHighstormTick + intervalTicks;
 
-        // Measured from the storm's own date, not from now: the storm is being moved out of the
-        // Weeping it landed in, so what matters is how much of that year it still has to clear.
+        // dated from the storm's own tick, not now, since it is being pushed past the Weeping it landed in
         pushedPastWeeping = Mod.enableWeeping && IsTickDuringWeeping(nextHighstormTick);
         if (pushedPastWeeping) {
             int daysLeftInYear = WeepingSchedule.DaysToClearWeeping(DayOfYearAt(nextHighstormTick));
@@ -218,8 +217,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         string span = DescribeSpan(ticksLeft);
 
-        // The wait reads as a broken timer without this. A storm rolled into the Weeping gets moved
-        // past it, so the countdown jumps by weeks on a day that still looks ordinary.
+        // countdown jumps by weeks here: a storm rolled into the Weeping gets pushed past it
         return scheduler.pushedPastWeeping
             ? "CRO_Highstorm_Readout_AfterWeeping".Translate(span)
             : "CRO_Highstorm_Readout_Countdown".Translate(span);

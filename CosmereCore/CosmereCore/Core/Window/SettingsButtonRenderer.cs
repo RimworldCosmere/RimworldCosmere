@@ -6,10 +6,10 @@ using Verse.Sound;
 
 namespace Cosmere.Core.Window;
 
-// Vanilla's button atlas is parchment-on-wood and carries no system identity. These
-// buttons keep the vanilla silhouette - same height, same border weight, same restraint -
-// but take their fill from the active shard accent so the footer belongs to the window
-// it sits in.
+/// <summary>
+///     Vanilla's button atlas is parchment-on-wood with no system identity. These keep the
+///     vanilla silhouette but fill from the active shard accent, so the footer belongs to its window.
+/// </summary>
 public static class SettingsButtonRenderer {
     private const float BorderThickness = 1f;
 
@@ -31,8 +31,7 @@ public static class SettingsButtonRenderer {
 
         Widgets.DrawBoxSolid(rect, fill);
 
-        // A single lit edge along the top is what sells a flat rect as a pressable
-        // surface without reaching for a gradient.
+        // a single lit top edge sells a flat rect as pressable, without a gradient.
         Widgets.DrawBoxSolid(
             new Rect(rect.x + BorderThickness, rect.y + BorderThickness, rect.width - BorderThickness * 2f, BorderThickness),
             new Color(1f, 1f, 1f, hovered ? 0.16f : 0.09f)

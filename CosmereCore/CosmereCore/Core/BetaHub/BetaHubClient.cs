@@ -57,9 +57,7 @@ public static class BetaHubClient {
                 if (outcome != SubmitOutcome.Success) {
                     Logger.Warning($"BetaHub submit failed with {done.responseCode}: {body}");
 
-                    // A 403 naming release permission means CI has not published a release for
-                    // this build yet. Resending without the label files it against the latest
-                    // release, which beats losing the report.
+                    // a 403 here means CI hasn't published this release yet; retry without the label.
                     if (includeReleaseLabel && BetaHubStatusMapper.IsMissingReleasePermission(done.responseCode, body)) {
                         Logger.Warning("Retrying the BetaHub submit without a release label.");
                         Post(report, screenshotJpeg, onDone, includeReleaseLabel: false);
@@ -99,8 +97,7 @@ public static class BetaHubClient {
         WWWForm form = new WWWForm();
         form.AddBinaryData("log_file[file]", bytes, "cosmere-diagnostics.log", "text/plain");
 
-        // Unlisted rather than encrypted. The URL is unguessable but not access controlled,
-        // which is why nothing beyond the SteamID and the log goes in here.
+        // unlisted, not encrypted: the URL is unguessable but not access controlled.
         form.AddField("log_file[developer_private]", "true");
 
         UnityWebRequest request = UnityWebRequest.Post(BetaHubConfig.LogFilesUrl(issuePath), form);
@@ -125,8 +122,10 @@ public static class BetaHubClient {
         Logger.Warning($"BetaHub {what} upload failed with {done.responseCode}: {done.downloadHandler?.text}");
     }
 
-    // A published create returns the scoped id (/issues/8), a draft returns the g- form.
-    // Media endpoints accept either, so the last url segment is used as-is.
+    /// <summary>
+    ///     A published create returns the scoped id (/issues/8), a draft returns the g- form.
+    ///     Media endpoints accept either, so the last url segment is used as-is.
+    /// </summary>
     private static string? ReadIssuePath(string? issueUrl) {
         if (string.IsNullOrEmpty(issueUrl)) return null;
 
@@ -135,11 +134,10 @@ public static class BetaHubClient {
         return lastSlash < 0 ? null : issueUrl.Substring(lastSlash + 1);
     }
 
-    // Verse.Json has no usable deserializer in the shipped assembly (verified against
-    // Assembly-CSharp.dll: no Verse.Json type exists at all, in any namespace). Pulling in a
-    // full JSON library just to read two flat string fields off a response body is not worth
-    // the dependency for a mod that ships into RimWorld, so this reads "key":"value" text
-    // directly instead of parsing the document.
+    /// <summary>
+    ///     Verse.Json has no usable deserializer in the shipped assembly. Rather than pull in a
+    ///     JSON library for two flat string fields, this reads "key":"value" text directly.
+    /// </summary>
     private static string? ReadJsonString(string body, string key) {
         if (string.IsNullOrEmpty(body)) return null;
 

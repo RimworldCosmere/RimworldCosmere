@@ -30,6 +30,9 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
 
+    // Keyed by ConnectionKey; empty for every metal but duralumin.
+    private Dictionary<string, float> chargeByLedger = [];
+
     public Pawn? owner { get; private set; }
 
     private new MetalmindProperties props => (MetalmindProperties)base.props;
@@ -56,9 +59,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         set => equippedInt = value;
     }
 
-    // The comp reference is cached, not the factor: quality is assigned after
-    // PostPostMake runs, so caching the value would freeze every metalmind at normal.
-    // Reading Quality off the held comp stays cheap and stays current.
+    /// The comp reference is cached, not the factor: quality is assigned after PostPostMake,
+    /// so caching the value would freeze every metalmind at normal quality.
     private float CapacityFactor {
         get {
             if (!qualityCompResolved) {
@@ -72,10 +74,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    // props.maxAmount is shared by every metalmind of this def, so quality scales that
-    // shared base and capacity burnt away by compounding is tracked per instance and
-    // subtracted after - burning a legendary metalmind costs the same absolute capacity
-    // as burning an awful one.
+    /// props.maxAmount is shared by the def; quality scales that shared base, then per-instance
+    /// capacityLost is subtracted, so burning any quality costs the same absolute capacity.
     public float MaxAmount => Mathf.Max(0f, props.maxAmount * CapacityFactor - capacityLostInt);
 
     public bool IsBurnedOut => MaxAmount <= 0f;
@@ -86,8 +86,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
 
-    // Memories and attribute charge share one piece of metal. A coppermind full of a
-    // childhood has no room left for mental speed, and vice versa.
+    /// Memories and attribute charge share one piece of metal. A coppermind full of a
+    /// childhood has no room left for mental speed, and vice versa.
     public float TotalOccupied => TotalStored + UsedMemorySpace;
 
     public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalOccupied);
@@ -120,8 +120,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    // A nicrosilmind holds Investiture itself, so it mirrors at nicrosil's own rate
-    // instead of the generic per-attribute conversion every other metalmind uses.
+    /// A nicrosilmind holds Investiture itself, so it mirrors at nicrosil's own rate
+    /// instead of the generic per-attribute conversion every other metalmind uses.
     private float BeuPerUnit => Metal?.defName == "Nicrosil"
         ? ScadrialMetallurgyConstants.NicrosilBeuPerCharge
         : ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
@@ -129,8 +129,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private void SyncInvestitureMirror() {
         investitureHolder.currentInvestitureSelf = TotalOccupied * BeuPerUnit;
 
-        // Max is mirrored here too, not just at PostPostMake: quality is stamped on after
-        // the thing is made, and compounding shrinks capacity later in the item's life.
+        // max mirrored here too, not just PostPostMake: quality stamps on late and compounding shrinks capacity later.
         investitureHolder.maxInvestitureSelf = MaxAmount * BeuPerUnit;
     }
 
@@ -152,24 +151,32 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    public float AddStored(float amount) {
+    public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanStore) return 0f;
         if (!ValidateOwner()) return 0f;
 
         float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount - UsedMemorySpace);
+        float moved = StoredAmount - before;
+        RecordStored(ledgerKey, moved);
 
-        return StoredAmount - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTap) return 0f;
         if (!ValidateOwner()) return 0f;
 
         float before = StoredAmount;
         StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
+        float moved = before - StoredAmount;
 
-        return before - StoredAmount;
+        if (moved != 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, moved);
+            else ChargeAttribution.Drain(chargeByLedger, moved);
+        }
+
+        return moved;
     }
 
     public float AddCompounded(float amount) {
@@ -182,9 +189,9 @@ public class Metalmind : ThingComp, IMetalmindSource {
         return CompoundedAmount - before;
     }
 
-    // Drawing compounded charge eats the metalmind that carried it. Capacity drops
-    // by what was spent, so the two run out together.
-    public float ConsumeCompounded(float amount) {
+    /// Drawing compounded charge eats the metalmind that carried it. Capacity drops
+    /// by what was spent, so the two run out together.
+    public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTapCompounded) return 0f;
         if (!ValidateOwner()) return 0f;
 
@@ -196,7 +203,38 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
         capacityLostInt += spent;
 
+        // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
+        float fromStored = spent - fromCompounded;
+        if (fromStored > 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, fromStored);
+            else ChargeAttribution.Drain(chargeByLedger, fromStored);
+        }
+
         return spent;
+    }
+
+    public float StoredFor(ConnectionKey ledgerKey) {
+        return chargeByLedger.TryGetValue(ledgerKey.Name, out float amount) ? amount : 0f;
+    }
+
+    private void RecordStored(ConnectionKey? ledgerKey, float moved) {
+        if (ledgerKey == null || moved == 0f) return;
+
+        string key = ledgerKey.Value.Name;
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
+    }
+
+    private void RecordConsumed(ConnectionKey ledgerKey, float moved) {
+        ChargeAttribution.DrainNamed(chargeByLedger, ledgerKey.Name, moved);
+    }
+
+    // Merges in attribution already scaled by the caller - used on explant handover.
+    public void ReceiveAttribution(Dictionary<string, float> transferred) {
+        foreach (KeyValuePair<string, float> pair in transferred) {
+            chargeByLedger.TryGetValue(pair.Key, out float existing);
+            chargeByLedger[pair.Key] = existing + pair.Value;
+        }
     }
 
     public bool CanFitMemory(float magnitude) {
@@ -294,6 +332,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         Scribe_Values.Look(ref capacityLostInt, "capacityLost", 0f);
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
+        Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
+        chargeByLedger ??= [];
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             cachedMetal = null;
@@ -306,19 +346,30 @@ public class Metalmind : ThingComp, IMetalmindSource {
             owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
 
-            // A save written when this metalmind held more capacity would load over-full
-            // once every pool is counted. Capacity can shrink because compounding burnt
-            // it, or because a save predates quality scaling and this metalmind is
-            // below-normal quality. Memories are never dropped - a lost childhood is
-            // worse than a lost charge - so compounded goes first, then the plain store.
+            // loads over-full when compounding burnt capacity, or when a save predates quality scaling.
             float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);
             if (storedAmountInt + compoundedAmountInt > roomForCharge) {
                 compoundedAmountInt = Mathf.Max(0f, roomForCharge - storedAmountInt);
                 storedAmountInt = Mathf.Min(storedAmountInt, roomForCharge);
             }
 
+            ReconcileAttribution();
             SyncInvestitureMirror();
         }
+    }
+
+    // Duralumin only, after the clamp above: drops unclaimed charge, then rescales.
+    private void ReconcileAttribution() {
+        if (Metal?.defName != "Duralumin") return;
+
+        float attributed = ChargeAttribution.Total(chargeByLedger);
+        if (storedAmountInt > attributed) {
+            float discarded = storedAmountInt - attributed;
+            storedAmountInt = attributed;
+            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+        }
+
+        ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);
     }
 
     public override string CompInspectStringExtra() {

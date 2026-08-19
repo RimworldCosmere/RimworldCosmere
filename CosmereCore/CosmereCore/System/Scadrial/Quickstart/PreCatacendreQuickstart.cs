@@ -22,10 +22,10 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
     public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre;
 
-    // Nothing beyond what the scenario itself sets, which is Ruin and Preservation. Adding Honor,
-    // Cultivation and Odium here turned a Mistborn colony into one with highstorms scheduled and
-    // Rosharan genes rolling on every pawn. The All-Stars quickstart is where Roshar content gets
-    // exercised.
+    /// <summary>
+    ///     nothing beyond what the scenario sets (Ruin, Preservation): adding Honor/Cultivation/Odium here turned
+    ///     a Mistborn colony into one with highstorms and Rosharan genes rolling; use All-Stars quickstart for that
+    /// </summary>
     public override IReadOnlyList<string> shards => [];
 
     public override void PostStart() {
@@ -152,11 +152,9 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         );
         if (kind == null || koloss == null) return;
 
-        // Ten of them, spread across the whole growth range, because one koloss says nothing about
-        // what a band of them looks like - and size is the thing that varies most.
+        // ten, spread across the growth range: one koloss says nothing about what a band looks like; size varies most
         for (int i = 0; i < Band; i++) {
-            // No faction. A koloss in the colony is already somebody's, and the point of having
-            // them stand there is to seize them - which needs them to belong to nobody first.
+            // no faction: a koloss belongs to someone already; seizing one needs it to start belonging to nobody
             Pawn one = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
                 kind,
                 null,
@@ -171,8 +169,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             // The one koloss anybody ever called anything, and nine nobody did.
             if (i == 0) one.Name = new NameSingle("Human", false);
 
-            // fixedChronologicalAge on the request does not survive generation - the tracker has
-            // to be written afterwards. Years a koloss, in a body that was grown when it got it.
+            // fixedChronologicalAge doesnt survive generation; write the age tracker after, on a body grown when spiked
             if (one.ageTracker != null) {
                 one.ageTracker.AgeChronologicalTicks = (i + 1) * GenDate.TicksPerYear;
             }
@@ -192,8 +189,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         );
         if (growth == null) return;
 
-        // Never a literal zero. Hediff.ShouldRemove is Severity <= 0f, so the hediff would delete
-        // itself on the next tick and the koloss would have no growth at all.
+        // never a literal zero: Hediff.ShouldRemove is Severity <= 0f, so it would delete itself next tick
         growth.Severity = Mathf.Max(0.001f, along);
     }
 

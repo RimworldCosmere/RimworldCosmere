@@ -4,9 +4,10 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-// Concord allows one whole-method Around per target, and Pawn.Kill needs pre-call state for
-// two separate concerns. PawnKillPatch owns the single injection and calls into both; this
-// type keeps the witness half of that logic.
+/// <summary>
+///     Concord allows one whole-method Around per target, so PawnKillPatch owns the single
+///     Pawn.Kill injection and calls into both concerns; this type holds the witness half.
+/// </summary>
 public static class DeathWitnessTracking {
     public static Map? CaptureMapHeld(Pawn pawn) {
         return pawn.MapHeld;

@@ -141,8 +141,7 @@ public class Dialog_CosmereFeatures : Verse.Window {
         Rect row = new Rect(0f, y, width, rowHeight);
         Widgets.DrawHighlightIfMouseover(row);
 
-        // A phenomenon whose Shard is switched off cannot happen whatever the player ticks, so
-        // say so rather than offering a checkbox that does nothing.
+        // A phenomenon with its Shard switched off cannot happen, so it gets no checkbox to toggle.
         bool shardsPresent = feature.anyOfShards.Count == 0 ||
             ShardUtility.AreAnyEnabled(feature.anyOfShards.ToArray());
 

@@ -55,8 +55,7 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
         List<CellRect> usedRects = MapGenerator.GetOrGenerateVar<List<CellRect>>("UsedRects");
         HashSet<IntVec3> placed = new HashSet<IntVec3>();
 
-        // Breadth-first so every arm grows evenly and the budget runs out at the tips rather
-        // than after one arm has eaten it all.
+        // Breadth-first so every arm grows evenly and the budget runs out at the tips, not on one arm.
         Queue<(IntVec3 from, float angle, int depth)> queue = new Queue<(IntVec3, float, int)>();
 
         float spread = 360f / trunks;
@@ -99,8 +98,7 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
 
         if (placed.Count == 0) return;
 
-        // Publish the field's bounds the way GenStep_PreciousLump does, so anything ordered
-        // later that anchors on the objective - the garrison - lands on the crystal.
+        // Publish bounds like GenStep_PreciousLump does, so the garrison anchor lands on the crystal.
         int minX = int.MaxValue, minZ = int.MaxValue, maxX = int.MinValue, maxZ = int.MinValue;
         foreach (IntVec3 cell in placed) {
             if (cell.x < minX) minX = cell.x;
@@ -130,8 +128,7 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
                 int distance = dx * dx + dz * dz;
                 if (distance > sqr) continue;
 
-                // Rim cells land only most of the time, which is what keeps the edge broken up
-                // instead of a run of clean arcs.
+                // Rim cells land only most of the time, so the edge breaks up instead of a clean arc.
                 if (distance > sqr - radius && !Rand.Chance(0.55f)) continue;
 
                 TryPlace(new IntVec3(centre.x + dx, 0, centre.z + dz), map, thingDef, usedRects, placed);
@@ -152,13 +149,10 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
             if (usedRects[i].Contains(cell)) return false;
         }
 
-        // Deliberately not restricted to existing rock: a field this size leaves any natural
-        // patch within a few cells, and requiring rock threw away all but a fraction of it.
+        // Deliberately not restricted to existing rock: requiring it threw away most of a field this size.
         if (cell.GetTerrain(map).IsWater) return false;
 
-        // Skip occupied cells rather than clearing them. Destroying rock mid-generation kicks
-        // off a roof-collapse check, and each collapse destroys more rock - over thousands of
-        // cells that cascade recurses deep enough to overflow the stack.
+        // Skip occupied cells instead of clearing: destroying rock mid-gen can cascade and overflow the stack.
         if (cell.GetEdifice(map) != null) return false;
 
         GenSpawn.Spawn(thingDef, cell, map);

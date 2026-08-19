@@ -37,8 +37,10 @@ public class KeepVialInStock : WorkGiver_Scanner {
         return job;
     }
 
-    // Keyed off the vial's own metal rather than the first gene short of stock, or a pawn short
-    // of two metals only ever restocks whichever gene the gene list happens to yield first.
+    /// <summary>
+    ///     Keyed off the vial's own metal, not the first gene short of stock - a pawn short on two
+    ///     metals would otherwise always restock whichever gene the list happens to yield first.
+    /// </summary>
     private static Allomancer? GeneWanting(Pawn pawn, Verse.Thing vial) {
         if (pawn.genes == null) return null;
 

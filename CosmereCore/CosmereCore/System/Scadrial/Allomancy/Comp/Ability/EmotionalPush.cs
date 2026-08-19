@@ -123,9 +123,7 @@ public class QuellBreak : EmotionalPush {
         MentalState? state = troubled.MentalState;
         if (state == null) return;
 
-        // A loose koloss is not calmed, it is taken. SeizeKoloss runs from the same cast and will
-        // either get hold of it - which ends the bloodlust on its own - or say how far short the
-        // push fell. Refusing here just talked over that.
+        // a loose koloss isn't calmed, it's taken; SeizeKoloss (same cast) already handles that outcome.
         if (UnbreakableStateRegistry.Guards(troubled)) return;
 
         state.RecoverFromState();

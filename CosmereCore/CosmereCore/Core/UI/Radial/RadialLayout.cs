@@ -79,8 +79,10 @@ public static class RadialLayout {
         return index;
     }
 
-    // Where a horizontal line through (px, py) meets the ray leaving the centre at edgeDeg. An edge
-    // that is itself horizontal never meets it, and is reported as unbounded.
+    /// <summary>
+    ///     Where a horizontal line through (px, py) meets the ray leaving the centre at edgeDeg. An
+    ///     edge that is itself horizontal never meets it, and is reported as unbounded.
+    /// </summary>
     private static float EdgeRayHalfWidth(float px, float py, float edgeDeg) {
         float rad = edgeDeg * Mathf.Deg2Rad;
         float cos = Mathf.Cos(rad);

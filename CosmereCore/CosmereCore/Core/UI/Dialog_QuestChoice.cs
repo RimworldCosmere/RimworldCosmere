@@ -18,8 +18,10 @@ public class Dialog_QuestChoice : Verse.Window {
     private const float AccentBarHeight = 3f;
     private const float DividerHeight = 1f;
 
-    // Wide enough for "300 silver" at GameFont.Tiny. The cost column and the label column are
-    // sized from this same figure, so they cannot drift apart.
+    /// <summary>
+    ///     Wide enough for "300 silver" at GameFont.Tiny. The cost column and the label column are
+    ///     sized from this same figure, so they cannot drift apart.
+    /// </summary>
     private const float CostColumnUnits = 6f;
 
     private static readonly Color AccentColor = new Color(0.42f, 0.58f, 0.66f);
@@ -28,8 +30,10 @@ public class Dialog_QuestChoice : Verse.Window {
     private static readonly Color CostColor = new Color(0.82f, 0.8f, 0.68f);
     private static readonly Color BlurbColor = new Color(0.75f, 0.75f, 0.75f);
 
-    // Blocked-row wash: the accent colour itself at a fraction of its alpha, not a new hue -
-    // reads as "the same steel-blue surface, faded" rather than an unrelated warning colour.
+    /// <summary>
+    ///     Blocked-row wash: the accent colour itself at a fraction of its alpha, not a new hue -
+    ///     reads as "the same steel-blue surface, faded" rather than an unrelated warning colour.
+    /// </summary>
     private static readonly Color BlockedRowColor = new Color(AccentColor.r, AccentColor.g, AccentColor.b, 0.15f);
 
     private readonly QuestPart_CosmereChoice part;
@@ -45,9 +49,10 @@ public class Dialog_QuestChoice : Verse.Window {
         draggable = false;
     }
 
-    // Window.InnerWindowOnGUI contracts the window rect by Margin (18f) before calling
-    // DoWindowContents. Overriding to 0 leaves Spacing.Get() as the only contraction in play,
-    // so CalcHeight's content width matches what DoWindowContents actually renders at.
+    /// <summary>
+    ///     Window.InnerWindowOnGUI contracts the window rect by Margin (18f) before calling
+    ///     DoWindowContents. Overriding to 0 keeps CalcHeight's content width matching what DoWindowContents actually renders at.
+    /// </summary>
     protected override float Margin => 0f;
 
     public override Vector2 InitialSize => new Vector2(WindowWidth, CalcHeight());
@@ -112,8 +117,7 @@ public class Dialog_QuestChoice : Verse.Window {
                 }
             }
 
-            // ButtonInvisible's own doMouseoverSound is skipped - MouseoverSounds.DoRegion
-            // above already covers the row every hovered frame, not just on the click frame.
+            // ButtonInvisible skips its own sound - MouseoverSounds already covers the row each hovered frame.
             if (Widgets.ButtonInvisible(row, false) && part.Choose(option)) {
                 Close();
                 return;
@@ -166,9 +170,10 @@ public class Dialog_QuestChoice : Verse.Window {
         return Mathf.Max(textHeight + Spacing.Get(), Spacing.Get(3f));
     }
 
-    // option.labelKey/tipKey are string? on the model (Scribe-compatible), but ChoiceObjective's
-    // ConfigError rejects null/empty at load time, so a rendered dialog never sees the fallback.
-    // Local-copy-then-narrow mirrors the idiom in Core/Quest/Prereq/FlagPrereq.cs.
+    /// <summary>
+    ///     option.labelKey/tipKey are string? on the model (Scribe-compatible), but ChoiceObjective's
+    ///     ConfigError rejects null/empty at load time, so this never actually sees the fallback. Same idiom as Core/Quest/Prereq/FlagPrereq.cs.
+    /// </summary>
     private static string ResolvedLabelKey(QuestChoiceOption option) {
         string? labelKey = option.labelKey;
         return labelKey != null && labelKey.Length > 0 ? labelKey : string.Empty;

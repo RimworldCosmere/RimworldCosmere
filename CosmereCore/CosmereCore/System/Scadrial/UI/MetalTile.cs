@@ -5,8 +5,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-// How a metal's tile reads at a glance. Inert is not the same as Empty: an
-// inert metal has no metalmind to work with, while an empty one is ready to fill.
+/// How a metal's tile reads at a glance. Inert is not the same as Empty: an inert metal has no
+/// metalmind to work with; an empty one is ready to fill.
 public enum MetalTileState {
     Idle,
     Active,
@@ -14,18 +14,14 @@ public enum MetalTileState {
     Inert,
 }
 
-// A single cell of the Metallic Arts table: glyph, name, a right-aligned note,
-// and the metal's own colour as a level band along the base.
+/// A single cell of the table: glyph, name, a right-aligned note, and a colour band along the base.
 public static class MetalTile {
-    // The band is the reserve readout, so it is sized to be read rather than to be a
-    // hairline, and it sits clear of the bottom edge instead of hard against it. The
-    // tile is tall enough to hold the glyph and the band without them colliding.
+    /// Tall enough to hold the glyph and the band without colliding. The band is the reserve readout,
+    /// sized to be read rather than a hairline, and sits clear of the bottom edge.
     public const float Height = 64f;
 
-    // The detail panel a tile opens shares these exactly. The two are drawn as one
-    // merged shape, and a merged shape carrying two tones reads as two shapes.
-    // Translucent so the parchment behind still shows its grain through, rather than
-    // every cell reading as a flat chip laid on top.
+    /// Shared exactly with the detail panel a tile opens into - two tones on one merged shape read as
+    /// two shapes. Translucent so the parchment grain still shows through, not a flat chip on top.
     public static readonly Color Fill = new Color(0.063f, 0.051f, 0.039f, 0.38f);
     public static readonly Color Border = new Color(0.298f, 0.243f, 0.169f);
 
@@ -59,9 +55,7 @@ public static class MetalTile {
 
         float wash = Panel.LitWash(state == MetalTileState.Flaring);
 
-        // An open tile runs down through the join gap into the detail panel, carrying
-        // its fill, its stroke and - when the metal is lit - its wash and edge rail
-        // with it, so the two are one surface rather than a box resting on a box.
+        // open tile carries fill, stroke and lit wash through the join gap - one surface, not a box on a box.
         if (joinedBelow) {
             Panel.DrawJoinedDown(
                 rect,
@@ -80,14 +74,10 @@ public static class MetalTile {
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        // Empty sits between inert and stocked: there is something to work with
-        // here, just nothing in it yet, so it dims without going dead.
+        // empty sits between inert and stocked - dims without going dead, since there is something to fill.
         bool empty = !inert && fraction <= 0f && !hot;
 
-        // White rather than the metal's own colour. Copper and bronze are dark browns,
-        // and a dark brown mark on a dark brown tile is a mark nobody can read - the
-        // level band below still carries the metal's colour, which is where it can be
-        // seen against its own track.
+        // glyph is white, not the metal's colour - copper/bronze are dark browns, unreadable on a dark tile.
         Rect iconRect = new Rect(rect.x + 6f, rect.y + 3f, GlyphSize, GlyphSize);
         if (icon != null) {
             Color prev = GUI.color;
@@ -100,16 +90,13 @@ public static class MetalTile {
             GUI.color = prev;
         }
 
-        // Measured rather than reserved: the axis mark is two characters where a
-        // capacity reading is five, and a flat reservation starves the name.
+        // measured, not reserved - axis mark is 2 chars, capacity reading is 5; a flat reservation starves the name.
         float noteWidth;
         using (new TextBlock(GameFont.Tiny)) {
             noteWidth = note.NullOrEmpty() ? 0f : Text.CalcSize(note).x + 4f;
         }
 
-        // Centred against the glyph rather than pinned to the top of the tile: the
-        // mark is taller than a line of Tiny, so top-aligning left the name floating
-        // above its own icon.
+        // centred on the glyph, not top-pinned - Tiny text is shorter, so top-align floated the name above the icon.
         float textY = iconRect.y + (GlyphSize - tinyH) / 2f;
 
         Rect noteRect = new Rect(rect.xMax - 5f - noteWidth, textY, noteWidth, tinyH);
@@ -127,15 +114,10 @@ public static class MetalTile {
 
         if (!inert) Panel.Hover(rect, hot ? activeTint : Border, joinedBelow ? MetallicArtsTable.JoinGap : 0f);
 
-        // The detail panel this tile opens into carries a full-width reserve bar of
-        // its own, so keeping the band would state the same reading twice a few pixels
-        // apart. The tile keeps its height either way, or the row beside it would jump.
+        // skip the band here - the panel below repeats the reading. Height stays fixed either way, or the row jumps.
         if (joinedBelow) return;
 
-        // Two pools mean two gauges. The stored one stays the primary bar; the
-        // compounded one sits below as a thinner stripe on a warmer track, so which
-        // is which reads without a legend, and an empty one still shows the pool
-        // exists.
+        // two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
         bool twoPools = compoundedTint.HasValue;
         float bottom = rect.yMax - BandLift;
         float stack = twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight;
@@ -154,9 +136,8 @@ public static class MetalTile {
         );
     }
 
-    // Savant standing is earned per metal, so it is marked per tile rather than
-    // summarised somewhere above. A folded corner costs no layout at all, and the
-    // three stages read as three brightnesses of the same fold.
+    /// Savant standing is earned per metal, marked per tile rather than summarised elsewhere. A folded
+    /// corner costs no layout, and the three stages read as three brightnesses of the same fold.
     private static void DrawSavantFold(Rect rect, int stage) {
         if (stage <= 0) return;
 

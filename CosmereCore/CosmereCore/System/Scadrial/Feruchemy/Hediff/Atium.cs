@@ -12,13 +12,12 @@ public class Atium : HediffWithComps {
     private const int TicksPerDay = GenDate.TicksPerDay;
     private const float AgeTicksPerGameTick = 43200f;
 
-    // How young atium will take a pawn. Flat rather than read off the race, since
-    // life stages are flagged loosely enough that teenagers count as adult.
+    /// How young atium will take a pawn. Flat rather than read off the race, since
+    /// life stages are flagged loosely enough that teenagers count as adult.
     private const int MinAgeYears = 18;
 
-    // Held in ticks and compared as a long. Float loses whole ticks past about
-    // sixteen million, and this floor is sixty-five million, so a float compare
-    // lands either side of it and the dial never sees itself arrive.
+    /// Held as a long, not float: float loses whole ticks past ~16M ticks, and this
+    /// floor sits at 65M, so a float compare would never see it arrive.
     private const long MinAgeTicks = MinAgeYears * (long)GenDate.TicksPerYear;
 
     private static readonly string[] AgeConditionNames = [
@@ -56,8 +55,8 @@ public class Atium : HediffWithComps {
         }
     }
 
-    // Hands back the share of this interval's draw that bought no years, so a
-    // pawn arriving at the floor is not charged for the part that did nothing.
+    /// Hands back the share of this interval's draw that bought no years, so a
+    /// pawn arriving at the floor is not charged for the part that did nothing.
     private void RefundUnused(float fraction) {
         Feruchemist? gene = atium;
         if (gene == null || fraction <= 0f) return;
@@ -95,18 +94,14 @@ public class Atium : HediffWithComps {
 
         if (!isTapping && !isStoring) return;
 
-        // Age has a floor. A dial left pushed against it spends charge, and now the
-        // metalmind itself, to move a number that cannot move - so park it rather
-        // than let the pawn burn an implant away for nothing.
+        // age has a floor; a dial pushed against it burns charge and the metalmind for nothing, so park it.
         float direction = isStoring ? +1f : -1f;
         float severityFactor = CompoundedTap.Scale(def, Severity) / 5.0f;
         long requested = (long)(delta * AgeTicksPerGameTick * severityFactor);
         long current = pawn.ageTracker.AgeBiologicalTicks;
 
         if (direction < 0f) {
-            // Ordinary aging ticks the pawn back up between rare ticks, so they sit a
-            // few hundred ticks above the floor rather than on it. Asking whether they
-            // have arrived never answers yes; ask how much is left to shed instead.
+            // natural aging ticks them back above the floor between rare ticks; check ticks left, not equality.
             long available = current - MinAgeTicks;
             if (available <= 0L) {
                 ParkDial();
@@ -117,8 +112,7 @@ public class Atium : HediffWithComps {
             long applied = Math.Min(requested, available);
             pawn.ageTracker.AgeBiologicalTicks = current - applied;
 
-            // The draw only paid for the years actually shed, so hand back the rest
-            // and stop: the pawn is at the floor and further tapping buys nothing.
+            // only charge for years actually shed; refund the rest and park, the floor buys nothing further.
             if (applied < requested) {
                 RefundUnused(1f - applied / (float)requested);
                 ParkDial();

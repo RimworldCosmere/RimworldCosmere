@@ -45,8 +45,7 @@ public class ScenPart_FactionRelations : ScenPart {
             int delta = pair.goodwill - a.GoodwillWith(b);
             if (delta == 0) continue;
 
-            // SetRelationDirect refuses a pair that both use goodwill, and these all do, so the
-            // relation kind has to come out of the goodwill number.
+            // SetRelationDirect refuses a pair that both use goodwill, so relation kind derives from delta.
             a.TryAffectGoodwillWith(b, delta, false, false);
         }
     }

@@ -9,11 +9,10 @@ public sealed record RadialSystem(
     Texture2D? Icon,
     IReadOnlyList<RadialSubsection> Subsections
 ) {
-    // The wheel and the dock's ribbons name and mark a system the same way, because
-    // both ask the skin rather than each carrying its own copy of the answer. Spelling
-    // the label out at the call site is how the wheel came to call Surgebinding
-    // "Stormlight" - the resource rather than the art - long after the ribbon stopped,
-    // and how it ended up with no mark at all where the ribbon had one.
+    /// <summary>
+    ///     Wheel and dock ribbons name and mark a system the same way by asking the skin, not carrying
+    ///     their own copy - a duplicated copy once drifted, mislabeling Surgebinding as "Stormlight".
+    /// </summary>
     public static RadialSystem ForSystem(string systemId, IReadOnlyList<RadialSubsection> subsections) {
         ISystemSkin skin = SystemSkinRegistry.ForOrFallback(systemId);
 

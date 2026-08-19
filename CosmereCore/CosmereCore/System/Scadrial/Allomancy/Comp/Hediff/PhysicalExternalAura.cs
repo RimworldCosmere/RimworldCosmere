@@ -14,14 +14,15 @@ public class PhysicalExternalAuraProperties : LineDrawingAuraProperties {
 }
 
 public class PhysicalExternalAura : LineDrawingAura {
-    // The targeting preview builds its lines through here too, so a line previewed under the cursor
-    // is the same line the aura draws once the metal is lit.
+    /// <summary>
+    ///     The targeting preview builds its lines through here too, so a line previewed under the
+    ///     cursor is the same line the aura draws once the metal is lit.
+    /// </summary>
     public static LineToRender MetalLine(Pawn pawn, Verse.Thing thing, bool pulling, Material material, float radius) {
         float distance = (thing.DrawPos - pawn.DrawPos).ToIntVec3().LengthHorizontal;
         float mass = thing.GetMetalMass() * thing.stackCount;
 
-        // Thickness scales between 0.15 and 0.3 based on metal mass,
-        // with 10kg or more giving maximum thickness.
+        // thickness scales 0.15-0.3 with metal mass, maxing at 10kg or more
         float thickness = Mathf.Lerp(0.15f, 0.3f, Mathf.Clamp01(mass / 10f));
 
         return new LineToRender(

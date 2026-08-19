@@ -32,9 +32,7 @@ public static class RosharUIRegistration {
 
         InvestitureProviderRegistry.Register(new SurgebindingInvestitureProvider());
 
-        // The Radiant plate is stored white on transparent, so GUI.color tints it
-        // straight to the rail's ink. Without a sigil the ribbon fell back to
-        // printing the first letter of the header.
+        // plate is white on transparent so GUI.color tints it; no sigil meant the header's first letter.
         SystemSkinRegistry.Register(new DataSystemSkin(
             systemId: "Surgebinding",
             headerLabelKey: "CC_System_Surgebinding_Header",
@@ -61,8 +59,7 @@ public static class RosharUIRegistration {
             new AutocastTrigger(AutocastTriggerKind.ReservePercent, AutocastComparison.LessThan, 0.2f),
         ]);
 
-        // Drafted is the closest thing to "in combat" the trigger set has: it is the moment the
-        // player has decided this pawn is fighting, which is when Blade and Plate should be up.
+        // drafted is the closest the trigger set has to "in combat" - when blade and plate should be up.
         AutocastDefaults.Register(
             "Cosmere_Roshar_Ability_ToggleShardblade",
             [new AutocastTrigger(AutocastTriggerKind.Drafted, AutocastComparison.EqualTo, 1f)],

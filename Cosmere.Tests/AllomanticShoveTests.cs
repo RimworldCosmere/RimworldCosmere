@@ -58,8 +58,7 @@ public class AllomanticShoveTests {
 
     [TestMethod]
     public void TheAnchorSurplusIsWhatSizesTheLaunch() {
-        // MoveThing turns the mass difference into tiles with massDifference / 3, so the surplus is
-        // the only thing setting how far a pawn travels off a wall.
+        // MoveThing turns the mass difference into tiles via massDifference / 3, so the surplus sets distance.
         float mass = AllomanticShove.EffectiveTargetMass(BuildingReportedMass, HumanMass, true);
         float tiles = (mass - HumanMass) / 3f;
 

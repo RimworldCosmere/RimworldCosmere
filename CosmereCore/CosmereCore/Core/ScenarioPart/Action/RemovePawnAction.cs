@@ -46,8 +46,7 @@ public class RemovePawnAction : ProgressionAction {
                 pawn.Kill(null);
                 break;
             case "leave":
-                // DeSpawn throws on a pawn who is not on a map, and FindPawnByName can now hand
-                // back one who is away with a caravan.
+                // DeSpawn throws on a pawn not on a map, and FindPawnByName can hand back one away with a caravan.
                 if (pawn.Spawned) pawn.DeSpawn();
                 pawn.holdingOwner?.Remove(pawn);
                 Find.WorldPawns.PassToWorld(pawn);

@@ -49,8 +49,10 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         }
     }
 
-    // Setting Position behind the pather's back leaves it steering from the cell the pawn used to
-    // stand in, so the shove and the walk order fight and the pawn reads as stuck. Keep the job.
+    /// <summary>
+    ///     Setting Position behind the pather's back leaves it steering from the cell the pawn used
+    ///     to stand in, so the shove and the walk order fight and the pawn reads as stuck. Keep the job.
+    /// </summary>
     private static void NotifyMoved(Verse.Thing thing) {
         if (thing is Pawn moved && moved.Spawned) moved.Notify_Teleported(false);
     }

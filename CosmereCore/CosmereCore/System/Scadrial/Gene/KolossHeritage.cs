@@ -27,13 +27,10 @@ public class KolossHeritage : Verse.Gene {
 
         Verse.Hediff made = pawn.health.AddHediff(growth);
 
-        // A koloss made by surgery starts at nothing, because the clock starts at the spikes. One
-        // that marched out of the east has been somebody's for years, and a raid of newborns reads
-        // as a raid of large men. The kind says which it is.
+        // kind decides age: surgery koloss start young, raid/march koloss start already grown.
         if (pawn.kindDef?.GetModExtension<Def.KolossGrowthExtension>() is not { } aged) return;
 
-        // Never a literal zero: Hediff.ShouldRemove is Severity <= 0f, so the hediff would delete
-        // itself on the next tick and the koloss would have no growth at all.
+        // never literal 0: ShouldRemove is Severity <= 0f, so it would delete itself next tick.
         made.Severity = Mathf.Max(0.001f, aged.growth.RandomInRange);
     }
 }

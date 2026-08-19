@@ -33,8 +33,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         1 / Mod.Settings.nahelSprenSpawnAverageIntervalTicks * Current.Game.storyteller.difficulty.threatScale;
 
     public override void MapComponentTick() {
-        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
-        // growing them, and the particle systems are expensive to keep warm besides.
+        // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         if (baseSpawnChance == 0) return;
 

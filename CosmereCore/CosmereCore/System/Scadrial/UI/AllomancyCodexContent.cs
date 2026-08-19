@@ -67,10 +67,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             y += 28f;
         }
 
-        // Seventeen metals never fitted the panel, and without a scroll view the
-        // ones past the fold were simply cut off rather than reachable.
-        // The mark is the row's anchor, so it gets the room to be recognised and
-        // the row grows to hold it.
+        // scroll view: seventeen metals overflow the panel; markSize anchors the row, rowHeight grows to hold it
         const float markSize = 44f;
         const float rowHeight = 52f;
         const float rowGap = 2f;
@@ -87,8 +84,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             Rect row = new Rect(0f, y, viewRect.width, rowHeight);
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            // The metal's own mark in the metal's own colour, rather than an
-            // anonymous chip that only the colour distinguished.
+            // metals own mark in its own colour, not an anonymous chip that only the colour distinguished
             Rect swatch = new Rect(row.x + rowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
             Texture2D? mark = metal.allomancy?.invertedIcon;
             if (mark != null) {
@@ -114,9 +110,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 burningTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentBurningForMetal(metal));
             }
 
-            // The same reading Feruchemy gives, and the same number the savant
-            // stage beside it is derived from. Never-burned reads as its own
-            // sentence rather than substituting "never" into a past-tense one.
+            // same reading as Feruchemy and the savant stage; never-burned is its own sentence, not substituted in
             string burnedLabel = burningTicks > 0
                 ? "CC_Codex_Allomancy_MetalBurned".Translate(
                     burningTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
@@ -131,8 +125,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 buttonSize
             );
 
-            // Runs to the vial button rather than a fixed width, so a colonist who
-            // has burned four figures of pewter does not push into it.
+            // runs to the vial button, not a fixed width, so four-figure burn totals dont push into it
             Rect burnedRect = new Rect(
                 stageRect.xMax + 8f,
                 row.y,
@@ -170,8 +163,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         );
         TooltipHandler.TipRegion(rect, tooltip);
 
-        // A word never fit this button and was clipped by the panel edge. The vial
-        // the setting is about says it in the space available.
+        // a text label clipped at the panel edge; the vial icon says it in the space available instead
         bool clicked = VialIcon != null
             ? Widgets.ButtonImage(rect, VialIcon, true)
             : Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate());
@@ -181,9 +173,10 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         }
     }
 
-    // Nothing at all in this column read as an oversight rather than as a metal
-    // that has no reserve to keep. A dimmed vial says the setting exists and does
-    // not apply here.
+    /// <summary>
+    ///     An empty column read as an oversight, not as a metal with no reserve to keep. A dimmed
+    ///     vial shows the setting exists but does not apply here.
+    /// </summary>
     private static void DrawVialSettingsUnavailable(Rect rect, MetallicArtsMetalDef metal) {
         TooltipHandler.TipRegion(
             rect,

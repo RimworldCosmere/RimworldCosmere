@@ -49,8 +49,7 @@ public class RemoveSpike : Recipe_Surgery {
 
         UpdateRuinsInfluence(pawn);
 
-        // A kandra is two spikes. Taking one out has to land now rather than on the next slow
-        // tick, because the surgeon is standing right there watching it happen.
+        // a kandra is two spikes - reconcile now, not on the next slow tick, while the surgeon is watching
         KandraUtility.ReconcileSpikes(pawn);
     }
 

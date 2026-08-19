@@ -6,9 +6,8 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 ///     How much charge a pawn's own Investiture will bear moving, in either direction.
 /// </summary>
 /// <remarks>
-///     Deliberately free of RimWorld and Unity types so the test host can load it. A metal that
-///     stores something notional has no such bound; nicrosil stores Investiture itself, so the
-///     pawn runs out before the metalmind does.
+///     Verse-free so the test host can load it. Nicrosil stores Investiture itself, so unlike a
+///     metal storing something notional, the pawn runs out before the metalmind does.
 /// </remarks>
 public static class InvestitureBudget {
     /// <summary>Charge the pawn still has in them to give. You cannot store what you no longer have.</summary>

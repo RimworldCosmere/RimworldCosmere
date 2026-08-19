@@ -37,8 +37,7 @@ public sealed class SettingsContentRenderer {
         sectionOffsets.Clear();
         rowOffsets.Clear();
 
-        // Tabs paginate, so a tab holding a single section would strand it in a
-        // half-width column with the other half empty. One section gets the full pane.
+        // a lone section in a tab would strand in a half column with the other half empty; give it the full pane.
         int visibleCount = 0;
         for (int i = 0; i < sections.Count; i++) {
             if (sections[i].IsVisible) visibleCount++;
@@ -101,9 +100,7 @@ public sealed class SettingsContentRenderer {
     private MeasuredSection MeasureSection(string systemKey, SettingSection section, float columnWidth) {
         List<MeasuredRow> rows = [];
 
-        // Rows are inset by the section padding on both sides, so measuring against the
-        // bare column width wraps the text differently than drawing does and the last
-        // line of every long description lands outside the height it was measured for.
+        // rows are inset by section padding on both sides; measuring against bare column width mis-wraps text.
         float labelWidth = GetLabelWidth(columnWidth - SectionPadding * 2f);
         float height = SectionPadding + SectionTitleHeight + DividerGap + DividerHeight + DividerGap;
 

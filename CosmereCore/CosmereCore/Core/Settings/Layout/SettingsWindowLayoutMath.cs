@@ -7,8 +7,10 @@ public static class SettingsWindowLayoutMath {
     // Tall enough that the 34f sigil and the 32f close mark both clear their padding.
     public const float CrestHeight = 52f;
 
-    // Verse.TabDrawer.TabHeight, mirrored rather than referenced so this file stays
-    // pure math the off-game test project can load.
+    /// <summary>
+    ///     Mirrors Verse.TabDrawer.TabHeight rather than referencing it, so this file stays pure
+    ///     math the off-game test project can load.
+    /// </summary>
     public const float SectionTabHeight = 32f;
 
     // Holds the 20f of air above the button row plus the row itself plus a bottom rest.
@@ -34,8 +36,7 @@ public static class SettingsWindowLayoutMath {
     }
 
     public static SettingsWindowLayoutData Create(float x, float y, float width, float height) {
-        // The divider sits in the middle of this gutter, so neither the sidebar rows nor
-        // the pane content crowd the line that separates them.
+        // The divider sits in the middle of this gutter, so neither the sidebar rows nor the pane content crowd it.
         float mainX = x + SidebarWidth + SidebarGutter;
         float mainWidth = global::System.Math.Max(0f, x + width - mainX);
         float footerY = y + height - FooterHeight;

@@ -119,6 +119,8 @@
 
     <CC_Codex_Subtab_Empty>Nothing to show here yet.</CC_Codex_Subtab_Empty>
     <CC_Codex_Subtab_Connection>Connection</CC_Codex_Subtab_Connection>
+    <CC_Connection_Tab_Shards>Shards</CC_Connection_Tab_Shards>
+    <CC_Connection_Tab_Planets>Planets</CC_Connection_Tab_Planets>
     <CC_Connection_Tier_None>None</CC_Connection_Tier_None>
     <CC_Connection_Tier_Touched>Touched</CC_Connection_Tier_Touched>
     <CC_Connection_Tier_Bonded>Bonded</CC_Connection_Tier_Bonded>
@@ -126,9 +128,24 @@
     <CC_Connection_Tier_Ascendant>Ascendant</CC_Connection_Tier_Ascendant>
     <CC_Connection_Absent>absent</CC_Connection_Absent>
     <CC_Connection_NoShards>No Shards hold anything in this cosmere.</CC_Connection_NoShards>
+    <CC_Connection_NoPlanets>No worlds are available.</CC_Connection_NoPlanets>
     <CC_Connection_Group_Unclaimed>Beyond these worlds</CC_Connection_Group_Unclaimed>
     <CC_Connection_RowTip>{SHARD}\n\n{TIER} ({VALUE} of 100).\n\nConnection decides who may use a god metal of this Shard, and who may take on new power from it. Thirty is enough for either.</CC_Connection_RowTip>
     <CC_Connection_AbsentTip>{SHARD} holds nothing here. No one in this cosmere can be tied to a Shard that is not part of it.</CC_Connection_AbsentTip>
+    <CC_PlanetConnection_WorldTip>{WORLD}\n\nConnection: {LEVEL} of {MAX}\nAncestry: {ANCESTRY}\nResidence: {RESIDENCE}\nInvestiture: {INVESTITURE}\nEarned: {EARNED}\n\nClick to view {WORLD}.</CC_PlanetConnection_WorldTip>
+    <CC_PlanetConnection_Ancestry>Ancestry {VALUE}</CC_PlanetConnection_Ancestry>
+    <CC_PlanetConnection_Residence>Residence {VALUE}</CC_PlanetConnection_Residence>
+    <CC_PlanetConnection_Investiture>Investiture {VALUE}</CC_PlanetConnection_Investiture>
+    <CC_PlanetConnection_Earned>Earned {VALUE}</CC_PlanetConnection_Earned>
+    <CC_Homeworld_TipTitle>Homeworld: {WORLD}</CC_Homeworld_TipTitle>
+    <CC_PlanetConnection_TipRow>{WORLD}: {LEVEL} / {MAX}\n  Ancestry {ANCESTRY}, residence {RESIDENCE}\n  Investiture {INVESTITURE}, earned {EARNED}</CC_PlanetConnection_TipRow>
+    <CC_Homeworld_ClickToView>Click to view {WORLD}.</CC_Homeworld_ClickToView>
+    <CC_PlanetConnection_InfoLabel>Connection - {WORLD}</CC_PlanetConnection_InfoLabel>
+    <CC_PlanetConnection_InfoValue>{LEVEL} / {MAX}</CC_PlanetConnection_InfoValue>
+    <CC_PlanetConnection_InfoReport>{PAWN}'s Connection to {WORLD}.\n\nAncestry: {ANCESTRY}\nResidence: {RESIDENCE}\nInvestiture: {INVESTITURE}\nEarned: {EARNED}\nTotal: {LEVEL} / {MAX}</CC_PlanetConnection_InfoReport>
+    <CC_Connection_InfoLabel>Connection - {SHARD}</CC_Connection_InfoLabel>
+    <CC_Connection_InfoValue>{TIER} {VALUE} / {MAX}</CC_Connection_InfoValue>
+    <CC_Connection_InfoReport>{PAWN}'s Connection to {SHARD}.\n\nWorld tie: {WORLDTIE}\nInvestiture: {INVESTITURE}\nEarned ties: {EARNED}\nHeld elsewhere: {HELD}\nFrom Harmony: {HARMONY}\nTotal: {TOTAL} / 100</CC_Connection_InfoReport>
     <CC_Storage_InvestitureBand>{0} Investiture</CC_Storage_InvestitureBand>
     <CC_Storage_InvestitureBand_Tip>Only store things charged within this share of what they can hold. Anything that holds no Investiture is unaffected.</CC_Storage_InvestitureBand_Tip>
     <CC_Storage_InvestitureBand_Eject>Eject when out of range</CC_Storage_InvestitureBand_Eject>

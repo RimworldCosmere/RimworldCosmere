@@ -11,9 +11,10 @@ namespace Cosmere.System.Scadrial.Allomancy.Ability;
 public class TimeAbility : AllomancyAbility {
     private const int BaseRadius = 3;
 
-    // A bubble is nailed to the ground because holding one still is the hard part.
-    // Someone who has burned this metal for thirty days no longer has to think about
-    // it, and carries the bubble with them.
+    /// <summary>
+    ///     A bubble stays nailed to the ground - holding one still is the hard part. At this
+    ///     savant stage, 30 days of burning makes it second nature, so the bubble moves with the pawn.
+    /// </summary>
     private const int SavantStageForMobileBubble = 3;
 
     private readonly List<Pawn> pawnsInBubble = [];
@@ -66,8 +67,7 @@ public class TimeAbility : AllomancyAbility {
         bubbleWithDistortion?.Maintain();
         if (bubble == null || bubbleWithDistortion == null) return;
 
-        // The mote keeps the cell it spawned in; only what it draws at moves. Every
-        // radius test below reads `centre`, so the mote's own cell never matters.
+        // mote keeps the cell it spawned in - only its draw position moves. radius tests below read `centre`.
         if (AnchorsToSelf && pawn.Spawned) {
             centre = pawn.Position;
             bubble.exactPosition = pawn.DrawPos;

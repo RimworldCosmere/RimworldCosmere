@@ -67,8 +67,6 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         surge?.Burn();
 
         if (thing == pawn) {
-            // Get everything metal in a radius around self (same radius as the ability range)
-            // Use MoveThing(newThing, false) on them
             IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(
                 thing.Position,
                 Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, ability.verb.EffectiveRange)),
@@ -87,8 +85,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) +
                          MassUtility.GearAndInventoryMass(pawn) * forceMultiplier;
 
-        // A spawned building is bolted to the map. Thing.Position on anything that affects regions
-        // is unsupported and leaves reachability stale, which is what stranded pawns after a shove.
+        // a spawned building is bolted down - moving it via Position leaves reachability stale, stranding pawns.
         bool anchored = thing.Spawned && thing.def.category == ThingCategory.Building;
         float mass = AllomanticShove.EffectiveTargetMass(
             thing.GetStatValue(RimWorld.StatDefOf.Mass) * thing.stackCount,
@@ -119,8 +116,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             break;
         }
 
-        // A shove that resolves back onto the caster's own cell is not a shove. Registering it just
-        // pins them under the mover for the duration while dust plays at their feet.
+        // a shove resolving onto the caster's own cell would pin them under the mover while dust plays.
         if (finalPos != things.Item1.Position) {
             int duration = Mathf.RoundToInt(
                 Mathf.Lerp(GenTicks.TicksPerRealSecond / 2f, massDifference, 30f / forceMultiplier / 100)

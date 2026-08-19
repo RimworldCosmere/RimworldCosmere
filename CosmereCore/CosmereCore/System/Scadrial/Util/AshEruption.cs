@@ -66,9 +66,7 @@ public static class AshEruption {
         if (interval < 1) interval = 1;
         if (ticksPassed % interval != 0) return false;
 
-        // The first beat lands the moment the mountain opens and the last stops short of the end.
-        // Without the ceiling a duration that divides evenly buys a free extra beat on the closing
-        // tick, because a condition is not expired until the tick after its duration runs out.
+        // ceiling matters - an evenly dividing duration would otherwise buy a free extra beat on the closing tick.
         return ticksPassed / interval < count;
     }
 

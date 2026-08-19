@@ -47,8 +47,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                 f.targetValue
             );
 
-            // The icon is the inverted copy, as Allomancy's is: GUI.color multiplies, so
-            // the raw black art cannot take a tint and renders black on a black panel.
+            // inverted copy, like Allomancy's - GUI.color multiplies, so raw black art renders black on black.
             cells.Add(
                 new InvestitureCell(
                     f.metal.defName,
@@ -73,8 +72,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
     }
 
     public override RadialSystem? SnapshotRadial(Pawn pawn) {
-        // Feruchemy is a dock and codex surface only; tapping and storing are
-        // sustained states rather than the quick casts the radial exists for.
+        // dock and codex only - tapping/storing are sustained states, not the quick casts radial exists for.
         return null;
     }
 }

@@ -5,10 +5,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-// Lays the metals out as the Metallic Arts table: one block per quadrant, two
-// tiles across, so position carries the same meaning the book's table does.
-// Both arts follow this table, so Allomancy and Feruchemy share the layout and
-// supply their own tile drawing and interaction.
+/// Lays metals out as the book's Metallic Arts table: one block per quadrant, two tiles across.
+/// Allomancy and Feruchemy share this layout and supply their own tile drawing and interaction.
 public static class MetallicArtsTable {
     private static float QuadHeaderHeight => Text.LineHeightOf(GameFont.Tiny) + 3f;
 
@@ -16,10 +14,8 @@ public static class MetallicArtsTable {
     private const float TileGap = 3f;
     private const int Columns = 2;
 
-    // The open tile runs down through this gap to reach its detail panel, so the
-    // panel clears the closed tile beside it rather than butting against the whole
-    // row. Only the open tile crosses it, which is what makes the pair read as one
-    // shape and its neighbour as a separate one.
+    /// The open tile runs through this gap into its detail panel, clearing the closed tile beside it.
+    /// Only the open tile crosses it - that is what reads the pair as one shape, its neighbour as separate.
     public const float JoinGap = TileGap;
 
     public static float HeightFor(
@@ -84,10 +80,7 @@ public static class MetallicArtsTable {
                 bool endOfRow = column == Columns - 1 || r == group.Rows.Count - 1;
                 if (!endOfRow) continue;
 
-                // The strip drops in beneath whichever row holds the open metal, so it
-                // never separates a tile from its neighbour - and it sits a join gap
-                // below that row, which the open tile alone reaches across. The pair
-                // reads as one surface; the closed tile beside it keeps its clearance.
+                // strip sits under the open metal's row, a join gap below it - only that tile reaches across to merge.
                 int openIndex = -1;
                 if (expandedSubsystemId != null && drawStrip != null) {
                     for (int i = r - column; i <= r; i++) {
@@ -102,8 +95,7 @@ public static class MetallicArtsTable {
                     continue;
                 }
 
-                // The strip is handed the open tile's own rect, because that span is
-                // where its top edge has to stay open for the two to merge.
+                // strip gets the open tile's own rect - its top edge must stay open for the two to merge.
                 int openColumn = openIndex % Columns;
                 Rect openTileRect = new Rect(
                     rect.x + openColumn * (tileWidth + TileGap),
@@ -114,9 +106,7 @@ public static class MetallicArtsTable {
 
                 Rect stripRect = new Rect(rect.x, y + JoinGap, rect.width, expandedStripHeight);
                 if (expandedStripHeight < stripFullHeight - 0.5f) {
-                    // Mid-reveal. The panel is drawn at its finished size inside a clip
-                    // only as tall as it has opened so far, so it slides out from under
-                    // the tile rather than squashing its contents into a sliver.
+                    // mid-reveal: panel draws full size in a clip only as tall as opened - slides out, not squashes.
                     Widgets.BeginGroup(stripRect);
                     drawStrip!(
                         new Rect(0f, 0f, rect.width, stripFullHeight),

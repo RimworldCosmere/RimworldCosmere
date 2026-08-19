@@ -5,13 +5,15 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Patch.Allomancy;
 
-// NOTE: these injections set the return value and then let the original run, so the original's
-// own return value wins and the hit-chance calculation below has no effect. That is exactly what
-// the Harmony prefixes did (they assigned __result and returned true), and the port keeps it
-// unchanged - making it bite would be a combat balance change, not a migration.
+/// <summary>
+///     sets the return value then lets the original run: the original wins, so the hit-chance calc below
+///     is a no-op. ported unchanged from the harmony prefixes - making it bite is a balance change, not a fix.
+/// </summary>
 public static class AtiumElectrumSteel {
-    // Returns the roll rather than taking the ControlHandle: Concord requires the handle be used
-    // only as the direct receiver of a control call, so it cannot be passed to a shared helper.
+    /// <summary>
+    ///     Returns the roll rather than taking the ControlHandle: Concord needs the handle used only as the
+    ///     direct receiver of a control call, so it cant be passed to a shared helper.
+    /// </summary>
     internal static bool TryResolveHit(Verb verb, out bool hit) {
         hit = false;
         if (!verb.CurrentTarget.HasThing || verb.CurrentTarget.Thing is not Pawn targetPawn) return false;

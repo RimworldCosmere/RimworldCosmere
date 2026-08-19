@@ -55,8 +55,10 @@ public static class DiagnosticsText {
         return $"{facts.OperatingSystem} | {facts.GraphicsDevice} | {facts.SystemMemoryMb} MB RAM";
     }
 
-    // Suggestions accept no attachments, so their build context has to ride in the
-    // description. The SteamID stays out of it because that text is public.
+    /// <summary>
+    ///     Suggestions accept no attachments, so build context rides in the description instead.
+    ///     The SteamID stays out since that text is public.
+    /// </summary>
     public static string BuildInlineFooter(DiagnosticsFacts facts) {
         string cosmereMods = string.Join(", ", facts.ActiveMods.Where(m => m.StartsWith("Cosmere")));
 

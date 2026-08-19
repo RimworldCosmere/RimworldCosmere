@@ -15,8 +15,7 @@ public class AshmountEruption : RimWorld.GameCondition {
     public override void Init() {
         base.Init();
 
-        // Snapped rather than eased. A progression beat lands over days because the world itself is
-        // thickening; a mountain opening does not ask the player to wait a week to notice.
+        // snapped, not eased - a mountain opening doesnt ask the player to wait a week to notice
         SingleMap?.GetComponent<AshDepthTracker>()?.SetSeverityNow(AshEruption.SpikeSeverity(AshPressure.Target));
     }
 
@@ -25,12 +24,10 @@ public class AshmountEruption : RimWorld.GameCondition {
 
         Verse.Map? map = SingleMap;
 
-        // Duration logs an error every time it is read on a permanent condition. The def refuses
-        // to go permanent, but a dev tool can still set it.
+        // Duration logs an error on a permanent condition; the def refuses that, but a dev tool can still set it
         if (map == null || Permanent) return;
 
-        // The Catacendre can land mid-eruption. The start and the end both check the era, and
-        // without this the middle keeps throwing metal and shaking ground the mountains no longer own.
+        // the Catacendre can land mid-eruption - without this the middle keeps throwing metal past it
         if (!AshEra.CanAccumulate(map)) return;
 
         AshDepthTracker? tracker = map.GetComponent<AshDepthTracker>();
@@ -135,8 +132,7 @@ public class AshmountEruption : RimWorld.GameCondition {
     ///     better payday than the metal the vent throws, and free.
     /// </summary>
     private static void ShakeCell(Verse.Map map, IntVec3 cell, int damage, List<Verse.Thing> standing) {
-        // Copied, not walked live: killing a shelf hands its overflow to the next cell, which takes
-        // several entries off the grid list in one TakeDamage and outruns any cursor into it.
+        // copied, not walked live: killing a shelf's overflow can remove several entries in one TakeDamage
         standing.Clear();
         standing.AddRange(map.thingGrid.ThingsListAtFast(cell));
 

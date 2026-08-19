@@ -183,10 +183,7 @@ public class FloatSubMenu : FloatMenuOption {
             MouseAction(rect, !Open, floatMenu);
         }
 
-        // When the sub menu is open, let super implementation know only about
-        // mouse movement inside parent menu. Also do not let it know if the
-        // mouse is in our extraPartOnGUI space, since it does not highlight
-        // option then.
+        // base only sees mouse movement inside the parent; not at all over extraPartOnGUI.
         Vector2 mouse = Event.current.mousePosition;
         if (Open && mouseArea == MouseArea.Outside || inExtraSpace) {
             Event.current.mousePosition = new Vector2(rect.x + 2f, rect.y + 2f);

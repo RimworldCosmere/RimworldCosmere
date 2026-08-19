@@ -17,8 +17,7 @@ public class SetAshfallIntensityAction : ProgressionAction {
     public float severity = AshPressure.Default;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        // Game-scoped as well as per-map, so a colony founded after this beat starts under the
-        // ash the arc has already reached instead of at the Final Empire baseline.
+        // game-scoped too: a colony founded after this beat starts under the arcs current ash, not the baseline
         AshPressure.Target = severity;
 
         List<Verse.Map> maps = Find.Maps;

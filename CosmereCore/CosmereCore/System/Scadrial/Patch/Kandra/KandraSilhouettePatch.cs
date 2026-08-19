@@ -24,9 +24,10 @@ namespace Cosmere.System.Scadrial.Patch.Kandra;
 ///     </para>
 /// </remarks>
 public static class KandraSilhouette {
-    // Keyed on gender too. DataFor picks the female graphic when there is one, so keying on the
-    // kind alone let the first kandra to wear a gendered animal decide the outline for every
-    // other one. Vanilla's own SilhouetteCacheKey includes gender for exactly this reason.
+    /// <summary>
+    ///     keyed on gender too: DataFor picks the female graphic when present, so keying on kind alone let the
+    ///     first kandra wearing a gendered animal set the outline for every other; vanillas cache key does this too.
+    /// </summary>
     private static readonly Dictionary<(PawnKindDef, Gender), Graphic> outlines = [];
 
     /// <summary>

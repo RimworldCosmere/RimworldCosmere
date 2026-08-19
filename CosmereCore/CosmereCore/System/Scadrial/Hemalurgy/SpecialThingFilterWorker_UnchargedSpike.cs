@@ -18,12 +18,10 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 /// </remarks>
 public class SpecialThingFilterWorker_UnchargedSpike : SpecialThingFilterWorker {
     public override bool Matches(Verse.Thing t) {
-        // Only ever an opinion about spikes. Matching anything else would quietly drop the
-        // medicine out of the same bill.
+        // only ever an opinion about spikes - matching anything else would drop the medicine from the bill
         if (!CanEverMatch(t.def)) return false;
 
-        // isCharged rather than a null check: a spike can carry charge data that is not valid,
-        // and the comp already knows the difference.
+        // isCharged, not a null check - a spike can carry invalid charge data, and the comp knows the difference
         HemalurgicSpike? spike = t.TryGetComp<HemalurgicSpike>();
 
         return spike is not { isCharged: true };

@@ -1,6 +1,7 @@
 using Cosmere.Core.Def;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
@@ -14,6 +15,9 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     private float compoundedAmountInt;
     private float storedAmountInt;
 
+    // Keyed by ConnectionKey; empty for every metal but duralumin.
+    private Dictionary<string, float> chargeByLedger = [];
+
     public void ExposeData() {
         Scribe_Values.Look(ref metalDefName, "metalDefName", string.Empty);
         Scribe_Values.Look(ref metalmindType, "metalmindType", string.Empty);
@@ -22,6 +26,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         Scribe_Values.Look(ref maxAmountInt, "maxAmount");
         Scribe_Values.Look(ref ownerName, "ownerName", string.Empty);
         Scribe_Values.Look(ref loadId, "loadId", -1);
+        Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
+        chargeByLedger ??= [];
     }
 
     public float StoredAmount {
@@ -48,9 +54,8 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     public bool CanTap => Equipped && StoredAmount > 0f;
 
-    // Burning draws on whatever the metalmind holds. Charge stored by hand is the
-    // same charge - what makes it compounding is setting the metal alight rather
-    // than drawing it out, so there is no separate pool to fill first.
+    /// Burning draws on whatever the metalmind holds; stored-by-hand charge is the
+    /// same charge, just set alight rather than drawn out normally.
     public bool CanTapCompounded => Equipped && TotalStored > 0f;
 
     public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
@@ -67,29 +72,75 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         }
     }
 
-    public float AddStored(float amount) {
+    public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanStore) return 0f;
 
         float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt - compoundedAmountInt);
+        float moved = storedAmountInt - before;
+        RecordStored(ledgerKey, moved);
 
-        return storedAmountInt - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTap) return 0f;
 
         float before = storedAmountInt;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
+        float moved = before - storedAmountInt;
 
-        return before - storedAmountInt;
+        if (moved != 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, moved);
+            else ChargeAttribution.Drain(chargeByLedger, moved);
+        }
+
+        return moved;
     }
 
-    // Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
-    // after load to keep the two pools inside a capacity that may have changed.
+    public float StoredFor(ConnectionKey ledgerKey) {
+        return chargeByLedger.TryGetValue(ledgerKey.Name, out float amount) ? amount : 0f;
+    }
+
+    private void RecordStored(ConnectionKey? ledgerKey, float moved) {
+        if (ledgerKey == null || moved == 0f) return;
+
+        string key = ledgerKey.Value.Name;
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
+    }
+
+    private void RecordConsumed(ConnectionKey ledgerKey, float moved) {
+        ChargeAttribution.DrainNamed(chargeByLedger, ledgerKey.Name, moved);
+    }
+
+    // Copy of the current attribution map, for handing charge across on explant.
+    public Dictionary<string, float> AttributionSnapshot() {
+        return new Dictionary<string, float>(chargeByLedger);
+    }
+
+    /// Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
+    /// after load to keep the two pools inside a capacity that may have changed.
     public void ReconcileCapacity() {
-        if (storedAmountInt + compoundedAmountInt <= maxAmountInt) return;
-        compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
+        if (storedAmountInt + compoundedAmountInt > maxAmountInt) {
+            compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
+        }
+
+        ReconcileAttribution();
+    }
+
+    // Duralumin only, after the clamp above: drops unclaimed charge, then rescales.
+    private void ReconcileAttribution() {
+        if (Metal?.defName != "Duralumin") return;
+
+        float attributed = ChargeAttribution.Total(chargeByLedger);
+        if (storedAmountInt > attributed) {
+            float discarded = storedAmountInt - attributed;
+            storedAmountInt = attributed;
+            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+        }
+
+        ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);
     }
 
     public float AddCompounded(float amount) {
@@ -101,12 +152,9 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return compoundedAmountInt - before;
     }
 
-    // Drawing compounded charge eats the metalmind that carried it. Capacity
-    // drops by what was spent, so the two run out together and a metalmind filled
-    // entirely by compounding is used up exactly when it empties.
-    // Spends the metalmind itself along with its charge. Capacity falls by what
-    // was drawn, so the metal runs out exactly when the charge does.
-    public float ConsumeCompounded(float amount) {
+    /// Drawing compounded charge spends the metalmind that carries it: capacity falls by
+    /// what was drawn, so the metal runs out exactly when the charge does.
+    public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTapCompounded) return 0f;
 
         float spent = Mathf.Min(amount, TotalStored);
@@ -116,6 +164,13 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         storedAmountInt -= spent - fromCompounded;
 
         maxAmountInt = Mathf.Max(0f, maxAmountInt - spent);
+
+        // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
+        float fromStored = spent - fromCompounded;
+        if (fromStored > 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, fromStored);
+            else ChargeAttribution.Drain(chargeByLedger, fromStored);
+        }
 
         return spent;
     }

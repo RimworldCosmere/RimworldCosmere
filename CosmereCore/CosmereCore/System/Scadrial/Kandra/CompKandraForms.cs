@@ -120,9 +120,7 @@ public class CompKandraForms : ThingComp {
     public void Learn(Pawn corpsePawn) {
         if (parent is not Pawn pawn) return;
 
-        // The corpse's own kind, when it is an animal we can wear. ShapeFor used to answer both
-        // "which generated race" and "is this an animal at all"; only the second question is left,
-        // and reading it off RaceProps is what stops an eaten colonist becoming an animal form.
+        // reading RaceProps off the corpse is what stops an eaten colonist becoming an animal form.
         PawnKindDef? shape = KandraShapeEligibility.Wearable(corpsePawn.kindDef) ? corpsePawn.kindDef : null;
         KandraForm form = shape != null
             ? KandraForm.FromAnimal(corpsePawn, shape)
@@ -218,8 +216,7 @@ public class CompKandraForms : ThingComp {
     public void RememberWorkPriorities() {
         if (parent is not Pawn pawn || pawn.workSettings is not { EverWork: true }) return;
 
-        // Shaping twice without reverting would otherwise snapshot the already-zeroed tab and
-        // lose the real one for good.
+        // shaping twice without reverting would snapshot the already-zeroed tab and lose the real one.
         if (workPriorities.Count > 0) return;
 
         DefMap<WorkTypeDef, int>? stored = StoredPriorities(pawn);

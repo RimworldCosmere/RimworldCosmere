@@ -105,8 +105,7 @@ public class AshProgressionTests {
     public void TheEasedCurveClimbsAndThenDrainsToNothing() {
         List<Beat> beats = Campaign();
 
-        // Each arc is given the same span, comfortably past its last authored beat, so the curve
-        // has time to arrive before the next arc takes over.
+        // each arc gets the same span, past its last authored beat, so the curve arrives before the next arc.
         const int ArcSpanDays = 95;
         List<(int day, Beat beat)> timeline = new List<(int, Beat)>();
         for (int i = 0; i < beats.Count; i++) {

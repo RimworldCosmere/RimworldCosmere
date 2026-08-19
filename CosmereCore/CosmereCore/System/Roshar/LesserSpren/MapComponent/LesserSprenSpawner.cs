@@ -36,13 +36,11 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentDraw() {
-        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
-        // growing them, and the particle systems are expensive to keep warm besides.
+        // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         SprenDebugOverlay.DrawOverlay();
 
-        // Process pending initializations on main thread before checking initialized -
-        // background scanners queue work here while the map is still loading.
+        // process pending inits first: background scanners queue work here while the map is still loading
         if (PendingInitialization.Count > 0) {
             foreach (SprenType sprenType in PendingInitialization.ToList()) {
                 if (!SprenSystems.TryGetValue(sprenType, out SprenParticleSystem? sprenSystem)) continue;
@@ -64,8 +62,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentUpdate() {
-        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
-        // growing them, and the particle systems are expensive to keep warm besides.
+        // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapComponentUpdate();
 
@@ -76,8 +73,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapComponentTick() {
-        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
-        // growing them, and the particle systems are expensive to keep warm besides.
+        // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapComponentTick();
 
@@ -123,8 +119,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     public override void MapGenerated() {
-        // Spren are Honor's and Cultivation's. Nothing on a Scadrial map should be
-        // growing them, and the particle systems are expensive to keep warm besides.
+        // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
         base.MapGenerated();
 

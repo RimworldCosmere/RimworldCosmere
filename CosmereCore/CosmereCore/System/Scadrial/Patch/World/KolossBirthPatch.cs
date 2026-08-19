@@ -44,8 +44,7 @@ public static class KolossBirthPatch {
 
         if (!KolossUtility.IsKoloss(geneticMother) && !KolossUtility.IsKoloss(father)) return;
 
-        // Before the Catacendre a koloss fathers nothing. Era rather than Shard: a sandbox
-        // Pre-Catacendre start with Harmony toggled on is still a world of Rashek's koloss.
+        // before the Catacendre koloss cant father; gated by era not Shard, so Harmony-on Pre-Catacendre blocks it
         if (!KolossFertility.CanBreedNow()) return;
 
         XenotypeDef? blooded = DefDatabase<XenotypeDef>.GetNamedSilentFail(

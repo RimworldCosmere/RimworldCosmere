@@ -67,24 +67,23 @@ public class ITab_Investiture : ITab {
         }
 
         if (state.ShowingConnection) {
-            Rect connectionDivider = new Rect(contentX, CodexChrome.HeaderHeight, size.x - contentX, 1f);
+            Rect connectionTabs = new Rect(
+                contentX,
+                CodexChrome.HeaderHeight,
+                size.x - contentX,
+                CodexChrome.SubtabBarHeight
+            );
+            ConnectionSubtab.DrawTabBar(connectionTabs, state, headerAccent);
+
+            Rect connectionDivider = new Rect(connectionTabs.x, connectionTabs.yMax, connectionTabs.width, 1f);
             CodexChrome.DrawDivider(connectionDivider, headerAccent);
 
-            ConnectionSubtab.Draw(
-                new Rect(
-                    contentX + CodexChrome.Gutter,
-                    connectionDivider.yMax + CodexChrome.Gutter,
-                    size.x - contentX - CodexChrome.Gutter * 2f,
-                    size.y - connectionDivider.yMax - CodexChrome.Gutter * 2f
-                ),
-                pawn,
-                state
-            );
+            Rect connectionBody = CodexChrome.BodyRect(tabRect, hasSwitcher);
+            ConnectionSubtab.Draw(connectionBody, pawn, state);
             return;
         }
 
-        // Runs to both frame edges: a gap before the first tab and after the last
-        // made the bar look inset from the window it belongs to.
+        // Runs to both frame edges - a gap on either side made the bar look inset from the window.
         Rect subtabBar = new Rect(
             contentX,
             CodexChrome.HeaderHeight,
@@ -110,28 +109,22 @@ public class ITab_Investiture : ITab {
     }
 
     /// <summary>
-    ///     The whole tab for a pawn with no Investiture at all: header, and Connection.
+    ///     The whole tab for a pawn with no Investiture at all: header and Connection pages.
     /// </summary>
-    /// <remarks>
-    ///     No system switcher and no subtab bar, because there is exactly one thing to look at
-    ///     and a one-tab bar is furniture. The fallback skin supplies the accent - Connection
-    ///     belongs to no shardworld, so borrowing one world's colour here would be a lie.
-    /// </remarks>
     private void DrawConnectionOnly(Pawn pawn) {
         ISystemSkin skin = SystemSkinRegistry.ForOrFallback(string.Empty);
+        Rect tabRect = new Rect(0f, 0f, size.x, size.y);
 
         Rect header = new Rect(0f, 0f, size.x, CodexChrome.HeaderHeight);
         CodexChrome.DrawHeader(header, "CC_Codex_Subtab_Connection".Translate(), skin.AccentColor);
 
-        Rect divider = new Rect(0f, header.yMax, size.x, 1f);
+        Rect connectionTabs = new Rect(0f, header.yMax, size.x, CodexChrome.SubtabBarHeight);
+        ConnectionSubtab.DrawTabBar(connectionTabs, state, skin.AccentColor);
+
+        Rect divider = new Rect(0f, connectionTabs.yMax, size.x, 1f);
         CodexChrome.DrawDivider(divider, skin.AccentColor);
 
-        Rect body = new Rect(
-            CodexChrome.Gutter,
-            divider.yMax + CodexChrome.Gutter,
-            size.x - CodexChrome.Gutter * 2f,
-            size.y - divider.yMax - CodexChrome.Gutter * 2f
-        );
+        Rect body = CodexChrome.BodyRect(tabRect, false);
         ConnectionSubtab.Draw(body, pawn, state);
     }
 

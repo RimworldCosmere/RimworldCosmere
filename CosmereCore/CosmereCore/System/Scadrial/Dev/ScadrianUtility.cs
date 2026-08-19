@@ -13,8 +13,10 @@ namespace Cosmere.System.Scadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianUtility {
-    // Compounding demands level ten in both arts, so a pawn meant to demonstrate
-    // it cannot be left on whatever pawn generation rolled.
+    /// <summary>
+    ///     Compounding demands level ten in both arts, so a pawn meant to demonstrate it cannot be
+    ///     left on whatever pawn generation rolled.
+    /// </summary>
     public static void SetMetallicArtsSkills(Pawn pawn, int level) {
         if (pawn.skills == null) return;
 
@@ -22,8 +24,10 @@ public static class ScadrianUtility {
         pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = level;
     }
 
-    // Compounding only reaches a metalmind inside the body, so a pawn meant to
-    // demonstrate it needs implants rather than the bands everyone else carries.
+    /// <summary>
+    ///     Compounding only reaches a metalmind inside the body, so a pawn meant to demonstrate it
+    ///     needs implants rather than the bands everyone else carries.
+    /// </summary>
     public static void AddImplantedMetalminds(Pawn pawn, MetalDef metal, int count) {
         ThingDef? implantDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Scadrial_Thing_MetalmindImplant");
         if (implantDef == null || pawn.health == null) return;

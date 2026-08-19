@@ -50,8 +50,7 @@ public class AshTerrainMemory : IExposable {
         original[index] = 0;
         SwappedCount--;
 
-        // Drop the array the moment the last cell reverts, so a drained map carries none of this
-        // in memory or into the save.
+        // drop the array the moment the last cell reverts, so a drained map carries none of it into the save
         if (SwappedCount == 0) original = null;
 
         return Lookup(hash);

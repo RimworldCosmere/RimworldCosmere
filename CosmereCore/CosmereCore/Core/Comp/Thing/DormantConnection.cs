@@ -41,9 +41,7 @@ public class DormantConnection : ThingComp {
     }
 
     public void AddHiddenGene(GeneDef geneDef, int interval = 1) {
-        // Pawn generation can already have rolled this dormant connection before a caller adds it
-        // explicitly - the quickstart does exactly that. Keep the existing entry rather than throw
-        // on the duplicate key, which used to abort the rest of the caller's setup.
+        // pawn generation can already roll this connection; keep the entry, don't throw on duplicates.
         if (hiddenGenes.ContainsKey(geneDef)) return;
 
         hiddenGenes.Add(geneDef, interval);

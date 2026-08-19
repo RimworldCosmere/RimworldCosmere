@@ -8,10 +8,10 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-// The marks for a complete Allomancer and a complete Feruchemist are single drawn
-// symbols rather than the metal set stacked up, so they are loaded by name. Nothing
-// else reaches these paths - MetallicArtsMetalDef only resolves icons whose file
-// name matches a metal defName.
+/// <summary>
+///     Complete Allomancer/Feruchemist marks are single drawn symbols, loaded by name - nothing else
+///     reaches these paths, since MetallicArtsMetalDef only resolves icons matching a metal defName.
+/// </summary>
 [StaticConstructorOnStartup]
 public static class ScadrialMarks {
     public static readonly Texture2D? Mistborn =
@@ -20,25 +20,27 @@ public static class ScadrialMarks {
     public static readonly Texture2D? FullFeruchemist =
         Tintable("UI/Icons/Genes/Investiture/Feruchemy/FullFeruchemist");
 
-    // The source art is black on transparent, and GUI.color multiplies - black times
-    // any tint is still black. Inverting to white first is what makes the mark take a
-    // colour at all, which is why MetallicArtsMetalDef keeps an inverted copy of every
-    // metal icon.
+    /// <summary>
+    ///     Source art is black on transparent, and GUI.color multiplies - black times any tint is still
+    ///     black. Inverting to white first is what lets the mark take a colour at all.
+    /// </summary>
     private static Texture2D? Tintable(string path) {
         return ContentFinder<Texture2D>.Get(path, false)?.CloneTexture().InvertColors();
     }
 }
 
-// What the pawn is, above the table of what they can do. Both Metallic Arts want
-// the same shape with different words in it, so the wording and the caching live
-// here rather than twice over in the two sections.
+/// <summary>
+///     What the pawn is, above the table of what they can do. Both Metallic Arts want the same shape
+///     with different words, so the wording and caching live here instead of twice over.
+/// </summary>
 public sealed class ScadrialCrest {
     public const float Gap = 6f;
     public const float RuleGap = 7f;
 
-    // Identity moves rarely - a pawn does not become Mistborn twice a second - so it
-    // is held for a second at a time. The activity line is not cached: a readout of
-    // what is happening now has to be now.
+    /// <summary>
+    ///     Identity moves rarely - a pawn does not become Mistborn twice a second - so it is held for a
+    ///     second at a time. The activity line is never cached; a readout of "now" has to be now.
+    /// </summary>
     private const int RefreshInterval = 60;
 
     private static readonly Color TitleColor = new Color(0.867f, 0.831f, 0.757f);
@@ -84,17 +86,17 @@ public sealed class ScadrialCrest {
             marks.Count > 0 ? marks : null
         );
 
-        // A rule under the crest, because who the pawn is and what they can burn are
-        // two different questions and the table below answers the second.
+        // rule under the crest - identity and what a pawn burns are different questions; the table answers the second.
         Widgets.DrawBoxSolid(
             new Rect(rect.x, rect.yMax + RuleGap - 1f, rect.width, 1f),
             new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, 0.35f)
         );
     }
 
-    // A pawn born to every metal is named for that and wears one mark. One metal
-    // names the metal. Anything between is simply an Allomancer, and wears a mark
-    // for each metal they actually have.
+    /// <summary>
+    ///     A pawn born to every metal is named for that and wears one mark; one metal names the metal.
+    ///     Anything between is simply an Allomancer, wearing a mark for each metal it actually has.
+    /// </summary>
     private void RefreshIdentity(Pawn pawn, InvestitureSnapshot snapshot) {
         int bucket = Find.TickManager.TicksGame / RefreshInterval;
         if (cachedPawnId == pawn.thingIDNumber
@@ -131,9 +133,10 @@ public sealed class ScadrialCrest {
         for (int i = 0; i < cells.Count; i++) marks.Add(cells[i].Icon);
     }
 
-    // The one thing seventeen tiles cannot say at a glance. Finding what is lit means
-    // scanning the table; this says it in three words, and says something true even
-    // when the answer is nothing.
+    /// <summary>
+    ///     The one thing seventeen tiles cannot say at a glance. Scanning the table finds what is lit;
+    ///     this says it in three words, true even when the answer is nothing.
+    /// </summary>
     private void RefreshActivity(Pawn pawn, InvestitureSnapshot snapshot) {
         if (feruchemy) {
             RefreshFeruchemyActivity(pawn);
@@ -158,9 +161,10 @@ public sealed class ScadrialCrest {
                     : "CC_Dock_Crest_NothingBurning".Translate().Resolve();
     }
 
-    // Tapping and storing are opposite directions through the same gene, and the
-    // cells cannot tell them apart, so this reads the genes. A Ferring with nothing
-    // to draw on is the loudest case: they can do nothing at all.
+    /// <summary>
+    ///     Tapping and storing are opposite directions through the same gene, which the cells cannot tell
+    ///     apart - this reads the genes instead. A Ferring with nothing to draw on is the loudest case.
+    /// </summary>
     private void RefreshFeruchemyActivity(Pawn pawn) {
         int tapping = 0;
         int storing = 0;

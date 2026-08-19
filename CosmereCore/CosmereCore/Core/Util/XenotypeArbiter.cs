@@ -48,16 +48,13 @@ public static class XenotypeArbiter {
     public static bool MayAnswer(CosmereWorldDef? world) {
         if (world == null) return false;
 
-        // Nothing decided yet, so nobody answers. IsActive is deliberately permissive about a
-        // null world and returns true for everything, which used to let both shards through and
-        // leave composition order to pick - the very tie this class exists to break.
+        // primary can be null while world isn't - IsActive treats a null world as permissive.
         CosmereWorldDef? primary = WorldUtility.Primary;
         if (primary == null) return false;
 
         if (!WorldUtility.IsActive(world)) return false;
 
-        // A single world has already been decided by IsActive - only one can be active, so there
-        // is nothing to arbitrate.
+        // non-crossworld means IsActive already picked the one active world; nothing left to arbitrate.
         if (!primary.crossWorld) return true;
 
         return chosen == world;

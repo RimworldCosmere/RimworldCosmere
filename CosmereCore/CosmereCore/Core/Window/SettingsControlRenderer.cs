@@ -31,9 +31,7 @@ public sealed class SettingsControlRenderer {
         bool enabled,
         string? disabledReasonKey
     ) {
-        // Row height follows the description text, so a control handed the whole row grows
-        // with it - a one-line dropdown becomes a box three lines tall. Every control gets
-        // the height it declared, centred, the way the checkbox already sized itself.
+        // controls stay centred at their declared height - given the full row, a dropdown would grow 3 lines tall.
         float controlHeight = Mathf.Min(HeightFor(control), rect.height);
         rect = new Rect(rect.x, rect.y + (rect.height - controlHeight) / 2f, rect.width, controlHeight);
 
@@ -180,8 +178,7 @@ public sealed class SettingsControlRenderer {
         string label = ChoiceLabel(control.Value, options, control.AllowNone);
         Color textColor = interactive ? skin.HeaderTextColor : DisabledTextColor(skin);
 
-        // Dropdowns share the tan affordance the buttons use. Drawn on the panel colour they
-        // read as static text, and a player has no way to tell the value can be changed.
+        // dropdowns share the button tan - on plain panel colour they'd read as static, uneditable text.
         Widgets.DrawBoxSolid(rect, new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, interactive ? 0.32f : 0.14f));
         UIText.EllipsisLabel(rect.ContractedBy(6f, 0f), label, GameFont.Small, TextAnchor.MiddleLeft, textColor);
 

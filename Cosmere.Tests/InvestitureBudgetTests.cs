@@ -36,8 +36,10 @@ public class InvestitureBudgetTests {
         Assert.AreEqual(0f, InvestitureBudget.Tappable(150f, 100f, Rate));
     }
 
-    // Store to the floor, tap it all back, land on exactly where you started. 0.125 is a power
-    // of two, so both directions are exponent shifts and the round trip is exact, not near.
+    /// <summary>
+    ///     Store to the floor, tap it all back, land on exactly where you started. 0.125 is a power
+    ///     of two, so both directions are exponent shifts and the round trip is exact, not near.
+    /// </summary>
     [TestMethod]
     public void TheRoundTripReturnsTheStartingInvestitureExactly() {
         const float start = 1f;
@@ -53,8 +55,10 @@ public class InvestitureBudgetTests {
         Assert.AreEqual(start, afterStoring + returned);
     }
 
-    // The last partial second: the pawn has less than one charge's worth left, so the tick's
-    // full ask has to clip to the budget rather than overdraw and let a clamp eat the rest.
+    /// <summary>
+    ///     The last partial second: the pawn has less than one charge's worth left, so the tick's
+    ///     full ask has to clip to the budget rather than overdraw and let a clamp eat the rest.
+    /// </summary>
     [TestMethod]
     public void ThePartialSecondClipsToWhatIsLeft() {
         float budget = InvestitureBudget.Storable(0.05f, Rate);

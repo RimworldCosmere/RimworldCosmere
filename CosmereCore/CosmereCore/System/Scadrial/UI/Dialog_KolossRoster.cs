@@ -75,8 +75,7 @@ public class Dialog_KolossRoster : Window {
     public override void DoWindowContents(Rect inRect) {
         List<Pawn> held = Held;
 
-        // Nothing left to hold closes the window rather than leaving an empty table behind, which
-        // is what happens the moment the last one is released from inside it.
+        // closes when nothing is left to hold - the alternative is an empty table after the last release.
         if (held.Count == 0) {
             Close();
 
@@ -156,8 +155,7 @@ public class Dialog_KolossRoster : Window {
             Widgets.Label(name.TopHalf(), koloss.LabelShortCap);
         }
 
-        // What it is doing right now, which is the question the window exists to answer. A koloss
-        // that says "Hauling steel" is working; one that says it is loose is a problem.
+        // what it is doing now - the question this window exists to answer.
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft)) {
             GUI.color = loose ? Loose : Faint;
             Widgets.Label(name.BottomHalf(), StateOf(koloss, loose));
@@ -166,8 +164,7 @@ public class Dialog_KolossRoster : Window {
 
         DrawRowButtons(buttons, koloss);
 
-        // Selection is the whole row minus the buttons, so a click anywhere on the name picks it
-        // up without stealing the presses meant for the actions.
+        // text rect is the row minus buttons, so a name click does not eat a button press.
         Widgets.DrawHighlightIfMouseover(text);
         MouseoverSounds.DoRegion(text);
         TooltipHandler.TipRegion(text, "CS_KolossRoster_RowTip".Translate());
@@ -186,8 +183,7 @@ public class Dialog_KolossRoster : Window {
         Widgets.DrawBox(rect);
         GUI.color = Color.white;
 
-        // A portrait rather than a thing icon. ThingIcon squares the pawn off at the shoulders,
-        // which on something drawn at 1.75 times a person clips its head.
+        // not ThingIcon - it squares pawns at the shoulders, clipping the head at 1.75x scale.
         Rect inside = rect.ContractedBy(1f);
         GUI.DrawTexture(
             inside,
@@ -210,8 +206,7 @@ public class Dialog_KolossRoster : Window {
         bool drafted = koloss.drafter?.Drafted == true;
         bool canDraft = koloss.drafter != null && koloss.IsColonistPlayerControlled;
 
-        // The reason matters more than a greyed button. A koloss in bloodlust is not yours to send
-        // anywhere, and saying so is the difference between a rule and a bug.
+        // reason beats a bare grey button: a koloss in bloodlust isnt yours to command.
         TaggedString draftTip = canDraft
             ? drafted ? "CS_KolossRoster_Undraft".Translate() : "CS_KolossRoster_DraftTip".Translate()
             : "CS_KolossRoster_CannotDraft".Translate();
@@ -254,8 +249,7 @@ public class Dialog_KolossRoster : Window {
             Close();
         }
 
-        // One button for both directions, because a band that is half drafted has one obvious next
-        // move and it is not "draft the ones already drafted".
+        // single button, both directions: a half-drafted band has one obvious next move.
         List<Pawn> draftable = Draftable(held);
         bool anyIdle = draftable.Any(one => one.drafter?.Drafted != true);
 

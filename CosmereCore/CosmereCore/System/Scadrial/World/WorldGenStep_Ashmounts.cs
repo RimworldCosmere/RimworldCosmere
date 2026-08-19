@@ -30,7 +30,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
     public override void GenerateWithoutWorldData(string seed, PlanetLayer layer) { }
 
     public override void GenerateFresh(string seed, PlanetLayer layer) {
-        // WorldBeforeGenerationPatch guarantees Primary is set before this runs, so IsActive's null-permissive fallback never triggers.
+        // WorldBeforeGenerationPatch sets Primary first, so IsActive's null fallback never fires.
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) {
             AshmountExposureCache.Set(new Dictionary<int, float>());
             return;
@@ -53,7 +53,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         List<AshmountRing.Candidate> candidates = new List<AshmountRing.Candidate>();
         WorldGrid grid = Find.WorldGrid;
 
-        // At order 350 nothing upstream creates a MapParent, so this is provably empty - kept as insurance against a third-party gen step running earlier.
+        // at order 350 nothing upstream makes a MapParent; kept against a third-party step running earlier.
         HashSet<int> taken = new HashSet<int>();
         foreach (MapParent parent in Find.WorldObjects.MapParents) {
             if (parent.Tile.Layer == layer) taken.Add(parent.Tile.tileId);
@@ -87,7 +87,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         for (int i = 0; i < mounts.Count; i++) {
             PlanetTile tile = new PlanetTile(mounts[i], layer);
 
-            // Impassable is the settle block - TileFinder.IsValidTileForNewSettlement rejects it outright, no Harmony patch needed.
+            // Impassable is the settle block: TileFinder.IsValidTileForNewSettlement rejects it outright.
             grid[tile].hilliness = Hilliness.Impassable;
 
             WorldObject mount = WorldObjectMaker.MakeWorldObject(AshmountDefOf.Cosmere_Scadrial_WorldObject_Ashmount);

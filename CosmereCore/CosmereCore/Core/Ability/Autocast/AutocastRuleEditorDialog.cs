@@ -107,8 +107,10 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         return y;
     }
 
-    // A dial is held rather than cast, so it needs a direction to hold it in, how
-    // hard, and where to leave it once the triggers stop passing.
+    /// <summary>
+    ///     A dial is held rather than cast, so it needs a direction to hold it in, how hard,
+    ///     and where to leave it once the triggers stop passing.
+    /// </summary>
     private float DrawDialSettings(Rect inRect, float y) {
         bool tapping = AutocastDialRange.IsTapping(rule.Kind, rule.ActiveTarget);
         float intensity = AutocastDialRange.Intensity(rule.Kind, rule.ActiveTarget);
@@ -132,8 +134,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         Rect rateSlider = new Rect(directionRect.xMax + 10f, y + 4f, inRect.width - directionRect.width - 70f, 18f);
         float moved = Widgets.HorizontalSlider(rateSlider, intensity, 0f, 1f);
 
-        // Only write back when the player moved it, so the stored target keeps the
-        // exact value the dock set rather than drifting through the round trip.
+        // only write back if the player moved it; writing every frame would drift the target through the round trip.
         if (!Mathf.Approximately(moved, intensity)) {
             rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, tapping, moved);
         }

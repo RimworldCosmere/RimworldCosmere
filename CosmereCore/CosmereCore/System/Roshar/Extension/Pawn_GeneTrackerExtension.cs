@@ -53,9 +53,7 @@ public static class Pawn_GeneTrackerExtension {
         if (spren.story != null) {
             spren.story.bodyType = BodyTypeDefOf.Thin;
 
-            // Every spren wears the same face, which is the point - they are one order wearing one
-            // shape. Taking index 0 out of the database used to do it, until a mod loaded a head
-            // ahead of ours and every spren in the game turned up as a skull.
+            // same face by defName, not index 0 - index 0 turned into skulls when a mod's head loaded first
             HeadTypeDef? face = Cosmere.Core.Util.HeadTypeUtility.Available(spren.gender, spren)
                 .MinBy(head => head.defName);
             if (face != null) spren.story.headType = face;
@@ -122,9 +120,7 @@ public static class Pawn_GeneTrackerExtension {
         string? sprenName = null,
         bool showNamingDialog = false
     ) {
-        // Every Radiant path funnels through here, so bailing silently makes Surgebinding look
-        // simply broken rather than switched off: the order dialog still closes, the choice comp is
-        // still removed, and the pawn just never becomes a Surgebinder.
+        // bail loud, not silent: a quiet null return here reads as Surgebinding broken, not switched off
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) {
             Logger.Warning(
                 $"Cannot grant Radiant order '{geneDef.defName}' to {genes.pawn?.LabelShort}: the Honor shard is " +

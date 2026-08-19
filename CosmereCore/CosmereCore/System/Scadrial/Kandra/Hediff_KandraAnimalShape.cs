@@ -77,9 +77,7 @@ public class Hediff_KandraAnimalShape : HediffWithComps {
             disabledWorkTags = baseline.disabledWorkTags,
             capMods = baseline.capMods,
 
-            // Not optional. DynamicPawnRenderNodeSetup_Hediffs skips any hediff whose Visible is
-            // false, so hiding this from the health tab also deletes the render node and the
-            // pawn draws as nothing at all.
+            // not optional - DynamicPawnRenderNodeSetup_Hediffs skips a hidden hediff's render node too.
             becomeVisible = true,
             statFactors = [],
             statOffsets = [],

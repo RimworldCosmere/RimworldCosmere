@@ -17,18 +17,13 @@ public class ScenPart_NamedPawns : ScenPart {
         for (int i = 0; i < pawns.Count; i++) {
             NamedPawnDef template = pawns[i];
 
-            // Say what the pawn is before it is built rather than editing it afterwards. Gender,
-            // age and xenotype all decide body type, head, hair and beard during generation, so
-            // anything set in Notify_PawnGenerated flips the label and leaves the body it was
-            // given. AddNewPawn must be passed the index: with the default of -1 it generates
-            // from DefaultStartingPawnRequest and never reads what was set here.
+            // Set before generation: post-generation edits only change the label, not body/head/hair.
             PawnGenerationRequest request = StartingPawnUtility.GetGenerationRequest(i);
 
             if (template.gender != Gender.None) request.FixedGender = template.gender;
 
             if (template.age > 0) {
-                // The default starting-pawn request excludes a child age band. ValidateAndFix
-                // rejects a fixed age alongside any range, so both have to come off first.
+                // ValidateAndFix rejects a fixed age set alongside a range, so both must clear first.
                 request.ExcludeBiologicalAgeRange = null;
                 request.BiologicalAgeRange = null;
                 request.FixedBiologicalAge = template.age;
@@ -206,8 +201,10 @@ public class ScenPart_NamedPawns : ScenPart {
         }
     }
 
-    // This hook fires after gear generation, so aging a pawn down here trips
-    // LifeStageWorker_HumanlikeAdult into stripping adult-only apparel into their inventory.
+    /// <summary>
+    ///     This hook fires after gear generation, so aging a pawn down here trips
+    ///     LifeStageWorker_HumanlikeAdult into stripping adult-only apparel into their inventory.
+    /// </summary>
     private static void RedressAfterAgeChange(Pawn pawn) {
         if (pawn.apparel == null || pawn.inventory == null) return;
 
@@ -255,19 +252,19 @@ public class ScenPart_NamedPawns : ScenPart {
         return null;
     }
 
-    // A named pawn is written to be someone in particular, so the story they are
-    // given has to stick. Left to pawn generation they take a random pair, which
-    // is both off-character and how they end up incapable of work the scenario
-    // never meant to bar them from.
     /// <summary>
     ///     Makes the pawn look like the person the template names.
     /// </summary>
     /// <remarks>
-    ///     Gender used to be handed to the generator as a hint, which worked while this part
-    ///     built the roster itself. The config page now clears the roster and regenerates it from
-    ///     default requests, so the hint is gone by the time these pawns exist and the only thing
-    ///     left is to correct them afterwards. Setting gender alone flips the label and leaves the
-    ///     body and head that were rolled, which is how Kelsier ended up a woman.
+    ///     A named pawn is written to be someone in particular, so the backstory has to stick -
+    ///     a random pair off pawn generation is off-character and can bar work the scenario never meant to exclude.
+    ///     <para>
+    ///         Gender used to be handed to the generator as a hint, which worked while this part
+    ///         built the roster itself. The config page now clears the roster and regenerates it from
+    ///         default requests, so the hint is gone by the time these pawns exist and the only thing
+    ///         left is to correct them afterwards. Setting gender alone flips the label and leaves the
+    ///         body and head that were rolled, which is how Kelsier ended up a woman.
+    ///     </para>
     /// </remarks>
     private static void ApplyAppearance(Pawn pawn, NamedPawnDef template) {
         if (pawn.story == null) return;
@@ -301,9 +298,7 @@ public class ScenPart_NamedPawns : ScenPart {
 
         if (head != null) pawn.story.headType = head;
 
-        // Hair carries a style gender too, and a rolled one contradicts the template just as
-        // readily as the head did. Ham kept a woman's haircut through the first fix because only
-        // the body and head were being corrected.
+        // Hair carries a style gender too, and a rolled one contradicts the template just as readily as the head did.
         HairDef? hair = pawn.story.hairDef;
         if (hair != null && !SuitsGender(hair.styleGender, template.gender)) {
             pawn.story.hairDef = DefDatabase<HairDef>.AllDefsListForReading

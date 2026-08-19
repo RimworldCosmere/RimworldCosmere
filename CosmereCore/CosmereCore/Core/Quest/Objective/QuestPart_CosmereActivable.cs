@@ -27,9 +27,7 @@ public abstract class QuestPart_CosmereActivable : QuestPartActivable {
         base.QuestPartTick();
         if (State != QuestPartState.Enabled) return;
 
-        // Checked on the first poll rather than in Enable: Enable runs inside
-        // Quest.Notify_SignalReceived's walk of the parts list, and completing from there
-        // re-enters the signal manager mid-walk.
+        // Checked on first poll, not Enable: completing there would re-enter the signal manager mid-walk.
         if (!QuestBranch.Matches(afterChoice, quest)) {
             Logger.Verbose($"{GetType().Name}: skipped, quest took a branch other than '{afterChoice}'.");
             OnSkipped();
@@ -37,9 +35,7 @@ public abstract class QuestPart_CosmereActivable : QuestPartActivable {
             return;
         }
 
-        // int.IsHashIntervalTick(int) does not exist - RimWorld only defines the
-        // Map/Thing/WorldObject/Faction overloads. A non-positive interval means "check every
-        // tick" instead of throwing on a modulo by zero.
+        // int has no IsHashIntervalTick overload - RimWorld defines it only on Map/Thing/WorldObject/Faction.
         if (checkIntervalTicks > 0 && Find.TickManager.TicksGame % checkIntervalTicks != 0) return;
 
         if (IsSatisfied()) OnSatisfied();

@@ -5,13 +5,10 @@ using Verse;
 
 namespace Cosmere.Core.Patch.World;
 
-// A void monolith has no place in a shardworld, and it does not survive being
-// placed in one: it asks for a factionless drifter and vanilla generation throws
-// while making them, which surfaced every run as a map generation failure with
-// nothing in the stack to say what had been asked for.
-//
-// Verified as vanilla by disabling every Cosmere pawn generation patch in turn -
-// the failure persisted with all of them off.
+/// <summary>
+///     Void monoliths ask for a factionless drifter during map gen, and vanilla's
+///     GenStep_Monolith throws while creating one - skip the step entirely when a shard is active.
+/// </summary>
 [Patch]
 public abstract class MonolithSkipPatch : GenStep_Monolith {
     [Inject(At.Head, nameof(ScatterAt))]

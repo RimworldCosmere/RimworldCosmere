@@ -16,8 +16,10 @@ public static class RadialWedgeTex {
     private static readonly Dictionary<int, Texture2D> separatorCache = new Dictionary<int, Texture2D>();
     private static Texture2D? gizmoIconCache;
 
-    // A small spoked ring standing in for the wheel, drawn rather than shipped
-    // as art so it matches whatever the ring geometry becomes.
+    /// <summary>
+    ///     A small spoked ring standing in for the wheel, drawn rather than shipped as art so it
+    ///     matches whatever the ring geometry becomes.
+    /// </summary>
     public static Texture2D GizmoIcon() {
         if (gizmoIconCache != null) return gizmoIconCache;
 
@@ -170,8 +172,10 @@ public static class RadialWedgeTex {
         return Get(count, 0);
     }
 
-    // Baked at its final angle rather than drawn rotated. Rotating GUI.matrix mid-window
-    // fights the IMGUI clip stack and smears the wedges at any UI scale above 1.
+    /// <summary>
+    ///     Baked at its final angle rather than drawn rotated. Rotating GUI.matrix mid-window fights
+    ///     the IMGUI clip stack and smears the wedges at any UI scale above 1.
+    /// </summary>
     public static Texture2D Get(int count, int index) {
         int key = count * 1000 + index;
         if (cache.TryGetValue(key, out Texture2D cached)) return cached;

@@ -70,9 +70,10 @@ public class AllomancyAuraHediffGiver : HediffComp {
     private bool isEmotional =>
         parent.metal == MetallicArtsMetalDefOf.Zinc || parent.metal == MetallicArtsMetalDefOf.Brass;
 
-    // The first source ability, or none. Written as an explicit first read
-    // rather than a foreach that returns on entry, which read as a loop but
-    // could never take a second pass.
+    /// <summary>
+    ///     The first source ability, or none. An explicit first read, not a foreach that returns on
+    ///     entry - that reads like a loop but can never take a second pass.
+    /// </summary>
     private IAbility<Allomancer, AllomanticHediff>? ability {
         get {
             using HashSet<IAbility<Allomancer, IHediff<Allomancer>>>.Enumerator e =
@@ -200,8 +201,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        // Silent, and it has to be. This runs once a second on everyone in range, so a Rioter
-        // standing beside a Smoker would otherwise narrate the same refusal forever.
+        // silent: runs once a second on everyone in range, so a Rioter would narrate this forever
         if (isEmotional && Coppercloud.Hides(Pawn, target, parent.metal)) {
             return;
         }

@@ -12,8 +12,10 @@ public static class SettingsHeaderRenderer {
     private const float SigilSize = 34f;
     private const float CloseSize = 32f;
 
-    // Vanilla hangs its own close X off the window chrome. This one lives in our top bar
-    // instead, so the header owns the whole row rather than leaving a gap for it.
+    /// <summary>
+    ///     Vanilla hangs its own close X off the window chrome. This one lives in our top bar
+    ///     instead, so the header owns the whole row rather than leaving a gap for it.
+    /// </summary>
     public static bool DrawCrest(Rect rect, ISystemSkin skin) {
         Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), skin.AccentColor);
 
@@ -97,8 +99,10 @@ public static class SettingsHeaderRenderer {
         return requested;
     }
 
-    // GameFont stops at Medium, so a glyph cannot be scaled to carry a crest this size.
-    // Two rotated bars give the mark whatever weight the header needs.
+    /// <summary>
+    ///     GameFont stops at Medium, so a glyph cannot be scaled to carry a crest this size.
+    ///     Two rotated bars give the mark whatever weight the header needs.
+    /// </summary>
     private static bool DrawClose(Rect rect, ISystemSkin skin) {
         bool hovered = Mouse.IsOver(rect);
         Color color = hovered ? skin.AccentColor : skin.HeaderTextColor;

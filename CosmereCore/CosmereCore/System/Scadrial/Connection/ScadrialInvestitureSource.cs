@@ -22,9 +22,7 @@ public class ScadrialInvestitureSource : IConnectionInvestitureSource {
     public int InvestitureStrength(Pawn pawn, ShardDef shard) {
         if (shard.defName is not ("Preservation" or "Ruin")) return 0;
 
-        // Above the genes guard on purpose: spikes are in the body, not the genome, and a kandra
-        // has no Allomancy at all. Ruin only - Preservation would drag Harmony up with it, since
-        // Core derives Harmony as the lower of the two.
+        // above the genes guard: spikes live in the body, not the genome; Ruin only or Preservation drags Harmony up
         int spikes = shard.defName == "Ruin"
             ? ConnectionMath.StrengthFromSpikes(HemalurgicSpikeUtility.SpikeCount(pawn))
             : 0;
@@ -36,9 +34,7 @@ public class ScadrialInvestitureSource : IConnectionInvestitureSource {
             ? ConnectionMath.FullInvestitureBonus
             : HasAnySingleInvestiture(pawn) ? ConnectionMath.SingleInvestitureBonus : 0;
 
-        // The registry takes the highest reading across sources rather than the sum, so these two
-        // are compared here rather than added - and a Mistborn kandra reads as whichever of the
-        // two is worth more.
+        // the registry takes the highest reading, not the sum - a Mistborn kandra reads as whichever is worth more
         return global::System.Math.Max(spikes, invested);
     }
 

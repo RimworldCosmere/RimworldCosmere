@@ -80,8 +80,7 @@ public static class TabStrip {
 
         if (!isSelected) Widgets.DrawHighlightIfMouseover(tab);
 
-        // The accent reads as an underline rather than a fill, so a bright shard colour does not
-        // fight the label sitting on top of it.
+        // the accent reads as an underline, not a fill, so a bright shard colour does not fight the label on top.
         Widgets.DrawBoxSolid(
             new Rect(tab.x, tab.yMax - UnderlineHeight, tab.width, UnderlineHeight),
             isSelected ? item.Accent : new Color(item.Accent.r, item.Accent.g, item.Accent.b, 0.25f)

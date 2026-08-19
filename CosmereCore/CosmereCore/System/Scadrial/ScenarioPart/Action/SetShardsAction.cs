@@ -25,8 +25,7 @@ public class SetShardsAction : ProgressionAction {
             shards.DisableShard(disable[i]);
         }
 
-        // Allowing conflicts on purpose. Harmony is mutually exclusive with the two it replaces,
-        // and they have already been taken off above.
+        // conflicts allowed on purpose: Harmony replaces the two disabled above, so overlap here is expected
         for (int i = 0; i < enable.Count; i++) {
             shards.EnableShard(enable[i], true);
         }

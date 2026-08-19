@@ -5,8 +5,10 @@ namespace Cosmere.Core.Ability.Autocast;
 public enum AutocastRuleKind {
     Ability,
 
-    // Holds a feruchemical dial rather than casting. A dial is a state the pawn
-    // stays in, not an act they perform once.
+    /// <summary>
+    ///     Holds a feruchemical dial rather than casting. A dial is a state the pawn stays
+    ///     in, not an act they perform once.
+    /// </summary>
     FeruchemyDial,
 }
 
@@ -34,14 +36,16 @@ public sealed class AutocastRule : IExposable {
     public AutocastRelease Release = AutocastRelease.ToIdle;
     public float RestTarget = 50f;
 
-    // For a toggled ability, whether to switch it back off once the triggers stop passing. A rule
-    // that reads "while drafted" usually means "and not otherwise", but that is the player's call:
-    // some sustained surges are worth keeping up between fights.
+    /// <summary>
+    ///     Whether to switch a toggled ability back off once triggers stop passing. Off by
+    ///     default: some sustained surges are worth keeping up between fights.
+    /// </summary>
     public bool ToggleOffWhenInactive;
 
-    // Whether this rule is the reason the dial is where it is. Persisted so a
-    // save made mid-hold releases the dial it set rather than one the player
-    // moved by hand afterwards.
+    /// <summary>
+    ///     Whether this rule is the reason the dial sits where it does. Persisted so a save
+    ///     made mid-hold releases the dial it set, not one the player moved by hand.
+    /// </summary>
     public bool Holding;
 
     public void ExposeData() {

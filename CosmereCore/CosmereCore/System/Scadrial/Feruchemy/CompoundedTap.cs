@@ -3,10 +3,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Feruchemy;
 
-// Compounded charge taps through its own hediff def, whose stage ladder already
-// carries the amplification for anything declared in XML. Metals that implement
-// their effect in C# instead have to recognise that def as tapping and scale
-// themselves, so the multiplier lives here rather than in each of them.
+/// XML-declared tap effects scale automatically via the hediff stage ladder.
+/// C# ones must call <see cref="Scale"/> to get the compounded multiplier.
 public static class CompoundedTap {
     public const float EffectMultiplier = 10f;
 

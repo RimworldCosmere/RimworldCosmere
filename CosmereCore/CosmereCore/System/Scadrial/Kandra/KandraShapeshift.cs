@@ -67,8 +67,7 @@ public static class KandraShapeshift {
         if (form.IsAnimal) {
             StowGear(pawn, forms);
 
-            // Before the hediff, never after. The render node reads the worn form from the comp
-            // inside its constructor, where its own hediff back-reference is still null.
+            // before the hediff: render node reads worn form from the comp in its own ctor, hediff backref still null
             forms?.RememberWorkPriorities();
             forms?.SetCurrent(form);
 
@@ -80,9 +79,7 @@ public static class KandraShapeshift {
             return;
         }
 
-        // A human face. Guarded, because KandraForm.FromAnimal stores the eaten ANIMAL's gender
-        // and leaves the colours at default(Color) - transparent black - so applying these
-        // unguarded would change the colonist's gender and paint their skin invisible.
+        // guarded: FromAnimal leaves gender/colours at default (transparent), so unguarded corrupts the pawn
         if (pawn.story != null) {
             if (form.bodyType != null) pawn.story.bodyType = form.bodyType;
             if (form.headType != null) pawn.story.headType = form.headType;
@@ -93,13 +90,9 @@ public static class KandraShapeshift {
 
         pawn.gender = form.gender;
 
-        // The xenotype is captured on the form and deliberately not applied. A kandra wearing a
-        // Mistborn's body looks like her; it does not make them Mistborn. Shapeshifting is a
-        // disguise, not a way to farm powers off corpses.
+        // xenotype is captured but never applied: wearing a face is a disguise, not a way to steal powers
 
-        // The pawn keeps its own Name. Overwriting it looked right until a kandra died wearing
-        // somebody's face and the corpse kept their name for good. The worn name lives on the
-        // comp and is added at the places that display it.
+        // keeps its own Name: overwriting stuck a dead kandra with another's name forever; worn name lives on the comp
         pawn.Drawer?.renderer?.SetAllGraphicsDirty();
         PortraitsCache.SetDirty(pawn);
     }
@@ -113,8 +106,7 @@ public static class KandraShapeshift {
         pawn.health!.RemoveHediff(worn);
         UnstowGear(pawn, forms);
 
-        // After the hediff is gone, never before: SetPriority logs an error for a work type that
-        // is still disabled.
+        // after the hediff is gone, never before: SetPriority logs an error for a still-disabled work type
         forms?.RestoreWorkPriorities();
     }
 
@@ -233,8 +225,7 @@ public static class KandraShapeshift {
         forms.RememberTrueBody();
 
         KandraForm invented = new KandraForm {
-            // A face nobody has worn needs a name nobody answers to. Any person namer will do;
-            // the kandra is inventing, not impersonating.
+            // any person namer works here: inventing a face, not impersonating one, so the name need not match
             nameFull = PawnBioAndNameGenerator.GeneratePawnName(kandra, NameStyle.Full).ToStringShort,
             bodyType = kandra.story?.bodyType,
             headType = kandra.story?.headType,

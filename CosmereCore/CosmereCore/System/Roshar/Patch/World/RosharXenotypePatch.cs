@@ -7,12 +7,13 @@ namespace Cosmere.System.Roshar.Patch.World;
 
 [Patch(typeof(Verse.PawnGenerator))]
 public static class RosharXenotypePatch {
-    // A return injection rather than a head one: cancelling the original stopped whatever else
-    // it does on the way to a return value, which left vanilla generation to fail
-    // on a factionless pawn. Overriding its answer is enough.
-    //
-    // Priority 1 so this composes outermost and its answer is the one that survives, matching
-    // the Harmony Priority.Low postfix it replaces.
+    /// <summary>
+    ///     A return injection, not a head one: cancelling the original left vanilla generation failing
+    ///     on a factionless pawn. Overriding the answer is enough.
+    /// </summary>
+    /// <remarks>
+    ///     Priority 1 so this composes outermost, matching the Harmony Priority.Low postfix it replaces.
+    /// </remarks>
     [Inject(At.Return, nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn), Priority = 1)]
     private static void AfterGetXenotypeForGeneratedPawn(
         PawnGenerationRequest request,
@@ -20,14 +21,10 @@ public static class RosharXenotypePatch {
     ) {
         if (request.ForcedXenotype != null) return;
 
-        // A xenotype only means anything to a humanlike with a gene tracker.
-        // Forcing one onto whatever else a map generator asks for - Anomaly's
-        // monolith among them - breaks generation further down.
+        // xenotypes only mean something to humanlikes; forcing one onto Anomaly's monolith breaks generation
         if (request.KindDef?.RaceProps?.Humanlike != true) return;
 
-        // Not IsActive: on the cross-world sentinel every world is active at once, and two
-        // patches writing the same return value let composition order pick the xenotype.
-        // A faction that names its own people outranks the planet they stand on.
+        // not IsActive: the cross-world sentinel has every world active at once; a self-naming faction wins
         if (XenotypeArbiter.FactionSpeaksForItself(request)) return;
 
         if (!XenotypeArbiter.MayAnswer(WorldDefOf.Roshar)) return;

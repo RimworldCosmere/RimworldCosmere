@@ -21,6 +21,32 @@ public class ConnectionMathTests {
     private const int Mistborn = ConnectionMath.FullInvestitureBonus;
 
     [TestMethod]
+    public void TheThreeFloorsAreIndependentlyAddressable() {
+        Assert.AreEqual(30, ConnectionMath.AncestryFloor);
+        Assert.AreEqual(30, ConnectionMath.GodMetalThreshold);
+        Assert.AreEqual(45, ConnectionMath.ResidenceCap);
+    }
+
+    [TestMethod]
+    public void PlanetaryConnectionSourcesStayOnTheSharedScale() {
+        int strength = ConnectionMath.ComposeWorld(
+            ConnectionMath.AncestryFloor,
+            ConnectionMath.ResidenceCap,
+            0,
+            0
+        );
+
+        Assert.AreEqual(75, strength);
+        Assert.IsTrue(strength <= ConnectionMath.Max);
+    }
+
+    [TestMethod]
+    public void GodMetalNeedsTheThresholdExactly() {
+        Assert.IsFalse(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold - 1));
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold));
+    }
+
+    [TestMethod]
     public void TierBoundariesMatchTheDesign() {
         Assert.AreEqual(ConnectionTier.None, ConnectionMath.TierOf(0));
         Assert.AreEqual(ConnectionTier.Touched, ConnectionMath.TierOf(1));
@@ -71,20 +97,28 @@ public class ConnectionMathTests {
         Assert.IsTrue(ConnectionMath.MayUseGodMetal(100));
     }
 
-    /// <summary>
-    ///     Residence naturalises a pawn toward what being born there grants. It is another route
-    ///     to the same baseline, not a second helping of it - a year on Scadrial must not put a
-    ///     native above a native.
-    /// </summary>
     [TestMethod]
-    public void ResidenceReachesTheFloorWithoutStackingOnIt() {
-        Assert.AreEqual(30, ConnectionMath.Compose(0, 30, 0, 0), "A full year of residence reaches the floor.");
-        Assert.AreEqual(15, ConnectionMath.Compose(0, 15, 0, 0), "Half a year gets halfway.");
+    public void ResidenceSetsTheShardWorldTie() {
         Assert.AreEqual(
-            30,
-            ConnectionMath.Compose(Floor, 30, 0, 0),
-            "A native who has also lived there is still 30, not 60."
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap, 0, 0),
+            "A decade of residence reaches the cap."
         );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap / 2,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap / 2, 0, 0),
+            "Halfway there gets halfway."
+        );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(Floor, ConnectionMath.ResidenceCap, 0, 0),
+            "The stronger world tie sets the Shard baseline."
+        );
+    }
+
+    [TestMethod]
+    public void ShardConnectionDoesNotDoubleCountTheWorldTie() {
+        Assert.AreEqual(65, ConnectionMath.Compose(30, 45, 20, 0));
     }
 
     /// <summary>Harmony holds both, so Connection to Harmony is Connection to each.</summary>
@@ -215,9 +249,7 @@ public class ConnectionMathTests {
     public void EveryGodMetalDecisionAsksAboutConnection() {
         string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
 
-        // Files that branch on godMetal without deciding whether a pawn may *use* one: a plain
-        // data holder, the dev utility that filters god metals out of a vial list, and the gene
-        // roller, which excludes them from generation rather than gating their use.
+        // exempt files branch on godMetal without deciding whether a pawn may *use* one, not gating access.
         string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs", "GeneUtility.cs"];
 
         List<string> offenders = [];
@@ -284,44 +316,139 @@ public class ConnectionMathTests {
     }
 
     /// <summary>
-    ///     Residence reaches the ancestry floor at a year and stops. It is how an off-worlder
-    ///     eventually burns atium without ever having been Scadrian.
+    ///     Residence takes ten years to fill, not one - a lifetime somewhere now outgrows being
+    ///     born there instead of only ever tying it.
     /// </summary>
     [TestMethod]
-    public void ResidenceReachesTheFloorInAYearAndStops() {
-        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0), "Day one is nothing.");
-        Assert.AreEqual(15, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear / 2), "Half a year, half way.");
-        Assert.AreEqual(Floor, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear), "A year reaches the floor.");
+    public void ResidenceTakesTenYearsToFill() {
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0));
+        Assert.AreEqual(4, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear));
+        Assert.AreEqual(22, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 5));
+        Assert.AreEqual(45, ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence));
+    }
+
+    // The point of the whole change: a lifetime somewhere beats being born there.
+    [TestMethod]
+    public void ResidenceOvertakesAncestryBeforeSevenYears() {
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 6) < ConnectionMath.AncestryFloor);
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 7) > ConnectionMath.AncestryFloor);
+    }
+
+    /// <summary>
+    ///     Residence never rises past the cap however long a pawn stays, and negative time never
+    ///     produces a negative reading.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceStaysAtTheCapAndNeverGoesNegative() {
         Assert.AreEqual(
-            Floor,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 10),
-            "Ten years is still the floor - naturalising makes you a local, not a native twice over."
+            45,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence * 10),
+            "A century is still the cap - naturalising makes you a local, not a native a dozen times over."
         );
         Assert.AreEqual(0, ConnectionMath.ResidenceFrom(-1), "Negative time is nothing, not a wrap-around.");
     }
 
+    [TestMethod]
+    public void ResidenceTicksAreTheInverseOfResidenceStrength() {
+        for (int strength = 0; strength <= ConnectionMath.ResidenceCap; strength++) {
+            int ticks = ConnectionMath.TicksForResidence(strength);
+            Assert.AreEqual(strength, ConnectionMath.ResidenceFrom(ticks), $"strength {strength}");
+        }
+    }
+
+    [TestMethod]
+    public void ResidenceTicksClampToTenYears() {
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(0));
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(-5));
+        Assert.AreEqual(
+            ConnectionMath.TicksToFullResidence,
+            ConnectionMath.TicksForResidence(ConnectionMath.ResidenceCap)
+        );
+        Assert.AreEqual(ConnectionMath.TicksToFullResidence, ConnectionMath.TicksForResidence(999));
+    }
+
     /// <summary>
-    ///     A native who has also lived there stays at 30. Residence and ancestry are two routes
-    ///     to the same baseline, and Compose already takes the larger - this guards the pairing.
+    ///     A pawn who already has residence ticks and takes a delta near int.MaxValue must clamp,
+    ///     not wrap negative from 32-bit overflow on the addition.
     /// </summary>
     [TestMethod]
-    public void ResidenceNeverStacksOnTopOfBeingNative() {
-        int nativeWhoStayed = ConnectionMath.Compose(
-            Floor,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
-            0,
-            0
+    public void ResidenceTicksClampInsteadOfOverflowingOnALargeDelta() {
+        Assert.AreEqual(
+            ConnectionMath.TicksToFullResidence,
+            ConnectionMath.ClampResidenceTicks(100, int.MaxValue),
+            "A huge positive delta must clamp at the ceiling, not wrap past it."
         );
-        Assert.AreEqual(30, nativeWhoStayed);
+        Assert.AreEqual(
+            0,
+            ConnectionMath.ClampResidenceTicks(100, int.MinValue),
+            "A huge negative delta must clamp at zero."
+        );
+    }
 
-        int refugeeWhoStayed = ConnectionMath.Compose(
-            0,
-            ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear),
-            0,
-            0
+    /// <summary>
+    ///     A had already past the ceiling must not let delta move it further, or flip the sign of
+    ///     the caller's intent - the bug that let a 10-point store silently move 22.
+    /// </summary>
+    [TestMethod]
+    public void ClampResidenceTicksNeverOvershootsOrInvertsWhenHadIsAlreadyPastTheCeiling() {
+        const int had = 54_000_000;
+        const int askTicks = 8_000_000; // TicksForResidence(10), what a 10-point move asks for
+
+        int tapMoved = ConnectionMath.ClampResidenceTicks(had, askTicks) - had;
+        Assert.IsTrue(tapMoved >= 0, $"A positive delta must not decrease had; moved {tapMoved}.");
+        Assert.IsTrue(tapMoved <= askTicks, $"A tap must not move more than it asked for; moved {tapMoved}.");
+
+        int storeMoved = ConnectionMath.ClampResidenceTicks(had, -askTicks) - had;
+        Assert.IsTrue(storeMoved <= 0, $"A negative delta must not increase had; moved {storeMoved}.");
+        Assert.IsTrue(-storeMoved <= askTicks, $"A store must not move more than it asked for; moved {storeMoved}.");
+    }
+
+    /// <summary>A had exactly at the ceiling has no headroom left to gain, and everything left to give.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtTheCeilingGainNothingAndStillDrain() {
+        int ceiling = ConnectionMath.TicksToFullResidence;
+
+        Assert.AreEqual(ceiling, ConnectionMath.ClampResidenceTicks(ceiling, 1_000_000));
+        Assert.AreEqual(ceiling - 1_000_000, ConnectionMath.ClampResidenceTicks(ceiling, -1_000_000));
+    }
+
+    /// <summary>A had of exactly zero has nothing left to give, and the whole ceiling left to gain.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtZeroDrainNothingAndStillGain() {
+        Assert.AreEqual(0, ConnectionMath.ClampResidenceTicks(0, -1_000_000));
+        Assert.AreEqual(1_000_000, ConnectionMath.ClampResidenceTicks(0, 1_000_000));
+    }
+
+    /// <summary>
+    ///     GameComponentTick's native check has no pin of its own, so a careless edit could drop it
+    ///     silently - it is what stops every baseliner out of a drop pod reading as a native.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceOnlyReadsNativeFromTheXenotype() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", "ResidenceTracker.cs"
+            )
         );
-        Assert.AreEqual(30, refugeeWhoStayed, "A year on the ground earns what being born there grants.");
-        Assert.IsTrue(ConnectionMath.MayUseGodMetal(refugeeWhoStayed), "And with it, atium.");
+
+        int method = source.IndexOf("public override void GameComponentTick", StringComparison.Ordinal);
+        Assert.IsTrue(method >= 0, "Expected GameComponentTick to exist.");
+
+        string body = source[method..];
+        int end = body.IndexOf("\n    }", StringComparison.Ordinal);
+        if (end > 0) body = body[..end];
+
+        Assert.IsTrue(
+            body.Contains("world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype)", StringComparison.Ordinal),
+            "A newly-seen pawn must be checked against the xenotype's world, or every baseliner out "
+            + "of a drop pod reads as a native."
+        );
+    }
+
+    [TestMethod]
+    public void PlanetConnectionAddsEachIndependentSource() {
+        Assert.AreEqual(90, ConnectionMath.ComposeWorld(30, 45, 10, 5));
+        Assert.AreEqual(ConnectionMath.Max, ConnectionMath.ComposeWorld(30, 45, 20, 10));
     }
 
     /// <summary>
@@ -455,8 +582,7 @@ public class ConnectionMathTests {
         int five = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(5), 0);
         Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(five));
 
-        // A kandra wearing all four Blessings carries eight, and still must not read as a
-        // Shardholder.
+        // a kandra wearing all four Blessings carries eight, and still must not read as a Shardholder.
         int eight = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(8), 0);
         Assert.IsTrue(eight <= ConnectionMath.OrdinaryMax);
         Assert.AreNotEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(eight));

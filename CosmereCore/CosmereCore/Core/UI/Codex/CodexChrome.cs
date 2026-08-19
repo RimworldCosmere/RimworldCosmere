@@ -36,8 +36,7 @@ public static class CodexChrome {
         float top = HeaderHeight + SubtabBarHeight;
         float left = hasSwitcher ? RailWidth : 0f;
 
-        // No horizontal gutter: rows and tables run to the frame on purpose. Only the heading block
-        // above them is inset, via ContentHeader.
+        // No horizontal gutter here - rows run to the frame; only the heading block is inset, via ContentHeader.
         return new Rect(
             tabRect.x + left,
             tabRect.y + top + Gutter,

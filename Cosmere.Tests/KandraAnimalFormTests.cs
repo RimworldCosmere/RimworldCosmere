@@ -135,8 +135,7 @@ public class KandraAnimalFormTests {
             .Select(e => e.Value)
             .ToList();
 
-        // Every xenotype made on Scadrial has to be here, or WorldForXenotype returns null and
-        // AncestryFloor gives it zero - the pawn reads as Connected to nothing.
+        // every xenotype made on Scadrial must be here, or WorldForXenotype returns null and AncestryFloor gives zero.
         foreach (string made in new[] {
             "Cosmere_Scadrial_Xenotype_Kandra",
             "Cosmere_Scadrial_Xenotype_Koloss",
@@ -252,9 +251,7 @@ public class KandraAnimalFormTests {
             + " reads directOwner.Tools through IVerbOwner, so the subclass wins."
         );
 
-        // HediffComp_VerbGiver.Props hard-casts to HediffCompProperties_VerbGiver, and
-        // VerbProperties reads through it. The wrong base throws InvalidCastException every time
-        // anything asks the pawn for a melee verb.
+        // Props hard-casts to HediffCompProperties_VerbGiver - wrong base throws InvalidCastException on melee ask.
         Assert.IsTrue(
             verbs.Contains("HediffCompProperties_KandraShapeVerbs : HediffCompProperties_VerbGiver", StringComparison.Ordinal),
             "Deriving from plain HediffCompProperties makes every melee lookup throw."

@@ -33,8 +33,7 @@ public class CoppercloudContestTests {
 
     [TestMethod]
     public void ATieGoesToTheCloud() {
-        // Copper is the defensive metal. A Smoker who matches the Seeker exactly should win, or
-        // equal skill on both sides would quietly favour the attacker.
+        // copper is defensive - a Smoker matching the Seeker exactly should win, or equal skill favors the attacker.
         Assert.IsTrue(CoppercloudContest.Blocks(4f, 4f));
     }
 
@@ -47,8 +46,7 @@ public class CoppercloudContestTests {
 
     [TestMethod]
     public void ADuraluminBurnClearsAnyOrdinaryStack() {
-        // GetStrength already spikes tenfold on a duralumin burn, so this is what that spike buys
-        // against three Smokers standing together.
+        // GetStrength already spikes tenfold on a duralumin burn - this is what that spike buys against three Smokers.
         Assert.IsFalse(CoppercloudContest.Blocks(DiminishingStack.Combine([4f, 4f, 4f]), 40f));
     }
 }

@@ -26,8 +26,8 @@ public sealed class MetalGroup {
 }
 
 public static class MetalGroupTable {
-    // Rows hold a copy of the cell, so a cached grouping goes stale the moment a
-    // metal starts burning. Refresh the values in place and keep the ordering.
+    /// Rows hold a copy of the cell, so a cached grouping goes stale the moment a metal starts
+    /// burning. Refresh the values in place and keep the ordering.
     public static void RefreshCells(IReadOnlyList<MetalGroup> groups, IReadOnlyList<InvestitureCell> cells) {
         for (int g = 0; g < groups.Count; g++) {
             List<MetalRow> rows = groups[g].Rows;

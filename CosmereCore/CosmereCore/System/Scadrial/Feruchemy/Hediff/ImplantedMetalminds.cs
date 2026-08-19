@@ -39,9 +39,8 @@ public class ImplantedMetalminds : HediffWithComps {
         Severity = metalminds.Count;
     }
 
-    // Ids only have to be unique among this pawn's implants, and they must not be
-    // reused after one burns out or the player's chosen target would silently move
-    // to a different metalmind.
+    /// Ids only need to be unique per pawn. Never reuse one after a burn-out, or the
+    /// player's chosen target silently moves to a different metalmind.
     private int NextLoadId() {
         int next = 0;
         for (int i = 0; i < metalminds.Count; i++) {
@@ -93,8 +92,7 @@ public class ImplantedMetalminds : HediffWithComps {
             for (int i = 0; i < metalminds.Count; i++) {
                 metalminds[i].ReconcileCapacity();
 
-                // Saves written before implants carried an id load them all as -1,
-                // which would make every one of them answer to the same target.
+                // pre-id saves load loadId as -1 for every implant, so without this they all match one target.
                 if (metalminds[i].loadId < 0) metalminds[i].loadId = i;
             }
         }

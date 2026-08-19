@@ -21,9 +21,16 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
-    private static float StripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight +
-        DockDropdownRow.Height + 32f;
+    /// A closed strip never asks its gene for anything; an open one adds whatever
+    /// FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
+    private static float StripHeightFor(Feruchemist? gene) {
+        if (gene == null) return 0f;
+
+        float compoundToggleHeight =
+            FeruchemyDialWidget.ShowsCompoundToggle(gene) ? StripButtonHeight : 0f;
+        return StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + compoundToggleHeight +
+            DockDropdownRow.Height + 32f + FeruchemyLedgerRow.HeightFor(gene);
+    }
 
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
@@ -37,33 +44,30 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private int cachedCellCount = -1;
     private string? expandedMetal;
 
-    // Which strip is on screen, which is not the same as which one the player has open:
-    // a closing strip has to keep drawing until it has finished sliding away.
+    /// Which strip is on screen, not the same as which one the player has open: a closing
+    /// strip has to keep drawing until it has finished sliding away.
     private string? revealedMetal;
     private float revealedHeight;
 
-    // Picked while another metal is still open, and held until that one has finished
-    // sliding away.
+    // picked while another metal is open, held until that one finishes sliding away.
     private string? pendingMetal;
 
-    // Idempotent, because height is asked for several times a frame. Reveal itself only
-    // advances once per frame; this just re-reads where it got to.
-    private void StepReveal() {
-        // One panel at a time, in order: the open metal slides up, then the new one
-        // slides down. Swapping the contents mid-slide makes the panel jump rows while
-        // it is moving, which reads as a glitch rather than as an exchange.
+    /// Idempotent, because height is asked for several times a frame. Reveal itself only
+    /// advances once per frame; this just re-reads where it got to.
+    private void StepReveal(float openHeight) {
+        // one panel at a time - swapping mid-slide would jump rows and read as a glitch.
         if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
             expandedMetal = pendingMetal;
             pendingMetal = null;
         }
 
-        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : StripHeight);
+        revealedHeight = reveal.Toward(expandedMetal == null ? 0f : openHeight);
         if (expandedMetal != null) revealedMetal = expandedMetal;
         else if (revealedHeight < 1f) revealedMetal = null;
     }
 
-    // Clicking the open metal closes it; clicking a different one closes it first and
-    // queues the new one behind it.
+    /// Clicking the open metal closes it; clicking a different one closes it first and
+    /// queues the new one behind it.
     private void ToggleMetal(string subsystemId) {
         if (expandedMetal == subsystemId) {
             expandedMetal = null;
@@ -89,14 +93,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
-        StepReveal();
+        StepReveal(StripHeightFor(FindGene(pawn, expandedMetal ?? pendingMetal)));
         return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
         crest.Draw(new Rect(rect.x, rect.y, rect.width, crest.Height - ScadrialCrest.Gap), Skin);
-        StepReveal();
+        StepReveal(StripHeightFor(FindGene(pawn, expandedMetal ?? pendingMetal)));
+        float revealedStripHeight = StripHeightFor(FindGene(pawn, revealedMetal));
 
         Rect table = new Rect(rect.x, rect.y + crest.Height, rect.width, rect.height - crest.Height);
         MetallicArtsTable.Draw(
@@ -105,7 +110,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             QuadHeader,
             revealedMetal,
             revealedHeight,
-            StripHeight,
+            revealedStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
             (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
         );
@@ -167,9 +172,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         FeruchemyCapacity capacity = FeruchemyCapacity.Of(gene);
 
-        // Same fill and stroke as the tile, opened along the tile's span: the two are
-        // one merged surface. A working metalmind carries its accent down through the
-        // join as well, so the pair reads as one thing that is running.
+        // same fill/stroke as the tile - a working metalmind carries its accent through the join, one running thing.
         bool compounding = gene.isCompounding;
         bool hot = compounding || gene.isTapping || gene.isStoring;
         Color tint = compounding
@@ -192,8 +195,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        // Burning the metalmind reads first: it is the loudest thing happening and
-        // the only one that destroys something.
+        // burning reads first - the loudest thing happening, and the only one that destroys something.
         string direction = capacity.CompoundedRate < 0f
             ? "CC_Dock_Feruchemy_BurningMetalmind".Translate()
             : capacity.CompoundedRate > 0f
@@ -220,8 +222,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         bool compounded = gene.compounding;
 
-        // Below fifty taps, above stores. The reachable span is bounded by what
-        // the metalminds can actually give or accept right now.
+        // below fifty taps, above stores - span is bounded by what the metalminds can give or take.
         Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 6f, inner.width, DialHeight);
         dial.DrawDial(sliderRect, cell.SubsystemId, gene, capacity, compounded);
 
@@ -261,6 +262,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float afterTarget = FeruchemyTargetRow.Draw(inner, endsRect.yMax + 6f, gene);
+        afterTarget = FeruchemyLedgerRow.Draw(inner, afterTarget, gene);
         float buttonY = dial.DrawCompoundToggle(inner, afterTarget + 6f, pawn, gene, StripButtonHeight) + 8f;
 
         if (DockButton.Draw(
@@ -291,8 +293,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    // What this metal stores and taps, in the metal def's own words. The tooltip
-    // described the click rather than the power before this.
+    /// What this metal stores and taps, in the metal def's own words. The tooltip
+    /// described the click rather than the power before this.
     private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
         MetallicArtsMetalDef? metal =
             DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
@@ -328,8 +330,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return def == null ? 0 : ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, def);
     }
 
-    private static Feruchemist? FindGene(Pawn pawn, string metalDefName) {
-        if (pawn.genes == null) return null;
+    private static Feruchemist? FindGene(Pawn pawn, string? metalDefName) {
+        if (metalDefName == null || pawn.genes == null) return null;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Feruchemist f && f.metal.defName == metalDefName && !f.Overridden) return f;

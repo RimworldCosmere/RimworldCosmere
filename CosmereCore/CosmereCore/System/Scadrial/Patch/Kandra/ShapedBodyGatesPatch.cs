@@ -25,9 +25,7 @@ public static class ShapedSurgeryPatch {
         if (thingForMedBills is not Pawn pawn) return Control.Continue;
         if (KandraShapeGraphicUtility.WornKind(pawn) == null) return Control.Continue;
 
-        // The method returns the Y it drew down to, and the caller assigns it straight back to
-        // curY. Skipping the draw means handing back the Y it was given, or the health tab's
-        // layout collapses under whatever comes next.
+        // hand back curY unchanged when skipping the draw, or the health tabs layout collapses below it
         ch.ReturnValue = curY;
 
         return Control.Cancel;

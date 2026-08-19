@@ -25,8 +25,7 @@ public abstract class QuickstartDebugButtonsPatch : DebugWindowsOpener {
             BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
         );
 
-        // Local, not a field: Concord reruns transpilers on every recompose of the target,
-        // so a static guard would suppress the insert on every run after the first.
+        // Local, not a field: a static guard would swallow re-inserts when Concord recomposes the target.
         bool inserted = false;
 
         foreach (CodeInstruction inst in instructions) {
@@ -44,9 +43,7 @@ public abstract class QuickstartDebugButtonsPatch : DebugWindowsOpener {
             yield return inst;
         }
 
-        // Reported here rather than from a startup callback: Patcher.Apply runs inside a queued
-        // long event, so anything checking a flag from LongEventHandler.ExecuteWhenFinished reads
-        // it before this transpiler has run.
+        // Patcher.Apply runs in a queued long event, so a startup callback would read this too early.
         if (!inserted) {
             Logger.Warning("DebugWindowsOpener.DrawButtons transpiler found no `bne.un.s` to insert before.");
         }

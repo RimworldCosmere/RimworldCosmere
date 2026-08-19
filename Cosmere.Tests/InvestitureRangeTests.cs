@@ -28,8 +28,7 @@ public class InvestitureRangeTests {
 
     [TestMethod]
     public void TheBandIsAShareNotAnAmount() {
-        // A chip and a broam hold wildly different amounts, and one setting has to mean the same
-        // thing on both.
+        // a chip and a broam hold wildly different amounts, and one setting must mean the same thing on both.
         Assert.IsTrue(InvestitureRange.Within(5f, 10f, 0.4f, 0.6f), "half of a small gem");
         Assert.IsTrue(InvestitureRange.Within(500f, 1000f, 0.4f, 0.6f), "half of a large one");
     }

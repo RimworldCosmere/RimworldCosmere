@@ -9,9 +9,9 @@ namespace Cosmere.Core.ShardConnection;
 ///     How long each pawn has lived on the save's world.
 /// </summary>
 /// <remarks>
-///     A pawn who was not born to this world grows into it, reaching the ancestry floor at about
-///     a year. It is what lets an off-world refugee eventually burn atium without ever having
-///     been Scadrian.
+///     A pawn who was not born to this world grows into it, passing the ancestry floor at about
+///     six and a half years and reaching residence's own cap at ten. It is what lets an
+///     off-world refugee eventually burn atium without ever having been Scadrian.
 ///     <para>
 ///         Only a real shardworld naturalises anyone. The cross-world sentinel is nobody's home -
 ///         living on a planet no Shard ever settled teaches you nothing, so a Crashlanded colony
@@ -55,21 +55,56 @@ public class ResidenceTracker : Verse.GameComponent {
 
         if (!belongs) return 0;
 
-        return ConnectionMath.ResidenceFrom(
-            ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks) ? ticks : 0
-        );
+        return ConnectionMath.ResidenceFrom(TicksFor(pawn));
+    }
+
+    /// <summary>Moves a pawn's residence and reports how much actually moved.</summary>
+    /// <remarks>Some gameplay moves stored residence rather than only accumulating it, so this runs in both directions.</remarks>
+    public int AdjustTicks(Pawn? pawn, int delta) {
+        if (pawn == null || delta == 0) return 0;
+
+        int id = pawn.thingIDNumber;
+        int had = ticksByPawn.TryGetValue(id, out int ticks) ? ticks : 0;
+        int next = ConnectionMath.ClampResidenceTicks(had, delta);
+        ticksByPawn[id] = next;
+
+        return next - had;
+    }
+
+    /// <summary>Raw ticks resident, with no shard-ancestry gate. The read half of <see cref="AdjustTicks" />.</summary>
+    public int TicksFor(Pawn? pawn) {
+        if (pawn == null) return 0;
+
+        if (ticksByPawn.TryGetValue(pawn.thingIDNumber, out int ticks)) return ticks;
+
+        CosmereWorldDef? world = NaturalisingWorld();
+        if (world == null) return 0;
+
+        bool native = world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
+        int seeded = ConnectionMath.SeedTicksForAge(pawn.ageTracker.AgeBiologicalTicks, native);
+        ticksByPawn[pawn.thingIDNumber] = seeded;
+
+        return seeded;
     }
 
     public override void GameComponentTick() {
         if (Find.TickManager.TicksGame % TickInterval != 0) return;
-        if (NaturalisingWorld() == null) return;
+
+        CosmereWorldDef? world = NaturalisingWorld();
+        if (world == null) return;
 
         List<Verse.Map> maps = Find.Maps;
         for (int m = 0; m < maps.Count; m++) {
             List<Pawn> pawns = maps[m].mapPawns.FreeColonistsAndPrisonersSpawned;
             for (int i = 0; i < pawns.Count; i++) {
-                int id = pawns[i].thingIDNumber;
-                ticksByPawn[id] = (ticksByPawn.TryGetValue(id, out int had) ? had : 0) + TickInterval;
+                Pawn pawn = pawns[i];
+                int id = pawn.thingIDNumber;
+                if (ticksByPawn.TryGetValue(id, out int had)) {
+                    ticksByPawn[id] = ConnectionMath.ClampResidenceTicks(had, TickInterval);
+                } else {
+                    bool native = world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
+                    ticksByPawn[id] = ConnectionMath.SeedTicksForAge(pawn.ageTracker.AgeBiologicalTicks, native);
+                }
             }
         }
     }

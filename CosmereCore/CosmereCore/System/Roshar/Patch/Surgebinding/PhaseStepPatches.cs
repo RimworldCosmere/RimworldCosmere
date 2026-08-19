@@ -69,9 +69,10 @@ public static class FlyingReachabilityPatch {
 /// </summary>
 [Patch]
 public abstract class FlyingReachabilityDirectPatch : Reachability {
-    // Set across our own re-entrant call so the nested injection stands aside and lets the real
-    // body run. Vanilla's own PassAllDestroyableThings self-call lands here too and is fine:
-    // it just passes straight through to the body it was always meant to reach.
+    /// <summary>
+    ///     Set during our own re-entrant call so the nested injection steps aside for the real body.
+    ///     Vanilla's own PassAllDestroyableThings self-call lands here too and just passes through.
+    /// </summary>
     [ThreadStatic]
     private static bool passingThrough;
 

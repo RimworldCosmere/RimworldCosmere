@@ -52,8 +52,7 @@ public class Quickstarter {
             return null;
         }
 
-        // A name the arg cannot resolve stops the launch rather than falling back to the setting,
-        // which would quietly boot a different colony than the one that was asked for.
+        // A name the arg cannot resolve stops the launch instead of quietly booting a different colony.
         Type? type = GenCommandLine.TryGetCommandLineArg(CommandLineArg, out string value)
             ? CommandLineQuickstart(value)
             : SettingsQuickstart();
@@ -131,8 +130,7 @@ public class Quickstarter {
         Find.Scenario.PreConfigure();
         Current.Game.storyteller = new Storyteller(Quickstart.storyteller, Quickstart.difficulty);
 
-        // Before GenerateWorld, not next to EnableShards below: a WorldGenStep that reads the
-        // world during generation sees null otherwise.
+        // Before GenerateWorld: a WorldGenStep reading the world during generation would see null otherwise.
         WorldUtility.SeedFromScenario();
 
         Current.Game.World = WorldGenerator.GenerateWorld(
@@ -149,9 +147,7 @@ public class Quickstarter {
 
         Find.Scenario.PostIdeoChosen();
 
-        // After PostIdeoChosen, not before: the scenario's own shard extension enables its set
-        // during PreConfigure without allowing conflicts, so a quickstart asking for both Ruin
-        // and Preservation would lose one of them if it ran first.
+        // After PostIdeoChosen: running this first would let PreConfigure drop a shard like Ruin or Preservation.
         EnableShards();
     }
 

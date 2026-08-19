@@ -69,8 +69,10 @@ public abstract class BaseWindow : Verse.Window {
 
     protected virtual bool drawFooterSeparator => true;
 
-    // Pulls the body in from the window edge so a scrollbar rides inside the frame rather
-    // than on top of the border.
+    /// <summary>
+    ///     Pulls the body in from the window edge so a scrollbar rides inside the frame rather
+    ///     than on top of the border.
+    /// </summary>
     protected virtual float bodyInset => 0f;
 
     protected override float Margin => drawBorder ? 1 : 0;

@@ -4,8 +4,10 @@ using Verse;
 namespace Cosmere.Core.Extension;
 
 public static class HediffExtension {
-    // Investiture can regrow a part lost recently, but an old amputation has settled into who
-    // the pawn is and stays lost.
+    /// <summary>
+    ///     Investiture can regrow a part lost recently, but an old amputation has settled into
+    ///     who the pawn is and stays lost.
+    /// </summary>
     private const int MissingPartHealWindowTicks = RimWorld.GenDate.TicksPerDay * 90;
 
     public static bool ParentIsMissing(this Verse.Hediff hediff) {

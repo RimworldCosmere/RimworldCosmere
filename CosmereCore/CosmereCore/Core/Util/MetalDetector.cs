@@ -109,8 +109,10 @@ public static class MetalDetector {
         return value;
     }
 
-    // ThingMaker logs an error for any madeFromStuff def handed no stuff, and both callers below
-    // walk arbitrary defs off cost lists and ingredient filters. Glass was the one that surfaced.
+    /// <summary>
+    ///     ThingMaker logs an error for any madeFromStuff def handed no stuff, and both callers below
+    ///     walk arbitrary defs off cost lists and ingredient filters. Glass was the one that surfaced it.
+    /// </summary>
     private static Verse.Thing MakeSample(ThingDef thingDef) {
         return ThingMaker.MakeThing(
             thingDef,

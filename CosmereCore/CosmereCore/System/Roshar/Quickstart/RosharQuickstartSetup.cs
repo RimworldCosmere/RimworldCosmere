@@ -7,9 +7,10 @@ namespace Cosmere.System.Roshar.Quickstart;
 
 [StaticConstructorOnStartup]
 internal static class RosharQuickstartSetup {
-    // TryAddRadiantOrder takes the zero-based CurrentIdeal, so the Third Ideal is 2.
-    // Every pawn here used to pass 5, which is out of range and silently clamped to
-    // the Fifth, leaving the whole roster maxed.
+    /// <summary>
+    ///     TryAddRadiantOrder takes the zero-based CurrentIdeal, so the Third Ideal is 2. Every pawn
+    ///     here used to pass 5, out of range and silently clamped to the Fifth, maxing the roster.
+    /// </summary>
     private const int FirstIdeal = 0;
     private const int SecondIdeal = 1;
     private const int ThirdIdeal = 2;

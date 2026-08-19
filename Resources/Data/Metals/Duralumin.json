@@ -21,16 +21,16 @@
   },
   "feruchemy": {
     "userName": "connector",
-    "description": "Stores connection, useful for adjusting social ties or affiliations.",
+    "description": "Stores Connection - the ties binding a person to the world they live on, to what they have bonded, and to a Shard.",
     "group": "spiritual",
     "attribute": "Connection",
     "store": {
       "stages": 1,
-      "description": "This pawn is storing Connection in a duralumin metalmind, severing bonds with people, places, and concepts. They become spiritually untethered, less grounded, less known. This may reduce social or cultural influence but allows deep storage of spiritual ties."
+      "description": "This pawn is storing Connection in a duralumin metalmind. Their hold on the world thins. The place they live becomes less theirs, bonds slacken, and what they have earned toward a Shard drains into the metal. None of it is destroyed. It waits."
     },
     "tap": {
       "stages": 1,
-      "description": "This pawn is tapping a duralumin metalmind, intensifying their Connection to others. Bonds strengthen, allegiances deepen, and ties to people or places become nearly unbreakable. Useful for bonding, commanding, or interacting with spiritual systems."
+      "description": "This pawn is tapping a duralumin metalmind, drawing stored Connection back into themselves. Roots take hold again, bonds pull tight, and what was earned toward a Shard returns. A person cannot hold more Connection than they were owed."
     }
   },
   "alloy": {

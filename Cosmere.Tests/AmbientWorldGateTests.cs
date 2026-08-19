@@ -89,8 +89,7 @@ public class AmbientWorldGateTests {
                 offenders.Add($"{relative} does not gate on a named feature");
             }
 
-            // The conditions belong in the def now. A bare Shard check here means the world half
-            // was forgotten, which is how Honor once put spren on Scadrial.
+            // belongs in the def now - a bare Shard check here means the world half was forgotten (Honor's spren bug).
             if (source.Contains("ShardUtility.AreAnyEnabled", StringComparison.Ordinal)) {
                 offenders.Add($"{relative} still checks a Shard directly");
             }
@@ -113,10 +112,7 @@ public class AmbientWorldGateTests {
 
             string source = File.ReadAllText(path);
 
-            // Through the arbiter, not WorldUtility.IsActive directly. On the cross-world
-            // sentinel IsActive is true for every world at once, so both patches passed their
-            // gate and both wrote the return value - leaving Concord's composition order to
-            // decide the xenotype of every pawn in the game.
+            // through the arbiter, not IsActive - true for every world on the sentinel, so load order decided xenotype.
             if (!source.Contains("XenotypeArbiter.MayAnswer", StringComparison.Ordinal)) {
                 offenders.Add($"{relative} does not ask the arbiter whether it may answer");
             }

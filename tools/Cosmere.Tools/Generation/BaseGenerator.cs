@@ -6,9 +6,10 @@ using HandlebarsDotNet;
 namespace Cosmere.Tools.Generation;
 
 public abstract class BaseGenerator : IGenerator {
-    // A stat floored at a thousandth is off; a capacity floored there is a pawn who
-    // cannot see, hear or stand. Tin storing all the way down should cost a colonist
-    // their senses, not their ability to be a colonist.
+    /// <summary>
+    ///     A stat floored at a thousandth is off; a capacity floored there leaves a pawn who cannot
+    ///     see, hear or stand. Tin storing all the way down should cost senses, not personhood.
+    /// </summary>
     private const double MinimumCapacityFactor = 0.15;
 
     // What a compounded burn pays over an ordinary tap.
@@ -171,9 +172,7 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        // Offsets sit on zero, not one. Sharing the factor helper meant brass shipped
-        // a stored ComfyTemperatureMin of +101 instead of +100 - and every stage below
-        // it was off by the same one.
+        // offsets sit on zero, not one - sharing the factor helper shipped brass +101 instead of +100.
         Handlebars.RegisterHelper("getOffsetForStage", (writer, context, parameters) => {
             if (parameters.Length >= 2 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
@@ -186,11 +185,7 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        // A factor ladder is geometric, not linear. The metal names the peak its top rung
-        // reaches and each rung takes an even fraction of the way there, so tapping to x10
-        // pairs with storing to exactly 1/10 - the two sides multiply back to 1 at every
-        // rung, which is what conservation means for a multiplier. A linear ladder cannot
-        // reach a peak like that at all: the storing side would need to pass through zero.
+        // factor ladder is geometric, not linear - tap x10 pairs with store 1/10, multiplying back to 1 at every rung.
         Handlebars.RegisterHelper("getFactorForStage", (writer, context, parameters) => {
             if (parameters.Length >= 3 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
@@ -215,9 +210,7 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        // Compounded charge pays out ten times harder. Reading that off the factor itself
-        // drives "lower is better" stats negative - Gold's IncomingDamageFactor would reach
-        // damage that heals - so amplify the benefit the factor represents and invert back.
+        // compounded charge pays 10x - reading the factor makes lower-is-better stats negative, so amplify then invert.
         Handlebars.RegisterHelper("getCompoundedStatForStage", (writer, context, parameters) => {
             if (parameters.Length >= 3 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&
@@ -234,9 +227,7 @@ public abstract class BaseGenerator : IGenerator {
             }
         });
 
-        // Offsets have no reciprocal reading, so the tenfold a factor gets would run
-        // straight off the end of any real scale - brass reached a comfort band 300
-        // degrees below zero. Three is what an absolute number can carry.
+        // offsets have no reciprocal reading - a tenfold factor ran brass to -300; three is what a number can carry.
         Handlebars.RegisterHelper("getCompoundedOffsetForStage", (writer, context, parameters) => {
             if (parameters.Length >= 2 &&
                 int.TryParse(parameters[0]?.ToString(), out var stage) &&

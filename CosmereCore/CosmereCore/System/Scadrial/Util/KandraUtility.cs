@@ -201,8 +201,7 @@ public static class KandraUtility {
 
         GiveBlessing(pawn, blessing);
 
-        // The kandra's own body is whatever it woke up in. Recording it now means Revert always
-        // has somewhere to go back to, even if the first thing it does is eat a corpse.
+        // records the kandra's own body now, so Revert always has somewhere to go back to, even after eating a corpse.
         pawn.TryGetComp<CompKandraForms>()?.RememberTrueBody();
     }
 
@@ -214,15 +213,12 @@ public static class KandraUtility {
     ///     being applied. Calling SetXenotype from in there sets the whole thing going again.
     /// </remarks>
     public static void GiveBlessing(Pawn pawn, HediffDef blessing) {
-        // This Blessing, not any Blessing. Checking whether the pawn had one at all meant a
-        // kandra that already carried Presence could never be given Potency: the hediff was
-        // skipped and only the spikes went in.
+        // must check this Blessing, not any - checking for any meant a kandra with Presence never got Potency added.
         if (pawn.health?.hediffSet?.HasHediff(blessing) != true) pawn.health?.AddHediff(blessing);
 
         DriveSpikes(pawn, blessing);
 
-        // One place decides what the spikes add up to, so adding a second Blessing and repairing
-        // a broken one go down the same path.
+        // one place decides what the spikes add up to, so adding a Blessing and repairing one share this path.
         ReconcileSpikes(pawn);
     }
 
@@ -263,9 +259,7 @@ public static class KandraUtility {
             Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
 
-        // Kandra made before the spikes were attached to a part carry one with no Part, which
-        // hides the removal surgery forever. Take it off and let the code below rebuild it,
-        // keeping whatever spikes were in it.
+        // old kandra carry a spikes hediff with no Part, which hides the removal surgery - strip and rebuild it.
         if (existing is HemalurgicSpikes stray && stray.Part == null) {
             List<ImplantedSpikeData> carried = [.. stray.spikes];
             pawn.health.RemoveHediff(stray);
@@ -274,10 +268,7 @@ public static class KandraUtility {
         }
 
         if (existing is not HemalurgicSpikes set) {
-            // On the torso, the way the implant surgery does it. Added with no part, the hediff
-            // works for everything that only counts spikes, but Recipe_Surgery asks the worker
-            // for parts to operate on and it answers with this hediff's Part. Null there means
-            // no valid parts, so "remove hemalurgic spike" silently never appears.
+            // must attach to the torso - a null Part makes Recipe_Surgery see no valid parts, so remove never appears.
             BodyPartRecord? torso = pawn.health.hediffSet?.GetNotMissingParts()
                 .FirstOrDefault(part => part.def == pawn.RaceProps.body.corePart.def);
             if (torso == null) return;
@@ -294,9 +285,7 @@ public static class KandraUtility {
             for (int i = 0; i < salvaged.Count; i++) set.AddSpike(salvaged[i]);
         }
 
-        // Count this Blessing's own pair, not every spike in the body. A kandra with three
-        // Blessings has six spikes in it, and topping up to two total would leave the new one
-        // with nothing.
+        // counts this Blessing's own pair, not every spike in the body - a kandra with three Blessings has six total.
         for (int i = MatchingSpikeCount(pawn, blessing); i < SpikesPerBlessing; i++) {
             set.AddSpike(
                 new ImplantedSpikeData {
@@ -307,10 +296,7 @@ public static class KandraUtility {
             );
         }
 
-        // Spikes are spikes. A kandra's are what hold its mind together, and they are also the
-        // hole Ruin talks through. Driving them in here rather than through the surgery bypassed
-        // the influence entirely, so kandra were the one spiked thing on Scadrial that nothing
-        // whispered to.
+        // spikes hold a kandra's mind and are also Ruin's channel - driving them in outside surgery left Ruin silent.
         HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
     }
 
@@ -326,8 +312,7 @@ public static class KandraUtility {
     public static void ReconcileSpikes(Pawn pawn) {
         if (pawn.health?.hediffSet == null) return;
 
-        // A Blessing whose pair is broken stops being a Blessing, and its stats go with it. The
-        // spikes that are left stay in the body; they just do not add up to anything.
+        // a Blessing with a broken pair stops being a Blessing and loses its stats - the spikes stay in the body.
         List<Hediff> all = BlessingsOn(pawn);
         for (int i = 0; i < all.Count; i++) {
             if (MatchingSpikeCount(pawn, all[i].def) < SpikesPerBlessing) {
@@ -338,10 +323,7 @@ public static class KandraUtility {
         int whole = CompleteBlessingsOn(pawn).Count;
 
         if (whole > 0) {
-            // Only a kandra that was actually broken is being repaired. This runs on a slow tick
-            // for every healthy kandra in the colony, and the restore below used to fire every
-            // time - so a colonist wearing a face the player chose had it taken off on a timer,
-            // roughly every two thousand ticks, for no reason it could see.
+            // repairs only a broken kandra - it used to fire every tick and strip a face for no reason.
             bool wasBroken =
                 pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_HalfBlessed)
                 || pawn.health.hediffSet.HasHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Mistwraith);
@@ -356,9 +338,7 @@ public static class KandraUtility {
 
             forms?.Mind.Restore(pawn);
 
-            // A repaired kandra picks its old face back up. Coming out of it grey and nameless
-            // would make every recovery feel like a different person walking in. Nothing stored
-            // means it had no face when it broke, and it keeps whichever one it has now.
+            // a repaired kandra picks its old face back up, so recovery doesn't read as a different person walking in.
             if (worn != null) KandraShapeshift.Wear(pawn, worn);
 
             return;

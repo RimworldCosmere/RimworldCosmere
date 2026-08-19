@@ -82,8 +82,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             y += 28f;
         }
 
-        // Seventeen metals never fitted, and without a scroll view the ones past
-        // the fold were cut off rather than reachable.
+        // 17 metals never fit - without a scroll view, the ones past the fold were unreachable.
         Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, ferus.Count * (rowHeight + rowGap));
         Widgets.BeginScrollView(listRect, ref progressionScroll, viewRect);
@@ -123,8 +122,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 tappingTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentTappingForMetal(metal));
             }
 
-            // Each half is a whole phrase, so a metal never worked reads
-            // "never stored" rather than "stored never".
+            // each half is a whole phrase: unworked reads "never stored", not "stored never".
             string storedLabel = storingTicks > 0
                 ? "CC_Codex_Feruchemy_Stored".Translate(
                     storingTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
@@ -345,8 +343,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         return result;
     }
 
-    // Feruchemy casts nothing. Each metal the pawn can work is a dial that rules
-    // hold, so the metals are the targets rather than any ability.
+    // feruchemy casts nothing - each workable metal is a dial that rules hold, so metals are the targets.
     public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {
         List<AutocastTarget> targets = [];
         List<Feruchemist> ferus = CollectFeruchemists(pawn);

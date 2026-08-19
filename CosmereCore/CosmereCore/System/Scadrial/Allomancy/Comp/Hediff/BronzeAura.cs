@@ -36,8 +36,7 @@ public class BronzeAura : LineDrawingAura {
 
         float fade = FadeFor(distance);
 
-        // Thickness scales between 0.15 and 1 based on thing's investiture,
-        // with 10000 BEUs or more giving maximum thickness.
+        // thickness scales 0.15-1 with investiture, maxing at 10000 beu or more
         float thickness = Mathf.Lerp(0.15f, 1f, Mathf.Clamp01(investiture / 50000f));
 
         return new LineToRender(

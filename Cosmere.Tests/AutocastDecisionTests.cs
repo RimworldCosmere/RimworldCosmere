@@ -22,8 +22,10 @@ public class AutocastDecisionTests {
         );
     }
 
-    // A targeted toggle used to be skipped before it ever reached the release branch, so
-    // soothe and riot stayed up for good once autocast started them.
+    /// <summary>
+    ///     A targeted toggle used to be skipped before it reached the release branch, so soothe and
+    ///     riot stayed up for good once autocast started them.
+    /// </summary>
     [TestMethod]
     public void NeedingATargetDoesNotBlockTheRelease() {
         Assert.AreEqual(

@@ -371,8 +371,7 @@ public class QuestDefValidationTests {
             // No progression means no arc, so no raid can ever fire from this scenario.
             if (startArc == null || !raidsIn.ContainsKey(startArc)) continue;
 
-            // Must be the faction ScenPart's relations, not a named pawn's - those share a
-            // tag name and the pawn block comes first in the file.
+            // must be the faction ScenPart's relations, not a named pawn's - they share a tag, pawn block comes first.
             XElement? relations = null;
             foreach (XElement part in root.Descendants("li")) {
                 string? cls = (string?)part.Attribute("Class");
@@ -693,9 +692,7 @@ public class QuestDefValidationTests {
                 foreach (XElement entry in extras.Elements("li")) {
                     if (ours.Contains(entry.Value)) continue;
 
-                    // A vanilla base-building part walls its base into a rect BESIDE the site's
-                    // rect of interest, so it can never guard the objective itself. That is
-                    // allowed only when the quest also ships a garrison part, which does.
+                    // a vanilla base part walls beside the site rect, so it can't guard without a garrison part.
                     bool guarded = false;
                     foreach (XElement other in extras.Elements("li")) {
                         if (ours.Contains(other.Value) && other.Value.Contains("Garrison")) guarded = true;
@@ -766,9 +763,7 @@ public class QuestDefValidationTests {
                     HashSet<string> present = FactionsCreatedBy(scenario);
                     if (present.Contains(faction)) continue;
 
-                    // The player-faction and NPC-faction defs for one power differ only by an
-                    // "NPC" suffix, and a scenario where you play that power has no business
-                    // spawning a rival copy of yourself.
+                    // player/NPC defs differ only by an NPC suffix - playing that power shouldn't spawn a rival copy.
                     if (faction.EndsWith("NPC", StringComparison.Ordinal)
                         && present.Contains(faction.Substring(0, faction.Length - 3))) {
                         continue;
@@ -892,8 +887,7 @@ public class QuestDefValidationTests {
 
             if (days > 0) continue;
 
-            // Only a quest the player is asked to accept can miss an acceptance deadline.
-            // Capstones and Threats are both handed to the player rather than offered.
+            // only a quest the player accepts can miss a deadline - Capstones/Threats are both handed to them.
             string? kind = def.Element("kind")?.Value;
             Assert.IsTrue(
                 kind == "Capstone" || kind == "Threat",

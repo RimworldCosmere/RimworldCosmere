@@ -2,9 +2,10 @@ using UnityEngine;
 
 namespace Cosmere.Core.Ability.Autocast;
 
-// A dial reads as two directions away from rest rather than as one number, and
-// both the editor and the rule summary need to speak of it that way. Kept here
-// so neither has to know that fifty is the middle.
+/// <summary>
+///     A dial reads as two directions from rest, not a single number. Centralized here so the
+///     editor and rule summary don't need to know that 50 is the middle.
+/// </summary>
 public static class AutocastDialRange {
     private const float FallbackIdle = 50f;
     private const float FallbackMin = 0f;

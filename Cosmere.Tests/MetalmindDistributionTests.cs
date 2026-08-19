@@ -9,6 +9,8 @@ namespace Cosmere.Tests;
 internal sealed class FakeMetalmindSource : IMetalmindSource {
     private float stored;
 
+    private readonly Dictionary<string, float> byLedger = new Dictionary<string, float>();
+
     private readonly bool refuses;
 
     public FakeMetalmindSource(
@@ -53,32 +55,49 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 
     public string SourceLabel => SourceId;
 
-    // The clamp the carry exists to work around: asking for more than there is room for
-    // silently loses the difference, so the caller has to be told what actually landed.
-    public float AddStored(float amount) {
+    /// <summary>
+    ///     The clamp the carry exists to work around: asking for more than there is room for
+    ///     silently loses the difference, so the caller has to be told what actually landed.
+    /// </summary>
+    public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
         if (refuses) return 0f;
 
         float before = stored;
         stored = Math.Min(MaxAmount, stored + amount);
+        float moved = stored - before;
+        if (ledgerKey != null && moved != 0f) {
+            byLedger.TryGetValue(ledgerKey.Value.Name, out float existing);
+            byLedger[ledgerKey.Value.Name] = existing + moved;
+        }
 
-        return stored - before;
+        return moved;
     }
 
-    public float ConsumeStored(float amount) {
+    public float ConsumeStored(float amount, ConnectionKey? ledgerKey = null) {
         if (refuses) return 0f;
 
         float before = stored;
         stored = Math.Max(0f, stored - amount);
+        float moved = before - stored;
+        if (moved != 0f) {
+            if (ledgerKey != null) ChargeAttribution.DrainNamed(byLedger, ledgerKey.Value.Name, moved);
+            else ChargeAttribution.Drain(byLedger, moved);
+        }
 
-        return before - stored;
+        return moved;
     }
 
     public float AddCompounded(float amount) {
         return 0f;
     }
 
-    public float ConsumeCompounded(float amount) {
-        return 0f;
+    // The burn spends ordinary charge too, so the fake drains the same pool a tap does.
+    public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
+        return ConsumeStored(amount, ledgerKey);
+    }
+
+    public float StoredFor(ConnectionKey ledgerKey) {
+        return byLedger.TryGetValue(ledgerKey.Name, out float amount) ? amount : 0f;
     }
 }
 
@@ -88,15 +107,121 @@ internal sealed class FakeMetalmindSource : IMetalmindSource {
 /// </summary>
 [TestClass]
 public class MetalmindDistributionTests {
+    private const float Tolerance = 1e-3f;
+
     private static float Store(List<IMetalmindSource> sources, float amount, string target = MetalmindDistribution.TargetAll) {
-        return MetalmindDistribution.Carry(
+        return MetalmindDistribution.Transfer(sources, MetalmindOperation.Store, target, null, amount);
+    }
+
+    private static float StoreFor(
+        List<IMetalmindSource> sources,
+        ConnectionKey ledgerKey,
+        float amount,
+        string target = MetalmindDistribution.TargetAll
+    ) {
+        return MetalmindDistribution.Transfer(sources, MetalmindOperation.Store, target, ledgerKey, amount);
+    }
+
+    // The operation the ordinary duralumin tap uses, so these tests hit the shipped path.
+    private static float Tap(List<IMetalmindSource> sources, ConnectionKey ledgerKey, float amount) {
+        return MetalmindDistribution.Transfer(
             sources,
-            target,
-            amount,
-            static m => m.CanStore,
-            static (m, a) => m.AddStored(a),
-            static m => m.FreeSpace
+            MetalmindOperation.Tap,
+            MetalmindDistribution.TargetAll,
+            ledgerKey,
+            amount
         );
+    }
+
+    // And the one the compounded burn uses, which is the other withdrawal.
+    private static float BurnCompounded(List<IMetalmindSource> sources, ConnectionKey ledgerKey, float amount) {
+        return MetalmindDistribution.Transfer(
+            sources,
+            MetalmindOperation.TapCompounded,
+            MetalmindDistribution.TargetAll,
+            ledgerKey,
+            amount
+        );
+    }
+
+    private static readonly ConnectionKey ruin = ConnectionKey.For(DuraluminLedger.Shard, "Ruin");
+
+    private static readonly ConnectionKey residence = ConnectionKey.For(DuraluminLedger.Residence, null);
+
+    /// <summary>
+    ///     A withdrawal must come out of the ledger it names, even when a metalmind earlier in the
+    ///     list holds none of that key and has plenty of another key's charge to give instead.
+    /// </summary>
+    [TestMethod]
+    public void ADrawNeverFallsThroughOntoAnotherLedgersCharge() {
+        FakeMetalmindSource full = new FakeMetalmindSource(20f, "full");
+        FakeMetalmindSource empty = new FakeMetalmindSource(20f, "empty");
+        Assert.AreEqual(20f, StoreFor([full], ruin, 20f), Tolerance);
+
+        Assert.AreEqual(18f, StoreFor([full, empty], residence, 18f), Tolerance);
+        Assert.AreEqual(5f, Tap([full, empty], residence, 5f), Tolerance);
+
+        Assert.AreEqual(20f, full.StoredFor(ruin), Tolerance, "the correction robbed a Shard tie to pay a residence one.");
+        Assert.AreEqual(13f, empty.StoredFor(residence), Tolerance);
+    }
+
+    /// <summary>
+    ///     The re-review's reproduction: band A holds only a Shard tie, band B holds only the
+    ///     residence tie being tapped, and A is walked first.
+    /// </summary>
+    /// <remarks>
+    ///     Splitting the tap by physical charge let A absorb the whole 18, destroying two points of
+    ///     Shard Connection to mint two points of Residence that band B could still pay out again.
+    /// </remarks>
+    [TestMethod]
+    public void ATapNeverFundsOneLedgerByDestroyingAnother() {
+        FakeMetalmindSource bandA = new FakeMetalmindSource(20f, "A");
+        FakeMetalmindSource bandB = new FakeMetalmindSource(18f, "B");
+        StoreFor([bandA], ruin, 20f);
+        StoreFor([bandB], residence, 18f);
+
+        Assert.AreEqual(18f, Tap([bandA, bandB], residence, 18f), Tolerance);
+
+        Assert.AreEqual(20f, bandA.StoredFor(ruin), Tolerance, "band A paid a residence tap out of its Shard tie.");
+        Assert.AreEqual(20f, bandA.StoredAmount, Tolerance, "band A gave up charge it held none of the key for.");
+        Assert.AreEqual(0f, bandB.StoredFor(residence), Tolerance, "band B kept residence charge it had already paid out.");
+        Assert.AreEqual(0f, bandB.StoredAmount, Tolerance);
+    }
+
+    // A draw can never take more than the key is recorded as holding, whatever the metalmind holds.
+    [TestMethod]
+    public void ADrawIsBoundedByWhatTheKeyIsRecordedAsHolding() {
+        FakeMetalmindSource band = new FakeMetalmindSource(50f);
+        StoreFor([band], ruin, 30f);
+        StoreFor([band], residence, 10f);
+
+        Assert.AreEqual(10f, Tap([band], residence, 40f), Tolerance);
+        Assert.AreEqual(0f, band.StoredFor(residence), Tolerance);
+        Assert.AreEqual(30f, band.StoredFor(ruin), Tolerance);
+    }
+
+    /// <summary>
+    ///     The compounded burn is the other withdrawal, and it takes the same bound. Deriving the
+    ///     direction from the operation has to cover both, not only the one the tests started with.
+    /// </summary>
+    [TestMethod]
+    public void ACompoundedBurnIsBoundedByWhatTheKeyIsRecordedAsHolding() {
+        FakeMetalmindSource band = new FakeMetalmindSource(50f);
+        StoreFor([band], ruin, 30f);
+        StoreFor([band], residence, 10f);
+
+        Assert.AreEqual(10f, BurnCompounded([band], residence, 40f), Tolerance);
+        Assert.AreEqual(0f, band.StoredFor(residence), Tolerance);
+        Assert.AreEqual(30f, band.StoredFor(ruin), Tolerance);
+    }
+
+    // The other half of the rule: bounding a store by the key would break every first store.
+    [TestMethod]
+    public void AStoreIsNotBoundedByWhatTheKeyAlreadyHolds() {
+        FakeMetalmindSource fresh = new FakeMetalmindSource(20f, "fresh");
+
+        Assert.AreEqual(12f, StoreFor([fresh], residence, 12f), Tolerance);
+        Assert.AreEqual(12f, fresh.StoredFor(residence), Tolerance);
     }
 
     [TestMethod]
@@ -154,8 +279,10 @@ public class MetalmindDistributionTests {
         Assert.AreEqual(0f, Store([band], 4f, "thing:burned-out"));
     }
 
-    // A metalmind can refuse a transfer it looked able to take - Metalmind.AddStored bails on
-    // ValidateOwner, so a band another pawn owns has room and still moves nothing.
+    /// <summary>
+    ///     A metalmind can refuse a transfer it looked able to take - Metalmind.AddStored bails on
+    ///     ValidateOwner, so a band another pawn owns has room and still moves nothing.
+    /// </summary>
     [TestMethod]
     public void AMetalmindThatRefusesTheTransferReportsNothingMoved() {
         FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);
@@ -164,8 +291,10 @@ public class MetalmindDistributionTests {
         Assert.AreEqual(0f, foreign.StoredAmount);
     }
 
-    // And it must not eat the remainder on its way past, or the metalmind behind it never
-    // sees the charge the refusing one declined.
+    /// <summary>
+    ///     And it must not eat the remainder on its way past, or the metalmind behind it never sees
+    ///     the charge the refusing one declined.
+    /// </summary>
     [TestMethod]
     public void ARefusingMetalmindDoesNotSwallowTheRemainder() {
         FakeMetalmindSource foreign = new FakeMetalmindSource(10f, "foreign", refusesTransfers: true);

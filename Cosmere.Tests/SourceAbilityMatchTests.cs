@@ -23,8 +23,7 @@ public class SourceAbilityMatchTests {
 
     [TestMethod]
     public void ItIsNotJustTheFirstOneInTheRoster() {
-        // The bug this guards: a coppercloud reloaded as whatever ability happened to sit first on
-        // its Smoker, which on a Mistborn is an arbitrary metal.
+        // bug this guards: a coppercloud reloaded as whatever ability sat first on its Smoker, arbitrary on a Mistborn.
         Assert.AreNotEqual(0, SourceAbilityMatch.IndexOf(Mistborn, "Cosmere_Scadrial_Ability_CopperAura"));
         Assert.AreEqual(2, SourceAbilityMatch.IndexOf(Mistborn, "Cosmere_Scadrial_Ability_IronPull"));
     }

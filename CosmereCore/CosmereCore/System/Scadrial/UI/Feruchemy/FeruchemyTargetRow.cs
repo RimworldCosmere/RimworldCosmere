@@ -7,9 +7,8 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI.Feruchemy;
 
 public static class FeruchemyTargetRow {
-    // Which metalmind the dials act on. A pawn wearing a band and carrying three
-    // implants needs to say which one they mean before compounding makes sense,
-    // since burning one destroys it.
+    /// Which metalmind the dials act on. A pawn wearing a band and carrying three implants
+    /// needs to say which one they mean before compounding makes sense - burning the wrong one destroys it.
     public static float Draw(Rect inner, float y, Feruchemist gene) {
         return DockDropdownRow.Draw(
             new Rect(inner.x, y, inner.width, DockDropdownRow.Height),
@@ -67,8 +66,7 @@ public static class FeruchemyTargetRow {
         return GroupSummary(gene, key, gene.targetMetalmindId);
     }
 
-    // Groups carry their own running total, so choosing one does not hide how much
-    // is actually in there.
+    /// Groups carry their own running total, so choosing one does not hide how much is actually in there.
     private static string GroupSummary(Feruchemist gene, string key, string target) {
         float stored = 0f;
         float max = 0f;

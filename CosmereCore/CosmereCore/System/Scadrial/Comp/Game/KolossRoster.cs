@@ -179,9 +179,7 @@ public class KolossRoster : GameComponent {
     public bool Release(Pawn? koloss) {
         if (koloss == null) return false;
 
-        // Slavery ends here, but the faction does not change yet. Losing the hold starts a grace
-        // window, and the koloss is still nominally the colony's until that runs out - which is
-        // what gives the player something to select, and something to warn them on.
+        // slavery ends now, but faction stays until the grace window runs out - lets the player warn/select
         if (ModsConfig.IdeologyActive && koloss.guest != null && koloss.IsSlaveOfColony) {
             koloss.guest.SetGuestStatus(null);
         }
@@ -243,8 +241,7 @@ public class KolossRoster : GameComponent {
         }
 
         foreach (Pawn holder in holders) {
-            // One source per push, summed, because DrainSource compares on its def alone and a
-            // second entry for the same ability would replace the first rather than add to it.
+            // summed here: DrainSource compares by def alone, so a second entry would overwrite, not add
             Dictionary<Cosmere.Core.Def.AbilityDef, float> owed = [];
 
             foreach (KolossBond bond in BondsOf(holder)) {
@@ -302,8 +299,7 @@ public class KolossRoster : GameComponent {
         Pawn? lost = bond.koloss;
         Pawn? holder = bond.holder;
 
-        // Stop billing for it before letting go, or the gene keeps paying upkeep on a hold that
-        // no longer exists.
+        // stop billing before letting go, or the gene keeps paying upkeep on a hold that's gone
         Cosmere.Core.Def.AbilityDef? through = AbilityFor(bond);
         if (holder != null && through != null) {
             GeneFor(holder, through)?.UpdateDrainSource(new DrainSource(through, 0f));
@@ -326,10 +322,7 @@ public class KolossRoster : GameComponent {
     public static Allomancer? HoldingGene(Pawn? holder) {
         if (holder?.genes == null) return null;
 
-        // GetAllomanticGeneForMetal goes through Cosmere.Core.Def.MetalDef.GetMistingGene, which knows the real
-        // names. Guessing at "Cosmere_Scadrial_Gene_Allomancy_Zinc" matched nothing - the gene is
-        // called MistingZinc - so billing found no gene and dropped every bond on the next tick.
-        // A hold lasted about four seconds.
+        // real gene name is MistingZinc, not a guessed Cosmere_Scadrial_Gene_Allomancy_Zinc - that dropped every bond
         return holder.genes.GetAllomanticGeneForMetal(MetalDefOf.Zinc)
                ?? holder.genes.GetAllomanticGeneForMetal(MetalDefOf.Brass);
     }

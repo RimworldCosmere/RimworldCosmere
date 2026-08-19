@@ -24,10 +24,7 @@ public class BlessingBound : Verse.Gene {
 
         if (KandraUtility.Blessings.Count == 0) return;
 
-        // A kandra the game generated arrives with the xenotype and nothing in it. One that came
-        // from a save or a dev tool may have the Blessing hediff and no spikes under it, which
-        // reads as a kandra with nothing holding it together: no spike to pull, and the next
-        // check would turn it into a mistwraith. Either way, make the spikes match the Blessing.
+        // no spikes under an existing Blessing hediff reads as unbound; sync spikes to match it.
         Verse.Hediff? existing = KandraUtility.BlessingOn(pawn);
         KandraUtility.GiveBlessing(
             pawn,

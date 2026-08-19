@@ -56,9 +56,10 @@ public class MetallicArtsBalanceTests {
         return (string?)def.Element("defName") ?? (string?)def.Attribute("Name") ?? "<abstract>";
     }
 
-    // The bug: getStatForStage emitted the factor formula for offsets too, so every offset
-    // carried a spare 1 and then multiplied by the stage. Storing brass asked for a room
-    // above eighty degrees.
+    /// <summary>
+    ///     The bug: getStatForStage emitted the factor formula for offsets too, so every offset carried
+    ///     a spare 1 and multiplied by the stage - storing brass asked for a room above eighty degrees.
+    /// </summary>
     [TestMethod]
     public void FeruchemicalTemperatureOffsetsStayInsideARangeAPawnCanLiveIn() {
         foreach ((string file, XElement def) in DefsUnder("CosmereScadrial", "Defs", "Feruchemy")) {
@@ -89,8 +90,10 @@ public class MetallicArtsBalanceTests {
         }
     }
 
-    // A capacity floored where a stat is floored leaves a colonist who cannot see, hear or
-    // stand up, which is a different thing from one who gave their senses away.
+    /// <summary>
+    ///     A capacity floored where a stat is floored leaves a colonist who cannot see, hear or
+    ///     stand up, which is a different thing from one who gave their senses away.
+    /// </summary>
     [TestMethod]
     public void StoringNeverTakesACapacityBelowWhatAPawnCanFunctionAt() {
         foreach ((string file, XElement def) in DefsUnder("CosmereScadrial", "Defs", "Feruchemy")) {
@@ -108,9 +111,10 @@ public class MetallicArtsBalanceTests {
         }
     }
 
-    // Feruchemy is conservation. A metal whose tapping ladder pays out more than its storing
-    // ladder costs is making Investiture out of nothing - gold's tap step was 0.95 against a
-    // storing step of 0.045, so a bloodmaker healed twenty times over for a tenth of the price.
+    /// <summary>
+    ///     Feruchemy is conservation: a ladder that pays out more than storing costs makes Investiture
+    ///     from nothing - gold's tap step was 0.95 against a storing step of 0.045, a 20x markup.
+    /// </summary>
     [TestMethod]
     public void EveryFeruchemicalLadderMirrorsItsOppositeNumber() {
         Dictionary<string, Dictionary<string, float>> byDef = [];
@@ -139,10 +143,7 @@ public class MetallicArtsBalanceTests {
             foreach ((string stat, float storeValue) in store) {
                 Assert.IsTrue(tap.ContainsKey(stat), $"{tapName} is missing {stat}, which {storeName} moves");
 
-                // The ladder is geometric, so the two sides of any rung are reciprocals and
-                // multiply back to 1. That is what conservation means for a multiplier - and
-                // it is the only shape that reaches a peak of ten without the storing side
-                // having to pass through zero on the way down.
+                // ladder rungs are reciprocals multiplying to 1 - the only shape reaching a peak without crossing zero.
                 float tapValue = tap[stat];
 
                 Assert.AreEqual(
@@ -155,9 +156,10 @@ public class MetallicArtsBalanceTests {
         }
     }
 
-    // A ladder that climbs evenly to its peak is the point of the geometric shape: half the
-    // dial should be worth noticeably less than all of it, and every rung should be an
-    // improvement on the one below.
+    /// <summary>
+    ///     A ladder that climbs evenly to its peak is the point of the geometric shape: half the dial
+    ///     should be worth noticeably less than all of it, with every rung an improvement on the last.
+    /// </summary>
     [TestMethod]
     public void EveryLadderClimbsEvenlyToItsPeak() {
         int laddersChecked = 0;
@@ -189,8 +191,7 @@ public class MetallicArtsBalanceTests {
                     Assert.IsTrue(ordered, $"{file}/{name}: {stat} goes backwards at rung {i}");
                 }
 
-                // Geometric means the halfway rung is the square root of the peak, so half a
-                // dial buys about a third of a tenfold ladder rather than half of it.
+                // halfway rung is the peak's square root - half a dial buys about a third of a tenfold ladder.
                 float peak = rungs[^1];
                 float middle = rungs[rungs.Count / 2 - 1];
                 Assert.AreEqual(
@@ -207,8 +208,10 @@ public class MetallicArtsBalanceTests {
         Assert.IsTrue(laddersChecked > 0, "found no feruchemical ladders at all");
     }
 
-    // Anything that used to ride multiplyStatChangesBySeverity now rides a curve. Leaving the
-    // flag on a stage that still lists a flat factor puts the old blowout straight back.
+    /// <summary>
+    ///     Anything that used to ride multiplyStatChangesBySeverity now rides a curve. Leaving the flag
+    ///     on a stage that still lists a flat factor puts the old blowout straight back.
+    /// </summary>
     [TestMethod]
     public void NoAllomanticStageStillMultipliesAFlatFactorBySeverity() {
         foreach ((string file, XElement def) in DefsUnder("CosmereScadrial", "Defs", "Allomancy")) {
@@ -261,8 +264,10 @@ public class MetallicArtsBalanceTests {
         Assert.IsTrue(checkedCurves > 0, "found no severity curves at all - the conversion did not run");
     }
 
-    // Both bubbles shipped with the flag off and hardcoded factors, so burning, flaring and a
-    // duralumin burn produced the identical bubble.
+    /// <summary>
+    ///     Both bubbles shipped with the flag off and hardcoded factors, so burning, flaring and a
+    ///     duralumin burn produced the identical bubble.
+    /// </summary>
     [TestMethod]
     public void BothTimeBubblesRespondToSeverity() {
         string[] wanted = [
@@ -295,8 +300,10 @@ public class MetallicArtsBalanceTests {
         }
     }
 
-    // Upkeep should track what the burn buys. Pewter - seventeen stats including double move
-    // speed - used to sit on the same default as an ability that only draws lines in the air.
+    /// <summary>
+    ///     Upkeep should track what the burn buys. Pewter - seventeen stats including double move
+    ///     speed - used to sit on the same default as an ability that only draws lines in the air.
+    /// </summary>
     [TestMethod]
     public void PewterCostsMoreToBurnThanAPassiveSense() {
         Dictionary<string, float> upkeep = ReadUpkeep();
@@ -339,10 +346,10 @@ public class MetallicArtsBalanceTests {
         return upkeep;
     }
 
-    // SimpleCurve keeps its points in a `points` field. A bare list of <li> under the curve
-    // loads for a List<CurvePoint> and not for this, and RimWorld's answer is an XML error per
-    // point plus an empty curve - which evaluates to zero, so every affected stat silently
-    // became a factor of 0 rather than reverting to 1.
+    /// <summary>
+    ///     SimpleCurve keeps its points in a `points` field. A bare list of items loads as a plain
+    ///     list instead, giving an XML error per point and an empty curve that evaluates to 0, not 1.
+    /// </summary>
     private static List<(float severity, float value)> ReadCurve(XElement entry) {
         List<(float, float)> points = [];
         XElement? curve = entry.Element("valueBySeverity");

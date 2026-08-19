@@ -12,8 +12,10 @@ public class FeruchemyRateTests {
     private const float BandCapacity = 900f;
     private const float Tolerance = 1e-4f;
 
-    // The bug this class exists for: storing and tapping used separate multipliers, so a
-    // metal could be tuned to give back more than it took.
+    /// <summary>
+    ///     The bug this class exists for: storing and tapping used separate multipliers, so a metal
+    ///     could be tuned to give back more than it took.
+    /// </summary>
     [TestMethod]
     public void StoringAndTappingMoveChargeAtTheSameRate() {
         foreach (float severity in new[] { 1f, 5f, 12f, FeruchemyRate.MaxSeverity }) {
@@ -84,8 +86,10 @@ public class FeruchemyRateTests {
         }
     }
 
-    // Efficiency buys duration, not magnitude - and it has to slow filling by the same
-    // factor, or a savant would be pulling charge out of nowhere.
+    /// <summary>
+    ///     Efficiency buys duration, not magnitude, and it has to slow filling by the same factor -
+    ///     or a savant would be pulling charge out of nowhere.
+    /// </summary>
     [TestMethod]
     public void EfficiencyStretchesFillingAndDrawingEqually() {
         float efficiency = FeruchemyRate.Efficiency(1f, 20, 1.6f);

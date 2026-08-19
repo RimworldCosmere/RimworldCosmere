@@ -24,8 +24,7 @@ public static class FeatureUtility {
 
         CosmereWorldDef? current = WorldUtility.Primary;
 
-        // No world chosen yet - during early load, or a save predating world selection. Fall
-        // back to the Shard answer rather than silencing everything.
+        // no world chosen yet (early load, or a save predating world selection): fall back to Shard.
         if (current == null) return true;
 
         if (current.crossWorld) return IsChosen(feature);

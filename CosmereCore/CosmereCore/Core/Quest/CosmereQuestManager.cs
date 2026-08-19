@@ -227,8 +227,7 @@ public class CosmereQuestManager : GameComponent {
             return false;
         }
 
-        // Before Add: QuestManager.Add calls Initiate() for an already-accepted quest, which is
-        // what enables the first stage's parts. Accepting afterwards would leave them dormant.
+        // Call before Add: Add() calls Initiate() for an already-accepted quest, enabling the first stage's parts.
         quest.SetInitiallyAccepted();
 
         Find.QuestManager.Add(quest);
@@ -348,8 +347,7 @@ public class CosmereQuestManager : GameComponent {
     }
 
     public static string? FindActiveEra() {
-        // An era the story has advanced into wins over everything: a campaign that lived
-        // through the Catacendre is not in the age its scenario was written for any more.
+        // An era the story has advanced into wins over everything: post-Catacendre isn't the scenario's original age.
         CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();
         string? reached = manager?.currentEra;
         if (reached != null && reached.Length > 0) return reached;

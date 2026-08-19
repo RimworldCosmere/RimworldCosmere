@@ -21,8 +21,7 @@ public sealed class DockAccordion {
     ) {
         if (snapshots.Count == 0) return;
 
-        // Only pick a section the first time. Re-running this every frame turned
-        // closing the open one into reopening it.
+        // Only picks a default once - re-running every frame reopened whatever the player just closed.
         if (!defaulted) {
             defaulted = true;
             ExpandedSystemId ??= snapshots[0].SystemId;
@@ -52,9 +51,7 @@ public sealed class DockAccordion {
 
             float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
 
-            // Two ceilings, and the lower one wins: what is left of the window, and
-            // what the player will let a single section grow to. Without the second a
-            // Mistborn's table simply runs off the bottom of a short screen.
+            // Two ceilings, the lower one wins - without the settings cap, a large section runs off a short screen.
             float availableHeight = Mathf.Min(
                 rect.yMax - y,
                 Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight

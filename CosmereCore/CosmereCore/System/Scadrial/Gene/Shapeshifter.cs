@@ -23,9 +23,7 @@ public class Shapeshifter : Verse.Gene {
         if (!pawn.Spawned) return;
         if (!pawn.IsHashIntervalTick(KandraDisguise.LookInterval, delta)) return;
 
-        // A kandra nobody is playing is always somebody else. Its own shape is the one thing it
-        // never shows, so one caught without a face puts one on rather than standing in front of
-        // the colony as what it is.
+        // NPC kandra never show their own face; put one on if caught bare.
         if (!pawn.IsColonist) {
             if (!KandraDisguise.IsDisguised(pawn)) KandraShapeshift.WearAnyFace(pawn);
 

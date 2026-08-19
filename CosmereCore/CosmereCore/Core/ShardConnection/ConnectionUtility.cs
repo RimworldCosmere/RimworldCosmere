@@ -15,6 +15,10 @@ namespace Cosmere.Core.ShardConnection;
 ///     That edge holds the <em>earned</em> portion only. Ancestry and Investiture are recomputed
 ///     on every read, so removing a gene or killing a spren drops the total on its own without a
 ///     save migration.
+///     <para>
+///         <see cref="ConnectionOffsets" /> holds the other half of the story: how much of the
+///         composed total is currently somewhere other than the pawn, taken off on every read.
+///     </para>
 /// </remarks>
 public static class ConnectionUtility {
     /// <summary>What the pawn has earned toward this Shard, ignoring who they were born as.</summary>
@@ -33,21 +37,58 @@ public static class ConnectionUtility {
     public static int StrengthOf(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
-        int own = Raw(pawn, shard);
+        return StrengthFrom(pawn, shard, false);
+    }
 
-        // Harmony holds Ruin and Preservation both, so anyone Connected to Harmony is Connected
-        // to each of them at the same value.
+    public static ConnectionBreakdown BreakdownFor(Pawn? pawn, ShardDef? shard) {
+        if (pawn == null || shard == null) return default;
+
+        int ancestry = AncestryFloor(pawn, shard);
+        int residence = GameComponentCache<ResidenceTracker>.Get()?.StrengthFor(pawn, shard) ?? 0;
+        int investiture = ConnectionInvestitureRegistry.StrengthFor(pawn, shard);
+        int earned = Earned(pawn, shard);
+        int composed = ConnectionMath.Compose(ancestry, residence, investiture, earned);
+        int held = (int)global::System.Math.Round(ConnectionOffsets.Get(pawn, shard));
+        int carried = ConnectionMath.Clamp(composed - held);
+        int total = StrengthOf(pawn, shard);
+
+        return new ConnectionBreakdown(
+            ancestry,
+            residence,
+            investiture,
+            earned,
+            held,
+            global::System.Math.Max(0, total - carried),
+            total
+        );
+    }
+
+    /// <summary>
+    ///     The same reading, counting what is held elsewhere as though the pawn still carried it.
+    /// </summary>
+    /// <remarks>
+    ///     What a top-up measures against. Setting a tie aside must not make a pawn eligible for a
+    ///     grant they already took, which is what measuring against the reduced reading allowed.
+    /// </remarks>
+    private static int StrengthBeforeOffset(Pawn? pawn, ShardDef? shard) {
+        if (pawn == null || shard == null) return 0;
+
+        return StrengthFrom(pawn, shard, true);
+    }
+
+    /// <summary>The one Harmony body. Both public readings differ only in which base they compose from.</summary>
+    private static int StrengthFrom(Pawn pawn, ShardDef shard, bool ignoreHeld) {
+        int own = Carried(pawn, shard, ignoreHeld);
+
+        // Harmony holds Ruin and Preservation both, so a Harmony Connection implies the same to each.
         if (shard.defName is "Ruin" or "Preservation") {
             ShardDef? harmony = DefDatabase<ShardDef>.GetNamedSilentFail("Harmony");
-            if (harmony != null) return ConnectionMath.WithHarmony(own, Raw(pawn, harmony));
+            if (harmony != null) return ConnectionMath.WithHarmony(own, Carried(pawn, harmony, ignoreHeld));
 
             return own;
         }
 
-        // And the same fact read the other way, so the two directions cannot disagree. Ancestry
-        // grants floors from a world's fallback Shards - Ruin and Preservation on Scadrial - so
-        // nothing hands a floor to Harmony, and a post-Catacendre native would otherwise read 0
-        // to the Shard their own world is held by.
+        // Inverse of above: nothing hands Harmony a floor directly, so it derives from Ruin and Preservation.
         if (shard.defName == "Harmony") {
             ShardDef? ruin = DefDatabase<ShardDef>.GetNamedSilentFail("Ruin");
             ShardDef? preservation = DefDatabase<ShardDef>.GetNamedSilentFail("Preservation");
@@ -55,11 +96,19 @@ public static class ConnectionUtility {
 
             return ConnectionMath.WithHarmony(
                 own,
-                ConnectionMath.HarmonyFrom(Raw(pawn, ruin), Raw(pawn, preservation))
+                ConnectionMath.HarmonyFrom(
+                    Carried(pawn, ruin, ignoreHeld),
+                    Carried(pawn, preservation, ignoreHeld)
+                )
             );
         }
 
         return own;
+    }
+
+    /// <summary>What the pawn carries toward this Shard, or would carry with everything taken back.</summary>
+    private static int Carried(Pawn pawn, ShardDef shard, bool ignoreHeld) {
+        return ignoreHeld ? Composed(pawn, shard) : Raw(pawn, shard);
     }
 
     public static ConnectionTier TierOf(Pawn? pawn, ShardDef? shard) {
@@ -132,7 +181,7 @@ public static class ConnectionUtility {
             ShardGrant entry = metal.shards[i];
             if (entry.grant <= 0) continue;
 
-            int shortfall = entry.grant - StrengthOf(pawn, entry.shard);
+            int shortfall = entry.grant - StrengthBeforeOffset(pawn, entry.shard);
             if (shortfall > 0) Grant(pawn, entry.shard, shortfall);
         }
     }
@@ -146,6 +195,24 @@ public static class ConnectionUtility {
 
         int next = ConnectionMath.Clamp(Earned(pawn, shard) + amount);
         SpiritWeb.Instance?.SetConnection(pawn, entity, ConnectionMath.ToEdge(next));
+    }
+
+    /// <summary>
+    ///     Moves how much of this pawn's tie is held elsewhere, and reports how much actually moved.
+    /// </summary>
+    /// <remarks>
+    ///     Bounded below by nothing held and above by <see cref="ConnectionMath.OffsetCeiling" />, so
+    ///     the last point of a tie can never leave and a stripped pawn can always take theirs back.
+    /// </remarks>
+    public static float AdjustOffset(Pawn? pawn, ShardDef? shard, float delta) {
+        if (pawn == null || shard == null || delta == 0f) return 0f;
+
+        float had = ConnectionOffsets.Get(pawn, shard);
+        float ceiling = ConnectionMath.OffsetCeiling(Composed(pawn, shard));
+        ConnectionOffsets.Set(pawn, shard, ConnectionMath.ClampOffset(had, delta, ceiling));
+
+        // Read back rather than trust the ask: outside a running game the store swallows the write.
+        return ConnectionOffsets.Get(pawn, shard) - had;
     }
 
     /// <summary>
@@ -163,9 +230,17 @@ public static class ConnectionUtility {
     }
 
     private static int Raw(Pawn pawn, ShardDef shard) {
+        int held = (int)global::System.Math.Round(ConnectionOffsets.Get(pawn, shard));
+
+        // Whatever is held elsewhere is not part of what this pawn currently carries.
+        return ConnectionMath.Clamp(Composed(pawn, shard) - held);
+    }
+
+    /// <summary>The four parts of the tie, before anything held elsewhere comes off the total.</summary>
+    private static int Composed(Pawn pawn, ShardDef shard) {
         return ConnectionMath.Compose(
             AncestryFloor(pawn, shard),
-            Verse.Current.Game?.GetComponent<ResidenceTracker>()?.StrengthFor(pawn, shard) ?? 0,
+            GameComponentCache<ResidenceTracker>.Get()?.StrengthFor(pawn, shard) ?? 0,
             ConnectionInvestitureRegistry.StrengthFor(pawn, shard),
             Earned(pawn, shard)
         );

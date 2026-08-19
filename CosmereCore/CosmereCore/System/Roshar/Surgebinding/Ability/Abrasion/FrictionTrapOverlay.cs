@@ -50,9 +50,10 @@ public static class FrictionTrapOverlay {
         }
     }
 
-    // A zone never moves or resizes, so its cells are settled the moment it is registered. Draw
-    // runs every frame off MapInterfaceUpdate; rebuilding this there re-tested (2r+1)^2 cells a
-    // frame to get the same answer.
+    /// <summary>
+    ///     A zone never moves or resizes, so its cells settle the moment it is registered. Draw runs
+    ///     every frame off MapInterfaceUpdate; rebuilding here re-tested (2r+1)^2 cells for the same answer.
+    /// </summary>
     private static List<IntVec3> CellsFor(IntVec3 center, float radius, Map map) {
         int radiusCeil = (int)radius + 1;
         List<IntVec3> cells = new List<IntVec3>();

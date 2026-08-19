@@ -28,8 +28,7 @@ public class RuinsInfluence : HediffWithComps {
         spikeCount = count;
         Severity = count * 0.2f;
 
-        // Dropping below the threshold calls off whatever was coming. Pulling a spike in time is
-        // meant to be an answer.
+        // dropping below the threshold calls off whatever was coming - pulling a spike in time is the answer
         if (spikeCount < ControlThreshold) Clear();
     }
 
@@ -69,8 +68,7 @@ public class RuinsInfluence : HediffWithComps {
 
         if (key == null) return;
 
-        // Anybody stopped in the meantime is no use to it. Arresting, downing or drugging the
-        // pawn is the intended answer to the warning.
+        // arresting, downing or drugging the pawn in the meantime is the intended answer to the warning
         if (!RuinCompulsions.CanBeMoved(pawn)) return;
 
         RuinCompulsion? compulsion = RuinCompulsions.All.Find(c => c.key == key);

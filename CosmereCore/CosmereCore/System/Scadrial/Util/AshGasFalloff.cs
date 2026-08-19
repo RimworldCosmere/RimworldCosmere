@@ -29,8 +29,7 @@ public static class AshGasFalloff {
         float exposure = distance <= 0f ? atMouth : atMouth * (1f - distance / radius);
         if (exposure < 0f) return 0f;
 
-        // Stat offsets stack, so a mouth strength over 1 is reachable and must not read as more
-        // than fully exposed.
+        // Stat offsets stack, so a mouth strength over 1 is reachable and must not read as more than fully exposed.
         return exposure > 1f ? 1f : exposure;
     }
 }

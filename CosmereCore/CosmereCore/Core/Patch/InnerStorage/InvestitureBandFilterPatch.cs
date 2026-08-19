@@ -18,8 +18,7 @@ namespace Cosmere.Core.Patch.InnerStorage;
 /// </remarks>
 [Patch(typeof(ThingFilterUI))]
 public static class InvestitureBandFilterPatch {
-    // Vanilla's own numbers from DrawHitPointsFilterConfig, so the band lines up with the quality
-    // slider under it rather than sitting proud of the column.
+    // vanilla's own numbers from DrawHitPointsFilterConfig, so the band lines up with the quality slider beneath it.
     private const float Inset = 20f;
     private const float SliderHeight = 32f;
     private const float RowHeight = 24f;

@@ -21,9 +21,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
 
         PawnKindDef pawnKind = def.pawnKind ?? PawnKindDefOf.Colonist;
 
-        // Gender and age have to go into the request. Body type, head and hair are all chosen
-        // from them during generation, so setting pawn.gender afterwards leaves a man wearing a
-        // woman's body.
+        // gender and age go into the request itself; setting pawn.gender after generation leaves a mismatched body.
         PawnGenerationRequest request = new PawnGenerationRequest(
             pawnKind,
             Faction.OfPlayer,
@@ -72,8 +70,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         Name? name = template.GetName();
         if (name != null) pawn.Name = name;
 
-        // The request already fixed these, but a template applied to an existing pawn (or a
-        // kind that overrode the request) still needs them straightened out.
+        // the request already fixed these; a template on an existing pawn still needs them straightened out.
         if (template.gender != Gender.None) pawn.gender = template.gender;
 
         if (template.age > 0) {
@@ -145,9 +142,10 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         }
     }
 
-    // A named pawn is written to be someone in particular, so their story has to stick. Left to
-    // generation they take a random pair, which is off-character and is how they end up
-    // incapable of work the incident never meant to bar them from.
+    /// <summary>
+    ///     A named pawn is written to be someone in particular, so their story has to stick. Left
+    ///     to generation they'd get a random pair, off-character and prone to disabling work types.
+    /// </summary>
     private static void ApplyBackstories(Pawn pawn, NamedPawnDef template) {
         if (pawn.story == null) return;
 

@@ -22,8 +22,10 @@ public class CosmereQuickstart : AbstractQuickstart {
         "Odium",
     ];
 
-    // All-Stars spans every shard, so its scenario cannot pick an era on its own. Declared here
-    // so era-gated content is reachable in the sandbox instead of silently filtered out.
+    /// <summary>
+    ///     All-Stars spans every shard, so its scenario cannot pick an era on its own. Set here so
+    ///     era-gated content is reachable in the sandbox instead of silently filtered out.
+    /// </summary>
     public override string? era => "Cosmere_Scadrial_Era_PreCatacendre";
 
     public override void PostApplyConfiguration() {

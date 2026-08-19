@@ -46,8 +46,7 @@ public static class KolossOrders {
         for (int i = 0; i < held.Count; i++) {
             Pawn one = held[i];
 
-            // A koloss that is down, dead, or already loose takes no orders. Checking here rather
-            // than filtering the list keeps the label honest about how many are held.
+            // checked here, not filtered from the list, so the label's held count stays honest.
             if (!one.Spawned || one.Dead || one.Downed || one.InMentalState) continue;
             if (one.jobs == null) continue;
             if (!one.CanReach(target, PathEndMode.Touch, Danger.Deadly)) continue;

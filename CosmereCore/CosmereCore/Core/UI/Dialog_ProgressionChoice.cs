@@ -48,8 +48,10 @@ public class Dialog_ProgressionChoice : Verse.Window {
         draggable = false;
     }
 
-    // Margin to 0 leaves Spacing.Get() as the only contraction in play, so CalcHeight's content
-    // width matches what DoWindowContents actually draws into.
+    /// <summary>
+    ///     Margin to 0 leaves Spacing.Get() as the only contraction in play, so CalcHeight's
+    ///     content width matches what DoWindowContents actually draws into.
+    /// </summary>
     protected override float Margin => 0f;
 
     public override Vector2 InitialSize => new Vector2(WindowWidth, CalcHeight());
@@ -91,8 +93,7 @@ public class Dialog_ProgressionChoice : Verse.Window {
                 Widgets.Label(row.ContractedBy(Spacing.Get(0.5f)), option.Label);
             }
 
-            // MouseoverSounds.DoRegion above already covers the row every hovered frame, so
-            // ButtonInvisible's own sound is skipped.
+            // MouseoverSounds already covers the row each hovered frame, so ButtonInvisible skips its own sound.
             if (Widgets.ButtonInvisible(row, false)) {
                 Action chosen = option.OnChosen;
                 Close();

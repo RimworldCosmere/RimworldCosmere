@@ -35,8 +35,7 @@ public static class RecordUtility {
         object? map = RecordsField?.GetValue(pawn.records);
         if (map == null) return false;
 
-        // DefMap carries two Item indexers - one keyed by def, one by list position - so asking
-        // for "Item" by name alone throws AmbiguousMatchException. Take the def-keyed one.
+        // DefMap has two Item indexers (def-keyed, position-keyed), so "Item" by name throws AmbiguousMatchException.
         if (indexer == null) {
             foreach (PropertyInfo candidate in map.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 ParameterInfo[] args = candidate.GetIndexParameters();

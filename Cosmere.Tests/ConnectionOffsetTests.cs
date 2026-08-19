@@ -179,6 +179,35 @@ public class ConnectionOffsetTests {
         );
     }
 
+    /// <summary>The Shard ledger offers the spendable tie and treats the held offset as tap headroom.</summary>
+    [TestMethod]
+    public void ShardLedgerReadsTheSpendableTieAndHeldHeadroom() {
+        string source = ShardLedgerSource();
+
+        Assert.IsTrue(
+            source.Contains(
+                "return ConnectionMath.OffsetCeiling(ConnectionUtility.StrengthOf(pawn, shard));",
+                StringComparison.Ordinal
+            ),
+            "CurrentPoints must offer the whole spendable tie."
+        );
+        Assert.IsTrue(
+            source.Contains("return ConnectionOffsets.Get(pawn, shard);", StringComparison.Ordinal),
+            "HeadroomPoints must report what the pawn can take back."
+        );
+    }
+
+    /// <summary>The ledger translates pawn movement to offset movement and translates the report back.</summary>
+    [TestMethod]
+    public void ShardLedgerInvertsBothSidesOfOffsetMovement() {
+        string source = ShardLedgerSource();
+
+        Assert.IsTrue(
+            source.Contains("return -ConnectionUtility.AdjustOffset(pawn, shard, -points);", StringComparison.Ordinal),
+            "A store is negative on the pawn and positive on the offset, but Move must report the pawn sign."
+        );
+    }
+
     /// <summary>
     ///     A grant tops a pawn up to a level. Measured against the reduced reading it pays out the
     ///     set-aside portion a second time: composed 40, set aside 39, drink a 40-grant metal, read 79.
@@ -234,6 +263,21 @@ public class ConnectionOffsetTests {
     private static string Source(string file) {
         return File.ReadAllText(
             Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", file)
+        );
+    }
+
+    private static string ShardLedgerSource() {
+        return File.ReadAllText(
+            Path.Combine(
+                RepoRoot,
+                "CosmereCore",
+                "CosmereCore",
+                "System",
+                "Scadrial",
+                "Feruchemy",
+                "Ledger",
+                "ShardLedger.cs"
+            )
         );
     }
 

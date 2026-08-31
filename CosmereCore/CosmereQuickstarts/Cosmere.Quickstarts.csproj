@@ -2,32 +2,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>CryptikLemur</Authors>
+        <AssemblyName>Cosmere.Quickstarts</AssemblyName>
+        <RootNamespace>Cosmere.Core.Quickstart</RootNamespace>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <OutDir>..\Assemblies\</OutDir>
+        <!-- Loaded only when the Quickstarts mod is active. See ../loadFolders.xml. -->
+        <OutDir>..\Quickstarts\Assemblies\</OutDir>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <Nullable>enable</Nullable>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
         <AnalysisLevel>latest</AnalysisLevel>
-        <WarningLevel>4</WarningLevel>
-        <ErrorReport>prompt</ErrorReport>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
-
-        <FileAlignment>512</FileAlignment>
-        <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
-        <Optimize>false</Optimize>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <PackageId>Cosmere</PackageId>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <DebugSymbols>false</DebugSymbols>
-        <DebugType>none</DebugType>
-        <Optimize>true</Optimize>
-        <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
@@ -42,31 +27,26 @@
         </PackageReference>
     </ItemDefinitionGroup>
 
-    <!-- The optional quickstart assembly is part of this mod, split out only so a player
-         who does not run the dev tool never has to resolve it. -->
-    <ItemGroup>
-        <InternalsVisibleTo Include="Cosmere.Quickstarts"/>
-    </ItemGroup>
-
     <ItemGroup>
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
+        <Using Include="RimWorks.Quickstarts"/>
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.System.Scadrial.Extension"/>
         <Using Include="Cosmere.System.Roshar.Extension"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Concord.Ref" Version="0.14.*"/>
-        <PackageReference Include="Concord.Analyzers" Version="0.14.*" PrivateAssets="all"/>
-        <PackageReference Include="Concord.Generators" Version="0.14.*" PrivateAssets="all"/>
+        <PackageReference Include="RimWorks.Quickstarts.Ref" Version="1.0.*"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <ProjectReference Include="..\CosmereCore\Cosmere.csproj"/>
+    </ItemGroup>
 
-        <!-- Include all DLLs from potential RimWorld installation paths -->
-        <!-- If none of these match your path, just copy one of them and change it to your path -->
-        <Reference Include="..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\RimWorldWin64_Data\Managed')">
+    <!-- Same game-assembly probe as Cosmere.csproj. Krafs is the fallback when none match. -->
+    <ItemGroup>
+        <Reference Include="..\..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\..\RimWorldWin64_Data\Managed')">
             <Private>False</Private>
         </Reference>
         <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
@@ -85,10 +65,7 @@
             <Private>False</Private>
         </Reference>
     </ItemGroup>
-    <!-- The below condition will check if you've defined a reference called "Assembly-CSharp" and if that reference exists on disk.
-        If that reference does not exist, it will add Krafs Rimworld Ref to the project. If it does exist, Krafs won't be added
-        as a reference. This basically means that Krafs is treated as a fallback if Assembly-CSharp is not found -->
-    <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
+    <ItemGroup Condition="'@(Reference-&gt;WithMetadataValue('Identity', 'Assembly-CSharp')-&gt;Metadata('HintPath')-&gt;Exists())' == ''">
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*"/>
     </ItemGroup>
 </Project>

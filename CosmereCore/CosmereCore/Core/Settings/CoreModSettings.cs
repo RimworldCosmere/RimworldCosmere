@@ -2,7 +2,6 @@ using System;
 using Cosmere.Core.BetaHub;
 using Cosmere.Core.Framework;
 using Cosmere.Core.Investiture;
-using Cosmere.Core.Quickstart;
 using Cosmere.Core.Settings.Model;
 using RimWorld;
 using UnityEngine;
@@ -16,12 +15,6 @@ public class CoreModSettings : CosmereModSettings {
     private const float MinDockSectionMaxHeight = 200f;
     private const float MaxDockSectionMaxHeight = 1200f;
 
-    private readonly Dictionary<string, string> quickstarters = typeof(AbstractQuickstart).AllSubclassesNonAbstract()
-        .ToDictionary(
-            q => $"{q.Assembly.GetName().Name}: {q.Name}",
-            q => q.AssemblyQualifiedName
-        );
-
     public bool debugMode;
 
     // Faction filtering settings
@@ -29,7 +22,6 @@ public class CoreModSettings : CosmereModSettings {
     public bool disableOdysseyFactionsInCosmereScenarios = true;
     public bool highContrast;
     public LogLevel logLevel = LogLevel.Verbose;
-    public string? quickstartName;
 
     public bool radialAnchorMouse = true;
     public bool radialPausesGame;
@@ -49,7 +41,6 @@ public class CoreModSettings : CosmereModSettings {
     public float dockSectionMaxHeight = DefaultDockSectionMaxHeight;
 
     public bool showDormantConnection;
-    public string? testScenarioDefName;
 
     /// <summary>
     ///     How often a sustained ability is charged for its upkeep. Shared by every invested
@@ -260,32 +251,6 @@ public class CoreModSettings : CosmereModSettings {
                         ),
                         () => Prefs.DevMode
                     ),
-                    new SettingDescriptor(
-                        "quickstarter",
-                        "CC_Settings_Quickstarter_Label",
-                        "CC_Settings_Quickstarter_Description",
-                        new ChoiceControl(
-                            () => quickstartName,
-                            updated => quickstartName = updated,
-                            null,
-                            GetQuickstarterChoices,
-                            true
-                        ),
-                        () => Prefs.DevMode
-                    ),
-                    new SettingDescriptor(
-                        "test-scenario",
-                        "CC_Settings_TestScenario_Label",
-                        "CC_Settings_TestScenario_Description",
-                        new ChoiceControl(
-                            () => testScenarioDefName,
-                            updated => testScenarioDefName = updated,
-                            null,
-                            GetScenarioChoices,
-                            true
-                        ),
-                        () => Prefs.DevMode && IsScenarioTestQuickstartSelected()
-                    ),
                 ]
             ),
         ];
@@ -298,64 +263,10 @@ public class CoreModSettings : CosmereModSettings {
         return sections;
     }
 
-    private IReadOnlyList<Choice> GetQuickstarterChoices() {
-        List<Choice> choices = [];
-        foreach (KeyValuePair<string, string> quickstarter in quickstarters) {
-            string? label = GetQuickstartScenarioLabel(quickstarter.Value);
-            choices.Add(Choice.Literal(quickstarter.Value, label ?? quickstarter.Key));
-        }
-
-        return choices;
-    }
-
-    private string? GetQuickstartScenarioLabel(string? quickstarter) {
-        if (quickstarter == null) return null;
-        Type? type = Type.GetType(quickstarter);
-
-        return type == null ? null : $"{type.Assembly.GetName().Name}: {type.Name}";
-    }
-
-    private bool IsScenarioTestQuickstartSelected() {
-        if (string.IsNullOrEmpty(quickstartName)) return false;
-        Type? type = Type.GetType(quickstartName!);
-        return type == typeof(ScenarioTestQuickstart);
-    }
-
-    private string? GetTestScenarioLabel(string? defName) {
-        if (string.IsNullOrEmpty(defName)) return null;
-        ScenarioDef? def = DefDatabase<ScenarioDef>.GetNamedSilentFail(defName);
-        return def == null ? defName : def.LabelCap.ToString();
-    }
-
-    private IReadOnlyList<Choice> GetScenarioChoices() {
-        Dictionary<string, string> scenarioDefs = GetScenarioDefItems();
-        List<Choice> choices = [];
-        foreach (KeyValuePair<string, string> scenarioDef in scenarioDefs) {
-            string? label = GetTestScenarioLabel(scenarioDef.Value);
-            choices.Add(Choice.Literal(scenarioDef.Value, label ?? scenarioDef.Key));
-        }
-
-        return choices;
-    }
-
-    private static Dictionary<string, string> GetScenarioDefItems() {
-        Dictionary<string, string> items = new Dictionary<string, string>();
-        List<ScenarioDef> defs = DefDatabase<ScenarioDef>.AllDefsListForReading;
-        for (int i = 0; i < defs.Count; i++) {
-            ScenarioDef def = defs[i];
-            string label = $"{def.LabelCap} ({def.defName})";
-            items[label] = def.defName;
-        }
-
-        return items;
-    }
-
     public override void ExposeData() {
         Scribe_Values.Look(ref showDormantConnection, "showDormantConnection");
         Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
         Scribe_Values.Look(ref debugMode, "debugMode");
-        Scribe_Values.Look(ref quickstartName, "quickstartName");
-        Scribe_Values.Look(ref testScenarioDefName, "testScenarioDefName");
         Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios");
         Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios");
         Scribe_Values.Look(ref reduceMotion, "reduceMotion");

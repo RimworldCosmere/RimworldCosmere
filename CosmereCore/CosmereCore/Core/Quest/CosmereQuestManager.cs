@@ -13,6 +13,11 @@ namespace Cosmere.Core.Quest;
 ///     CosmereQuestEligibility and CapstoneStateMachine, both of which are already unit-tested.
 /// </summary>
 public class CosmereQuestManager : GameComponent {
+    /// <summary>
+    ///     Supplies the era a running quickstart forces. Null when nothing is forcing one.
+    /// </summary>
+    public static Func<string?>? eraProvider;
+
     private Dictionary<string, CapstoneState> capstoneStates = new Dictionary<string, CapstoneState>();
     private Dictionary<string, HashSet<int>> pawnBurns = new Dictionary<string, HashSet<int>>();
     private HashSet<string> flags = new HashSet<string>();
@@ -353,7 +358,7 @@ public class CosmereQuestManager : GameComponent {
         if (reached != null && reached.Length > 0) return reached;
 
         // A cross-shard quickstart declares its own era, because its scenario cannot.
-        string? forced = Quickstart.Quickstarter.instance?.Quickstart?.era;
+        string? forced = eraProvider?.Invoke();
         if (forced != null && forced.Length > 0) return forced;
 
         string? scenarioName = Find.Scenario?.name;

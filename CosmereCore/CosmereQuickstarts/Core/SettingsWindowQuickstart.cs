@@ -3,7 +3,7 @@ using Verse;
 
 namespace Cosmere.Core.Quickstart;
 
-public class SettingsWindowQuickstart : AbstractQuickstart {
+public class SettingsWindowQuickstart : CosmereQuickstartBase {
     public override int mapSize => 25;
 
     public override TaggedString description => "Used to test the Settings Window";

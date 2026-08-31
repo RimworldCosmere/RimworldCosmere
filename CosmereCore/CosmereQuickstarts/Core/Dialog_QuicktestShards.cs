@@ -28,7 +28,7 @@ public class Dialog_QuicktestShards : Verse.Window {
         doCloseX = true;
         draggable = true;
 
-        foreach (string defName in VanillaQuicktest.DefaultShards) {
+        foreach (string defName in CosmereQuicktest.DefaultShards) {
             if (DefDatabase<ShardDef>.GetNamedSilentFail(defName) != null) selected.Add(defName);
         }
     }
@@ -87,6 +87,6 @@ public class Dialog_QuicktestShards : Verse.Window {
         if (!Widgets.ButtonText(startRect, "CC_Quicktest_Shards_Start".Translate())) return;
 
         Close();
-        VanillaQuicktest.Start(selected.ToList());
+        CosmereQuicktest.Start(selected.ToList());
     }
 }

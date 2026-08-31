@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
 # Fails if any C# file has an inline // comment running past one line.
-# The ceiling lives in ~/.claude/skills/code-comments: 1 line inline, 2 for a /// docblock.
+# The ceiling: 1 line inline, 2 prose lines for a /// docblock.
 set -uo pipefail
 
 root="${1:-.}"
 found=0
+
+# git decides what to check, not a path list: it already knows which files are ours, so
+# every ignored tree - build output, dependencies, scratch checkouts - drops out on its own.
+list_sources() {
+    git -C "$root" ls-files --cached --others --exclude-standard -z -- '*.cs' \
+        | tr '\0' '\n' \
+        | grep -v '\.generated\.cs$' \
+        | sed "s|^|$root/|"
+}
+
+if ! git -C "$root" rev-parse --git-dir >/dev/null 2>&1; then
+    echo "check-comment-length: $root is not a git repository" >&2
+    exit 2
+fi
 
 while IFS= read -r file; do
     awk -v f="$file" '
@@ -15,10 +29,7 @@ while IFS= read -r file; do
     awk -v f="$file" '
         /^[[:space:]]*\/\/[^\/]/ && length($0) > 120 { printf "%s(%d): error CC0002: comment line is %d chars, ceiling is 120. cut it to one fact.\n", f, FNR, length($0) }
     ' "$file"
-done < <(find "$root" -name '*.cs' \
-    -not -name '*.generated.cs' \
-    -not -path '*/obj/*' -not -path '*/bin/*' \
-    -not -path '*/.worktrees/*' -not -path '*/.claude/*' -not -path '*/node_modules/*' -not -path '*/.git/*') > /tmp/cc0001.txt
+done < <(list_sources) > /tmp/cc0001.txt
 
 if [ -s /tmp/cc0001.txt ]; then
     cat /tmp/cc0001.txt

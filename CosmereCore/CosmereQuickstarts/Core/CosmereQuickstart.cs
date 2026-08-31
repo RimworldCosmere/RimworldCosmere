@@ -5,7 +5,7 @@ using Verse;
 
 namespace Cosmere.Core.Quickstart;
 
-public class CosmereQuickstart : AbstractQuickstart {
+public class CosmereQuickstart : CosmereQuickstartBase {
     public override int mapSize => 75;
 
     public override TaggedString description => "Cosmere All-Stars: Radiants + Mistborn + mundane";

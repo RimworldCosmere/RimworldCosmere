@@ -6,7 +6,7 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Quickstart;
 
-public class TrueDesolationQuickstart : AbstractQuickstart {
+public class TrueDesolationQuickstart : CosmereQuickstartBase {
     public override int mapSize => 100;
 
     public override TaggedString description => "Used to test True Desolation pawns";

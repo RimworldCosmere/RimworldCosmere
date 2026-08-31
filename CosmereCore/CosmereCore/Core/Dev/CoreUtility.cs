@@ -1,5 +1,4 @@
 ﻿using Cosmere.Core.Comp.Thing;
-using Cosmere.Core.Quickstart;
 using LudeonTK;
 using Verse;
 
@@ -29,14 +28,5 @@ public static class CoreUtility {
         foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
             thing.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
-    }
-
-    [DebugAction(
-        "Cosmere/Core",
-        "Reload Quickstart",
-        allowedGameStates = AllowedGameStates.Entry
-    )]
-    public static void ReloadQuickstart() {
-        Quickstarter.ReloadQuickstart();
     }
 }

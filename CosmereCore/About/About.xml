@@ -25,4 +25,9 @@
         <li>Ludeon.RimWorld.Biotech</li>
         <li>concordlib.concord</li>
     </forceLoadAfter>
+    <!-- Optional dev tool. When it is active, loadFolders.xml adds the Quickstarts folder
+         with Cosmere's own quickstarts in it. -->
+    <loadAfter>
+        <li>rimworks.quickstarts</li>
+    </loadAfter>
 </ModMetaData>

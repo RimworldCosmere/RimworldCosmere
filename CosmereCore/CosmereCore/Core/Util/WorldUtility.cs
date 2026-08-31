@@ -171,8 +171,8 @@ public static class WorldUtility {
     ///     generation, such as Scadrial's Ashmounts, sees null otherwise.
     /// </summary>
     /// <remarks>
-    ///     The page path commits when the player picks. The two page-less paths - Quickstarter
-    ///     and VanillaQuicktest - both set their Shards *after* generating the world, so they
+    ///     The page path commits when the player picks. The two page-less paths - a quickstart
+    ///     and the dev quicktest - both set their Shards *after* generating the world, so they
     ///     have to call this themselves at the right point.
     /// </remarks>
     public static CosmereWorldDef? SeedFromScenario() {

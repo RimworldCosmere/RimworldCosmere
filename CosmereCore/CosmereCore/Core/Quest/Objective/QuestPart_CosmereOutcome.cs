@@ -1,7 +1,6 @@
 using Cosmere.Core.Quest.Outcome;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Objective;
 
@@ -34,7 +33,7 @@ public class QuestPart_CosmereOutcome : QuestPart {
         };
 
         outcome.Resolve(ctx);
-        Logger.Info($"{def.defName}: resolved failure outcome.");
+        Log.Info($"{def.defName}: resolved failure outcome.");
     }
 
     public override void ExposeData() {

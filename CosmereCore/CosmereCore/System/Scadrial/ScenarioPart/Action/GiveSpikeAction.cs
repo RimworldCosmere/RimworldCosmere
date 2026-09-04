@@ -5,7 +5,6 @@ using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.Hemalurgy.Util;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -40,13 +39,13 @@ public class GiveSpikeAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            if (!optional) Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for GiveSpike");
+            if (!optional) Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for GiveSpike");
             return;
         }
 
         MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(metal);
         if (metalDef == null) {
-            Logger.Warning($"ScenarioProgression: MetalDef '{metal}' not found for GiveSpike");
+            Log.Warn($"ScenarioProgression: MetalDef '{metal}' not found for GiveSpike");
             return;
         }
 
@@ -70,7 +69,7 @@ public class GiveSpikeAction : ProgressionAction {
         HemalurgicImplantUtility.AddToUnifiedHediff(pawn, spike, torso);
         HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
 
-        Logger.Important($"ScenarioProgression: drove a {metalDef.defName} spike into {pawnName}.");
+        Log.Info($"ScenarioProgression: drove a {metalDef.defName} spike into {pawnName}.");
     }
 
     public override string? Describe() {

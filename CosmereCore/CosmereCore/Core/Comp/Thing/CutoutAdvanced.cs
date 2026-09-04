@@ -167,7 +167,7 @@ public class CutoutAdvanced : ThingComp {
         }
 
         if (palettes.NullOrEmpty()) {
-            Logger.Error("palettes cannot be null or empty");
+            Log.Error("palettes cannot be null or empty");
             return block;
         }
 

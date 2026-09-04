@@ -140,7 +140,7 @@ public static class KolossUtility {
     ///     so both come through here.
     /// </remarks>
     public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
-        Cosmere.Core.Logger.Important($"Koloss: making one out of {subject.LabelShort}.");
+        Log.Info($"Koloss: making one out of {subject.LabelShort}.");
 
         // must read before the subject goes - asking after always says no, losing the player's selection.
         bool watching = Find.Selector?.IsSelected(subject) == true
@@ -307,25 +307,25 @@ public static class KolossUtility {
     /// </remarks>
     private static void StartGrowing(Pawn made) {
         if (made.health?.hediffSet == null) {
-            Cosmere.Core.Logger.Warning($"Koloss: {made.LabelShort} has no health tracker, so no clock started.");
+            Log.Warn($"Koloss: {made.LabelShort} has no health tracker, so no clock started.");
 
             return;
         }
 
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
         if (growth == null) {
-            Cosmere.Core.Logger.Warning("Koloss: the growth hediff def is missing, so nothing starts the clock.");
+            Log.Warn("Koloss: the growth hediff def is missing, so nothing starts the clock.");
             return;
         }
 
         if (made.health.hediffSet.GetFirstHediffOfDef(growth) != null) {
-            Cosmere.Core.Logger.Important($"Koloss: {made.LabelShort} was already growing.");
+            Log.Info($"Koloss: {made.LabelShort} was already growing.");
 
             return;
         }
 
         made.health.AddHediff(growth);
-        Cosmere.Core.Logger.Important($"Koloss: {made.LabelShort} started growing.");
+        Log.Info($"Koloss: {made.LabelShort} started growing.");
     }
 
     private static PawnKindDef? KolossKind =>

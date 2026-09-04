@@ -26,7 +26,7 @@ public class BondedSpren : Spren {
         if (guest is not { IsPrisoner: true }) return;
 
         guest.SetGuestStatus(null);
-        Cosmere.Core.Logger.Important($"Released {LabelShort}, which had been imprisoned.");
+        Log.Info($"Released {LabelShort}, which had been imprisoned.");
     }
 
     public override string GetInspectString() {

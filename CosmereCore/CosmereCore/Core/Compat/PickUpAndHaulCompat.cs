@@ -42,9 +42,9 @@ public static class PickUpAndHaulCompat {
 
         try {
             Patcher.Patch(target, injection, At.Head);
-            Logger.Info("Pick Up And Haul found; its hauler now understands Cosmere storage.");
+            Log.Info("Pick Up And Haul found; its hauler now understands Cosmere storage.");
         } catch (Exception e) {
-            Logger.Error($"Could not teach Pick Up And Haul about Cosmere storage: {e.Message}");
+            Log.Error($"Could not teach Pick Up And Haul about Cosmere storage: {e.Message}");
         }
     }
 

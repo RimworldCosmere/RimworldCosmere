@@ -32,21 +32,21 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
     protected override bool IsSatisfied() {
         Site? current = CurrentSite;
         if (current == null) {
-            Logger.Warning("QuestPart_ArrivedAtSite: lost its site reference. Opening the stage.");
+            Log.Warn("QuestPart_ArrivedAtSite: lost its site reference. Opening the stage.");
             return true;
         }
 
         if (current.HasMap) {
             if (!sawMap) {
                 sawMap = true;
-                Logger.Verbose($"QuestPart_ArrivedAtSite: map generated at tile {current.Tile}.");
+                Log.Debug($"QuestPart_ArrivedAtSite: map generated at tile {current.Tile}.");
             }
 
             return true;
         }
 
         if (current.Destroyed) {
-            Logger.Verbose(
+            Log.Debug(
                 $"QuestPart_ArrivedAtSite: site at tile {current.Tile} is gone (sawMap={sawMap}). Opening the stage."
             );
             return true;
@@ -74,7 +74,7 @@ public class QuestPart_ArrivedAtSite : QuestPart_CosmereActivable {
         if (signal.tag != expected) return;
 
         sawMap = true;
-        Logger.Verbose($"QuestPart_ArrivedAtSite: arrival signal '{expected}' received.");
+        Log.Debug($"QuestPart_ArrivedAtSite: arrival signal '{expected}' received.");
         Complete();
     }
 

@@ -119,13 +119,13 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
         toil.initAction = () => {
             Verse.Thing? carried = pawn.carryTracker.CarriedThing;
             if (carried == null) {
-                Logger.Warning("ChargeLiveSpike: carried thing is null at charge time");
+                Log.Warn("ChargeLiveSpike: carried thing is null at charge time");
                 return;
             }
 
             HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
             if (spikeComp == null || spikeComp.isCharged) {
-                Logger.Warning($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
+                Log.Warn($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
                 return;
             }
 

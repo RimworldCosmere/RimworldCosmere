@@ -22,8 +22,6 @@
     <CC_Settings_RadialAnchorMouse_Description>When enabled the ability radial opens centered on the mouse cursor. When disabled it opens centered on the selected pawn.</CC_Settings_RadialAnchorMouse_Description>
 
     <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
-    <CC_Settings_LogLevel_Label>Log level</CC_Settings_LogLevel_Label>
-    <CC_Settings_LogLevel_Description>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Description>
     
     <CC_Settings_DebugMode_Label>Debug mode</CC_Settings_DebugMode_Label>
     <CC_Settings_DebugMode_Description>Provides extra debugging features</CC_Settings_DebugMode_Description>
@@ -49,12 +47,6 @@
     <CC_Settings_HighContrast_Label>High contrast</CC_Settings_HighContrast_Label>
     <CC_Settings_HighContrast_Description>Brightens system accents and strengthens panel borders.</CC_Settings_HighContrast_Description>
 
-    <CC_Settings_LogLevel_None>None</CC_Settings_LogLevel_None>
-    <CC_Settings_LogLevel_Important>Important</CC_Settings_LogLevel_Important>
-    <CC_Settings_LogLevel_Error>Error</CC_Settings_LogLevel_Error>
-    <CC_Settings_LogLevel_Warning>Warning</CC_Settings_LogLevel_Warning>
-    <CC_Settings_LogLevel_Info>Info</CC_Settings_LogLevel_Info>
-    <CC_Settings_LogLevel_Verbose>Verbose</CC_Settings_LogLevel_Verbose>
 
     <CC_Settings_Search_Placeholder>Search settings</CC_Settings_Search_Placeholder>
     <CC_Settings_Search_NoResults>No settings match "{QUERY}".</CC_Settings_Search_NoResults>

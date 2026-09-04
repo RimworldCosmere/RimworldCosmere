@@ -21,7 +21,6 @@ public class CoreModSettings : CosmereModSettings {
     public bool disableEmpireInCosmereScenarios;
     public bool disableOdysseyFactionsInCosmereScenarios = true;
     public bool highContrast;
-    public LogLevel logLevel = LogLevel.Verbose;
 
     public bool radialAnchorMouse = true;
     public bool radialPausesGame;
@@ -222,25 +221,6 @@ public class CoreModSettings : CosmereModSettings {
                 "CC_Settings_Category_Debug",
                 [
                     new SettingDescriptor(
-                        "log-level",
-                        "CC_Settings_LogLevel_Label",
-                        "CC_Settings_LogLevel_Description",
-                        new ChoiceControl(
-                            () => logLevel.ToString(),
-                            updated => logLevel = Enum.Parse<LogLevel>(updated!),
-                            nameof(LogLevel.Verbose),
-                            () => [
-                                new Choice(nameof(LogLevel.None), "CC_Settings_LogLevel_None"),
-                                new Choice(nameof(LogLevel.Important), "CC_Settings_LogLevel_Important"),
-                                new Choice(nameof(LogLevel.Error), "CC_Settings_LogLevel_Error"),
-                                new Choice(nameof(LogLevel.Warning), "CC_Settings_LogLevel_Warning"),
-                                new Choice(nameof(LogLevel.Info), "CC_Settings_LogLevel_Info"),
-                                new Choice(nameof(LogLevel.Verbose), "CC_Settings_LogLevel_Verbose"),
-                            ],
-                            false
-                        )
-                    ),
-                    new SettingDescriptor(
                         "debug-mode",
                         "CC_Settings_DebugMode_Label",
                         "CC_Settings_DebugMode_Description",
@@ -257,7 +237,7 @@ public class CoreModSettings : CosmereModSettings {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate(Name, sections);
         foreach (string error in errors) {
-            Logger.Error($"Settings descriptor validation failed: {error}");
+            Log.Error($"Settings descriptor validation failed: {error}");
         }
 
         return sections;
@@ -265,7 +245,6 @@ public class CoreModSettings : CosmereModSettings {
 
     public override void ExposeData() {
         Scribe_Values.Look(ref showDormantConnection, "showDormantConnection");
-        Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
         Scribe_Values.Look(ref debugMode, "debugMode");
         Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios");
         Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios");

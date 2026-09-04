@@ -65,7 +65,7 @@ public static class SettingsHeaderRenderer {
             try {
                 if (section.IsVisible) visibleSections.Add(section);
             } catch (global::System.Exception exception) {
-                Logger.Error($"Settings section tab {section.Key} failed: {exception}");
+                Log.Error($"Settings section tab {section.Key} failed: {exception}");
             }
         }
 

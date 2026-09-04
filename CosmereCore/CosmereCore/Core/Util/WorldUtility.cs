@@ -32,12 +32,12 @@ public static class WorldUtility {
     public static void Set(CosmereWorldDef? world) {
         CosmereWorld? comp = component;
         if (comp == null) {
-            Logger.Warning("WorldUtility: no CosmereWorld component, cannot set the world.");
+            Log.Warn("WorldUtility: no CosmereWorld component, cannot set the world.");
             return;
         }
 
         comp.primary = world;
-        Logger.Important(
+        Log.Info(
             $"World set to {world?.defName ?? "none"} " +
             $"(scenario '{Verse.Current.Game?.Scenario?.name ?? "none"}')."
         );

@@ -51,7 +51,7 @@ public abstract class KolossAtlasBypassPatch : PawnRenderer {
         );
 
         if (field == null) {
-            Cosmere.Core.Logger.Error(
+            Log.Error(
                 "PawnRenderer.pawn not found, so a koloss cannot be told apart from a colonist here. "
                 + "Koloss will be cropped past camera zoom 18."
             );

@@ -1,6 +1,5 @@
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Comp.Game;
 
@@ -21,7 +20,7 @@ public class NarcolepsyTracker : GameComponent {
         int nextTick = GenTicks.TicksGame + GenDate.TicksPerDay * 7;
         nextCollapseTicks.Add(nextTick);
         int ticksUntil = nextTick - GenTicks.TicksGame;
-        Logger.Verbose(
+        Log.Debug(
             $"NarcolepsyTracker: registered {pawn.NameShortColored}, next collapse in {ticksUntil} ticks ({ticksUntil / (float)GenDate.TicksPerDay:F1} days)"
         );
     }
@@ -55,7 +54,7 @@ public class NarcolepsyTracker : GameComponent {
             if (pawn.Downed || pawn.InBed()) continue;
             if (pawn.health.hediffSet.HasHediff(collapseDef)) continue;
 
-            Logger.Verbose(
+            Log.Debug(
                 $"NarcolepsyTracker: {pawn.NameShortColored} collapsing! Next in {nextInterval / (float)GenDate.TicksPerDay:F1} days"
             );
             pawn.health.AddHediff(HediffMaker.MakeHediff(collapseDef, pawn));

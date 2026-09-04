@@ -21,7 +21,7 @@ public static class RadialDispatcher {
             }
         }
 
-        Logger.Verbose($"radial dispatch: no handler registered for action kind {leaf.Kind}");
+        Log.Debug($"radial dispatch: no handler registered for action kind {leaf.Kind}");
     }
 
     /// <summary>

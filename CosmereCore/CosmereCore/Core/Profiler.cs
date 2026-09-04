@@ -44,7 +44,7 @@ public static class Profiler {
             }
 
             if (attributed > 0) {
-                Logger.Warning(
+                Log.Warn(
                     $"{attributed} method(s) carry [Profile], but attribute-driven profiling is not wired up. " +
                     "StartProfiling/EndProfiling need to know which method they are running in, and Concord has no " +
                     "equivalent of Harmony's __originalMethod yet. Use Profiler.Scope(...) until it does."
@@ -53,7 +53,7 @@ public static class Profiler {
 
             Initialized = true;
         } catch (Exception ex) {
-            Logger.Error($"Profiler initialization failed: {ex}");
+            Log.Error($"Profiler initialization failed: {ex}");
         }
     }
 
@@ -74,7 +74,7 @@ public static class Profiler {
         try {
             return a.GetTypes();
         } catch (Exception ex) {
-            Logger.Verbose($"Failed to get types from assembly {a.FullName}: {ex.Message}");
+            Log.Debug($"Failed to get types from assembly {a.FullName}: {ex.Message}");
             return [];
         }
     }
@@ -85,7 +85,7 @@ public static class Profiler {
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
             );
         } catch (Exception ex) {
-            Logger.Verbose($"Failed to get methods from type {t.FullName}: {ex.Message}");
+            Log.Debug($"Failed to get methods from type {t.FullName}: {ex.Message}");
             return [];
         }
     }
@@ -128,7 +128,7 @@ public static class Profiler {
                 Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
                 agg.Add(sw.ElapsedTicks, 1, 1.0f);
             } else {
-                Logger.Profile(label, sw.ElapsedTicks);
+                LogElapsed(label, sw.ElapsedTicks);
             }
 
             return;
@@ -152,7 +152,7 @@ public static class Profiler {
                     agg.Add(token.sw.ElapsedTicks, 1, weight);
                 } else {
                     long estTicks = (long)(token.sw.ElapsedTicks * weight);
-                    Logger.Profile($"[SAMP] {label}", estTicks);
+                    LogElapsed($"[SAMP] {label}", estTicks);
                 }
             }
         }
@@ -174,6 +174,19 @@ public static class Profiler {
             SampleToken token = sstack.Pop();
 
             // discard on exception path
+        }
+    }
+
+    private static void LogElapsed(string label, long elapsedTicks) {
+        double nanoseconds = (double)elapsedTicks / Stopwatch.Frequency * 1_000_000_000;
+        double microseconds = nanoseconds / 1000;
+        double milliseconds = nanoseconds / 1_000_000;
+        if (milliseconds >= 1) {
+            Log.Info($"[Profile] {label} took {milliseconds}ms");
+        } else if (microseconds >= 1) {
+            Log.Info($"[Profile] {label} took {microseconds}μs");
+        } else {
+            Log.Info($"[Profile] {label} took {nanoseconds}ns");
         }
     }
 
@@ -200,7 +213,7 @@ public static class Profiler {
 
         string mode = snapshot.mode == ProfileMode.Sampling ? "SAMP" : "INST";
         string cat = string.IsNullOrEmpty(snapshot.category) ? string.Empty : $" [{snapshot.category}]";
-        Logger.Verbose(
+        Log.Debug(
             $"{mode}{cat} {snapshot.label}: calls={snapshot.calls}, samples={snapshot.samples}, mean≈{meanMs:F3}ms, total≈{totalMs:F1}ms, min≈{snapshot.minTicks * tickToMs:F3}ms, max≈{snapshot.maxTicks * tickToMs:F3}ms"
         );
     }
@@ -345,7 +358,7 @@ public static class Profiler {
                 double ms = sw.ElapsedTicks * (1000.0 / Stopwatch.Frequency) * weight;
                 string modeString = mode == ProfileMode.Sampling ? "SAMP" : "INST";
                 string cat = string.IsNullOrEmpty(category) ? string.Empty : $" [{category}]";
-                Logger.Verbose($"{modeString}{cat} {label}: {ms:F3}ms");
+                Log.Debug($"{modeString}{cat} {label}: {ms:F3}ms");
             }
         }
     }

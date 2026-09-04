@@ -14,7 +14,7 @@ public sealed class FeruchemyRadialHandler : IRadialActionHandler {
 
     public void Dispatch(Pawn pawn, RadialLeaf leaf, string subsystemId, bool flareShift) {
         if (pawn.genes == null) {
-            Logger.Verbose($"radial dispatch: feruchemy metal {subsystemId} skipped - pawn has no genes");
+            Log.Debug($"radial dispatch: feruchemy metal {subsystemId} skipped - pawn has no genes");
             return;
         }
 
@@ -34,6 +34,6 @@ public sealed class FeruchemyRadialHandler : IRadialActionHandler {
             }
         }
 
-        Logger.Verbose($"radial dispatch: feruchemy metal {subsystemId} not on pawn");
+        Log.Debug($"radial dispatch: feruchemy metal {subsystemId} not on pawn");
     }
 }

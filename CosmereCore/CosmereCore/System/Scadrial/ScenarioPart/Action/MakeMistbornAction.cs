@@ -3,7 +3,6 @@ using Cosmere.Core.ScenarioPart.Action;
 using Verse;
 
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -18,7 +17,7 @@ public class MakeMistbornAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for MakeMistborn");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for MakeMistborn");
             return;
         }
 

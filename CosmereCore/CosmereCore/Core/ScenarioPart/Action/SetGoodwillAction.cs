@@ -16,13 +16,13 @@ public class SetGoodwillAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(faction);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: FactionDef '{faction}' not found for SetGoodwill");
+            Log.Warn($"ScenarioProgression: FactionDef '{faction}' not found for SetGoodwill");
             return;
         }
 
         Faction? other = Find.FactionManager.FirstFactionOfDef(def);
         if (other == null) {
-            Logger.Warning($"ScenarioProgression: no live faction for '{faction}'");
+            Log.Warn($"ScenarioProgression: no live faction for '{faction}'");
             return;
         }
 

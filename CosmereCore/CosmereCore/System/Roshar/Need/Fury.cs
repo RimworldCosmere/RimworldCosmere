@@ -2,7 +2,6 @@ using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Need;
 
@@ -114,7 +113,7 @@ public class Fury : RimWorld.Need {
                 MessageTypeDefOf.ThreatSmall
             );
         } else {
-            Logger.Verbose($"Fury break failed for {pawn.NameShortColored} - TryStartMentalState returned false");
+            Log.Debug($"Fury break failed for {pawn.NameShortColored} - TryStartMentalState returned false");
         }
     }
 

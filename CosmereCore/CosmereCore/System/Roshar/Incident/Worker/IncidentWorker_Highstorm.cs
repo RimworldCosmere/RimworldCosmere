@@ -1,6 +1,5 @@
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Incident.Worker;
 
@@ -8,7 +7,7 @@ public class IncidentWorker_Highstorm : IncidentWorker {
     protected override bool TryExecuteWorker(IncidentParms parms) {
         Map map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) {
-            Logger.Warning("Highstorm incident: No valid map found.");
+            Log.Warn("Highstorm incident: No valid map found.");
             return false;
         }
 
@@ -28,7 +27,7 @@ public class IncidentWorker_Highstorm : IncidentWorker {
         GameConditionDef stormDef = DefDatabase<GameConditionDef>.GetNamed("Cosmere_Roshar_HighstormCondition");
         DefModExtension.Highstorm? ext = stormDef.GetModExtension<DefModExtension.Highstorm>();
         if (ext == null) {
-            Logger.Warning("Missing Highstorm ModExtension on Cosmere_Roshar_HighstormCondition");
+            Log.Warn("Missing Highstorm ModExtension on Cosmere_Roshar_HighstormCondition");
             return false;
         }
 

@@ -61,7 +61,7 @@ public class ScenPart_NamedPawns : ScenPart {
 
                 PawnRelationDef? def = DefDatabase<PawnRelationDef>.GetNamedSilentFail(entry.def);
                 if (def == null) {
-                    Logger.Warning($"ScenPart_NamedPawns: PawnRelationDef '{entry.def}' not found");
+                    Log.Warn($"ScenPart_NamedPawns: PawnRelationDef '{entry.def}' not found");
                     continue;
                 }
 
@@ -76,7 +76,7 @@ public class ScenPart_NamedPawns : ScenPart {
                 }
 
                 self.relations.AddDirectRelation(def, other);
-                Logger.Info($"ScenPart_NamedPawns: {template.firstName} is {def.defName} to {entry.to}.");
+                Log.Info($"ScenPart_NamedPawns: {template.firstName} is {def.defName} to {entry.to}.");
             }
         }
     }
@@ -350,7 +350,7 @@ public class ScenPart_NamedPawns : ScenPart {
         if (template.childhood != null) {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.childhood);
             if (story == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Childhood '{template.childhood}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Childhood '{template.childhood}' not found, skipping");
             } else {
                 pawn.story.Childhood = story;
             }
@@ -359,7 +359,7 @@ public class ScenPart_NamedPawns : ScenPart {
         if (template.adulthood != null) {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.adulthood);
             if (story == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Adulthood '{template.adulthood}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Adulthood '{template.adulthood}' not found, skipping");
             } else {
                 pawn.story.Adulthood = story;
             }
@@ -373,7 +373,7 @@ public class ScenPart_NamedPawns : ScenPart {
 
         XenotypeDef xenotypeDef = DefDatabase<XenotypeDef>.GetNamedSilentFail(template.xenotype);
         if (xenotypeDef == null) {
-            Logger.Warning($"ScenPart_NamedPawns: Xenotype '{template.xenotype}' not found, skipping");
+            Log.Warn($"ScenPart_NamedPawns: Xenotype '{template.xenotype}' not found, skipping");
             return;
         }
 
@@ -394,7 +394,7 @@ public class ScenPart_NamedPawns : ScenPart {
             NamedPawnTraitEntry entry = template.traits[i];
             TraitDef traitDef = DefDatabase<TraitDef>.GetNamedSilentFail(entry.def);
             if (traitDef == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Trait '{entry.def}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Trait '{entry.def}' not found, skipping");
                 continue;
             }
 
@@ -409,7 +409,7 @@ public class ScenPart_NamedPawns : ScenPart {
             NamedPawnSkillEntry entry = template.skills[i];
             SkillDef skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(entry.def);
             if (skillDef == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Skill '{entry.def}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Skill '{entry.def}' not found, skipping");
                 continue;
             }
 
@@ -428,7 +428,7 @@ public class ScenPart_NamedPawns : ScenPart {
             string geneName = template.genes[i];
             GeneDef geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(geneName);
             if (geneDef == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Gene '{geneName}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Gene '{geneName}' not found, skipping");
                 continue;
             }
 
@@ -446,7 +446,7 @@ public class ScenPart_NamedPawns : ScenPart {
             NamedPawnInventoryEntry entry = template.apparel[i];
             ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
             if (thingDef == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Apparel '{entry.thing}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Apparel '{entry.thing}' not found, skipping");
                 continue;
             }
 
@@ -467,7 +467,7 @@ public class ScenPart_NamedPawns : ScenPart {
             NamedPawnInventoryEntry entry = template.inventory[i];
             ThingDef thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
             if (thingDef == null) {
-                Logger.Warning($"ScenPart_NamedPawns: Thing '{entry.thing}' not found, skipping");
+                Log.Warn($"ScenPart_NamedPawns: Thing '{entry.thing}' not found, skipping");
                 continue;
             }
 

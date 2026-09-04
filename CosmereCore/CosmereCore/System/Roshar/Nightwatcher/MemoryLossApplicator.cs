@@ -1,7 +1,6 @@
 using Cosmere.Core.Nightwatcher;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Nightwatcher;
 
@@ -19,6 +18,6 @@ public class MemoryLossApplicator : ICurseApplicator, INightwatcherEffectDescrib
             skills[i].xpSinceMidnight = 0f;
         }
 
-        Logger.Info($"MemoryLossApplicator: reset all skills to max 4 for {pawn.NameShortColored}");
+        Log.Info($"MemoryLossApplicator: reset all skills to max 4 for {pawn.NameShortColored}");
     }
 }

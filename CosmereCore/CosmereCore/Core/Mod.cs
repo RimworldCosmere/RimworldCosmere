@@ -9,16 +9,6 @@ using Verse;
 
 namespace Cosmere.Core;
 
-public enum LogLevel {
-    // ReSharper disable once UnusedMember.Global
-    None = 0,
-    Important,
-    Error,
-    Warning,
-    Info,
-    Verbose,
-}
-
 public class Mod : CosmereMod<CoreModSettings> {
     private static readonly Dictionary<Type, CosmereModSettings> settingsByType = [];
     private static List<CosmereModSettings>? settingsList;
@@ -30,8 +20,6 @@ public class Mod : CosmereMod<CoreModSettings> {
     }
 
     public static bool debugMode => GetModSettings<CoreModSettings>().debugMode;
-
-    public static LogLevel logLevel => GetModSettings<CoreModSettings>().logLevel;
 
     public static List<CosmereModSettings> cosmereSettings => settingsList ??= BuildSettingsList();
 
@@ -73,7 +61,7 @@ public class Mod : CosmereMod<CoreModSettings> {
                 settingsByType[t] = instance;
                 result.Add(instance);
             } catch (Exception ex) {
-                Logger.Error($"Failed to instantiate settings type {t.FullName}: {ex}");
+                Log.Error($"Failed to instantiate settings type {t.FullName}: {ex}");
             }
         }
 

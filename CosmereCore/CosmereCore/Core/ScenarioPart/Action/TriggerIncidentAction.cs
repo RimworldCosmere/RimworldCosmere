@@ -9,7 +9,7 @@ public class TriggerIncidentAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         IncidentDef? def = DefDatabase<IncidentDef>.GetNamedSilentFail(incident);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: Incident '{incident}' not found");
+            Log.Warn($"ScenarioProgression: Incident '{incident}' not found");
             return;
         }
 

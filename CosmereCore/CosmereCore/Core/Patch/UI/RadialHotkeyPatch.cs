@@ -12,7 +12,7 @@ public abstract class RadialHotkeyPatch : UIRoot_Play {
         try {
             RadialController.OnHotkeyPoll();
         } catch (Exception ex) {
-            Logger.Error($"radial hotkey poll failed: {ex}");
+            Log.Error($"radial hotkey poll failed: {ex}");
         }
     }
 }

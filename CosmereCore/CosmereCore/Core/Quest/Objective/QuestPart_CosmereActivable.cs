@@ -29,7 +29,7 @@ public abstract class QuestPart_CosmereActivable : QuestPartActivable {
 
         // Checked on first poll, not Enable: completing there would re-enter the signal manager mid-walk.
         if (!QuestBranch.Matches(afterChoice, quest)) {
-            Logger.Verbose($"{GetType().Name}: skipped, quest took a branch other than '{afterChoice}'.");
+            Log.Debug($"{GetType().Name}: skipped, quest took a branch other than '{afterChoice}'.");
             OnSkipped();
             Complete();
             return;
@@ -53,7 +53,7 @@ public abstract class QuestPart_CosmereActivable : QuestPartActivable {
 
     /// <summary>Raise the fail signal and stop polling.</summary>
     protected void Fail() {
-        Logger.Warning($"{GetType().Name} failed the quest (state was {State}).");
+        Log.Warn($"{GetType().Name} failed the quest (state was {State}).");
 
         string? signal = failSignal;
         if (signal != null && signal.Length > 0) Find.SignalManager.SendSignal(new Signal(signal));

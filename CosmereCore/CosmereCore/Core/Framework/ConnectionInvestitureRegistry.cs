@@ -31,7 +31,7 @@ public static class ConnectionInvestitureRegistry {
                 int reading = sources[i].InvestitureStrength(pawn, shard);
                 if (reading > best) best = reading;
             } catch (Exception ex) {
-                Logger.Warning(
+                Log.Warn(
                     $"ConnectionInvestitureRegistry: source {sources[i].GetType().Name} threw: {ex}"
                 );
             }

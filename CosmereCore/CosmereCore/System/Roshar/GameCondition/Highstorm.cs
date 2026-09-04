@@ -6,7 +6,6 @@ using Cosmere.System.Roshar.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.GameCondition;
 
@@ -83,7 +82,7 @@ public class Highstorm : RimWorld.GameCondition {
         base.GameConditionTick();
         DefModExtension.Highstorm? ext = def.GetModExtension<DefModExtension.Highstorm>();
         if (ext == null) {
-            Logger.Error("DefModExtension.Highstorm is null on GameConditionDef!");
+            Log.Error("DefModExtension.Highstorm is null on GameConditionDef!");
             return;
         }
 
@@ -107,7 +106,7 @@ public class Highstorm : RimWorld.GameCondition {
         CurrentIntensity = baseIntensity * seasonalMultiplier;
 
         if (SingleMap == null) {
-            Logger.Error("SingleMap is null, cannot process storm!");
+            Log.Error("SingleMap is null, cannot process storm!");
             return;
         }
 

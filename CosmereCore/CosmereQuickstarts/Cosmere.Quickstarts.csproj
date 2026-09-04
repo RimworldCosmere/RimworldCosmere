@@ -31,13 +31,15 @@
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
         <Using Include="RimWorks.Quickstarts"/>
+        <Using Include="RimWorks.RimLogging.Log" Alias="Log"/>
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.System.Scadrial.Extension"/>
         <Using Include="Cosmere.System.Roshar.Extension"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="RimWorks.Quickstarts.Ref" Version="1.0.*"/>
+        <PackageReference Include="RimWorks.Quickstarts.Ref" Version="2.*"/>
+        <PackageReference Include="RimWorks.RimLogging" Version="2.*"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

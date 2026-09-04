@@ -55,11 +55,11 @@ public static class BetaHubClient {
                 };
 
                 if (outcome != SubmitOutcome.Success) {
-                    Logger.Warning($"BetaHub submit failed with {done.responseCode}: {body}");
+                    Log.Warn($"BetaHub submit failed with {done.responseCode}: {body}");
 
                     // a 403 here means CI hasn't published this release yet; retry without the label.
                     if (includeReleaseLabel && BetaHubStatusMapper.IsMissingReleasePermission(done.responseCode, body)) {
-                        Logger.Warning("Retrying the BetaHub submit without a release label.");
+                        Log.Warn("Retrying the BetaHub submit without a release label.");
                         Post(report, screenshotJpeg, onDone, includeReleaseLabel: false);
 
                         return;
@@ -119,7 +119,7 @@ public static class BetaHubClient {
     private static void LogAttachmentOutcome(string what, UnityWebRequest done) {
         if (BetaHubStatusMapper.Map(done.responseCode) == SubmitOutcome.Success) return;
 
-        Logger.Warning($"BetaHub {what} upload failed with {done.responseCode}: {done.downloadHandler?.text}");
+        Log.Warn($"BetaHub {what} upload failed with {done.responseCode}: {done.downloadHandler?.text}");
     }
 
     /// <summary>

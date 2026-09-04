@@ -20,14 +20,23 @@
             <displayName>Concord</displayName>
             <downloadUrl>https://github.com/ConcordLib/RimWorld/releases/latest</downloadUrl>
         </li>
+        <li>
+            <packageId>RimWorks.RimLogging</packageId>
+            <displayName>RimLogging</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3733484696</steamWorkshopUrl>
+            <downloadUrl>https://github.com/RimWorks/rimworld-logging-framework/releases/latest</downloadUrl>
+        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
         <li>concordlib.concord</li>
+        <li>RimWorks.RimLogging</li>
     </forceLoadAfter>
-    <!-- Optional dev tool. When it is active, loadFolders.xml adds the Quickstarts folder
-         with Cosmere's own quickstarts in it. -->
+    <!-- Optional dev tools. Quickstarts also gates a loadFolders.xml folder holding
+         Cosmere's own quickstarts. -->
     <loadAfter>
         <li>rimworks.quickstarts</li>
+        <li>rimworks.pickle</li>
+        <li>RimWorks.RimObs</li>
     </loadAfter>
 </ModMetaData>

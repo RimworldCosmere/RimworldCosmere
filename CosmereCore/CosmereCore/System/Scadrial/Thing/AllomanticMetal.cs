@@ -3,7 +3,6 @@ using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Thing;
 
@@ -59,7 +58,7 @@ public class AllomanticMetal : AllomanticVial {
             if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 if (stuffMetal == null) {
-                    Logger.Warning(
+                    Log.Warn(
                         $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
                     );
                     return;
@@ -75,7 +74,7 @@ public class AllomanticMetal : AllomanticVial {
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 if (stuffMetal == null) {
-                    Logger.Warning(
+                    Log.Warn(
                         $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
                     );
                     return;

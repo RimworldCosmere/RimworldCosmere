@@ -15,7 +15,7 @@ public static class ConnectionStealRegistry {
             try {
                 handlers[i].OnConnectionStolen(donor);
             } catch (Exception ex) {
-                Logger.Warning($"ConnectionStealRegistry: handler {handlers[i].GetType().Name} threw: {ex}");
+                Log.Warn($"ConnectionStealRegistry: handler {handlers[i].GetType().Name} threw: {ex}");
             }
         }
     }

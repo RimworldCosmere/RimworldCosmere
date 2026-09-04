@@ -38,7 +38,7 @@ public static class DiagnosticsBundle {
 
             return LogTail.Take(reader.ReadToEnd(), LogTail.DefaultMaxChars);
         } catch (Exception ex) {
-            Logger.Warning($"Could not read the log for a BetaHub report: {ex.Message}");
+            Log.Warn($"Could not read the log for a BetaHub report: {ex.Message}");
             return "(log unreadable)";
         }
     }

@@ -2,7 +2,6 @@ using System.Text;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Def;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 
@@ -30,7 +29,7 @@ public class HemalurgicSpike : ThingComp {
 
             if (cachedMetal != null) return cachedMetal;
 
-            Logger.Error("HemalurgicSpike doesn't have a metal");
+            Log.Error("HemalurgicSpike doesn't have a metal");
             return null;
         }
     }

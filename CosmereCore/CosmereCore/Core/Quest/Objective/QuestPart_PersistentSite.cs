@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Objective;
 
@@ -57,7 +56,7 @@ public class QuestPart_PersistentSite : QuestPart_CosmereActivable {
 
         IncidentDefOf.RaidEnemy.Worker.TryExecute(parms);
         lastRaidTick = Find.TickManager.TicksGame;
-        Logger.Verbose($"QuestPart_PersistentSite: player {why} the site, sent {parms.points} points of raid.");
+        Log.Debug($"QuestPart_PersistentSite: player {why} the site, sent {parms.points} points of raid.");
     }
 
     public override IEnumerable<GlobalTargetInfo> QuestLookTargets {

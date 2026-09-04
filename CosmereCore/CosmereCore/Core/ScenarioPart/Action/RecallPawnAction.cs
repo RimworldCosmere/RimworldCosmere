@@ -22,7 +22,7 @@ public class RecallPawnAction : ProgressionAction {
 
         Pawn? pawn = FindInWorld(pawnName);
         if (pawn == null) {
-            if (!optional) Logger.Warning($"ScenarioProgression: '{pawnName}' is not in the world to recall.");
+            if (!optional) Log.Warn($"ScenarioProgression: '{pawnName}' is not in the world to recall.");
             return;
         }
 
@@ -46,7 +46,7 @@ public class RecallPawnAction : ProgressionAction {
             Find.LetterStack.ReceiveLetter(letterTitle, letterText, LetterDefOf.PositiveEvent, pawn);
         }
 
-        Logger.Important($"ScenarioProgression: {pawnName} is back.");
+        Log.Info($"ScenarioProgression: {pawnName} is back.");
     }
 
     private static Pawn? FindInWorld(string firstName) {

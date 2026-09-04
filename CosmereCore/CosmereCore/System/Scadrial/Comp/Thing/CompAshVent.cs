@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cosmere.System.Scadrial.Grid;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Comp.Thing;
 
@@ -44,7 +43,7 @@ public class CompProperties_AshVent : CompProperties {
         for (int i = 0; i < metals.Count; i++) {
             ThingDef? metal = DefDatabase<ThingDef>.GetNamedSilentFail(metals[i]);
             if (metal == null) {
-                Logger.Error($"{parentDef.defName} lists thrown metal {metals[i]}, which is not a loaded ThingDef.");
+                Log.Error($"{parentDef.defName} lists thrown metal {metals[i]}, which is not a loaded ThingDef.");
                 continue;
             }
 
@@ -91,7 +90,7 @@ public class CompAshVent : ThingComp {
                 TerrainDef? to = DefDatabase<TerrainDef>.GetNamedSilentFail(rung.Value);
 
                 if (from == null || to == null) {
-                    Logger.Warning($"Ash vent soil ladder drops {rung.Key} to {rung.Value}: one is not loaded.");
+                    Log.Warn($"Ash vent soil ladder drops {rung.Key} to {rung.Value}: one is not loaded.");
                     continue;
                 }
 

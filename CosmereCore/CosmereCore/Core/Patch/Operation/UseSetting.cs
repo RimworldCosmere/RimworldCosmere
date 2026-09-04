@@ -13,7 +13,7 @@ public class UseSetting : PatchOperation {
 
     protected override bool ApplyWorker(XmlDocument xml) {
         if (!CosmereSettings.TryGetRaw(modId, key, out object settingValue)) {
-            Logger.Warning($"PatchOperationUseSetting: Missing setting '{key}' in mod '{modId}'");
+            Log.Warn($"PatchOperationUseSetting: Missing setting '{key}' in mod '{modId}'");
             return false;
         }
 

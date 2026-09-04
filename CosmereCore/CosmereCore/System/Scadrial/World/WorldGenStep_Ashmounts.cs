@@ -5,7 +5,6 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.World;
 
@@ -96,7 +95,7 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         }
 
         CacheExposure(layer, mounts, tileCount);
-        Logger.Important($"Ashmounts: raised {mounts.Count} around tile {centreId}.");
+        Log.Info($"Ashmounts: raised {mounts.Count} around tile {centreId}.");
     }
 
     private static void CacheExposure(PlanetLayer layer, List<int> mounts, int tileCount) {

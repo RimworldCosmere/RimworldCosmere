@@ -4,7 +4,6 @@ using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Comp.Map;
 
@@ -131,7 +130,7 @@ public class AshDepthTracker : MapComponent {
 
         exposureMultiplier = Comp.Game.AshmountExposureCache.For(map.Tile);
         if (exposureMultiplier > 1.01f) {
-            Logger.Important($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
+            Log.Info($"Ash: this tile sits at {exposureMultiplier:0.00}x for Ashmount exposure.");
         }
 
         // ash was already falling before landing - apply current pressure now, don't ease up from clean air

@@ -72,7 +72,7 @@ public static class KolossGrowthTuning {
 
             int retuned = Retune(perDay.severityPerDay);
 
-            Cosmere.Core.Logger.Verbose(
+            Log.Debug(
                 $"KolossGrowthTuning: growth set to {years:0.#} years " +
                 $"({perDay.severityPerDay:0.000000} severity/day), {retuned} already alive retuned."
             );

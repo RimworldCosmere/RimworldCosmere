@@ -7,7 +7,6 @@ using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Gene;
 
@@ -134,7 +133,7 @@ public class Allomancer : Metalborn {
         if (TryBurnMetalForInvestiture(BurnRate)) return;
 
         RemoveAllSources();
-        Logger.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
+        Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
     }
 
     private void RemoveAllSources() {

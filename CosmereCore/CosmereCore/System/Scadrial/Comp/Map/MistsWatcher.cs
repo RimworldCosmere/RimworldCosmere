@@ -107,7 +107,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         nextMistsStartTick = lastMistsStartTick + intervalTicks;
 
-        Logger.Verbose(
+        Log.Debug(
             $"Next scheduled at tick {nextMistsStartTick} (interval {intervalTicks}, last at {lastMistsStartTick})"
         );
     }

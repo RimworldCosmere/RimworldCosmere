@@ -24,6 +24,6 @@ public static class WorldBeforeGenerationPatch {
 
         // Important, not Info: Info is filtered from the shipped log level.
         CosmereWorldDef? seeded = WorldUtility.SeedFromScenario();
-        if (seeded == null) Logger.Warning("World was unset at generation and no world could be inferred.");
+        if (seeded == null) Log.Warn("World was unset at generation and no world could be inferred.");
     }
 }

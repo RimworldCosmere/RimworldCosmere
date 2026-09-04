@@ -13,7 +13,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         NamedPawnIncidentConfig? config =
             def.GetModExtension<NamedPawnIncidentConfig>();
         if (config?.pawn == null) {
-            Logger.Warning($"NamedPawnArrival: No NamedPawnIncidentConfig on IncidentDef '{def.defName}'");
+            Log.Warn($"NamedPawnArrival: No NamedPawnIncidentConfig on IncidentDef '{def.defName}'");
             return false;
         }
 
@@ -152,7 +152,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         if (template.childhood != null) {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.childhood);
             if (story == null) {
-                Logger.Warning($"NamedPawnArrival: Childhood '{template.childhood}' not found, skipping");
+                Log.Warn($"NamedPawnArrival: Childhood '{template.childhood}' not found, skipping");
             } else {
                 pawn.story.Childhood = story;
             }
@@ -161,7 +161,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         if (template.adulthood != null) {
             BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.adulthood);
             if (story == null) {
-                Logger.Warning($"NamedPawnArrival: Adulthood '{template.adulthood}' not found, skipping");
+                Log.Warn($"NamedPawnArrival: Adulthood '{template.adulthood}' not found, skipping");
             } else {
                 pawn.story.Adulthood = story;
             }

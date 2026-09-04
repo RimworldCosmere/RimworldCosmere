@@ -12,7 +12,6 @@ using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Gene;
 
@@ -850,7 +849,7 @@ public class Feruchemist : Metalborn {
 
         if (unsettled <= 0f) return;
 
-        Logger.Warning(
+        Log.Warn(
             $"Duralumin: {unsettled:F1} of a {chargeMoved:F1} charge transfer went unsettled for {pawn.LabelShort}"
         );
     }

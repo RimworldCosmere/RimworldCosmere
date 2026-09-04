@@ -49,7 +49,7 @@ public class GiveBlessing : Recipe_Surgery {
     ) {
         HediffDef? blessing = recipe?.GetModExtension<BlessingExtension>()?.blessing;
         if (blessing == null) {
-            Cosmere.Core.Logger.Warning(
+            Log.Warn(
                 $"GiveBlessing: {recipe?.defName} has no BlessingExtension, so there is nothing to drive in."
             );
             return;

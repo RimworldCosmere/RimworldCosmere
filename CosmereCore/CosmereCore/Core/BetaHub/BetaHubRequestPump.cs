@@ -29,7 +29,7 @@ public static class BetaHubRequestPump {
             try {
                 entry.OnDone(entry.Request);
             } catch (Exception ex) {
-                Logger.Error($"BetaHub request callback threw: {ex}");
+                Log.Error($"BetaHub request callback threw: {ex}");
             } finally {
                 entry.Request.Dispose();
             }

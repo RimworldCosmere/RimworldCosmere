@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Reward;
 
@@ -22,14 +21,14 @@ public class RolledReward : QuestReward {
 
         string? picked = RewardTable.Roll(entries, ctx.rewardSeed);
         if (picked == null) {
-            Logger.Error($"RolledReward on {ctx.def?.defName} rolled nothing.");
+            Log.Error($"RolledReward on {ctx.def?.defName} rolled nothing.");
             return;
         }
 
         for (int i = 0; i < branches.Count; i++) {
             if (branches[i].key != picked) continue;
             branches[i].reward?.Give(ctx);
-            Logger.Info($"RolledReward on {ctx.def?.defName} resolved to '{picked}'.");
+            Log.Info($"RolledReward on {ctx.def?.defName} resolved to '{picked}'.");
             return;
         }
     }

@@ -58,7 +58,7 @@ public static class TextureExtension {
 
     public static Texture2D InvertColors(this Texture2D texture) {
         if (!texture.isReadable) {
-            Logger.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
+            Log.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
             return texture;
         }
 
@@ -84,7 +84,7 @@ public static class TextureExtension {
     /// </remarks>
     public static Texture2D Silhouette(this Texture2D texture, Color color) {
         if (!texture.isReadable) {
-            Logger.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
+            Log.Error("Texture is not readable. Set it to readable in the import settings or clone it manually.");
             return texture;
         }
 

@@ -49,7 +49,7 @@ public class RaidAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(faction);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: FactionDef '{faction}' not found for Raid");
+            Log.Warn($"ScenarioProgression: FactionDef '{faction}' not found for Raid");
             return;
         }
 
@@ -59,17 +59,17 @@ public class RaidAction : ProgressionAction {
             try {
                 FactionGeneratorPatch.CreateScripted(def);
             } catch (Exception ex) {
-                Logger.Warning($"ScenarioProgression: could not create faction '{faction}': {ex}");
+                Log.Warn($"ScenarioProgression: could not create faction '{faction}': {ex}");
                 return;
             }
 
             attacker = Find.FactionManager.FirstFactionOfDef(def);
             if (attacker == null) {
-                Logger.Warning($"ScenarioProgression: still no faction for '{faction}', no raid sent.");
+                Log.Warn($"ScenarioProgression: still no faction for '{faction}', no raid sent.");
                 return;
             }
 
-            Logger.Important($"ScenarioProgression: created faction '{faction}' so its raid could land.");
+            Log.Info($"ScenarioProgression: created faction '{faction}' so its raid could land.");
         }
 
         Map? map = Find.CurrentMap;
@@ -98,7 +98,7 @@ public class RaidAction : ProgressionAction {
         if (arrivalMode.Length > 0) {
             PawnsArrivalModeDef? mode = DefDatabase<PawnsArrivalModeDef>.GetNamedSilentFail(arrivalMode);
             if (mode == null) {
-                Logger.Warning($"ScenarioProgression: arrival mode '{arrivalMode}' not found, letting vanilla pick.");
+                Log.Warn($"ScenarioProgression: arrival mode '{arrivalMode}' not found, letting vanilla pick.");
             } else {
                 parms.raidArrivalMode = mode;
             }
@@ -110,11 +110,11 @@ public class RaidAction : ProgressionAction {
         }
 
         if (!incident.Worker.TryExecute(parms)) {
-            Logger.Warning($"ScenarioProgression: {incident.defName} refused to fire for '{faction}'.");
+            Log.Warn($"ScenarioProgression: {incident.defName} refused to fire for '{faction}'.");
             return;
         }
 
-        Logger.Important($"ScenarioProgression: sent {parms.points:F0} points of {attacker.Name} at the colony.");
+        Log.Info($"ScenarioProgression: sent {parms.points:F0} points of {attacker.Name} at the colony.");
     }
 
     public override string? Describe() {

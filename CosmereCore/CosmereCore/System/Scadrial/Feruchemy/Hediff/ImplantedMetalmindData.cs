@@ -1,7 +1,6 @@
 using Cosmere.Core.Def;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
@@ -137,7 +136,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         if (storedAmountInt > attributed) {
             float discarded = storedAmountInt - attributed;
             storedAmountInt = attributed;
-            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+            Log.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
         }
 
         ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);

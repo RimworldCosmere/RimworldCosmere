@@ -4,7 +4,6 @@ using Cosmere.System.Scadrial.Comp.Map;
 using Cosmere.System.Scadrial.Util;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -25,7 +24,7 @@ public class SetAshfallIntensityAction : ProgressionAction {
             maps[i].GetComponent<AshDepthTracker>()?.SetSeverityTarget(severity);
         }
 
-        Logger.Important($"ScenarioProgression: ashfall now climbs towards {severity}.");
+        Log.Info($"ScenarioProgression: ashfall now climbs towards {severity}.");
     }
 
     public override string? Describe() {

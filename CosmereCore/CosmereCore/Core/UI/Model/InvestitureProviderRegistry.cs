@@ -40,7 +40,7 @@ public static class InvestitureProviderRegistry {
                 InvestitureSnapshot? snap = providers[i].Snapshot(pawn);
                 if (snap != null) result.Add(snap);
             } catch (Exception ex) {
-                Logger.Warning($"InvestitureProviderRegistry: provider {providers[i].GetType().Name} threw: {ex}");
+                Log.Warn($"InvestitureProviderRegistry: provider {providers[i].GetType().Name} threw: {ex}");
             }
         }
 

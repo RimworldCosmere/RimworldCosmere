@@ -19,7 +19,6 @@ using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 using static Cosmere.System.Roshar.RadiantOrderDefOf;
-using Logger = Cosmere.Core.Logger;
 using RadiantOrder = Cosmere.System.Roshar.DefModExtension.RadiantOrder;
 
 namespace Cosmere.System.Roshar.Gene;
@@ -201,7 +200,7 @@ public class Surgebinder : Invested {
             pawn
         );
 
-        Logger.Important(
+        Log.Info(
             $"RegressIdeal: {pawn.NameShortColored} regressed from ideal {previousIdeal + 1} to {CurrentIdealInt + 1}"
         );
     }
@@ -209,7 +208,7 @@ public class Surgebinder : Invested {
     public void CatastrophicBondDeath() {
         int idealBeforeDeath = CurrentIdeal;
         bool isBondsmith = radiantOrderDef == RadiantOrderDefOf.Bondsmith;
-        Logger.Important(
+        Log.Info(
             $"CatastrophicBondDeath: {pawn.NameShortColored}, ideal={idealBeforeDeath}, bondsmith={isBondsmith}"
         );
         DeregisterFromTrackers(isBondsmith);
@@ -709,7 +708,7 @@ public class Surgebinder : Invested {
         skill.Level = 0;
         base.PostAdd();
         OnIdealChange();
-        Logger.Verbose($"{pawn.NameFullColored} has become a {radiantOrderDef.LabelCap}");
+        Log.Debug($"{pawn.NameFullColored} has become a {radiantOrderDef.LabelCap}");
     }
 
     private void EnableSoulcastWorkType() {
@@ -778,7 +777,7 @@ public class Surgebinder : Invested {
         radiantOrderDef.idealChecker.ConsummateOath(pawn, this, CurrentIdeal);
 
         List<AbilityDef> granted = radiantOrderDef.GetAbilities(CurrentIdealInt).ToList();
-        Logger.Info(
+        Log.Info(
             $"{pawn.LabelShort}: {radiantOrderDef.defName} ideal -> {CurrentIdealDisplay}, " +
             $"abilities now [{string.Join(", ", granted.Select(a => a.defName))}]"
         );

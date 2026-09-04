@@ -24,14 +24,14 @@ public class AddHediffAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         HediffDef? def = DefDatabase<HediffDef>.GetNamedSilentFail(hediff);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: HediffDef '{hediff}' not found for AddHediff");
+            Log.Warn($"ScenarioProgression: HediffDef '{hediff}' not found for AddHediff");
             return;
         }
 
         if (pawnName.Length > 0) {
             Pawn? pawn = comp.FindPawnByName(pawnName);
             if (pawn == null) {
-                if (!optional) Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for AddHediff");
+                if (!optional) Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for AddHediff");
                 return;
             }
 

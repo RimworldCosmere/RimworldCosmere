@@ -21,7 +21,7 @@ public class ScenPart_FactionRelations : ScenPart {
 
         Faction player = Faction.OfPlayer;
         if (player == null) {
-            Logger.Warning("ScenPart_FactionRelations: Faction.OfPlayer is null");
+            Log.Warn("ScenPart_FactionRelations: Faction.OfPlayer is null");
             return;
         }
 
@@ -57,7 +57,7 @@ public class ScenPart_FactionRelations : ScenPart {
     private static Faction? ResolveOrCreate(string defName) {
         FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(defName);
         if (def == null) {
-            Logger.Warning($"ScenPart_FactionRelations: FactionDef '{defName}' not found");
+            Log.Warn($"ScenPart_FactionRelations: FactionDef '{defName}' not found");
             return null;
         }
 
@@ -67,7 +67,7 @@ public class ScenPart_FactionRelations : ScenPart {
         try {
             FactionGeneratorPatch.CreateScripted(def);
         } catch (Exception ex) {
-            Logger.Warning($"ScenPart_FactionRelations: Failed to create faction '{defName}': {ex}");
+            Log.Warn($"ScenPart_FactionRelations: Failed to create faction '{defName}': {ex}");
             return null;
         }
 

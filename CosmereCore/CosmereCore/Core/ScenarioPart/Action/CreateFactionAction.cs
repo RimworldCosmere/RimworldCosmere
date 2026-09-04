@@ -27,7 +27,7 @@ public class CreateFactionAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(faction);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: FactionDef '{faction}' not found for CreateFaction");
+            Log.Warn($"ScenarioProgression: FactionDef '{faction}' not found for CreateFaction");
             return;
         }
 
@@ -36,13 +36,13 @@ public class CreateFactionAction : ProgressionAction {
             try {
                 FactionGeneratorPatch.CreateScripted(def);
             } catch (Exception ex) {
-                Logger.Warning($"ScenarioProgression: could not create faction '{faction}': {ex}");
+                Log.Warn($"ScenarioProgression: could not create faction '{faction}': {ex}");
                 return;
             }
 
             made = Find.FactionManager.FirstFactionOfDef(def);
             if (made == null) {
-                Logger.Warning($"ScenarioProgression: faction '{faction}' still absent after creation.");
+                Log.Warn($"ScenarioProgression: faction '{faction}' still absent after creation.");
                 return;
             }
         }
@@ -54,7 +54,7 @@ public class CreateFactionAction : ProgressionAction {
         }
 
         InstallLeader(made, comp);
-        Logger.Important($"ScenarioProgression: '{faction}' now exists, led by {made.leader?.Name?.ToStringShort ?? "nobody"}.");
+        Log.Info($"ScenarioProgression: '{faction}' now exists, led by {made.leader?.Name?.ToStringShort ?? "nobody"}.");
     }
 
     private void InstallLeader(Faction made, GameComponent_ScenarioProgression comp) {

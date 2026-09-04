@@ -13,7 +13,7 @@ public class Gold : HediffWithComps {
         base.PostMake();
 
         if (gold == null) {
-            Logger.Error("CS_Error_MissingRequirement".Translate("Gold", "the Gold gene"));
+            Log.Error("CS_Error_MissingRequirement".Translate("Gold", "the Gold gene"));
             pawn.health.RemoveHediff(this);
         }
     }

@@ -13,14 +13,14 @@ public class AdvanceIdealAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for AdvanceIdeal");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for AdvanceIdeal");
             return;
         }
 
         Surgebinder? surgebinder =
             pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' has no Surgebinder gene");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' has no Surgebinder gene");
             return;
         }
 

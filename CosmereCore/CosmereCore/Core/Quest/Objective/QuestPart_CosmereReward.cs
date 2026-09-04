@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cosmere.Core.Quest.Reward;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Objective;
 
@@ -42,7 +41,7 @@ public class QuestPart_CosmereReward : QuestPart {
             given++;
         }
 
-        Logger.Info($"{def.defName}: gave {given} reward(s) on quest completion.");
+        Log.Info($"{def.defName}: gave {given} reward(s) on quest completion.");
     }
 
     public override void ExposeData() {

@@ -52,12 +52,16 @@
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
         <Using Include="Cosmere.Core.Extension"/>
+        <!-- Deliberately shadows Verse.Log. Every log line goes through RimLogging. -->
+        <Using Include="RimWorks.RimLogging.Log" Alias="Log"/>
         <Using Include="Cosmere.System.Scadrial.Extension"/>
         <Using Include="Cosmere.System.Roshar.Extension"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Concord.Ref" Version="0.14.*"/>
+        <PackageReference Include="RimWorks.RimLogging" Version="2.*"/>
+        <PackageReference Include="RimWorks.Pickle.Ref" Version="4.*"/>
         <PackageReference Include="Concord.Analyzers" Version="0.14.*" PrivateAssets="all"/>
         <PackageReference Include="Concord.Generators" Version="0.14.*" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">

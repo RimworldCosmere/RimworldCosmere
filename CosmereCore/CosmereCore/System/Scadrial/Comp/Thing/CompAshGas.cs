@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Comp.Thing;
 
@@ -116,7 +115,7 @@ public class CompAshGas : ThingComp {
         filtration = DefDatabase<StatDef>.GetNamedSilentFail("Cosmere_Scadrial_Stat_AshFiltration");
         if (ashLung != null && filtration != null) return true;
 
-        Logger.Error(
+        Log.Error(
             "Ash gas is registered but Cosmere_Scadrial_Hediff_AshLung or Cosmere_Scadrial_Stat_AshFiltration " +
             "is not loaded. The vent will radiate heat and throw metal but nobody will ever choke on it."
         );

@@ -1,7 +1,6 @@
 using Concord;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.World;
 
@@ -53,13 +52,13 @@ public static class RosharGeneGenerationPatch {
 
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(selected);
         if (geneDef == null) {
-            Logger.Warning($"PawnGeneGeneration: rank gene '{selected}' not found");
+            Log.Warn($"PawnGeneGeneration: rank gene '{selected}' not found");
             return;
         }
 
         if (!pawn.genes.HasActiveGene(geneDef)) {
             pawn.genes.AddGene(geneDef, true);
-            Logger.Verbose($"PawnGeneGeneration: assigned {selected} to {pawn.NameShortColored}");
+            Log.Debug($"PawnGeneGeneration: assigned {selected} to {pawn.NameShortColored}");
         }
     }
 }

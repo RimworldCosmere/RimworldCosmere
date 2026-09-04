@@ -195,7 +195,7 @@ public class CosmereQuestManager : GameComponent {
             builder.Append(passed ? " [eligible] " : " [filtered] ");
         }
 
-        Logger.Verbose(builder.ToString());
+        Log.Debug(builder.ToString());
     }
 
     public bool TryStartCapstone(CosmereQuestDef def, Verse.Map map, Pawn? subject) {
@@ -203,7 +203,7 @@ public class CosmereQuestManager : GameComponent {
             ? existing
             : CapstoneState.NotFired;
         if (!CapstoneStateMachine.CanTransition(current, CapstoneState.Offered)) {
-            Logger.Warning($"{def.defName}: cannot start capstone from state {current}.");
+            Log.Warn($"{def.defName}: cannot start capstone from state {current}.");
             return false;
         }
 
@@ -224,7 +224,7 @@ public class CosmereQuestManager : GameComponent {
     /// </summary>
     public bool TryStartThreat(CosmereQuestDef def, Verse.Map map, Pawn? subject) {
         if (def.kind != QuestKind.Threat) {
-            Logger.Error($"{def.defName}: TryStartThreat called on a {def.kind} quest.");
+            Log.Error($"{def.defName}: TryStartThreat called on a {def.kind} quest.");
             return false;
         }
 
@@ -291,18 +291,18 @@ public class CosmereQuestManager : GameComponent {
     public bool AdvanceEra() {
         string? active = FindActiveEra();
         if (active == null || active.Length == 0) {
-            Logger.Warning("AdvanceEra: this campaign has no era to advance from.");
+            Log.Warn("AdvanceEra: this campaign has no era to advance from.");
             return false;
         }
 
         Cosmere.Core.Def.EraDef? era = DefDatabase<Cosmere.Core.Def.EraDef>.GetNamedSilentFail(active);
         if (era?.next == null) {
-            Logger.Info($"AdvanceEra: '{active}' is the last era of its timeline, staying put.");
+            Log.Info($"AdvanceEra: '{active}' is the last era of its timeline, staying put.");
             return false;
         }
 
         currentEra = era.next.defName;
-        Logger.Important($"The campaign has moved from the {era.label} into the {era.next.label}.");
+        Log.Info($"The campaign has moved from the {era.label} into the {era.next.label}.");
         return true;
     }
 

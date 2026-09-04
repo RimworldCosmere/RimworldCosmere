@@ -1,6 +1,5 @@
 using Cosmere.Core.Nightwatcher;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Nightwatcher;
 
@@ -20,7 +19,7 @@ public class HealChronicApplicator : IBoonApplicator, INightwatcherEffectDescrib
         for (int i = 0; i < hediffs.Count; i++) {
             if (!ChronicHediffs.Contains(hediffs[i].def.defName)) continue;
             pawn.health.RemoveHediff(hediffs[i]);
-            Logger.Info($"HealChronicApplicator: removed {hediffs[i].def.defName} from {pawn.NameShortColored}");
+            Log.Info($"HealChronicApplicator: removed {hediffs[i].def.defName} from {pawn.NameShortColored}");
             return;
         }
     }

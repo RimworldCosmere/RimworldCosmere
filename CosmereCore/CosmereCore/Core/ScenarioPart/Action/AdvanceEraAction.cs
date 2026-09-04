@@ -12,7 +12,7 @@ public class AdvanceEraAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();
         if (manager == null) {
-            Logger.Warning("ScenarioProgression: CosmereQuestManager unavailable, cannot advance the era");
+            Log.Warn("ScenarioProgression: CosmereQuestManager unavailable, cannot advance the era");
             return;
         }
 

@@ -16,7 +16,7 @@ public sealed class RosharNamedPawnApplier : INamedPawnApplier {
         try {
             pawn.genes?.TryAddRadiantOrder(orderGeneDef, template.idealLevel);
         } catch (Exception ex) {
-            Logger.Warning($"NamedPawnApplier: Failed to add radiant order: {ex}");
+            Log.Warn($"NamedPawnApplier: Failed to add radiant order: {ex}");
         }
     }
 }

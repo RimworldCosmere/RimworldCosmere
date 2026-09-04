@@ -59,7 +59,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
         handedOffDef = next;
         activeDef = next;
         arcStartTick = Find.TickManager.TicksGame;
-        Logger.Important($"Scenario progression handed off to {next.defName} on day {GenDate.DaysPassed}.");
+        Log.Info($"Scenario progression handed off to {next.defName} on day {GenDate.DaysPassed}.");
     }
 
     /// <summary>
@@ -171,7 +171,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
                 try {
                     actions[i].Execute(this);
                 } catch (Exception ex) {
-                    Logger.Warning($"ScenarioProgression: Failed to execute action: {ex}");
+                    Log.Warn($"ScenarioProgression: Failed to execute action: {ex}");
                 }
             }
         } finally {

@@ -39,7 +39,7 @@ public abstract class ForcePlayerFixedIdeoPatch : Page_ChooseIdeoPreset {
 
         classicIdeo = forcedIdeo;
         Find.IdeoManager.RemoveUnusedStartingIdeos();
-        Logger.Info(
+        Log.Info(
             $"ForcePlayerFixedIdeoPatch: forced player ideo to '{forcedIdeo.name}' from fixedIdeo on {def.defName}"
         );
     }

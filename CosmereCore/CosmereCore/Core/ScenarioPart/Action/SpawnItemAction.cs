@@ -13,7 +13,7 @@ public class SpawnItemAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thing);
         if (thingDef == null) {
-            Logger.Warning($"ScenarioProgression: Thing '{thing}' not found for SpawnItem");
+            Log.Warn($"ScenarioProgression: Thing '{thing}' not found for SpawnItem");
             return;
         }
 

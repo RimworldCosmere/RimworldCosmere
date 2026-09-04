@@ -6,7 +6,6 @@ using Cosmere.System.Scadrial.Feruchemy.Memory;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 
@@ -146,7 +145,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
             if (cachedMetal != null) return cachedMetal;
 
-            Logger.Error("Metalmind doesn't have a metal");
+            Log.Error("Metalmind doesn't have a metal");
             return null;
         }
     }
@@ -366,7 +365,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (storedAmountInt > attributed) {
             float discarded = storedAmountInt - attributed;
             storedAmountInt = attributed;
-            Logger.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+            Log.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
         }
 
         ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);

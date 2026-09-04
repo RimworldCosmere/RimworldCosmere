@@ -52,7 +52,7 @@ public static class KolossControl {
         float needed = EmotionalResistance.Of(koloss);
         if (needed <= 0f) return "CS_KolossBind_NotBindable".Translate(koloss.LabelShortCap.Named("TARGET"));
 
-        Cosmere.Core.Logger.Verbose(
+        Log.Debug(
             $"Koloss seize: {holder.LabelShort} reach {reach:F2} against {koloss.LabelShort} needing {needed:F2}."
         );
 

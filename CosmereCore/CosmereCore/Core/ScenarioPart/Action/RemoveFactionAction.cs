@@ -28,7 +28,7 @@ public class RemoveFactionAction : ProgressionAction {
         for (int i = 0; i < factions.Count; i++) {
             FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(factions[i]);
             if (def == null) {
-                Logger.Warning($"ScenarioProgression: FactionDef '{factions[i]}' not found for RemoveFaction");
+                Log.Warn($"ScenarioProgression: FactionDef '{factions[i]}' not found for RemoveFaction");
                 continue;
             }
 
@@ -55,7 +55,7 @@ public class RemoveFactionAction : ProgressionAction {
 
         faction.defeated = true;
         faction.hidden = true;
-        Logger.Important($"ScenarioProgression: '{defName}' is finished, {destroyed} settlements removed.");
+        Log.Info($"ScenarioProgression: '{defName}' is finished, {destroyed} settlements removed.");
     }
 
     public override string? Describe() {

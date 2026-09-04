@@ -119,7 +119,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public void UpdateStatus(Status? newStatus = null) {
         if (newStatus == null) {
             if (nextStatus == null) {
-                Logger.Error("Call to UpdateStatus with no status, and no next status");
+                Log.Error("Call to UpdateStatus with no status, and no next status");
                 return;
             }
 
@@ -163,7 +163,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                     comps.Add(abilityComp);
                     abilityComp.Initialize(def.comps[index]);
                 } catch (Exception ex) {
-                    Logger.Error("Could not instantiate or initialize an AbilityComp: " + ex);
+                    Log.Error("Could not instantiate or initialize an AbilityComp: " + ex);
                     comps.Remove(abilityComp);
                 }
             }

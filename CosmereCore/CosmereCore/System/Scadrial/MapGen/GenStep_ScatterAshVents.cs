@@ -1,7 +1,6 @@
 using Cosmere.System.Scadrial.Comp.Game;
 using Cosmere.System.Scadrial.Util;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.MapGen;
 
@@ -42,7 +41,7 @@ public class GenStep_ScatterAshVents : GenStep_ScatterThings {
         usedSpots.Clear();
 
         // Read back off the lister - ScatterAt can still decline a cell it was handed.
-        Logger.Important($"AshVents: scattered {map.listerThings.ThingsOfDef(thingDef).Count} on this map.");
+        Log.Info($"AshVents: scattered {map.listerThings.ThingsOfDef(thingDef).Count} on this map.");
     }
 
     protected override int CalculateFinalCount(Verse.Map map) {

@@ -21,13 +21,13 @@ public abstract class CosmereMod<TSettings> : Verse.Mod
         LongEventHandler.QueueLongEvent(
             () => {
                 if (!CosmerePatchGuard.Patched) {
-                    Logger.Verbose(
+                    Log.Debug(
                         $"{content.PackageId} Build Rev: {BuildInfo.Revision} @ {BuildInfo.BuildTime}"
                     );
                     Assembly assembly = GetType().Assembly;
                     string dllPath = assembly.Location;
                     DateTime lastWrite = File.GetLastWriteTime(dllPath);
-                    Logger.Important($"Cosmere DLL compiled: {lastWrite:yyyy-MM-dd HH:mm:ss}");
+                    Log.Info($"Cosmere DLL compiled: {lastWrite:yyyy-MM-dd HH:mm:ss}");
 
                     CosmerePatchGuard.ConcordPatches = Patcher.Apply(assembly);
                     CosmerePatchGuard.Patched = true;

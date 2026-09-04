@@ -2,7 +2,6 @@ using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Comp.Map;
 
@@ -56,7 +55,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             expeditionPawns[i].jobs?.StopAll();
         }
 
-        Logger.Verbose(
+        Log.Debug(
             $"[GemheartHunt] Expedition started with {pawns.Count} pawns, returns tick {expeditionReturnTick}"
         );
         return true;
@@ -81,7 +80,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
         float difficulty = CalculateDifficulty();
         float ratio = difficulty > 0 ? power / difficulty : 2f;
 
-        Logger.Verbose($"[GemheartHunt] Resolving: power={power:F1}, difficulty={difficulty:F1}, ratio={ratio:F2}");
+        Log.Debug($"[GemheartHunt] Resolving: power={power:F1}, difficulty={difficulty:F1}, ratio={ratio:F2}");
 
         if (ratio >= 1.5f) {
             ResolveVictory(survivors);
@@ -189,7 +188,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
     private void SpawnGemheart() {
         ThingDef? gemheartDef = ThingDefOf.Cosmere_Roshar_Thing_Gemheart;
         if (gemheartDef == null) {
-            Logger.Warning("[GemheartHunt] Gemheart ThingDef not found");
+            Log.Warn("[GemheartHunt] Gemheart ThingDef not found");
             return;
         }
 

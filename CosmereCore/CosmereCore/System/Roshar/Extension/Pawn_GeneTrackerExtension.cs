@@ -29,7 +29,7 @@ public static class Pawn_GeneTrackerExtension {
         string sprenDefName = "Cosmere_Roshar_Race_" + orderDef.sprenLabel.Replace(" ", string.Empty);
         PawnKindDef? sprenKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(sprenDefName);
         if (sprenKind == null) {
-            Logger.Error($"Could not find bonded spren PawnKindDef: {sprenDefName}");
+            Log.Error($"Could not find bonded spren PawnKindDef: {sprenDefName}");
             return null;
         }
 
@@ -122,7 +122,7 @@ public static class Pawn_GeneTrackerExtension {
     ) {
         // bail loud, not silent: a quiet null return here reads as Surgebinding broken, not switched off
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) {
-            Logger.Warning(
+            Log.Warn(
                 $"Cannot grant Radiant order '{geneDef.defName}' to {genes.pawn?.LabelShort}: the Honor shard is " +
                 "not enabled in this game. Surgebinding requires a scenario that enables Honor."
             );
@@ -135,7 +135,7 @@ public static class Pawn_GeneTrackerExtension {
         if (orderDef != null && pawn != null) {
             RadiantTracker? tracker = Current.Game?.GetComponent<RadiantTracker>();
             if (tracker != null && !tracker.CanRebond(pawn, orderDef.defName)) {
-                Logger.Warning(
+                Log.Warn(
                     $"{pawn.NameShortColored} cannot rebond order {orderDef.defName} due to broken bond restrictions"
                 );
                 return null;

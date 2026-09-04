@@ -3,7 +3,6 @@ using Cosmere.Core.Savant;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Savant;
 
@@ -28,7 +27,7 @@ public class RosharSavantCandidateProvider : ISavantCandidateProvider {
             SurgebindingSavantUtility.GetSavantHediffDef(chosenSurge.defName),
             SurgebindingSavantUtility.GetPermanentHediffDef(chosenSurge.defName)
         );
-        Logger.Info(
+        Log.Info(
             $"RosharSavantCandidateProvider: forced {pawn.NameShortColored} to surgebinding savant for {chosenSurge.defName}"
         );
     }

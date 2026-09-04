@@ -5,7 +5,6 @@ using Cosmere.System.Roshar.Comp.Map;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch.Highstorm;
 
@@ -89,7 +88,7 @@ public abstract class HighstormReadoutPatch : GlobalControls {
 
         // logged here, not via ExecuteWhenFinished: that callback reads the flag before this transpiler runs
         if (!inserted) {
-            Logger.Warning("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler found no DoDate call.");
+            Log.Warn("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler found no DoDate call.");
         }
     }
 }
@@ -123,7 +122,7 @@ public static class HighstormTogglePatch {
         }
 
         if (!inserted) {
-            Logger.Warning(
+            Log.Warn(
                 "PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler found no DoMapControls call."
             );
         }

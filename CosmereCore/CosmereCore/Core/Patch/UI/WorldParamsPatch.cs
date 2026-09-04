@@ -101,7 +101,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
             return Control.Cancel;
         }
 
-        Logger.Important($"World generation starting on {world.defName}.");
+        Log.Info($"World generation starting on {world.defName}.");
         return Control.Continue;
     }
 

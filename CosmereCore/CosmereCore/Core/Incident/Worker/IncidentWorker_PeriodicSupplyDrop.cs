@@ -11,7 +11,7 @@ public class IncidentWorker_PeriodicSupplyDrop : IncidentWorker {
 
         SupplyDropConfig? config = def.GetModExtension<SupplyDropConfig>();
         if (config == null || config.items.Count == 0) {
-            Logger.Warning($"PeriodicSupplyDrop: No SupplyDropConfig on IncidentDef '{def.defName}'");
+            Log.Warn($"PeriodicSupplyDrop: No SupplyDropConfig on IncidentDef '{def.defName}'");
             return false;
         }
 
@@ -22,7 +22,7 @@ public class IncidentWorker_PeriodicSupplyDrop : IncidentWorker {
 
             ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
             if (thingDef == null) {
-                Logger.Warning($"PeriodicSupplyDrop: Thing '{entry.thing}' not found, skipping");
+                Log.Warn($"PeriodicSupplyDrop: Thing '{entry.thing}' not found, skipping");
                 continue;
             }
 

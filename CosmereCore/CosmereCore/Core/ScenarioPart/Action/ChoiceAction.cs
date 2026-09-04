@@ -51,7 +51,7 @@ public class ChoiceAction : ProgressionAction {
         string? required = requiresPawn;
         if (required != null && required.Length > 0 && comp.FindPawnByName(required) == null) {
             bool explicitPath = onMissing.Count > 0;
-            Logger.Important(
+            Log.Info(
                 $"ScenarioProgression: '{required}' is gone, taking the " +
                 (explicitPath ? "onMissing" : "onAccept") + " path without asking."
             );
@@ -60,7 +60,7 @@ public class ChoiceAction : ProgressionAction {
             return;
         }
 
-        Logger.Important($"ScenarioProgression: asking '{titleKey}' - the campaign waits on it.");
+        Log.Info($"ScenarioProgression: asking '{titleKey}' - the campaign waits on it.");
 
         comp.AskChoice(() => new Dialog_ProgressionChoice(
             titleKey.Translate(),
@@ -86,7 +86,7 @@ public class ChoiceAction : ProgressionAction {
         global::System.Action? continuation,
         string chosenKey
     ) {
-        Logger.Important($"ScenarioProgression: '{chosenKey}' chosen.");
+        Log.Info($"ScenarioProgression: '{chosenKey}' chosen.");
         comp.ChoiceAnswered();
         Run(branch, comp);
         continuation?.Invoke();

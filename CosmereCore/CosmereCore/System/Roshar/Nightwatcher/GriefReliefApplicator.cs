@@ -1,7 +1,6 @@
 using Cosmere.Core.Nightwatcher;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Nightwatcher;
 
@@ -19,6 +18,6 @@ public class GriefReliefApplicator : IBoonApplicator, INightwatcherEffectDescrib
             }
         }
 
-        Logger.Info($"GriefReliefApplicator: cleared negative memories for {pawn.NameShortColored}");
+        Log.Info($"GriefReliefApplicator: cleared negative memories for {pawn.NameShortColored}");
     }
 }

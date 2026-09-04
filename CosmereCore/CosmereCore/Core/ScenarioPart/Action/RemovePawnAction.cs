@@ -28,9 +28,9 @@ public class RemovePawnAction : ProgressionAction {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
             if (optional) {
-                Logger.Verbose($"ScenarioProgression: '{pawnName}' is already gone, nothing to remove.");
+                Log.Debug($"ScenarioProgression: '{pawnName}' is already gone, nothing to remove.");
             } else {
-                Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for RemovePawn");
+                Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for RemovePawn");
             }
 
             return;

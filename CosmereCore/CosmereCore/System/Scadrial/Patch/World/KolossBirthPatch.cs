@@ -54,7 +54,7 @@ public static class KolossBirthPatch {
 
         child.genes.SetXenotype(blooded);
 
-        Cosmere.Core.Logger.Verbose(
+        Log.Debug(
             $"KolossBirthPatch: {child.LabelShort} born koloss-blooded."
         );
     }

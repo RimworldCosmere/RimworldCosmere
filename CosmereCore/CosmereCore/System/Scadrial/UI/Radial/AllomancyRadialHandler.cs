@@ -14,7 +14,7 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
 
     public void Dispatch(Pawn pawn, RadialLeaf leaf, string subsystemId, bool flareShift) {
         if (pawn.abilities == null) {
-            Logger.Verbose($"radial dispatch: allomancy metal {subsystemId} skipped - pawn has no abilities");
+            Log.Debug($"radial dispatch: allomancy metal {subsystemId} skipped - pawn has no abilities");
             return;
         }
 
@@ -26,6 +26,6 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
             return;
         }
 
-        Logger.Verbose($"radial dispatch: allomancy ability {leaf.LeafId} not on pawn");
+        Log.Debug($"radial dispatch: allomancy ability {leaf.LeafId} not on pawn");
     }
 }

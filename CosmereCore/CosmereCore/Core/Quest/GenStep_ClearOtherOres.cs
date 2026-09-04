@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest;
 
@@ -20,7 +19,7 @@ public class GenStep_ClearOtherOres : GenStep {
     public override void Generate(Verse.Map map, GenStepParams parms) {
         ThingDef? kept = keep;
         if (kept == null) {
-            Logger.Error("GenStep_ClearOtherOres has no keep def.");
+            Log.Error("GenStep_ClearOtherOres has no keep def.");
             return;
         }
 
@@ -40,6 +39,6 @@ public class GenStep_ClearOtherOres : GenStep {
             if (!doomed[i].Destroyed) doomed[i].Destroy(DestroyMode.Vanish);
         }
 
-        Logger.Verbose($"GenStep_ClearOtherOres: removed {doomed.Count} ore cells, keeping {kept.defName}.");
+        Log.Debug($"GenStep_ClearOtherOres: removed {doomed.Count} ore cells, keeping {kept.defName}.");
     }
 }

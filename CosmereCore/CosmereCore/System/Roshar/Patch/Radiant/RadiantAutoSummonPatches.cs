@@ -3,7 +3,6 @@ using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 using Shardblade = Cosmere.System.Roshar.Surgebinding.Ability.Shardblade;
 using Shardplate = Cosmere.System.Roshar.Surgebinding.Ability.Shardplate;
 
@@ -40,7 +39,7 @@ public static class RadiantAutoSummon {
             if (bladeAbility is Shardblade blade && blade.status.active == Active.Off) {
                 blade.UpdateStatus(Active.On);
                 summoned = true;
-                Logger.Verbose($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-summoned Shardblade");
+                Log.Debug($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-summoned Shardblade");
             }
         }
 
@@ -49,7 +48,7 @@ public static class RadiantAutoSummon {
             if (plateAbility is Shardplate plate && plate.status.active == Active.Off) {
                 plate.UpdateStatus(Active.On);
                 summoned = true;
-                Logger.Verbose($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-summoned Shardplate");
+                Log.Debug($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-summoned Shardplate");
             }
         }
 
@@ -82,7 +81,7 @@ public static class RadiantAutoSummon {
             Ability? bladeAbility = pawn.abilities?.GetAbility(cachedBladeAbilityDef);
             if (bladeAbility is Shardblade blade && blade.status.active == Active.On) {
                 blade.UpdateStatus(Active.Off);
-                Logger.Verbose($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-dismissed Shardblade");
+                Log.Debug($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-dismissed Shardblade");
             }
         }
 
@@ -90,7 +89,7 @@ public static class RadiantAutoSummon {
             Ability? plateAbility = pawn.abilities?.GetAbility(cachedPlateAbilityDef);
             if (plateAbility is Shardplate plate && plate.status.active == Active.On) {
                 plate.UpdateStatus(Active.Off);
-                Logger.Verbose($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-dismissed Shardplate");
+                Log.Debug($"RadiantAutoSummonPatch: {pawn.LabelShort} auto-dismissed Shardplate");
             }
         }
 

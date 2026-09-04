@@ -1,7 +1,6 @@
 using Cosmere.System.Roshar.Def;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Comp.Hediff;
 
@@ -20,7 +19,7 @@ public class HediffEvolution : HediffComp {
         curseDef = curse;
         if (curse.cultivationEvolutionDays <= 0) return;
         evolutionTick = GenTicks.TicksGame + curse.cultivationEvolutionDays * GenDate.TicksPerDay;
-        Logger.Info(
+        Log.Info(
             $"HediffEvolution: scheduled evolution in {curse.cultivationEvolutionDays} days for {Pawn?.NameShortColored}"
         );
     }
@@ -55,7 +54,7 @@ public class HediffEvolution : HediffComp {
             pawn
         );
 
-        Logger.Info($"HediffEvolution: {pawn.NameShortColored} curse '{curseDef.defName}' has evolved");
+        Log.Info($"HediffEvolution: {pawn.NameShortColored} curse '{curseDef.defName}' has evolved");
     }
 
     public override void CompExposeData() {

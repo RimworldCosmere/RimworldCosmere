@@ -1,7 +1,6 @@
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 
@@ -52,7 +51,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
     public void UpdateParticles() {
         if (particleSystem == null) {
-            Logger.Error(
+            Log.Error(
                 $"[Spren] Cannot update particles - ParticleSystem: {particleSystem != null}"
             );
             return;

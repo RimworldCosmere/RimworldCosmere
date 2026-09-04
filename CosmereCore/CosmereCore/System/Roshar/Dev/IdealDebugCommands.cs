@@ -6,7 +6,6 @@ using Cosmere.System.Roshar.Surgebinding;
 using LudeonTK;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Dev;
 
@@ -284,7 +283,7 @@ public static class IdealDebugCommands {
         Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Fury;
         if (fury != null) sb.AppendLine($"Fury Level: {fury.CurLevel:F2}");
 
-        Logger.Verbose(sb.ToString());
+        Log.Debug(sb.ToString());
     }
 
     [DebugAction(

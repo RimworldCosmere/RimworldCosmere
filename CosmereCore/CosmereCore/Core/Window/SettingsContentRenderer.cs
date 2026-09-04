@@ -53,7 +53,7 @@ public sealed class SettingsContentRenderer {
                 measuredSections.Add(measured);
                 sectionMeasurements.Add(new SettingSectionMeasurement(section.Key, measured.Height));
             } catch (Exception exception) {
-                Logger.Error($"Settings section {systemKey}/{section.Key} failed: {exception}");
+                Log.Error($"Settings section {systemKey}/{section.Key} failed: {exception}");
             }
         }
 
@@ -114,7 +114,7 @@ public sealed class SettingsContentRenderer {
                 height += rowHeight;
                 if (rows.Count > 1) height += RowGap;
             } catch (Exception exception) {
-                Logger.Error($"Settings descriptor {systemKey}/{section.Key}/{descriptor.Key} failed: {exception}");
+                Log.Error($"Settings descriptor {systemKey}/{section.Key}/{descriptor.Key} failed: {exception}");
                 rows.Add(new MeasuredRow(descriptor, controlRenderer.HeightFor(descriptor.Control) + RowVerticalPadding * 2f, true));
                 height += rows[^1].Height;
                 if (rows.Count > 1) height += RowGap;
@@ -237,7 +237,7 @@ public sealed class SettingsContentRenderer {
                 TooltipHandler.TipRegion(row.Rect, descriptor.DescriptionKey.Translate());
             }
         } catch (Exception exception) {
-            Logger.Error($"Settings descriptor {systemKey}/{sectionKey}/{row.Descriptor.Key} failed: {exception}");
+            Log.Error($"Settings descriptor {systemKey}/{sectionKey}/{row.Descriptor.Key} failed: {exception}");
             DrawUnavailableRow(row.Rect, skin);
         }
     }

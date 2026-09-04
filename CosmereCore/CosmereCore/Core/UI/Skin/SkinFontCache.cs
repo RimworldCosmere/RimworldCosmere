@@ -18,20 +18,20 @@ public static class SkinFontCache {
             try {
                 font = Font.CreateDynamicFontFromOSFont(family, pixelSize);
             } catch (Exception ex) {
-                Logger.Verbose(
+                Log.Debug(
                     $"SkinFontCache: CreateDynamicFontFromOSFont('{family}') threw {ex.GetType().Name}: {ex.Message}"
                 );
                 continue;
             }
 
             if (font != null && font.dynamic) {
-                Logger.Info($"SkinFontCache: resolved '{family}' @ {pixelSize}px");
+                Log.Info($"SkinFontCache: resolved '{family}' @ {pixelSize}px");
                 cache[key] = font;
                 return font;
             }
         }
 
-        Logger.Verbose($"SkinFontCache: no font resolved for {key}; using fallback");
+        Log.Debug($"SkinFontCache: no font resolved for {key}; using fallback");
         cache[key] = null;
         return null;
     }

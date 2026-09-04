@@ -123,7 +123,7 @@ public static class FactionGeneratorConfigurableFactionsPatch {
     private static void AfterConfigurableFactions(ControlHandle<IEnumerable<FactionDef>> ch) {
         Scenario scenario = Find.Scenario;
         string scenarioName = scenario?.name ?? "(null)";
-        Logger.Verbose($"FactionGeneratorPatch: Filtering factions for scenario '{scenarioName}'");
+        Log.Debug($"FactionGeneratorPatch: Filtering factions for scenario '{scenarioName}'");
         ch.ReturnValue = FilterFactions(ch.ReturnValue);
     }
 
@@ -134,13 +134,13 @@ public static class FactionGeneratorConfigurableFactionsPatch {
             // concealing (not dropping) avoids vanilla's wall of yellow warnings for expected factions.
             if (!allowed && FactionGeneratorPatch.IsWarnedAboutWhenMissing(faction)) {
                 Conceal(faction);
-                Logger.Verbose($"FactionGeneratorPatch: {faction.defName} -> concealed");
+                Log.Debug($"FactionGeneratorPatch: {faction.defName} -> concealed");
                 yield return faction;
                 continue;
             }
 
             Reveal(faction);
-            Logger.Verbose($"FactionGeneratorPatch: {faction.defName} -> {(allowed ? "allowed" : "filtered")}");
+            Log.Debug($"FactionGeneratorPatch: {faction.defName} -> {(allowed ? "allowed" : "filtered")}");
             if (allowed) {
                 yield return faction;
             }

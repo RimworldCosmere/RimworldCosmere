@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cosmere.Core.Quest.Objective;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest;
 
@@ -22,7 +21,7 @@ public static class CosmereQuestBuilder {
         RimWorld.Quest built = RimWorld.Quest.MakeRaw();
         built.root = DefDatabase<QuestScriptDef>.GetNamed("Cosmere_Quest_Root");
         if (built.root == null) {
-            Logger.Warning($"{def.defName}: quest build aborted - Cosmere_Quest_Root marker def is missing");
+            Log.Warn($"{def.defName}: quest build aborted - Cosmere_Quest_Root marker def is missing");
             quest = null;
             return false;
         }
@@ -42,7 +41,7 @@ public static class CosmereQuestBuilder {
         try {
             BuildStages(built, def, map, subject);
         } catch (QuestBuildFailure failure) {
-            Logger.Warning($"{def.defName}: quest build aborted - {failure.Message}");
+            Log.Warn($"{def.defName}: quest build aborted - {failure.Message}");
             quest = null;
             return false;
         }

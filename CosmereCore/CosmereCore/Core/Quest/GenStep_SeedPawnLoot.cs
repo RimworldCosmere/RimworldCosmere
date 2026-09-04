@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest;
 
@@ -21,7 +20,7 @@ public class GenStep_SeedPawnLoot : GenStep {
     public override void Generate(Verse.Map map, GenStepParams parms) {
         ThingDef? loot = thingDef;
         if (loot == null) {
-            Logger.Error("GenStep_SeedPawnLoot has no thingDef.");
+            Log.Error("GenStep_SeedPawnLoot has no thingDef.");
             return;
         }
 
@@ -38,7 +37,7 @@ public class GenStep_SeedPawnLoot : GenStep {
         }
 
         if (candidates.Count == 0) {
-            Logger.Warning($"GenStep_SeedPawnLoot: no hostile pawns to carry {loot.defName}.");
+            Log.Warn($"GenStep_SeedPawnLoot: no hostile pawns to carry {loot.defName}.");
             return;
         }
 
@@ -55,7 +54,7 @@ public class GenStep_SeedPawnLoot : GenStep {
             candidates[i].inventory.innerContainer.TryAdd(stack);
         }
 
-        Logger.Verbose(
+        Log.Debug(
             $"GenStep_SeedPawnLoot: {carriers} pawn(s) carrying {countPerCarrier} {loot.defName} each."
         );
     }

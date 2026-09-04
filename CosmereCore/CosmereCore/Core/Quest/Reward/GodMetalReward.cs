@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cosmere.Core.Def;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Reward;
 
@@ -23,7 +22,7 @@ public class GodMetalReward : QuestReward {
 
     public override void Give(QuestBuildContext ctx) {
         if (metal?.Item == null || ctx.map == null) {
-            Logger.Error($"GodMetalReward on {ctx.def?.defName} could not resolve a metal thing.");
+            Log.Error($"GodMetalReward on {ctx.def?.defName} could not resolve a metal thing.");
             return;
         }
 

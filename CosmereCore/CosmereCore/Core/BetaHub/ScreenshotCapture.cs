@@ -36,7 +36,7 @@ public static class ScreenshotCapture {
             texture.Apply();
             jpeg = texture.EncodeToJPG(JpegQuality);
         } catch (Exception ex) {
-            Logger.Warning($"Screenshot capture failed: {ex.Message}");
+            Log.Warn($"Screenshot capture failed: {ex.Message}");
         } finally {
             if (texture != null) UnityEngine.Object.Destroy(texture);
         }

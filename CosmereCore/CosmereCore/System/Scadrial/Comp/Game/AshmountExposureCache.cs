@@ -29,7 +29,7 @@ public class AshmountExposureCache : GameComponent {
     public static void Set(Dictionary<int, float> values) {
         AshmountExposureCache? cache = Current.Game?.GetComponent<AshmountExposureCache>();
         if (cache == null) {
-            Core.Logger.Warning("AshmountExposureCache: no component, exposure will read as 1 everywhere.");
+            Log.Warn("AshmountExposureCache: no component, exposure will read as 1 everywhere.");
             return;
         }
 

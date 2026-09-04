@@ -2,7 +2,6 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 using Verse.AI;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Comp.Thing;
 
@@ -140,7 +139,7 @@ public class SprenBond : ThingComp {
             Find.WorldPawns.PassToWorld(Spren, PawnDiscardDecideMode.KeepForever);
         }
 
-        Logger.Verbose($"Spren {Spren.NameFullColored} dismissed to Cognitive Realm");
+        Log.Debug($"Spren {Spren.NameFullColored} dismissed to Cognitive Realm");
     }
 
     public void Summon(Verse.Map map, IntVec3 nearPosition) {
@@ -156,7 +155,7 @@ public class SprenBond : ThingComp {
         IntVec3 cell = CellFinder.RandomSpawnCellForPawnNear(nearPosition, map, 2);
         GenSpawn.Spawn(Spren, cell, map);
 
-        Logger.Verbose($"Spren {Spren.NameFullColored} summoned from Cognitive Realm");
+        Log.Debug($"Spren {Spren.NameFullColored} summoned from Cognitive Realm");
     }
 
     public override void CompTick() {

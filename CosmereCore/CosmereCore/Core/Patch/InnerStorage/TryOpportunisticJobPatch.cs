@@ -55,7 +55,7 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
             if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
             if (code[i].operand is not Type operand || operand != typeof(ISlotGroupParent)) continue;
             if (patchedCount > 2) {
-                Logger.Warning(
+                Log.Warn(
                     "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
                 );
                 continue;
@@ -112,7 +112,7 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
 
         // reported here, not a startup callback: ExecuteWhenFinished would read the flag too early.
         if (patchedCount != 2) {
-            Logger.Warning(
+            Log.Warn(
                 $"Pawn_JobTracker.TryOpportunisticJob transpiler expected 2 `isinst ISlotGroupParent` sites, found {patchedCount}."
             );
             return instructions;

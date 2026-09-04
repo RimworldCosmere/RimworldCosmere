@@ -264,7 +264,7 @@ public class RosharModSettings : CosmereModSettings {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate(Name, sections);
         foreach (string error in errors) {
-            Cosmere.Core.Logger.Error($"Settings descriptor validation failed: {error}");
+            Log.Error($"Settings descriptor validation failed: {error}");
         }
 
         return sections;

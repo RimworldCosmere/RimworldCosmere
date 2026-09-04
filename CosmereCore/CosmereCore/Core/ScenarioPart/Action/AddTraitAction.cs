@@ -11,13 +11,13 @@ public class AddTraitAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for AddTrait");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for AddTrait");
             return;
         }
 
         TraitDef? traitDef = DefDatabase<TraitDef>.GetNamedSilentFail(trait);
         if (traitDef == null) {
-            Logger.Warning($"ScenarioProgression: Trait '{trait}' not found");
+            Log.Warn($"ScenarioProgression: Trait '{trait}' not found");
             return;
         }
 

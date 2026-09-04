@@ -8,7 +8,6 @@ using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Dialog;
@@ -480,7 +479,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             try {
                 degreeData = trait.def?.DataAtDegree(degree);
             } catch (Exception ex) {
-                Logger.Verbose(
+                Log.Debug(
                     $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex}"
                 );
             }

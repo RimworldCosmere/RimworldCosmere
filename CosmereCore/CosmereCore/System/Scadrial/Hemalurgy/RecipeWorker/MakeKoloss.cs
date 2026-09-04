@@ -54,7 +54,7 @@ public class MakeKoloss : Recipe_Surgery {
             "Cosmere_Scadrial_Xenotype_Koloss"
         );
         if (koloss == null) {
-            Cosmere.Core.Logger.Warning("MakeKoloss: the koloss xenotype is missing.");
+            Log.Warn("MakeKoloss: the koloss xenotype is missing.");
             return;
         }
 

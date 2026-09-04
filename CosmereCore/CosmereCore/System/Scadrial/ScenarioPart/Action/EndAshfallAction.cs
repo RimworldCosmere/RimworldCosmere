@@ -3,7 +3,6 @@ using Cosmere.Core.ScenarioPart.Action;
 using Cosmere.System.Scadrial.Comp.Map;
 using Cosmere.System.Scadrial.Util;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -21,7 +20,7 @@ public class EndAshfallAction : ProgressionAction {
             maps[i].GetComponent<AshDepthTracker>()?.BeginDrain();
         }
 
-        Logger.Important("ScenarioProgression: the ashfall has stopped. The ground drains from here.");
+        Log.Info("ScenarioProgression: the ashfall has stopped. The ground drains from here.");
     }
 
     public override string? Describe() {

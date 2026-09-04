@@ -13,7 +13,7 @@ public class HandOffProgressionAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         ScenarioProgressionDef? next = progression;
         if (next == null) {
-            Logger.Warning("ScenarioProgression: HandOffProgressionAction has no progression set");
+            Log.Warn("ScenarioProgression: HandOffProgressionAction has no progression set");
             return;
         }
 

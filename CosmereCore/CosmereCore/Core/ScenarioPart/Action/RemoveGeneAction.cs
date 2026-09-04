@@ -9,13 +9,13 @@ public class RemoveGeneAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for RemoveGene");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for RemoveGene");
             return;
         }
 
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(gene);
         if (geneDef == null) {
-            Logger.Warning($"ScenarioProgression: Gene '{gene}' not found");
+            Log.Warn($"ScenarioProgression: Gene '{gene}' not found");
             return;
         }
 

@@ -42,7 +42,7 @@ public class GemStuff : Verse.Graphic {
 
     public override Verse.Graphic GetColoredVersion(UnityEngine.Shader newShader, Color newColor, Color newColorTwo) {
         if (newColorTwo != Color.white) {
-            Logger.Error("Cannot use Graphic_Appearances.GetColoredVersion with a non-white colorTwo.");
+            Log.Error("Cannot use Graphic_Appearances.GetColoredVersion with a non-white colorTwo.");
         }
 
         return GraphicDatabase.Get<GemStuff>(path, newShader, drawSize, newColor, Color.white, data);

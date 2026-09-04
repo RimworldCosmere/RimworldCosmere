@@ -2,7 +2,6 @@ using Cosmere.Core;
 using Cosmere.Core.Need;
 using Cosmere.System.Scadrial.Gene;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
@@ -17,13 +16,13 @@ public class Nicrosil : HediffWithComps {
         base.PostMake();
 
         if (investiture == null) {
-            Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "investiture"));
+            Log.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "investiture"));
             pawn.health.RemoveHediff(this);
             return;
         }
 
         if (nicrosil == null) {
-            Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
+            Log.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
             pawn.health.RemoveHediff(this);
         }
     }

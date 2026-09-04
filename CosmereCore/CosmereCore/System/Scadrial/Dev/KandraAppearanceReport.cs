@@ -28,7 +28,7 @@ public static class KandraAppearanceReport {
             Kandra.KandraForm? worn = forms?.Current;
             Kandra.KandraForm? own = forms?.TrueBody;
 
-            Cosmere.Core.Logger.Important(
+            Log.Info(
                 $"Kandra appearance: {pawn.LabelShort}"
                 + $"\n  IsColonist: {pawn.IsColonist} | forms comp: {(forms == null ? "none" : "yes")}"
                 + $"\n  wearing: {Describe(worn)}"
@@ -79,7 +79,7 @@ public static class KandraAppearanceReport {
                 Util.KolossUtility.KolossXenotype
             );
             if (koloss == null) {
-                Cosmere.Core.Logger.Warning("The koloss xenotype is missing.");
+                Log.Warn("The koloss xenotype is missing.");
 
                 return;
             }

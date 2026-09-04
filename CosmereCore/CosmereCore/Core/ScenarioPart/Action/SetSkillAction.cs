@@ -20,13 +20,13 @@ public class SetSkillAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for SetSkill");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for SetSkill");
             return;
         }
 
         SkillDef? skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(skill);
         if (skillDef == null) {
-            Logger.Warning($"ScenarioProgression: Skill '{skill}' not found");
+            Log.Warn($"ScenarioProgression: Skill '{skill}' not found");
             return;
         }
 

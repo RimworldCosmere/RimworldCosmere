@@ -1,6 +1,5 @@
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Reward;
 
@@ -17,7 +16,7 @@ public class GoodwillReward : QuestReward {
 
         Faction? target = Find.FactionManager.FirstFactionOfDef(faction);
         if (target == null) {
-            Logger.Warning($"GoodwillReward on {ctx.def?.defName}: {faction.defName} is not present in this world.");
+            Log.Warn($"GoodwillReward on {ctx.def?.defName}: {faction.defName} is not present in this world.");
             return;
         }
 

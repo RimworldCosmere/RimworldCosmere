@@ -13,13 +13,13 @@ public class IncidentWorker_NamedPawnDeparture : IncidentWorker {
         NamedPawnIncidentConfig? config =
             def.GetModExtension<NamedPawnIncidentConfig>();
         if (config?.pawn?.firstName == null) {
-            Logger.Warning($"NamedPawnDeparture: No pawn name configured on IncidentDef '{def.defName}'");
+            Log.Warn($"NamedPawnDeparture: No pawn name configured on IncidentDef '{def.defName}'");
             return false;
         }
 
         Pawn? pawn = FindPawnByName(map, config.pawn.firstName);
         if (pawn == null) {
-            Logger.Warning($"NamedPawnDeparture: Pawn '{config.pawn.firstName}' not found on map");
+            Log.Warn($"NamedPawnDeparture: Pawn '{config.pawn.firstName}' not found on map");
             return false;
         }
 

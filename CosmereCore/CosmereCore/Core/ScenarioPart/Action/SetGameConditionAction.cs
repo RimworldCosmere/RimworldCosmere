@@ -10,7 +10,7 @@ public class SetGameConditionAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         GameConditionDef? def = DefDatabase<GameConditionDef>.GetNamedSilentFail(gameCondition);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: GameCondition '{gameCondition}' not found");
+            Log.Warn($"ScenarioProgression: GameCondition '{gameCondition}' not found");
             return;
         }
 

@@ -6,7 +6,6 @@ using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -35,13 +34,13 @@ public class MakeSavantAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            if (!optional) Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for MakeSavant");
+            if (!optional) Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for MakeSavant");
             return;
         }
 
         MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(metal);
         if (metalDef == null) {
-            Logger.Warning($"ScenarioProgression: MetalDef '{metal}' not found for MakeSavant");
+            Log.Warn($"ScenarioProgression: MetalDef '{metal}' not found for MakeSavant");
             return;
         }
 
@@ -58,7 +57,7 @@ public class MakeSavantAction : ProgressionAction {
             : RecordDefOf.GetTimeSpentBurningForMetal(metalDef);
 
         if (!RecordUtility.RaiseTo(pawn, record, ticks)) {
-            Logger.Warning($"ScenarioProgression: could not write record '{record.defName}' for {pawnName}.");
+            Log.Warn($"ScenarioProgression: could not write record '{record.defName}' for {pawnName}.");
         }
 
         HediffDef? savant = feruchemy
@@ -66,7 +65,7 @@ public class MakeSavantAction : ProgressionAction {
             : ScadrialSavantUtility.GetAllomanticSavantHediffDef(metalDef);
 
         SavantUtility.ApplySavantHediffs(pawn, savant, null);
-        Logger.Important($"ScenarioProgression: {pawnName} is a stage {stage} savant in {metalDef.defName}.");
+        Log.Info($"ScenarioProgression: {pawnName} is a stage {stage} savant in {metalDef.defName}.");
     }
 
     public override string? Describe() {

@@ -43,6 +43,6 @@ public static class CharacterCardWorldConnectionPatch {
             inserted = true;
         }
 
-        if (!inserted) Logger.Warning("CharacterCardUtility.DoTopStack world Connection transpiler found no xenotype element.");
+        if (!inserted) Log.Warn("CharacterCardUtility.DoTopStack world Connection transpiler found no xenotype element.");
     }
 }

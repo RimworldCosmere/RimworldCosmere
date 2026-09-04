@@ -188,7 +188,7 @@ public static class KandraUtility {
 
         XenotypeDef? kandra = DefDatabase<XenotypeDef>.GetNamedSilentFail(KandraXenotype);
         if (kandra == null) {
-            Cosmere.Core.Logger.Warning("KandraUtility: the kandra xenotype is missing.");
+            Log.Warn("KandraUtility: the kandra xenotype is missing.");
             return;
         }
 

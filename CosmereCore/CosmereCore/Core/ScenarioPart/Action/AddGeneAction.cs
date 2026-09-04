@@ -10,13 +10,13 @@ public class AddGeneAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
-            Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for AddGene");
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for AddGene");
             return;
         }
 
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(gene);
         if (geneDef == null) {
-            Logger.Warning($"ScenarioProgression: Gene '{gene}' not found");
+            Log.Warn($"ScenarioProgression: Gene '{gene}' not found");
             return;
         }
 

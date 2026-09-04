@@ -60,7 +60,7 @@ public static class MineableUtility {
             }
         }
 
-        Logger.Important($"Stripped {doomed.Count} mineables, keeping {keep.defName}.");
+        Log.Info($"Stripped {doomed.Count} mineables, keeping {keep.defName}.");
         Messages.Message(
             $"Removed {doomed.Count} mineables. Only {keep.label} remains.",
             MessageTypeDefOf.TaskCompletion,

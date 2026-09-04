@@ -32,7 +32,7 @@ public class RitualOutcomeEffectWorker_MakeKoloss : RitualOutcomeEffectWorker_Fr
 
         XenotypeDef? koloss = DefDatabase<XenotypeDef>.GetNamedSilentFail(KolossUtility.KolossXenotype);
         if (koloss == null) {
-            Cosmere.Core.Logger.Warning("MakeKoloss ritual: the koloss xenotype is missing.");
+            Log.Warn("MakeKoloss ritual: the koloss xenotype is missing.");
             return;
         }
 

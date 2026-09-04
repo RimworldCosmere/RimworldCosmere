@@ -7,7 +7,6 @@ using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Dialog;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Nightwatcher;
 
@@ -35,14 +34,14 @@ public static class NightwatcherSystem {
             web.AdjustConnection(cultivation, pawn, 0.1f);
         }
 
-        Logger.Info($"NightwatcherSystem: applied boon '{boon.defName}' to {pawn.NameShortColored}");
+        Log.Info($"NightwatcherSystem: applied boon '{boon.defName}' to {pawn.NameShortColored}");
     }
 
     public static void ApplyCurse(Pawn pawn, NightwatcherCurseDef curse, NightwatcherApplicationContext? context = null) {
         StandardCurseApplicator.Instance.Apply(pawn, curse, context);
         curse.Applicator?.Apply(pawn, curse, context);
 
-        Logger.Info($"NightwatcherSystem: applied curse '{curse.defName}' to {pawn.NameShortColored}");
+        Log.Info($"NightwatcherSystem: applied curse '{curse.defName}' to {pawn.NameShortColored}");
     }
 
     public static NightwatcherCurseDef DrawCurse(NightwatcherBoonDef boon) {
@@ -53,7 +52,7 @@ public static class NightwatcherSystem {
         }
 
         if (eligible.Count == 0) {
-            Logger.Warning($"NightwatcherSystem: no eligible curses for boon tier {boon.powerTier}");
+            Log.Warn($"NightwatcherSystem: no eligible curses for boon tier {boon.powerTier}");
             return DefDatabase<NightwatcherCurseDef>.AllDefsListForReading[0];
         }
 

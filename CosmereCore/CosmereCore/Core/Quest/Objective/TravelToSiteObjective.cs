@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Objective;
 
@@ -56,7 +55,7 @@ public class TravelToSiteObjective : QuestObjective {
 
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         if (!TryFindTile(ctx, out PlanetTile tile)) {
-            Logger.Error($"TravelToSiteObjective on {ctx.def?.defName} found no tile. Quest aborted.");
+            Log.Error($"TravelToSiteObjective on {ctx.def?.defName} found no tile. Quest aborted.");
             throw new QuestBuildFailure("no site tile available");
         }
 
@@ -76,7 +75,7 @@ public class TravelToSiteObjective : QuestObjective {
 
                 // Outpost and friends build from map.ParentFaction; skip rather than let a null faction throw.
                 if (extra.requiresFaction && faction == null) {
-                    Logger.Warning(
+                    Log.Warn(
                         $"{ctx.def?.defName}: skipping site part '{extra.defName}' - it requires a " +
                         "faction and the quest's targetFaction is not present in this world."
                     );

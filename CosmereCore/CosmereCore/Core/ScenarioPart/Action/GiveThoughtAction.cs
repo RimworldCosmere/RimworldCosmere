@@ -19,14 +19,14 @@ public class GiveThoughtAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         ThoughtDef? def = DefDatabase<ThoughtDef>.GetNamedSilentFail(thought);
         if (def == null) {
-            Logger.Warning($"ScenarioProgression: ThoughtDef '{thought}' not found for GiveThought");
+            Log.Warn($"ScenarioProgression: ThoughtDef '{thought}' not found for GiveThought");
             return;
         }
 
         if (pawnName.Length > 0) {
             Pawn? pawn = comp.FindPawnByName(pawnName);
             if (pawn == null) {
-                Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for GiveThought");
+                Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for GiveThought");
                 return;
             }
 

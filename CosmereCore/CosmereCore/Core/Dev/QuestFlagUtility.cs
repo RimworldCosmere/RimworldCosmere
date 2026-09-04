@@ -31,7 +31,7 @@ public static class QuestFlagUtility {
                     DebugMenuOptionMode.Action,
                     () => {
                         manager.SetFlag(flag);
-                        Logger.Important($"Quest flag '{flag}' set.");
+                        Log.Info($"Quest flag '{flag}' set.");
                         Messages.Message($"Quest flag '{flag}' set.", MessageTypeDefOf.TaskCompletion, false);
                     }
                 )

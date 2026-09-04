@@ -3,7 +3,6 @@ using Cosmere.System.Roshar.GameCondition;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Comp.Map;
 
@@ -143,7 +142,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
             lastHighstormTick = nextHighstormTick - intervalTicks;
             warningShown = false;
             seasonalIntensity = GetSeasonalIntensityMultiplier(map);
-            Logger.Verbose(
+            Log.Debug(
                 $"First storm scheduled at tick {nextHighstormTick} ({maxDays} days from now)"
             );
             return;
@@ -162,7 +161,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         warningShown = false;
         seasonalIntensity = GetSeasonalIntensityMultiplier(map);
 
-        Logger.Verbose(
+        Log.Debug(
             $"Next scheduled at tick {nextHighstormTick} (interval {intervalTicks}, last at {lastHighstormTick})"
         );
     }
@@ -179,7 +178,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (success) {
             stormActive = true;
         } else {
-            Logger.Warning("Incident failed to execute, will retry next schedule.");
+            Log.Warn("Incident failed to execute, will retry next schedule.");
         }
 
         lastHighstormTick = Find.TickManager.TicksGame;

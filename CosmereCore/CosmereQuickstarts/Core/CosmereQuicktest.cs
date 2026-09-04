@@ -45,7 +45,7 @@ public static class CosmereQuicktest {
 
         Shards? component = Current.Game?.GetComponent<Shards>();
         if (component == null) {
-            Logger.Warning("Quickstart shards skipped: the game has no Shards component yet.");
+            Log.Warn("Quickstart shards skipped: the game has no Shards component yet.");
             return;
         }
 
@@ -54,7 +54,7 @@ public static class CosmereQuicktest {
             component.EnableShard(shards[i], true);
         }
 
-        Logger.Verbose($"Quickstart enabled shards: {string.Join(", ", component.enabledShards.Keys)}");
+        Log.Debug($"Quickstart enabled shards: {string.Join(", ", component.enabledShards.Keys)}");
     }
 
     private static string? ForcedEra() {

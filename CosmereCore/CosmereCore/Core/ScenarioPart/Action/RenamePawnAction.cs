@@ -31,16 +31,16 @@ public class RenamePawnAction : ProgressionAction {
         Pawn? pawn = comp.FindPawnByName(pawnName);
         if (pawn == null) {
             if (optional) {
-                Logger.Verbose($"ScenarioProgression: '{pawnName}' is not here, so there is nobody to rename.");
+                Log.Debug($"ScenarioProgression: '{pawnName}' is not here, so there is nobody to rename.");
             } else {
-                Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' not found for RenamePawn");
+                Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for RenamePawn");
             }
 
             return;
         }
 
         if (string.IsNullOrEmpty(newFirstName)) {
-            Logger.Warning("ScenarioProgression: RenamePawn has no newFirstName, so nothing changed.");
+            Log.Warn("ScenarioProgression: RenamePawn has no newFirstName, so nothing changed.");
             return;
         }
 
@@ -50,7 +50,7 @@ public class RenamePawnAction : ProgressionAction {
             Find.LetterStack.ReceiveLetter(letterTitle, letterText, LetterDefOf.NeutralEvent, pawn);
         }
 
-        Logger.Info($"ScenarioProgression: '{pawnName}' is now called {pawn.Name.ToStringShort}.");
+        Log.Info($"ScenarioProgression: '{pawnName}' is now called {pawn.Name.ToStringShort}.");
     }
 
     /// <summary>

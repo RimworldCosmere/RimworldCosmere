@@ -68,7 +68,7 @@ public static class TimeSkipUtility {
         int before = GenDate.DaysPassed;
         ticks.DebugSetTicksGame(ticks.TicksGame + days * GenDate.TicksPerDay);
 
-        Logger.Important($"Skipped {days} day(s): day {before} -> day {GenDate.DaysPassed}.");
+        Log.Info($"Skipped {days} day(s): day {before} -> day {GenDate.DaysPassed}.");
         Messages.Message(
             $"Skipped to day {GenDate.DaysPassed}. Nothing in between was simulated.",
             MessageTypeDefOf.TaskCompletion,

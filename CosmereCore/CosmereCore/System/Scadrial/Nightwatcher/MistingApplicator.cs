@@ -2,7 +2,6 @@ using Cosmere.Core.Nightwatcher;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Util;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Nightwatcher;
 
@@ -17,7 +16,7 @@ public class MistingApplicator : IBoonApplicator, INightwatcherChoiceProvider, I
             false,
             true
         );
-        Logger.Info($"MistingApplicator: granted Misting ({metal.LabelCap}) to {pawn.NameShortColored}");
+        Log.Info($"MistingApplicator: granted Misting ({metal.LabelCap}) to {pawn.NameShortColored}");
     }
 
     public IEnumerable<NightwatcherChoice> GetChoices(Verse.Def def) {

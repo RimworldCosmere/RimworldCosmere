@@ -2,7 +2,6 @@ using Cosmere.Core.Comp.Game;
 using Cosmere.Core.ScenarioPart;
 using Cosmere.Core.ScenarioPart.Action;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.ScenarioPart.Action;
 
@@ -17,7 +16,7 @@ public class SetShardsAction : ProgressionAction {
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards == null) {
-            Logger.Warning("ScenarioProgression: no Shards component, cannot change Shards.");
+            Log.Warn("ScenarioProgression: no Shards component, cannot change Shards.");
             return;
         }
 
@@ -30,7 +29,7 @@ public class SetShardsAction : ProgressionAction {
             shards.EnableShard(enable[i], true);
         }
 
-        Logger.Important($"ScenarioProgression: Shards changed - off [{string.Join(", ", disable)}], on [{string.Join(", ", enable)}].");
+        Log.Info($"ScenarioProgression: Shards changed - off [{string.Join(", ", disable)}], on [{string.Join(", ", enable)}].");
     }
 
     public override string? Describe() {

@@ -1,5 +1,4 @@
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest.Outcome;
 
@@ -10,7 +9,7 @@ namespace Cosmere.Core.Quest.Outcome;
 public class BurnForPawn : QuestOutcome {
     public override void Resolve(QuestBuildContext ctx) {
         if (ctx.subject == null) {
-            Logger.Warning($"BurnForPawn on {ctx.def?.defName} had no subject pawn. Nothing was burned.");
+            Log.Warn($"BurnForPawn on {ctx.def?.defName} had no subject pawn. Nothing was burned.");
             return;
         }
 

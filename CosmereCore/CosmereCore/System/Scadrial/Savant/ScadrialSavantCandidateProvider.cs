@@ -2,7 +2,6 @@ using System;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Gene;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Savant;
 
@@ -29,7 +28,7 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
             ScadrialSavantUtility.GetAllomanticSavantHediffDef(chosen.metal),
             ScadrialSavantUtility.GetAllomanticPermanentHediffDef(chosen.metal)
         );
-        Logger.Info(
+        Log.Info(
             $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to allomantic savant for {chosen.metal.defName}"
         );
     }
@@ -40,7 +39,7 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
             ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(chosen.metal),
             ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(chosen.metal)
         );
-        Logger.Info(
+        Log.Info(
             $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to feruchemical savant for {chosen.metal.defName}"
         );
     }

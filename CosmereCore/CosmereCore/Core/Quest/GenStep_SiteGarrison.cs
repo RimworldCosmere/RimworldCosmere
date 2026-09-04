@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest;
 
@@ -28,13 +27,13 @@ public class GenStep_SiteGarrison : GenStep {
         if (faction == null || faction.IsPlayer) faction = Find.FactionManager.RandomEnemyFaction();
 
         if (faction == null) {
-            Logger.Warning("GenStep_SiteGarrison: no enemy faction in this world. Site left unguarded.");
+            Log.Warn("GenStep_SiteGarrison: no enemy faction in this world. Site left unguarded.");
             return;
         }
 
         // GenStep_PreciousLump sets this in ScatterAt; this GenStep's def must be ordered after it.
         if (!MapGenerator.TryGetVar("RectOfInterest", out CellRect rect)) {
-            Logger.Warning("GenStep_SiteGarrison: no RectOfInterest. Falling back to map centre.");
+            Log.Warn("GenStep_SiteGarrison: no RectOfInterest. Falling back to map centre.");
             rect = CellRect.CenteredOn(map.Center, 4);
         }
 
@@ -58,12 +57,12 @@ public class GenStep_SiteGarrison : GenStep {
         }
 
         if (defenders.Count == 0) {
-            Logger.Warning($"GenStep_SiteGarrison: {faction.Name} generated no pawns for {points} points.");
+            Log.Warn($"GenStep_SiteGarrison: {faction.Name} generated no pawns for {points} points.");
             return;
         }
 
         LordMaker.MakeNewLord(faction, new LordJob_DefendPoint(center, null, defendRadius), map, defenders);
-        Logger.Verbose($"GenStep_SiteGarrison: {defenders.Count} {faction.Name} pawns holding {center}.");
+        Log.Debug($"GenStep_SiteGarrison: {defenders.Count} {faction.Name} pawns holding {center}.");
     }
 
     /// <summary>
@@ -82,7 +81,7 @@ public class GenStep_SiteGarrison : GenStep {
             return found;
         }
 
-        Logger.Warning("GenStep_SiteGarrison: nothing standable beside the seam. Using the map centre.");
+        Log.Warn("GenStep_SiteGarrison: nothing standable beside the seam. Using the map centre.");
         return CellFinder.RandomNotEdgeCell(20, map);
     }
 }

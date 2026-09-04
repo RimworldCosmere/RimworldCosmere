@@ -60,11 +60,11 @@ public class NamedPawnDef {
                     break;
                 case "age":
                     if (!int.TryParse(node.InnerText, out age))
-                        Logger.Warning($"NamedPawnDef: invalid age value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid age value '{node.InnerText}'");
                     break;
                 case "chronologicalAge":
                     if (!int.TryParse(node.InnerText, out chronologicalAge))
-                        Logger.Warning($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
                     break;
                 case "gender":
                     gender = (Gender)ParseHelper.FromString(node.InnerText, typeof(Gender));
@@ -80,7 +80,7 @@ public class NamedPawnDef {
                     break;
                 case "noRandomTraits":
                     if (!bool.TryParse(node.InnerText, out noRandomTraits))
-                        Logger.Warning($"NamedPawnDef: invalid noRandomTraits value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid noRandomTraits value '{node.InnerText}'");
                     break;
                 case "traits":
                     traits = DirectXmlToObject.ObjectFromXml<List<NamedPawnTraitEntry>>(node, false);
@@ -96,12 +96,12 @@ public class NamedPawnDef {
                     break;
                 case "idealLevel":
                     if (!int.TryParse(node.InnerText, out idealLevel))
-                        Logger.Warning($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
 
                     break;
                 case "kandraGeneration":
                     if (!int.TryParse(node.InnerText, out kandraGeneration))
-                        Logger.Warning($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
                     break;
                 case "bodyType":
                     bodyType = node.InnerText;
@@ -114,11 +114,11 @@ public class NamedPawnDef {
                     break;
                 case "mistborn":
                     if (!bool.TryParse(node.InnerText, out mistborn))
-                        Logger.Warning($"NamedPawnDef: invalid mistborn value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid mistborn value '{node.InnerText}'");
                     break;
                 case "fullFeruchemist":
                     if (!bool.TryParse(node.InnerText, out fullFeruchemist))
-                        Logger.Warning($"NamedPawnDef: invalid fullFeruchemist value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnDef: invalid fullFeruchemist value '{node.InnerText}'");
                     break;
                 case "inventory":
                     inventory = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
@@ -162,7 +162,7 @@ public class NamedPawnTraitEntry {
                     break;
                 case "degree":
                     if (!int.TryParse(node.InnerText, out degree))
-                        Logger.Warning($"NamedPawnTraitEntry: invalid degree value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnTraitEntry: invalid degree value '{node.InnerText}'");
                     break;
             }
         }
@@ -184,7 +184,7 @@ public class NamedPawnSkillEntry {
                     break;
                 case "level":
                     if (!int.TryParse(node.InnerText, out level))
-                        Logger.Warning($"NamedPawnSkillEntry: invalid level value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnSkillEntry: invalid level value '{node.InnerText}'");
                     break;
                 case "passion":
                     passion = (Passion)ParseHelper.FromString(node.InnerText, typeof(Passion));
@@ -212,7 +212,7 @@ public class NamedPawnInventoryEntry {
                     break;
                 case "count":
                     if (!int.TryParse(node.InnerText, out count))
-                        Logger.Warning($"NamedPawnInventoryEntry: invalid count value '{node.InnerText}'");
+                        Log.Warn($"NamedPawnInventoryEntry: invalid count value '{node.InnerText}'");
                     break;
             }
         }

@@ -56,7 +56,7 @@ public static class CasteUtility {
             pawn.genes.SetXenotype(lighteyesXenotype);
         }
 
-        Logger.Info($"CasteUtility: {pawn.NameShortColored} transitioned from darkeyes to lighteyes");
+        Log.Info($"CasteUtility: {pawn.NameShortColored} transitioned from darkeyes to lighteyes");
         return true;
     }
 
@@ -73,7 +73,7 @@ public static class CasteUtility {
     private static void AddGeneByName(Pawn pawn, string defName) {
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
         if (geneDef == null) {
-            Logger.Warning($"CasteUtility: Gene '{defName}' not found");
+            Log.Warn($"CasteUtility: Gene '{defName}' not found");
             return;
         }
 

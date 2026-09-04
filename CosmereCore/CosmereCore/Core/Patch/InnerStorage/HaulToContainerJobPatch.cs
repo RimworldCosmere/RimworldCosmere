@@ -36,7 +36,7 @@ public static class HaulToContainerJobPatch {
             if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
             if (code[i].operand is not Type operand || operand != typeof(ISlotGroupParent)) continue;
             if (inserted) {
-                Logger.Warning(
+                Log.Warn(
                     "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
                 );
                 continue;
@@ -65,7 +65,7 @@ public static class HaulToContainerJobPatch {
 
         // reported here, not a startup callback: ExecuteWhenFinished would read the flag too early.
         if (!inserted) {
-            Logger.Warning("HaulAIUtility.HaulToStorageJob transpiler found no `isinst ISlotGroupParent` to patch.");
+            Log.Warn("HaulAIUtility.HaulToStorageJob transpiler found no `isinst ISlotGroupParent` to patch.");
             return instructions;
         }
 

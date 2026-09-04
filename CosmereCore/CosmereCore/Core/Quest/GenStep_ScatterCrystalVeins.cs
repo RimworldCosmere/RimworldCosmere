@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Quest;
 
@@ -92,7 +91,7 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
             queue.Enqueue((tip, angle + Sixteenth, depth + 1));
         }
 
-        Logger.Verbose(
+        Log.Debug(
             $"GenStep_ScatterCrystalVeins: field at {c} placed {placed.Count}/{budget} cells of {thingDef.defName}."
         );
 

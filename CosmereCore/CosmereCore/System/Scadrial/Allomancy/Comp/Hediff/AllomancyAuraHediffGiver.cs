@@ -129,7 +129,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             if (nearbyPawns.Contains(pawn)) continue;
             if (ability != null) {
                 AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(
-                    (AllomancyAbility)ability!,
+                    (AllomancyAbility)ability,
                     props,
                     Pawn
                 );
@@ -192,7 +192,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         if (EmotionalResistance.Of(target) <= 0f) return;
         if (KolossControl.IsHeld(target)) return;
 
-        AllomancyAbility burning = (AllomancyAbility)ability!;
+        AllomancyAbility burning = (AllomancyAbility)ability;
         KolossControl.TryBind(Pawn, target, burning.GetStrength(burning.nextStatus), burning.def.metal, burning.def);
     }
 
@@ -206,7 +206,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff((AllomancyAbility)ability!, props, Pawn);
+        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff((AllomancyAbility)ability, props, Pawn);
         if (hediff == null) return;
         pawnsWithHediff.Add(target);
 

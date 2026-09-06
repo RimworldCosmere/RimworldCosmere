@@ -21,7 +21,7 @@ public class KolossTests {
             }
 
             Assert.IsNotNull(dir);
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 

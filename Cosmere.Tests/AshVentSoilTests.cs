@@ -45,7 +45,7 @@ public class AshVentSoilTests {
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
 
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -61,7 +61,7 @@ public class AshVentSoilTests {
 
             Assert.IsNotNull(def, "VentSoil.xml no longer declares Cosmere_Scadrial_Terrain_VentSoil.");
 
-            return def!;
+            return def;
         }
     }
 
@@ -71,7 +71,7 @@ public class AshVentSoilTests {
 
         Assert.IsNotNull(fertility, "Vent soil declares no fertility, so it inherits 1.0 and beats nothing.");
         Assert.IsTrue(
-            float.Parse(fertility!, CultureInfo.InvariantCulture) > VanillaRichSoilFertility,
+            float.Parse(fertility, CultureInfo.InvariantCulture) > VanillaRichSoilFertility,
             $"vent soil sits at {fertility}, at or under vanilla rich soil's {VanillaRichSoilFertility}."
         );
     }
@@ -97,7 +97,7 @@ public class AshVentSoilTests {
                 string? texture = def.Element("texturePath")?.Value;
 
                 Assert.IsFalse(string.IsNullOrWhiteSpace(texture), $"{defName} declares no texturePath.");
-                if (texture!.StartsWith(VanillaTexturePrefix, StringComparison.Ordinal)) continue;
+                if (texture.StartsWith(VanillaTexturePrefix, StringComparison.Ordinal)) continue;
 
                 string png = Path.Combine(RepoRoot, "CosmereScadrial", "Assets", "Textures", texture + ".png");
                 Assert.IsTrue(File.Exists(png), $"{defName} points at {texture}, and no PNG exists at {png}.");

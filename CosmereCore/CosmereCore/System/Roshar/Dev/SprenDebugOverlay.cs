@@ -29,7 +29,7 @@ public static class SprenDebugOverlay {
                     IntVec3 position = info.position!.Value;
                     if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
 
-                    Vector3 drawPos = info.position!.Value.ToVector3Shifted();
+                    Vector3 drawPos = info.position.Value.ToVector3Shifted();
                     drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor();
 
                     Graphics.DrawMesh(
@@ -49,7 +49,7 @@ public static class SprenDebugOverlay {
                 IntVec3 position = info.position!.Value;
                 if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
 
-                Vector3 drawPos = info.position!.Value.ToVector3Shifted();
+                Vector3 drawPos = info.position.Value.ToVector3Shifted();
                 drawPos.y = AltitudeLayer.MetaOverlays.AltitudeFor() + 0.1f;
 
                 Graphics.DrawMesh(

@@ -33,7 +33,7 @@ public class AshProgressionTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs/ScenarioProgression above the test output.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -171,7 +171,7 @@ public class AshProgressionTests {
         XElement? root = XDocument.Load(path).Root;
         Assert.IsNotNull(root, $"{arc}.xml has no root element");
 
-        foreach (XElement def in root!.Elements()) {
+        foreach (XElement def in root.Elements()) {
             XElement? events = def.Element("events");
             if (events == null) continue;
 

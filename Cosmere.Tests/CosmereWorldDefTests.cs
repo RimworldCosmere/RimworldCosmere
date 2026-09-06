@@ -21,7 +21,7 @@ public class CosmereWorldDefTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 

@@ -67,7 +67,7 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         get {
             if (cachedMetal != null) return cachedMetal;
             cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(metalDefName);
-            return cachedMetal!;
+            return cachedMetal;
         }
     }
 

@@ -21,7 +21,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
     private void CreateParticleSystem(int mapID) {
         particleSystem =
-            Builder.CreateLesserSprenParticleSystem(mapID, controller, controller.defaultSpawnInformation!);
+            Builder.CreateLesserSprenParticleSystem(mapID, controller, controller.defaultSpawnInformation);
 
         particleSystem.transform.position = Vector3.zero;
 

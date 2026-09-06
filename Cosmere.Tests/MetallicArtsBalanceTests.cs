@@ -31,7 +31,7 @@ public class MetallicArtsBalanceTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs/Feruchemy above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -282,9 +282,9 @@ public class MetallicArtsBalanceTests {
 
             Assert.IsNotNull(def, $"{defName} not found");
 
-            XElement? stage = Stages(def!).FirstOrDefault();
+            XElement? stage = Stages(def).FirstOrDefault();
             Assert.IsNotNull(stage, $"{defName} has no stage");
-            Assert.IsNull((string?)stage!.Element("statFactors"), $"{defName} still carries flat factors");
+            Assert.IsNull((string?)stage.Element("statFactors"), $"{defName} still carries flat factors");
 
             List<XElement> curves = stage.Element("statFactorsBySeverity")?.Elements("li").ToList() ?? [];
             Assert.IsTrue(curves.Count > 0, $"{defName} has no severity curves");
@@ -355,13 +355,13 @@ public class MetallicArtsBalanceTests {
         XElement? curve = entry.Element("valueBySeverity");
         Assert.IsNotNull(curve, $"{(string?)entry.Element("stat")} has no valueBySeverity");
 
-        XElement? wrapper = curve!.Element("points");
+        XElement? wrapper = curve.Element("points");
         Assert.IsNotNull(
             wrapper,
             $"{(string?)entry.Element("stat")}: SimpleCurve points must sit inside <points>, not directly under the curve"
         );
 
-        foreach (XElement point in wrapper!.Elements("li")) {
+        foreach (XElement point in wrapper.Elements("li")) {
             string[] parts = point.Value.Trim('(', ')', ' ').Split(',');
             points.Add((float.Parse(parts[0]), float.Parse(parts[1])));
         }

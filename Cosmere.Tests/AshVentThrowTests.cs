@@ -27,7 +27,7 @@ public class AshVentThrowTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -43,7 +43,7 @@ public class AshVentThrowTests {
         }
 
         Assert.Fail($"No ThingDef named {VentDefName} under CosmereScadrial/Defs.");
-        return null!;
+        return null;
     }
 
     private static IEnumerable<XElement> DefsOfType(string element, string dir) {
@@ -131,7 +131,7 @@ public class AshVentThrowTests {
 
         XElement? key = XDocument.Load(path).Root?.Element(FirstMetalKey);
         Assert.IsNotNull(key, $"{FirstMetalKey} is not defined, so the message shows the player its own key name");
-        Assert.IsTrue(key!.Value.Trim().Length > 0, $"{FirstMetalKey} is empty");
+        Assert.IsTrue(key.Value.Trim().Length > 0, $"{FirstMetalKey} is empty");
         Assert.IsFalse(key.Value.Contains('{'), $"{FirstMetalKey} carries a placeholder, but nothing passes it an argument");
     }
 }

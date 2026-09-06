@@ -149,11 +149,11 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         } else if (CTAButtonText(secondButtonRect, joinString)) {
             pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
 
-            TrueSprenSpawner? spawner = pawn!.Map?.GetComponent<TrueSprenSpawner>();
-            spawner?.DestroySprenForPawn(pawn!);
+            TrueSprenSpawner? spawner = pawn.Map?.GetComponent<TrueSprenSpawner>();
+            spawner?.DestroySprenForPawn(pawn);
 
             string? sprenName = isBondsmithLocked ? forcedBondsmithSpren : null;
-            Surgebinder? surgebinder = pawn!.genes.TryAddRadiantOrder(
+            Surgebinder? surgebinder = pawn.genes.TryAddRadiantOrder(
                 currentOrder.GetSurgebindingGene(),
                 sprenName: sprenName,
                 showNamingDialog: !isBondsmithLocked
@@ -163,7 +163,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
                 surgebinder.godsprenName = forcedBondsmithSpren!;
 
                 BondsmithCalling? calling = null;
-                List<Verse.Hediff> hediffs = pawn!.health?.hediffSet?.hediffs ?? [];
+                List<Verse.Hediff> hediffs = pawn.health?.hediffSet?.hediffs ?? [];
                 for (int i = 0; i < hediffs.Count; i++) {
                     if (hediffs[i] is BondsmithCalling c) {
                         calling = c;
@@ -172,7 +172,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
                 }
 
                 if (calling != null) {
-                    pawn!.health!.RemoveHediff(calling);
+                    pawn.health!.RemoveHediff(calling);
                 }
 
                 RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
@@ -187,7 +187,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             if (surgebinder?.bondedSpren != null) {
                 Find.Selector.Select(surgebinder.bondedSpren);
             } else {
-                Find.Selector.Select(pawn!);
+                Find.Selector.Select(pawn);
             }
         }
 

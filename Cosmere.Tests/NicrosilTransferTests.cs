@@ -24,7 +24,7 @@ public class NicrosilTransferTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs/Feruchemy.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -39,10 +39,10 @@ public class NicrosilTransferTests {
 
         Assert.IsNotNull(def, $"{defName} not found");
 
-        XElement? amount = def!.Descendants("maxAmount").FirstOrDefault();
+        XElement? amount = def.Descendants("maxAmount").FirstOrDefault();
         Assert.IsNotNull(amount, $"{defName} declares no maxAmount");
 
-        return float.Parse(amount!.Value);
+        return float.Parse(amount.Value);
     }
 
     private static float BeuFor(string defName) {

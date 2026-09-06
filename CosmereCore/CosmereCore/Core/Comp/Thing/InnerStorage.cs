@@ -111,7 +111,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public void Notify_SettingsChanged() { }
 
     public bool Accepts(Verse.Thing t) {
-        if (!innerContainer!.CanAcceptAnyOf(t)) return false;
+        if (!innerContainer.CanAcceptAnyOf(t)) return false;
         if (!GetStoreSettings().AllowedToAccept(t)) return false;
         if (props.maxItems >= 0 && innerContainer.TotalStackCount >= props.maxItems) return false;
         if (!WithinInvestitureBand(t)) return false;
@@ -176,7 +176,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     /// <returns>True when the stack count is spent and nothing here can absorb it.</returns>
     private bool AtStackLimit(Verse.Thing t) {
         if (props.maxStacks < 0) return false;
-        if (innerContainer!.Count < props.maxStacks) return false;
+        if (innerContainer.Count < props.maxStacks) return false;
 
         for (int i = 0; i < innerContainer.Count; i++) {
             Verse.Thing held = innerContainer[i];
@@ -192,7 +192,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
             : wearer.SpawnedParentOrMe.Position;
 
     public int SpaceRemainingFor(ThingDef _) {
-        return ItemCapacity - innerContainer!.TotalStackCount;
+        return ItemCapacity - innerContainer.TotalStackCount;
     }
 
     /// <summary>
@@ -225,7 +225,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     }
 
     public ThingOwner GetDirectlyHeldThings() {
-        return innerContainer!;
+        return innerContainer;
     }
 
     public override void CompTick() {
@@ -239,7 +239,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         previousMap?.haulDestinationManager?.RemoveHaulDestination(this);
         if (mode == DestroyMode.Deconstruct && props.dropItemsWhenDeconstructed) {
             foreach (Verse.Thing thing in innerContainer.ToList()) {
-                innerContainer!.TryDrop(
+                innerContainer.TryDrop(
                     thing,
                     ParentThing!.Position,
                     previousMap,

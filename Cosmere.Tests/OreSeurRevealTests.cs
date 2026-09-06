@@ -21,7 +21,7 @@ public class OreSeurRevealTests {
             }
 
             Assert.IsNotNull(dir);
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -78,7 +78,7 @@ public class OreSeurRevealTests {
                     .Any(a => (string?)a.Attribute("Class") == "Cosmere.Core.ScenarioPart.Action.RenamePawnAction") == true);
 
             Assert.IsNotNull(found, "The TenSoon rename event is missing.");
-            return found!;
+            return found;
         }
     }
 
@@ -101,7 +101,7 @@ public class OreSeurRevealTests {
             .FirstOrDefault(t => (string?)t.Attribute("Class") == "Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger");
 
         Assert.IsNotNull(alive, "The rename should be gated on him being alive.");
-        Assert.AreEqual("OreSeur", alive!.Element("pawnName")?.Value);
+        Assert.AreEqual("OreSeur", alive.Element("pawnName")?.Value);
         Assert.AreEqual("true", alive.Element("alive")?.Value);
     }
 

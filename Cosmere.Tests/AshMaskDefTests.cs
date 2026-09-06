@@ -23,7 +23,7 @@ public class AshMaskDefTests {
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
 
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -39,7 +39,7 @@ public class AshMaskDefTests {
 
             Assert.IsNotNull(offset, "The ash mask no longer grants Cosmere_Scadrial_Stat_AshFiltration.");
 
-            return float.Parse(offset!.Value, CultureInfo.InvariantCulture);
+            return float.Parse(offset.Value, CultureInfo.InvariantCulture);
         }
     }
 
@@ -53,7 +53,7 @@ public class AshMaskDefTests {
 
             Assert.IsNotNull(offset, "The gas mask patch no longer grants Cosmere_Scadrial_Stat_AshFiltration.");
 
-            return float.Parse(offset!.Value, CultureInfo.InvariantCulture);
+            return float.Parse(offset.Value, CultureInfo.InvariantCulture);
         }
     }
 

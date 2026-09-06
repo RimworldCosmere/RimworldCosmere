@@ -90,11 +90,11 @@ public static class UIHelpers {
 
         Dropdown(
             sub,
-            val => ((T)(object)val!).ToString(),
+            val => ((T)(object)val).ToString(),
             intValue,
             placeholder,
             GetEnumValues<T>(),
-            updatedVal => onSelected((T)(object)updatedVal!),
+            updatedVal => onSelected((T)(object)updatedVal),
             allowNone: allowNone
         );
     }

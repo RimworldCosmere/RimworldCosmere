@@ -19,7 +19,7 @@ public class RuinCompulsionTests {
             }
 
             Assert.IsNotNull(dir);
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 

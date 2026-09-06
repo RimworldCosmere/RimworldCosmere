@@ -27,7 +27,7 @@ public class StoreInApparelInnerStorage : WorkGiver_HaulGeneral {
         if (!apparel.Spawned && !p.Equals(innerStorage.parent)) return null;
 
         Job job = JobMaker.MakeJob(JobDefOf.Cosmere_StoreInApparelInnerStorage, t, innerStorage.parent);
-        job.count = Mathf.Min(t.stackCount, innerStorage.innerContainer!.GetCountCanAccept(t));
+        job.count = Mathf.Min(t.stackCount, innerStorage.innerContainer.GetCountCanAccept(t));
         job.haulMode = HaulMode.ToContainer;
 
         return job;

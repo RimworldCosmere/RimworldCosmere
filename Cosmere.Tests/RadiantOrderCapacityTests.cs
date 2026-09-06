@@ -28,7 +28,7 @@ public class RadiantOrderCapacityTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate Resources/Data/RadiantOrders above the test output directory.");
-            return Path.Combine(dir!.FullName, "Resources", "Data", "RadiantOrders");
+            return Path.Combine(dir.FullName, "Resources", "Data", "RadiantOrders");
         }
     }
 
@@ -57,7 +57,7 @@ public class RadiantOrderCapacityTests {
                 "MaxInvestitureLevel falls back to 1f, capping the Radiant at 1 Stormlight."
             );
             Assert.IsTrue(
-                max!.Value<int>() > 0,
+                max.Value<int>() > 0,
                 $"{Path.GetFileName(path)} ideal {i + 1} has stormlightMax {max.Value<int>()}, which must be positive."
             );
         }
@@ -99,6 +99,6 @@ public class RadiantOrderCapacityTests {
         JObject order = JObject.Parse(File.ReadAllText(path));
         JArray? ideals = order["ideals"] as JArray;
         Assert.IsNotNull(ideals, $"{Path.GetFileName(path)} has no ideals array.");
-        return ideals!;
+        return ideals;
     }
 }

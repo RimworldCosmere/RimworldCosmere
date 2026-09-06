@@ -99,7 +99,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
         if (gene is null) {
-            return "CS_NotMisting".Translate(metal.allomancy!.userName.Named("MISTING"));
+            return "CS_NotMisting".Translate(metal.allomancy.userName.Named("MISTING"));
         }
 
         if (gene.Value > .9f) {

@@ -25,10 +25,10 @@ public class AshRoomFillTests {
 
             Assert.IsNotNull(comp, "AshVent.xml no longer carries a CompProperties_AshVent.");
 
-            string? rate = comp!.Element("millimetresPerDay")?.Value;
+            string? rate = comp.Element("millimetresPerDay")?.Value;
             Assert.IsNotNull(rate, "the vent declares no millimetresPerDay, so it inherits the C# default.");
 
-            return float.Parse(rate!, CultureInfo.InvariantCulture);
+            return float.Parse(rate, CultureInfo.InvariantCulture);
         }
     }
 
@@ -41,7 +41,7 @@ public class AshRoomFillTests {
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
 
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -232,7 +232,7 @@ public class AshRoomFillTests {
         string? line = body.Split('\n').FirstOrDefault(l => l.Contains(fragment));
         Assert.IsNotNull(line, $"no line of ContributeToGrid mentions {fragment}.");
 
-        return line!.Length - line.TrimStart().Length;
+        return line.Length - line.TrimStart().Length;
     }
 
     /// <summary>The method holding a fingerprint, cut at the four-space brace that closes it.</summary>

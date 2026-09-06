@@ -22,7 +22,7 @@ public class AshGasTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -35,7 +35,7 @@ public class AshGasTests {
                 .FirstOrDefault(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_AshVent");
 
             Assert.IsNotNull(def, "AshVent.xml no longer declares Cosmere_Scadrial_Thing_AshVent.");
-            return def!;
+            return def;
         }
     }
 
@@ -44,7 +44,7 @@ public class AshGasTests {
             .FirstOrDefault(c => c.Attribute("Class")?.Value.EndsWith(className, StringComparison.Ordinal) == true);
 
         Assert.IsNotNull(comp, $"The ash vent carries no {className}.");
-        return comp!;
+        return comp;
     }
 
     private static float Float(XElement? element, float fallback) =>

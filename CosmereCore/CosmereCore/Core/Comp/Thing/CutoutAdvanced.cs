@@ -181,7 +181,7 @@ public class CutoutAdvanced : ThingComp {
         block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
 
         material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
-        block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
+        block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask.mask);
         block.SetLUTColorMask(palettes);
         block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, props.materialIntesity);
 

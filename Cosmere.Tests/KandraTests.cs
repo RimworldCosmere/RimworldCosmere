@@ -27,7 +27,7 @@ public class KandraTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -57,7 +57,7 @@ public class KandraTests {
         HashSet<string> names = [];
         foreach (XElement element in DefsOfType(typeName)) {
             string? name = element.Element("defName")?.Value;
-            if (!string.IsNullOrWhiteSpace(name)) names.Add(name!);
+            if (!string.IsNullOrWhiteSpace(name)) names.Add(name);
         }
 
         return names;
@@ -89,7 +89,7 @@ public class KandraTests {
         Assert.IsNotNull(kandra, "The kandra xenotype is missing.");
 
         HashSet<string> genes = DefNamesOfType("GeneDef");
-        List<string> named = kandra!.Element("genes")?.Elements("li").Select(li => li.Value).ToList() ?? [];
+        List<string> named = kandra.Element("genes")?.Elements("li").Select(li => li.Value).ToList() ?? [];
 
         Assert.AreEqual(5, named.Count, "The kandra xenotype should carry exactly its five genes.");
         foreach (string gene in named) {
@@ -123,7 +123,7 @@ public class KandraTests {
             found++;
             string? blessing = extension.Element("blessing")?.Value;
             Assert.IsFalse(string.IsNullOrWhiteSpace(blessing), "A Blessing surgery has an empty blessing field.");
-            Assert.IsTrue(hediffs.Contains(blessing!), $"A Blessing surgery names {blessing}, which no HediffDef defines.");
+            Assert.IsTrue(hediffs.Contains(blessing), $"A Blessing surgery names {blessing}, which no HediffDef defines.");
         }
 
         Assert.AreEqual(BlessingDefNames.Length, found, "There should be one surgery per Blessing.");
@@ -323,7 +323,7 @@ public class KandraTests {
         XElement? curve = heritage.Element("biologicalAgeTickFactorFromAgeCurve");
         Assert.IsNotNull(curve, "The kandra heritage gene should stop biological ageing.");
 
-        List<string> points = curve!.Element("points")?.Elements("li").Select(li => li.Value).ToList() ?? [];
+        List<string> points = curve.Element("points")?.Elements("li").Select(li => li.Value).ToList() ?? [];
         Assert.IsTrue(points.Count > 0, "The ageing curve has no points.");
         foreach (string point in points) {
             Assert.IsTrue(
@@ -688,7 +688,7 @@ public class KandraTests {
                 .FirstOrDefault(li => li.Element("firstName")?.Value == "OreSeur");
 
             Assert.IsNotNull(oreSeur, $"OreSeur is missing from {file}.");
-            Assert.AreEqual("3", oreSeur!.Element("kandraGeneration")?.Value, $"in {file}");
+            Assert.AreEqual("3", oreSeur.Element("kandraGeneration")?.Value, $"in {file}");
         }
     }
 
@@ -772,7 +772,7 @@ public class KandraTests {
         XElement? abstractBase = DefsOfType("RecipeDef")
             .FirstOrDefault(r => (string?)r.Attribute("Name") == "Cosmere_Scadrial_KandraBlessingBase");
         Assert.IsNotNull(abstractBase);
-        Assert.IsNull(abstractBase!.Element("ingredients"), "The base must not list ingredients; they append.");
+        Assert.IsNull(abstractBase.Element("ingredients"), "The base must not list ingredients; they append.");
     }
 
     /// <summary>

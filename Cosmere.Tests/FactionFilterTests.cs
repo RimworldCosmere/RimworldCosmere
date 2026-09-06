@@ -22,7 +22,7 @@ public class FactionFilterTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -254,12 +254,12 @@ public class FactionFilterTests {
                     if (world.Element("crossWorld")?.Value.Trim() == "true") continue;
 
                     string? name = world.Element("defName")?.Value.Trim();
-                    if (!string.IsNullOrEmpty(name)) worlds.Add(name!);
+                    if (!string.IsNullOrEmpty(name)) worlds.Add(name);
                 }
 
                 foreach (XElement faction in root.Descendants("FactionDef")) {
                     string? name = faction.Element("defName")?.Value.Trim();
-                    if (!string.IsNullOrEmpty(name)) factions.Add(name!);
+                    if (!string.IsNullOrEmpty(name)) factions.Add(name);
                 }
             }
         }

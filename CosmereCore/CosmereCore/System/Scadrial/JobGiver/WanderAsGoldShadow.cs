@@ -13,6 +13,6 @@ public class WanderAsGoldShadow : JobGiver_Wander {
     }
 
     protected override IntVec3 GetWanderRoot(Pawn pawn) {
-        return pawn is GoldShadow { owner.Spawned: true } shadow ? shadow.owner!.Position : pawn.Position;
+        return pawn is GoldShadow { owner.Spawned: true } shadow ? shadow.owner.Position : pawn.Position;
     }
 }

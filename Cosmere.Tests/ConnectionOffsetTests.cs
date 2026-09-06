@@ -289,7 +289,7 @@ public class ConnectionOffsetTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate the repo root above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 }

@@ -20,7 +20,7 @@ public class GoldShadowTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -87,7 +87,7 @@ public class GoldShadowTests {
 
         Assert.IsNotNull(race, "Cosmere_Scadrial_Race_GoldShadow is missing or has no <race> block.");
 
-        Assert.AreEqual("Cosmere_Scadrial_ThinkTree_GoldShadow", race!.Element("thinkTreeMain")?.Value);
+        Assert.AreEqual("Cosmere_Scadrial_ThinkTree_GoldShadow", race.Element("thinkTreeMain")?.Value);
         Assert.AreEqual("Cosmere_Scadrial_ThinkTree_GoldShadowConstant", race.Element("thinkTreeConstant")?.Value);
 
         List<string> declared = new List<string>();

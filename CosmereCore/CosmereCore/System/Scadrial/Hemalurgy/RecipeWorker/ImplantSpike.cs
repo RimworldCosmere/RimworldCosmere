@@ -57,7 +57,7 @@ public class ImplantSpike : Recipe_Surgery {
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
         }
 
-        HemalurgicChargeData charge = spikeComp.chargeData!;
+        HemalurgicChargeData charge = spikeComp.chargeData;
         float strength = spikeComp.currentStrength;
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 

@@ -27,7 +27,7 @@ public class QuestDefValidationTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs/Quests above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -41,7 +41,7 @@ public class QuestDefValidationTests {
             XDocument doc = XDocument.Load(path);
             XElement? root = doc.Root;
             Assert.IsNotNull(root, $"{Path.GetFileName(path)}: file has no root element.");
-            foreach (XElement def in root!.Elements()) {
+            foreach (XElement def in root.Elements()) {
                 defs.Add((path, def));
             }
         }
@@ -52,7 +52,7 @@ public class QuestDefValidationTests {
     private static string RequireDefName(string filePath, XElement def) {
         XElement? name = def.Element("defName");
         Assert.IsNotNull(name, $"{Path.GetFileName(filePath)}: a quest def is missing its defName element.");
-        return name!.Value;
+        return name.Value;
     }
 
     private static bool HasClass(XElement element, string typeSuffix) {
@@ -199,7 +199,7 @@ public class QuestDefValidationTests {
                     XElement? labelKey = option.Element("labelKey");
                     Assert.IsNotNull(labelKey, $"{name}: a choice option has no labelKey.");
                     Assert.IsTrue(
-                        keys.Contains(labelKey!.Value),
+                        keys.Contains(labelKey.Value),
                         $"{name}: labelKey '{labelKey.Value}' has no matching entry in any " +
                         "Languages/English/Keyed folder. The player would see the raw key."
                     );
@@ -207,7 +207,7 @@ public class QuestDefValidationTests {
                     XElement? tipKey = option.Element("tipKey");
                     Assert.IsNotNull(tipKey, $"{name}: a choice option has no tipKey.");
                     Assert.IsTrue(
-                        keys.Contains(tipKey!.Value),
+                        keys.Contains(tipKey.Value),
                         $"{name}: tipKey '{tipKey.Value}' has no matching entry in any " +
                         "Languages/English/Keyed folder. The player would see the raw key."
                     );
@@ -296,7 +296,7 @@ public class QuestDefValidationTests {
                 );
 
                 Assert.IsTrue(
-                    keys.Contains(labelKey!.Value),
+                    keys.Contains(labelKey.Value),
                     $"{name}: siteLabelKey '{labelKey.Value}' has no matching entry in any " +
                     "Languages/English/Keyed folder."
                 );
@@ -657,7 +657,7 @@ public class QuestDefValidationTests {
                     $"{name}: worldObject '{worldObject.Value}' is not a WorldObjectDef we ship."
                 );
 
-                XElement? generator = shipped!.Element("mapGenerator");
+                XElement? generator = shipped.Element("mapGenerator");
                 Assert.IsNotNull(
                     generator,
                     $"{name}: worldObject '{worldObject.Value}' sets no mapGenerator, so the site " +
@@ -665,7 +665,7 @@ public class QuestDefValidationTests {
                 );
 
                 Assert.IsTrue(
-                    generators.Contains(generator!.Value),
+                    generators.Contains(generator.Value),
                     $"{name}: worldObject '{worldObject.Value}' names mapGenerator " +
                     $"'{generator.Value}', which is not a MapGeneratorDef we ship."
                 );
@@ -730,7 +730,7 @@ public class QuestDefValidationTests {
             XElement? order = def.Element("order");
             Assert.IsNotNull(order, $"{name}: a GenStep_SiteGarrison def declares no order.");
             Assert.IsTrue(
-                int.TryParse(order!.Value, out int value) && value > preciousLumpOrder,
+                int.TryParse(order.Value, out int value) && value > preciousLumpOrder,
                 $"{name}: order '{order.Value}' must be above {preciousLumpOrder}, or RectOfInterest " +
                 "is still unset when the garrison spawns."
             );
@@ -835,7 +835,7 @@ public class QuestDefValidationTests {
                 XElement? target = action.Element("progression");
                 Assert.IsNotNull(target, $"{name}: a HandOffProgressionAction names no progression.");
                 Assert.IsTrue(
-                    arcs.Contains(target!.Value),
+                    arcs.Contains(target.Value),
                     $"{name}: hands off to '{target.Value}', which is not a ScenarioProgressionDef. " +
                     "The timeline would stop here."
                 );
@@ -863,7 +863,7 @@ public class QuestDefValidationTests {
                 );
 
                 Assert.IsTrue(
-                    keys.Contains(descriptionKey!.Value),
+                    keys.Contains(descriptionKey.Value),
                     $"{name}: stage '{stageKey}' descriptionKey '{descriptionKey.Value}' has no " +
                     "matching entry in any Languages/English/Keyed folder. The player would see " +
                     "the raw key."
@@ -935,7 +935,7 @@ public class QuestDefValidationTests {
                 Assert.IsNotNull(metal, $"{name}: a GodMetalReward has no metal.");
 
                 Assert.IsTrue(
-                    metalDefs.Contains(metal!.Value),
+                    metalDefs.Contains(metal.Value),
                     $"{name}: GodMetalReward metal '{metal.Value}' has no matching MetalDef under CosmereCore/Defs/Metals."
                 );
                 Assert.IsTrue(
@@ -1000,12 +1000,12 @@ public class QuestDefValidationTests {
                 Assert.IsNotNull(branches, $"{name}: a RolledReward has no branches.");
 
                 List<RewardTableEntry> entries = new List<RewardTableEntry>();
-                foreach (XElement branch in branches!.Elements("li")) {
+                foreach (XElement branch in branches.Elements("li")) {
                     XElement? key = branch.Element("key");
                     XElement? weight = branch.Element("weight");
                     Assert.IsNotNull(key, $"{name}: a RolledReward branch has no key.");
-                    Assert.IsNotNull(weight, $"{name}: RolledReward branch '{key!.Value}' has no weight.");
-                    entries.Add(new RewardTableEntry { key = key.Value, weight = int.Parse(weight!.Value) });
+                    Assert.IsNotNull(weight, $"{name}: RolledReward branch '{key.Value}' has no weight.");
+                    entries.Add(new RewardTableEntry { key = key.Value, weight = int.Parse(weight.Value) });
                 }
 
                 Assert.IsTrue(

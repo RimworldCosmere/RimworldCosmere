@@ -35,7 +35,7 @@ public class AshEruptionTests {
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
 
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -52,14 +52,14 @@ public class AshEruptionTests {
 
         Assert.Fail($"No {element} named {defName} under CosmereScadrial/Defs.");
 
-        return null!;
+        return null;
     }
 
     private static string Field(XElement def, string name) {
         string? value = def.Element(name)?.Value.Trim();
         Assert.IsFalse(string.IsNullOrEmpty(value), $"{def.Element("defName")?.Value} carries no {name}.");
 
-        return value!;
+        return value;
     }
 
     /// <summary>The condition's own source, for the checks a Verse-bound tick cannot be run for.</summary>
@@ -564,7 +564,7 @@ public class AshEruptionTests {
 
         Assert.Fail($"{VentDefName} carries no {VentCompClass}.");
 
-        return null!;
+        return null;
     }
 
     /// <summary>

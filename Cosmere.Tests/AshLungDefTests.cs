@@ -23,7 +23,7 @@ public class AshLungDefTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -36,7 +36,7 @@ public class AshLungDefTests {
                 .FirstOrDefault(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_AshLung");
 
             Assert.IsNotNull(def, "AshLung.xml no longer declares Cosmere_Scadrial_Hediff_AshLung.");
-            return def!;
+            return def;
         }
     }
 
@@ -44,7 +44,7 @@ public class AshLungDefTests {
         get {
             XElement? stages = AshLung.Element("stages");
             Assert.IsNotNull(stages, "AshLung declares no stages, so it has no progression at all.");
-            return stages!.Elements("li").ToList();
+            return stages.Elements("li").ToList();
         }
     }
 

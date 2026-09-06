@@ -144,7 +144,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
                 return;
             }
 
-            HemalurgicChargeData charge = spikeComp.chargeData!;
+            HemalurgicChargeData charge = spikeComp.chargeData;
             float strength = spikeComp.currentStrength;
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 

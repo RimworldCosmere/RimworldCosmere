@@ -121,7 +121,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
             RecordDef? recordDef = fields[i].GetValue(null) as RecordDef;
             if (recordDef == null) continue;
 
-            float value = pawn!.records.GetValue(recordDef);
+            float value = pawn.records.GetValue(recordDef);
             if (value <= 0f) continue;
 
             Rect lineRect = new Rect(inner.x + Spacing.Get(), yPos, inner.width - Spacing.Get(), lineHeight);

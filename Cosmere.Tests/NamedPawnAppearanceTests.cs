@@ -19,7 +19,7 @@ public class NamedPawnAppearanceTests {
             }
 
             Assert.IsNotNull(dir);
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 

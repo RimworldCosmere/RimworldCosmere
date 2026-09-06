@@ -37,7 +37,7 @@ public static class Profiler {
         try {
             int attributed = 0;
             foreach (MethodInfo method in profiledMethods) {
-                Profile attr = method.GetCustomAttribute<Profile>()!;
+                Profile attr = method.GetCustomAttribute<Profile>();
                 Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Attrs[method] = attr;
                 attributed++;
@@ -109,7 +109,7 @@ public static class Profiler {
                 sw = Stopwatch.StartNew();
             }
 
-            SampleStack.Value!.Push(new SampleToken(sampled, sw));
+            SampleStack.Value.Push(new SampleToken(sampled, sw));
         }
     }
 
@@ -136,7 +136,7 @@ public static class Profiler {
 
         // Sampling
         if (attr.Mode == ProfileMode.Sampling) {
-            Stack<SampleToken>? stack = SampleStack.Value!;
+            Stack<SampleToken>? stack = SampleStack.Value;
             if (stack.Count == 0) return;
             SampleToken token = stack.Pop();
 
@@ -169,7 +169,7 @@ public static class Profiler {
         }
 
         // For sampling, unwind if needed (in case EndProfiling wasn’t hit)
-        Stack<SampleToken>? sstack = SampleStack.Value!;
+        Stack<SampleToken>? sstack = SampleStack.Value;
         if (sstack.Count > 0) {
             SampleToken token = sstack.Pop();
 

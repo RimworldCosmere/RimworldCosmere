@@ -36,7 +36,7 @@ public class DormantConnection : ThingComp {
     private static Func<Pawn, GeneDef, bool> GetGeneCallback(GeneDef gene) {
         if (!gene.HasModExtension<DefModExtension.DormantConnection>()) return (_, _) => false;
 
-        DefModExtension.DormantConnection ext = gene.GetModExtension<DefModExtension.DormantConnection>()!;
+        DefModExtension.DormantConnection ext = gene.GetModExtension<DefModExtension.DormantConnection>();
         return ext.Handler is DefModExtension.IDormantConnectionCallback h ? h.Callback : (_, _) => false;
     }
 

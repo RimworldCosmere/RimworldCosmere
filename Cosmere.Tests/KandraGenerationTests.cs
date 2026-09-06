@@ -25,7 +25,7 @@ public class KandraGenerationTests {
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
 
             return File.ReadAllText(Path.Combine(
-                dir!.FullName,
+                dir.FullName,
                 "CosmereCore",
                 "CosmereCore",
                 "System",

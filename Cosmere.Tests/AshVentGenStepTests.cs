@@ -37,7 +37,7 @@ public class AshVentGenStepTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -54,7 +54,7 @@ public class AshVentGenStepTests {
         }
 
         Assert.Fail($"No GenStepDef named {VentGenStepName} under CosmereScadrial/Defs.");
-        return null!;
+        return null;
     }
 
     [TestMethod]

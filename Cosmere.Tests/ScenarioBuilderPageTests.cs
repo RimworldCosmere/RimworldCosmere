@@ -23,7 +23,7 @@ public class ScenarioBuilderPageTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 
@@ -102,7 +102,7 @@ public class ScenarioBuilderPageTests {
                 XElement? counts = part.Element("xenotypeCounts");
                 Assert.IsNotNull(counts, $"{name} omits xenotypeCounts, which NREs in PostIdeoChosen.");
 
-                int total = counts!.Elements("li")
+                int total = counts.Elements("li")
                     .Sum(li => int.TryParse(li.Element("count")?.Value, out int c) ? c : 0);
 
                 Assert.IsTrue(
@@ -138,7 +138,7 @@ public class ScenarioBuilderPageTests {
 
             Assert.AreEqual(
                 roster,
-                int.Parse(config!.Element("pawnChoiceCount")!.Value),
+                int.Parse(config.Element("pawnChoiceCount")!.Value),
                 $"{name}: pawnChoiceCount does not match its {roster} named pawns."
             );
 

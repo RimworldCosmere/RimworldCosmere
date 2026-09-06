@@ -81,7 +81,7 @@ public static class LesserSprenCaptureSystem {
         foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
             if (info.map != map) continue;
             if (position.Equals(info.position!.Value)) return true;
-            if (position.DistanceTo(info.position!.Value) <= radius) return true;
+            if (position.DistanceTo(info.position.Value) <= radius) return true;
         }
 
         return false;

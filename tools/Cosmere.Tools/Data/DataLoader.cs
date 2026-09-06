@@ -18,7 +18,8 @@ public class DataLoader {
         };
     }
 
-    public async Task<List<T>> LoadAllAsync<T>(string dataType) {
+    public async Task<List<T>> LoadAllAsync<T>(string dataType)
+        where T : class {
         var dataDir = _fileSystem.Path.Combine(Environment.CurrentDirectory, "Resources", "Data", dataType);
 
         if (!_fileSystem.Directory.Exists(dataDir))

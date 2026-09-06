@@ -98,7 +98,7 @@ public static class BuildAssetsCommand {
 
                     var exit = RunUnity(unityPath, unityProject, args, verbose);
                     if (exit != 0)
-                        throw new Exception($"Unity failed for {modName} (exit {exit}).");
+                        throw new InvalidOperationException($"Unity failed for {modName} (exit {exit}).");
 
                     File.WriteAllText(hashFile, currentHash, Encoding.ASCII);
                     Console.WriteLine($"✓ {modName}: done");

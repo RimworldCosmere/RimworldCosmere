@@ -23,14 +23,24 @@ public class KolossHeritage : Verse.Gene {
 
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
         if (growth == null) return;
-        if (pawn.health.hediffSet.GetFirstHediffOfDef(growth) != null) return;
 
-        Verse.Hediff made = pawn.health.AddHediff(growth);
+        if (pawn.health.hediffSet.GetFirstHediffOfDef(growth) == null) {
+            Verse.Hediff made = pawn.health.AddHediff(growth);
 
-        // kind decides age: surgery koloss start young, raid/march koloss start already grown.
-        if (pawn.kindDef?.GetModExtension<Def.KolossGrowthExtension>() is not { } aged) return;
+            // kind decides age: surgery koloss start young, raid/march koloss start already grown.
+            if (pawn.kindDef?.GetModExtension<Def.KolossGrowthExtension>() is { } aged) {
+                // never literal 0: ShouldRemove is Severity <= 0f, so it deletes itself next tick.
+                made.Severity = Mathf.Max(0.001f, aged.growth.RandomInRange);
+            }
+        }
 
-        // never literal 0: ShouldRemove is Severity <= 0f, so it would delete itself next tick.
-        made.Severity = Mathf.Max(0.001f, aged.growth.RandomInRange);
+        KolossAppearance.Refresh(pawn);
+    }
+
+    // Growth is slow enough that once a game hour is far more often than the answer can change.
+    public override void TickInterval(int delta) {
+        base.TickInterval(delta);
+
+        if (pawn.IsHashIntervalTick(2500, delta)) KolossAppearance.Refresh(pawn);
     }
 }

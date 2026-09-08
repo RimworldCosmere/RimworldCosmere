@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- What a koloss looks like is a reading of its age, not a choice anyone made. KolossAppearance
+       adds and removes the genes below as the growth hediff climbs, so none of them can be picked
+       in the gene assembler and none of them cost anything on the complexity budget. -->
+  <GeneDef Name="Cosmere_Scadrial_KolossLookGeneBase" ParentName="Cosmere_Scadrial_KolossGeneBase" Abstract="True">
+    <biostatCpx>0</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <displayCategory>Cosmetic</displayCategory>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <randomChosen>false</randomChosen>
+  </GeneDef>
+
+  <!-- Build. The body texture and which head shapes are allowed both hang off these two. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossBuild_Young</defName>
+    <label>young build</label>
+    <labelShortAdj>young</labelShortAdj>
+    <description>A koloss in its first years is heavy rather than tall. The muscle has not caught up with the appetite, and the skin still covers everything it is supposed to.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossBuildYoung</iconPath>
+    <displayOrderInCategory>120</displayOrderInCategory>
+    <bodyType>Fat</bodyType>
+  </GeneDef>
+
+  <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossBuild_Mature</defName>
+    <label>mature build</label>
+    <labelShortAdj>mature</labelShortAdj>
+    <description>Past its fifth year the weight has gone to shoulder and arm. A mature koloss stands a head and a half over a man and is built entirely for reaching him.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossBuildMature</iconPath>
+    <displayOrderInCategory>121</displayOrderInCategory>
+    <bodyType>Hulk</bodyType>
+  </GeneDef>
+
+  <!-- Scars. Layer 4 sits above the body tattoo and below wounds and apparel, so a clothed koloss
+       shows its coat and a naked one shows what the coat was hiding. -->
+  <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossScars_Low</defName>
+    <label>first splits</label>
+    <labelShortAdj>split</labelShortAdj>
+    <description>The skin has begun to part at the shoulders. The koloss has not noticed.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossScarsLow</iconPath>
+    <displayOrderInCategory>130</displayOrderInCategory>
+    <renderNodeProperties>
+      <li>
+        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Low</texPath>
+        <parentTagDef>Body</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>4</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+
+  <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossScars_Medium</defName>
+    <label>open splits</label>
+    <labelShortAdj>split</labelShortAdj>
+    <description>Shoulders, thighs and jaw have all gone. The koloss pins the worst of it shut with whatever is to hand and keeps working.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossScarsMedium</iconPath>
+    <displayOrderInCategory>131</displayOrderInCategory>
+    <renderNodeProperties>
+      <li>
+        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Medium</texPath>
+        <parentTagDef>Body</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>4</layer>
+          </defaultData>
+        </drawData>
+      </li>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KolossScars/Koloss_HeadScars_Medium</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+
+  <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
+    <defName>Cosmere_Scadrial_Gene_KolossScars_Heavy</defName>
+    <label>failing skin</label>
+    <labelShortAdj>failing</labelShortAdj>
+    <description>There is more split than skin now. A koloss this old is months from the body finally outrunning the thing that holds it in.</description>
+    <iconPath>UI/Icons/Genes/Gene_KolossScarsHeavy</iconPath>
+    <displayOrderInCategory>132</displayOrderInCategory>
+    <renderNodeProperties>
+      <li>
+        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Heavy</texPath>
+        <parentTagDef>Body</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>4</layer>
+          </defaultData>
+        </drawData>
+      </li>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KolossScars/Koloss_HeadScars_Heavy</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+
+</Defs>

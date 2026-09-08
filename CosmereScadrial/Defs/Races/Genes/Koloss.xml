@@ -18,9 +18,25 @@
     <displayOrderInCategory>100</displayOrderInCategory>
     <biostatCpx>3</biostatCpx>
     <biostatMet>-3</biostatMet>
-    <bodyType>Hulk</bodyType>
+    <!-- No bodyType here. Build follows age, so one of the two Cosmere_Scadrial_Gene_KolossBuild_*
+         genes carries it and KolossAppearance swaps which one is on. -->
     <skinColorOverride>(96, 122, 148)</skinColorOverride>
     <skinIsHairColor>false</skinIsHairColor>
+    <!-- Nothing grows on a koloss. The koloss-blooded are people and keep theirs, which is why
+         this sits on heritage rather than anywhere the two genes share. -->
+    <forcedHair>Bald</forcedHair>
+    <hairTagFilter>
+      <whitelist>true</whitelist>
+      <tags>
+        <li>Bald</li>
+      </tags>
+    </hairTagFilter>
+    <beardTagFilter>
+      <whitelist>true</whitelist>
+      <tags>
+        <li>NoBeard</li>
+      </tags>
+    </beardTagFilter>
     <statFactors>
       <!-- Just over a person's, and the growth stages take it back - a splitting koloss shaves
            0.30 off Moving and ends up slower than the colonist running from it. Young ones are

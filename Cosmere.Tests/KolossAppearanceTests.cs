@@ -53,8 +53,47 @@ public class KolossAppearanceTests {
             .Select(e => e.Value.Trim())
             .ToList();
 
-        Assert.AreEqual(5, paths.Count, "expected three body scar layers and two head scar layers");
+        Assert.AreEqual(7, paths.Count, "expected three body scars, two head scars and two eye layers");
         foreach (string path in paths) AssertRotations(path);
+    }
+
+    /// <summary>
+    ///     The head is drawn with the skin shader, so anything flattened into it comes out the
+    ///     koloss's blue-grey. The eyes stay gold only while they ride an untinted node of their own.
+    /// </summary>
+    [TestMethod]
+    public void EyesAreNeverTintedBySkin() {
+        List<XElement> eyeNodes = Def("Races", "Genes", "KolossAppearance.xml")
+            .Descendants("li")
+            .Where(li => li.Element("texPath")?.Value.Contains("KolossEyes") == true)
+            .ToList();
+
+        Assert.AreEqual(2, eyeNodes.Count, "one eye layer per build");
+        foreach (XElement node in eyeNodes) {
+            Assert.IsNull(node.Element("colorType"), "Skin colorType turns the gold olive");
+            Assert.IsNull(node.Element("useSkinShader"), "the skin shader turns the gold olive");
+        }
+    }
+
+    /// <summary>
+    ///     PawnRenderNodeWorker_AttachmentBody scales by the average of bodyGraphicScale, which the
+    ///     body node never applies, so scars drew an eighth larger than the body under them.
+    /// </summary>
+    [TestMethod]
+    public void BodyScarsScaleWithTheBody() {
+        List<XElement> bodyNodes = Def("Races", "Genes", "KolossAppearance.xml")
+            .Descendants("li")
+            .Where(li => li.Element("parentTagDef")?.Value == "Body")
+            .ToList();
+
+        Assert.AreEqual(3, bodyNodes.Count, "one body scar layer per tier");
+        foreach (XElement node in bodyNodes) {
+            Assert.AreEqual(
+                "PawnRenderNodeWorker_Body",
+                node.Element("workerClass")?.Value,
+                "AttachmentBody adds a bodyGraphicScale factor the body itself does not have"
+            );
+        }
     }
 
     [TestMethod]

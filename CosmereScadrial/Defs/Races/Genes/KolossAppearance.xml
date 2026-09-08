@@ -21,6 +21,22 @@
     <iconPath>UI/Icons/Genes/Gene_KolossBuildYoung</iconPath>
     <displayOrderInCategory>120</displayOrderInCategory>
     <bodyType>Fat</bodyType>
+    <!-- Eyes ride their own node with no colorType and no skin shader. Flattened into the head
+         texture they came out olive, because the head is multiplied by the koloss skin colour. -->
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KolossEyes/Koloss_Eyes_Young</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>53</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
   </GeneDef>
 
   <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
@@ -31,10 +47,28 @@
     <iconPath>UI/Icons/Genes/Gene_KolossBuildMature</iconPath>
     <displayOrderInCategory>121</displayOrderInCategory>
     <bodyType>Hulk</bodyType>
+    <!-- Eyes ride their own node with no colorType and no skin shader. Flattened into the head
+         texture they came out olive, because the head is multiplied by the koloss skin colour. -->
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KolossEyes/Koloss_Eyes_Mature</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>53</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
   </GeneDef>
 
   <!-- Scars. Layer 4 sits above the body tattoo and below wounds and apparel, so a clothed koloss
-       shows its coat and a naked one shows what the coat was hiding. -->
+       shows its coat and a naked one shows what the coat was hiding. The body worker rather than
+       AttachmentBody: that one scales by the average of bodyGraphicScale, which the body itself
+       never applies, and drew the scars a good eighth larger than the thing they sit on. -->
   <GeneDef ParentName="Cosmere_Scadrial_KolossLookGeneBase">
     <defName>Cosmere_Scadrial_Gene_KolossScars_Low</defName>
     <label>first splits</label>
@@ -44,7 +78,7 @@
     <displayOrderInCategory>130</displayOrderInCategory>
     <renderNodeProperties>
       <li>
-        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <workerClass>PawnRenderNodeWorker_Body</workerClass>
         <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Low</texPath>
         <parentTagDef>Body</parentTagDef>
         <rotDrawMode>Fresh</rotDrawMode>
@@ -66,7 +100,7 @@
     <displayOrderInCategory>131</displayOrderInCategory>
     <renderNodeProperties>
       <li>
-        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <workerClass>PawnRenderNodeWorker_Body</workerClass>
         <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Medium</texPath>
         <parentTagDef>Body</parentTagDef>
         <rotDrawMode>Fresh</rotDrawMode>
@@ -100,7 +134,7 @@
     <displayOrderInCategory>132</displayOrderInCategory>
     <renderNodeProperties>
       <li>
-        <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
+        <workerClass>PawnRenderNodeWorker_Body</workerClass>
         <texPath>Things/Pawn/Humanlike/BodyAttachments/KolossScars/Koloss_Scars_Heavy</texPath>
         <parentTagDef>Body</parentTagDef>
         <rotDrawMode>Fresh</rotDrawMode>

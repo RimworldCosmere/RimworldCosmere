@@ -551,6 +551,9 @@ public class KandraAnimalFormTests {
             disguise.Contains("BaseSuspicion * (1f - forms.Conviction)", StringComparison.Ordinal),
             "Conviction runs 0 to 1 off the same skill."
         );
-        Assert.AreEqual(20f, 20f, "NoticeRange is the twenty-cell baseline.");
+        Assert.IsTrue(
+            disguise.Contains("NoticeRange = 20f", StringComparison.Ordinal),
+            "NoticeRange is the twenty-cell baseline."
+        );
     }
 }

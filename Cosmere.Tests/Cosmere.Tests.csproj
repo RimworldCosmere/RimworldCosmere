@@ -12,15 +12,18 @@
         <IsTestProject>true</IsTestProject>
         <!-- Referencing the net48 project is intentional and limited to GaugeMath,
              which is plain System.Math and loads cleanly. -->
-        <NoWarn>$(NoWarn);NU1701;NU1702;CS8032</NoWarn>
+        <!-- MSTEST0032 calls a constant-guard assertion always-true, because the compiler folds
+             the const at this compilation. It still fails the moment somebody edits the value,
+             which is the entire job of those tests. -->
+        <NoWarn>$(NoWarn);NU1701;NU1702;CS8032;MSTEST0032</NoWarn>
         <OutDir>bin\$(Configuration)\</OutDir>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1"/>
-        <PackageReference Include="MSTest.TestAdapter" Version="3.6.1"/>
-        <PackageReference Include="MSTest.TestFramework" Version="3.6.1"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="4.4.0"/>
+        <PackageReference Include="MSTest.TestFramework" Version="4.4.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
     </ItemGroup>
 
     <ItemGroup>

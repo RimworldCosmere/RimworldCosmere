@@ -44,7 +44,7 @@ public class RadiantOrderCapacityTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(OrderFiles), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(OrderFiles))]
     public void EveryIdealDeclaresAPositiveCapacity(string path) {
         JArray ideals = IdealsOf(path);
 
@@ -64,7 +64,7 @@ public class RadiantOrderCapacityTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(OrderFiles), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(OrderFiles))]
     public void CapacityRisesWithEveryIdeal(string path) {
         JArray ideals = IdealsOf(path);
 
@@ -81,7 +81,7 @@ public class RadiantOrderCapacityTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(OrderFiles), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(OrderFiles))]
     public void EveryOrderSharesTheSameCurve(string path) {
         JArray ideals = IdealsOf(path);
         Assert.AreEqual(ExpectedCurve.Length, ideals.Count, $"{Path.GetFileName(path)} does not have five Ideals.");

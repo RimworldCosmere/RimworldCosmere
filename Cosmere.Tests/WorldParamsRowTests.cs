@@ -46,7 +46,7 @@ public class WorldParamsRowTests {
     }
 
     [TestMethod]
-    [DynamicData(nameof(Combinations), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Combinations))]
     public void OurRowsNeverOverlapVanillaRows(bool odyssey, bool biotech, bool tutorial) {
         // 768 is the shortest window RimWorld supports.
         foreach (float windowHeight in new[] { 768f, 900f, 1080f, 1440f }) {

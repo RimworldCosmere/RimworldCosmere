@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Handlebars.Net" Version="2.1.6" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IO.Abstractions" Version="22.0.15" />
+    <PackageReference Include="Handlebars.Net" Version="2.4.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.IO.Abstractions" Version="22.2.0" />
   </ItemGroup>
 
 </Project>

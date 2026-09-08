@@ -60,11 +60,8 @@ public abstract class BaseGenerator : IGenerator {
         });
 
         Handlebars.RegisterHelper("capitalize", (writer, context, parameters) => {
-            if (parameters.Length > 0 && parameters[0] != null) {
-                var str = parameters[0].ToString();
-                if (!string.IsNullOrEmpty(str)) {
-                    writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
-                }
+            if (parameters.Length > 0 && parameters[0]?.ToString() is { Length: > 0 } str) {
+                writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
             }
         });
 
@@ -299,7 +296,8 @@ public abstract class BaseGenerator : IGenerator {
                 options.Data.CreateProperty("first", i == 0, out _);
                 options.Data.CreateProperty("last", i == (count - 1), out _);
 
-                options.Template(output, context);
+                // its own frame, or Handlebars 2.4.3 walks `../` one level too far and reads empty.
+                options.Template(output, options.CreateFrame(context));
             }
         });
     }

@@ -11,19 +11,19 @@
   <ThingDef ParentName="BaseMeleeWeapon_Sharp">
     <defName>Cosmere_Scadrial_Thing_KolossSword</defName>
     <label>koloss blade</label>
-    <description>A length of industrial saw plate, torn off whatever it used to turn in and wrapped at one end for a grip. The teeth are still on it. Nothing about it was made for this, and nothing about it was made for a hand smaller than the one carrying it now.</description>
+    <description>A slab of metal beaten into a curve and bound at one end for a grip. The edge is uneven, the back is thick enough to stop a blow, and the whole of it weighs more than a person can hold up for long. Nothing about it was made for a hand smaller than the one carrying it now.</description>
     <graphicData>
       <texPath>Things/Item/Equipment/WeaponMelee/KolossSword</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <!-- Vanilla weapons sit in a 64x64 square and take the default 1.0, but their blades are
-           about one to four. This one is one to eight, so at the same canvas it reads half the
-           height and looks like a toy. The canvas is also padded to the left rather than centred,
-           so the grip lands near the middle and the pawn holds the handle instead of the blade -
-           the same trick the Shardblade uses. drawSize covers both the lean ratio and the padding. -->
-      <drawSize>6.0</drawSize>
+      <!-- The mask leaves the grip wrap its own colour and lets the stuff tint only the blade. -->
+      <shaderType>CutoutComplex</shaderType>
+      <!-- The art is drawn along the diagonal, so the canvas is padded down and left to bring the
+           grip onto the centre - the point a pawn's hand is drawn at. That padding is most of the
+           canvas, which is why drawSize is far larger than the sword's actual reach. -->
+      <drawSize>6.25</drawSize>
     </graphicData>
     <!-- Its own icon rather than one derived from the world graphic, which inherits drawSize and
-         spills straight out of the gizmo box. Pre-rotated and fitted to a square. -->
+         spills straight out of the gizmo box. Same art without the centring pad. -->
     <uiIconPath>UI/Icons/Weapons/KolossSword</uiIconPath>
     <techLevel>Medieval</techLevel>
     <weaponTags>
@@ -35,17 +35,19 @@
     <!-- Not craftable and not traded. Every one of these came off a dead koloss, which is also
          the only way a player gets one. -->
     <tradeability>None</tradeability>
-    <!-- The art is greyscale, so the game tints it by material the way it does every other melee
-         weapon. A koloss sword is whatever somebody beat it out of. -->
+    <!-- The blade is greyscale, so the game tints it by material the way it does every other
+         melee weapon. A koloss sword is whatever somebody beat it out of. -->
     <stuffCategories>
       <li>Metallic</li>
     </stuffCategories>
     <costStuffCount>140</costStuffCount>
+    <!-- The art is drawn along the diagonal and the engine adds 53 degrees of its own at rest,
+         so this offset is what puts the blade up over the shoulder instead of dragging. -->
+    <equippedAngleOffset>-35</equippedAngleOffset>
     <statBases>
       <Mass>7</Mass>
       <MarketValue>90</MarketValue>
     </statBases>
-    <equippedAngleOffset>-45</equippedAngleOffset>
     <tools>
       <li>
         <label>grip</label>

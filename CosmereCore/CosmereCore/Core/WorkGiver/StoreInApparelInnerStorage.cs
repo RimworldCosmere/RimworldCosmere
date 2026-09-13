@@ -6,28 +6,30 @@ using Verse.AI;
 
 namespace Cosmere.Core.WorkGiver;
 
+/// <summary>
+///     Fills the storage a pawn is wearing. Worn storage is off the map-wide haul search on
+///     purpose, so this looks at the wearer's own apparel instead of asking StoreUtility.
+/// </summary>
 public class StoreInApparelInnerStorage : WorkGiver_HaulGeneral {
     public override Job? JobOnThing(Pawn p, Verse.Thing t, bool forced = false) {
-        StoragePriority currentPriority = StoreUtility.CurrentStoragePriorityOf(t, forced);
-        if (!StoreUtility.TryFindBestBetterStorageFor(
-                t,
-                p,
-                p.Map,
-                currentPriority,
-                p.Faction,
-                out _,
-                out IHaulDestination haulDestination
-            )) {
-            JobFailReason.Is(HaulAIUtility.NoEmptyPlaceLowerTrans);
-            return null;
+        if (t is Corpse || p.apparel == null) return null;
+        if (!HaulAIUtility.PawnCanAutomaticallyHaulFast(p, t, forced)) return null;
+
+        StoragePriority current = StoreUtility.CurrentStoragePriorityOf(t, forced);
+        InnerStorage? best = null;
+        foreach (Apparel worn in p.apparel.WornApparel) {
+            InnerStorage? pouch = worn.TryGetComp<InnerStorage>();
+            if (pouch == null || !pouch.Accepts(t)) continue;
+
+            StoragePriority priority = pouch.GetStoreSettings().Priority;
+            if (priority <= current) continue;
+            if (best == null || priority > best.GetStoreSettings().Priority) best = pouch;
         }
 
-        if (haulDestination is not InnerStorage innerStorage) return null;
-        if (innerStorage.parent is not Apparel apparel) return null;
-        if (!apparel.Spawned && !p.Equals(innerStorage.parent)) return null;
+        if (best == null) return null;
 
-        Job job = JobMaker.MakeJob(JobDefOf.Cosmere_StoreInApparelInnerStorage, t, innerStorage.parent);
-        job.count = Mathf.Min(t.stackCount, innerStorage.innerContainer.GetCountCanAccept(t));
+        Job job = JobMaker.MakeJob(JobDefOf.Cosmere_StoreInApparelInnerStorage, t, best.parent);
+        job.count = Mathf.Min(t.stackCount, best.GetCountCanAccept(t));
         job.haulMode = HaulMode.ToContainer;
 
         return job;

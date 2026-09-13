@@ -15,7 +15,7 @@ public class StoreInApparelInnerStorage : InnerStorageJobDriver {
             .FailOnSelfAndParentsDespawnedOrNull(TargetIndex.A);
         yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false, true, true);
 
-        yield return Toils_General.Open(TargetIndex.B);
+        // no Open toil: Toils_General.Open hard-casts to IOpenable and apparel is not one.
         Toil toil = Toils_General.Wait(Duration);
         toil.WithProgressBarToilDelay(TargetIndex.B);
         EffecterDef workEffecter = WorkEffecter;

@@ -85,6 +85,13 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
             }
 
             if (patchedCount == 1) {
+                // ret inside the foreach's try/finally is invalid IL, so reuse vanilla's stloc + leave spill.
+                int spill = code.FindIndex(i, c => c.opcode == OpCodes.Call && c.operand is MethodInfo { Name: "HaulToCellStorageJob" });
+                if (spill < 0 || spill + 2 >= code.Count) {
+                    Log.Warn("Pawn_JobTracker.TryOpportunisticJob transpiler could not find the HaulToCellStorageJob return spill.");
+                    return instructions;
+                }
+
                 newInstructions.AddRange(
                     [
                         new CodeInstruction(OpCodes.Isinst, innerStorageType), // is InnerStorage?
@@ -98,7 +105,8 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
                             haulDestination
                         ), // haulDestination (already IS InnerStorage)
                         new CodeInstruction(OpCodes.Call, HaulMethod),
-                        new CodeInstruction(OpCodes.Ret),
+                        new CodeInstruction(code[spill + 1].opcode, code[spill + 1].operand), // stloc.s result
+                        new CodeInstruction(code[spill + 2].opcode, code[spill + 2].operand), // leave past the finally
                         new CodeInstruction(OpCodes.Ldloc_S, haulDestination)
                             .WithLabels(continueLabelTwo), // haulDestination
                     ]

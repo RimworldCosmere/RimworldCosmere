@@ -77,11 +77,8 @@ test('publish compiles README and passes the branch asset base URL to the descri
   ]);
 });
 
-test('release workflow pins steamdown cli beta 2 for image rendering', () => {
-  assert.match(releaseWorkflow, /npm install -g @steamdown\/cli@1\.0\.0-beta\.2 tsx/);
-  assert.match(
-    releaseWorkflow,
-    /npm install @semantic-release\/git semantic-release-replace-plugin @steamdown\/cli@1\.0\.0-beta\.2 -D/,
-  );
+test('release workflow pins steamdown cli 1.0.0 for image rendering', () => {
+  assert.match(releaseWorkflow, /npm install -g @steamdown\/cli@1\.0\.0 tsx/);
+  assert.match(releaseWorkflow, /npm install @steamdown\/cli@1\.0\.0 -D/);
 });
 

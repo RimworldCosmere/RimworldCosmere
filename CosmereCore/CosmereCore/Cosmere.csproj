@@ -11,6 +11,7 @@
         <WarningLevel>4</WarningLevel>
         <ErrorReport>prompt</ErrorReport>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
@@ -22,6 +23,17 @@
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <PackageId>Cosmere</PackageId>
     </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyMetadata Include="BuildTime" Value="$([System.DateTime]::UtcNow.ToString('o'))"/>
+    </ItemGroup>
+
+    <!-- Tagged CI builds pass InformationalVersion from the tag. Everything else gets git describe. -->
+    <Target Name="StampGitDescribe" BeforeTargets="GetAssemblyVersion" Condition="'$(InformationalVersion)' == ''">
+        <Exec Command="git describe --tags --always" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low">
+            <Output TaskParameter="ConsoleOutput" PropertyName="InformationalVersion"/>
+        </Exec>
+    </Target>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DebugSymbols>false</DebugSymbols>

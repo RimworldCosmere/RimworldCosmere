@@ -5,8 +5,6 @@
     "check:steam-release": "node tools/semantic-release-steam/tests/run-config-check.mjs"
   },
   "devDependencies": {
-    "@semantic-release/git": "^11.0.1",
-    "semantic-release": "^25.0.9",
-    "semantic-release-replace-plugin": "^1.2.7"
+    "semantic-release": "^25.0.9"
   }
 }

@@ -24,6 +24,8 @@
         <PackageReference Include="MSTest.TestAdapter" Version="4.4.0"/>
         <PackageReference Include="MSTest.TestFramework" Version="4.4.0"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
+        <!-- Runtime only. Cosmere.dll carries Concord assembly attributes, and reading any assembly attribute resolves them all. -->
+        <PackageReference Include="Concord.Runtime" Version="0.14.*"/>
     </ItemGroup>
 
     <ItemGroup>

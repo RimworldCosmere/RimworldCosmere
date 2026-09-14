@@ -1,0 +1,20 @@
+name: announce
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  discord:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RimWorks/mod-ci/.github/actions/discord-release@ce9b54f421d96c7503cf6ff896916e4419ed084d # v1.7.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          mod-name: Cosmere
+          role-ids: ${{ vars.DISCORD_ROLE_IDS }}
+          workshop-id: Core=3474223604, Scadrial=3474236328, Roshar=3706867006
+          embed-color: E67E22

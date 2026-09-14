@@ -371,6 +371,10 @@ jobs:
             mkdir -p "./${mod_name}"
             unzip -o "$artifact" -d "./${mod_name}"
           done
+      - name: Record the tag before releasing
+        id: before
+        run: echo "tag=$(git describe --tags --abbrev=0 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
@@ -382,3 +386,12 @@ jobs:
           npm install @steamdown/cli@1.0.0 -D
           node --test tools/semantic-release-steam/tests/*.test.mjs
           npx semantic-release
+
+      - uses: RimWorks/mod-ci/.github/actions/discord-release@3fc79fa70496f2d785d8b0ba485ba6f213f9c264 # v1.8.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          mod-name: Cosmere
+          role-ids: ${{ vars.DISCORD_ROLE_IDS }}
+          workshop-id: Core=3474223604, Scadrial=3474236328, Roshar=3706867006
+          embed-color: E67E22
+          previous-tag: ${{ steps.before.outputs.tag }}

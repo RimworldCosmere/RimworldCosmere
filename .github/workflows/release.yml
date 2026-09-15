@@ -387,7 +387,7 @@ jobs:
           node --test tools/semantic-release-steam/tests/*.test.mjs
           npx semantic-release
 
-      - uses: RimWorks/mod-ci/.github/actions/discord-release@3fc79fa70496f2d785d8b0ba485ba6f213f9c264 # v1.8.0
+      - uses: RimWorks/mod-ci/.github/actions/discord-release@v1.10
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           mod-name: Cosmere

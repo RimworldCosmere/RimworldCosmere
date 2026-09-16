@@ -382,10 +382,7 @@ jobs:
           STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
           STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
           BETA_HUB_API_KEY: ${{ secrets.BETA_HUB_API_KEY }}
-        run: |
-          npm install @steamdown/cli@1.0.0 -D
-          node --test tools/semantic-release-steam/tests/*.test.mjs
-          npx semantic-release
+        run: npx semantic-release
 
       - uses: RimWorks/mod-ci/.github/actions/discord-release@v1.10
         with:

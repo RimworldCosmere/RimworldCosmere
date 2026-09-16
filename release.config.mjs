@@ -1,4 +1,5 @@
 ﻿import { readFileSync } from 'node:fs';
+import { basename } from 'node:path';
 
 const publishedFileIds = JSON.parse(
     readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
@@ -23,8 +24,14 @@ export default {
             }
         ],
         [
-            "./tools/semantic-release-steam/index.mjs",
+            "semantic-release-steam",
             {
+                "appId": "294100",
+                "outputReadme": true,
+                "assetDirNameTransform": modPath => [
+                    basename(modPath).replace(/^Cosmere/, '').toLowerCase(),
+                    'fallback',
+                ],
                 "branchTargets": {
                     "main": "stable",
                     "beta": "beta"

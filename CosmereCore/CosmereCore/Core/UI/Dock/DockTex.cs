@@ -25,11 +25,25 @@ public static class DockTex {
     ///     A chevron pointing down, for folding the dock away. Vanilla's close X says the panel
     ///     goes away entirely, which is not what the button does.
     /// </summary>
-    public static readonly Texture2D Chevron = BuildChevron();
+    public static readonly Texture2D Chevron = BuildChevron(ChevronDir.Down);
+
+    /// <summary>
+    ///     Pre-turned rather than rotated at draw time. Widgets.DrawTextureRotated goes through
+    ///     UI.RotateAroundPivot, which rescales an already-scaled pivot at UI scale above 1.
+    /// </summary>
+    public static readonly Texture2D ChevronLeft = BuildChevron(ChevronDir.Left);
+
+    public static readonly Texture2D ChevronRight = BuildChevron(ChevronDir.Right);
+
+    private enum ChevronDir {
+        Down,
+        Left,
+        Right,
+    }
 
     private const int ChevronSize = 32;
 
-    private static Texture2D BuildChevron() {
+    private static Texture2D BuildChevron(ChevronDir direction) {
         Texture2D tex = new Texture2D(ChevronSize, ChevronSize, TextureFormat.ARGB32, false) {
             wrapMode = TextureWrapMode.Clamp,
             filterMode = FilterMode.Bilinear,
@@ -43,8 +57,12 @@ public static class DockTex {
                 float nx = (x + 0.5f) / ChevronSize * 2f - 1f;
                 float ny = (y + 0.5f) / ChevronSize * 2f - 1f;
 
-                float arm = Mathf.Abs(ny - (Mathf.Abs(nx) - 0.32f)) * ChevronSize / 2f;
-                float reach = Mathf.Max(0f, Mathf.Abs(nx) - 0.68f) * ChevronSize / 2f;
+                float along = direction == ChevronDir.Down ? ny : nx;
+                float across = direction == ChevronDir.Down ? nx : ny;
+                if (direction == ChevronDir.Right) along = -along;
+
+                float arm = Mathf.Abs(along - (Mathf.Abs(across) - 0.32f)) * ChevronSize / 2f;
+                float reach = Mathf.Max(0f, Mathf.Abs(across) - 0.68f) * ChevronSize / 2f;
                 float distance = Mathf.Sqrt(arm * arm + reach * reach);
 
                 pixels[y * ChevronSize + x] = new Color(1f, 1f, 1f, Mathf.Clamp01(2.1f - distance));

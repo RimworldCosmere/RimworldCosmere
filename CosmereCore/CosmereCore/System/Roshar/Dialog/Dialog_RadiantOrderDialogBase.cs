@@ -39,7 +39,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     private static readonly Color FutureColor = new Color(0.5f, 0.5f, 0.5f);
     private static readonly Color BlockedColor = new Color(0.85f, 0.2f, 0.2f);
 
-    private static readonly Texture2D CircleTex = CreateCircleTexture(32);
+    protected static readonly Texture2D CircleTex = CreateCircleTexture(32);
     protected readonly Color accentColor;
     protected readonly Pawn? pawn;
     protected readonly Surgebinder? surgebinder;
@@ -64,11 +64,22 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
     protected override float headerHeight => Spacing.Get(16);
 
+    /// <summary>Where this order sits in a browsable list. Null when there is nothing to browse.</summary>
+    protected virtual TaggedString? GetPositionReadout() {
+        return null;
+    }
+
     protected override void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
         listing.Gap(BannerSize - BannerOverhang + Spacing.Get(0.5f));
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
             listing.Label($"<b>{order.LabelCap}</b>");
+
+        TaggedString? position = GetPositionReadout();
+        if (position != null) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, bodyTextColor))
+                listing.Label(position.Value);
+        }
 
         TaggedString title = GetTitle();
         if (title != null) {

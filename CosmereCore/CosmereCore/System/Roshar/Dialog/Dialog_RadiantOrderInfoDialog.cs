@@ -195,43 +195,43 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         Rect innerRect = rect.ContractedBy(padding);
         float unit = innerRect.width / divisor;
 
-        Rect leftButtonRect = new Rect(innerRect.x, innerRect.y, unit * 2, footerButtonHeight);
+        Rect leftButtonRect = new Rect(innerRect.x, innerRect.y, unit * 2f, footerButtonHeight);
         Rect centerButtonRect = new Rect(
-            unit * 4 + Spacing.Get(1 + 1f / divisor),
-            innerRect.y - 4,
-            unit * 4,
-            footerButtonHeight + 8
+            innerRect.x + unit * 4f,
+            innerRect.y - 4f,
+            unit * 4f,
+            footerButtonHeight + 8f
         );
         Rect rightButtonRect = new Rect(
-            innerRect.width - unit * 2f + Spacing.Get(1 + 1f / divisor),
+            innerRect.xMax - unit * 2f,
             innerRect.y,
-            unit * 2,
+            unit * 2f,
             footerButtonHeight
         );
 
-        Color origColor = GUI.color;
-        GUI.color = DangerColor;
-        if (Widgets.ButtonText(leftButtonRect, "CRO_BreakBond_Sever".Translate())) {
-            GUI.color = origColor;
-            ShowSeverBondDialog();
+        TaggedString leftLabel = mode == RadiantOrderInfoMode.SpeakOath
+            ? "CRO_SpeakOath_NotYet".Translate()
+            : "CRO_RadiantOrder_Close".Translate();
+        if (Widgets.ButtonText(leftButtonRect, leftLabel)) {
+            Close();
             return;
         }
-
-        GUI.color = origColor;
 
         bool showSpeakWords = mode == RadiantOrderInfoMode.SpeakOath || surgebinder!.PendingOath;
         if (showSpeakWords) {
             if (CTAButtonText(centerButtonRect, "CRO_SpeakOath_SpeakTheWords".Translate())) {
                 surgebinder!.SpeakOath();
                 Close();
+                return;
             }
         }
 
-        TaggedString rightLabel = mode == RadiantOrderInfoMode.SpeakOath
-            ? "CRO_SpeakOath_NotYet".Translate()
-            : "CRO_RadiantOrder_Close".Translate();
-        if (Widgets.ButtonText(rightButtonRect, rightLabel)) {
-            Close();
+        TooltipHandler.TipRegion(rightButtonRect, "CRO_BreakBond_SeverTooltip".Translate());
+
+        using (new TextBlock(GUI.color * DangerColor)) {
+            if (Widgets.ButtonText(rightButtonRect, "CRO_BreakBond_Sever".Translate())) {
+                ShowSeverBondDialog();
+            }
         }
     }
 

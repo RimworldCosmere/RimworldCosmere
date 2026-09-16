@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_RadiantOrder_Position>{INDEX} of {TOTAL}</CRO_RadiantOrder_Position>
+    <CRO_RadiantOrder_Sigil_Blocked>{ORDER}\n\n{REASON}</CRO_RadiantOrder_Sigil_Blocked>
+</LanguageData>

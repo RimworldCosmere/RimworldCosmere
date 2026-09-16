@@ -11,9 +11,14 @@ public class Dialog_GemheartExpedition : Window {
     private const int MinPawns = 3;
     private const int MaxPawns = 6;
 
+    private const float RowHeight = 40f;
+    private const float CheckSize = 24f;
+    private const float Gutter = 8f;
+
     private static readonly Color ReadyColor = new Color(0.45f, 0.72f, 0.42f);
     private static readonly Color ShortColor = new Color(0.85f, 0.35f, 0.3f);
     private static readonly Color StatColor = new Color(0.62f, 0.6f, 0.56f);
+    private static readonly Color CostlyColor = new Color(0.82f, 0.7f, 0.35f);
 
     private readonly List<Pawn> available = [];
 
@@ -54,56 +59,26 @@ public class Dialog_GemheartExpedition : Window {
         }
 
         y = descRect.yMax + 10f;
-        Rect countRect = new Rect(inRect.x, y, inRect.width, 24f);
+        Rect statusRect = new Rect(inRect.x, y, inRect.width, 24f);
         bool enoughSelected = selected.Count >= MinPawns;
-        using (new TextBlock(GameFont.Small, null, enoughSelected ? ReadyColor : ShortColor)) {
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, enoughSelected ? ReadyColor : ShortColor)) {
             Widgets.Label(
-                countRect,
+                statusRect.LeftHalf(),
                 "CRO_Gemheart_Selected".Translate(selected.Count.Named("COUNT"), MaxPawns.Named("MAX"))
             );
         }
 
-        y = countRect.yMax + 6f;
+        DrawOdds(statusRect.RightHalf());
+
+        y = statusRect.yMax + 6f;
         float listHeight = inRect.height - y - 50f;
         Rect listOuterRect = new Rect(inRect.x, y, inRect.width, listHeight);
-        float entryHeight = 40f;
-        Rect listInnerRect = new Rect(0f, 0f, listOuterRect.width - 16f, available.Count * entryHeight);
+        Rect listInnerRect = new Rect(0f, 0f, listOuterRect.width - 16f, available.Count * RowHeight);
 
         Widgets.BeginScrollView(listOuterRect, ref scrollPos, listInnerRect);
         for (int i = 0; i < available.Count; i++) {
-            Pawn pawn = available[i];
-            Rect entryRect = new Rect(0f, i * entryHeight, listInnerRect.width, entryHeight);
-
-            if (i % 2 == 1) {
-                Widgets.DrawLightHighlight(entryRect);
-            }
-
-            bool isSelected = selected.Contains(pawn);
-            Rect checkRect = new Rect(entryRect.x + 4f, entryRect.y + 8f, 24f, 24f);
-            bool wasSelected = isSelected;
-            Widgets.Checkbox(checkRect.position, ref isSelected, 24f, !(!isSelected && selected.Count >= MaxPawns));
-
-            if (isSelected != wasSelected) {
-                if (isSelected) {
-                    selected.Add(pawn);
-                } else {
-                    selected.Remove(pawn);
-                }
-            }
-
-            Rect nameRect = new Rect(checkRect.xMax + 8f, entryRect.y + 2f, 180f, entryHeight / 2f);
-            Widgets.Label(nameRect, pawn.LabelShortCap);
-
-            Rect statsRect = new Rect(
-                checkRect.xMax + 8f,
-                entryRect.y + entryHeight / 2f,
-                entryRect.width - 40f,
-                entryHeight / 2f
-            );
-
-            using (new TextBlock(GameFont.Tiny, null, StatColor)) {
-                Widgets.Label(statsRect, SkillLine(pawn));
-            }
+            DrawPawnRow(new Rect(0f, i * RowHeight, listInnerRect.width, RowHeight), available[i], i % 2 == 1);
         }
 
         Widgets.EndScrollView();
@@ -136,6 +111,93 @@ public class Dialog_GemheartExpedition : Window {
         if (Widgets.ButtonText(cancelRect, "CRO_Gemheart_Cancel".Translate())) {
             Close();
         }
+    }
+
+    private void DrawPawnRow(Rect rowRect, Pawn pawn, bool striped) {
+        if (striped) Widgets.DrawLightHighlight(rowRect);
+
+        bool isSelected = selected.Contains(pawn);
+        bool atCapacity = !isSelected && selected.Count >= MaxPawns;
+
+        if (!atCapacity) {
+            Widgets.DrawHighlightIfMouseover(rowRect);
+            MouseoverSounds.DoRegion(rowRect);
+        }
+
+        TooltipHandler.TipRegion(
+            rowRect,
+            atCapacity
+                ? "CRO_Gemheart_Row_Full".Translate(MaxPawns.Named("MAX"))
+                : "CRO_Gemheart_Row_Tooltip".Translate(
+                    pawn.LabelShortCap.Named("PAWN"),
+                    GemheartExpeditionManager.PawnPower(pawn).ToString("F0").Named("POWER")
+                )
+        );
+
+        float checkX = rowRect.x + 4f;
+        Widgets.CheckboxDraw(checkX, rowRect.y + (rowRect.height - CheckSize) / 2f, isSelected, atCapacity, CheckSize);
+
+        float textX = checkX + CheckSize + Gutter;
+        float textWidth = rowRect.xMax - textX - Gutter;
+
+        Rect nameRect = new Rect(textX, rowRect.y + 2f, textWidth, rowRect.height / 2f);
+        Widgets.Label(nameRect, pawn.LabelShortCap);
+
+        Rect statsRect = new Rect(textX, rowRect.y + rowRect.height / 2f, textWidth, rowRect.height / 2f);
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, StatColor)) {
+            Widgets.Label(statsRect, SkillLine(pawn));
+        }
+
+        if (atCapacity || !Widgets.ButtonInvisible(rowRect)) return;
+
+        if (isSelected) {
+            selected.Remove(pawn);
+            SoundDefOf.Checkbox_TurnedOff.PlayOneShotOnCamera();
+        } else {
+            selected.Add(pawn);
+            SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera();
+        }
+    }
+
+    private void DrawOdds(Rect rect) {
+        if (selected.Count == 0) return;
+
+        GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
+        if (manager == null) return;
+
+        float power = GemheartExpeditionManager.ExpeditionPower(selected.ToList());
+        float difficulty = manager.CurrentDifficulty;
+        GemheartOutcome outcome = GemheartOdds.Classify(GemheartOdds.Ratio(power, difficulty));
+
+        TooltipHandler.TipRegion(
+            rect,
+            "CRO_Gemheart_Odds_Tooltip".Translate(
+                power.ToString("F0").Named("POWER"),
+                difficulty.ToString("F0").Named("DIFFICULTY")
+            )
+        );
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, OutcomeColor(outcome))) {
+            Widgets.Label(rect, "CRO_Gemheart_Odds".Translate(OutcomeLabel(outcome).Named("OUTCOME")));
+        }
+    }
+
+    private static Color OutcomeColor(GemheartOutcome outcome) {
+        return outcome switch {
+            GemheartOutcome.Victory or GemheartOutcome.HardWon => ReadyColor,
+            GemheartOutcome.Pyrrhic => CostlyColor,
+            _ => ShortColor,
+        };
+    }
+
+    private static TaggedString OutcomeLabel(GemheartOutcome outcome) {
+        return outcome switch {
+            GemheartOutcome.Victory => "CRO_Gemheart_Odds_Victory".Translate(),
+            GemheartOutcome.HardWon => "CRO_Gemheart_Odds_HardWon".Translate(),
+            GemheartOutcome.Pyrrhic => "CRO_Gemheart_Odds_Pyrrhic".Translate(),
+            GemheartOutcome.Failure => "CRO_Gemheart_Odds_Failure".Translate(),
+            _ => "CRO_Gemheart_Odds_Disaster".Translate(),
+        };
     }
 
     private static TaggedString SkillLine(Pawn pawn) {

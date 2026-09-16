@@ -1,5 +1,6 @@
 using Cosmere.Core.Listing;
 using Cosmere.Core.UI;
+using Cosmere.Core.UI.Dock;
 using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Map;
@@ -8,11 +9,19 @@ using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Roshar.Dialog;
 
 [StaticConstructorOnStartup]
 public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
+    private const float RestDotAlpha = 0.4f;
+    private const float HoverDotAlpha = 0.85f;
+
+    private static readonly Color UnavailableDotColor = new Color(0.45f, 0.43f, 0.40f);
+    private static readonly Color ArrowRestColor = new Color(0.79f, 0.65f, 0.37f, 0.3f);
+    private static readonly Color ArrowHoverColor = new Color(0.79f, 0.65f, 0.37f, 0.9f);
+
     private static readonly List<RadiantOrderDef> RadiantOrders = DefDatabase<RadiantOrderDef>.AllDefsListForReading;
     private static List<RadiantOrderDef>? normalOrders;
     private readonly List<RadiantOrderDef> availableOrders;
@@ -95,33 +104,148 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         base.DrawOverviewTab(listing);
     }
 
-    protected override void DrawFooter(Rect rect) {
-        const int divisor = 12;
+    protected override float footerHeight => hasFooter ? Spacing.Get(8) : 0;
 
-        Rect innerRect = rect.ContractedBy(padding);
-        float unit = innerRect.width / divisor;
-        Rect firstButtonRect = new Rect(innerRect.x, innerRect.y, unit, footerButtonHeight);
-        Rect secondButtonRect = new Rect(
-            unit * 4 + Spacing.Get(1 + 1f / divisor),
-            innerRect.y - 4,
-            unit * 4,
-            footerButtonHeight + 8
+    protected override TaggedString? GetPositionReadout() {
+        if (forcedBondsmithSpren != null || availableOrders.Count <= 1) return null;
+
+        return "CRO_RadiantOrder_Position".Translate(
+            (radiantOrderIndex + 1).Named("INDEX"),
+            availableOrders.Count.Named("TOTAL")
         );
-        Rect thirdButtonRect = new Rect(
-            innerRect.width - unit * 1f + Spacing.Get(1 + 1f / divisor),
+    }
+
+    public override void DoWindowContents(Rect inRect) {
+        base.DoWindowContents(inRect);
+
+        if (forcedBondsmithSpren != null || availableOrders.Count <= 1) return;
+
+        float contentTop = inRect.y + headerHeight;
+        float railTop = inRect.yMax - footerHeight + padding.top;
+        float height = RadiantFilmstripLayout.ArrowColumnHeight(contentTop, railTop);
+        if (height <= 0f) return;
+
+        Rect previousRect = new Rect(inRect.x, contentTop, RadiantFilmstripLayout.ArrowColumnWidth, height);
+        Rect nextRect = new Rect(
+            RadiantFilmstripLayout.RightArrowLeft(inRect.x, inRect.width),
+            contentTop,
+            RadiantFilmstripLayout.ArrowColumnWidth,
+            height
+        );
+
+        if (DrawEdgeArrow(previousRect, true)) Step(-1);
+        if (DrawEdgeArrow(nextRect, false)) Step(1);
+    }
+
+    /// <summary>Chevron points the way it moves, generated pre-turned so nothing rotates at draw time.</summary>
+    private bool DrawEdgeArrow(Rect rect, bool pointsLeft) {
+        float glyph = Spacing.Get(2);
+        Rect chevronRect = new Rect(
+            rect.center.x - glyph / 2f,
+            rect.center.y - glyph / 2f,
+            glyph,
+            glyph
+        );
+
+        using (new TextBlock(Mouse.IsOver(rect) ? ArrowHoverColor : ArrowRestColor))
+            GUI.DrawTexture(chevronRect, pointsLeft ? DockTex.ChevronLeft : DockTex.ChevronRight);
+
+        // no fill: a 72px column of pale wash reads as a slab, and the chevron already brightens
+        MouseoverSounds.DoRegion(rect);
+        TooltipHandler.TipRegion(
+            rect,
+            pointsLeft
+                ? "CRO_RadiantOrder_Nav_Previous".Translate()
+                : "CRO_RadiantOrder_Nav_Next".Translate()
+        );
+
+        return Widgets.ButtonInvisible(rect);
+    }
+
+    private void Step(int delta) {
+        SelectOrder((radiantOrderIndex + delta + availableOrders.Count) % availableOrders.Count);
+    }
+
+    private void SelectOrder(int index) {
+        if (index == radiantOrderIndex) return;
+
+        quotes = null;
+        radiantOrderIndex = index;
+        order = availableOrders[index];
+    }
+
+    private bool IsBondsmithCapped() {
+        if (forcedBondsmithSpren != null) return false;
+
+        RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
+
+        return tracker != null && !tracker.CanProgressBondsmith();
+    }
+
+    private void DrawSigilRail(Rect rect) {
+        int count = availableOrders.Count;
+        bool bondsmithCapped = IsBondsmithCapped();
+        TaggedString cappedReason = "CRO_RadiantOrder_BondsmithCapReached".Translate(
+            RadiantTracker.MaxBondsmiths.Named("MAX")
+        );
+
+        for (int i = 0; i < count; i++) {
+            RadiantOrderDef sigilOrder = availableOrders[i];
+            bool selected = i == radiantOrderIndex;
+            bool blocked = bondsmithCapped && sigilOrder == RadiantOrderDefOf.Bondsmith;
+
+            float size = RadiantFilmstripLayout.DotSizeAt(i, radiantOrderIndex);
+            float centerX = RadiantFilmstripLayout.DotCenterX(rect.center.x, count, i);
+            Rect dotRect = new Rect(centerX - size / 2f, rect.center.y - size / 2f, size, size);
+
+            if (selected) {
+                Rect ringRect = dotRect.ExpandedBy(RadiantFilmstripLayout.SelectedRingWidth);
+                using (new TextBlock(BorderColor)) GUI.DrawTexture(ringRect, CircleTex);
+            }
+
+            Color dotColor = blocked ? UnavailableDotColor : sigilOrder.color;
+            float alpha = selected ? 1f : Mouse.IsOver(dotRect) ? HoverDotAlpha : RestDotAlpha;
+
+            using (new TextBlock(new Color(dotColor.r, dotColor.g, dotColor.b, alpha)))
+                GUI.DrawTexture(dotRect, CircleTex);
+
+            Widgets.DrawHighlightIfMouseover(dotRect);
+            MouseoverSounds.DoRegion(dotRect);
+            TooltipHandler.TipRegion(
+                dotRect,
+                blocked
+                    ? "CRO_RadiantOrder_Sigil_Blocked".Translate(
+                        sigilOrder.LabelCap.Named("ORDER"),
+                        cappedReason.Named("REASON")
+                    )
+                    : sigilOrder.LabelCap
+            );
+
+            if (Widgets.ButtonInvisible(dotRect)) {
+                SelectOrder(i);
+            }
+        }
+    }
+
+    protected override void DrawFooter(Rect rect) {
+        Rect innerRect = rect.ContractedBy(padding);
+        bool isBondsmithLocked = forcedBondsmithSpren != null;
+
+        Rect railRect = new Rect(
+            innerRect.x,
             innerRect.y,
-            unit,
+            innerRect.width,
+            RadiantFilmstripLayout.RailHeight()
+        );
+        Rect secondButtonRect = new Rect(
+            innerRect.x,
+            railRect.yMax + Spacing.Get(0.5f),
+            innerRect.width,
             footerButtonHeight
         );
 
-        bool isBondsmithLocked = forcedBondsmithSpren != null;
-
-        if (!isBondsmithLocked) {
-            if (Widgets.ButtonText(firstButtonRect, "CRO_RadiantOrder_Nav_Previous".Translate())) {
-                quotes = null;
-                radiantOrderIndex = (radiantOrderIndex - 1 + availableOrders.Count) % availableOrders.Count;
-                order = availableOrders[radiantOrderIndex];
-            }
+        if (!isBondsmithLocked && availableOrders.Count > 1) {
+            DrawSigilRail(railRect);
         }
 
         RadiantOrderDef currentOrder = availableOrders[radiantOrderIndex];
@@ -129,15 +253,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             currentOrder.LabelCap.Named("ORDER")
         );
 
-        bool isBondsmith = currentOrder == RadiantOrderDefOf.Bondsmith;
-        bool bondsmithBlocked = false;
-
-        if (isBondsmith && !isBondsmithLocked) {
-            RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
-            if (tracker != null && !tracker.CanProgressBondsmith()) {
-                bondsmithBlocked = true;
-            }
-        }
+        bool bondsmithBlocked = currentOrder == RadiantOrderDefOf.Bondsmith && IsBondsmithCapped();
 
         if (bondsmithBlocked) {
             CTAButtonText(secondButtonRect, joinString, false);
@@ -187,14 +303,6 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
                 Find.Selector.Select(surgebinder.bondedSpren);
             } else {
                 Find.Selector.Select(pawn);
-            }
-        }
-
-        if (!isBondsmithLocked) {
-            if (Widgets.ButtonText(thirdButtonRect, "CRO_RadiantOrder_Nav_Next".Translate())) {
-                quotes = null;
-                radiantOrderIndex = (radiantOrderIndex + 1) % availableOrders.Count;
-                order = availableOrders[radiantOrderIndex];
             }
         }
     }

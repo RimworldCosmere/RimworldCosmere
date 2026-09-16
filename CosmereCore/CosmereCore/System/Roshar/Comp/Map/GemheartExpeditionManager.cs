@@ -18,6 +18,8 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
 
     public bool ExpeditionActive => expeditionActive;
 
+    public float CurrentDifficulty => GemheartOdds.Difficulty(GenDate.DaysPassed, map.wealthWatcher.WealthTotal);
+
     public bool CanStartHunt => !expeditionActive &&
                                 (lastHuntTick < 0 || Find.TickManager.TicksGame - lastHuntTick >= MinCooldownTicks);
 
@@ -76,55 +78,57 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             return;
         }
 
-        float power = CalculateExpeditionPower(survivors);
-        float difficulty = CalculateDifficulty();
-        float ratio = difficulty > 0 ? power / difficulty : 2f;
+        float power = ExpeditionPower(survivors);
+        float difficulty = CurrentDifficulty;
+        float ratio = GemheartOdds.Ratio(power, difficulty);
 
         Log.Debug($"[GemheartHunt] Resolving: power={power:F1}, difficulty={difficulty:F1}, ratio={ratio:F2}");
 
-        if (ratio >= 1.5f) {
-            ResolveVictory(survivors);
-        } else if (ratio >= 1.0f) {
-            ResolveHardWon(survivors);
-        } else if (ratio >= 0.6f) {
-            ResolvePyrrhic(survivors);
-        } else if (ratio >= 0.3f) {
-            ResolveFailure(survivors);
-        } else {
-            ResolveDisaster(survivors);
+        switch (GemheartOdds.Classify(ratio)) {
+            case GemheartOutcome.Victory:
+                ResolveVictory(survivors);
+                break;
+            case GemheartOutcome.HardWon:
+                ResolveHardWon(survivors);
+                break;
+            case GemheartOutcome.Pyrrhic:
+                ResolvePyrrhic(survivors);
+                break;
+            case GemheartOutcome.Failure:
+                ResolveFailure(survivors);
+                break;
+            default:
+                ResolveDisaster(survivors);
+                break;
         }
 
         expeditionPawns = [];
     }
 
-    private static float CalculateExpeditionPower(List<Pawn> pawns) {
-        float power = 0f;
-        for (int i = 0; i < pawns.Count; i++) {
-            Pawn pawn = pawns[i];
-            float melee = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Melee)?.Level ?? 0;
-            float shooting = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Shooting)?.Level ?? 0;
-            power += melee * 3f + shooting * 2f;
+    public static float PawnPower(Pawn pawn) {
+        int melee = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Melee)?.Level ?? 0;
+        int shooting = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Shooting)?.Level ?? 0;
 
-            if (pawn.genes != null) {
-                Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
-                if (surgebinder is { Active: true }) {
-                    power += surgebinder.CurrentIdealDisplay * 25f;
-                }
-            }
-
-            if (pawn.equipment?.Primary != null) {
-                power += pawn.equipment.Primary.GetStatValue(StatDefOf.MeleeWeapon_AverageDPS) * 2f;
-            }
+        int ideal = 0;
+        if (pawn.genes != null) {
+            Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
+            if (surgebinder is { Active: true }) ideal = surgebinder.CurrentIdealDisplay;
         }
 
-        power += pawns.Count * 5f;
-        return power;
+        float weaponDps = pawn.equipment?.Primary != null
+            ? pawn.equipment.Primary.GetStatValue(StatDefOf.MeleeWeapon_AverageDPS)
+            : 0f;
+
+        return GemheartOdds.PawnPower(melee, shooting, ideal, weaponDps);
     }
 
-    private float CalculateDifficulty() {
-        int daysPassed = GenDate.DaysPassed;
-        float wealth = map.wealthWatcher.WealthTotal;
-        return 100f + daysPassed * 0.5f + wealth / 10000f;
+    public static float ExpeditionPower(List<Pawn> pawns) {
+        float sum = 0f;
+        for (int i = 0; i < pawns.Count; i++) {
+            sum += PawnPower(pawns[i]);
+        }
+
+        return GemheartOdds.PartyPower(sum, pawns.Count);
     }
 
     private void ResolveVictory(List<Pawn> pawns) {

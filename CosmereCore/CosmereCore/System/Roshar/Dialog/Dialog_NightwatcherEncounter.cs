@@ -1,4 +1,5 @@
 using Cosmere.Core.Nightwatcher;
+using Cosmere.Core.UI;
 using Cosmere.System.Roshar.Comp.Hediff;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
@@ -6,28 +7,51 @@ using Cosmere.System.Roshar.Nightwatcher;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Roshar.Dialog;
 
 public class Dialog_NightwatcherEncounter : Window {
+    private const float Pad = 12f;
+    private const float Gap = 8f;
+    private const float TitleHeight = 36f;
+    private const float TabHeight = 34f;
+    private const float RowHeaderHeight = 28f;
+    private const float PanelHeight = 92f;
+    private const float FooterHeight = 40f;
+    private const float ButtonHeight = 36f;
+    private const float ConfirmWidth = 180f;
+    private const float ScrollbarWidth = 20f;
+
     private static readonly Color NightwatcherGreen = new Color(0.35f, 0.82f, 0.55f);
     private static readonly Color CurseColor = new Color(0.72f, 0.28f, 0.92f);
     private static readonly Color EffectColor = new Color(0.9f, 0.75f, 0.4f);
-    private static readonly Color MetalColor = new Color(0.6f, 0.75f, 0.9f);
+    private static readonly Color BodyText = new Color(0.85f, 0.85f, 0.85f);
+    private static readonly Color MutedText = new Color(0.75f, 0.75f, 0.75f);
+    private static readonly Color DimText = new Color(0.55f, 0.55f, 0.55f);
+    private static readonly Color TabSelectedText = new Color(0.88f, 0.94f, 0.9f);
+    private static readonly Color TabUnselectedText = new Color(0.66f, 0.7f, 0.67f);
+    private static readonly Color TabHoverFill = new Color(1f, 1f, 1f, 0.04f);
+    private static readonly Color RuleColor = new Color(1f, 1f, 1f, 0.12f);
+    private static readonly Color RowSelectedFill = new Color(1f, 1f, 1f, 0.05f);
+    private static readonly Color RowSelectedEdge = new Color(0.35f, 0.82f, 0.55f, 0.85f);
+    private static readonly Color PanelFill = new Color(1f, 1f, 1f, 0.03f);
 
     private static string GetTierLabel(int tier) => tier switch {
-        1 => "Cosmere_Roshar_NW_Tier1_Label".Translate(),
-        2 => "Cosmere_Roshar_NW_Tier2_Label".Translate(),
-        _ => "Cosmere_Roshar_NW_Tier3_Label".Translate(),
+        1 => "CRO_NW_Tier1_Label".Translate(),
+        2 => "CRO_NW_Tier2_Label".Translate(),
+        _ => "CRO_NW_Tier3_Label".Translate(),
     };
 
     private static string GetTierDesc(int tier) => tier switch {
-        1 => "Cosmere_Roshar_NW_Tier1_Desc".Translate(),
-        2 => "Cosmere_Roshar_NW_Tier2_Desc".Translate(),
-        _ => "Cosmere_Roshar_NW_Tier3_Desc".Translate(),
+        1 => "CRO_NW_Tier1_Desc".Translate(),
+        2 => "CRO_NW_Tier2_Desc".Translate(),
+        _ => "CRO_NW_Tier3_Desc".Translate(),
     };
 
     private readonly Pawn pawn;
+    private readonly List<BoonRowLayout> rowLayouts = [];
+    private readonly Dictionary<int, List<NightwatcherBoonDef>> tierBuckets = [];
     private Vector2 boonScrollPos;
     private NightwatcherCurseDef? drawnCurse;
 
@@ -35,6 +59,7 @@ public class Dialog_NightwatcherEncounter : Window {
     private Phase phase = Phase.Opening;
     private NightwatcherBoonDef? selectedBoon;
     private string? selectedChoiceKey;
+    private int selectedTier = 1;
 
     public Dialog_NightwatcherEncounter(Pawn pawn) {
         this.pawn = pawn;
@@ -79,37 +104,32 @@ public class Dialog_NightwatcherEncounter : Window {
     private void DrawOpening(Rect inRect) {
         float y = inRect.y + 20f;
 
-        Text.Font = GameFont.Medium;
-        GUI.color = NightwatcherGreen;
-        Widgets.Label(
-            new Rect(inRect.x, y, inRect.width, 40f),
-            "Cosmere_Roshar_NW_Opening_Title".Translate()
-        );
-        GUI.color = Color.white;
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, NightwatcherGreen)) {
+            Widgets.Label(
+                new Rect(inRect.x, y, inRect.width, 40f),
+                "CRO_NW_Opening_Title".Translate()
+            );
+        }
+
         y += 48f;
 
-        Text.Font = GameFont.Small;
-        GUI.color = new Color(0.85f, 0.85f, 0.85f);
-        string openingText = "Cosmere_Roshar_NW_Opening_Text".Translate(pawn.Named("PAWN"));
-        float textHeight = Text.CalcHeight(openingText, inRect.width - 20f);
-        Widgets.Label(new Rect(inRect.x + 10f, y, inRect.width - 20f, textHeight), openingText);
-        GUI.color = Color.white;
+        string openingText = "CRO_NW_Opening_Text".Translate(pawn.Named("PAWN"));
+        float textHeight = UIText.WrappedHeight(openingText, inRect.width - 20f, GameFont.Small);
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, BodyText)) {
+            Widgets.Label(new Rect(inRect.x + 10f, y, inRect.width - 20f, textHeight), openingText);
+        }
+
         y += textHeight + 20f;
 
         float btnW = 220f;
-        float btnX = inRect.x + (inRect.width - btnW) / 2f;
-        if (Widgets.ButtonText(
-                new Rect(btnX, y, btnW, 36f),
-                "Cosmere_Roshar_NW_Opening_Ask".Translate()
-            )) {
+        Rect btn = new Rect(inRect.x + (inRect.width - btnW) / 2f, y, btnW, ButtonHeight);
+        MouseoverSounds.DoRegion(btn);
+        if (Widgets.ButtonText(btn, "CRO_NW_Opening_Ask".Translate())) {
             phase = Phase.BoonSelection;
         }
     }
 
     private struct BoonRowLayout {
-        public bool isNewTier;
-        public int tier;
-        public float tierDescHeight;
         public string descText;
         public float descHeight;
         public string effectsText;
@@ -117,48 +137,100 @@ public class Dialog_NightwatcherEncounter : Window {
         public float rowHeight;
     }
 
-    private readonly List<BoonRowLayout> rowLayouts = [];
+    // Clamped so a def with a stray tier still lands in exactly one tab instead of vanishing.
+    private static int TierOf(NightwatcherBoonDef boon) => Mathf.Clamp(boon.powerTier, 1, 3);
+
+    private List<NightwatcherBoonDef> BoonsForTier(int tier) {
+        if (tierBuckets.TryGetValue(tier, out List<NightwatcherBoonDef>? cached)) return cached;
+
+        List<NightwatcherBoonDef> bucket = [];
+        List<NightwatcherBoonDef> all = FilteredBoons;
+        for (int i = 0; i < all.Count; i++) {
+            if (TierOf(all[i]) == tier) bucket.Add(all[i]);
+        }
+
+        tierBuckets[tier] = bucket;
+
+        return bucket;
+    }
 
     private void DrawBoonSelection(Rect inRect) {
-        float y = inRect.y + 12f;
+        Rect titleRect = new Rect(inRect.x, inRect.y + Pad, inRect.width, TitleHeight);
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, NightwatcherGreen)) {
+            Widgets.Label(titleRect, "CRO_NW_Boon_Title".Translate());
+        }
 
-        Text.Font = GameFont.Medium;
-        GUI.color = NightwatcherGreen;
-        Widgets.Label(
-            new Rect(inRect.x, y, inRect.width, 36f),
-            "Cosmere_Roshar_NW_Boon_Title".Translate()
-        );
-        GUI.color = Color.white;
-        y += 44f;
+        Rect tabRect = new Rect(inRect.x, titleRect.yMax + 4f, inRect.width, TabHeight);
+        DrawTierTabs(tabRect);
+        Widgets.DrawBoxSolid(new Rect(inRect.x, tabRect.yMax, inRect.width, 1f), RuleColor);
 
-        float listHeight = inRect.height - 56f - (y - inRect.y);
-        Rect listRect = new Rect(inRect.x, y, inRect.width, listHeight);
-        float contentWidth = listRect.width - 16f;
+        string tierDesc = GetTierDesc(selectedTier);
+        float tierDescHeight = UIText.WrappedHeight(tierDesc, inRect.width - Pad * 2f, GameFont.Tiny);
+        Rect tierDescRect = new Rect(inRect.x + Pad, tabRect.yMax + 1f + Gap, inRect.width - Pad * 2f, tierDescHeight);
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, DimText)) {
+            Widgets.Label(tierDescRect, tierDesc);
+        }
 
-        List<NightwatcherBoonDef> boons = FilteredBoons;
-        Text.Font = GameFont.Tiny;
+        Rect footerRect = new Rect(inRect.x, inRect.yMax - FooterHeight, inRect.width, FooterHeight);
+        Rect panelRect = new Rect(inRect.x, footerRect.y - Gap - PanelHeight, inRect.width, PanelHeight);
+
+        float listTop = tierDescRect.yMax + Gap;
+        Rect listRect = new Rect(inRect.x, listTop, inRect.width, Mathf.Max(0f, panelRect.y - Gap - listTop));
+
+        DrawBoonList(listRect);
+        DrawSelectionPanel(panelRect);
+        DrawConfirm(footerRect);
+    }
+
+    private void DrawTierTabs(Rect rect) {
+        float tabWidth = rect.width / 3f;
+        for (int tier = 1; tier <= 3; tier++) {
+            Rect tab = new Rect(rect.x + (tier - 1) * tabWidth, rect.y, tabWidth, rect.height);
+            bool isSelected = selectedTier == tier;
+            if (!isSelected && Mouse.IsOver(tab)) Widgets.DrawBoxSolid(tab, TabHoverFill);
+
+            string label = "CRO_NW_Tier_Tab".Translate(
+                GetTierLabel(tier).Named("LABEL"),
+                BoonsForTier(tier).Count.Named("COUNT")
+            );
+            UIText.EllipsisLabel(
+                tab.ContractedBy(4f, 0f),
+                label,
+                GameFont.Small,
+                TextAnchor.MiddleCenter,
+                isSelected ? TabSelectedText : TabUnselectedText
+            );
+
+            if (isSelected) {
+                Widgets.DrawBoxSolid(new Rect(tab.x + 6f, tab.yMax - 2f, tab.width - 12f, 2f), NightwatcherGreen);
+            }
+
+            TooltipHandler.TipRegion(tab, GetTierDesc(tier));
+            MouseoverSounds.DoRegion(tab);
+            if (!Widgets.ButtonInvisible(tab)) continue;
+
+            selectedTier = tier;
+            boonScrollPos = Vector2.zero;
+        }
+    }
+
+    private void DrawBoonList(Rect listRect) {
+        List<NightwatcherBoonDef> boons = BoonsForTier(selectedTier);
+        float contentWidth = listRect.width - ScrollbarWidth;
+        float textWidth = contentWidth - Pad * 2f;
 
         rowLayouts.Clear();
         float totalHeight = 0f;
-        int lastTier = 0;
         for (int i = 0; i < boons.Count; i++) {
             NightwatcherBoonDef boon = boons[i];
             BoonRowLayout layout = default;
-            if (boon.powerTier != lastTier) {
-                lastTier = boon.powerTier;
-                layout.isNewTier = true;
-                layout.tier = lastTier;
-                layout.tierDescHeight = Text.CalcHeight(GetTierDesc(lastTier), contentWidth - 32f);
-                totalHeight += 28f + layout.tierDescHeight + 8f;
-            }
-
             layout.descText = boon.description.Formatted(pawn.Named("PAWN"));
-            layout.descHeight = Text.CalcHeight(layout.descText, contentWidth - 24f);
+            layout.descHeight = UIText.WrappedHeight(layout.descText, textWidth, GameFont.Tiny);
             layout.effectsText = GetBoonEffects(boon, selectedBoon == boon ? selectedChoiceKey : null);
             layout.effectsHeight = layout.effectsText.Length > 0
-                ? Text.CalcHeight(layout.effectsText, contentWidth - 24f) + 4f
+                ? UIText.WrappedHeight(layout.effectsText, textWidth, GameFont.Tiny) + 4f
                 : 0f;
-            layout.rowHeight = 32f + layout.descHeight + layout.effectsHeight + 12f;
+            layout.rowHeight = RowHeaderHeight + layout.descHeight + layout.effectsHeight + Pad;
             totalHeight += layout.rowHeight;
             rowLayouts.Add(layout);
         }
@@ -170,66 +242,51 @@ public class Dialog_NightwatcherEncounter : Window {
         for (int i = 0; i < boons.Count; i++) {
             NightwatcherBoonDef boon = boons[i];
             BoonRowLayout layout = rowLayouts[i];
+            Rect rowRect = new Rect(0f, rowY, viewRect.width, layout.rowHeight);
+            rowY += layout.rowHeight;
 
-            if (layout.isNewTier) {
-                Text.Font = GameFont.Small;
-                GUI.color = new Color(0.7f, 0.7f, 0.7f);
-                Widgets.Label(
-                    new Rect(8f, rowY + 8f, viewRect.width - 16f, 22f),
-                    GetTierLabel(layout.tier)
-                );
-                Text.Font = GameFont.Tiny;
-                GUI.color = new Color(0.5f, 0.5f, 0.5f);
-                Widgets.Label(
-                    new Rect(16f, rowY + 26f, viewRect.width - 32f, layout.tierDescHeight),
-                    GetTierDesc(layout.tier)
-                );
-                GUI.color = Color.white;
-                rowY += 28f + layout.tierDescHeight + 8f;
+            if (rowRect.yMax < boonScrollPos.y || rowRect.y > boonScrollPos.y + listRect.height) continue;
+
+            if (selectedBoon == boon) {
+                Widgets.DrawBoxSolid(rowRect, RowSelectedFill);
+                Widgets.DrawBoxSolid(new Rect(rowRect.x, rowRect.y, 2f, rowRect.height), RowSelectedEdge);
+            } else {
+                Widgets.DrawHighlightIfMouseover(rowRect);
             }
 
-            Text.Font = GameFont.Tiny;
-            string boonDesc = layout.descText;
-            float descHeight = layout.descHeight;
-            string effectsText = layout.effectsText;
-            float effectsHeight = layout.effectsHeight;
-            float rowHeight = layout.rowHeight;
-            Rect rowRect = new Rect(0f, rowY, viewRect.width, rowHeight);
-
-            bool isSelected = selectedBoon == boon;
-            if (isSelected) {
-                Widgets.DrawBoxSolid(rowRect, new Color(0.2f, 0.45f, 0.3f, 0.4f));
-            } else if (Mouse.IsOver(rowRect)) {
-                Widgets.DrawBoxSolid(rowRect, new Color(0.3f, 0.3f, 0.3f, 0.3f));
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, NightwatcherGreen)) {
+                Widgets.Label(new Rect(Pad, rowRect.y + 4f, textWidth, 24f), boon.LabelCap);
             }
 
-            Text.Font = GameFont.Small;
-            GUI.color = NightwatcherGreen;
-            Widgets.Label(
-                new Rect(12f, rowRect.y + 4f, viewRect.width - 24f, 24f),
-                boon.LabelCap
+            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, MutedText)) {
+                Widgets.Label(
+                    new Rect(Pad, rowRect.y + RowHeaderHeight, textWidth, layout.descHeight),
+                    layout.descText
+                );
+            }
+
+            if (layout.effectsText.Length > 0) {
+                using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, EffectColor)) {
+                    Widgets.Label(
+                        new Rect(
+                            Pad,
+                            rowRect.y + RowHeaderHeight + layout.descHeight + 4f,
+                            textWidth,
+                            layout.effectsHeight
+                        ),
+                        layout.effectsText
+                    );
+                }
+            }
+
+            bool needsChoice = boon.Applicator is INightwatcherChoiceProvider;
+            TooltipHandler.TipRegion(
+                rowRect,
+                needsChoice ? "CRO_NW_Boon_RowChoiceTip".Translate() : "CRO_NW_Boon_RowTip".Translate()
             );
-
-            Text.Font = GameFont.Tiny;
-            GUI.color = new Color(0.75f, 0.75f, 0.75f);
-            Widgets.Label(
-                new Rect(12f, rowRect.y + 28f, viewRect.width - 24f, descHeight),
-                boonDesc
-            );
-
-            if (effectsText.Length > 0) {
-                GUI.color = EffectColor;
-                Widgets.Label(
-                    new Rect(12f, rowRect.y + 28f + descHeight + 4f, viewRect.width - 24f, effectsHeight),
-                    effectsText
-                );
-            }
-
-            GUI.color = Color.white;
-            Text.Font = GameFont.Small;
-
+            MouseoverSounds.DoRegion(rowRect);
             if (Widgets.ButtonInvisible(rowRect)) {
-                if (boon.Applicator is INightwatcherChoiceProvider) {
+                if (needsChoice) {
                     ShowChoiceMenu(boon);
                 } else {
                     selectedBoon = boon;
@@ -238,107 +295,135 @@ public class Dialog_NightwatcherEncounter : Window {
             }
 
             Widgets.DrawLineHorizontal(4f, rowRect.yMax - 1f, rowRect.width - 8f);
-            rowY += rowHeight;
         }
 
         Widgets.EndScrollView();
+    }
 
-        y = listRect.yMax + 8f;
+    private void DrawSelectionPanel(Rect rect) {
+        Widgets.DrawBoxSolid(rect, PanelFill);
+        Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, rect.width, 1f), RuleColor);
 
+        Rect inner = rect.ContractedBy(Pad, Gap);
+
+        if (selectedBoon == null) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, DimText)) {
+                Widgets.Label(inner, "CRO_NW_Boon_NoSelection".Translate());
+            }
+
+            return;
+        }
+
+        Rect nameRect = new Rect(inner.x, inner.y, inner.width, 26f);
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, NightwatcherGreen)) {
+            Widgets.Label(nameRect, selectedBoon.LabelCap);
+        }
+
+        string detail = GetBoonEffects(selectedBoon, selectedChoiceKey);
+        if (detail.Length == 0) detail = selectedBoon.description.Formatted(pawn.Named("PAWN"));
+
+        Rect detailRect = new Rect(inner.x, nameRect.yMax + 2f, inner.width, inner.yMax - nameRect.yMax - 2f);
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, EffectColor)) {
+            Widgets.Label(detailRect, detail);
+        }
+
+        // the panel is fixed height, so a long effect line reads in full only from the tooltip
+        TooltipHandler.TipRegion(rect, detail);
+    }
+
+    private void DrawConfirm(Rect footer) {
         bool needsChoice = selectedBoon?.Applicator is INightwatcherChoiceProvider;
         bool canConfirm = selectedBoon != null && (!needsChoice || selectedChoiceKey != null);
-        if (canConfirm) {
-            float btnW = 180f;
-            float btnX = inRect.x + (inRect.width - btnW) / 2f;
-            if (Widgets.ButtonText(
-                    new Rect(btnX, y, btnW, 36f),
-                    "Cosmere_Roshar_NW_Boon_Confirm".Translate()
-                )) {
-                NightwatcherApplicationContext? context = selectedChoiceKey != null
-                    ? new NightwatcherApplicationContext(selectedChoiceKey)
-                    : null;
-                NightwatcherSystem.ApplyBoon(pawn, selectedBoon!, context);
-                drawnCurse = NightwatcherSystem.DrawCurse(selectedBoon!);
-                phase = Phase.CurseReveal;
-            }
+
+        Rect btn = new Rect(footer.x + (footer.width - ConfirmWidth) / 2f, footer.y, ConfirmWidth, ButtonHeight);
+        if (!canConfirm) {
+            TooltipHandler.TipRegion(
+                btn,
+                selectedBoon == null
+                    ? "CRO_NW_Boon_ConfirmNeedsBoon".Translate()
+                    : "CRO_NW_Boon_ConfirmNeedsChoice".Translate()
+            );
         }
+
+        MouseoverSounds.DoRegion(btn);
+        if (!Widgets.ButtonText(btn, "CRO_NW_Boon_Confirm".Translate(), active: canConfirm)) return;
+
+        NightwatcherApplicationContext? context = selectedChoiceKey != null
+            ? new NightwatcherApplicationContext(selectedChoiceKey)
+            : null;
+        NightwatcherSystem.ApplyBoon(pawn, selectedBoon!, context);
+        drawnCurse = NightwatcherSystem.DrawCurse(selectedBoon!);
+        phase = Phase.CurseReveal;
     }
 
     private void DrawCurseReveal(Rect inRect) {
         float y = inRect.y + 20f;
 
-        Text.Font = GameFont.Medium;
-        GUI.color = CurseColor;
-        Widgets.Label(
-            new Rect(inRect.x, y, inRect.width, 40f),
-            "Cosmere_Roshar_NW_Curse_Title".Translate()
-        );
-        GUI.color = Color.white;
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, CurseColor)) {
+            Widgets.Label(
+                new Rect(inRect.x, y, inRect.width, 40f),
+                "CRO_NW_Curse_Title".Translate()
+            );
+        }
+
         y += 48f;
 
-        Text.Font = GameFont.Small;
-        GUI.color = new Color(0.85f, 0.85f, 0.85f);
-        string revealText = "Cosmere_Roshar_NW_Curse_Text".Translate(
+        string revealText = "CRO_NW_Curse_Text".Translate(
             pawn.Named("PAWN"),
             selectedBoon!.Named("BOON")
         );
-        float textHeight = Text.CalcHeight(revealText, inRect.width - 20f);
-        Widgets.Label(new Rect(inRect.x + 10f, y, inRect.width - 20f, textHeight), revealText);
-        GUI.color = Color.white;
+        float textHeight = UIText.WrappedHeight(revealText, inRect.width - 20f, GameFont.Small);
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, BodyText)) {
+            Widgets.Label(new Rect(inRect.x + 10f, y, inRect.width - 20f, textHeight), revealText);
+        }
+
         y += textHeight + 16f;
 
         if (drawnCurse != null) {
-            Text.Font = GameFont.Medium;
-            GUI.color = CurseColor;
-            Widgets.Label(
-                new Rect(inRect.x + 10f, y, inRect.width - 20f, 32f),
-                drawnCurse.LabelCap
-            );
+            using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, CurseColor)) {
+                Widgets.Label(
+                    new Rect(inRect.x + 10f, y, inRect.width - 20f, 32f),
+                    drawnCurse.LabelCap
+                );
+            }
+
             y += 34f;
 
-            Text.Font = GameFont.Small;
-            GUI.color = new Color(0.75f, 0.75f, 0.75f);
             string curseDesc = drawnCurse.description.Formatted(pawn.Named("PAWN"));
-            float curseDescH = Text.CalcHeight(curseDesc, inRect.width - 40f);
-            Widgets.Label(
-                new Rect(inRect.x + 20f, y, inRect.width - 40f, curseDescH),
-                curseDesc
-            );
+            float curseDescH = UIText.WrappedHeight(curseDesc, inRect.width - 40f, GameFont.Small);
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, MutedText)) {
+                Widgets.Label(new Rect(inRect.x + 20f, y, inRect.width - 40f, curseDescH), curseDesc);
+            }
+
             y += curseDescH + 6f;
 
             string curseEffects = GetCurseEffects(drawnCurse);
             if (curseEffects.Length > 0) {
-                Text.Font = GameFont.Tiny;
-                GUI.color = EffectColor;
-                float effectsH = Text.CalcHeight(curseEffects, inRect.width - 40f);
-                Widgets.Label(
-                    new Rect(inRect.x + 20f, y, inRect.width - 40f, effectsH),
-                    curseEffects
-                );
+                float effectsH = UIText.WrappedHeight(curseEffects, inRect.width - 40f, GameFont.Tiny);
+                using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, EffectColor)) {
+                    Widgets.Label(new Rect(inRect.x + 20f, y, inRect.width - 40f, effectsH), curseEffects);
+                }
+
                 y += effectsH + 8f;
             }
 
-            GUI.color = Color.white;
-            Text.Font = GameFont.Small;
             y += 8f;
         }
 
         float btnW = 160f;
-        float btnX = inRect.x + (inRect.width - btnW) / 2f;
-        if (Widgets.ButtonText(
-                new Rect(btnX, y, btnW, 36f),
-                "Cosmere_Roshar_NW_Curse_Accept".Translate()
-            )) {
-            if (drawnCurse != null) {
-                NightwatcherSystem.ApplyCurse(pawn, drawnCurse);
-            }
+        Rect btn = new Rect(inRect.x + (inRect.width - btnW) / 2f, y, btnW, ButtonHeight);
+        MouseoverSounds.DoRegion(btn);
+        if (!Widgets.ButtonText(btn, "CRO_NW_Curse_Accept".Translate())) return;
 
-            NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
-            comp?.MarkVisited();
-
-            SendResultLetter();
-            Close();
+        if (drawnCurse != null) {
+            NightwatcherSystem.ApplyCurse(pawn, drawnCurse);
         }
+
+        NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
+        comp?.MarkVisited();
+
+        SendResultLetter();
+        Close();
     }
 
     private void ShowChoiceMenu(NightwatcherBoonDef boon) {
@@ -393,7 +478,7 @@ public class Dialog_NightwatcherEncounter : Window {
 
         if (boon.surgebindingConnectionBoost > 0f) {
             effects.Add("CRO_NW_Effect_CultivationConnection".Translate(
-                boon.surgebindingConnectionBoost.Named("AMOUNT")
+                boon.surgebindingConnectionBoost.ToString("0.##").Named("AMOUNT")
             ));
         }
 
@@ -454,7 +539,7 @@ public class Dialog_NightwatcherEncounter : Window {
 
         if (curse.cultivationEvolutionDays > 0) {
             float years = curse.cultivationEvolutionDays / 365f;
-            effects.Add("CRO_NW_Effect_EvolvesAfterYears".Translate(years.Named("YEARS")));
+            effects.Add("CRO_NW_Effect_EvolvesAfterYears".Translate(years.ToString("0.#").Named("YEARS")));
         }
 
         return effects.Count > 0 ? string.Join("  |  ", effects) : string.Empty;
@@ -479,7 +564,7 @@ public class Dialog_NightwatcherEncounter : Window {
                 string sign = mod.value >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatOffset".Translate(
                     sign.Named("SIGN"),
-                    mod.value.Named("VALUE"),
+                    mod.value.ToString("0.##").Named("VALUE"),
                     mod.stat.LabelCap.Named("STAT")
                 ));
             }
@@ -492,7 +577,7 @@ public class Dialog_NightwatcherEncounter : Window {
                 string sign = pct >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatFactor".Translate(
                     sign.Named("SIGN"),
-                    pct.Named("VALUE"),
+                    pct.ToString("0.#").Named("VALUE"),
                     mod.stat.LabelCap.Named("STAT")
                 ));
             }
@@ -505,7 +590,7 @@ public class Dialog_NightwatcherEncounter : Window {
                     string sign = cap.offset >= 0 ? "+" : string.Empty;
                     effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
                         sign.Named("SIGN"),
-                        (cap.offset * 100f).Named("VALUE"),
+                        (cap.offset * 100f).ToString("0.#").Named("VALUE"),
                         cap.capacity.LabelCap.Named("CAPACITY")
                     ));
                 }
@@ -516,7 +601,7 @@ public class Dialog_NightwatcherEncounter : Window {
             string sign = stage.painOffset >= 0 ? "+" : string.Empty;
             effects.Add("CRO_NW_Effect_PainOffset".Translate(
                 sign.Named("SIGN"),
-                stage.painOffset.Named("VALUE")
+                stage.painOffset.ToString("0.##").Named("VALUE")
             ));
         }
 
@@ -528,8 +613,8 @@ public class Dialog_NightwatcherEncounter : Window {
         string curseLabel = drawnCurse?.LabelCap ?? string.Empty;
 
         Find.LetterStack.ReceiveLetter(
-            "Cosmere_Roshar_NW_Letter_Title".Translate(pawn.Named("PAWN")),
-            "Cosmere_Roshar_NW_Letter_Text".Translate(
+            "CRO_NW_Letter_Title".Translate(pawn.Named("PAWN")),
+            "CRO_NW_Letter_Text".Translate(
                 pawn.Named("PAWN"),
                 boonLabel.Named("BOON"),
                 curseLabel.Named("CURSE")

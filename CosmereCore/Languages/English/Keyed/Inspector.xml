@@ -81,12 +81,17 @@
   <CC_Autocast_Editor_ToggleOffWhenInactive>Release when triggers stop</CC_Autocast_Editor_ToggleOffWhenInactive>
   <CC_Autocast_Editor_ToggleOffWhenInactive_Tip>Switch this ability back off once its triggers no longer pass. A rule that summons Blade and Plate while drafted will dismiss them again on undrafting.</CC_Autocast_Editor_ToggleOffWhenInactive_Tip>
   <CC_Autocast_Editor_MaxReserveSpend>Max reserve spend: {PERCENT}%</CC_Autocast_Editor_MaxReserveSpend>
-  <CC_Autocast_Editor_TriggersHeader>Triggers (all must match):</CC_Autocast_Editor_TriggersHeader>
+  <CC_Autocast_Editor_TriggersHeader>Fires when &lt;b&gt;all&lt;/b&gt; of these are true:</CC_Autocast_Editor_TriggersHeader>
   <CC_Autocast_Editor_AddTrigger>Add trigger</CC_Autocast_Editor_AddTrigger>
   <CC_Autocast_Editor_Close>Close</CC_Autocast_Editor_Close>
   <CC_Autocast_Editor_FiresWhileDrafted>(fires while drafted)</CC_Autocast_Editor_FiresWhileDrafted>
   <CC_Autocast_Editor_PercentLabel>{PERCENT}%</CC_Autocast_Editor_PercentLabel>
   <CC_Autocast_Editor_CellsLabel>{COUNT} c</CC_Autocast_Editor_CellsLabel>
+  <CC_Autocast_Editor_NoTriggers>No triggers yet. Add one to give this rule something to watch for.</CC_Autocast_Editor_NoTriggers>
+
+  <CC_Autocast_Comparison_LessThan_Tip>Fires while the value is below the threshold.</CC_Autocast_Comparison_LessThan_Tip>
+  <CC_Autocast_Comparison_GreaterThan_Tip>Fires while the value is above the threshold.</CC_Autocast_Comparison_GreaterThan_Tip>
+  <CC_Autocast_Comparison_EqualTo_Tip>Fires while the value matches the threshold.</CC_Autocast_Comparison_EqualTo_Tip>
 
   <CC_Autocast_Editor_DirectionTap>Tap</CC_Autocast_Editor_DirectionTap>
   <CC_Autocast_Editor_DirectionStore>Store</CC_Autocast_Editor_DirectionStore>

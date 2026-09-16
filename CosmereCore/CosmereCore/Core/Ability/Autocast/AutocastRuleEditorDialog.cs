@@ -5,6 +5,9 @@ using Verse;
 namespace Cosmere.Core.Ability.Autocast;
 
 public sealed class AutocastRuleEditorDialog : Verse.Window {
+    private static readonly AutocastComparison[] Comparisons =
+        (AutocastComparison[])Enum.GetValues(typeof(AutocastComparison));
+
     private readonly string abilityLabel;
     private readonly AutocastRule rule;
     private readonly bool toggleable;
@@ -70,6 +73,11 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
 
         Widgets.EndScrollView();
 
+        if (rule.Triggers.Count == 0) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.6f, 0.6f, 0.6f)))
+                Widgets.Label(listRect, "CC_Autocast_Editor_NoTriggers".Translate());
+        }
+
         Rect addButton = new Rect(inRect.x, inRect.yMax - 32f, 160f, 28f);
         if (Widgets.ButtonText(addButton, "CC_Autocast_Editor_AddTrigger".Translate())) {
             rule.Triggers.Add(
@@ -116,20 +124,11 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         float intensity = AutocastDialRange.Intensity(rule.Kind, rule.ActiveTarget);
 
         Rect directionRect = new Rect(inRect.x, y, 150f, 24f);
-        if (Widgets.ButtonText(directionRect, DirectionLabel(tapping))) {
-            List<FloatMenuOption> opts = [
-                new FloatMenuOption(
-                    DirectionLabel(true),
-                    () => rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, true, intensity)
-                ),
-                new FloatMenuOption(
-                    DirectionLabel(false),
-                    () => rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, false, intensity)
-                ),
-            ];
-
-            Find.WindowStack.Add(new FloatMenu(opts));
-        }
+        DrawDirectionButtons(
+            directionRect,
+            tapping,
+            picked => rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, picked, intensity)
+        );
 
         Rect rateSlider = new Rect(directionRect.xMax + 10f, y + 4f, inRect.width - directionRect.width - 70f, 18f);
         float moved = Widgets.HorizontalSlider(rateSlider, intensity, 0f, 1f);
@@ -174,20 +173,11 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         float restIntensity = AutocastDialRange.Intensity(rule.Kind, rule.RestTarget);
 
         Rect restDirection = new Rect(inRect.x, y, 150f, 24f);
-        if (Widgets.ButtonText(restDirection, DirectionLabel(restTapping))) {
-            List<FloatMenuOption> opts = [
-                new FloatMenuOption(
-                    DirectionLabel(true),
-                    () => rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, true, restIntensity)
-                ),
-                new FloatMenuOption(
-                    DirectionLabel(false),
-                    () => rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, false, restIntensity)
-                ),
-            ];
-
-            Find.WindowStack.Add(new FloatMenu(opts));
-        }
+        DrawDirectionButtons(
+            restDirection,
+            restTapping,
+            picked => rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, picked, restIntensity)
+        );
 
         Rect restSlider = new Rect(restDirection.xMax + 10f, y + 4f, inRect.width - restDirection.width - 70f, 18f);
         float restMoved = Widgets.HorizontalSlider(restSlider, restIntensity, 0f, 1f);
@@ -205,6 +195,40 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         return y + 30f;
     }
 
+    // both choices fit in the row, so a menu would only add a click
+    private static void DrawDirectionButtons(Rect rect, bool tapping, Action<bool> pick) {
+        float half = (rect.width - 4f) / 2f;
+
+        if (Widgets.ButtonText(new Rect(rect.x, rect.y, half, rect.height), DirectionLabel(true), active: !tapping)) {
+            pick(true);
+        }
+
+        if (Widgets.ButtonText(
+                new Rect(rect.xMax - half, rect.y, half, rect.height),
+                DirectionLabel(false),
+                active: tapping
+            )) {
+            pick(false);
+        }
+    }
+
+    // glyphs are all that fits, so each one carries its own tooltip
+    private static void DrawComparisonButtons(Rect rect, AutocastTrigger trigger) {
+        const float gap = 3f;
+        float width = (rect.width - gap * 2f) / 3f;
+        int i = 0;
+
+        foreach (AutocastComparison cmp in Comparisons) {
+            Rect cell = new Rect(rect.x + i * (width + gap), rect.y, width, rect.height);
+            i++;
+
+            TooltipHandler.TipRegion(cell, ComparisonTip(cmp));
+            if (Widgets.ButtonText(cell, ComparisonLabel(cmp), active: trigger.Comparison != cmp)) {
+                trigger.Comparison = cmp;
+            }
+        }
+    }
+
     private static string DirectionLabel(bool tapping) {
         return tapping
             ? "CC_Autocast_Editor_DirectionTap".Translate()
@@ -216,7 +240,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             AutocastRelease.ToIdle => "CC_Autocast_Release_ToIdle".Translate(),
             AutocastRelease.Leave => "CC_Autocast_Release_Leave".Translate(),
             AutocastRelease.ToRest => "CC_Autocast_Release_ToRest".Translate(),
-            _ => release.ToString(),
+            _ => throw new ArgumentOutOfRangeException(nameof(release), release, null),
         };
     }
 
@@ -237,16 +261,8 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(draftedLabel, "CC_Autocast_Editor_FiresWhileDrafted".Translate());
         } else {
-            Rect cmpRect = new Rect(row.x + 160f, row.y + 8f, 80f, 24f);
-            if (Widgets.ButtonText(cmpRect, ComparisonLabel(trigger.Comparison))) {
-                List<FloatMenuOption> opts = [];
-                foreach (AutocastComparison cmp in Enum.GetValues(typeof(AutocastComparison))) {
-                    AutocastComparison captured = cmp;
-                    opts.Add(new FloatMenuOption(ComparisonLabel(cmp), () => trigger.Comparison = captured));
-                }
-
-                Find.WindowStack.Add(new FloatMenu(opts));
-            }
+            Rect cmpRect = new Rect(row.x + 160f, row.y + 8f, 84f, 24f);
+            DrawComparisonButtons(cmpRect, trigger);
 
             Rect sliderRect = new Rect(row.x + 250f, row.y + 12f, row.width - 310f, 18f);
             bool isPercent = trigger.Kind == AutocastTriggerKind.HealthPercent ||
@@ -278,7 +294,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             AutocastTriggerKind.Drafted => "CC_Autocast_Trigger_Drafted".Translate(),
             AutocastTriggerKind.EnemyProximity => "CC_Autocast_Trigger_EnemyProximity".Translate(),
             AutocastTriggerKind.AllyProximity => "CC_Autocast_Trigger_AllyProximity".Translate(),
-            _ => kind.ToString(),
+            _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null),
         };
     }
 
@@ -287,7 +303,16 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             AutocastComparison.LessThan => "<",
             AutocastComparison.GreaterThan => ">",
             AutocastComparison.EqualTo => "=",
-            _ => "?",
+            _ => throw new ArgumentOutOfRangeException(nameof(cmp), cmp, null),
+        };
+    }
+
+    private static string ComparisonTip(AutocastComparison cmp) {
+        return cmp switch {
+            AutocastComparison.LessThan => "CC_Autocast_Comparison_LessThan_Tip".Translate(),
+            AutocastComparison.GreaterThan => "CC_Autocast_Comparison_GreaterThan_Tip".Translate(),
+            AutocastComparison.EqualTo => "CC_Autocast_Comparison_EqualTo_Tip".Translate(),
+            _ => throw new ArgumentOutOfRangeException(nameof(cmp), cmp, null),
         };
     }
 }

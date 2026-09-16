@@ -73,7 +73,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         const float rowGap = 2f;
         Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (rowHeight + rowGap));
-        Widgets.BeginScrollView(listRect, ref progressionScroll, viewRect);
+        Widgets.BeginScrollView(listRect, ref state.ProgressionScroll, viewRect);
 
         y = 0f;
         for (int i = 0; i < genes.Count; i++) {
@@ -147,8 +147,6 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
         Widgets.EndScrollView();
     }
-
-    private Vector2 progressionScroll;
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
 

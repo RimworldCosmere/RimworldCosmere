@@ -5,6 +5,7 @@ namespace Cosmere.Core.UI.Codex;
 public sealed class CodexState {
     public Vector2 BondDetailScroll = Vector2.zero;
     public Vector2 MemoriesScroll = Vector2.zero;
+    public Vector2 AutocastScroll = Vector2.zero;
     public Vector2 ProgressionScroll = Vector2.zero;
     public Vector2 ShardConnectionScroll = Vector2.zero;
     public Vector2 WorldConnectionScroll = Vector2.zero;

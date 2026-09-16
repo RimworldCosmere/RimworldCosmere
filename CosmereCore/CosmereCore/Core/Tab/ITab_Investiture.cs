@@ -101,7 +101,7 @@ public class ITab_Investiture : ITab {
 
     private void DrawSubtabBody(Rect rect, Pawn pawn, IInvestitureProvider active) {
         if (state.Subtab == CodexSubtab.Autocast) {
-            AutocastSubtabRenderer.Draw(rect, pawn, active);
+            AutocastSubtabRenderer.Draw(rect, pawn, state, active);
             return;
         }
 

@@ -16,9 +16,7 @@ public static class AutocastSubtabRenderer {
     private static readonly Color Dim = new Color(0.55f, 0.55f, 0.55f);
     private static readonly Color HeaderFill = new Color(1f, 1f, 1f, 0.05f);
 
-    private static Vector2 scroll;
-
-    public static void Draw(Rect rect, Pawn pawn, IInvestitureProvider active) {
+    public static void Draw(Rect rect, Pawn pawn, CodexState state, IInvestitureProvider active) {
         IReadOnlyList<AutocastTarget> targets = active.Codex.AutocastTargets(pawn);
         if (targets.Count == 0) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, Muted))
@@ -35,7 +33,7 @@ public static class AutocastSubtabRenderer {
         }
 
         Rect viewRect = new Rect(0f, 0f, rect.width - 20f, height);
-        Widgets.BeginScrollView(rect, ref scroll, viewRect);
+        Widgets.BeginScrollView(rect, ref state.AutocastScroll, viewRect);
 
         float y = 4f;
         for (int i = 0; i < targets.Count; i++) {

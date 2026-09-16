@@ -338,10 +338,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+      - name: Install release dependencies
+        run: npm ci --ignore-scripts
       - name: Set up SteamCMD
         uses: buildalon/setup-steamcmd@v1
       - name: Restore Steam config

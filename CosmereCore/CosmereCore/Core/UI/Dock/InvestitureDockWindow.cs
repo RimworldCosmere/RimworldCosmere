@@ -291,6 +291,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 )
             );
             Widgets.DrawHighlightIfMouseover(ribbon);
+            MouseoverSounds.DoRegion(ribbon);
 
             // Open onto the system that was actually clicked, not whichever section happened to be expanded last.
             if (Widgets.ButtonInvisible(ribbon)) {
@@ -325,7 +326,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             RibbonInk
         );
         TooltipHandler.TipRegion(pinRect, "CC_Dock_Collapse".Translate());
-        if (Widgets.ButtonImage(pinRect.ContractedBy(5f), TexButton.CloseXSmall, true)) {
+        if (Widgets.ButtonImage(pinRect, DockTex.Chevron, RibbonInk, GenUI.MouseoverColor)) {
             pinned = false;
             RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
         }

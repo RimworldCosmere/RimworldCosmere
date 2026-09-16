@@ -21,6 +21,42 @@ public static class DockTex {
     /// </summary>
     public static readonly Texture2D RoundBorder = Build(true);
 
+    /// <summary>
+    ///     A chevron pointing down, for folding the dock away. Vanilla's close X says the panel
+    ///     goes away entirely, which is not what the button does.
+    /// </summary>
+    public static readonly Texture2D Chevron = BuildChevron();
+
+    private const int ChevronSize = 32;
+
+    private static Texture2D BuildChevron() {
+        Texture2D tex = new Texture2D(ChevronSize, ChevronSize, TextureFormat.ARGB32, false) {
+            wrapMode = TextureWrapMode.Clamp,
+            filterMode = FilterMode.Bilinear,
+        };
+
+        Color[] pixels = new Color[ChevronSize * ChevronSize];
+
+        for (int y = 0; y < ChevronSize; y++) {
+            for (int x = 0; x < ChevronSize; x++) {
+                // row 0 is the bottom, so a V opening upward reads as a chevron pointing down
+                float nx = (x + 0.5f) / ChevronSize * 2f - 1f;
+                float ny = (y + 0.5f) / ChevronSize * 2f - 1f;
+
+                float arm = Mathf.Abs(ny - (Mathf.Abs(nx) - 0.32f)) * ChevronSize / 2f;
+                float reach = Mathf.Max(0f, Mathf.Abs(nx) - 0.68f) * ChevronSize / 2f;
+                float distance = Mathf.Sqrt(arm * arm + reach * reach);
+
+                pixels[y * ChevronSize + x] = new Color(1f, 1f, 1f, Mathf.Clamp01(2.1f - distance));
+            }
+        }
+
+        tex.SetPixels(pixels);
+        tex.Apply();
+
+        return tex;
+    }
+
     private static Texture2D Build(bool strokeOnly) {
         Texture2D tex = new Texture2D(AtlasSize, AtlasSize, TextureFormat.ARGB32, false) {
             wrapMode = TextureWrapMode.Clamp,

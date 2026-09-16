@@ -106,7 +106,11 @@ public sealed class RadialWindow : Verse.Window {
         Vector2 center = new Vector2(WindowExtent, WindowExtent);
         Vector2 mouse = Event.current.mousePosition;
 
+        int hoveredBefore = state.HoveredIndex;
         UpdateHover(center, mouse);
+        if (state.HoveredIndex >= 0 && state.HoveredIndex != hoveredBefore) {
+            RimWorld.SoundDefOf.Mouseover_Standard.PlayOneShotOnCamera();
+        }
 
         // Fills the window exactly; anything larger would clip to a hard edge.
         float vignetteSize = WindowExtent * 2f;

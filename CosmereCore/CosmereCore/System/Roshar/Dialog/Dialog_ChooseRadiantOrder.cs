@@ -117,7 +117,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         bool isBondsmithLocked = forcedBondsmithSpren != null;
 
         if (!isBondsmithLocked) {
-            if (Widgets.ButtonText(firstButtonRect, "Previous")) {
+            if (Widgets.ButtonText(firstButtonRect, "CRO_RadiantOrder_Nav_Previous".Translate())) {
                 quotes = null;
                 radiantOrderIndex = (radiantOrderIndex - 1 + availableOrders.Count) % availableOrders.Count;
                 order = availableOrders[radiantOrderIndex];
@@ -140,12 +140,11 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         }
 
         if (bondsmithBlocked) {
-            Color origColor = GUI.color;
-            GUI.color = new Color(1f, 1f, 1f, 0.4f);
-            CTAButtonText(secondButtonRect, joinString);
-            GUI.color = origColor;
-
-            TooltipHandler.TipRegion(secondButtonRect, "Maximum number of Bondsmiths (3) has been reached.");
+            CTAButtonText(secondButtonRect, joinString, false);
+            TooltipHandler.TipRegion(
+                secondButtonRect,
+                "CRO_RadiantOrder_BondsmithCapReached".Translate(RadiantTracker.MaxBondsmiths.Named("MAX"))
+            );
         } else if (CTAButtonText(secondButtonRect, joinString)) {
             pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
 
@@ -192,7 +191,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         }
 
         if (!isBondsmithLocked) {
-            if (Widgets.ButtonText(thirdButtonRect, "Next")) {
+            if (Widgets.ButtonText(thirdButtonRect, "CRO_RadiantOrder_Nav_Next".Translate())) {
                 quotes = null;
                 radiantOrderIndex = (radiantOrderIndex + 1) % availableOrders.Count;
                 order = availableOrders[radiantOrderIndex];

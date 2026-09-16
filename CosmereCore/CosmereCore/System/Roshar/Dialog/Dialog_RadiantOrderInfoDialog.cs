@@ -30,7 +30,10 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
     protected override bool hasFooter => true;
 
     protected override TaggedString GetTitle() {
-        return pawn!.NameShortColored + " — " + order.LabelCap;
+        return "CRO_RadiantOrder_Info_Title".Translate(
+            pawn!.NameShortColored.Named("PAWN"),
+            order.LabelCap.Named("ORDER")
+        );
     }
 
     protected override void DrawIdealsTab(FoundationListing listing) {
@@ -64,7 +67,10 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
 
     private void DrawOathDisplay(FoundationListing listing, Ideal ideal, int idealIndex) {
         string quote = ideal.quotes.Count > 0 ? ideal.quotes[0] : string.Empty;
-        string idealLabel = $"{GetOrdinal(idealIndex + 1)} Ideal of the {order.LabelCap}";
+        TaggedString idealLabel = "CRO_RadiantOrder_Info_IdealOfOrder".Translate(
+            GetOrdinal(idealIndex + 1).Named("ORDINAL"),
+            order.LabelCap.Named("ORDER")
+        );
 
         float quoteHeight;
         using (new TextBlock(GameFont.Medium))
@@ -113,8 +119,13 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         float yPos = inner.y;
 
         Rect headerRect = new Rect(inner.x, yPos, inner.width, headerHeight);
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor))
-            Widgets.Label(headerRect, $"<b>What {pawn!.LabelShortCap} achieved:</b>");
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor)) {
+            Widgets.Label(
+                headerRect,
+                $"<b>{"CRO_RadiantOrder_ProgressRecap".Translate(pawn!.LabelShortCap.Named("PAWN"))}</b>"
+            );
+        }
+
         yPos += headerHeight + Spacing.Get(0.25f);
 
         for (int i = 0; i < fields.Length; i++) {
@@ -129,8 +140,16 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
                 ? ((int)value).ToStringTicksToPeriod()
                 : ((int)value).ToString();
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, bodyTextColor))
-                Widgets.Label(lineRect, $"  * {recordDef.LabelCap}: {displayValue}");
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, bodyTextColor)) {
+                Widgets.Label(
+                    lineRect,
+                    "CRO_RadiantOrder_Info_ProgressLine".Translate(
+                        recordDef.LabelCap.Named("RECORD"),
+                        displayValue.Named("VALUE")
+                    )
+                );
+            }
+
             yPos += lineHeight;
         }
     }
@@ -154,8 +173,13 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         float yPos = inner.y;
 
         Rect headerRect = new Rect(inner.x, yPos, inner.width, headerHeight);
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor))
-            Widgets.Label(headerRect, $"<b>Next: {futureIdeal.label}</b>");
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor)) {
+            Widgets.Label(
+                headerRect,
+                $"<b>{"CRO_RadiantOrder_NextIdeal".Translate(futureIdeal.label.Named("IDEAL"))}</b>"
+            );
+        }
+
         yPos += headerHeight + Spacing.Get(0.25f);
 
         if (requirements != null) {
@@ -187,7 +211,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
 
         Color origColor = GUI.color;
         GUI.color = DangerColor;
-        if (Widgets.ButtonText(leftButtonRect, "Sever Bond")) {
+        if (Widgets.ButtonText(leftButtonRect, "CRO_BreakBond_Sever".Translate())) {
             GUI.color = origColor;
             ShowSeverBondDialog();
             return;
@@ -197,13 +221,15 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
 
         bool showSpeakWords = mode == RadiantOrderInfoMode.SpeakOath || surgebinder!.PendingOath;
         if (showSpeakWords) {
-            if (CTAButtonText(centerButtonRect, "Speak the Words")) {
+            if (CTAButtonText(centerButtonRect, "CRO_SpeakOath_SpeakTheWords".Translate())) {
                 surgebinder!.SpeakOath();
                 Close();
             }
         }
 
-        string rightLabel = mode == RadiantOrderInfoMode.SpeakOath ? "Not Yet" : "Close";
+        TaggedString rightLabel = mode == RadiantOrderInfoMode.SpeakOath
+            ? "CRO_SpeakOath_NotYet".Translate()
+            : "CRO_RadiantOrder_Close".Translate();
         if (Widgets.ButtonText(rightButtonRect, rightLabel)) {
             Close();
         }

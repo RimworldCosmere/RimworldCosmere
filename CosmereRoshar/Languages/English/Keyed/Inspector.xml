@@ -2,4 +2,11 @@
 <LanguageData>
     <CRO_InspectorTab_SpherePouch>Spheres</CRO_InspectorTab_SpherePouch>
     <CRO_Storage_StormlightBand>{0} Stormlight</CRO_Storage_StormlightBand>
+
+    <CRO_Fabrial_NoGem>No gem in fabrial.</CRO_Fabrial_NoGem>
+    <CRO_Fabrial_Inspect>Spren: {SPREN}\nStormlight: {LIGHT}\nTime remaining: {TIME}</CRO_Fabrial_Inspect>
+    <CRO_Fabrial_Inspect_NoSpren>Stormlight: {LIGHT}\nTime remaining: {TIME}</CRO_Fabrial_Inspect_NoSpren>
+    <CRO_Fabrial_Spren_None>None</CRO_Fabrial_Spren_None>
+    <CRO_Fabrial_TimeRemaining>{DAYS}d {HOURS}h</CRO_Fabrial_TimeRemaining>
+    <CRO_Fabrial_TimeEndless>Endless</CRO_Fabrial_TimeEndless>
 </LanguageData>

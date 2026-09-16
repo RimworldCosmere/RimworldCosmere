@@ -28,7 +28,7 @@ public class SprenContainer : ThingComp {
 
     public override string? CompInspectStringExtra() {
         if (hasCapturedSpren) {
-            return $"Contains: {capturedSprenType} spren";
+            return "CRO_SprenContainer_Contains".Translate(capturedSprenType.ToString().Named("SPREN")).Resolve();
         }
 
         return null;
@@ -45,8 +45,8 @@ public class SprenContainer : ThingComp {
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
         if (Core.Mod.debugMode) {
             yield return new Command_Action {
-                defaultLabel = "Debug: Test Spren Capture",
-                defaultDesc = "Test the spren capture system at this position",
+                defaultLabel = "CRO_SprenContainer_Debug_Label".Translate(),
+                defaultDesc = "CRO_SprenContainer_Debug_Desc".Translate(),
                 icon = TexCommand.DesirePower,
                 action = () => {
                     IntVec3 position = parent.Position;
@@ -55,7 +55,7 @@ public class SprenContainer : ThingComp {
 
                     Pawn? selectedPawn = Find.Selector.SingleSelectedThing as Pawn;
                     if (selectedPawn == null) {
-                        Messages.Message("Select a pawn first", MessageTypeDefOf.RejectInput);
+                        Messages.Message("CRO_SprenContainer_SelectPawn".Translate(), MessageTypeDefOf.RejectInput);
                         return;
                     }
 
@@ -65,7 +65,11 @@ public class SprenContainer : ThingComp {
                     );
 
                     Messages.Message(
-                        $"Found {capturable.Count} capturable spren types at {position}: {string.Join(", ", capturable)}",
+                        "CRO_SprenContainer_Debug_Found".Translate(
+                            capturable.Count.Named("COUNT"),
+                            position.ToString().Named("POSITION"),
+                            string.Join(", ", capturable).Named("TYPES")
+                        ),
                         MessageTypeDefOf.NeutralEvent
                     );
                 },

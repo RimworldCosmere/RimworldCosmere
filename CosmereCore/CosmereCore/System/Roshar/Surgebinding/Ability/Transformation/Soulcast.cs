@@ -47,7 +47,7 @@ public class Soulcast : SurgebindingAbility {
         }
 
         if (target.HasThing && IsBondedSpren(target.Thing)) {
-            Messages.Message("Cannot soulcast a bonded spren.", MessageTypeDefOf.RejectInput, false);
+            Messages.Message("CRO_Soulcast_BondedSpren".Translate(), MessageTypeDefOf.RejectInput, false);
             return;
         }
 
@@ -209,9 +209,21 @@ public class Soulcast : SurgebindingAbility {
 
     private FloatMenuOption PickerOption(string label, float cost, Action onPick) {
         bool canAfford = Gene.CanLowerReserve(cost);
-        string full = $"{label} ({"CRO_Soulcast_Cost".Translate(cost.ToString("F0"))})";
-        if (canAfford) return new FloatMenuOption(full, onPick);
-        return new FloatMenuOption($"{full} — {"CRO_Soulcast_NotEnoughInvestiture".Translate()}", null);
+        NamedArgument labelArg = label.Named("LABEL");
+        NamedArgument costArg = "CRO_Soulcast_Cost".Translate(cost.ToString("F0")).Named("COST");
+
+        if (canAfford) {
+            return new FloatMenuOption("CRO_Soulcast_Option".Translate(labelArg, costArg), onPick);
+        }
+
+        return new FloatMenuOption(
+            "CRO_Soulcast_OptionUnaffordable".Translate(
+                labelArg,
+                costArg,
+                "CRO_Soulcast_NotEnoughInvestiture".Translate().Named("REASON")
+            ),
+            null
+        );
     }
 
     private void DoConvertDrop(Verse.Thing thing, ThingDef material) {

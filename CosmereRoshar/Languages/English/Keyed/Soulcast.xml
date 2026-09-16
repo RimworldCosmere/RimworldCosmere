@@ -15,4 +15,7 @@
 
     <CRO_Soulcast_PawnWarningTitle>Soulcast Living Being</CRO_Soulcast_PawnWarningTitle>
     <CRO_Soulcast_PawnWarning>WARNING: This will kill {PAWN} by transmuting them into a {MATERIAL} sculpture.\n\nSuccess chance: {CHANCE}\n\nThis cannot be undone. Proceed?</CRO_Soulcast_PawnWarning>
+
+    <CRO_Soulcast_Option>{LABEL} ({COST})</CRO_Soulcast_Option>
+    <CRO_Soulcast_OptionUnaffordable>{LABEL} ({COST}) - {REASON}</CRO_Soulcast_OptionUnaffordable>
 </LanguageData>

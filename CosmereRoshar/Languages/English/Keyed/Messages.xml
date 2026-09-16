@@ -21,4 +21,10 @@
 
     <CS_Savant_Surgebinding_Stage3_Title>{PAWN} has become a {POWER} surge savant</CS_Savant_Surgebinding_Stage3_Title>
     <CS_Savant_Surgebinding_Stage3_Message>{PAWN} has drawn so deeply on the Surge of {POWER} that it has permanently scarred {PAWN_possessive} spiritweb. The surge's power is transcendent, but it has left permanent marks on body and soul.</CS_Savant_Surgebinding_Stage3_Message>
+
+    <CRO_Gemheart_Marching>{COUNT} colonists march toward the Shattered Plains.</CRO_Gemheart_Marching>
+    <CRO_Portal_CaravanMoved>{PAWN} opened a portal, transporting the caravan.</CRO_Portal_CaravanMoved>
+    <CRO_SprenContainer_Debug_Found>Found {COUNT} capturable spren at {POSITION}: {TYPES}</CRO_SprenContainer_Debug_Found>
+    <CRO_Lashing_GroupFlew>{PAWN} lashed {COUNT} colonists toward a new destination.</CRO_Lashing_GroupFlew>
+    <CRO_Portal_PawnsMoved>{PAWN} opened a portal, transporting {COUNT} colonists.</CRO_Portal_PawnsMoved>
 </LanguageData>

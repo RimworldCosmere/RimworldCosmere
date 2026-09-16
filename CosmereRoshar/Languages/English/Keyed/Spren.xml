@@ -37,4 +37,9 @@
   <SprenCapture_AttemptCaptureSpecific>{0} will attempt to capture {1} near {2} using {3}</SprenCapture_AttemptCaptureSpecific>
   <SprenCapture_AttemptCaptureAny>{0} will attempt to capture any suitable spren near {1} using {2}</SprenCapture_AttemptCaptureAny>
   <SprenCapture_Failed>{0} failed to capture the spren</SprenCapture_Failed>
+
+  <!-- Spren container -->
+  <CRO_SprenContainer_Contains>Contains: {SPREN} spren</CRO_SprenContainer_Contains>
+  <CRO_SprenContainer_Debug_Label>Debug: test spren capture</CRO_SprenContainer_Debug_Label>
+  <CRO_SprenContainer_Debug_Desc>Test the spren capture system at this position.</CRO_SprenContainer_Debug_Desc>
 </LanguageData>

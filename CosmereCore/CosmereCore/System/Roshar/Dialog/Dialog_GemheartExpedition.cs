@@ -10,6 +10,11 @@ namespace Cosmere.System.Roshar.Dialog;
 public class Dialog_GemheartExpedition : Window {
     private const int MinPawns = 3;
     private const int MaxPawns = 6;
+
+    private static readonly Color ReadyColor = new Color(0.45f, 0.72f, 0.42f);
+    private static readonly Color ShortColor = new Color(0.85f, 0.35f, 0.3f);
+    private static readonly Color StatColor = new Color(0.62f, 0.6f, 0.56f);
+
     private readonly List<Pawn> available = [];
 
     private readonly Map map;
@@ -34,25 +39,29 @@ public class Dialog_GemheartExpedition : Window {
     public override Vector2 InitialSize => new Vector2(500f, 600f);
 
     public override void DoWindowContents(Rect inRect) {
-        Text.Font = GameFont.Medium;
         Rect titleRect = new Rect(inRect.x, inRect.y, inRect.width, 36f);
-        Widgets.Label(titleRect, "Gemheart Expedition");
+        using (new TextBlock(GameFont.Medium)) {
+            Widgets.Label(titleRect, "CRO_Gemheart_Title".Translate());
+        }
 
-        Text.Font = GameFont.Small;
         float y = titleRect.yMax + 10f;
         Rect descRect = new Rect(inRect.x, y, inRect.width, 48f);
-        Widgets.Label(
-            descRect,
-            $"Select {MinPawns}-{MaxPawns} colonists for the plateau run. Stronger fighters and Radiants improve the odds."
-        );
+        using (new TextBlock(GameFont.Small)) {
+            Widgets.Label(
+                descRect,
+                "CRO_Gemheart_Blurb".Translate(MinPawns.Named("MIN"), MaxPawns.Named("MAX"))
+            );
+        }
 
         y = descRect.yMax + 10f;
         Rect countRect = new Rect(inRect.x, y, inRect.width, 24f);
-        string countText = $"Selected: {selected.Count}/{MaxPawns}";
-        Color countColor = selected.Count >= MinPawns ? Color.green : Color.red;
-        GUI.color = countColor;
-        Widgets.Label(countRect, countText);
-        GUI.color = Color.white;
+        bool enoughSelected = selected.Count >= MinPawns;
+        using (new TextBlock(GameFont.Small, null, enoughSelected ? ReadyColor : ShortColor)) {
+            Widgets.Label(
+                countRect,
+                "CRO_Gemheart_Selected".Translate(selected.Count.Named("COUNT"), MaxPawns.Named("MAX"))
+            );
+        }
 
         y = countRect.yMax + 6f;
         float listHeight = inRect.height - y - 50f;
@@ -91,22 +100,10 @@ public class Dialog_GemheartExpedition : Window {
                 entryRect.width - 40f,
                 entryHeight / 2f
             );
-            Text.Font = GameFont.Tiny;
-            int melee = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Melee)?.Level ?? 0;
-            int shooting = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Shooting)?.Level ?? 0;
-            string stats = $"Melee: {melee}  Shooting: {shooting}";
 
-            if (pawn.genes != null) {
-                Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
-                if (surgebinder is { Active: true }) {
-                    stats += $"  Radiant (Ideal {surgebinder.CurrentIdealDisplay})";
-                }
+            using (new TextBlock(GameFont.Tiny, null, StatColor)) {
+                Widgets.Label(statsRect, SkillLine(pawn));
             }
-
-            GUI.color = Color.gray;
-            Widgets.Label(statsRect, stats);
-            GUI.color = Color.white;
-            Text.Font = GameFont.Small;
         }
 
         Widgets.EndScrollView();
@@ -118,28 +115,42 @@ public class Dialog_GemheartExpedition : Window {
         Rect sendRect = new Rect(inRect.x + inRect.width / 2f - buttonWidth - spacing / 2f, buttonY, buttonWidth, 36f);
         Rect cancelRect = new Rect(inRect.x + inRect.width / 2f + spacing / 2f, buttonY, buttonWidth, 36f);
 
-        if (selected.Count >= MinPawns) {
-            if (Widgets.ButtonText(sendRect, "March")) {
-                GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
-                if (manager != null) {
-                    manager.StartExpedition(selected.ToList());
-                    SoundDefOf.Quest_Accepted.PlayOneShotOnCamera();
-                    Messages.Message(
-                        $"{selected.Count} colonists march toward the Shattered Plains.",
-                        MessageTypeDefOf.PositiveEvent
-                    );
-                }
-
-                Close();
-            }
-        } else {
-            GUI.color = Color.gray;
-            Widgets.ButtonText(sendRect, "March");
-            GUI.color = Color.white;
+        if (!enoughSelected) {
+            TooltipHandler.TipRegion(sendRect, "CRO_Gemheart_NeedMore".Translate(MinPawns.Named("MIN")));
         }
 
-        if (Widgets.ButtonText(cancelRect, "Cancel")) {
+        if (Widgets.ButtonText(sendRect, "CRO_Gemheart_March".Translate(), active: enoughSelected)) {
+            GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
+            if (manager != null) {
+                manager.StartExpedition(selected.ToList());
+                SoundDefOf.Quest_Accepted.PlayOneShotOnCamera();
+                Messages.Message(
+                    "CRO_Gemheart_Marching".Translate(selected.Count.Named("COUNT")),
+                    MessageTypeDefOf.PositiveEvent
+                );
+            }
+
             Close();
         }
+
+        if (Widgets.ButtonText(cancelRect, "CRO_Gemheart_Cancel".Translate())) {
+            Close();
+        }
+    }
+
+    private static TaggedString SkillLine(Pawn pawn) {
+        NamedArgument melee = (pawn.skills?.GetSkill(RimWorld.SkillDefOf.Melee)?.Level ?? 0).Named("MELEE");
+        NamedArgument shooting = (pawn.skills?.GetSkill(RimWorld.SkillDefOf.Shooting)?.Level ?? 0).Named("SHOOTING");
+
+        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+        if (surgebinder is { Active: true }) {
+            return "CRO_Gemheart_SkillsRadiant".Translate(
+                melee,
+                shooting,
+                surgebinder.CurrentIdealDisplay.Named("IDEAL")
+            );
+        }
+
+        return "CRO_Gemheart_Skills".Translate(melee, shooting);
     }
 }

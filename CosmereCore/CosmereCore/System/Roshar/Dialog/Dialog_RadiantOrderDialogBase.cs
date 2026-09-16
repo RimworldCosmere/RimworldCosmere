@@ -8,6 +8,7 @@ using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Dialog;
@@ -109,9 +110,21 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         tabRow.width += bodyPad * 2;
         float tabWidth = tabRow.width / 3f;
 
-        DrawTab(new Rect(tabRow.x, tabRow.y, tabWidth, TabHeight), "Overview", DialogTab.Overview);
-        DrawTab(new Rect(tabRow.x + tabWidth, tabRow.y, tabWidth, TabHeight), "Ideals", DialogTab.Ideals);
-        DrawTab(new Rect(tabRow.x + tabWidth * 2f, tabRow.y, tabWidth, TabHeight), "Traits", DialogTab.Traits);
+        DrawTab(
+            new Rect(tabRow.x, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Overview".Translate(),
+            DialogTab.Overview
+        );
+        DrawTab(
+            new Rect(tabRow.x + tabWidth, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Ideals".Translate(),
+            DialogTab.Ideals
+        );
+        DrawTab(
+            new Rect(tabRow.x + tabWidth * 2f, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Traits".Translate(),
+            DialogTab.Traits
+        );
 
         DrawBorder(
             tabRow.With(y: tabRow.yMax - 1, height: 1),
@@ -132,6 +145,9 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             Rect underline = new Rect(rect.x, rect.yMax - TabUnderlineHeight, rect.width, TabUnderlineHeight);
             GUI.DrawTexture(underline, accentTexture);
         }
+
+        if (!isActive) Widgets.DrawHighlightIfMouseover(rect);
+        MouseoverSounds.DoRegion(rect);
 
         if (Widgets.ButtonInvisible(rect)) {
             currentTab = tab;
@@ -310,6 +326,15 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         }
     }
 
+    private static TaggedString GetStatusLabel(IdealStatus status) {
+        return status switch {
+            IdealStatus.Achieved => "CRO_RadiantOrder_Status_Achieved".Translate(),
+            IdealStatus.Current => "CRO_RadiantOrder_Status_Current".Translate(),
+            IdealStatus.Blocked => "CRO_RadiantOrder_Status_Blocked".Translate(),
+            _ => "CRO_RadiantOrder_Status_Future".Translate(),
+        };
+    }
+
     private Color GetStatusColor(IdealStatus status) {
         return status switch {
             IdealStatus.Achieved => AchievedColor,
@@ -350,15 +375,13 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         float originalWidth = listing.ColumnWidth;
         listing.ColumnWidth -= TimelineContentIndent;
 
-        string statusSuffix = status switch {
-            IdealStatus.Achieved => " ✓",
-            IdealStatus.Current => string.Empty,
-            IdealStatus.Blocked => " (Blocked)",
-            _ => string.Empty,
-        };
+        TaggedString heading = "CRO_RadiantOrder_Ideal_Heading".Translate(
+            ideal.label.CapitalizeFirst().Named("IDEAL"),
+            GetStatusLabel(status).Named("STATUS")
+        );
 
         using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, statusColor))
-            listing.Label($"<b>{ideal.label.CapitalizeFirst()}{statusSuffix}</b>");
+            listing.Label($"<b>{heading}</b>");
 
         listing.Gap(Spacing.Get(0.25f));
 
@@ -401,7 +424,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         if (abilitiesToShow.Count > 0) {
             string abilityNames = GetAbilityNames(abilitiesToShow);
             using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, accentColor))
-                listing.Label($"Unlocks: {abilityNames}");
+                listing.Label("CRO_RadiantOrder_Unlocks".Translate(abilityNames.Named("ABILITIES")));
         }
 
         listing.ColumnWidth = originalWidth;
@@ -430,10 +453,10 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
     protected virtual void DrawTraitsTab(FoundationListing listing) {
         using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
-            listing.Label("<b>Favorable Traits</b>");
+            listing.Label($"<b>{"CRO_RadiantOrder_Traits_Favorable".Translate()}</b>");
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
-            listing.Label("1.25x progression speed");
+            listing.Label("CRO_RadiantOrder_Traits_FavorableEffect".Translate());
 
         listing.Gap(Spacing.Get(0.5f));
 
@@ -441,7 +464,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             DrawTraitPills(listing, order.favorableTraits, AchievedColor);
         } else {
             using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
-                listing.Label("None");
+                listing.Label("CRO_RadiantOrder_Traits_None".Translate());
         }
 
         listing.Gap();
@@ -449,10 +472,10 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         listing.Gap();
 
         using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
-            listing.Label("<b>Incompatible Traits</b>");
+            listing.Label($"<b>{"CRO_RadiantOrder_Traits_Incompatible".Translate()}</b>");
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
-            listing.Label("Blocks progression at 3rd Ideal");
+            listing.Label("CRO_RadiantOrder_Traits_IncompatibleEffect".Translate());
 
         listing.Gap(Spacing.Get(0.5f));
 
@@ -460,7 +483,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             DrawTraitPills(listing, order.incompatibleTraits, BlockedColor);
         } else {
             using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
-                listing.Label("None");
+                listing.Label("CRO_RadiantOrder_Traits_None".Translate());
         }
     }
 
@@ -484,7 +507,10 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
                 );
             }
 
-            string traitLabel = degreeData?.label ?? trait.def?.label ?? trait.def?.defName ?? "Unknown";
+            string traitLabel = degreeData?.label
+                                ?? trait.def?.label
+                                ?? trait.def?.defName
+                                ?? (string)"CRO_RadiantOrder_Traits_Unknown".Translate();
             traitLabel = traitLabel.CapitalizeFirst();
 
             bool pawnHasTrait = pawn != null && trait.HasTrait(pawn);
@@ -534,17 +560,24 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
             if (tipData?.description != null) {
                 tooltipText = tipData.description
-                    .Replace("{PAWN_nameDef}", pawn?.Name?.ToStringShort ?? "pawn")
-                    .Replace("{PAWN_pronoun}", pawn?.gender == Gender.Female ? "she" : "he")
-                    .Replace("{PAWN_possessive}", pawn?.gender == Gender.Female ? "her" : "his")
-                    .Replace("{PAWN_objective}", pawn?.gender == Gender.Female ? "her" : "him");
+                    .Replace("{PAWN_nameDef}", pawn?.Name?.ToStringShort ?? string.Empty)
+                    .Replace("{PAWN_pronoun}", Pronoun(pawn, GenderUtility.GetPronoun, "CRO_Pronoun_They"))
+                    .Replace("{PAWN_possessive}", Pronoun(pawn, GenderUtility.GetPossessive, "CRO_Pronoun_Their"))
+                    .Replace("{PAWN_objective}", Pronoun(pawn, GenderUtility.GetObjective, "CRO_Pronoun_Them"));
             }
 
             if (pawn != null) {
-                string traitStatus = pawnHasTrait
-                    ? $"{pawn.LabelShortCap} has this trait!"
-                    : $"{pawn.LabelShortCap} doesn't have this trait";
-                tooltipText = tooltipText != null ? $"{traitStatus}\n\n{tooltipText}" : traitStatus;
+                TaggedString traitStatus = (pawnHasTrait
+                        ? "CRO_RadiantOrder_Trait_Has"
+                        : "CRO_RadiantOrder_Trait_Lacks")
+                    .Translate(pawn.LabelShortCap.Named("PAWN"));
+
+                tooltipText = tooltipText != null
+                    ? "CRO_RadiantOrder_Trait_Tooltip".Translate(
+                        traitStatus.Named("STATUS"),
+                        tooltipText.Named("DESCRIPTION")
+                    ).Resolve()
+                    : traitStatus.Resolve();
             }
 
             if (tooltipText != null) {
@@ -553,6 +586,16 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
             currentX += pillWidth + pillPadding;
         }
+    }
+
+    /// <summary>
+    ///     Vanilla resolves Gender.None to "it", which reads wrong on a person, so a genderless
+    ///     or missing pawn falls back to they/them.
+    /// </summary>
+    private static string Pronoun(Pawn? pawn, Func<Gender, string> vanilla, string neutralKey) {
+        return pawn is { gender: Gender.Male or Gender.Female }
+            ? vanilla(pawn.gender)
+            : neutralKey.Translate();
     }
 
     private enum IdealStatus {

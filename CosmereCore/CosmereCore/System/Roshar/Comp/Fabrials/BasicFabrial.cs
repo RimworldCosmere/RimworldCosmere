@@ -116,31 +116,31 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     }
 
     public override string CompInspectStringExtra() {
-        if (insertedGemstone == null) return "No gem in fabrial.";
+        if (insertedGemstone == null) return "CRO_Fabrial_NoGem".Translate();
 
         SprenContainer? sprenContainer = Spren;
         InvestitureHolder? investiture = Holder;
 
-        return "Spren: " +
-               (sprenContainer?.CapturedSprenType?.ToString() ?? "None") +
-               "\nStormlight: " +
-               (investiture?.currentInvestiture.ToString("F0") ?? "0") +
-               "\ntime remaining: " +
-               GetTimeRemaining();
+        return "CRO_Fabrial_Inspect".Translate(
+            (sprenContainer?.CapturedSprenType?.ToString()
+             ?? (string)"CRO_Fabrial_Spren_None".Translate()).Named("SPREN"),
+            (investiture?.currentInvestiture ?? 0f).ToString("F0").Named("LIGHT"),
+            GetTimeRemaining().Named("TIME")
+        ).Resolve();
     }
 
     private string GetTimeRemaining() {
         InvestitureHolder? investiture = Holder;
-        if (investiture == null) return "\u221e";
+        if (investiture == null) return "CRO_Fabrial_TimeEndless".Translate();
 
         float tickRaresPerHour = (float)GenDate.TicksPerHour / GenTicks.TickRareInterval;
         float investiturePerHour = investiture.drainRate * tickRaresPerHour;
-        if (Mathf.Approximately(investiturePerHour, 0f)) return "\u221e";
+        if (Mathf.Approximately(investiturePerHour, 0f)) return "CRO_Fabrial_TimeEndless".Translate();
 
         int hoursLeft = (int)(investiture.currentInvestiture / investiturePerHour);
         int daysLeft = hoursLeft / 24;
         hoursLeft %= 24;
-        return daysLeft + "d " + hoursLeft + "h";
+        return "CRO_Fabrial_TimeRemaining".Translate(daysLeft.Named("DAYS"), hoursLeft.Named("HOURS")).Resolve();
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
@@ -156,7 +156,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         );
 
         Action? replaceGemAction = null;
-        string replaceGemText = "No suitable gem available";
+        string replaceGemText = "CRO_Fabrial_NoGemAvailable".Translate();
         if (cutGemstone != null) {
             replaceGemAction = () => {
                 Verse.AI.Job job = JobMaker.MakeJob(
@@ -168,7 +168,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
             };
-            replaceGemText = $"Replace with {cutGemstone.Label}";
+            replaceGemText = "CRO_Fabrial_ReplaceGem".Translate(cutGemstone.Label.Named("GEM")).Resolve();
         }
 
         yield return new FloatMenuOption(replaceGemText, replaceGemAction);
@@ -183,7 +183,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
             };
         }
 
-        yield return new FloatMenuOption("Remove Gemstone", removeGemAction);
+        yield return new FloatMenuOption("CRO_Fabrial_RemoveGem".Translate(), removeGemAction);
     }
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
@@ -192,8 +192,8 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         }
 
         yield return new Command_Action {
-            defaultLabel = "Set Gem Filters",
-            defaultDesc = "Click to choose which gems are allowed in this fabrial.",
+            defaultLabel = "CRO_Fabrial_SetFilters".Translate(),
+            defaultDesc = "CRO_Fabrial_SetFiltersDesc".Translate(),
             icon = TexCommand.SelectShelf,
             action = OpenFilterDialog,
         };

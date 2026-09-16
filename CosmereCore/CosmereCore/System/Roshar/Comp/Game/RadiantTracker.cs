@@ -7,6 +7,8 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Game;
 
 public class RadiantTracker : GameComponent {
+    public const int MaxBondsmiths = 3;
+
     private int activeBondsmithCount;
     private Dictionary<int, BrokenBondRecord> brokenBonds = new Dictionary<int, BrokenBondRecord>();
     private int lastStabilityCheckTick = -1;
@@ -16,7 +18,7 @@ public class RadiantTracker : GameComponent {
     public int ActiveBondsmithCount => activeBondsmithCount;
 
     public bool CanProgressBondsmith() {
-        return activeBondsmithCount < 3;
+        return activeBondsmithCount < MaxBondsmiths;
     }
 
     public void RegisterBondsmith() {

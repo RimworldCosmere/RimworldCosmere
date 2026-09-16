@@ -85,8 +85,8 @@ public class Portal : SurgebindingAbility {
             null,
             t => {
                 PlanetTile tile = t.Tile;
-                if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
-                return "Select portal destination";
+                if (!Find.WorldGrid.InBounds(tile.tileId)) return "CRO_World_OutOfBounds".Translate();
+                return "CRO_Portal_SelectDestination".Translate();
             }
         );
     }
@@ -107,7 +107,7 @@ public class Portal : SurgebindingAbility {
 
         float cost = 30f / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) {
-            Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
+            Messages.Message("CRO_Surgebinding_NotEnoughStormlight".Translate(), MessageTypeDefOf.RejectInput);
             return false;
         }
 
@@ -121,7 +121,10 @@ public class Portal : SurgebindingAbility {
             Caravan caravan = CaravanMaker.MakeCaravan(selectedPawns, pawn.Faction, tile.tileId, true);
 
             Messages.Message(
-                $"{pawn.NameShortColored} opened a portal, transporting {selectedPawns.Count} pawn(s)",
+                "CRO_Portal_PawnsMoved".Translate(
+                    pawn.NameShortColored.Named("PAWN"),
+                    selectedPawns.Count.Named("COUNT")
+                ),
                 caravan,
                 MessageTypeDefOf.PositiveEvent
             );
@@ -152,7 +155,7 @@ public class Portal : SurgebindingAbility {
 
                 float cost = 30f / (1 << Gene.CurrentIdeal);
                 if (!Gene.CanLowerReserve(cost)) {
-                    Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
+                    Messages.Message("CRO_Surgebinding_NotEnoughStormlight".Translate(), MessageTypeDefOf.RejectInput);
                     return false;
                 }
 
@@ -180,7 +183,7 @@ public class Portal : SurgebindingAbility {
                 }
 
                 Messages.Message(
-                    $"{pawn.NameShortColored} opened a portal, transporting the caravan",
+                    "CRO_Portal_CaravanMoved".Translate(pawn.NameShortColored.Named("PAWN")),
                     destinationMap != null ? (LookTargets)destinationMap.Parent : caravan,
                     MessageTypeDefOf.PositiveEvent
                 );
@@ -194,8 +197,8 @@ public class Portal : SurgebindingAbility {
             null,
             t => {
                 PlanetTile tile = t.Tile;
-                if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
-                return "Open portal to this location";
+                if (!Find.WorldGrid.InBounds(tile.tileId)) return "CRO_World_OutOfBounds".Translate();
+                return "CRO_Portal_OpenHere".Translate();
             }
         );
     }
@@ -249,8 +252,8 @@ public abstract class PortalCaravanGizmoPatch : Caravan {
                 Portal captured = portalAbility;
                 extra.Add(
                     new Command_Action {
-                        defaultLabel = "Portal: " + p.LabelShort,
-                        defaultDesc = "Open a portal to teleport this caravan to another location instantly.",
+                        defaultLabel = "CRO_Portal_Caravan_Label".Translate(p.LabelShort.Named("PAWN")),
+                        defaultDesc = "CRO_Portal_Caravan_Desc".Translate(),
                         icon = PortalIcon,
                         action = () => {
                             if (Portal.activePortals.Count > 0 && !Find.WorldTargeter.IsTargeting) {

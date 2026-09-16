@@ -25,6 +25,8 @@ public abstract class BaseWindow : Verse.Window {
     protected static readonly Color BodyColor = Widgets.WindowBGFillColor;
     protected static readonly Color FooterColor = Widgets.MenuSectionBGFillColor;
     protected static readonly Color BorderColor = new Color(.79f, .65f, .37f);
+    protected static readonly Color InactiveCTAColor = new Color(1f, 1f, 1f, .35f);
+    protected static readonly Color InactiveCTALabelColor = new Color(.72f, .70f, .66f, .6f);
     protected static readonly Texture2D BorderTexture = BorderColor.ToSolidColorTexture();
     protected static readonly Texture2D CloseButton = ContentFinder<Texture2D>.Get("UI/Buttons/Abandon");
     protected static float DropShadowContract = -7f;
@@ -220,22 +222,26 @@ public abstract class BaseWindow : Verse.Window {
         Widgets.DrawAtlas(rect1, InvertedDropShadow);
     }
 
-    public virtual bool CTAButtonText(Rect rect, string label) {
+    public virtual bool CTAButtonText(Rect rect, string label, bool active = true) {
         Texture2D atlas = CTAButtonBGAtlas;
-        if (Mouse.IsOver(rect)) {
+        if (active && Mouse.IsOver(rect)) {
             atlas = CTAButtonBGAtlasMouseover;
             if (Input.GetMouseButton(0)) {
                 atlas = CTAButtonBGAtlasClick;
             }
         }
 
-        Widgets.DrawAtlas(rect, atlas);
-        MouseoverSounds.DoRegion(rect);
+        using (new TextBlock(active ? Color.white : InactiveCTAColor)) {
+            Widgets.DrawAtlas(rect, atlas);
+        }
 
-        using (new TextBlock(null, TextAnchor.MiddleCenter, rect.height >= Text.LineHeight * 2f, Color.white)) {
+        if (active) MouseoverSounds.DoRegion(rect);
+
+        Color labelColor = active ? Color.white : InactiveCTALabelColor;
+        using (new TextBlock(null, TextAnchor.MiddleCenter, rect.height >= Text.LineHeight * 2f, labelColor)) {
             Widgets.Label(rect, label);
         }
 
-        return Widgets.ButtonInvisible(rect, false);
+        return active && Widgets.ButtonInvisible(rect, false);
     }
 }

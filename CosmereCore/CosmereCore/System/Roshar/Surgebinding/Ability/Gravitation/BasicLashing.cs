@@ -93,8 +93,8 @@ public class BasicLashing : SurgebindingAbility {
         if (Gene.CurrentIdeal < 2) yield break;
 
         Command_Action flyToCommand = new Command_Action {
-            defaultLabel = "Fly To...",
-            defaultDesc = "Lash yourself and nearby allies to a destination on the world map, arriving instantly.",
+            defaultLabel = "CRO_Lashing_FlyTo_Label".Translate(),
+            defaultDesc = "CRO_Lashing_FlyTo_Desc".Translate(),
             icon = def.uiIcon,
             action = BeginWorldFlight,
         };
@@ -112,8 +112,8 @@ public class BasicLashing : SurgebindingAbility {
             null,
             t => {
                 PlanetTile tile = t.Tile;
-                if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
-                return "Fly to this location";
+                if (!Find.WorldGrid.InBounds(tile.tileId)) return "CRO_World_OutOfBounds".Translate();
+                return "CRO_Lashing_FlyHere".Translate();
             }
         );
     }
@@ -124,7 +124,7 @@ public class BasicLashing : SurgebindingAbility {
 
         float cost = 30f / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) {
-            Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
+            Messages.Message("CRO_Surgebinding_NotEnoughStormlight".Translate(), MessageTypeDefOf.RejectInput);
             return false;
         }
 
@@ -142,7 +142,10 @@ public class BasicLashing : SurgebindingAbility {
         UpdateStatus(Active.Off);
 
         Messages.Message(
-            $"{pawn.NameShortColored} lashed {flyingGroup.Count} pawn(s) to a new destination",
+            "CRO_Lashing_GroupFlew".Translate(
+                pawn.NameShortColored.Named("PAWN"),
+                flyingGroup.Count.Named("COUNT")
+            ),
             caravan,
             MessageTypeDefOf.PositiveEvent
         );

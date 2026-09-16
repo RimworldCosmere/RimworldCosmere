@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_SphereFilter_Title>Spheres this fabrial may draw upon</CRO_SphereFilter_Title>
+    <CRO_SphereFilter_Empty>No spheres fit this fabrial. Cut gemstones of a matching size, and they will appear here.</CRO_SphereFilter_Empty>
+    <CRO_SphereFilter_Row_Tip>Allow the fabrial to draw Stormlight from {SPHERE}.</CRO_SphereFilter_Row_Tip>
+    <CRO_SphereFilter_Close>Close</CRO_SphereFilter_Close>
+    <CRO_SphereFilter_Close_Tip>Close the setting. Your choices are kept.</CRO_SphereFilter_Close_Tip>
+</LanguageData>

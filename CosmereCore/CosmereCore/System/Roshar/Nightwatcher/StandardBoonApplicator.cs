@@ -21,7 +21,6 @@ public class StandardBoonApplicator : IBoonApplicator {
         ApplyTraitGrant(pawn, boon);
         ApplyTraitRemove(pawn, boon);
         ApplyHediffRemove(pawn, boon);
-        ApplyInvestiture(pawn, boon);
         ApplySurgebindingConnection(pawn, boon);
         ApplyPsylink(pawn, boon);
     }
@@ -66,12 +65,6 @@ public class StandardBoonApplicator : IBoonApplicator {
         if (boon.removeHediff == null) return;
         Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(boon.removeHediff);
         if (existing != null) pawn.health.RemoveHediff(existing);
-    }
-
-    private static void ApplyInvestiture(Pawn pawn, NightwatcherBoonDef boon) {
-        if (boon.investitureBonus <= 0f) return;
-        InvestitureHolder? holder = pawn.TryGetComp<InvestitureHolder>();
-        if (holder != null) holder.maxInvestitureSelf += boon.investitureBonus;
     }
 
     private static void ApplySurgebindingConnection(Pawn pawn, NightwatcherBoonDef boon) {

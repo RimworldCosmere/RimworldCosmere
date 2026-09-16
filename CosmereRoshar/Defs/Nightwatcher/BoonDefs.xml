@@ -37,8 +37,7 @@
         <label>stormlight touched</label>
         <description>Something of Cultivation lingers in {PAWN_nameDef}. {PAWN_pronoun} can hold more Stormlight than {PAWN_possessive} body should allow, and {PAWN_possessive} hands move with a precision that feels borrowed from someone far more practiced.</description>
         <powerTier>1</powerTier>
-        <investitureBonus>200</investitureBonus>
-        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</hediff>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Touched</hediff>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -102,7 +101,6 @@
         <label>stormlight affinity</label>
         <description>The Nightwatcher reshaped {PAWN_nameDef}'s Spiritweb, aligning it with the rhythm of the storms. {PAWN_pronoun} can hold far more Stormlight now, and {PAWN_possessive} Connection to Surgebinding has deepened in ways that are difficult to explain.</description>
         <powerTier>2</powerTier>
-        <investitureBonus>500</investitureBonus>
         <surgebindingConnectionBoost>20</surgebindingConnectionBoost>
         <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</hediff>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -174,7 +172,6 @@
         <label>lifelight</label>
         <description>Cultivation rewrote something fundamental in {PAWN_nameDef}. Food converts directly into Investiture now, light pooling beneath {PAWN_possessive} skin like warmth from a fire. {PAWN_possessive} body heals faster, fights harder, sustains itself with an efficiency that shouldn't be possible. This is the rarest of Cultivation's gifts.</description>
         <powerTier>3</powerTier>
-        <investitureBonus>300</investitureBonus>
         <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight</hediff>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
@@ -183,8 +180,8 @@
         <label>awakened mind</label>
         <description>The Nightwatcher cracked {PAWN_nameDef}'s Spiritweb wide open. Investiture floods in like water through broken stone. {PAWN_possessive} Connection to Cultivation runs deep now, and {PAWN_possessive} capacity for Stormlight has expanded beyond anything natural. The rhythms of Roshar hum through {PAWN_possessive} bones. Spren will notice.</description>
         <powerTier>3</powerTier>
-        <investitureBonus>500</investitureBonus>
         <surgebindingConnectionBoost>40</surgebindingConnectionBoost>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_AwokenMind</hediff>
         <skillBoosts>
             <li><skill>Cosmere_Roshar_Skill_SurgebindingPower</skill><levels>10</levels></li>
         </skillBoosts>

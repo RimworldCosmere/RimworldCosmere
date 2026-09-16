@@ -39,11 +39,14 @@
 
     <!-- ===== Boon Passive Hediffs ===== -->
     <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
-        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</defName>
-        <label>Nightwatcher: stormlight affinity</label>
-        <description>{PAWN_nameDef}'s Spiritweb hums in time with the storms. {PAWN_pronoun} can hold far more Stormlight than before, and {PAWN_possessive} hands move with a delicate precision that wasn't there yesterday.</description>
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Touched</defName>
+        <label>Nightwatcher: stormlight touched</label>
+        <description>Something of Cultivation lingers in {PAWN_nameDef}. Stormlight settles into {PAWN_possessive} Spiritweb more readily than it should, and {PAWN_possessive} hands move with a precision that wasn't there yesterday.</description>
         <stages>
             <li>
+                <statFactors>
+                    <Cosmere_InvestitureAbsorption>1.15</Cosmere_InvestitureAbsorption>
+                </statFactors>
                 <capMods>
                     <li>
                         <capacity>Manipulation</capacity>
@@ -53,6 +56,26 @@
             </li>
         </stages>
     </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</defName>
+        <label>Nightwatcher: stormlight affinity</label>
+        <description>{PAWN_nameDef}'s Spiritweb hums in time with the storms. Every sphere gives up far more to {PAWN_nameDef} than it would to anyone else, and {PAWN_possessive} hands move with a delicate precision.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <Cosmere_InvestitureAbsorption>1.5</Cosmere_InvestitureAbsorption>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
 
     <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
         <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Intellect</defName>
@@ -91,6 +114,9 @@
                     <ResearchSpeed>0.3</ResearchSpeed>
                     <MedicalOperationSpeed>0.2</MedicalOperationSpeed>
                 </statOffsets>
+                <statFactors>
+                    <Cosmere_InvestitureAbsorption>2.0</Cosmere_InvestitureAbsorption>
+                </statFactors>
             </li>
         </stages>
     </HediffDef>
@@ -142,6 +168,9 @@
                 <statOffsets>
                     <ImmunityGainSpeed>0.15</ImmunityGainSpeed>
                 </statOffsets>
+                <statFactors>
+                    <Cosmere_InvestitureAbsorption>2.0</Cosmere_InvestitureAbsorption>
+                </statFactors>
                 <capMods>
                     <li>
                         <capacity>BloodFiltration</capacity>

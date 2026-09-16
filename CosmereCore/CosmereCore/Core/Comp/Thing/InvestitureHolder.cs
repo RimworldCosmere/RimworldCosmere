@@ -196,6 +196,17 @@ public class InvestitureHolder : ThingComp {
                investitureHolder.AbsorbInvestitureFrom(parent, amountToDraw, out amountDrawn);
     }
 
+    /// <summary>
+    ///     Received per unit drawn. Only a pawn carries the stat; anything else trades one for one.
+    /// </summary>
+    private float AbsorptionEfficiency {
+        get {
+            if (parent is not Pawn pawn) return 1f;
+
+            return Mathf.Max(0.01f, pawn.GetStatValue(StatDefOf.Cosmere_InvestitureAbsorption));
+        }
+    }
+
     public float AbsorbInvestitureFrom(Verse.Thing thing, float amountToAbsorb) {
         return !AbsorbInvestitureFrom(thing, amountToAbsorb, out float amountAbsorbed) ? 0f : amountAbsorbed;
     }
@@ -215,16 +226,20 @@ public class InvestitureHolder : ThingComp {
             amountToAbsorb = thingInvestiture.currentInvestiture;
         }
 
-        amountAbsorbed = Mathf.Min(
+        // capped by space/efficiency, so the multiplied gain fills the space without overflowing
+        float efficiency = AbsorptionEfficiency;
+        float drawn = Mathf.Min(
             amountToAbsorb,
             Mathf.Min(
-                maxInvestitureSelfStack - currentInvestitureSelfStack,
+                (maxInvestitureSelfStack - currentInvestitureSelfStack) / efficiency,
                 thingInvestiture.currentInvestitureSelfStack
             )
         );
-        if (amountAbsorbed > 0) {
-            currentInvestitureSelf += amountAbsorbed / parent.stackCount;
-            thingInvestiture.currentInvestitureSelf -= amountAbsorbed / thing.stackCount;
+
+        amountAbsorbed = drawn;
+        if (drawn > 0) {
+            currentInvestitureSelf += drawn * efficiency / parent.stackCount;
+            thingInvestiture.currentInvestitureSelf -= drawn / thing.stackCount;
         }
 
         List<Verse.Thing> thingChildren = thingInvestiture.children;

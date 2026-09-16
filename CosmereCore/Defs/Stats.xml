@@ -29,6 +29,16 @@
         <displayPriorityInCategory>1000</displayPriorityInCategory>
     </StatDef>
     <StatDef>
+        <defName>Cosmere_InvestitureAbsorption</defName>
+        <label>investiture absorption</label>
+        <description>How much Investiture is received for each unit drawn from a source. Above 1, less is spent to fill the same reserve.</description>
+        <category>Cosmere</category>
+        <minValue>0.01</minValue>
+        <defaultBaseValue>1</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>999</displayPriorityInCategory>
+    </StatDef>
+    <StatDef>
         <defName>Cosmere_Investiture</defName>
         <label>investiture</label>
         <description>A amount of Investiture in an object or creature.</description>

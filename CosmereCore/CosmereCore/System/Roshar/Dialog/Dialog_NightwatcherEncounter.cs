@@ -470,12 +470,6 @@ public class Dialog_NightwatcherEncounter : Window {
             effects.Add("CRO_NW_Effect_Cures".Translate(boon.removeHediff.LabelCap.Named("LABEL")));
         }
 
-        if (boon.investitureBonus > 0f) {
-            effects.Add("CRO_NW_Effect_InvestitureCapacity".Translate(
-                ((int)boon.investitureBonus).Named("AMOUNT")
-            ));
-        }
-
         if (boon.surgebindingConnectionBoost > 0f) {
             effects.Add("CRO_NW_Effect_CultivationConnection".Translate(
                 boon.surgebindingConnectionBoost.ToString("0.##").Named("AMOUNT")

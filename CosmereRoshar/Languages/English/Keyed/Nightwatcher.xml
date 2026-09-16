@@ -56,7 +56,6 @@ Both are permanent. Neither can be removed by ordinary means. This is the nature
     <CRO_NW_Effect_Loses>Loses: {LABEL}</CRO_NW_Effect_Loses>
     <CRO_NW_Effect_SkillBoost>+{LEVELS} {SKILL}</CRO_NW_Effect_SkillBoost>
     <CRO_NW_Effect_SkillPenalty>-{LEVELS} {SKILL}</CRO_NW_Effect_SkillPenalty>
-    <CRO_NW_Effect_InvestitureCapacity>+{AMOUNT} Investiture capacity</CRO_NW_Effect_InvestitureCapacity>
     <CRO_NW_Effect_CultivationConnection>+{AMOUNT} Cultivation connection</CRO_NW_Effect_CultivationConnection>
     <CRO_NW_Effect_PsylinkLevel>+1 Psylink level</CRO_NW_Effect_PsylinkLevel>
     <CRO_NW_Effect_BiologicalImmortality>Biological immortality</CRO_NW_Effect_BiologicalImmortality>

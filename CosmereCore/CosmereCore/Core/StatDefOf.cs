@@ -14,6 +14,7 @@ public static class StatDefOf {
     public static StatDef Cosmere_Mental_Break_Remove_Factor;
     public static StatDef Cosmere_Time_Dilation_Factor;
     public static StatDef Cosmere_Investiture;
+    public static StatDef Cosmere_InvestitureAbsorption;
 
     static StatDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));

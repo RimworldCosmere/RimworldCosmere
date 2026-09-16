@@ -10,7 +10,6 @@ public class NightwatcherBoonDef : Verse.Def {
     public TraitDef? grantTrait;
     public int grantTraitDegree = 0;
     public HediffDef? hediff;
-    public float investitureBonus = 0f;
     public string? metalSelectionType;
     public int powerTier = 1;
     public bool psylinkBoost = false;

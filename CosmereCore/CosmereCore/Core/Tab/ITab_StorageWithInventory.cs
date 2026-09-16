@@ -140,29 +140,31 @@ public class ITab_StorageWithInventory : ITab_Storage {
         CaravanThingsTabUtility.DrawMass(thing, rect4);
         rect.width -= 60f;
         if (Mouse.IsOver(rect)) {
-            GUI.color = ITab_Pawn_Gear.HighlightColor;
-            GUI.DrawTexture(rect, TexUI.HighlightTex);
+            using (new TextBlock(ITab_Pawn_Gear.HighlightColor)) {
+                GUI.DrawTexture(rect, TexUI.HighlightTex);
+            }
         }
 
         if (thing.def.DrawMatSingle != null && thing.def.DrawMatSingle.mainTexture != null) {
             Widgets.ThingIcon(new Rect(4f, y, 28f, 28f), thing);
         }
 
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.color = ITab_Pawn_Gear.ThingLabelColor;
-        Rect rect5 = new Rect(36f, y, rect.width - 36f, rect.height);
-        string text = thing.LabelCap;
-        if (thing is Apparel ap && SelPawn?.outfits != null && SelPawn.outfits.forcedHandler.IsForced(ap)) {
-            text += ", " + "ApparelForcedLower".Translate();
+        using (new TextBlock(TextAnchor.MiddleLeft, ITab_Pawn_Gear.ThingLabelColor)) {
+            Rect rect5 = new Rect(36f, y, rect.width - 36f, rect.height);
+            string text = thing.LabelCap;
+            if (thing is Apparel ap && SelPawn?.outfits != null && SelPawn.outfits.forcedHandler.IsForced(ap)) {
+                text += ", " + "ApparelForcedLower".Translate();
+            }
+
+            if (disabled) {
+                text += " (" + "ApparelLockedLower".Translate() + ")";
+            }
+
+            Text.WordWrap = false;
+            Widgets.Label(rect5, text.Truncate(rect5.width));
+            Text.WordWrap = true;
         }
 
-        if (disabled) {
-            text += " (" + "ApparelLockedLower".Translate() + ")";
-        }
-
-        Text.WordWrap = false;
-        Widgets.Label(rect5, text.Truncate(rect5.width));
-        Text.WordWrap = true;
         if (Mouse.IsOver(rect)) {
             TooltipHandler.TipRegion(rect, thing.GetTooltip());
         }

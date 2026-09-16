@@ -29,7 +29,7 @@ public static class StealTargetSelector {
             options.Add(new FloatMenuOption(gene.LabelCap, () => onSelected(gene)));
         }
 
-        options.Add(new FloatMenuOption("Cancel", onCancel));
+        options.Add(new FloatMenuOption("CancelButton".Translate(), onCancel));
 
         Find.WindowStack.Add(new FloatMenu(options));
     }

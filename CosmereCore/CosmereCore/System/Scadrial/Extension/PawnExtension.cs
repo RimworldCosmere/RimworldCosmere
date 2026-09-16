@@ -21,7 +21,8 @@ namespace Cosmere.System.Scadrial.Extension;
 
 public static class PawnExtension {
     public static AcceptanceReport CanUseMetal(this Pawn pawn, MetalDef metal) {
-        if (metal.Equals(MetalDefOf.Lerasium) && pawn.IsMistborn()) {
+        // callers pass a MetallicArtsMetalDef, a different object to the MetalDef of the same name.
+        if (metal.defName == MetalDefOf.Lerasium.defName && pawn.IsMistborn()) {
             return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
         }
 

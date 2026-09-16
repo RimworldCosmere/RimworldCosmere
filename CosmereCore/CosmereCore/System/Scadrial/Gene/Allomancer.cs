@@ -27,7 +27,7 @@ public class Allomancer : Metalborn {
 
     public bool ShouldConsumeVialNow {
         get {
-            if (metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil)) return false;
+            if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
             if (pawn.IsAsleep()) return false;
             if (pawn.IsShieldedAgainstInvestiture()) return false;
             if (

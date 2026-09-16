@@ -8,7 +8,7 @@
 #   ./scripts/worktree-run.sh [-a] [-m MARKER] [-p PROFILE] [-q QUICKSTART]
 #     -a            also rebuild asset bundles (only when Assets/ changed)
 #     -m MARKER     type name that must be present in the built DLL, verified before launch
-#     -p PROFILE    docker-game profile (default: cosmere)
+#     -p PROFILE    gamecrate profile (default: cosmere)
 #     -q QUICKSTART quickstart name (default: PreCatacendreQuickstart)
 
 set -euo pipefail
@@ -52,18 +52,18 @@ if [[ "$ASSETS" -eq 1 ]]; then
 fi
 
 echo "==> stop old container"
-docker stop "docker-game-rimworld-$PROFILE" >/dev/null 2>&1 || true
-rm -f "$HOME/.local/share/docker-game/rimworld/$PROFILE/.docker-game/lock"
+docker stop "gamecrate-rimworld-$PROFILE" >/dev/null 2>&1 || true
+rm -f "$HOME/.local/share/gamecrate/rimworld/$PROFILE/.gamecrate/lock"
 
 echo "==> launch"
-(cd "$WT" && docker-game rimworld "$PROFILE" -- "-cosmerequickstart=$QUICKSTART") >/dev/null 2>&1 &
+(cd "$WT" && gamecrate rimworld "$PROFILE" -- "-cosmerequickstart=$QUICKSTART") >/dev/null 2>&1 &
 
-until docker ps --filter "name=docker-game-rimworld-$PROFILE" --format '{{.Names}}' | grep -q "$PROFILE"; do
+until docker ps --filter "name=gamecrate-rimworld-$PROFILE" --format '{{.Names}}' | grep -q "$PROFILE"; do
     sleep 1
 done
 
 echo "==> verify container bound this worktree"
-bound=$(docker inspect "docker-game-rimworld-$PROFILE" \
+bound=$(docker inspect "gamecrate-rimworld-$PROFILE" \
     --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' | grep -c "$(basename "$WT")" || true)
 if [[ "$bound" -ne 3 ]]; then
     echo "FAIL: expected 3 mods bound from $(basename "$WT"), got $bound." >&2
@@ -73,7 +73,7 @@ echo "    ok (3/3)"
 
 if [[ -n "$MARKER" ]]; then
     echo "==> verify container DLL has '$MARKER'"
-    in_container=$(docker exec "docker-game-rimworld-$PROFILE" sh -c \
+    in_container=$(docker exec "gamecrate-rimworld-$PROFILE" sh -c \
         "{ strings /game/Mods/Cosmere.Core/Assemblies/Cosmere.dll; strings -el /game/Mods/Cosmere.Core/Assemblies/Cosmere.dll; } | grep -c '$MARKER'" || true)
     if [[ "$in_container" -eq 0 ]]; then
         echo "FAIL: container is running a stale DLL." >&2
@@ -83,7 +83,7 @@ if [[ -n "$MARKER" ]]; then
 fi
 
 echo "==> waiting for load"
-RUNS="$HOME/.local/share/docker-game/rimworld/$PROFILE/logs/runs"
+RUNS="$HOME/.local/share/gamecrate/rimworld/$PROFILE/logs/runs"
 D=$(ls -1t "$RUNS" | head -1)
 LOG="$RUNS/$D/Player.log"
 for _ in $(seq 1 90); do

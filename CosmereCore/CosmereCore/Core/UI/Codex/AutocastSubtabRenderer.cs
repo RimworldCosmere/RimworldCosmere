@@ -12,6 +12,9 @@ public static class AutocastSubtabRenderer {
     private const float GroupGap = 8f;
     private const float Indent = 16f;
 
+    // Fitts: every target on these rows sits at a frame edge, so none of them goes below this.
+    private const float TargetSize = 24f;
+
     private static readonly Color Muted = new Color(0.7f, 0.7f, 0.7f);
     private static readonly Color Dim = new Color(0.55f, 0.55f, 0.55f);
     private static readonly Color HeaderFill = new Color(1f, 1f, 1f, 0.05f);
@@ -61,7 +64,7 @@ public static class AutocastSubtabRenderer {
         if (target.Icon != null) GUI.DrawTexture(icon, target.Icon);
 
         // The add sits on the header rather than under the group, so an empty target is one line rather than two.
-        Rect add = new Rect(header.xMax - 26f, header.y + 6f, 20f, 20f);
+        Rect add = new Rect(header.xMax - 28f, header.y + (HeaderHeight - TargetSize) / 2f, TargetSize, TargetSize);
         Widgets.DrawHighlightIfMouseover(add);
         TooltipHandler.TipRegion(add, "CC_Codex_Autocast_AddRule".Translate());
 
@@ -77,34 +80,36 @@ public static class AutocastSubtabRenderer {
 
         List<AutocastRule> rules = store.RulesFor(pawn, target.Kind, target.Id);
 
-        // Deferred: removing inside the loop would resize the list being walked.
-        AutocastRule? removing = null;
         for (int i = 0; i < rules.Count; i++) {
-            if (DrawRule(new Rect(0f, y, width, RowHeight), pawn, rules[i], target, i % 2 == 1)) removing = rules[i];
+            DrawRule(new Rect(0f, y, width, RowHeight), pawn, store, rules[i], target);
             y += RowHeight;
         }
-
-        if (removing != null) store.RemoveRule(pawn, removing);
 
         return y + GroupGap;
     }
 
-    // Returns true when the player asked for this rule to go.
-    private static bool DrawRule(Rect row, Pawn pawn, AutocastRule rule, AutocastTarget target, bool striped) {
-        if (striped) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
+    private static void DrawRule(
+        Rect row,
+        Pawn pawn,
+        GameComponent_Autocast store,
+        AutocastRule rule,
+        AutocastTarget target
+    ) {
         Widgets.DrawHighlightIfMouseover(row);
 
         // Widgets.Checkbox always draws at 24px regardless of the rect size passed in.
-        const float checkSize = 24f;
-        Rect enabled = new Rect(row.x + Indent, row.y + (row.height - checkSize) / 2f, checkSize, checkSize);
-        Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled, checkSize);
+        Rect enabled = new Rect(row.x + Indent, row.y + (row.height - TargetSize) / 2f, TargetSize, TargetSize);
+        TooltipHandler.TipRegion(enabled, "CC_Codex_Autocast_EnabledTip".Translate());
+        Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled, TargetSize);
 
-        Rect remove = new Rect(row.xMax - 26f, row.y + 6f, 20f, 20f);
-        Rect edit = new Rect(remove.x - 88f, row.y + 4f, 80f, row.height - 8f);
+        float controlY = row.y + (row.height - TargetSize) / 2f;
+        Rect remove = new Rect(row.xMax - 28f, controlY, TargetSize, TargetSize);
+        Rect edit = new Rect(remove.x - 88f, controlY, 80f, TargetSize);
 
         Rect summary = new Rect(enabled.xMax + 8f, row.y, edit.x - enabled.xMax - 16f, row.height);
+        string described = AutocastRuleSummary.Describe(rule);
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, rule.Enabled ? Color.white : Dim))
-            Widgets.Label(summary, AutocastRuleSummary.Describe(rule));
+            Widgets.Label(summary, described);
 
         if (Widgets.ButtonText(edit, "CC_Codex_Autocast_EditButton".Translate())) {
             Find.WindowStack.Add(new AutocastRuleEditorDialog(rule, target.Label, IsToggleableAbility(pawn, target)));
@@ -112,7 +117,14 @@ public static class AutocastSubtabRenderer {
 
         TooltipHandler.TipRegion(remove, "CC_Codex_Autocast_RemoveRule".Translate());
 
-        return Widgets.ButtonImage(remove, TexButton.Delete);
+        // The confirm runs from its own window, so removing there never resizes the list being walked here.
+        if (Widgets.ButtonImage(remove, TexButton.Delete)) {
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                "CC_Codex_Autocast_RemoveConfirm".Translate(described.Named("RULE")),
+                () => store.RemoveRule(pawn, rule),
+                true
+            ));
+        }
     }
 
     // Only a sustained ability can be switched back off, so only those get the release option.

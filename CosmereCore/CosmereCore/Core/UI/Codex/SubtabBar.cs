@@ -8,6 +8,13 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Codex;
 
 public static class SubtabBar {
+    private static readonly Color SelectedText = new Color(0.88f, 0.73f, 0.42f);
+
+    // Same warm family as selected, lifted far enough that an unselected tab reads on its own.
+    private static readonly Color UnselectedText = new Color(0.74f, 0.70f, 0.60f);
+
+    private static readonly Color HoverFill = new Color(1f, 1f, 1f, 0.04f);
+
     private static readonly List<(CodexSubtab tab, string labelKey)> buffer =
         new List<(CodexSubtab tab, string labelKey)>();
 
@@ -48,12 +55,15 @@ public static class SubtabBar {
             bool isSelected = EqualityComparer<T>.Default.Equals(selected, tabs[i].tab);
 
             if (!isSelected && Mouse.IsOver(tab)) {
-                Widgets.DrawBoxSolid(tab, new Color(1f, 1f, 1f, 0.04f));
+                Widgets.DrawBoxSolid(tab, HoverFill);
             }
 
             string label = tabs[i].labelKey.Translate();
-            Color textColor = isSelected ? new Color(0.88f, 0.73f, 0.42f) : new Color(0.55f, 0.50f, 0.41f);
+            Color textColor = isSelected ? SelectedText : UnselectedText;
             UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
+
+            // Every label key owes a matching _Tip key, or the tab shows the key name back at the player.
+            TooltipHandler.TipRegion(tab, (tabs[i].labelKey + "_Tip").Translate());
 
             if (isSelected) {
                 // Flush at the frame ends - an underline stopping short there left a visible notch.

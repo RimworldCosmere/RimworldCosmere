@@ -1,6 +1,7 @@
 using Cosmere.Core;
 using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Savant;
+using Cosmere.Core.UI;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
@@ -9,11 +10,17 @@ using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Scadrial.UI;
 
 [StaticConstructorOnStartup]
 public sealed class AllomancyCodexContent : ICodexContentProvider {
+    private static readonly Color RowStripeColor = new Color(1f, 1f, 1f, 0.03f);
+    private static readonly Color OverallSkillColor = new Color(0.85f, 0.85f, 0.85f);
+    private static readonly Color SecondaryTextColor = new Color(0.75f, 0.75f, 0.75f);
+    private static readonly Color DimmedVialColor = new Color(1f, 1f, 1f, 0.22f);
+
     public bool HasProgression(Pawn pawn) {
         return CollectAllomancers(pawn).Count > 0;
     }
@@ -57,7 +64,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
         if (skill != null) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, OverallSkillColor)) {
                 Widgets.Label(
                     CodexChrome.ContentHeader(rect, y, 24f),
                     "CC_Codex_Allomancy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
@@ -75,14 +82,18 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (rowHeight + rowGap));
         Widgets.BeginScrollView(listRect, ref state.ProgressionScroll, viewRect);
 
+        List<(Allomancer gene, int stage, int ticks)> rows = SortedRows(pawn, genes);
+
         y = 0f;
-        for (int i = 0; i < genes.Count; i++) {
-            Allomancer gene = genes[i];
+        for (int i = 0; i < rows.Count; i++) {
+            (Allomancer gene, int stage, int burningTicks) = rows[i];
             MetallicArtsMetalDef metal = gene.metal;
-            bool hasVialControls = !metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil);
+            bool hasVialControls = !metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil);
 
             Rect row = new Rect(0f, y, viewRect.width, rowHeight);
-            if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
+            if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
+            Widgets.DrawHighlightIfMouseover(row);
+            MouseoverSounds.DoRegion(row);
 
             // metals own mark in its own colour, not an anonymous chip that only the colour distinguished
             Rect swatch = new Rect(row.x + rowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
@@ -96,19 +107,17 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
             }
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-                Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight), metal.LabelCap);
+            // the name column is a fixed width, so a long metal gets cut here and the row tooltip carries it whole
+            UIText.EllipsisLabel(
+                new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight),
+                metal.LabelCap,
+                GameFont.Small,
+                TextAnchor.MiddleLeft,
+                Color.white
+            );
 
-            int stage = SavantUtility.CanBeSavant(metal)
-                ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal)
-                : 0;
             Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, rowHeight);
             SavantUI.DrawSavantStage(stageRect, stage, metal.color);
-
-            int burningTicks = 0;
-            if (pawn.records != null) {
-                burningTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentBurningForMetal(metal));
-            }
 
             // same reading as Feruchemy and the savant stage; never-burned is its own sentence, not substituted in
             string burnedLabel = burningTicks > 0
@@ -132,14 +141,29 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 vialButtonRect.x - stageRect.xMax - 16f,
                 rowHeight
             );
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor)) {
                 Widgets.Label(burnedRect, burnedLabel);
             }
 
+            TooltipHandler.TipRegion(
+                row,
+                "CC_Codex_Allomancy_RowTooltip".Translate(
+                    metal.LabelCap.Named("METAL"),
+                    SavantUI.StageLabel(stage).Named("STAGE"),
+                    burnedLabel.Named("BURNED")
+                )
+            );
+
+            bool clicked = false;
             if (hasVialControls) {
-                DrawVialSettingsButton(vialButtonRect, gene);
+                clicked = DrawVialSettingsButton(vialButtonRect, gene);
             } else {
                 DrawVialSettingsUnavailable(vialButtonRect, metal);
+            }
+
+            // the whole row opens the dialog; the vial icon stays as the thing that says so
+            if (hasVialControls && (clicked || Widgets.ButtonInvisible(row))) {
+                Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
             }
 
             y += rowHeight + rowGap;
@@ -152,7 +176,28 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
     public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
 
-    private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
+    /// <summary>Worked metals first, so the table answers "which am I savant in" at a glance.</summary>
+    private static List<(Allomancer gene, int stage, int ticks)> SortedRows(Pawn pawn, List<Allomancer> genes) {
+        List<(Allomancer gene, int stage, int ticks)> rows = [];
+        for (int i = 0; i < genes.Count; i++) {
+            Allomancer gene = genes[i];
+            MetallicArtsMetalDef metal = gene.metal;
+            int stage = SavantUtility.CanBeSavant(metal)
+                ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal)
+                : 0;
+            int ticks = pawn.records != null
+                ? (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentBurningForMetal(metal))
+                : 0;
+
+            rows.Add((gene, stage, ticks));
+        }
+
+        rows.Sort((a, b) => CodexRowOrder.Compare(a.stage, a.ticks, b.stage, b.ticks));
+
+        return rows;
+    }
+
+    private static bool DrawVialSettingsButton(Rect rect, Allomancer gene) {
         string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);
 
         string tooltip = "CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
@@ -162,13 +207,9 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         TooltipHandler.TipRegion(rect, tooltip);
 
         // a text label clipped at the panel edge; the vial icon says it in the space available instead
-        bool clicked = VialIcon != null
+        return VialIcon != null
             ? Widgets.ButtonImage(rect, VialIcon, true)
             : Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate());
-
-        if (clicked) {
-            Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
-        }
     }
 
     /// <summary>
@@ -184,7 +225,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         if (VialIcon == null) return;
 
         Color prev = GUI.color;
-        GUI.color = new Color(1f, 1f, 1f, 0.22f);
+        GUI.color = DimmedVialColor;
         GUI.DrawTexture(rect, VialIcon);
         GUI.color = prev;
     }

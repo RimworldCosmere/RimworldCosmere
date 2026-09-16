@@ -7,6 +7,8 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.UI;
 
 public sealed class Dialog_StoreMemory : Window {
+    private const float ScrollbarWidth = 16f;
+    private const float MagnitudeColumnWidth = 38f;
     private static readonly Color PositiveMoodColor = new Color(0.45f, 0.85f, 0.45f);
     private static readonly Color NegativeMoodColor = new Color(0.9f, 0.45f, 0.45f);
     private static readonly Color SelectedRowColor = new Color(0.9f, 0.75f, 0.35f, 0.22f);
@@ -25,7 +27,10 @@ public sealed class Dialog_StoreMemory : Window {
 
     public Dialog_StoreMemory(Pawn pawn, List<Thought_Memory> memories, List<Metalmind> copperminds) {
         this.pawn = pawn;
-        this.memories = memories;
+
+        // a copy - the heaviest-first order is this window's, not the caller's list to keep
+        this.memories = new List<Thought_Memory>(memories);
+        this.memories.Sort((a, b) => MemoryMagnitude.CompareByWeight(a.MoodOffset(), b.MoodOffset()));
         this.copperminds = copperminds;
         doCloseX = true;
         closeOnClickedOutside = false;
@@ -73,8 +78,13 @@ public sealed class Dialog_StoreMemory : Window {
         Widgets.DrawBoxSolid(body, new Color(0f, 0f, 0f, 0.2f));
         Rect inner = body.ContractedBy(2f);
 
+        if (memories.Count == 0) {
+            DrawEmptyNote(inner, "CC_Codex_Feruchemy_StoreMemory_Empty_Memories".Translate());
+            return;
+        }
+
         float rowHeight = 28f;
-        Rect viewRect = new Rect(0f, 0f, inner.width - 16f, memories.Count * rowHeight);
+        Rect viewRect = new Rect(0f, 0f, inner.width - ScrollbarWidth, memories.Count * rowHeight);
         Widgets.BeginScrollView(inner, ref memoriesScroll, viewRect);
 
         for (int i = 0; i < memories.Count; i++) {
@@ -89,21 +99,17 @@ public sealed class Dialog_StoreMemory : Window {
             float offset = memory.MoodOffset();
             Color color = offset >= 0f ? PositiveMoodColor : NegativeMoodColor;
 
-            Rect label = new Rect(row.x + 6f, row.y, row.width * 0.7f - 6f, row.height);
+            Rect magnitude = new Rect(row.x + 6f, row.y, MagnitudeColumnWidth, row.height);
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, color))
+                Widgets.Label(magnitude, MemoryMagnitude.Format(offset));
+
+            Rect label = new Rect(magnitude.xMax + 6f, row.y, row.width - magnitude.width - 18f, row.height);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color)) {
                 Widgets.Label(
                     label,
                     memory.otherPawn != null
                         ? $"{memory.def.LabelCap} ({memory.otherPawn.LabelShortCap})"
                         : memory.def.LabelCap.ToString()
-                );
-            }
-
-            Rect sizeRect = new Rect(label.xMax, row.y, row.width - label.width - 6f, row.height);
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, SecondaryTextColor)) {
-                Widgets.Label(
-                    sizeRect,
-                    "CC_Codex_Feruchemy_StoreMemory_Size".Translate(Mathf.Abs(offset).ToString("F1").Named("SIZE"))
                 );
             }
 
@@ -130,8 +136,13 @@ public sealed class Dialog_StoreMemory : Window {
         Widgets.DrawBoxSolid(body, new Color(0f, 0f, 0f, 0.2f));
         Rect inner = body.ContractedBy(2f);
 
+        if (copperminds.Count == 0) {
+            DrawEmptyNote(inner, "CC_Codex_Feruchemy_StoreMemory_Empty_Copperminds".Translate());
+            return;
+        }
+
         float rowHeight = 34f;
-        Rect viewRect = new Rect(0f, 0f, inner.width - 16f, copperminds.Count * rowHeight);
+        Rect viewRect = new Rect(0f, 0f, inner.width - ScrollbarWidth, copperminds.Count * rowHeight);
         Widgets.BeginScrollView(inner, ref coppermindsScroll, viewRect);
 
         for (int i = 0; i < copperminds.Count; i++) {
@@ -164,12 +175,27 @@ public sealed class Dialog_StoreMemory : Window {
                 );
             }
 
+            if (!fits && selectedMemoryIndex >= 0) {
+                TooltipHandler.TipRegion(
+                    row,
+                    "CC_Codex_Feruchemy_StoreMemory_NoRoomTip".Translate(
+                        Mathf.Abs(memories[selectedMemoryIndex].MoodOffset()).ToString("F1").Named("NEEDED"),
+                        mind.FreeSpace.ToString("F1").Named("FREE")
+                    )
+                );
+            }
+
             if (fits && Widgets.ButtonInvisible(row)) {
                 selectedCoppermindIndex = i;
             }
         }
 
         Widgets.EndScrollView();
+    }
+
+    private static void DrawEmptyNote(Rect rect, TaggedString text) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, DisabledTextColor))
+            Widgets.Label(rect.ContractedBy(12f), text);
     }
 
     private void DrawBottomBar(Rect rect) {

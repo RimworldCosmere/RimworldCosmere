@@ -12,6 +12,7 @@ using Cosmere.System.Roshar.Surgebinding.Ability;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Roshar.UI;
 
@@ -215,9 +216,21 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
                 );
                 Rect accent = new Rect(entryRect.x, entryRect.y, 3f, entryRect.height);
                 Widgets.DrawBoxSolid(accent, orderColor);
-            } else if (Mouse.IsOver(entryRect)) {
-                Widgets.DrawHighlight(entryRect);
+            } else {
+                Widgets.DrawHighlightIfMouseover(entryRect);
             }
+
+            MouseoverSounds.DoRegion(entryRect);
+            string sprenName = spren.Name?.ToStringShort ?? spren.LabelShortCap;
+            TooltipHandler.TipRegion(
+                entryRect,
+                gene.radiantOrderDef != null
+                    ? "CC_Codex_Surgebinding_SprenEntry_Tip".Translate(
+                        sprenName.Named("SPREN"),
+                        gene.radiantOrderDef.LabelCap.Named("ORDER")
+                    )
+                    : "CC_Codex_Surgebinding_SprenEntry_TipUnsworn".Translate(sprenName.Named("SPREN"))
+            );
 
             Rect swatch = new Rect(entryRect.x + 8f, entryRect.y + 8f, 12f, 12f);
             Widgets.DrawBoxSolid(swatch, orderColor);
@@ -233,7 +246,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
                        TextAnchor.UpperLeft,
                        selected ? Color.white : new Color(0.8f, 0.8f, 0.8f)
                    ))
-                Widgets.Label(nameRect, spren.Name?.ToStringShort ?? spren.LabelShortCap);
+                Widgets.Label(nameRect, sprenName);
 
             if (Widgets.ButtonInvisible(entryRect)) {
                 state.SelectedSprenIndex = i;

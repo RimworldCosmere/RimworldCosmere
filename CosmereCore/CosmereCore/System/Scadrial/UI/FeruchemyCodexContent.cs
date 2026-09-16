@@ -1,5 +1,7 @@
+using Cosmere.Core;
 using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Savant;
+using Cosmere.Core.UI;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
@@ -10,6 +12,7 @@ using Cosmere.System.Scadrial.Savant;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Scadrial.UI;
 
@@ -22,6 +25,8 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     private static readonly Color RowStripeColor = new Color(1f, 1f, 1f, 0.03f);
     private static readonly Color CoppermindHeaderColor = new Color(0.85f, 0.7f, 0.45f);
     private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
+    private static readonly Color OverallSkillColor = new Color(0.85f, 0.85f, 0.85f);
+    private static readonly Color UsageTextColor = new Color(0.75f, 0.75f, 0.75f);
 
     public bool HasProgression(Pawn pawn) {
         return CollectFeruchemists(pawn).Count > 0;
@@ -42,7 +47,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     public bool HasMemories(Pawn pawn) {
         List<Feruchemist> fs = CollectFeruchemists(pawn);
         for (int i = 0; i < fs.Count; i++) {
-            if (fs[i].metal?.defName == "Copper") return true;
+            if (fs[i].metal == MetallicArtsMetalDefOf.Copper) return true;
         }
 
         return false;
@@ -72,7 +77,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
         if (skill != null) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, OverallSkillColor)) {
                 Widgets.Label(
                     CodexChrome.ContentHeader(rect, y, 24f),
                     "CC_Codex_Feruchemy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
@@ -87,13 +92,16 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, ferus.Count * (rowHeight + rowGap));
         Widgets.BeginScrollView(listRect, ref state.ProgressionScroll, viewRect);
 
+        List<(MetallicArtsMetalDef metal, int stage, int storing, int tapping)> rows = SortedRows(pawn, ferus);
+
         y = 0f;
-        for (int i = 0; i < ferus.Count; i++) {
-            Feruchemist f = ferus[i];
-            MetallicArtsMetalDef metal = f.metal;
+        for (int i = 0; i < rows.Count; i++) {
+            (MetallicArtsMetalDef metal, int stage, int storingTicks, int tappingTicks) = rows[i];
 
             Rect row = new Rect(0f, y, viewRect.width, rowHeight);
-            if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
+            if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
+            Widgets.DrawHighlightIfMouseover(row);
+            MouseoverSounds.DoRegion(row);
 
             Rect swatch = new Rect(row.x + RowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
             Texture2D? mark = metal.feruchemy?.invertedIcon;
@@ -106,21 +114,17 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
             }
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-                Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, row.height), metal.LabelCap);
+            // the name column is a fixed width, so a long metal gets cut here and the row tooltip carries it whole
+            UIText.EllipsisLabel(
+                new Rect(swatch.xMax + 8f, row.y, 130f, row.height),
+                metal.LabelCap,
+                GameFont.Small,
+                TextAnchor.MiddleLeft,
+                Color.white
+            );
 
-            int stage = SavantUtility.CanBeSavant(metal)
-                ? ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, metal)
-                : 0;
             Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, row.height);
             SavantUI.DrawSavantStage(stageRect, stage, metal.color);
-
-            int storingTicks = 0;
-            int tappingTicks = 0;
-            if (pawn.records != null) {
-                storingTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentStoringForMetal(metal));
-                tappingTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentTappingForMetal(metal));
-            }
 
             // each half is a whole phrase: unworked reads "never stored", not "stored never".
             string storedLabel = storingTicks > 0
@@ -135,7 +139,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 : (string)"CC_Codex_Feruchemy_NeverTapped".Translate();
 
             Rect usageRect = new Rect(stageRect.xMax + 8f, row.y, row.xMax - stageRect.xMax - 12f, row.height);
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, UsageTextColor)) {
                 Widgets.Label(
                     usageRect,
                     "CC_Codex_Feruchemy_StoredTapped".Translate(
@@ -144,6 +148,17 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                     )
                 );
             }
+
+            // nothing here is clickable, but a row that never answers the mouse reads as broken
+            TooltipHandler.TipRegion(
+                row,
+                "CC_Codex_Feruchemy_RowTooltip".Translate(
+                    metal.LabelCap.Named("METAL"),
+                    SavantUI.StageLabel(stage).Named("STAGE"),
+                    storedLabel.Named("STORED"),
+                    tappedLabel.Named("TAPPED")
+                )
+            );
 
             y += rowHeight + rowGap;
         }
@@ -197,6 +212,35 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         }
 
         Widgets.EndScrollView();
+    }
+
+    /// <summary>
+    ///     Worked metals first: savant stage, then time on the metalmind. Stored and tapped add up
+    ///     because a pawn who only ever taps still knows that metal better than one who never has.
+    /// </summary>
+    private static List<(MetallicArtsMetalDef metal, int stage, int storing, int tapping)> SortedRows(
+        Pawn pawn,
+        List<Feruchemist> ferus
+    ) {
+        List<(MetallicArtsMetalDef metal, int stage, int storing, int tapping)> rows = [];
+        for (int i = 0; i < ferus.Count; i++) {
+            MetallicArtsMetalDef metal = ferus[i].metal;
+            int stage = SavantUtility.CanBeSavant(metal)
+                ? ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, metal)
+                : 0;
+            int storing = 0;
+            int tapping = 0;
+            if (pawn.records != null) {
+                storing = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentStoringForMetal(metal));
+                tapping = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentTappingForMetal(metal));
+            }
+
+            rows.Add((metal, stage, storing, tapping));
+        }
+
+        rows.Sort((a, b) => CodexRowOrder.Compare(a.stage, a.storing + a.tapping, b.stage, b.storing + b.tapping));
+
+        return rows;
     }
 
     private static void DrawStoreMemoryButton(
@@ -333,7 +377,9 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         List<Verse.Thing> items = pawn.inventory.innerContainer.InnerListForReading;
         for (int i = 0; i < items.Count; i++) {
             Metalmind? mind = (items[i] as ThingWithComps)?.TryGetComp<Metalmind>();
-            if (mind != null && mind.Metal?.defName == "Copper") {
+
+            // Metalmind.Metal resolves out of DefDatabase<MetalDef>, so this is the plain metal, not the Scadrial one
+            if (mind != null && mind.Metal == MetalDefOf.Copper) {
                 result.Add(mind);
             }
         }

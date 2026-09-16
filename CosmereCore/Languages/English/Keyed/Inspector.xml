@@ -58,7 +58,6 @@
   <CC_Codex_Feruchemy_StoreMemory_Title>Store a memory - {PAWN}</CC_Codex_Feruchemy_StoreMemory_Title>
   <CC_Codex_Feruchemy_StoreMemory_PawnMemories>Active memories</CC_Codex_Feruchemy_StoreMemory_PawnMemories>
   <CC_Codex_Feruchemy_StoreMemory_Copperminds>Available copperminds</CC_Codex_Feruchemy_StoreMemory_Copperminds>
-  <CC_Codex_Feruchemy_StoreMemory_Size>{SIZE}</CC_Codex_Feruchemy_StoreMemory_Size>
   <CC_Codex_Feruchemy_StoreMemory_CoppermindDetail>{COUNT} stored - {USED}/{MAX}</CC_Codex_Feruchemy_StoreMemory_CoppermindDetail>
   <CC_Codex_Feruchemy_StoreMemory_Hint_SelectMemory>Pick a memory to store.</CC_Codex_Feruchemy_StoreMemory_Hint_SelectMemory>
   <CC_Codex_Feruchemy_StoreMemory_Hint_SelectCoppermind>Pick a coppermind with room.</CC_Codex_Feruchemy_StoreMemory_Hint_SelectCoppermind>
@@ -155,4 +154,28 @@
     <CC_Storage_InvestitureBand_Tip>Only store things charged within this share of what they can hold. Anything that holds no Investiture is unaffected.</CC_Storage_InvestitureBand_Tip>
     <CC_Storage_InvestitureBand_Eject>Eject when out of range</CC_Storage_InvestitureBand_Eject>
     <CC_Storage_InvestitureBand_Eject_Tip>Stored charge drains over time. With this set, anything that falls outside the range is ejected and set down nearby instead of being kept.</CC_Storage_InvestitureBand_Eject_Tip>
+
+  <!-- from CodexChrome.xml -->
+  <CC_Codex_Autocast_EnabledTip>Enable this rule. A disabled rule stays on the list but never fires.</CC_Codex_Autocast_EnabledTip>
+  <CC_Codex_Autocast_RemoveConfirm>Remove this rule?\n\n{RULE}</CC_Codex_Autocast_RemoveConfirm>
+
+  <CC_Codex_Subtab_Autocast_Tip>Rules that cast this pawn's abilities without an order.</CC_Codex_Subtab_Autocast_Tip>
+  <CC_Codex_Subtab_Progression_Tip>How far this pawn has come with the system, and what comes next.</CC_Codex_Subtab_Progression_Tip>
+  <CC_Codex_Subtab_Bonds_Tip>The bonds this pawn holds, and what each one grants.</CC_Codex_Subtab_Bonds_Tip>
+  <CC_Codex_Subtab_Memories_Tip>Memories this pawn has stored, and the space they take.</CC_Codex_Subtab_Memories_Tip>
+
+  <CC_Connection_Tab_Shards_Tip>This pawn's Connection to each Shard.</CC_Connection_Tab_Shards_Tip>
+  <CC_Connection_Tab_Planets_Tip>This pawn's Connection to each world.</CC_Connection_Tab_Planets_Tip>
+
+  <!-- from CodexTables.xml -->
+    <CC_Codex_Allomancy_RowTooltip>&lt;b&gt;{METAL}&lt;/b&gt;\n{STAGE}\n{BURNED}</CC_Codex_Allomancy_RowTooltip>
+    <CC_Codex_Feruchemy_RowTooltip>&lt;b&gt;{METAL}&lt;/b&gt;\n{STAGE}\n{STORED}\n{TAPPED}</CC_Codex_Feruchemy_RowTooltip>
+
+  <!-- from CodexMemories.xml -->
+  <CC_Codex_Feruchemy_StoreMemory_Empty_Memories>Nothing weighs on this mind. There is no memory here to give up.</CC_Codex_Feruchemy_StoreMemory_Empty_Memories>
+  <CC_Codex_Feruchemy_StoreMemory_Empty_Copperminds>No coppermind is worn. A memory needs copper to hold it.</CC_Codex_Feruchemy_StoreMemory_Empty_Copperminds>
+  <CC_Codex_Feruchemy_StoreMemory_NoRoomTip>This memory needs {NEEDED} of room. The coppermind has {FREE} left.</CC_Codex_Feruchemy_StoreMemory_NoRoomTip>
+
+  <CC_Codex_Surgebinding_SprenEntry_Tip>{SPREN}, of the {ORDER}. Open the bond.</CC_Codex_Surgebinding_SprenEntry_Tip>
+  <CC_Codex_Surgebinding_SprenEntry_TipUnsworn>{SPREN}, bonded but unsworn. Open the bond.</CC_Codex_Surgebinding_SprenEntry_TipUnsworn>
 </LanguageData>

@@ -107,7 +107,7 @@
     <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
         <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_AwokenMind</defName>
         <label>Nightwatcher: awakened mind</label>
-        <description>The Nightwatcher broke something open in {PAWN_nameDef}'s mind. Patterns emerge where there were none before. Research comes faster, and {PAWN_possessive} hands work with a surgeon's instinct during operations.</description>
+        <description>The break in {PAWN_nameDef}'s Spiritweb never closed. Investiture pours through it twice as fast as it should, and the mind behind it runs clearer for the flood. Research comes faster. {PAWN_possessive} hands work with a surgeon's instinct during operations.</description>
         <stages>
             <li>
                 <statOffsets>

@@ -176,9 +176,9 @@
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
-        <defName>NW_Boon_Psylink</defName>
+        <defName>NW_Boon_AwakenedMind</defName>
         <label>awakened mind</label>
-        <description>The Nightwatcher cracked {PAWN_nameDef}'s Spiritweb wide open. Investiture floods in like water through broken stone. {PAWN_possessive} Connection to Cultivation runs deep now, and {PAWN_possessive} capacity for Stormlight has expanded beyond anything natural. The rhythms of Roshar hum through {PAWN_possessive} bones. Spren will notice.</description>
+        <description>The Nightwatcher cracked {PAWN_nameDef}'s Spiritweb wide open. Investiture floods in like water through broken stone. {PAWN_possessive} Connection to Cultivation runs deep now, and {PAWN_possessive} capacity for Stormlight has expanded beyond anything natural. The same break clears {PAWN_possessive} thinking. Patterns surface where {PAWN_pronoun} saw none before. The rhythms of Roshar hum through {PAWN_possessive} bones. Spren will notice.</description>
         <powerTier>3</powerTier>
         <surgebindingConnectionBoost>40</surgebindingConnectionBoost>
         <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_AwokenMind</hediff>

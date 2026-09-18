@@ -1,4 +1,5 @@
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.Nightwatcher;
 using Verse;
 
 namespace Cosmere.System.Roshar.Hediff;
@@ -15,6 +16,16 @@ public class NightwatcherCurseHediff : NightwatcherPassiveHediff {
             string intro =
                 "The Nightwatcher has laid a curse upon {PAWN_nameDef}. It cannot be removed by any ordinary means.";
             return (intro + "\n\n" + (curseDef?.description ?? string.Empty)).Formatted(pawn.Named("PAWN"));
+        }
+    }
+
+    public override string TipStringExtra {
+        get {
+            string tip = base.TipStringExtra;
+            string effects = curseDef != null ? NightwatcherEffectText.Curse(curseDef) : string.Empty;
+            if (effects.Length == 0) return tip;
+
+            return tip.NullOrEmpty() ? effects : tip + "\n" + effects;
         }
     }
 

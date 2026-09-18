@@ -49,12 +49,20 @@ public sealed class DockAccordion {
 
             if (!isExpanded) continue;
 
+            float pinnedHeight = section.GetPinnedHeight(pawn, snap, ctx);
+            if (pinnedHeight > 0f) {
+                Rect pinnedRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, pinnedHeight);
+                section.DrawPinned(pinnedRect, pawn, snap, ctx);
+                y += pinnedHeight;
+            }
+
             float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
 
             // Two ceilings, the lower one wins - without the settings cap, a large section runs off a short screen.
-            float availableHeight = Mathf.Min(
+            float availableHeight = DockBodyBudget.For(
                 rect.yMax - y,
-                Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight
+                Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight,
+                pinnedHeight
             );
             Rect bodyRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, Mathf.Min(bodyHeight, availableHeight));
             if (bodyHeight > availableHeight) {

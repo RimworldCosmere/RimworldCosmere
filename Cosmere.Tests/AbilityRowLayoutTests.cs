@@ -51,25 +51,24 @@ public class AbilityRowLayoutTests {
     }
 
     [TestMethod]
-    public void HeadersOnlyWhenBothKindsPresent() {
-        Assert.IsTrue(AbilityRowLayout.ShowGroupHeaders([Sustained("SteelAura"), Targeted("SteelPush")]));
-        Assert.IsFalse(AbilityRowLayout.ShowGroupHeaders([Sustained("CopperAura")]));
-        Assert.IsFalse(AbilityRowLayout.ShowGroupHeaders([Targeted("Chromium")]));
-        Assert.IsFalse(AbilityRowLayout.ShowGroupHeaders([]));
-    }
-
-    [TestMethod]
-    public void HeightCountsRowsGapsAndHeaders() {
+    public void HeightCountsRowsGapsAndOneHeaderPerKind() {
         float one = AbilityRowLayout.HeightFor([Sustained("CopperAura")]);
-        Assert.AreEqual(AbilityRowLayout.RowHeight, one, 0.001f);
+        Assert.AreEqual(AbilityRowLayout.RowHeight + AbilityRowLayout.GroupHeaderHeight, one, 0.001f);
+
+        float lone = AbilityRowLayout.HeightFor([Targeted("Chromium")]);
+        Assert.AreEqual(AbilityRowLayout.RowHeight + AbilityRowLayout.GroupHeaderHeight, lone, 0.001f);
 
         float two = AbilityRowLayout.HeightFor([Sustained("CopperAura"), Sustained("Extra")]);
-        Assert.AreEqual(AbilityRowLayout.RowHeight * 2f + AbilityRowLayout.RowGap, two, 0.001f);
+        Assert.AreEqual(
+            AbilityRowLayout.RowHeight * 2f + AbilityRowLayout.RowGap + AbilityRowLayout.GroupHeaderHeight,
+            two,
+            0.001f
+        );
 
-        float grouped = AbilityRowLayout.HeightFor([Sustained("IronAura"), Targeted("IronPull")]);
+        float both = AbilityRowLayout.HeightFor([Sustained("IronAura"), Targeted("IronPull")]);
         Assert.AreEqual(
             AbilityRowLayout.RowHeight * 2f + AbilityRowLayout.RowGap + AbilityRowLayout.GroupHeaderHeight * 2f,
-            grouped,
+            both,
             0.001f
         );
     }

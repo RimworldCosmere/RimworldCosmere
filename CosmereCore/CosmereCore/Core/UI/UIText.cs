@@ -45,16 +45,23 @@ public static class UIText {
         }
     }
 
-    public static void EllipsisLabel(Rect rect, string text, GameFont font, TextAnchor anchor, Color color) {
+    /// <summary>
+    ///     Truncate is not tag-aware, so bold is applied to the fitted string, never handed to it.
+    /// </summary>
+    public static void EllipsisLabel(
+        Rect rect,
+        string text,
+        GameFont font,
+        TextAnchor anchor,
+        Color color,
+        bool bold = false) {
         using (new TextBlock(font, anchor, color)) {
-            if (Text.CalcSize(text).x <= rect.width) {
-                Widgets.Label(rect, text);
-                return;
-            }
+            Text.WordWrap = false;
+            bool fits = Text.CalcSize(text).x <= rect.width;
+            string fitted = fits ? text : text.Truncate(rect.width);
+            Widgets.Label(rect, bold ? "<b>" + fitted + "</b>" : fitted);
 
-            string truncated = text.Truncate(rect.width);
-            Widgets.Label(rect, truncated);
-            TooltipHandler.TipRegion(rect, text);
+            if (!fits) TooltipHandler.TipRegion(rect, text);
         }
     }
 }

@@ -50,7 +50,7 @@ public sealed class FeruchemyDialWidget {
                 rect,
                 label,
                 FeruchemyPalette.CompoundTint,
-                kind: on ? DockButtonKind.Active : DockButtonKind.Primary,
+                active: on,
                 enabled: report.Accepted && eligible
             )) {
             return rect.yMax;

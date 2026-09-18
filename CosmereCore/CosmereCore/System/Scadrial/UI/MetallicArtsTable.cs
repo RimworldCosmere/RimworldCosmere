@@ -1,5 +1,6 @@
 using System;
 using Cosmere.Core.UI;
+using Cosmere.Core.UI.Dock;
 using UnityEngine;
 using Verse;
 
@@ -11,6 +12,9 @@ public static class MetallicArtsTable {
     private static float QuadHeaderHeight => Text.LineHeightOf(GameFont.Tiny) + 3f;
 
     private const float QuadGap = 6f;
+
+    // room between a heading and its first row of tiles; the heading text otherwise sits on the tile border
+    private const float HeaderGap = 4f;
     private const float TileGap = 3f;
     private const int Columns = 2;
 
@@ -21,7 +25,8 @@ public static class MetallicArtsTable {
     public static float HeightFor(
         IReadOnlyList<MetalGroup> groups,
         string? expandedSubsystemId,
-        float expandedStripHeight
+        float expandedStripHeight,
+        Func<MetalGroup, bool>? collapsed = null
     ) {
         float height = 0f;
         for (int g = 0; g < groups.Count; g++) {
@@ -29,6 +34,13 @@ public static class MetallicArtsTable {
             if (group.Rows.Count == 0) continue;
 
             height += QuadHeaderHeight;
+            if (collapsed != null && collapsed(group)) {
+                height += QuadGap;
+                continue;
+            }
+
+            height += HeaderGap;
+
             height += RowCount(group.Rows.Count) * (MetalTile.Height + TileGap);
             if (expandedSubsystemId != null && ContainsMetal(group, expandedSubsystemId)) {
                 height += JoinGap + expandedStripHeight;
@@ -48,7 +60,9 @@ public static class MetallicArtsTable {
         float expandedStripHeight,
         float stripFullHeight,
         Action<Rect, MetalRow> drawTile,
-        Action<Rect, MetalRow, Rect>? drawStrip
+        Action<Rect, MetalRow, Rect>? drawStrip,
+        Func<MetalGroup, bool>? collapsed = null,
+        Action<MetalGroup>? onHeaderClick = null
     ) {
         float y = rect.y;
         float tileWidth = (rect.width - TileGap * (Columns - 1)) / Columns;
@@ -57,14 +71,41 @@ public static class MetallicArtsTable {
             MetalGroup group = groups[g];
             if (group.Rows.Count == 0) continue;
 
+            Rect headerRect = new Rect(rect.x, y, rect.width, QuadHeaderHeight);
+            bool folded = collapsed != null && collapsed(group);
             UIText.EllipsisLabel(
-                new Rect(rect.x, y, rect.width, QuadHeaderHeight),
+                headerRect,
                 group.LabelKey.Translate(),
                 GameFont.Tiny,
                 TextAnchor.MiddleLeft,
                 headerColor
             );
+
+            if (onHeaderClick != null) {
+                // a folded group has no tiles left to hint at itself, so the count says what is hidden
+                UIText.EllipsisLabel(
+                    headerRect,
+                    folded
+                        ? "CC_Dock_Group_Folded".Translate(group.Rows.Count.Named("COUNT"))
+                        : "CC_Dock_Fold_Hide".Translate(),
+                    GameFont.Tiny,
+                    TextAnchor.MiddleRight,
+                    DockPalette.GroupLabel
+                );
+                Widgets.DrawHighlightIfMouseover(headerRect);
+                if (Widgets.ButtonInvisible(headerRect)) {
+                    onHeaderClick(group);
+                    Event.current?.Use();
+                }
+            }
+
             y += QuadHeaderHeight;
+            if (folded) {
+                y += QuadGap;
+                continue;
+            }
+
+            y += HeaderGap;
 
             for (int r = 0; r < group.Rows.Count; r++) {
                 int column = r % Columns;

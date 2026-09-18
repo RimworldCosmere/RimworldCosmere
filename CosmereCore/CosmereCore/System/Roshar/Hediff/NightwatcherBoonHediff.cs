@@ -1,10 +1,12 @@
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.Nightwatcher;
 using Verse;
 
 namespace Cosmere.System.Roshar.Hediff;
 
 public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
     private NightwatcherBoonDef boonDef = null!;
+    private string? choiceKey;
 
     public NightwatcherBoonDef Boon => boonDef;
 
@@ -18,8 +20,21 @@ public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
         }
     }
 
-    public void Initialize(NightwatcherBoonDef def) {
+    public override string TipStringExtra {
+        get {
+            string tip = base.TipStringExtra;
+            if (boonDef == null) return tip;
+
+            string effects = NightwatcherEffectText.Boon(boonDef, choiceKey);
+            if (effects.Length == 0) return tip;
+
+            return tip.NullOrEmpty() ? effects : tip + "\n" + effects;
+        }
+    }
+
+    public void Initialize(NightwatcherBoonDef def, string? selectedDefName = null) {
         boonDef = def;
+        choiceKey = selectedDefName;
         Severity = 1f;
     }
 
@@ -30,5 +45,6 @@ public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Defs.Look(ref boonDef, "boonDef");
+        Scribe_Values.Look(ref choiceKey, "choiceKey");
     }
 }

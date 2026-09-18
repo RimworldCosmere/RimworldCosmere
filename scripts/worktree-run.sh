@@ -56,7 +56,7 @@ docker stop "gamecrate-rimworld-$PROFILE" >/dev/null 2>&1 || true
 rm -f "$HOME/.local/share/gamecrate/rimworld/$PROFILE/.gamecrate/lock"
 
 echo "==> launch"
-(cd "$WT" && gamecrate rimworld "$PROFILE" -- "-cosmerequickstart=$QUICKSTART") >/dev/null 2>&1 &
+(cd "$WT" && gamecrate rimworld "$PROFILE" -- "-quickstart=$QUICKSTART") >/dev/null 2>&1 &
 
 until docker ps --filter "name=gamecrate-rimworld-$PROFILE" --format '{{.Names}}' | grep -q "$PROFILE"; do
     sleep 1
@@ -87,9 +87,9 @@ RUNS="$HOME/.local/share/gamecrate/rimworld/$PROFILE/logs/runs"
 D=$(ls -1t "$RUNS" | head -1)
 LOG="$RUNS/$D/Player.log"
 for _ in $(seq 1 90); do
-    grep -q "Game loaded and ready" "$LOG" 2>/dev/null && break
+    grep -q "Quickstarter.*Loaded '" "$LOG" 2>/dev/null && break
     sleep 2
 done
 
 echo "log: $LOG"
-grep -c "Game loaded and ready" "$LOG" | sed 's/^/    loaded: /'
+grep -c "Quickstarter.*Loaded '" "$LOG" | sed 's/^/    loaded: /'

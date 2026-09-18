@@ -20,6 +20,19 @@ public interface IDockSection {
 
     void DrawHeader(Rect rect, bool expanded);
 
+    float GetPinnedHeight(
+        Pawn pawn,
+        InvestitureSnapshot snapshot,
+        DockRenderContext ctx
+    );
+
+    void DrawPinned(
+        Rect rect,
+        Pawn pawn,
+        InvestitureSnapshot snapshot,
+        DockRenderContext ctx
+    );
+
     void DrawBody(
         Rect rect,
         Pawn pawn,

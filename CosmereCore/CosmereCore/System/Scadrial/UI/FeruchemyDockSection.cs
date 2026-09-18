@@ -39,6 +39,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
     private readonly Reveal reveal = new Reveal();
     private readonly FeruchemyDialWidget dial = new FeruchemyDialWidget();
+
     private IReadOnlyList<MetalGroup>? cachedGroups;
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
@@ -85,6 +86,22 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         pendingMetal = subsystemId;
     }
 
+    private bool IsCollapsed(MetalGroup group) {
+        return IsGroupCollapsed(group.LabelKey);
+    }
+
+    /// Folding a quadrant closes any metal open inside it - the strip would otherwise keep
+    /// its height with nothing above it to say where it came from.
+    private void ToggleGroup(MetalGroup group) {
+        if (!ToggleGroupFold(group.LabelKey)) return;
+
+        for (int i = 0; i < group.Rows.Count; i++) {
+            string id = group.Rows[i].Cell.SubsystemId;
+            if (expandedMetal == id) expandedMetal = null;
+            if (pendingMetal == id) pendingMetal = null;
+        }
+    }
+
     public override string SystemId => "Feruchemy";
 
     public override float GetHeaderHeight() {
@@ -94,7 +111,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         crest.Refresh(pawn, snapshot);
         StepReveal(StripHeightFor(FindGene(pawn, expandedMetal ?? pendingMetal)));
-        return crest.Height + MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), revealedMetal, revealedHeight);
+        return crest.Height + MetallicArtsTable.HeightFor(
+            GroupsFor(pawn, snapshot),
+            revealedMetal,
+            revealedHeight,
+            IsCollapsed
+        );
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
@@ -112,7 +134,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             revealedHeight,
             revealedStripHeight,
             (tileRect, row) => DrawTile(tileRect, pawn, row),
-            (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect)
+            (stripRect, row, tileRect) => DrawStrip(stripRect, pawn, row, tileRect),
+            IsCollapsed,
+            ToggleGroup
         );
     }
 
@@ -130,14 +154,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
                     ? MetalTileState.Active
                     : MetalTileState.Idle;
 
-        Color tint = compounding
-            ? FeruchemyPalette.CompoundTint
-            : gene is { isStoring: true }
-                ? FeruchemyPalette.StoreFill
-                : gene is { isTapping: true }
-                    ? FeruchemyPalette.TapFill
-                    : ActiveTint;
-
         MetalTile.Draw(
             rect,
             cell.Icon,
@@ -146,11 +162,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.StoredFraction,
             MetalPalette.For(cell.SubsystemId),
             state,
-            tint,
             capacity.CompoundedFraction,
             capacity.CanStoreCompounded || capacity.Internal > 0f ? FeruchemyPalette.CompoundTint : null,
             SavantStageFor(pawn, cell),
-            revealedMetal == cell.SubsystemId
+            revealedMetal == cell.SubsystemId,
+            capacity.HasMetalmind
+                ? revealedMetal == cell.SubsystemId
+                    ? (string)"CC_Dock_Fold_Hide".Translate()
+                    : (string)"CC_Dock_Fold_Show".Translate()
+                : null
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell, capacity), cell.SubsystemId.GetHashCode());
@@ -172,25 +192,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         FeruchemyCapacity capacity = FeruchemyCapacity.Of(gene);
 
-        // same fill/stroke as the tile - a working metalmind carries its accent through the join, one running thing.
-        bool compounding = gene.isCompounding;
-        bool hot = compounding || gene.isTapping || gene.isStoring;
-        Color tint = compounding
-            ? FeruchemyPalette.CompoundTint
-            : gene.isStoring
-                ? FeruchemyPalette.StoreFill
-                : gene.isTapping
-                    ? FeruchemyPalette.TapFill
-                    : ActiveTint;
-        Panel.DrawNotchedTop(
-            rect,
-            MetalTile.Fill,
-            hot ? tint : MetalTile.Border,
-            openTile.x,
-            openTile.xMax,
-            hot ? tint : null,
-            Panel.LitWash(compounding)
-        );
+        // same fill/stroke as the tile, and no accent either - the rows below already say what the metalmind is doing.
+        Panel.DrawNotchedTop(rect, DockPalette.StripFill, MetalTile.Border, openTile.x, openTile.xMax);
 
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
@@ -268,8 +271,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (DockButton.Draw(
                 new Rect(inner.x, buttonY, inner.width, StripButtonHeight),
                 "CC_Dock_Feruchemy_Idle".Translate(),
-                ActiveTint,
-                kind: DockButtonKind.Ghost
+                ActiveTint
             )) {
             gene.Reset();
             Event.current?.Use();

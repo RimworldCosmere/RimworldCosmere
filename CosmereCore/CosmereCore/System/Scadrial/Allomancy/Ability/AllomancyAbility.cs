@@ -93,13 +93,17 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         flareStartTick = -1;
     }
 
+    /// <summary>
+    ///     Priced at the status the cast would move to, so a flare is charged as a flare. The base
+    ///     asks only whether the reserve covers one tick, which let the wheel start a burn the gizmo refused.
+    /// </summary>
     public override AcceptanceReport CanCast {
         get {
             if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation, ShardDefOf.Ruin, ShardDefOf.Harmony)) {
                 return "CS_Allomancy_NoShardPresent".Translate();
             }
 
-            return base.CanCast;
+            return Gene.CanBurn(GetDesiredBurnRateForStatus(nextStatus ?? Status.PowerOne));
         }
     }
 

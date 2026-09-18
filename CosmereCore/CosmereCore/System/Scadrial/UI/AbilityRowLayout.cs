@@ -21,8 +21,9 @@ public static class AbilityRowLayout {
         return ordered;
     }
 
-    // A lone header over a single row is chrome, and twelve of sixteen metals grant one ability.
-    public static bool ShowGroupHeaders(IReadOnlyList<AbilityRow> rows) {
+    /// One heading per kind a metal actually has. Without it a lone row never says whether
+    /// clicking it holds a burn or opens targeting.
+    private static int KindCount(IReadOnlyList<AbilityRow> rows) {
         bool sustained = false;
         bool targeted = false;
         for (int i = 0; i < rows.Count; i++) {
@@ -30,15 +31,12 @@ public static class AbilityRowLayout {
             else sustained = true;
         }
 
-        return sustained && targeted;
+        return (sustained ? 1 : 0) + (targeted ? 1 : 0);
     }
 
     public static float HeightFor(IReadOnlyList<AbilityRow> rows) {
         if (rows.Count == 0) return 0f;
 
-        float height = rows.Count * RowHeight + (rows.Count - 1) * RowGap;
-        if (ShowGroupHeaders(rows)) height += GroupHeaderHeight * 2f;
-
-        return height;
+        return rows.Count * RowHeight + (rows.Count - 1) * RowGap + KindCount(rows) * GroupHeaderHeight;
     }
 }

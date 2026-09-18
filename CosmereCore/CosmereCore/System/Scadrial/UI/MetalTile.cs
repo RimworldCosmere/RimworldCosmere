@@ -20,9 +20,6 @@ public static class MetalTile {
     /// sized to be read rather than a hairline, and sits clear of the bottom edge.
     public const float Height = 64f;
 
-    /// Shared exactly with the detail panel a tile opens into - two tones on one merged shape read as
-    /// two shapes. Translucent so the parchment grain still shows through, not a flat chip on top.
-    public static readonly Color Fill = new Color(0.063f, 0.051f, 0.039f, 0.38f);
     public static readonly Color Border = new Color(0.298f, 0.243f, 0.169f);
 
     private static readonly Color InertFill = new Color(0.043f, 0.035f, 0.027f, 0.55f);
@@ -41,33 +38,22 @@ public static class MetalTile {
         float fraction,
         Color metalColor,
         MetalTileState state,
-        Color activeTint,
         float compoundedFraction = 0f,
         Color? compoundedTint = null,
         int savantStage = 0,
-        bool joinedBelow = false
+        bool joinedBelow = false,
+        string? foldLabel = null
     ) {
         bool inert = state == MetalTileState.Inert;
         bool hot = state == MetalTileState.Active || state == MetalTileState.Flaring;
 
-        Color fill = inert ? InertFill : Fill;
-        Color border = hot ? activeTint : Border;
+        Color fill = inert ? InertFill : DockPalette.StripFill;
 
-        float wash = Panel.LitWash(state == MetalTileState.Flaring);
-
-        // open tile carries fill, stroke and lit wash through the join gap - one surface, not a box on a box.
+        // burning reads in the name colour, the reserve band and the pinned strip - no accent border, no wash.
         if (joinedBelow) {
-            Panel.DrawJoinedDown(
-                rect,
-                fill,
-                border,
-                MetallicArtsTable.JoinGap,
-                hot ? activeTint : null,
-                wash
-            );
+            Panel.DrawJoinedDown(rect, fill, Border, MetallicArtsTable.JoinGap);
         } else {
-            Panel.Draw(rect, fill, border);
-            if (hot) Panel.Active(rect, activeTint, wash);
+            Panel.Draw(rect, fill, Border);
         }
 
         DrawSavantFold(rect, savantStage);
@@ -92,14 +78,22 @@ public static class MetalTile {
 
         // measured, not reserved - axis mark is 2 chars, capacity reading is 5; a flat reservation starves the name.
         float noteWidth;
+        float foldWidth = 0f;
         using (new TextBlock(GameFont.Tiny)) {
             noteWidth = note.NullOrEmpty() ? 0f : Text.CalcSize(note).x + 4f;
+            if (!foldLabel.NullOrEmpty()) foldWidth = Text.CalcSize(foldLabel).x + 8f;
         }
 
         // centred on the glyph, not top-pinned - Tiny text is shorter, so top-align floated the name above the icon.
         float textY = iconRect.y + (GlyphSize - tinyH) / 2f;
 
-        Rect noteRect = new Rect(rect.xMax - 5f - noteWidth, textY, noteWidth, tinyH);
+        // fold word takes the right edge, note steps left - a second gauge leaves no row below for it.
+        if (foldWidth > 0f) {
+            Rect foldRect = new Rect(rect.xMax - 5f - foldWidth, textY, foldWidth, tinyH);
+            UIText.EllipsisLabel(foldRect, foldLabel!, GameFont.Tiny, TextAnchor.MiddleRight, DockPalette.GroupLabel);
+        }
+
+        Rect noteRect = new Rect(rect.xMax - 5f - foldWidth - noteWidth, textY, noteWidth, tinyH);
         UIText.EllipsisLabel(noteRect, note, GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.365f, 0.337f, 0.290f));
 
         Rect nameRect = new Rect(iconRect.xMax + 5f, textY, noteRect.x - iconRect.xMax - 7f, tinyH);
@@ -112,17 +106,17 @@ public static class MetalTile {
                     : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
-        if (!inert) Panel.Hover(rect, hot ? activeTint : Border, joinedBelow ? MetallicArtsTable.JoinGap : 0f);
+        if (!inert) Panel.Hover(rect, Border, joinedBelow ? MetallicArtsTable.JoinGap : 0f);
+
+        bool twoPools = compoundedTint.HasValue;
+        float bandTop = rect.yMax - BandLift
+            - (twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight);
 
         // skip the band here - the panel below repeats the reading. Height stays fixed either way, or the row jumps.
         if (joinedBelow) return;
 
         // two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
-        bool twoPools = compoundedTint.HasValue;
-        float bottom = rect.yMax - BandLift;
-        float stack = twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight;
-
-        Rect band = new Rect(rect.x + 4f, bottom - stack, rect.width - 8f, BandHeight);
+        Rect band = new Rect(rect.x + 4f, bandTop, rect.width - 8f, BandHeight);
         DrawGauge(band, inert ? 0f : fraction, metalColor, new Color(0.047f, 0.043f, 0.035f));
 
         if (!twoPools) return;

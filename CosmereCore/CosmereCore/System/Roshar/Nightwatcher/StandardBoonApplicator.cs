@@ -16,7 +16,7 @@ public class StandardBoonApplicator : IBoonApplicator {
 
     public void Apply(Pawn pawn, Verse.Def def, NightwatcherApplicationContext? context = null) {
         NightwatcherBoonDef boon = (NightwatcherBoonDef)def;
-        ApplyHediff(pawn, boon);
+        ApplyHediff(pawn, boon, context);
         ApplySkillBoosts(pawn, boon);
         ApplyTraitGrant(pawn, boon);
         ApplyTraitRemove(pawn, boon);
@@ -25,7 +25,7 @@ public class StandardBoonApplicator : IBoonApplicator {
         ApplyPsylink(pawn, boon);
     }
 
-    private static void ApplyHediff(Pawn pawn, NightwatcherBoonDef boon) {
+    private static void ApplyHediff(Pawn pawn, NightwatcherBoonDef boon, NightwatcherApplicationContext? context) {
         if (boon.hediff != null) {
             EnsureHediffPersistence(boon.hediff);
             pawn.health.AddHediff(HediffMaker.MakeHediff(boon.hediff, pawn));
@@ -36,7 +36,7 @@ public class StandardBoonApplicator : IBoonApplicator {
         if (boonHediffDef != null) {
             EnsureHediffPersistence(boonHediffDef);
             NightwatcherBoonHediff boonHediff = (NightwatcherBoonHediff)HediffMaker.MakeHediff(boonHediffDef, pawn);
-            boonHediff.Initialize(boon);
+            boonHediff.Initialize(boon, context?.SelectedDefName);
             pawn.health.AddHediff(boonHediff);
         }
     }

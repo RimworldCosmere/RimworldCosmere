@@ -9,6 +9,10 @@ public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
     private static readonly Dictionary<Verse.Thing, float> MetalThingCache = new Dictionary<Verse.Thing, float>();
 
+    // keyed by def, not by the throwaway sample Thing, or every recipe walk re-makes and re-walks every ingredient
+    private static readonly Dictionary<(ThingDef, bool), float> SampleMassCache = new Dictionary<(ThingDef, bool), float>();
+    private static readonly HashSet<(ThingDef, bool)> SamplesInProgress = new HashSet<(ThingDef, bool)>();
+
     public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
         return thingDef?.category is ThingCategory.Item
             or ThingCategory.Building
@@ -121,9 +125,22 @@ public static class MetalDetector {
     }
 
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
-        Verse.Thing? item = MakeSample(def.thingDef);
-        float metalMass = GetMetalMass(item, depth + 1, allowAluminum);
-        return metalMass * def.count;
+        return SampleMass(def.thingDef, depth + 1, allowAluminum) * def.count;
+    }
+
+    /// <summary>
+    ///     Metal mass of a default-stuff sample of the def. A def already mid-walk reads as 0, so a
+    ///     recipe cycle (A needs B, B is made from A) stops instead of recursing.
+    /// </summary>
+    private static float SampleMass(ThingDef thingDef, int depth, bool allowAluminum) {
+        (ThingDef, bool) key = (thingDef, allowAluminum);
+        if (SampleMassCache.TryGetValue(key, out float cached)) return cached;
+        if (!SamplesInProgress.Add(key)) return 0f;
+
+        float mass = CalculateMetalMass(MakeSample(thingDef), depth, allowAluminum);
+        SamplesInProgress.Remove(key);
+        SampleMassCache[key] = mass;
+        return mass;
     }
 
     public static List<RecipeDef> RecipesThatMake(ThingDef thingDef) {
@@ -146,7 +163,7 @@ public static class MetalDetector {
         if (!Enumerable.Any(
                 recipe.ingredients,
                 ingredient => ingredient.filter.AllowedThingDefs.Any(thingDef =>
-                    GetMetalMass(MakeSample(thingDef), depth, allowAluminum) > 0f
+                    SampleMass(thingDef, depth, allowAluminum) > 0f
                 )
             )) {
             MetalRecipeCache[recipe] = false;

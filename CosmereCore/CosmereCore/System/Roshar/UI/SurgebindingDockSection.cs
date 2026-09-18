@@ -54,39 +54,17 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     private const float TabRowHeight = 22f;
     private const float TabGap = 4f;
 
-    private static readonly Color MutedText = new Color(0.522f, 0.612f, 0.706f);
-    private static readonly Color DimText = new Color(0.365f, 0.427f, 0.502f);
-    private static readonly Color LockedText = new Color(0.325f, 0.361f, 0.412f);
-    private static readonly Color SecondaryAccent = new Color(0.302f, 0.396f, 0.478f);
+    // The inert parchment a metal tile gives a name nobody is burning.
+    private static readonly Color LockedText = new Color(0.435f, 0.412f, 0.373f);
 
-    /// <summary>
-    ///     Matched to the Metallic Arts tables, not invented: translucent wash, muted border.
-    ///     An open cell gets an accent tint plus an edge bar, never a background swap.
-    /// </summary>
     private const float CellPad = 6f;
     private const float StripPad = 6f;
-    private const float ActiveWash = 0.18f;
 
     /// <summary>
     ///     The open Surge cell runs down through this gap into its detail panel, so the
     ///     panel clears the other Surge rather than butting against the whole row.
     /// </summary>
     private const float JoinGap = LineGap;
-
-    private static readonly Color CellBack = new Color(0.055f, 0.075f, 0.110f, 0.38f);
-    private static readonly Color CellBorder = new Color(0.220f, 0.286f, 0.353f);
-
-    /// <summary>
-    ///     A step darker than the cell, because the ability rows sit inside a panel drawn
-    ///     in the cell's own fill - matching it would leave them invisible against it.
-    /// </summary>
-    private static readonly Color AbilityBack = new Color(0.047f, 0.063f, 0.090f, 0.45f);
-    private static readonly Color AbilityBorder = new Color(0.204f, 0.259f, 0.318f);
-    private static readonly Color HoverBorder = new Color(0.443f, 0.541f, 0.639f);
-    private static readonly Color TabOn = new Color(0.141f, 0.192f, 0.235f);
-    private static readonly Color TabOff = new Color(0.090f, 0.106f, 0.118f);
-    private static readonly Color TabBorder = new Color(0.200f, 0.255f, 0.298f);
-    private static readonly Color TabTextOff = new Color(0.435f, 0.502f, 0.565f);
 
     private readonly List<Surgebinder> bonds = [];
     private readonly List<SurgeCount> cachedSurges = [];
@@ -108,12 +86,6 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     // Picked while another Surge was still open, and held until that one has gone.
     private string? pendingSurge;
 
-    /// <summary>
-    ///     Where the open cell was drawn this frame. The panel needs it to know which span
-    ///     of its own top edge to leave open.
-    /// </summary>
-    private Rect revealedCell;
-
     public override string SystemId => "Surgebinding";
 
     public override float GetHeaderHeight() {
@@ -133,6 +105,8 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                        + GaugeHeight
                        + NotchGutter
                        + Text.LineHeightOf(GameFont.Tiny)
+                       + LineGap
+                       + OathLadderLayout.Height
                        + LineGap
                        + Text.LineHeightOf(GameFont.Tiny)
                        + BlockGap
@@ -179,7 +153,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             order.LabelCap,
             subtitle,
             IdealLabel(gene.CurrentIdealDisplay),
-            new CrestPalette(Color.white, MutedText, Skin.AccentColor)
+            new CrestPalette(Color.white, DockPalette.MutedText, DockPalette.MutedText)
         );
 
         // gauge fill stays roshar-accent, not order colour - orders run near-black to near-white across the ten.
@@ -210,7 +184,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             ),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            MutedText
+            DockPalette.MutedText
         );
 
         // sign comes from the number format, not the key: a reserve that isn't draining reads "0.00/s", not "-0.00/s".
@@ -219,18 +193,28 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             "CC_Dock_Gauge_Rate".Translate(gene.DrainPerSecond.ToString("-0.00;-0.00;0.00")),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
-            gene.DrainPerSecond > 0f ? MutedText : DimText
+            gene.DrainPerSecond > 0f ? DockPalette.MutedText : DockPalette.GroupLabel
         );
 
-        Rect captionRect = new Rect(inner.x, readingRect.yMax + LineGap, inner.width, tinyHeight);
+        // the ladder is the progression readout; the ceiling sentence is a footnote to it.
+        Rect ladderRect = new Rect(inner.x, readingRect.yMax + LineGap, inner.width, OathLadderLayout.Height);
+        OathLadder.Draw(ladderRect, order, gene, Skin.BarFillColor);
+
+        Rect captionRect = new Rect(inner.x, ladderRect.yMax + LineGap, inner.width, tinyHeight);
+        UIText.EllipsisLabel(
+            captionRect,
+            RefillLabel(gene),
+            GameFont.Tiny,
+            TextAnchor.MiddleLeft,
+            DockPalette.GroupLabel
+        );
         UIText.EllipsisLabel(
             captionRect,
             CeilingCaption(gene, order),
             GameFont.Tiny,
-            TextAnchor.MiddleLeft,
-            gene.PendingOath ? Skin.AccentColor : DimText
+            TextAnchor.MiddleRight,
+            gene.PendingOath ? DockPalette.HotLabel : DockPalette.GroupLabel
         );
-        UIText.EllipsisLabel(captionRect, RefillLabel(gene), GameFont.Tiny, TextAnchor.MiddleRight, DimText);
 
         Rect surgeRow = new Rect(inner.x, captionRect.yMax + BlockGap, inner.width, SurgeRowHeight);
         DrawSurgeRow(surgeRow, pawn, order);
@@ -247,7 +231,6 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 Widgets.BeginGroup(strip);
                 DrawAbilityStrip(
                     new Rect(0f, 0f, strip.width, full),
-                    new Rect(revealedCell.x - strip.x, 0f, revealedCell.width, revealedCell.height),
                     pawn,
                     gene,
                     order,
@@ -255,7 +238,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 );
                 Widgets.EndGroup();
             } else {
-                DrawAbilityStrip(strip, revealedCell, pawn, gene, order, shown.abilities);
+                DrawAbilityStrip(strip, pawn, gene, order, shown.abilities);
             }
 
             y = strip.yMax;
@@ -277,7 +260,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         if (gene.PendingOath) {
             Rect oathRect = new Rect(inner.x, y, inner.width, OathButtonHeight);
             TooltipHandler.TipRegion(oathRect, OathTooltip(gene, order));
-            if (DockButton.Draw(oathRect, "CC_Dock_Oath_Speak".Translate(), Skin.AccentColor, true)) {
+            if (DockButton.Draw(oathRect, "CC_Dock_Oath_Speak".Translate(), DockPalette.HotLabel, true)) {
                 Find.WindowStack.Add(new Dialog_RadiantOrderInfoDialog(pawn, gene, RadiantOrderInfoMode.SpeakOath));
             }
 
@@ -285,7 +268,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
 
         Rect infoRect = new Rect(inner.x, y, inner.width, InfoButtonHeight);
-        if (DockButton.Draw(infoRect, "CC_Dock_Order_Info".Translate(), SecondaryAccent, false)) {
+        if (DockButton.Draw(infoRect, "CC_Dock_Order_Info".Translate(), DockPalette.HotLabel, false)) {
             Find.WindowStack.Add(new Dialog_RadiantOrderInfoDialog(pawn, gene, RadiantOrderInfoMode.View));
         }
     }
@@ -380,15 +363,21 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             bool active = order.defName == selectedOrder;
             Rect tab = new Rect(row.x + i * (width + TabGap), row.y, width, row.height);
 
-            Widgets.DrawBoxSolid(tab, active ? TabOn : TabOff);
-            Widgets.DrawBoxSolidWithOutline(tab, Color.clear, active ? Skin.AccentColor : TabBorder);
             UIText.EllipsisLabel(
                 tab,
                 order.LabelCap,
                 GameFont.Tiny,
                 TextAnchor.MiddleCenter,
-                active ? Skin.HeaderTextColor : TabTextOff
+                active ? DockPalette.HotLabel : DockPalette.GroupLabel
             );
+
+            // the selected bond is named, not boxed - a hairline under it is the whole state.
+            if (active) {
+                Widgets.DrawBoxSolid(
+                    new Rect(tab.x, tab.yMax - 1f, tab.width, 1f),
+                    DockPalette.HotLabel
+                );
+            }
 
             TooltipHandler.TipRegion(
                 tab,
@@ -478,23 +467,10 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             SurgeCount surge = cachedSurges[i];
             Rect cell = new Rect(row.x + i * (cellWidth + LineGap), row.y, cellWidth, row.height);
 
-            // tracked against what's on screen, not selected, so a closing cell stays merged while it slides away.
+            // tracked against what's on screen, not selected, so a closing cell keeps its label while it slides away.
             bool open = surge.Def.defName == revealedSurge;
 
-            if (open) {
-                revealedCell = cell;
-                Panel.DrawJoinedDown(
-                    cell,
-                    CellBack,
-                    Skin.AccentColor,
-                    JoinGap,
-                    Skin.AccentColor,
-                    ActiveWash,
-                    false
-                );
-            } else {
-                Panel.Draw(cell, CellBack, CellBorder);
-            }
+            if (Mouse.IsOver(cell)) Widgets.DrawBoxSolid(cell, DockPalette.PanelRaised);
 
             Rect icon = new Rect(
                 cell.x + CellPad,
@@ -522,6 +498,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             }
 
             bool ready = !AnyOnCooldown(pawn, surge.Def);
+            Color text = ready ? DockPalette.MutedText : DockPalette.GroupLabel;
 
             float textRight = cell.xMax - CellPad;
             UIText.EllipsisLabel(
@@ -529,14 +506,14 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 surge.Def.LabelCap,
                 GameFont.Tiny,
                 TextAnchor.MiddleLeft,
-                ready ? MutedText : DimText
+                open ? Color.white : text
             );
             UIText.EllipsisLabel(
                 new Rect(textRight - countWidth, cell.y, countWidth, cell.height),
                 count,
                 GameFont.Tiny,
                 TextAnchor.MiddleRight,
-                open ? Skin.AccentColor : ready ? MutedText : DimText
+                open ? DockPalette.HotLabel : text
             );
 
             TooltipHandler.TipRegion(
@@ -547,7 +524,6 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                     surge.Total.Named("TOTAL")
                 )
             );
-            Panel.Hover(cell, HoverBorder, open ? JoinGap : 0f);
             MouseoverSounds.DoRegion(cell);
 
             if (!Widgets.ButtonInvisible(cell)) continue;
@@ -571,23 +547,13 @@ public sealed class SurgebindingDockSection : DockSectionBase {
 
     private void DrawAbilityStrip(
         Rect rect,
-        Rect openCell,
         Pawn pawn,
         Surgebinder gene,
         RadiantOrderDef order,
         List<AbilityDef> abilities
     ) {
-        // no edge rail: unlike a metal's live burning state, a surge has none to flag - one here would just be noise.
-        Panel.DrawNotchedTop(
-            rect,
-            CellBack,
-            Skin.AccentColor,
-            openCell.x,
-            openCell.xMax,
-            Skin.AccentColor,
-            ActiveWash,
-            false
-        );
+        // no accent: unlike a metal's live burning state, a surge has none to flag - one here would just be noise.
+        Panel.Draw(rect, DockPalette.StripFill, DockPalette.BorderSubtle);
 
         DrawAbilityGrid(rect.ContractedBy(StripPad), pawn, gene, order, abilities);
     }
@@ -628,15 +594,13 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         int minIdeal = def is SurgebindingAbilityDef surgeDef ? surgeDef.GetMinIdealForOrder(order.defName) : 0;
         bool locked = gene.CurrentIdeal < minIdeal;
 
-        // a running toggleable ability is a live state, so it gets the accent and edge rail, like a burning metal.
+        // a running toggleable ability is a live state, so its name goes bold and accent - nothing else changes.
         bool running = pawn.abilities?.GetAbility(def) is IToggleableAbility {
             IsToggleable: true,
             IsActive: true,
         };
 
-        Panel.Draw(row, AbilityBack, running ? Skin.AccentColor : AbilityBorder);
-        if (running) Panel.Active(row, Skin.AccentColor, ActiveWash);
-        if (!locked) Panel.Hover(row, HoverBorder);
+        if (!locked && Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, DockPalette.PanelRaised);
 
         row = row.ContractedBy(CellPad, 0f);
 
@@ -661,10 +625,11 @@ public sealed class SurgebindingDockSection : DockSectionBase {
 
         UIText.EllipsisLabel(
             new Rect(icon.xMax + 6f, row.y, row.xMax - icon.xMax - 6f - noteWidth, row.height),
-            def.LabelCap,
+            def.LabelCap.ToString(),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            locked ? LockedText : MutedText
+            locked ? LockedText : running ? DockPalette.HotLabel : DockPalette.MutedText,
+            running
         );
 
         if (!note.NullOrEmpty()) {
@@ -673,7 +638,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 note,
                 GameFont.Tiny,
                 TextAnchor.MiddleRight,
-                LockedText
+                locked ? LockedText : DockPalette.GroupLabel
             );
         }
 

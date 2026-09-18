@@ -72,6 +72,9 @@
   <CC_Dock_Feruchemy_Idle>Idle</CC_Dock_Feruchemy_Idle>
   <CC_Dock_Feruchemy_Tap>tap</CC_Dock_Feruchemy_Tap>
   <CC_Dock_Feruchemy_Store>store</CC_Dock_Feruchemy_Store>
+  <CC_Dock_Group_Folded>{COUNT} metals, show</CC_Dock_Group_Folded>
+  <CC_Dock_Fold_Show>show</CC_Dock_Fold_Show>
+  <CC_Dock_Fold_Hide>hide</CC_Dock_Fold_Hide>
   <CC_Dock_Collapse>Fold the dock away.\n\nShift-drag to move it.</CC_Dock_Collapse>
   <CC_Dock_Rail_Tip>{SYSTEM}\nReserve {PERCENT}%\n\nShift-drag to move the dock.</CC_Dock_Rail_Tip>
   <CC_Dock_Feruchemy_Compounding>Compounding</CC_Dock_Feruchemy_Compounding>
@@ -80,15 +83,17 @@
   <CC_Dock_Feruchemy_CompoundUnavailable>This metal cannot be compounded by this pawn.</CC_Dock_Feruchemy_CompoundUnavailable>
   <CC_Dock_Feruchemy_CompoundNoResearch>{RESEARCH} has not been researched.</CC_Dock_Feruchemy_CompoundNoResearch>
   <CC_Dock_Feruchemy_CompoundLowSkill>Compounding demands level {LEVEL} in both Allomancy and Feruchemy.</CC_Dock_Feruchemy_CompoundLowSkill>
-  <CC_Dock_Allomancy_Burn>Burn</CC_Dock_Allomancy_Burn>
   <CC_Dock_Allomancy_BurnRate>{RATE}%/s</CC_Dock_Allomancy_BurnRate>
-  <CC_Dock_Allomancy_StopBurn>Stop</CC_Dock_Allomancy_StopBurn>
   <CC_Dock_Allomancy_Flare>Flare</CC_Dock_Allomancy_Flare>
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>
   <CC_Dock_Allomancy_GroupSustained>Sustained</CC_Dock_Allomancy_GroupSustained>
   <CC_Dock_Allomancy_GroupTargeted>Targeted</CC_Dock_Allomancy_GroupTargeted>
-  <CC_Dock_Allomancy_Target>Target</CC_Dock_Allomancy_Target>
   <CC_Dock_Allomancy_AbilityTip>{ABILITY}\n\n{DESC}</CC_Dock_Allomancy_AbilityTip>
+  <CC_Dock_Burning_Header>Burning</CC_Dock_Burning_Header>
+  <CC_Dock_Burning_Row>{METAL} &#183; {ABILITY}</CC_Dock_Burning_Row>
+  <CC_Dock_Burning_Reading>{PERCENT}% &#183; {RATE}%/s</CC_Dock_Burning_Reading>
+  <CC_Dock_Burning_StopTip>Stop {ABILITY}.</CC_Dock_Burning_StopTip>
+  <CC_Dock_Burning_UnclaimedTip>{SOURCE} is drawing on this metal. It ends where it was begun, not here.</CC_Dock_Burning_UnclaimedTip>
   <CC_Dock_Allomancy_AbilityFlareTip>Flare {ABILITY}, burning harder and faster for a stronger effect.</CC_Dock_Allomancy_AbilityFlareTip>
     <CC_Dock_Feruchemy_TargetLabel>{TARGET}</CC_Dock_Feruchemy_TargetLabel>
     <CC_Dock_Feruchemy_TargetAll>every metalmind ({COUNT})</CC_Dock_Feruchemy_TargetAll>
@@ -102,4 +107,6 @@
     <CC_Dock_Feruchemy_CompoundNoAllomancy>This pawn cannot burn {METAL}.</CC_Dock_Feruchemy_CompoundNoAllomancy>
     <CC_Dock_Feruchemy_BurningMetalmind>Burning metalmind</CC_Dock_Feruchemy_BurningMetalmind>
     <CC_Dock_Feruchemy_CompoundNoRoom>That metalmind is full, and holds no compounded charge to burn. Draw it down first.</CC_Dock_Feruchemy_CompoundNoRoom>
+  <CC_Dock_Oath_Ladder_Tip>{IDEAL}\n{WORDS}</CC_Dock_Oath_Ladder_Tip>
+
 </LanguageData>

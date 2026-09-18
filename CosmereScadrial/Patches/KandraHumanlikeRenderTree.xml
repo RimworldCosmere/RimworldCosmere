@@ -60,4 +60,44 @@
     </value>
   </Operation>
 
+  <!-- A kandra out of its disguise keeps its body and head drawn - the formless textures are
+       swapped in under them - so these four nodes are vetoed rather than the Body and Head roots.
+       Both apparel parents are called "Apparel root", which is why they are picked by tagDef. -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[debugLabel="Body"]/children/li[tagDef="ApparelBody"]</xpath>
+    <value>
+      <subworkerClasses>
+        <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileFormless</li>
+      </subworkerClasses>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[debugLabel="Body"]/children/li[debugLabel="Body tattoo"]</xpath>
+    <value>
+      <subworkerClasses>
+        <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileFormless</li>
+      </subworkerClasses>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[debugLabel="Head"]/children/li[tagDef="ApparelHead"]</xpath>
+    <value>
+      <subworkerClasses>
+        <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileFormless</li>
+      </subworkerClasses>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[debugLabel="Head"]/children/li[debugLabel="Head tattoo"]</xpath>
+    <value>
+      <subworkerClasses>
+        <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_HideWhileFormless</li>
+      </subworkerClasses>
+    </value>
+  </Operation>
+
 </Patch>

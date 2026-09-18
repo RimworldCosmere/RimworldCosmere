@@ -36,11 +36,53 @@ public static class KandraAppearanceReport {
                 + $"\n  live story: headType={pawn.story?.headType?.defName ?? "NULL"}"
                 + $" bodyType={pawn.story?.bodyType?.defName ?? "NULL"}"
                 + $" hair={pawn.story?.hairDef?.defName ?? "NULL"}"
+                + $"\n  true body material: {Util.KandraAppearance.TrueBodyMaterialFor(pawn).name}"
+                + $" | formless now: {Util.KandraAppearance.IsFormless(pawn)}"
                 + $"\n  live gender: {pawn.gender} | skinOverride: {pawn.story?.skinColorOverride?.ToString() ?? "none"}"
                 + $"\n  shape hediff: {(pawn.health?.hediffSet?.HasHediff(HediffFor()) == true ? "on" : "off")}"
                 + $"\n  known forms: {forms?.Known.Count ?? 0} | cover blown: {forms?.CoverBlown}"
             );
         }
+    }
+
+    /// <summary>
+    ///     Every render node the pawn will actually draw, so "what is that on its face" stops
+    ///     being a guess. A node drawing over a shaped kandra is invisible to every other probe.
+    /// </summary>
+    [DebugAction(
+        "Cosmere/Core",
+        "Report kandra render nodes",
+        actionType = DebugActionType.ToolMap,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void ReportNodes() {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
+            if (thing is not Pawn pawn) continue;
+
+            PawnRenderTree? tree = pawn.Drawer?.renderer?.renderTree;
+            if (tree?.rootNode == null) {
+                Log.Info($"Render nodes: {pawn.LabelShort} has no render tree.");
+
+                continue;
+            }
+
+            global::System.Text.StringBuilder text = new global::System.Text.StringBuilder();
+            text.Append($"Render nodes: {pawn.LabelShort}");
+            Describe(tree.rootNode, text, 1);
+            Log.Info(text.ToString());
+        }
+    }
+
+    private static void Describe(PawnRenderNode node, global::System.Text.StringBuilder text, int depth) {
+        string pad = new string(' ', depth * 2);
+        string label = node.Props?.debugLabel ?? node.GetType().Name;
+        string graphic = node.PrimaryGraphic?.path ?? "no graphic";
+
+        text.Append($"\n{pad}{label} [{node.GetType().Name}] layer={node.Props?.baseLayer} {graphic}");
+
+        if (node.children == null) return;
+
+        for (int i = 0; i < node.children.Length; i++) Describe(node.children[i], text, depth + 1);
     }
 
     private static HediffDef? HediffFor() {

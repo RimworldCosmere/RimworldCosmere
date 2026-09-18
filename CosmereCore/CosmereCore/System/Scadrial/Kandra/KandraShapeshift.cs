@@ -138,6 +138,14 @@ public static class KandraShapeshift {
         if (pawn.apparel != null) {
             List<Apparel> clothes = [.. pawn.apparel.WornApparel];
             for (int i = 0; i < clothes.Count; i++) {
+                // TryDrop needs MapHeld, which a scenario pawn does not have yet.
+                if (!pawn.Spawned) {
+                    pawn.apparel.Remove(clothes[i]);
+                    pawn.apparel.Notify_ApparelRemoved(clothes[i]);
+                    if (pawn.inventory.innerContainer.TryAdd(clothes[i])) worn.Add(clothes[i]);
+                    continue;
+                }
+
                 if (!pawn.apparel.TryDrop(clothes[i], out Apparel? dropped, pawn.Position, false)) continue;
                 if (dropped == null) continue;
 

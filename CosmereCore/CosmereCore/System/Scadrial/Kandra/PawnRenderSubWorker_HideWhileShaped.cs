@@ -29,7 +29,7 @@ public class PawnRenderSubWorker_HideWhileShaped : PawnRenderSubWorker {
     public static int Vetoes { get; private set; }
 
     public override bool CanDrawNowSub(PawnRenderNode node, PawnDrawParms parms) {
-        if (parms.pawn?.TryGetComp<CompKandraForms>()?.Current?.animalKind == null) return true;
+        if (KandraShapeGraphicUtility.WornKind(parms.pawn) == null) return true;
 
         Vetoes++;
         return false;

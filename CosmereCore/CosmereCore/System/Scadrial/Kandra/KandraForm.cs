@@ -42,6 +42,12 @@ public class KandraForm : IExposable {
     /// </remarks>
     public PawnKindDef? animalKind;
 
+    /// <summary>
+    ///     The body it built rather than one it ate. Drawn as the grey true-body art whatever the
+    ///     stored face says, so it stays a kandra when it is being nobody.
+    /// </summary>
+    public bool crafted;
+
     public bool IsAnimal => animalKind != null;
 
     /// <summary>
@@ -58,10 +64,18 @@ public class KandraForm : IExposable {
 
     /// <summary>An animal shape, remembered by its kind rather than by its face.</summary>
     public static KandraForm FromAnimal(Pawn source, PawnKindDef wornAs) {
+        return FromAnimalKind(wornAs, source.gender);
+    }
+
+    /// <summary>
+    ///     The same shape without a body to copy it off, for scenarios that hand a kandra a form
+    ///     it never had to eat anybody for.
+    /// </summary>
+    public static KandraForm FromAnimalKind(PawnKindDef wornAs, Gender gender) {
         return new KandraForm {
-            nameFull = source.kindDef.label,
-            nameShort = source.kindDef.label,
-            gender = source.gender,
+            nameFull = wornAs.label,
+            nameShort = wornAs.label,
+            gender = gender,
             animalKind = wornAs,
         };
     }
@@ -143,5 +157,6 @@ public class KandraForm : IExposable {
         Scribe_Defs.Look(ref faction, "faction");
         Scribe_References.Look(ref ideo, "ideo");
         Scribe_Defs.Look(ref animalKind, "animalKind");
+        Scribe_Values.Look(ref crafted, "crafted");
     }
 }

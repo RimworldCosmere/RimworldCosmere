@@ -1,4 +1,4 @@
-using Cosmere.System.Scadrial.Kandra;
+using Cosmere.System.Scadrial.Util;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
@@ -15,19 +15,8 @@ public class TrueBody : Verse.Gene {
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
-
-        bool formless = pawn.TryGetComp<CompKandraForms>()?.IsWearingSomeoneElse != true;
-        Hediff? showing = pawn.health?.hediffSet?.GetFirstHediffOfDef(
-            HediffDefOf.Cosmere_Scadrial_Hediff_Formless
-        );
-
-        if (formless && showing == null) {
-            pawn.health?.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_Formless);
-            return;
-        }
-
-        if (!formless && showing != null) pawn.health?.RemoveHediff(showing);
+        // Backstop. CompKandraForms.SetCurrent does the flip the moment a shape changes.
+        if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) KandraAppearance.SyncFormless(pawn);
     }
 
     public override void PostRemove() {
@@ -36,6 +25,9 @@ public class TrueBody : Verse.Gene {
         Hediff? showing = pawn.health?.hediffSet?.GetFirstHediffOfDef(
             HediffDefOf.Cosmere_Scadrial_Hediff_Formless
         );
-        if (showing != null) pawn.health?.RemoveHediff(showing);
+        if (showing == null) return;
+
+        pawn.health?.RemoveHediff(showing);
+        pawn.Drawer?.renderer?.SetAllGraphicsDirty();
     }
 }

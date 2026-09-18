@@ -29,9 +29,15 @@ public class KandraShapeGraphic : DefModExtension {
 ///     </para>
 /// </remarks>
 public static class KandraShapeGraphicUtility {
-    /// <summary>The animal a pawn is wearing, or null when it is being itself.</summary>
+    /// <summary>
+    ///     The animal a pawn is showing. A kandra whose true body is an animal wears nothing and
+    ///     is still a dog, so the true body answers when no disguise is on.
+    /// </summary>
     public static PawnKindDef? WornKind(Pawn? pawn) {
-        return pawn?.TryGetComp<CompKandraForms>()?.Current?.animalKind;
+        CompKandraForms? forms = pawn?.TryGetComp<CompKandraForms>();
+        if (forms == null) return null;
+
+        return forms.Current != null ? forms.Current.animalKind : forms.TrueBody?.animalKind;
     }
 
     /// <summary>

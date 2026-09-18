@@ -59,6 +59,9 @@ public class CompKandraForms : ThingComp {
 
     public bool IsWearingSomeoneElse => current != null;
 
+    /// <summary>Whether the body underneath is the one it built rather than one it ate.</summary>
+    public bool TrueBodyCrafted => trueBody?.crafted == true;
+
     /// <summary>Whether this kandra can shape a body nobody has ever worn.</summary>
     public bool CanFreeForm {
         get {
@@ -78,6 +81,17 @@ public class CompKandraForms : ThingComp {
             // Twenty is the ceiling on any RimWorld skill, so this reads as "how far along".
             return Mathf.Clamp01(SkillLevel(pawn) / 20f);
         }
+    }
+
+    /// <summary>
+    ///     A kandra that spawns wearing nobody is already formless, and nothing called
+    ///     <see cref="SetCurrent" /> to say so. Without this it waits out a rare tick as a human.
+    /// </summary>
+    public override void PostSpawnSetup(bool respawningAfterLoad) {
+        base.PostSpawnSetup(respawningAfterLoad);
+
+        Util.KandraAppearance.SyncFormless(parent as Pawn);
+        Util.KandraAppearance.SyncAnimalShape(parent as Pawn);
     }
 
     /// <summary>
@@ -138,14 +152,45 @@ public class CompKandraForms : ThingComp {
         known.Add(form);
     }
 
+    /// <summary>
+    ///     Decides that an eaten shape is what it goes back to now. Nothing is destroyed - the old
+    ///     true body joins the repertoire, so it can wear its former self whenever it likes.
+    /// </summary>
+    public void AdoptTrueBody(KandraForm form) {
+        if (trueBody != null && trueBody != form && !known.Contains(trueBody)) known.Add(trueBody);
+
+        trueBody = form;
+        known.Remove(form);
+
+        Util.KandraAppearance.SyncAnimalShape(parent as Pawn);
+        if (parent is Pawn pawn) pawn.Drawer?.renderer?.SetAllGraphicsDirty();
+    }
+
     /// <summary>Remembers what the kandra actually is, the first time they wear anything else.</summary>
     public void RememberTrueBody() {
         if (trueBody != null) return;
-        if (parent is Pawn pawn) trueBody = KandraForm.From(pawn);
+        if (parent is not Pawn pawn) return;
+
+        trueBody = KandraForm.From(pawn);
+
+        // What a kandra is when it is being nobody. The stored face is only a size and a shape.
+        trueBody.crafted = true;
     }
 
-    /// <summary>The name the colony hears, or null when the kandra is being itself.</summary>
-    public string? WornName => current?.Label;
+    /// <summary>
+    ///     The name the colony hears, or null when the kandra is being itself. A shape that
+    ///     carries the kandra's own name is not an impersonation, so it reads as nothing.
+    /// </summary>
+    public string? WornName {
+        get {
+            string? worn = current?.Label;
+            if (worn.NullOrEmpty()) return null;
+
+            string? own = (parent as Pawn)?.Name?.ToStringShort;
+
+            return worn == own ? null : worn;
+        }
+    }
 
     /// <summary>
     ///     Puts the impersonation in the selected pawn's panel.
@@ -155,9 +200,11 @@ public class CompKandraForms : ThingComp {
     ///     kandra wearing somebody. Nobody else in the colony gets this line.
     /// </remarks>
     public override string CompInspectStringExtra() {
-        if (current == null) return string.Empty;
+        string? worn = WornName;
 
-        return "CS_Kandra_Wearing".Translate(current.Label.Named("FORM")).Resolve();
+        return worn.NullOrEmpty()
+            ? string.Empty
+            : "CS_Kandra_Wearing".Translate(worn!.Named("FORM")).Resolve();
     }
 
     public KandraForm? TrueBody => trueBody;
@@ -166,6 +213,8 @@ public class CompKandraForms : ThingComp {
         current = form;
         coverBlown = false;
         wornSinceTick = Find.TickManager?.TicksGame ?? 0;
+        Util.KandraAppearance.SyncFormless(parent as Pawn);
+        Util.KandraAppearance.SyncAnimalShape(parent as Pawn);
     }
 
     /// <summary>

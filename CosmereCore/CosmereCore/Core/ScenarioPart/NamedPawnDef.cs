@@ -18,6 +18,12 @@ public class NamedPawnDef {
     /// <summary>Which generation of kandra, 1 to 10. Zero leaves it to the roll.</summary>
     public int kandraGeneration;
 
+    /// <summary>A PawnKindDef name that is this kandra's true body, as TenSoon chose a wolfhound.</summary>
+    public string? kandraTrueAnimal;
+
+    /// <summary>Faces this kandra already knows, one name per entry. Appearance is rolled.</summary>
+    public List<string> kandraKnownFaces = [];
+
     /// <summary>A BodyTypeDef name. Left empty, one is chosen to match the gender.</summary>
     public string? bodyType;
 
@@ -102,6 +108,12 @@ public class NamedPawnDef {
                 case "kandraGeneration":
                     if (!int.TryParse(node.InnerText, out kandraGeneration))
                         Log.Warn($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
+                    break;
+                case "kandraTrueAnimal":
+                    kandraTrueAnimal = node.InnerText;
+                    break;
+                case "kandraKnownFaces":
+                    kandraKnownFaces = DirectXmlToObject.ObjectFromXml<List<string>>(node, false);
                     break;
                 case "bodyType":
                     bodyType = node.InnerText;

@@ -193,6 +193,10 @@
             <li>
               <firstName>OreSeur</firstName>
               <kandraGeneration>3</kandraGeneration>
+              <kandraTrueAnimal>Cosmere_Scadrial_Wolfhound</kandraTrueAnimal>
+              <kandraKnownFaces>
+                <li>Lord Renoux</li>
+              </kandraKnownFaces>
               <age>40</age>
               <chronologicalAge>320</chronologicalAge>
               <gender>Male</gender>

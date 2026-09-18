@@ -199,6 +199,81 @@ public class ScenPart_NamedPawns : ScenPart {
                 kandra.SetGeneration(template.kandraGeneration);
             }
         }
+
+        ApplyKandraBodies(pawn, template);
+    }
+
+    /// <summary>
+    ///     Gives a story kandra the body it goes back to and the faces it already owns, so it
+    ///     arrives as itself rather than as a stranger who has eaten nobody.
+    /// </summary>
+    private static void ApplyKandraBodies(Pawn pawn, NamedPawnDef template) {
+        var forms = pawn.TryGetComp<System.Scadrial.Kandra.CompKandraForms>();
+        if (forms == null) return;
+
+        // Snapshots the generated humanlike shape, which AdoptTrueBody then files as a known face.
+        forms.RememberTrueBody();
+
+        ApplyKandraTrueAnimal(pawn, template, forms);
+        ApplyKandraKnownFaces(pawn, template, forms);
+    }
+
+    private static void ApplyKandraTrueAnimal(
+        Pawn pawn,
+        NamedPawnDef template,
+        System.Scadrial.Kandra.CompKandraForms forms
+    ) {
+        if (template.kandraTrueAnimal.NullOrEmpty()) return;
+
+        PawnKindDef? kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(template.kandraTrueAnimal);
+        if (kind == null) {
+            Log.Warn($"NamedPawnDef {template.firstName}: no PawnKindDef '{template.kandraTrueAnimal}'.");
+
+            return;
+        }
+
+        if (!System.Scadrial.Kandra.KandraShapeEligibility.Wearable(kind)) {
+            Log.Warn($"NamedPawnDef {template.firstName}: '{kind.defName}' is not a wearable shape.");
+
+            return;
+        }
+
+        forms.AdoptTrueBody(System.Scadrial.Kandra.KandraForm.FromAnimalKind(kind, pawn.gender));
+    }
+
+    /// <summary>
+    ///     Each face is a rolled colonist borrowed for its appearance and then thrown away, so the
+    ///     shape is concrete and survives a save rather than being re-rolled on every portrait.
+    /// </summary>
+    private static void ApplyKandraKnownFaces(
+        Pawn pawn,
+        NamedPawnDef template,
+        System.Scadrial.Kandra.CompKandraForms forms
+    ) {
+        for (int i = 0; i < template.kandraKnownFaces.Count; i++) {
+            Pawn? donor = null;
+            try {
+                donor = PawnGenerator.GeneratePawn(
+                    new PawnGenerationRequest(
+                        PawnKindDefOf.Colonist,
+                        forceGenerateNewPawn: true,
+                        canGeneratePawnRelations: false
+                    )
+                );
+
+                System.Scadrial.Kandra.KandraForm face = System.Scadrial.Kandra.KandraForm.From(donor);
+                face.nameFull = template.kandraKnownFaces[i];
+                face.nameShort = template.kandraKnownFaces[i];
+                forms.Remember(face);
+            } catch (global::System.Exception e) {
+                Log.Warn($"NamedPawnDef {template.firstName}: could not build face '{template.kandraKnownFaces[i]}': {e.Message}");
+            } finally {
+                if (donor != null) {
+                    donor.Destroy();
+                    Find.WorldPawns?.RemoveAndDiscardPawnViaGC(donor);
+                }
+            }
+        }
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ public class Shardblade : SurgebindingAbility {
 
     public override AcceptanceReport CanCast => base.CanCast && PawnHasShardblade();
 
-    private bool PawnHasShardblade() {
+    public bool PawnHasShardblade() {
         if (Gene.CurrentIdeal >= 1) return true;
         if (pawn.equipment?.Primary?.def == ShardbladeDef) return true;
 

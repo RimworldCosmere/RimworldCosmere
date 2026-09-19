@@ -16,4 +16,25 @@
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
     <CS_Koloss_Name>koloss</CS_Koloss_Name>
+    <CS_Kandra_Material_Ruby>Ruby</CS_Kandra_Material_Ruby>
+    <CS_Kandra_Material_Sapphire>Sapphire</CS_Kandra_Material_Sapphire>
+    <CS_Kandra_Material_Emerald>Emerald</CS_Kandra_Material_Emerald>
+    <CS_Kandra_Material_Topaz>Topaz</CS_Kandra_Material_Topaz>
+    <CS_Kandra_Material_Amethyst>Amethyst</CS_Kandra_Material_Amethyst>
+    <CS_Kandra_Material_Diamond>Diamond</CS_Kandra_Material_Diamond>
+    <CS_Kandra_Material_Garnet>Garnet</CS_Kandra_Material_Garnet>
+    <CS_Kandra_Material_Heliodor>Heliodor</CS_Kandra_Material_Heliodor>
+    <CS_Kandra_Material_Zircon>Zircon</CS_Kandra_Material_Zircon>
+    <CS_Kandra_Material_Smokestone>Smokestone</CS_Kandra_Material_Smokestone>
+    <CS_Kandra_Material_MilkyQuartzite>Milky quartzite</CS_Kandra_Material_MilkyQuartzite>
+    <CS_Kandra_Material_RoseQuartzite>Rose quartzite</CS_Kandra_Material_RoseQuartzite>
+    <CS_Kandra_Material_SmokyQuartzite>Smoky quartzite</CS_Kandra_Material_SmokyQuartzite>
+    <CS_Kandra_Material_Marble>Marble</CS_Kandra_Material_Marble>
+    <CS_Kandra_Material_Obsidian>Obsidian</CS_Kandra_Material_Obsidian>
+    <CS_Kandra_Material_PaleWood>Pale wood</CS_Kandra_Material_PaleWood>
+    <CS_Kandra_Material_Walnut>Walnut</CS_Kandra_Material_Walnut>
+    <CS_Kandra_Material_Blackwood>Blackwood</CS_Kandra_Material_Blackwood>
+    <CS_Kandra_MaterialGroup_Gem>Gemstone</CS_Kandra_MaterialGroup_Gem>
+    <CS_Kandra_MaterialGroup_Stone>Stone</CS_Kandra_MaterialGroup_Stone>
+    <CS_Kandra_MaterialGroup_Wood>Wood</CS_Kandra_MaterialGroup_Wood>
 </LanguageData>

@@ -53,7 +53,8 @@ public class BodyAbsorption : Shapeshifter {
             action = () => Find.WindowStack.Add(new Dialog_KandraForms(forms, StartChange)),
         };
 
-        if (forms.Known.Count == 0) wear.Disable("CS_Kandra_NoFormsYet".Translate());
+        // a crafted true body still has a designer to reach, and the empty grid says so itself.
+        if (forms.Known.Count == 0 && !forms.TrueBodyCrafted) wear.Disable("CS_Kandra_NoFormsYet".Translate());
 
         return wear;
     }

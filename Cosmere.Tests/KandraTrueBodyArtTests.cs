@@ -84,7 +84,7 @@ public class KandraTrueBodyArtTests {
         Assert.IsTrue(start >= 0, "KandraAppearance no longer declares a Materials table.");
 
         string table = source[start..source.IndexOf("];", start, StringComparison.Ordinal)];
-        MatchCollection rows = Regex.Matches(table, @"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f\)");
+        MatchCollection rows = Regex.Matches(table, @"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f, ""([^""]+)"", ""([^""]+)""\)");
 
         Assert.IsTrue(rows.Count >= 10, $"Only {rows.Count} true-body materials; the table looks cut.");
 
@@ -98,6 +98,22 @@ public class KandraTrueBodyArtTests {
                 $"{row.Groups[1].Value} has a weight of zero, so it can never be rolled."
             );
         }
+    }
+
+    [TestMethod]
+    public void APickedTrueBodyMaterialIsReadBeforeTheIdRoll() {
+        string source = File.ReadAllText(AppearanceSourcePath);
+        int start = source.IndexOf("TrueBodyMaterialFor(Pawn pawn) {", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "KandraAppearance no longer declares TrueBodyMaterialFor.");
+
+        int picked = source.IndexOf("TrueBodyMaterial", start, StringComparison.Ordinal);
+        int roll = source.IndexOf("Rand.PushState", start, StringComparison.Ordinal);
+
+        Assert.IsTrue(
+            picked >= 0 && picked < roll,
+            "TrueBodyMaterialFor rolls off the pawn id without reading the comp's picked material, "
+            + "so the designer's choice saves but never shows."
+        );
     }
 
     [TestMethod]
@@ -321,5 +337,103 @@ public class KandraTrueBodyArtTests {
                 $"The formless veto landed on a root node ({target}); that hides the kandra entirely."
             );
         }
+    }
+
+    private static string DialogSourcePath => Path.Combine(
+        RepoRoot,
+        "CosmereCore",
+        "CosmereCore",
+        "System",
+        "Scadrial",
+        "Kandra",
+        "Dialog_KandraForms.cs"
+    );
+
+    /// <summary>
+    ///     The designer offers the table and nothing else. A colour written in the window would
+    ///     dodge the gamut check above and could hand the player a naked-looking colonist.
+    /// </summary>
+    [TestMethod]
+    public void TheDesignerPicksFromTheMaterialTableAndInventsNoColourOfItsOwn() {
+        string source = File.ReadAllText(DialogSourcePath);
+
+        StringAssert.Contains(
+            source,
+            "KandraAppearance.AllMaterials",
+            "The palette no longer reads the material table, so it can offer a colour nothing checked."
+        );
+
+        StringAssert.Contains(
+            source,
+            "forms.BeginReshape(",
+            "The designer never records the choice, so confirming it does nothing."
+        );
+
+        foreach (Match match in Regex.Matches(source, @"new Color\s*\(|#[0-9a-fA-F]{6}")) {
+            Assert.Fail(
+                "Dialog_KandraForms writes its own colour at offset " + match.Index
+                + ". Every colour here has to come from KandraAppearance's table."
+            );
+        }
+    }
+
+    private static string ChangeShapeSourcePath => Path.Combine(
+        RepoRoot,
+        "CosmereCore",
+        "CosmereCore",
+        "System",
+        "Scadrial",
+        "JobDriver",
+        "KandraChangeShape.cs"
+    );
+
+    /// <summary>
+    ///     A reshape that nothing commits is a design the player made and the game threw away.
+    /// </summary>
+    [TestMethod]
+    public void TheReshapeJobCommitsTheDesignAndKeepsAnyDisguiseOn() {
+        string source = File.ReadAllText(ChangeShapeSourcePath);
+
+        StringAssert.Contains(
+            source,
+            "ReshapeIndex",
+            "Nothing in the change-shape job knows what a reshape is, so the design never lands."
+        );
+
+        int start = source.IndexOf("job.count == ReshapeIndex", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "The reshape branch is gone; CommitReshape has no caller again.");
+
+        string branch = source[start..source.IndexOf("job.count == RevertIndex", start, StringComparison.Ordinal)];
+
+        StringAssert.Contains(branch, "CommitReshape", "The reshape branch never commits the pending design.");
+        StringAssert.Contains(
+            branch,
+            "IsWearingSomeoneElse",
+            "Reshaping while disguised reverts the pawn, which rips the face off as a side effect."
+        );
+
+        StringAssert.Contains(
+            branch,
+            "Revert(",
+            "Nothing puts the reshaped body back on, so the new gender never reaches the pawn."
+        );
+    }
+
+    /// <summary>
+    ///     The form window is the only door to the designer, so gating its gizmo on eaten bodies
+    ///     puts "eat a corpse first" in front of designing your own.
+    /// </summary>
+    [TestMethod]
+    public void ACraftedTrueBodyKeepsTheTakeFormGizmoOpenWithNothingEaten() {
+        string source = File.ReadAllText(
+            Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs")
+        );
+
+        StringAssert.Contains(
+            source,
+            "forms.Known.Count == 0 && !forms.TrueBodyCrafted",
+            "The take-form gizmo is disabled on an empty repertoire alone, so a newly turned kandra "
+            + "cannot reach the designer until it has eaten somebody."
+        );
     }
 }

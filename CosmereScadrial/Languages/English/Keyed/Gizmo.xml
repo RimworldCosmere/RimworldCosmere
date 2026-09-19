@@ -26,7 +26,6 @@
   <CS_Kandra_Note_Wearing>Wearing {FORM}. The shape underneath is still its own.</CS_Kandra_Note_Wearing>
   <CS_Kandra_EditTrue>Edit true form</CS_Kandra_EditTrue>
   <CS_Kandra_EditTrue_NotCrafted>Only a crafted body can be reshaped. This one took a shape it ate.</CS_Kandra_EditTrue_NotCrafted>
-  <CS_Kandra_EditTrue_Unbuilt>Not yet possible. Reshaping a crafted body is still being written.</CS_Kandra_EditTrue_Unbuilt>
   <CS_Kandra_ChangeTrue>Change true form</CS_Kandra_ChangeTrue>
   <CS_Kandra_ChangeTrue_Nothing>It has eaten nobody. There is nothing else to be.</CS_Kandra_ChangeTrue_Nothing>
   <CS_Kandra_PickTrueHint>Pick the shape it returns to.</CS_Kandra_PickTrueHint>
@@ -36,4 +35,13 @@
   <CS_Kandra_AdoptKeep>Cancel</CS_Kandra_AdoptKeep>
   <CS_Kandra_AdoptTake>Make it the true form</CS_Kandra_AdoptTake>
   <CS_Kandra_NoFormsYetHint>A kandra learns a shape from the bones of the dead. Haul a corpse to it and it will remember the face.</CS_Kandra_NoFormsYetHint>
+  <CS_Kandra_Reshape>Reshape</CS_Kandra_Reshape>
+  <CS_Kandra_ReshapeTitle>Reshape the true body</CS_Kandra_ReshapeTitle>
+  <CS_Kandra_ReshapeSub>Pick what it is made of</CS_Kandra_ReshapeSub>
+  <CS_Kandra_ReshapeCost>Ten seconds of work.</CS_Kandra_ReshapeCost>
+  <CS_Kandra_ReshapeNow>Now</CS_Kandra_ReshapeNow>
+  <CS_Kandra_ReshapeAfter>After</CS_Kandra_ReshapeAfter>
+  <CS_Kandra_Gender>Gender</CS_Kandra_Gender>
+  <CS_Kandra_GenderReads>The colony will know it as {GENDER}.</CS_Kandra_GenderReads>
+  <CS_Kandra_MaterialTip>Built from {MATERIAL}.</CS_Kandra_MaterialTip>
 </LanguageData>

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Verse;
+using MaterialRow = (string name, string hex, float weight, string labelKey, string group);
 
 namespace Cosmere.System.Scadrial.Util;
 
@@ -19,26 +20,38 @@ public static class KandraAppearance {
     ///     What a kandra built its own body out of. Every entry sits outside the human skin
     ///     gamut - hue 18-24 at up to 0.55 saturation - or it reads as a person wearing nothing.
     /// </summary>
-    private static readonly (string name, string hex, float weight)[] Materials = [
-        ("ruby", "e0115f", 1.5f),
-        ("sapphire", "0f52ba", 1.5f),
-        ("emerald", "50c878", 1.5f),
-        ("topaz", "ffd23f", 1.5f),
-        ("amethyst", "9966cc", 1.5f),
-        ("diamond", "b9f2ff", 1.5f),
-        ("garnet", "a3123f", 1.5f),
-        ("heliodor", "d1ee1d", 1.5f),
-        ("zircon", "d8e9f0", 1.5f),
-        ("smokestone", "4a4657", 1.5f),
-        ("milky quartzite", "dff0f5", 2f),
-        ("rose quartzite", "f0a8c8", 2f),
-        ("smoky quartzite", "9aa3b5", 2f),
-        ("pale wood", "d9a441", 2f),
-        ("walnut", "8a4416", 2f),
-        ("blackwood", "2e1c2a", 2f),
-        ("marble", "e4eaf5", 0.8f),
-        ("obsidian", "171320", 0.8f),
+    private static readonly MaterialRow[] Materials = [
+        ("ruby", "e0115f", 1.5f, "CS_Kandra_Material_Ruby", "gem"),
+        ("sapphire", "0f52ba", 1.5f, "CS_Kandra_Material_Sapphire", "gem"),
+        ("emerald", "50c878", 1.5f, "CS_Kandra_Material_Emerald", "gem"),
+        ("topaz", "ffd23f", 1.5f, "CS_Kandra_Material_Topaz", "gem"),
+        ("amethyst", "9966cc", 1.5f, "CS_Kandra_Material_Amethyst", "gem"),
+        ("diamond", "b9f2ff", 1.5f, "CS_Kandra_Material_Diamond", "gem"),
+        ("garnet", "a3123f", 1.5f, "CS_Kandra_Material_Garnet", "gem"),
+        ("heliodor", "d1ee1d", 1.5f, "CS_Kandra_Material_Heliodor", "gem"),
+        ("zircon", "d8e9f0", 1.5f, "CS_Kandra_Material_Zircon", "gem"),
+        ("smokestone", "4a4657", 1.5f, "CS_Kandra_Material_Smokestone", "gem"),
+        ("milky quartzite", "dff0f5", 2f, "CS_Kandra_Material_MilkyQuartzite", "stone"),
+        ("rose quartzite", "f0a8c8", 2f, "CS_Kandra_Material_RoseQuartzite", "stone"),
+        ("smoky quartzite", "9aa3b5", 2f, "CS_Kandra_Material_SmokyQuartzite", "stone"),
+        ("pale wood", "d9a441", 2f, "CS_Kandra_Material_PaleWood", "wood"),
+        ("walnut", "8a4416", 2f, "CS_Kandra_Material_Walnut", "wood"),
+        ("blackwood", "2e1c2a", 2f, "CS_Kandra_Material_Blackwood", "wood"),
+        ("marble", "e4eaf5", 0.8f, "CS_Kandra_Material_Marble", "stone"),
+        ("obsidian", "171320", 0.8f, "CS_Kandra_Material_Obsidian", "stone"),
     ];
+
+    /// <summary>The material groups, in the order a picker should show them.</summary>
+    public static readonly (string group, string labelKey)[] MaterialGroups = [
+        ("gem", "CS_Kandra_MaterialGroup_Gem"),
+        ("stone", "CS_Kandra_MaterialGroup_Stone"),
+        ("wood", "CS_Kandra_MaterialGroup_Wood"),
+    ];
+
+    /// <summary>Every material, sorted into <see cref="MaterialGroups" /> order.</summary>
+    public static readonly IReadOnlyList<MaterialRow> AllMaterials = MaterialGroups
+        .SelectMany(group => Materials.Where(material => material.group == group.group))
+        .ToArray();
 
     /// <summary>The body texture for a formless kandra, or null when it is wearing a face.</summary>
     public static string? BodyGraphicPathFor(Pawn? pawn) {
@@ -107,10 +120,13 @@ public static class KandraAppearance {
     }
 
     /// <summary>
-    ///     What this kandra's true body is made of. Keyed off the pawn id, so it is the same body
-    ///     every time it drops a disguise and survives a reload without a saved field.
+    ///     What this kandra's true body is made of. A picked material wins; anything else rolls
+    ///     off the pawn id, so an undesigned kandra keeps the same body across reloads.
     /// </summary>
     public static (string name, Color colour) TrueBodyMaterialFor(Pawn pawn) {
+        MaterialRow? picked = FindMaterial(pawn.TryGetComp<Kandra.CompKandraForms>()?.TrueBodyMaterial);
+        if (picked != null) return (picked.Value.name, Parse(picked.Value.hex));
+
         Rand.PushState(pawn.thingIDNumber);
         try {
             float total = 0f;
@@ -126,6 +142,18 @@ public static class KandraAppearance {
         } finally {
             Rand.PopState();
         }
+    }
+
+    /// <summary>
+    ///     The row a stored material name points at, or null. A save from an older build can
+    ///     name a material the table no longer carries, so this never assumes a hit.
+    /// </summary>
+    public static MaterialRow? FindMaterial(string? name) {
+        foreach (MaterialRow material in Materials) {
+            if (material.name == name) return material;
+        }
+
+        return null;
     }
 
     /// <summary>The colour half of <see cref="TrueBodyMaterialFor" />.</summary>

@@ -77,10 +77,10 @@ public class KandraFormsDialogTests {
         int cta = Regex.Matches(source, @"CTAButtonText\(").Count;
         int plain = Regex.Matches(source, @"Widgets\.ButtonText\(").Count;
 
-        // Von Restorff: emphasis everywhere is emphasis nowhere. One commit action per state.
+        // One CTA per committing state: revert, reshape, adopt. No more than that.
         Assert.IsTrue(
-            cta <= 2,
-            $"{cta} CTA buttons. The atlas is for the one action that commits, not for every control."
+            cta <= 3,
+            $"{cta} CTA buttons against three committing states. The atlas is for the action that commits, not for every control."
         );
         Assert.IsTrue(
             plain >= cta,
@@ -307,6 +307,56 @@ public class KandraFormsDialogTests {
             body,
             "Current.crafted",
             "IsFormless only checks the true body, so wearing the crafted body renders as its stored face."
+        );
+    }
+
+    [TestMethod]
+    public void TheMaterialReadoutShowsTheTranslatedLabelRatherThanTheSaveKey() {
+        string source = DialogSource;
+
+        foreach (string method in new[] { "private void DrawMaterial", "private string CurrentTrueLabel" }) {
+            int start = source.IndexOf(method, StringComparison.Ordinal);
+            Assert.IsTrue(start >= 0, $"{method} is gone, so this guard no longer covers anything.");
+
+            string body = source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
+
+            StringAssert.Contains(
+                body,
+                "MaterialLabel(",
+                $"{method} prints the material's raw save key, so the rail reads 'milky quartzite' "
+                + "beside the palette's 'Milky quartzite'."
+            );
+        }
+
+        int helper = source.IndexOf("private static string MaterialLabel", StringComparison.Ordinal);
+        Assert.IsTrue(helper >= 0, "The dialog has no shared material label, so each caller resolves its own.");
+
+        string resolve = source[helper..source.IndexOf("\n    }", helper, StringComparison.Ordinal)];
+
+        StringAssert.Contains(resolve, "FindMaterial", "The label is not resolved against the material table.");
+        StringAssert.Contains(resolve, "labelKey.Translate", "The label skips the row's key, so it prints untranslated.");
+    }
+
+    [TestMethod]
+    public void TheCraftedPortraitUsesTheBodysOwnGenderRatherThanTheDisguises() {
+        string source = DialogSource;
+
+        int start = source.IndexOf("private void DrawTrueBody", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "The dialog no longer draws the crafted body itself.");
+
+        string body = source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
+
+        // ApplyTo puts the disguise's gender on the pawn while the true body keeps the real one.
+        Assert.IsFalse(
+            body.Contains("?? pawn.gender", StringComparison.Ordinal),
+            "DrawTrueBody falls back to the pawn's gender, so a disguised kandra sees the wrong "
+            + "silhouette in every caller that passes none."
+        );
+
+        StringAssert.Contains(
+            body,
+            "?? form.gender",
+            "DrawTrueBody must default to the form's own gender; three call sites pass none."
         );
     }
 }

@@ -16,6 +16,9 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public class KandraChangeShape : Verse.AI.JobDriver {
     public const int RevertIndex = -1;
 
+    /// <summary>Rebuilding its own body rather than putting on somebody else's.</summary>
+    public const int ReshapeIndex = -2;
+
     private CompKandraForms? Forms => pawn.TryGetComp<CompKandraForms>();
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
@@ -37,6 +40,13 @@ public class KandraChangeShape : Verse.AI.JobDriver {
     private void Change() {
         CompKandraForms? forms = Forms;
         if (forms == null) return;
+
+        if (job.count == ReshapeIndex) {
+            // Wearing a face keeps the face. The new colour and gender land when it comes off.
+            if (forms.CommitReshape() && !forms.IsWearingSomeoneElse) KandraShapeshift.Revert(pawn);
+
+            return;
+        }
 
         if (job.count == RevertIndex) {
             KandraShapeshift.Revert(pawn);

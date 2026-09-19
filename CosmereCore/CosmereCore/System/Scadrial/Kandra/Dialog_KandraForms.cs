@@ -40,6 +40,12 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     private const float RailPad = 12f;
     private const float WellHeight = 150f;
 
+    private const float PreviewPlateHeight = 224f;
+    private const float GenderButtonHeight = 40f;
+    private const float SwatchRowHeight = 24f;
+    private const int SwatchColumns = 3;
+
+    private static readonly Vector2 PreviewSize = new Vector2(180f, 168f);
     private static readonly Vector2 CardPortrait = new Vector2(108f, 84f);
     private static readonly Vector2 RailPortrait = new Vector2(200f, WellHeight);
 
@@ -50,6 +56,12 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     private bool picking;
     private Vector2 scroll;
 
+    /// <summary>The third rail state, beside picking and confirming. Set by the edit button.</summary>
+    private bool reshaping;
+
+    private string? designMaterial;
+    private Gender designGender;
+
     public Dialog_KandraForms(CompKandraForms forms, global::System.Action<int> choose) {
         this.forms = forms;
         this.choose = choose;
@@ -59,18 +71,20 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         absorbInputAroundWindow = true;
     }
 
-    protected override Vector2 initialWindowSize => new Vector2(Spacing.Get(50), Spacing.Get(32.5));
+    protected override Vector2 initialWindowSize => new Vector2(Spacing.Get(50), Spacing.Get(39));
 
     protected override float headerHeight => Spacing.Get(3.5);
 
     private Pawn? Pawn => forms.parent as Pawn;
 
     protected override TaggedString GetTitle() {
+        if (reshaping) return "CS_Kandra_ReshapeTitle".Translate();
+
         return (picking ? "CS_Kandra_ChooseTrue" : "CS_Kandra_PickForm").Translate();
     }
 
     protected override TaggedString? GetSubtitle() {
-        return CountLine();
+        return reshaping ? "CS_Kandra_ReshapeSub".Translate() : CountLine();
     }
 
     /// <summary>Nothing flows here, so the listing body stays empty and DrawBody lays out Rects.</summary>
@@ -89,6 +103,13 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
             body.width - RailWidth - Spacing.Get(),
             body.height
         );
+
+        if (reshaping) {
+            DrawReshapeRail(rail);
+            DrawDesigner(right);
+
+            return rect.height;
+        }
 
         if (confirming != null) {
             DrawConfirm(rail, confirming);
@@ -169,15 +190,17 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     private void DrawRailButtons(Rect first) {
         bool wearing = forms.IsWearingSomeoneElse;
 
-        // Spec pending. Inert with the real reason rather than shipped as a button that lies.
-        Reasoned(
-            first,
-            "CS_Kandra_EditTrue".Translate(),
-            false,
-            forms.TrueBodyCrafted
-                ? "CS_Kandra_EditTrue_Unbuilt".Translate()
-                : "CS_Kandra_EditTrue_NotCrafted".Translate()
-        );
+        // Only a built body has a material to pick. One it ate is bone, and bone is not designed.
+        bool crafted = forms.TrueBodyCrafted;
+
+        if (Reasoned(
+                first,
+                "CS_Kandra_EditTrue".Translate(),
+                crafted,
+                crafted ? null : "CS_Kandra_EditTrue_NotCrafted".Translate()
+            )) {
+            BeginDesign();
+        }
 
         // Allowed while wearing somebody. The body underneath is what changes, not the disguise.
         Rect change = new Rect(first.x, first.y + ButtonHeight + 8f, first.width, first.height);
@@ -234,7 +257,217 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
 
         Rect swatch = new Rect(rect.x, rect.y + 4f, 10f, 10f);
         Widgets.DrawBoxSolid(swatch, colour);
-        Widgets.Label(new Rect(swatch.xMax + 6f, rect.y, rect.width - 16f, rect.height), name);
+        Widgets.Label(new Rect(swatch.xMax + 6f, rect.y, rect.width - 16f, rect.height), MaterialLabel(name));
+    }
+
+    /// <summary>
+    ///     What the player reads a material as. The table's name is the save key, so it never goes
+    ///     on screen. A save naming a material the table dropped shows that name rather than a blank.
+    /// </summary>
+    private static string MaterialLabel(string name) {
+        (string name, string hex, float weight, string labelKey, string group)? row =
+            KandraAppearance.FindMaterial(name);
+
+        return row == null ? name.CapitalizeFirst() : (string)row.Value.labelKey.Translate();
+    }
+
+    /// <summary>Opens the designer on what the kandra already is, so accepting changes nothing.</summary>
+    private void BeginDesign() {
+        Pawn? pawn = Pawn;
+
+        designMaterial = pawn == null ? null : KandraAppearance.TrueBodyMaterialFor(pawn).name;
+        designGender = forms.TrueBody?.gender ?? pawn?.gender ?? Gender.Male;
+        reshaping = true;
+        picking = false;
+        confirming = null;
+    }
+
+    /// <summary>The before picture. The body as it stands, beside the one being designed.</summary>
+    private void DrawReshapeRail(Rect rail) {
+        Widgets.DrawMenuSection(rail);
+
+        float x = rail.x + RailPad;
+        float width = rail.width - (RailPad * 2f);
+        float y = rail.y + RailPad;
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            Widgets.Label(new Rect(x, y, width, 20f), "CS_Kandra_ReshapeNow".Translate());
+        }
+
+        y += 22f;
+        DrawPortrait(new Rect(x, y, width, WellHeight), forms.TrueBody, RailPortrait, 1.12f);
+        y += WellHeight + 8f;
+
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+            Widgets.Label(new Rect(x, y, width, 22f), Pawn?.LabelShortCap ?? string.Empty);
+        }
+
+        y += 24f;
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            DrawMaterial(new Rect(x, y, width, 18f));
+        }
+
+        Rect cancel = new Rect(x, rail.yMax - RailPad - ButtonHeight, width, ButtonHeight);
+        if (Widgets.ButtonText(cancel, "CS_Kandra_Cancel".Translate())) reshaping = false;
+    }
+
+    /// <summary>The preview and the choices, in place of the grid. The colour is the decision.</summary>
+    private void DrawDesigner(Rect region) {
+        Rect plate = region.TopPartPixels(PreviewPlateHeight);
+        DrawPreviewPlate(plate);
+
+        DrawPalette(new Rect(
+            region.x,
+            plate.yMax + Spacing.Get(),
+            region.width,
+            region.height - PreviewPlateHeight - Spacing.Get()
+        ));
+    }
+
+    private void DrawPreviewPlate(Rect plate) {
+        Widgets.DrawMenuSection(plate);
+
+        Rect inner = plate.ContractedBy(Spacing.Get());
+        Rect preview = new Rect(inner.x, inner.y, PreviewSize.x, PreviewSize.y);
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, bodyTextColor)) {
+            Widgets.Label(new Rect(preview.x, preview.yMax, preview.width, 18f), "CS_Kandra_ReshapeAfter".Translate());
+        }
+
+        DrawPortrait(preview, forms.TrueBody, PreviewSize, 1.12f, DesignColour(), designGender);
+
+        float x = preview.xMax + Spacing.Get();
+        float width = inner.xMax - x;
+        float y = inner.y;
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
+            Widgets.Label(new Rect(x, y, width, 18f), "CS_Kandra_Gender".Translate());
+        }
+
+        y += 20f;
+        float half = (width - Spacing.Get(0.5f)) / 2f;
+        DrawGenderOption(new Rect(x, y, half, GenderButtonHeight), Gender.Male);
+        DrawGenderOption(new Rect(x + half + Spacing.Get(0.5f), y, half, GenderButtonHeight), Gender.Female);
+
+        y += GenderButtonHeight + Spacing.Get(0.5f);
+        TaggedString reads = "CS_Kandra_GenderReads".Translate(designGender.GetLabel().CapitalizeFirst().Named("GENDER"));
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            Widgets.Label(new Rect(x, y, width, Text.CalcHeight(reads, width)), reads);
+        }
+
+        Rect cost = new Rect(x, inner.yMax - ButtonHeight - 18f, width, 18f);
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            Widgets.Label(cost, "CS_Kandra_ReshapeCost".Translate());
+        }
+
+        Rect commit = new Rect(x, cost.yMax, width, ButtonHeight);
+        if (!CTAButtonText(commit, "CS_Kandra_Reshape".Translate())) return;
+        if (designMaterial == null) return;
+
+        // Written to the comp now, applied when the ten seconds are up. Wearing a face is the same deal.
+        forms.BeginReshape(designMaterial, designGender);
+        choose(JobDriver.KandraChangeShape.ReshapeIndex);
+        Close();
+    }
+
+    /// <summary>Says Male and Female because it really does set the pawn's gender.</summary>
+    private void DrawGenderOption(Rect rect, Gender gender) {
+        bool selected = designGender == gender;
+
+        if (selected) {
+            Widgets.DrawHighlightSelected(rect);
+        } else {
+            Widgets.DrawHighlightIfMouseover(rect);
+        }
+
+        Rect thumb = new Rect(rect.x + 8f, rect.y + ((rect.height - 28f) / 2f), 22f, 28f);
+        Color previous = GUI.color;
+        GUI.color = DesignColour();
+        GUI.DrawTexture(thumb, gender == Gender.Female ? FemaleTrueBody : MaleTrueBody, ScaleMode.ScaleToFit);
+        GUI.color = previous;
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, selected ? BorderColor : bodyTextColor)) {
+            Widgets.Label(new Rect(thumb.xMax + 6f, rect.y, rect.width - 36f, rect.height), gender.GetLabel().CapitalizeFirst());
+        }
+
+        Verse.Sound.MouseoverSounds.DoRegion(rect);
+        if (Widgets.ButtonInvisible(rect)) designGender = gender;
+    }
+
+    /// <summary>
+    ///     Eighteen materials in three named groups. Grouping is what keeps the choice readable,
+    ///     and every colour on offer is a row the gamut test has already cleared.
+    /// </summary>
+    private void DrawPalette(Rect plate) {
+        Widgets.DrawMenuSection(plate);
+
+        Rect inner = plate.ContractedBy(Spacing.Get(0.75f));
+        float gap = Spacing.Get(0.5f);
+        float column = (inner.width - (gap * 2f)) / SwatchColumns;
+        float y = inner.y;
+
+        foreach ((string group, string labelKey) in KandraAppearance.MaterialGroups) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
+                Widgets.Label(new Rect(inner.x, y, inner.width, 18f), labelKey.Translate());
+            }
+
+            y += 20f;
+            int shown = 0;
+
+            foreach ((string name, string hex, float _, string label, string rowGroup) in KandraAppearance.AllMaterials) {
+                if (rowGroup != group) continue;
+
+                Rect row = new Rect(
+                    inner.x + ((shown % SwatchColumns) * (column + gap)),
+                    y + ((shown / SwatchColumns) * SwatchRowHeight),
+                    column,
+                    SwatchRowHeight - 2f
+                );
+
+                DrawSwatch(row, name, hex, label);
+                shown++;
+            }
+
+            y += Mathf.CeilToInt(shown / (float)SwatchColumns) * SwatchRowHeight;
+            y += gap;
+        }
+    }
+
+    private void DrawSwatch(Rect row, string name, string hex, string labelKey) {
+        bool selected = name == designMaterial;
+
+        if (selected) {
+            Widgets.DrawHighlightSelected(row);
+        } else {
+            Widgets.DrawHighlightIfMouseover(row);
+        }
+
+        Rect chip = new Rect(row.x + 4f, row.y + ((row.height - 14f) / 2f), 14f, 14f);
+        Widgets.DrawBoxSolid(chip, Parse(hex));
+
+        TaggedString label = labelKey.Translate();
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : bodyTextColor)) {
+            Widgets.Label(new Rect(chip.xMax + 6f, row.y, row.width - 26f, row.height), label);
+        }
+
+        TooltipHandler.TipRegion(row, (string)"CS_Kandra_MaterialTip".Translate(label.Named("MATERIAL")));
+        Verse.Sound.MouseoverSounds.DoRegion(row);
+
+        if (Widgets.ButtonInvisible(row)) designMaterial = name;
+    }
+
+    private Color DesignColour() {
+        (string name, string hex, float weight, string labelKey, string group)? row =
+            KandraAppearance.FindMaterial(designMaterial);
+
+        return row == null ? Color.white : Parse(row.Value.hex);
+    }
+
+    /// <summary>Every colour in this window comes out of the material table. None is written here.</summary>
+    private static Color Parse(string hex) {
+        return ColorUtility.TryParseHtmlString("#" + hex, out Color colour) ? colour : Color.white;
     }
 
     private void DrawGrid(Rect region) {
@@ -342,7 +575,7 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
 
         Pawn? pawn = Pawn;
 
-        return pawn == null ? string.Empty : KandraAppearance.TrueBodyMaterialFor(pawn).name;
+        return pawn == null ? string.Empty : MaterialLabel(KandraAppearance.TrueBodyMaterialFor(pawn).name);
     }
 
     private void DrawEmpty(Rect region) {
@@ -358,12 +591,19 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         }
     }
 
-    private void DrawPortrait(Rect well, KandraForm? form, Vector2 size, float zoom) {
+    private void DrawPortrait(
+        Rect well,
+        KandraForm? form,
+        Vector2 size,
+        float zoom,
+        Color? tint = null,
+        Gender? gender = null
+    ) {
         Widgets.DrawBoxSolid(well, Widgets.WindowBGFillColor);
 
         // A generated stand-in arrives dressed and human, which is the one thing this is not.
         if (form is { crafted: true }) {
-            DrawTrueBody(well, form, size);
+            DrawTrueBody(well, form, size, tint, gender);
 
             return;
         }
@@ -390,11 +630,12 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     ///     The crafted body drawn from its own textures, in the material it is made of. Body and
     ///     head are separate files, and the head rides where this pawn's body type puts one.
     /// </summary>
-    private void DrawTrueBody(Rect well, KandraForm form, Vector2 size) {
+    private void DrawTrueBody(Rect well, KandraForm form, Vector2 size, Color? tint, Gender? gender) {
         Pawn? pawn = Pawn;
         if (pawn == null) return;
 
-        bool female = pawn.gender == Gender.Female;
+        // A worn disguise puts its gender on the pawn, so only the form knows the real one.
+        bool female = (gender ?? form.gender) == Gender.Female;
         float side = Mathf.Min(size.x, size.y);
         Rect body = new Rect(
             well.x + ((well.width - side) / 2f),
@@ -408,7 +649,7 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         Rect head = new Rect(body.x, body.y - lift, side, side);
 
         Color previous = GUI.color;
-        GUI.color = KandraAppearance.TrueBodyColorFor(pawn);
+        GUI.color = tint ?? KandraAppearance.TrueBodyColorFor(pawn);
         GUI.DrawTexture(body, female ? FemaleTrueBody : MaleTrueBody, ScaleMode.ScaleToFit);
         GUI.DrawTexture(head, female ? FemaleTrueHead : MaleTrueHead, ScaleMode.ScaleToFit);
 

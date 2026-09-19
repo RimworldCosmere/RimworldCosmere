@@ -33,6 +33,14 @@ public class CompKandraForms : ThingComp {
     /// <summary>The kandra's own body, kept so they can always go back to it.</summary>
     private KandraForm? trueBody;
 
+    /// <summary>The material the player picked for the true body. Null until someone designs it.</summary>
+    private string? trueBodyMaterial;
+
+    /// <summary>What a running reshape job will commit. Reshaping takes ten seconds, so the
+    /// choice waits for the work to finish rather than snapping the moment it is confirmed.</summary>
+    private string? pendingMaterial;
+    private Gender? pendingGender;
+
     /// <summary>What the spikes were holding, kept for when a new pair goes in.</summary>
     private KandraMind mind = new KandraMind();
 
@@ -117,6 +125,9 @@ public class CompKandraForms : ThingComp {
         Scribe_Deep.Look(ref trueBody, "trueBody");
         Scribe_Deep.Look(ref mind, "mind");
         Scribe_Values.Look(ref coverBlown, "coverBlown");
+        Scribe_Values.Look(ref trueBodyMaterial, "trueBodyMaterial");
+        Scribe_Values.Look(ref pendingMaterial, "pendingMaterial");
+        Scribe_Values.Look(ref pendingGender, "pendingGender");
         Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
         Scribe_Collections.Look(ref workPriorities, "workPriorities", LookMode.Def, LookMode.Value);
         workPriorities ??= [];
@@ -208,6 +219,27 @@ public class CompKandraForms : ThingComp {
     }
 
     public KandraForm? TrueBody => trueBody;
+
+    public string? TrueBodyMaterial => trueBodyMaterial;
+
+    /// <summary>Records what the reshape job will produce when it finishes.</summary>
+    public void BeginReshape(string material, Gender gender) {
+        pendingMaterial = material;
+        pendingGender = gender;
+    }
+
+    /// <summary>Applies a finished reshape. False when there was nothing waiting.</summary>
+    public bool CommitReshape() {
+        if (pendingMaterial == null && pendingGender == null) return false;
+        if (trueBody == null) return false;
+
+        trueBodyMaterial = pendingMaterial;
+        if (pendingGender != null) trueBody.gender = pendingGender.Value;
+        pendingMaterial = null;
+        pendingGender = null;
+
+        return true;
+    }
 
     public void SetCurrent(KandraForm? form) {
         current = form;

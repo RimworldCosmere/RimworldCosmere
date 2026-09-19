@@ -17,6 +17,12 @@ public class KandraForm : IExposable {
     public Gender gender;
     public HairDef? hair;
     public Color hairColour;
+
+    /// <summary>
+    ///     Which palette entry <see cref="hairColour" /> was dyed from, so a retuned hex reaches
+    ///     bodies already wearing it. Null when the colour came off a real pawn instead.
+    /// </summary>
+    public string? hairColourName;
     public HeadTypeDef? headType;
 
     /// <summary>The name the colony will use. The whole point of wearing a face.</summary>
@@ -151,6 +157,7 @@ public class KandraForm : IExposable {
         Scribe_Defs.Look(ref headType, "headType");
         Scribe_Defs.Look(ref hair, "hair");
         Scribe_Values.Look(ref hairColour, "hairColour");
+        Scribe_Values.Look(ref hairColourName, "hairColourName");
         Scribe_Values.Look(ref skinColour, "skinColour");
         Scribe_Values.Look(ref gender, "gender");
         Scribe_Defs.Look(ref xenotype, "xenotype");
@@ -158,5 +165,10 @@ public class KandraForm : IExposable {
         Scribe_References.Look(ref ideo, "ideo");
         Scribe_Defs.Look(ref animalKind, "animalKind");
         Scribe_Values.Look(ref crafted, "crafted");
+
+        // a retuned palette hex has to reach bodies already wearing that dye
+        if (Scribe.mode == LoadSaveMode.PostLoadInit && Util.KandraAppearance.FindHairColour(hairColourName) != null) {
+            hairColour = Util.KandraAppearance.HairColorFor(hairColourName);
+        }
     }
 }

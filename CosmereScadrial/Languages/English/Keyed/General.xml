@@ -37,4 +37,18 @@
     <CS_Kandra_MaterialGroup_Gem>Gemstone</CS_Kandra_MaterialGroup_Gem>
     <CS_Kandra_MaterialGroup_Stone>Stone</CS_Kandra_MaterialGroup_Stone>
     <CS_Kandra_MaterialGroup_Wood>Wood</CS_Kandra_MaterialGroup_Wood>
+    <CS_Kandra_HairHeader>Hair</CS_Kandra_HairHeader>
+    <CS_Kandra_HairColourHeader>Hair colour</CS_Kandra_HairColourHeader>
+    <CS_Kandra_HairColour_AshBlonde>Ash blonde</CS_Kandra_HairColour_AshBlonde>
+    <CS_Kandra_HairColour_Wheat>Wheat</CS_Kandra_HairColour_Wheat>
+    <CS_Kandra_HairColour_Copper>Copper</CS_Kandra_HairColour_Copper>
+    <CS_Kandra_HairColour_Auburn>Auburn</CS_Kandra_HairColour_Auburn>
+    <CS_Kandra_HairColour_Chestnut>Chestnut</CS_Kandra_HairColour_Chestnut>
+    <CS_Kandra_HairColour_Soot>Soot</CS_Kandra_HairColour_Soot>
+    <CS_Kandra_HairColour_IronGrey>Iron grey</CS_Kandra_HairColour_IronGrey>
+    <CS_Kandra_HairColour_BoneWhite>Bone white</CS_Kandra_HairColour_BoneWhite>
+    <CS_Kandra_HairColour_Stormlight>Stormlight</CS_Kandra_HairColour_Stormlight>
+    <CS_Kandra_HairColour_Oxide>Oxide</CS_Kandra_HairColour_Oxide>
+    <CS_Kandra_HairColour_Wine>Wine</CS_Kandra_HairColour_Wine>
+    <CS_Kandra_HairColour_Ink>Ink</CS_Kandra_HairColour_Ink>
 </LanguageData>

@@ -40,6 +40,12 @@ public class CompKandraForms : ThingComp {
     /// choice waits for the work to finish rather than snapping the moment it is confirmed.</summary>
     private string? pendingMaterial;
     private Gender? pendingGender;
+    private HairDef? pendingHair;
+
+    /// <summary>The hair colour by palette name, never as a Color. A name picks up a retuned hex
+    /// later, where a stored hex freezes a colour that may leave the palette, and a nullable
+    /// struct through Scribe_Values is unproven here where a string is not.</summary>
+    private string? pendingHairColour;
 
     /// <summary>What the spikes were holding, kept for when a new pair goes in.</summary>
     private KandraMind mind = new KandraMind();
@@ -128,6 +134,8 @@ public class CompKandraForms : ThingComp {
         Scribe_Values.Look(ref trueBodyMaterial, "trueBodyMaterial");
         Scribe_Values.Look(ref pendingMaterial, "pendingMaterial");
         Scribe_Values.Look(ref pendingGender, "pendingGender");
+        Scribe_Defs.Look(ref pendingHair, "pendingHair");
+        Scribe_Values.Look(ref pendingHairColour, "pendingHairColour");
         Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
         Scribe_Collections.Look(ref workPriorities, "workPriorities", LookMode.Def, LookMode.Value);
         workPriorities ??= [];
@@ -223,26 +231,44 @@ public class CompKandraForms : ThingComp {
     public string? TrueBodyMaterial => trueBodyMaterial;
 
     /// <summary>Records what the reshape job will produce when it finishes.</summary>
-    public void BeginReshape(string material, Gender gender) {
+    public void BeginReshape(string material, Gender gender, HairDef? hair, string? hairColour) {
         pendingMaterial = material;
         pendingGender = gender;
+        pendingHair = hair;
+        pendingHairColour = hairColour;
     }
 
     /// <summary>Throws away a reshape that never finished, so it does not sit in the save.</summary>
     public void CancelReshape() {
         pendingMaterial = null;
         pendingGender = null;
+        pendingHair = null;
+        pendingHairColour = null;
     }
 
     /// <summary>Applies a finished reshape. False when there was nothing waiting.</summary>
     public bool CommitReshape() {
-        if (pendingMaterial == null && pendingGender == null) return false;
+        if (pendingMaterial == null && pendingGender == null && pendingHair == null &&
+            pendingHairColour == null) {
+            return false;
+        }
+
         if (trueBody == null) return false;
 
         trueBodyMaterial = pendingMaterial;
         if (pendingGender != null) trueBody.gender = pendingGender.Value;
+        if (pendingHair != null) trueBody.hair = pendingHair;
+
+        // the name rides along so a retune reaches this body; a dropped name leaves both alone.
+        if (Util.KandraAppearance.FindHairColour(pendingHairColour) != null) {
+            trueBody.hairColourName = pendingHairColour;
+            trueBody.hairColour = Util.KandraAppearance.HairColorFor(pendingHairColour);
+        }
+
         pendingMaterial = null;
         pendingGender = null;
+        pendingHair = null;
+        pendingHairColour = null;
 
         return true;
     }

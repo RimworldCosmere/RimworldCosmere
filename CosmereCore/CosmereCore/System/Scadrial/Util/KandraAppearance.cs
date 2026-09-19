@@ -1,5 +1,6 @@
 using UnityEngine;
 using Verse;
+using HairColourRow = (string name, string hex, string labelKey);
 using MaterialRow = (string name, string hex, float weight, string labelKey, string group);
 
 namespace Cosmere.System.Scadrial.Util;
@@ -40,6 +41,46 @@ public static class KandraAppearance {
         ("marble", "e4eaf5", 0.8f, "CS_Kandra_Material_Marble", "stone"),
         ("obsidian", "171320", 0.8f, "CS_Kandra_Material_Obsidian", "stone"),
     ];
+
+    /// <summary>
+    ///     What a kandra can dye the hair on its true body. Nothing rolls these - hair is only
+    ///     ever picked - so there is no weight column.
+    /// </summary>
+    private static readonly HairColourRow[] HairColourTable = [
+        ("ash blonde", "d8c9a3", "CS_Kandra_HairColour_AshBlonde"),
+        ("wheat", "c7a457", "CS_Kandra_HairColour_Wheat"),
+        ("copper", "a4562a", "CS_Kandra_HairColour_Copper"),
+        ("auburn", "7a3520", "CS_Kandra_HairColour_Auburn"),
+        ("chestnut", "5a3a24", "CS_Kandra_HairColour_Chestnut"),
+        ("soot", "2b2622", "CS_Kandra_HairColour_Soot"),
+        ("iron grey", "8e8c88", "CS_Kandra_HairColour_IronGrey"),
+        ("bone white", "e6e2d8", "CS_Kandra_HairColour_BoneWhite"),
+        ("stormlight", "9fd9e0", "CS_Kandra_HairColour_Stormlight"),
+        ("oxide", "4e7d6b", "CS_Kandra_HairColour_Oxide"),
+        ("wine", "6b2440", "CS_Kandra_HairColour_Wine"),
+        ("ink", "1b1b2a", "CS_Kandra_HairColour_Ink"),
+    ];
+
+    /// <summary>Every hair colour, in the order a picker should show them.</summary>
+    public static readonly IReadOnlyList<HairColourRow> AllHairColours = HairColourTable;
+
+    /// <summary>
+    ///     The row a stored hair colour name points at, or null. Same reason as
+    ///     <see cref="FindMaterial" />: an older save can name a colour that is gone.
+    /// </summary>
+    public static HairColourRow? FindHairColour(string? name) {
+        foreach (HairColourRow colour in HairColourTable) {
+            if (colour.name == name) return colour;
+        }
+
+        return null;
+    }
+
+    /// <summary>The colour a stored hair colour name draws with. White when nothing matches.</summary>
+    public static Color HairColorFor(string? name) {
+        HairColourRow? picked = FindHairColour(name);
+        return picked != null ? Parse(picked.Value.hex) : Color.white;
+    }
 
     /// <summary>The material groups, in the order a picker should show them.</summary>
     public static readonly (string group, string labelKey)[] MaterialGroups = [

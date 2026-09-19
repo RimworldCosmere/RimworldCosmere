@@ -83,13 +83,43 @@ public class KandraReshapeHairTests {
         Assert.IsTrue(
             Regex.IsMatch(body, $@"hairColour\s*=\s*[\w.]*HairColorFor\(\s*{name}\s*\)"),
             $"KandraForm.ExposeData never writes hairColour back from {name}, so a retuned palette "
-            + "hex never reaches a kandra already wearing it - the designer previews the new colour "
-            + "while the pawn on the map keeps the old one."
+            + "hex never reaches the stored form. The map pawn is a separate hop, guarded by "
+            + nameof(ARetunedDyeReachesThePawnOnTheMapAndNotJustItsStoredForm) + "."
         );
 
         Assert.IsTrue(
             body.Contains("LoadSaveMode.PostLoadInit", StringComparison.Ordinal),
             "The hair colour is resolved outside PostLoadInit, so it runs on save too."
+        );
+    }
+
+    [TestMethod]
+    public void ARetunedDyeReachesThePawnOnTheMapAndNotJustItsStoredForm() {
+        string comp = CompSource;
+
+        // the form fixes itself on load; story.HairColor is only written by a shape change.
+        int start = comp.IndexOf("PostSpawnSetup", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "CompKandraForms no longer has PostSpawnSetup.");
+
+        Assert.IsTrue(
+            Regex.IsMatch(comp, @"story\.HairColor\s*=\s*trueBody\.hairColour"),
+            "Nothing pushes the true body's dye onto the pawn on load. After a palette retune the "
+            + "designer and the portrait show the new colour while the kandra standing on the map "
+            + "keeps the old one until it next changes shape."
+        );
+
+        string body = MethodBody(comp, "void SyncTrueBodyHairColour");
+
+        Assert.IsTrue(
+            body.Contains("current != null", StringComparison.Ordinal),
+            "The dye sync does not check for a worn form, so it repaints a disguise's hair with the "
+            + "true body's colour and blows the kandra's cover on every load."
+        );
+
+        Assert.IsTrue(
+            body.Contains("hairColourName == null", StringComparison.Ordinal),
+            "The dye sync runs for a kandra with no palette name, so an undesigned kandra or an old "
+            + "save gets its hair repainted by something the player never chose."
         );
     }
 

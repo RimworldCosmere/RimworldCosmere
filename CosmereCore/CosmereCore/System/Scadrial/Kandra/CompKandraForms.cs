@@ -106,6 +106,24 @@ public class CompKandraForms : ThingComp {
 
         Util.KandraAppearance.SyncFormless(parent as Pawn);
         Util.KandraAppearance.SyncAnimalShape(parent as Pawn);
+        SyncTrueBodyHairColour();
+    }
+
+    /// <summary>
+    ///     Pushes a retuned dye onto the pawn itself. KandraForm re-resolves its own colour on
+    ///     load, but the map pawn renders from story.HairColor, which only a shape change writes.
+    ///     Without this a retune reaches the portrait and leaves the kandra on screen unchanged.
+    /// </summary>
+    private void SyncTrueBodyHairColour() {
+        if (parent is not Pawn pawn || pawn.story == null) return;
+
+        // the disguise owns the hair while one is on. undesigned kandra have no name and keep theirs.
+        if (current != null || trueBody?.hairColourName == null) return;
+        if (Util.KandraAppearance.FindHairColour(trueBody.hairColourName) == null) return;
+        if (pawn.story.HairColor == trueBody.hairColour) return;
+
+        pawn.story.HairColor = trueBody.hairColour;
+        pawn.Drawer?.renderer?.SetAllGraphicsDirty();
     }
 
     /// <summary>

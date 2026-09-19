@@ -47,6 +47,14 @@ public class CompKandraForms : ThingComp {
     /// struct through Scribe_Values is unproven here where a string is not.</summary>
     private string? pendingHairColour;
 
+    /// <summary>The eyes by palette name, for the same reasons the hair colour is a name. Null
+    /// means the player changed nothing, so the two that need an "unset" answer carry a sentinel:
+    /// "none" clears odd eyes and "off" puts the light out.</summary>
+    private string? pendingEyeColour;
+    private string? pendingEyeColourTwo;
+    private string? pendingIrisSize;
+    private string? pendingEyeLight;
+
     /// <summary>What the spikes were holding, kept for when a new pair goes in.</summary>
     private KandraMind mind = new KandraMind();
 
@@ -154,6 +162,10 @@ public class CompKandraForms : ThingComp {
         Scribe_Values.Look(ref pendingGender, "pendingGender");
         Scribe_Defs.Look(ref pendingHair, "pendingHair");
         Scribe_Values.Look(ref pendingHairColour, "pendingHairColour");
+        Scribe_Values.Look(ref pendingEyeColour, "pendingEyeColour");
+        Scribe_Values.Look(ref pendingEyeColourTwo, "pendingEyeColourTwo");
+        Scribe_Values.Look(ref pendingIrisSize, "pendingIrisSize");
+        Scribe_Values.Look(ref pendingEyeLight, "pendingEyeLight");
         Scribe_Values.Look(ref wornSinceTick, "wornSinceTick");
         Scribe_Collections.Look(ref workPriorities, "workPriorities", LookMode.Def, LookMode.Value);
         workPriorities ??= [];
@@ -249,11 +261,24 @@ public class CompKandraForms : ThingComp {
     public string? TrueBodyMaterial => trueBodyMaterial;
 
     /// <summary>Records what the reshape job will produce when it finishes.</summary>
-    public void BeginReshape(string material, Gender gender, HairDef? hair, string? hairColour) {
+    public void BeginReshape(
+        string material,
+        Gender gender,
+        HairDef? hair,
+        string? hairColour,
+        string? eyeColour = null,
+        string? eyeColourTwo = null,
+        string? irisSize = null,
+        string? eyeLight = null
+    ) {
         pendingMaterial = material;
         pendingGender = gender;
         pendingHair = hair;
         pendingHairColour = hairColour;
+        pendingEyeColour = eyeColour;
+        pendingEyeColourTwo = eyeColourTwo;
+        pendingIrisSize = irisSize;
+        pendingEyeLight = eyeLight;
     }
 
     /// <summary>Throws away a reshape that never finished, so it does not sit in the save.</summary>
@@ -262,12 +287,17 @@ public class CompKandraForms : ThingComp {
         pendingGender = null;
         pendingHair = null;
         pendingHairColour = null;
+        pendingEyeColour = null;
+        pendingEyeColourTwo = null;
+        pendingIrisSize = null;
+        pendingEyeLight = null;
     }
 
     /// <summary>Applies a finished reshape. False when there was nothing waiting.</summary>
     public bool CommitReshape() {
         if (pendingMaterial == null && pendingGender == null && pendingHair == null &&
-            pendingHairColour == null) {
+            pendingHairColour == null && pendingEyeColour == null && pendingEyeColourTwo == null &&
+            pendingIrisSize == null && pendingEyeLight == null) {
             return false;
         }
 
@@ -283,10 +313,35 @@ public class CompKandraForms : ThingComp {
             trueBody.hairColour = Util.KandraAppearance.HairColorFor(pendingHairColour);
         }
 
+        if (Util.KandraAppearance.FindEyeColour(pendingEyeColour) != null) {
+            trueBody.eyeColourName = pendingEyeColour;
+        }
+
+        // the none sentinel is how the player says both eyes match again.
+        if (pendingEyeColourTwo == Util.KandraAppearance.EyeColourNone) {
+            trueBody.eyeColourTwoName = null;
+        } else if (Util.KandraAppearance.FindEyeColour(pendingEyeColourTwo) != null) {
+            trueBody.eyeColourTwoName = pendingEyeColourTwo;
+        }
+
+        if (Util.KandraAppearance.FindIrisSize(pendingIrisSize) != null) {
+            trueBody.irisSizeName = pendingIrisSize;
+        }
+
+        if (pendingEyeLight == Util.KandraAppearance.EyeLightOff) {
+            trueBody.eyeLightName = Util.KandraAppearance.EyeLightOff;
+        } else if (Util.KandraAppearance.FindEyeLight(pendingEyeLight) != null) {
+            trueBody.eyeLightName = pendingEyeLight;
+        }
+
         pendingMaterial = null;
         pendingGender = null;
         pendingHair = null;
         pendingHairColour = null;
+        pendingEyeColour = null;
+        pendingEyeColourTwo = null;
+        pendingIrisSize = null;
+        pendingEyeLight = null;
 
         return true;
     }

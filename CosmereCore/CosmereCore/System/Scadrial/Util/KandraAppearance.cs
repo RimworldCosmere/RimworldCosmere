@@ -107,6 +107,9 @@ public static class KandraAppearance {
     /// <summary>Every eye colour, in the order a picker should show them.</summary>
     public static readonly IReadOnlyList<EyeColourRow> AllEyeColours = EyeColourTable;
 
+    /// <summary>What a picked second eye colour says when the player wants both eyes to match.</summary>
+    public const string EyeColourNone = "none";
+
     /// <summary>
     ///     The row a stored eye colour name points at, or null. Same reason as
     ///     <see cref="FindHairColour" />: an older save can name a colour that is gone.
@@ -156,6 +159,9 @@ public static class KandraAppearance {
 
     private const string DefaultEyeLight = "steady";
 
+    /// <summary>What a stored light name says when the player put the light out.</summary>
+    public const string EyeLightOff = "off";
+
     /// <summary>
     ///     How hard the eyes glow, as a multiple of the iris colour's brightness. Not alpha - the
     ///     eye art is fully opaque, so anything above 1 would clamp to nothing and 0.5 would sit on
@@ -180,22 +186,37 @@ public static class KandraAppearance {
         return null;
     }
 
-    /// <summary>The brightness multiple for a stored light name, falling back to steady.</summary>
+    /// <summary>
+    ///     The brightness multiple for a stored light name. Undesigned and off both give 1, no
+    ///     lift; a name the table no longer carries falls back to steady.
+    /// </summary>
     public static float EyeLightStrengthFor(string? name) {
+        if (name is null or EyeLightOff) return 1f;
+
         return (FindEyeLight(name) ?? FindEyeLight(DefaultEyeLight) ?? EyeLights[0]).strength;
     }
 
+    /// <summary>An unlit iris draws its stone colour exactly, so the palette is what a player sees.</summary>
+    private const float UnlitDim = 1f;
+
+    /// <summary>How much every channel gains per point of strength above 1.</summary>
+    private const float LightLift = 0.35f;
+
     /// <summary>
-    ///     The colour the iris draws with once the light is on. Every strength sits above 1, so
-    ///     the lit eye is always brighter than the unlit one - at 1.0 the two were the same pixel
-    ///     and the picker had a row that did nothing. The bloom is a separate node; this is only
-    ///     the lift on the iris itself.
+    ///     The colour the iris draws with. Unlit is the stone itself. Lighting it adds a flat
+    ///     amount to every channel, which clamps on a pale stone - the bloom node carries the rest
+    ///     of the separation, so the iris does not have to.
     /// </summary>
     public static Color EyeDrawColorFor(string? colourName, string? lightName) {
-        Color colour = EyeColorFor(colourName);
-        if (FindEyeLight(lightName) == null) return colour;
+        Color stone = EyeColorFor(colourName);
+        float lift = (EyeLightStrengthFor(lightName) - 1f) * LightLift;
 
-        return Color.Lerp(colour, Color.white, EyeLightStrengthFor(lightName) - 1f);
+        return new Color(
+            Mathf.Clamp01((stone.r * UnlitDim) + lift),
+            Mathf.Clamp01((stone.g * UnlitDim) + lift),
+            Mathf.Clamp01((stone.b * UnlitDim) + lift),
+            stone.a
+        );
     }
 
     /// <summary>The material groups, in the order a picker should show them.</summary>

@@ -40,6 +40,7 @@ public static class KandraAppearanceReport {
                 + $" | formless now: {Util.KandraAppearance.IsFormless(pawn)}"
                 + $"\n  live gender: {pawn.gender} | skinOverride: {pawn.story?.skinColorOverride?.ToString() ?? "none"}"
                 + $"\n  shape hediff: {(pawn.health?.hediffSet?.HasHediff(HediffFor()) == true ? "on" : "off")}"
+                + $"\n  eyes: {DescribeEyes(own)}"
                 + $"\n  known forms: {forms?.Known.Count ?? 0} | cover blown: {forms?.CoverBlown}"
             );
         }
@@ -83,6 +84,16 @@ public static class KandraAppearanceReport {
         if (node.children == null) return;
 
         for (int i = 0; i < node.children.Length; i++) Describe(node.children[i], text, depth + 1);
+    }
+
+    private static string DescribeEyes(Kandra.KandraForm? form) {
+        if (form == null) return "no true body";
+
+        // "not designed" and a blank column read the same otherwise.
+        return $"colour={form.eyeColourName ?? "not designed"}"
+               + $" colourTwo={form.eyeColourTwoName ?? "not designed"}"
+               + $" iris={form.irisSizeName ?? "not designed"}"
+               + $" light={form.eyeLightName ?? "not designed"}";
     }
 
     private static HediffDef? HediffFor() {

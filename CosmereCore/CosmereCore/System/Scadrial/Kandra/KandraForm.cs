@@ -23,6 +23,26 @@ public class KandraForm : IExposable {
     ///     bodies already wearing it. Null when the colour came off a real pawn instead.
     /// </summary>
     public string? hairColourName;
+
+    /// <summary>
+    ///     Which palette entry the left eye was dyed from. Null on a kandra nobody has designed.
+    /// </summary>
+    /// <remarks>
+    ///     Held by name and not as a <see cref="Color" /> for the same reason the hair dye is: a
+    ///     name picks up a retuned hex later, where a saved hex freezes a colour that may leave
+    ///     the palette.
+    /// </remarks>
+    public string? eyeColourName;
+
+    /// <summary>The right eye when it differs. Null means it matches the left.</summary>
+    public string? eyeColourTwoName;
+
+    /// <summary>Which iris size was picked. Null draws at standard.</summary>
+    public string? irisSizeName;
+
+    /// <summary>"off", or one of the light strengths. Null is off.</summary>
+    public string? eyeLightName;
+
     public HeadTypeDef? headType;
 
     /// <summary>The name the colony will use. The whole point of wearing a face.</summary>
@@ -145,6 +165,7 @@ public class KandraForm : IExposable {
                 portrait.story.skinColorOverride = skinColour;
             }
 
+            // eyes are not on pawn.story: the render reads them off the form, so nothing to sync
             portrait.Drawer?.renderer?.SetAllGraphicsDirty();
             return portrait;
         }
@@ -158,6 +179,10 @@ public class KandraForm : IExposable {
         Scribe_Defs.Look(ref hair, "hair");
         Scribe_Values.Look(ref hairColour, "hairColour");
         Scribe_Values.Look(ref hairColourName, "hairColourName");
+        Scribe_Values.Look(ref eyeColourName, "eyeColourName");
+        Scribe_Values.Look(ref eyeColourTwoName, "eyeColourTwoName");
+        Scribe_Values.Look(ref irisSizeName, "irisSizeName");
+        Scribe_Values.Look(ref eyeLightName, "eyeLightName");
         Scribe_Values.Look(ref skinColour, "skinColour");
         Scribe_Values.Look(ref gender, "gender");
         Scribe_Defs.Look(ref xenotype, "xenotype");

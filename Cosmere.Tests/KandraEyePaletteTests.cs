@@ -145,10 +145,7 @@ public class KandraEyePaletteTests {
 
     [TestMethod]
     public void AnEyeLightStrengthOutsideTheBrightnessRangeDrawsTheSameEyeAsTheOneBesideIt() {
-        string table = Source("EyeLights");
-        List<float> strengths = Regex.Matches(table, @"""[^""]+""\s*,\s*([0-9.]+)f")
-            .Select(match => float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture))
-            .ToList();
+        List<float> strengths = Strengths();
 
         Assert.AreEqual(3, strengths.Count, $"Expected three eye light strengths, found {strengths.Count}.");
         Assert.AreEqual(
@@ -161,10 +158,80 @@ public class KandraEyePaletteTests {
             Assert.IsTrue(
                 strength is > 0f and <= 2f,
                 $"Eye light strength {strength} is outside (0, 2]. EyeDrawColorFor darkens below 1 and "
-                + "bleaches toward white above it, so anything past 2 is pure white and any two such "
-                + "rows are indistinguishable."
+                + "adds to every channel above it, so anything past 2 clamps to white on a pale stone "
+                + "and any two such rows are indistinguishable."
             );
         }
+    }
+
+    [TestMethod]
+    public void AnUnlitIrisThatIsNotItsOwnStoneColourShowsThePlayerAPaletteTheyDidNotPick() {
+        Assert.AreEqual(
+            1f,
+            Constant("UnlitDim"),
+            "UnlitDim is not 1, so an unlit eye draws something other than the hex in EyeColourTable. "
+            + "Unlit is the state almost every kandra is in, so that is the palette the player judges."
+        );
+    }
+
+    [TestMethod]
+    public void AnEyeLightThatDarkensTheIrisMakesTurningTheLightOnLookLikeTurningItOff() {
+        float dim = Constant("UnlitDim");
+        float lift = Constant("LightLift");
+
+        foreach ((string name, float[] stone) in EyeColours()) {
+            float[] off = Draw(stone, dim, 0f);
+
+            foreach (float strength in Strengths().OrderBy(value => value)) {
+                float[] drawn = Draw(stone, dim, (strength - 1f) * lift);
+
+                for (int i = 0; i < off.Length; i++) {
+                    Assert.IsTrue(
+                        drawn[i] >= off[i],
+                        $"Lighting {name} eyes at {strength} makes channel {i} darker than unlit. "
+                        + "Every strength has to be at least as bright as no light at all."
+                    );
+                }
+            }
+        }
+    }
+
+    private static float[] Draw(float[] stone, float dim, float lift) {
+        return stone.Select(channel => Math.Clamp((channel * dim) + lift, 0f, 1f)).ToArray();
+    }
+
+    private static float MinDelta(float[] a, float[] b) {
+        return a.Zip(b, (left, right) => Math.Abs(left - right)).Min();
+    }
+
+    private static List<float> Strengths() {
+        return Regex.Matches(Source("EyeLights"), @"""[^""]+""\s*,\s*([0-9.]+)f")
+            .Select(match => float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture))
+            .ToList();
+    }
+
+    private static List<(string name, float[] stone)> EyeColours() {
+        return Regex.Matches(Source("EyeColourTable"), @"""([^""]+)""\s*,\s*""([0-9a-fA-F]{6})""")
+            .Select(match => (
+                match.Groups[1].Value,
+                Enumerable.Range(0, 3)
+                    .Select(i => int.Parse(
+                        match.Groups[2].Value.Substring(i * 2, 2),
+                        NumberStyles.HexNumber,
+                        CultureInfo.InvariantCulture
+                    ) / 255f)
+                    .ToArray()
+            ))
+            .ToList();
+    }
+
+    private static float Constant(string name) {
+        Match value = Regex.Match(
+            File.ReadAllText(AppearanceSourcePath),
+            $@"const\s+float\s+{name}\s*=\s*([0-9.]+)f"
+        );
+        Assert.IsTrue(value.Success, $"KandraAppearance declares no {name} constant, so EyeDrawColorFor changed shape.");
+        return float.Parse(value.Groups[1].Value, CultureInfo.InvariantCulture);
     }
 
     private static string Source(string namePrefix) {

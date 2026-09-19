@@ -1,6 +1,9 @@
 using UnityEngine;
 using Verse;
+using EyeColourRow = (string name, string hex, string labelKey);
+using EyeLightRow = (string name, float strength, string labelKey);
 using HairColourRow = (string name, string hex, string labelKey);
+using IrisRow = (string name, float scale, string labelKey);
 using MaterialRow = (string name, string hex, float weight, string labelKey, string group);
 
 namespace Cosmere.System.Scadrial.Util;
@@ -80,6 +83,119 @@ public static class KandraAppearance {
     public static Color HairColorFor(string? name) {
         HairColourRow? picked = FindHairColour(name);
         return picked != null ? Parse(picked.Value.hex) : Color.white;
+    }
+
+    /// <summary>
+    ///     What a kandra can light its eyes with. Nothing rolls these either - eyes are only ever
+    ///     picked - so there is no weight column.
+    /// </summary>
+    private static readonly EyeColourRow[] EyeColourTable = [
+        ("carnelian", "b04a2f", "CS_Kandra_EyeColour_Carnelian"),
+        ("amber", "d99a1c", "CS_Kandra_EyeColour_Amber"),
+        ("citrine", "e8c54a", "CS_Kandra_EyeColour_Citrine"),
+        ("peridot", "9bbf3f", "CS_Kandra_EyeColour_Peridot"),
+        ("malachite", "0f8a6a", "CS_Kandra_EyeColour_Malachite"),
+        ("turquoise", "30a3b8", "CS_Kandra_EyeColour_Turquoise"),
+        ("lapis", "1f4fa8", "CS_Kandra_EyeColour_Lapis"),
+        ("iolite", "5a4fb8", "CS_Kandra_EyeColour_Iolite"),
+        ("sugilite", "8a4fa0", "CS_Kandra_EyeColour_Sugilite"),
+        ("moonstone", "dfe6ee", "CS_Kandra_EyeColour_Moonstone"),
+        ("hematite", "6e6f76", "CS_Kandra_EyeColour_Hematite"),
+        ("onyx", "161418", "CS_Kandra_EyeColour_Onyx"),
+    ];
+
+    /// <summary>Every eye colour, in the order a picker should show them.</summary>
+    public static readonly IReadOnlyList<EyeColourRow> AllEyeColours = EyeColourTable;
+
+    /// <summary>
+    ///     The row a stored eye colour name points at, or null. Same reason as
+    ///     <see cref="FindHairColour" />: an older save can name a colour that is gone.
+    /// </summary>
+    public static EyeColourRow? FindEyeColour(string? name) {
+        foreach (EyeColourRow colour in EyeColourTable) {
+            if (colour.name == name) return colour;
+        }
+
+        return null;
+    }
+
+    /// <summary>The colour a stored eye colour name draws with. White when nothing matches.</summary>
+    public static Color EyeColorFor(string? name) {
+        EyeColourRow? picked = FindEyeColour(name);
+        return picked != null ? Parse(picked.Value.hex) : Color.white;
+    }
+
+    private const string DefaultIris = "standard";
+
+    /// <summary>How wide the lit part of the eye is drawn, as a multiple of the socket.</summary>
+    private static readonly IrisRow[] IrisSizes = [
+        ("small", 0.58f, "CS_Kandra_Iris_Small"),
+        ("standard", 0.80f, "CS_Kandra_Iris_Standard"),
+        ("wide", 1.00f, "CS_Kandra_Iris_Wide"),
+    ];
+
+    /// <summary>Every iris size, in the order a picker should show them.</summary>
+    public static readonly IReadOnlyList<IrisRow> AllIrisSizes = IrisSizes;
+
+    /// <summary>The row a stored iris size name points at, or null.</summary>
+    public static IrisRow? FindIrisSize(string? name) {
+        foreach (IrisRow iris in IrisSizes) {
+            if (iris.name == name) return iris;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    ///     The drawn scale for a stored iris name. A name the table no longer carries falls back
+    ///     to the standard size, so an old save draws a normal eye rather than none at all.
+    /// </summary>
+    public static float IrisScaleFor(string? name) {
+        return (FindIrisSize(name) ?? FindIrisSize(DefaultIris) ?? IrisSizes[0]).scale;
+    }
+
+    private const string DefaultEyeLight = "steady";
+
+    /// <summary>
+    ///     How hard the eyes glow, as a multiple of the iris colour's brightness. Not alpha - the
+    ///     eye art is fully opaque, so anything above 1 would clamp to nothing and 0.5 would sit on
+    ///     the Cutout alpha test and flicker. Must stay in (0, 2]: under 1 the colour darkens toward
+    ///     black, over 1 it bleaches toward white by the remainder.
+    /// </summary>
+    private static readonly EyeLightRow[] EyeLights = [
+        ("dim", 1.15f, "CS_Kandra_EyeLight_Dim"),
+        ("steady", 1.4f, "CS_Kandra_EyeLight_Steady"),
+        ("burning", 1.75f, "CS_Kandra_EyeLight_Burning"),
+    ];
+
+    /// <summary>Every light strength, in the order a picker should show them.</summary>
+    public static readonly IReadOnlyList<EyeLightRow> AllEyeLights = EyeLights;
+
+    /// <summary>The row a stored light strength name points at, or null.</summary>
+    public static EyeLightRow? FindEyeLight(string? name) {
+        foreach (EyeLightRow light in EyeLights) {
+            if (light.name == name) return light;
+        }
+
+        return null;
+    }
+
+    /// <summary>The brightness multiple for a stored light name, falling back to steady.</summary>
+    public static float EyeLightStrengthFor(string? name) {
+        return (FindEyeLight(name) ?? FindEyeLight(DefaultEyeLight) ?? EyeLights[0]).strength;
+    }
+
+    /// <summary>
+    ///     The colour the iris draws with once the light is on. Every strength sits above 1, so
+    ///     the lit eye is always brighter than the unlit one - at 1.0 the two were the same pixel
+    ///     and the picker had a row that did nothing. The bloom is a separate node; this is only
+    ///     the lift on the iris itself.
+    /// </summary>
+    public static Color EyeDrawColorFor(string? colourName, string? lightName) {
+        Color colour = EyeColorFor(colourName);
+        if (FindEyeLight(lightName) == null) return colour;
+
+        return Color.Lerp(colour, Color.white, EyeLightStrengthFor(lightName) - 1f);
     }
 
     /// <summary>The material groups, in the order a picker should show them.</summary>

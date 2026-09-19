@@ -28,6 +28,11 @@ public class KandraChangeShape : Verse.AI.JobDriver {
     protected override IEnumerable<Toil> MakeNewToils() {
         AddFailCondition(() => Forms == null);
 
+        // drafted or downed mid-rearrange, the design is gone. CommitReshape already cleared on success.
+        AddFinishAction(_ => {
+            if (job.count == ReshapeIndex) Forms?.CancelReshape();
+        });
+
         yield return Toils_General.Wait(KandraShapeshift.TicksToChange)
             .WithProgressBarToilDelay(TargetIndex.A);
 

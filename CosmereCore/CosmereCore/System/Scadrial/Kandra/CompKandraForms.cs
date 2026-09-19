@@ -228,6 +228,12 @@ public class CompKandraForms : ThingComp {
         pendingGender = gender;
     }
 
+    /// <summary>Throws away a reshape that never finished, so it does not sit in the save.</summary>
+    public void CancelReshape() {
+        pendingMaterial = null;
+        pendingGender = null;
+    }
+
     /// <summary>Applies a finished reshape. False when there was nothing waiting.</summary>
     public bool CommitReshape() {
         if (pendingMaterial == null && pendingGender == null) return false;

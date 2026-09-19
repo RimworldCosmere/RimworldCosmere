@@ -97,6 +97,11 @@ public class BodyAbsorption : Shapeshifter {
     private void StartChange(int index) {
         Verse.AI.Job job = JobMaker.MakeJob(JobDefOf.Cosmere_Scadrial_Job_KandraChangeShape);
         job.count = index;
-        pawn.jobs?.TryTakeOrderedJob(job);
+        if (pawn.jobs?.TryTakeOrderedJob(job) == true) return;
+
+        // refused, so no toil runs and no finish action fires to clean up after the dialog.
+        if (index == JobDriver.KandraChangeShape.ReshapeIndex) {
+            pawn.TryGetComp<CompKandraForms>()?.CancelReshape();
+        }
     }
 }

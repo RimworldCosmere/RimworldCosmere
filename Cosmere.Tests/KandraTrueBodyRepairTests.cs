@@ -147,6 +147,57 @@ public class KandraTrueBodyRepairTests {
         return BodyAt(source, start);
     }
 
+    [TestMethod]
+    public void AReshapeThatNeverFinishesDoesNotLeaveItsDesignInTheSave() {
+        string comp = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", "CompKandraForms.cs"
+            )
+        );
+
+        int cancel = comp.IndexOf("public void CancelReshape", StringComparison.Ordinal);
+        Assert.IsTrue(cancel >= 0, "CompKandraForms has no CancelReshape, so a dropped reshape cannot be cleaned up.");
+
+        string body = BodyAt(comp, cancel);
+        foreach (string field in new[] { "pendingMaterial", "pendingGender" }) {
+            StringAssert.Contains(
+                body,
+                field + " = null",
+                $"CancelReshape leaves {field} set, so a reshape the pawn never finished rides in the save forever."
+            );
+        }
+
+        string job = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "JobDriver", "KandraChangeShape.cs"
+            )
+        );
+
+        // Drafted, downed or attacked mid-rearrange all end the job without ever reaching Change.
+        Assert.IsTrue(
+            job.Contains("AddFinishAction", StringComparison.Ordinal)
+            && job.Contains("CancelReshape", StringComparison.Ordinal),
+            "KandraChangeShape does not clear a pending reshape when the job ends early."
+        );
+
+        string gizmo = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs"
+            )
+        );
+
+        int start = gizmo.IndexOf("private void StartChange", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "BodyAbsorption no longer starts the change job.");
+
+        string starter = BodyAt(gizmo, start);
+        Assert.IsTrue(
+            starter.Contains("TryTakeOrderedJob", StringComparison.Ordinal)
+            && starter.Contains("CancelReshape", StringComparison.Ordinal),
+            "StartChange throws away the result of TryTakeOrderedJob. A refused job runs no toil, so "
+            + "nothing fires the finish action and the design stays pending with no way to reach it."
+        );
+    }
+
     private static string BodyAt(string source, int start) =>
         source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
 }

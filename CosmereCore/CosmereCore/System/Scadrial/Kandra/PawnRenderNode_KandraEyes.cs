@@ -16,9 +16,6 @@ public class PawnRenderNode_KandraEyes : PawnRenderNode_AttachmentHead {
     public PawnRenderNode_KandraEyes(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
         : base(pawn, props, tree) { }
 
-    /// <summary>CutoutComplex rather than plain Cutout, which ignores the colour it is handed.</summary>
-    protected override UnityEngine.Shader DefaultShader => ShaderDatabase.CutoutComplex;
-
     /// <summary>Which eye this node is. A base-typed properties entry answers left.</summary>
     protected bool RightEye => Props is PawnRenderNodeProperties_KandraEye { rightEye: true };
 

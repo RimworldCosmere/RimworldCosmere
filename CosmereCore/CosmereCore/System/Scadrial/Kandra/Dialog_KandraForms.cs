@@ -13,7 +13,7 @@ namespace Cosmere.System.Scadrial.Kandra;
 ///     of the borrowed shapes, so it takes the rail rather than a card in the grid.
 /// </summary>
 [StaticConstructorOnStartup]
-public class Dialog_KandraForms : Core.Window.BaseWindow {
+public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private static readonly Texture2D MaleTrueBody =
         ContentFinder<Texture2D>.Get("Things/Pawn/Humanlike/Bodies/Kandra_Male_south");
 
@@ -25,6 +25,21 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
 
     private static readonly Texture2D FemaleTrueHead =
         ContentFinder<Texture2D>.Get("Things/Pawn/Humanlike/Heads/Kandra_Female_south");
+
+    /// <summary>The preview owns its own paths, the way it already does for the body and the head.</summary>
+    private const string IrisDir = "Things/Pawn/Humanlike/HeadAttachments/KandraEyes/";
+
+    private static readonly Texture2D MaleIrisLeft =
+        ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_Male_Standard_Left_south");
+
+    private static readonly Texture2D MaleIrisRight =
+        ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_Male_Standard_Right_south");
+
+    private static readonly Texture2D FemaleIrisLeft =
+        ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_Female_Standard_Left_south");
+
+    private static readonly Texture2D FemaleIrisRight =
+        ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_Female_Standard_Right_south");
 
     /// <summary>The humanlike body mesh is 1.5 world units, which is what headOffset is measured in.</summary>
     private const float BodyMeshUnits = 1.5f;
@@ -45,6 +60,12 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
 
     /// <summary>Two chip columns, not three. The palette is half as wide as it used to be.</summary>
     private const int SwatchColumns = 2;
+
+    /// <summary>How much of a tab's pane the left column takes. A grid needs room a list does not.</summary>
+    private const float BodyColumnShare = 0.5f;
+
+    private const float HairColumnShare = 0.655f;
+    private const float EyeColumnShare = 0.535f;
 
     private const int HairColumns = 4;
     private const float HairCellHeight = 92f;
@@ -69,9 +90,12 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     private Gender designGender;
     private HairDef? designHair;
     private string? designHairColour;
+    private string? designEyeColour;
 
     private Vector2 materialScroll;
     private Vector2 hairScroll;
+    private Vector2 dyeScroll;
+    private Vector2 eyeScroll;
 
     /// <summary>Every loaded hair. Abstracts never reach the database, so the list needs no filter.</summary>
     private List<HairDef>? hairs;
@@ -297,6 +321,7 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         designGender = body?.gender ?? pawn?.gender ?? Gender.Male;
         designHair = body?.hair ?? pawn?.story?.hairDef;
         designHairColour = body?.hairColourName;
+        designEyeColour = body?.eyeColourName;
         reshaping = true;
         picking = false;
         confirming = null;
@@ -332,8 +357,8 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     }
 
     /// <summary>
-    ///     The preview across the top, then the material and the hair side by side under it. The
-    ///     preview never moves while the player picks, because it is the thing being judged.
+    ///     The preview across the top, the tab strip under it, and whichever pane is live below
+    ///     that. The preview never moves while the player picks, because it is what is being judged.
     /// </summary>
     private void DrawDesigner(Rect region) {
         Rect plate = region.TopPartPixels(PreviewPlateHeight);
@@ -346,9 +371,83 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
             region.height - PreviewPlateHeight - Spacing.Get()
         );
 
-        float column = (below.width - Spacing.Get()) / 2f;
-        DrawPalette(new Rect(below.x, below.y, column, below.height));
-        DrawHairColumn(new Rect(below.xMax - column, below.y, column, below.height));
+        Rect pane = DrawTabStrip(below);
+
+        if (tab == DesignerTab.Hair) {
+            (Rect grid, Rect dyes) = DrawColumnPlates(pane, HairColumnShare);
+            DrawHairGrid(grid);
+            DrawHairDyes(dyes);
+
+            return;
+        }
+
+        if (tab == DesignerTab.Eyes) {
+            // The right column is the next phase's: iris size, odd eyes and the light.
+            DrawEyeColours(DrawColumnPlates(pane, EyeColumnShare).left);
+
+            return;
+        }
+
+        (Rect build, Rect materials) = DrawColumnPlates(pane, BodyColumnShare);
+        DrawBuildColumn(build);
+        DrawPalette(materials);
+    }
+
+    /// <summary>What the kandra is built as, and the note saying none of it is permanent.</summary>
+    private void DrawBuildColumn(Rect inner) {
+        float y = inner.y;
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
+            Widgets.Label(new Rect(inner.x, y, inner.width, 18f), "CS_Kandra_BuildHeader".Translate());
+        }
+
+        y += SectionHeaderHeight;
+        float half = (inner.width - Spacing.Get(0.5f)) / 2f;
+        DrawGenderOption(new Rect(inner.x, y, half, GenderButtonHeight), Gender.Male);
+        DrawGenderOption(new Rect(inner.xMax - half, y, half, GenderButtonHeight), Gender.Female);
+
+        y += GenderButtonHeight + Spacing.Get(0.5f);
+        TaggedString reads = "CS_Kandra_GenderReads".Translate(designGender.GetLabel().CapitalizeFirst().Named("GENDER"));
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            Rect line = new Rect(inner.x, y, inner.width, Text.CalcHeight(reads, inner.width));
+            Widgets.Label(line, reads);
+            y = line.yMax + Spacing.Get(0.5f);
+
+            TaggedString note = "CS_Kandra_BuildNote".Translate();
+            Widgets.Label(new Rect(inner.x, y, inner.width, Text.CalcHeight(note, inner.width)), note);
+        }
+    }
+
+    /// <summary>The stones a kandra can cut its eyes from, as the same chip rows the materials use.</summary>
+    private void DrawEyeColours(Rect inner) {
+        float gap = Spacing.Get(0.5f);
+        float width = ColumnContentWidth(inner);
+        float column = (width - (gap * (SwatchColumns - 1))) / SwatchColumns;
+
+        IReadOnlyList<(string name, string hex, string labelKey)> stones = KandraAppearance.AllEyeColours;
+        float rows = Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight;
+
+        Widgets.BeginScrollView(inner, ref eyeScroll, new Rect(0f, 0f, width, SectionHeaderHeight + rows));
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
+            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_EyeColourHeader".Translate());
+        }
+
+        for (int i = 0; i < stones.Count; i++) {
+            (string name, string hex, string labelKey) = stones[i];
+
+            Rect row = new Rect(
+                (i % SwatchColumns) * (column + gap),
+                SectionHeaderHeight + ((i / SwatchColumns) * SwatchRowHeight),
+                column,
+                SwatchRowHeight - 2f
+            );
+
+            if (DrawSwatch(row, hex, labelKey.Translate(), name == designEyeColour)) designEyeColour = name;
+        }
+
+        Widgets.EndScrollView();
     }
 
     private void DrawPreviewPlate(Rect plate) {
@@ -361,26 +460,24 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.Label(new Rect(preview.x, preview.yMax, preview.width, 18f), "CS_Kandra_ReshapeAfter".Translate());
         }
 
-        DrawPortrait(preview, forms.TrueBody, PreviewSize, 1.12f, DesignColour(), designGender, designHair, designHairColour);
+        DrawPortrait(
+            preview,
+            forms.TrueBody,
+            PreviewSize,
+            1.12f,
+            DesignColour(),
+            designGender,
+            designHair,
+            designHairColour,
+            designEyeColour
+        );
 
         float x = preview.xMax + Spacing.Get();
         float width = inner.xMax - x;
-        float y = inner.y;
-
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(x, y, width, 18f), "CS_Kandra_Gender".Translate());
-        }
-
-        y += 20f;
-        float half = (width - Spacing.Get(0.5f)) / 2f;
-        DrawGenderOption(new Rect(x, y, half, GenderButtonHeight), Gender.Male);
-        DrawGenderOption(new Rect(x + half + Spacing.Get(0.5f), y, half, GenderButtonHeight), Gender.Female);
-
-        y += GenderButtonHeight + Spacing.Get(0.5f);
         TaggedString reads = "CS_Kandra_GenderReads".Translate(designGender.GetLabel().CapitalizeFirst().Named("GENDER"));
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
-            Widgets.Label(new Rect(x, y, width, Text.CalcHeight(reads, width)), reads);
+            Widgets.Label(new Rect(x, inner.y, width, Text.CalcHeight(reads, width)), reads);
         }
 
         Rect cost = new Rect(x, inner.yMax - ButtonHeight - 18f, width, 18f);
@@ -393,7 +490,7 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         if (designMaterial == null) return;
 
         // Written to the comp now, applied when the ten seconds are up. Wearing a face is the same deal.
-        forms.BeginReshape(designMaterial, designGender, designHair, designHairColour);
+        forms.BeginReshape(designMaterial, designGender, designHair, designHairColour, designEyeColour);
         choose(JobDriver.KandraChangeShape.ReshapeIndex);
         Close();
     }
@@ -426,12 +523,9 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
     ///     Eighteen materials in three named groups. Grouping is what keeps the choice readable,
     ///     and every colour on offer is a row the gamut test has already cleared.
     /// </summary>
-    private void DrawPalette(Rect plate) {
-        Widgets.DrawMenuSection(plate);
-
-        Rect inner = plate.ContractedBy(Spacing.Get(0.75f));
+    private void DrawPalette(Rect inner) {
         float gap = Spacing.Get(0.5f);
-        float width = inner.width - ScrollbarWidth;
+        float width = ColumnContentWidth(inner);
         float column = (width - (gap * (SwatchColumns - 1))) / SwatchColumns;
 
         Widgets.BeginScrollView(inner, ref materialScroll, new Rect(0f, 0f, width, PaletteHeight(gap)));
@@ -488,39 +582,27 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         return height;
     }
 
-    /// <summary>
-    ///     Every loaded hair, then the dye. Both sit in one scroll because the colour is what the
-    ///     grid above is drawn in, and splitting them would put the cause below the effect.
-    /// </summary>
-    private void DrawHairColumn(Rect plate) {
-        Widgets.DrawMenuSection(plate);
-
-        Rect inner = plate.ContractedBy(Spacing.Get(0.75f));
+    /// <summary>Every loaded hair, drawn in whatever dye the column beside it has selected.</summary>
+    private void DrawHairGrid(Rect inner) {
         float gap = Spacing.Get(0.5f);
-        float width = inner.width - ScrollbarWidth;
+        float width = ColumnContentWidth(inner);
         float cell = (width - (gap * (HairColumns - 1))) / HairColumns;
 
         List<HairDef> loaded = Hairs;
-        IReadOnlyList<(string name, string hex, string labelKey)> dyes = KandraAppearance.AllHairColours;
-
         float grid = Mathf.CeilToInt(loaded.Count / (float)HairColumns) * (HairCellHeight + gap);
-        float height = SectionHeaderHeight + grid + gap + SectionHeaderHeight + (dyes.Count * SwatchRowHeight);
 
-        Widgets.BeginScrollView(inner, ref hairScroll, new Rect(0f, 0f, width, height));
-
-        float y = 0f;
+        Widgets.BeginScrollView(inner, ref hairScroll, new Rect(0f, 0f, width, SectionHeaderHeight + grid));
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(0f, y, width, 18f), "CS_Kandra_HairHeader".Translate());
+            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_HairHeader".Translate());
         }
 
-        y += SectionHeaderHeight;
         Color tint = HairTint();
 
         for (int i = 0; i < loaded.Count; i++) {
             Rect box = new Rect(
                 (i % HairColumns) * (cell + gap),
-                y + ((i / HairColumns) * (HairCellHeight + gap)),
+                SectionHeaderHeight + ((i / HairColumns) * (HairCellHeight + gap)),
                 cell,
                 HairCellHeight
             );
@@ -531,17 +613,27 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
             DrawHairCell(box, loaded[i], tint);
         }
 
-        y += grid + gap;
+        Widgets.EndScrollView();
+    }
+
+    /// <summary>The dye the grid beside it is drawn in, as the same chip rows the materials use.</summary>
+    private void DrawHairDyes(Rect inner) {
+        float width = ColumnContentWidth(inner);
+        IReadOnlyList<(string name, string hex, string labelKey)> dyes = KandraAppearance.AllHairColours;
+
+        Widgets.BeginScrollView(
+            inner,
+            ref dyeScroll,
+            new Rect(0f, 0f, width, SectionHeaderHeight + (dyes.Count * SwatchRowHeight))
+        );
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(0f, y, width, 18f), "CS_Kandra_HairColourHeader".Translate());
+            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_HairColourHeader".Translate());
         }
-
-        y += SectionHeaderHeight;
 
         for (int i = 0; i < dyes.Count; i++) {
             (string name, string hex, string labelKey) = dyes[i];
-            Rect row = new Rect(0f, y + (i * SwatchRowHeight), width, SwatchRowHeight - 2f);
+            Rect row = new Rect(0f, SectionHeaderHeight + (i * SwatchRowHeight), width, SwatchRowHeight - 2f);
 
             if (DrawSwatch(row, hex, labelKey.Translate(), name == designHairColour)) designHairColour = name;
         }
@@ -759,13 +851,14 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         Color? tint = null,
         Gender? gender = null,
         HairDef? hair = null,
-        string? hairColour = null
+        string? hairColour = null,
+        string? eyeColour = null
     ) {
         Widgets.DrawBoxSolid(well, Widgets.WindowBGFillColor);
 
         // A generated stand-in arrives dressed and human, which is the one thing this is not.
         if (form is { crafted: true }) {
-            DrawTrueBody(well, form, size, tint, gender, hair, hairColour);
+            DrawTrueBody(well, form, size, tint, gender, hair, hairColour, eyeColour);
 
             return;
         }
@@ -799,7 +892,8 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         Color? tint,
         Gender? gender,
         HairDef? hair,
-        string? hairColour
+        string? hairColour,
+        string? eyeColour
     ) {
         Pawn? pawn = Pawn;
         if (pawn == null) return;
@@ -822,6 +916,15 @@ public class Dialog_KandraForms : Core.Window.BaseWindow {
         GUI.color = tint ?? KandraAppearance.TrueBodyColorFor(pawn);
         GUI.DrawTexture(body, female ? FemaleTrueBody : MaleTrueBody, ScaleMode.ScaleToFit);
         GUI.DrawTexture(head, female ? FemaleTrueHead : MaleTrueHead, ScaleMode.ScaleToFit);
+
+        // Under the hair, because hair is what covers them. The iris rides the head's own quad.
+        string? stone = eyeColour ?? form.eyeColourName;
+
+        if (stone != null) {
+            GUI.color = KandraAppearance.EyeDrawColorFor(stone, form.eyeLightName);
+            GUI.DrawTexture(head, female ? FemaleIrisLeft : MaleIrisLeft, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(head, female ? FemaleIrisRight : MaleIrisRight, ScaleMode.ScaleToFit);
+        }
 
         // A kandra grows its own hair, so it keeps its own colour rather than the body material.
         Texture? mane = HairTexture(hair ?? form.hair ?? pawn.story?.hairDef);

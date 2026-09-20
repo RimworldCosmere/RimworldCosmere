@@ -200,15 +200,20 @@ public class KandraEyeRenderTests {
     }
 
     [TestMethod]
-    public void APlainCutoutShaderDropsTheIrisOutOfTheColourItWasGiven() {
+    public void AMaskedShaderWithNoMaskOnDiskPaintsEveryIrisWhite() {
         foreach (XElement node in NodesFor(EyeNodeClass)) {
             Assert.AreNotEqual(
-                "Cutout",
+                "CutoutComplex",
                 node.Element("shaderTypeDef")?.Value,
-                "An eye node is declared with a plain Cutout shader. The eye art is drawn to be tinted, "
-                + "and plain Cutout ignores the colour it is handed, with no error anywhere."
+                "An eye node asks for CutoutComplex, which reads a _m mask to pick colourTwo. There are "
+                + "no eye masks on disk, so every iris comes out white. Plain Cutout tints, like hair."
             );
         }
+
+        Assert.IsFalse(
+            EyeNodeSource().Contains("CutoutComplex", StringComparison.Ordinal),
+            "The eye node overrides DefaultShader to CutoutComplex, which does the same thing in code."
+        );
     }
 
     [TestMethod]

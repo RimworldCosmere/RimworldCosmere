@@ -98,7 +98,6 @@
         <rightEye>false</rightEye>
         <!-- Fallback only. The node picks gender, size and side at draw time. -->
         <texPath>Things/Pawn/Humanlike/HeadAttachments/KandraEyes/Kandra_Eyes_Male_Standard_Left</texPath>
-        <shaderTypeDef>CutoutComplex</shaderTypeDef>
         <parentTagDef>Head</parentTagDef>
         <rotDrawMode>Fresh</rotDrawMode>
         <subworkerClasses>
@@ -134,7 +133,6 @@
         <rightEye>true</rightEye>
         <!-- Fallback only. The node picks gender, size and side at draw time. -->
         <texPath>Things/Pawn/Humanlike/HeadAttachments/KandraEyes/Kandra_Eyes_Male_Standard_Right</texPath>
-        <shaderTypeDef>CutoutComplex</shaderTypeDef>
         <parentTagDef>Head</parentTagDef>
         <rotDrawMode>Fresh</rotDrawMode>
         <subworkerClasses>

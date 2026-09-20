@@ -149,7 +149,9 @@ public static class KandraAppearance {
         return null;
     }
 
-    private const string DefaultEyeLight = "steady";
+    /// <summary>Where a light starts when the player first turns one on. Not the table's first row,
+    ///     which would change silently if anyone reordered it.</summary>
+    public const string DefaultEyeLight = "steady";
 
     /// <summary>What a stored light name says when the player put the light out.</summary>
     public const string EyeLightOff = "off";

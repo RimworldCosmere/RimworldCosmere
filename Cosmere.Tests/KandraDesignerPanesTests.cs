@@ -139,10 +139,11 @@ public class KandraDesignerPanesTests {
             "The preview ignores the picked colour, or ignores the stored one when nothing is picked."
         );
 
+        // The tint moved into DrawIris, which draws the cutout and the bloom the way a pawn does.
         StringAssert.Contains(
             trueBody,
-            "EyeDrawColorFor",
-            "The preview tints the iris with something other than the palette's own draw colour."
+            "DrawIris(",
+            "The preview tints the iris itself again rather than drawing it the way the pawn does."
         );
 
         // A kandra's hair hangs over its sockets, so eyes drawn last cover the fringe.

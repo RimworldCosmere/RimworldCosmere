@@ -41,6 +41,9 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private static readonly Texture2D FemaleIrisRight =
         ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_Female_Standard_Right_south");
 
+    /// <summary>Every iris the table has art for, loaded once so no draw call reaches ContentFinder.</summary>
+    private static readonly Dictionary<string, Texture2D> IrisArt = BuildIrisArt();
+
     /// <summary>The humanlike body mesh is 1.5 world units, which is what headOffset is measured in.</summary>
     private const float BodyMeshUnits = 1.5f;
 
@@ -57,6 +60,10 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private const float PreviewPlateHeight = 224f;
     private const float GenderButtonHeight = 40f;
     private const float SwatchRowHeight = 24f;
+
+    private const float SummaryNameHeight = 24f;
+    private const float SummaryLineHeight = 18f;
+    private const float SummarySwatchSize = 10f;
 
     /// <summary>Two chip columns, not three. The palette is half as wide as it used to be.</summary>
     private const int SwatchColumns = 2;
@@ -91,6 +98,9 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private HairDef? designHair;
     private string? designHairColour;
     private string? designEyeColour;
+    private string? designEyeColourTwo;
+    private string? designIrisSize;
+    private string? designEyeLight;
 
     private Vector2 materialScroll;
     private Vector2 hairScroll;
@@ -322,6 +332,9 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         designHair = body?.hair ?? pawn?.story?.hairDef;
         designHairColour = body?.hairColourName;
         designEyeColour = body?.eyeColourName;
+        designEyeColourTwo = body?.eyeColourTwoName;
+        designIrisSize = body?.irisSizeName;
+        designEyeLight = body?.eyeLightName;
         reshaping = true;
         picking = false;
         confirming = null;
@@ -382,8 +395,9 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         }
 
         if (tab == DesignerTab.Eyes) {
-            // The right column is the next phase's: iris size, odd eyes and the light.
-            DrawEyeColours(DrawColumnPlates(pane, EyeColumnShare).left);
+            (Rect stones, Rect options) = DrawColumnPlates(pane, EyeColumnShare);
+            DrawEyeColours(stones);
+            DrawEyeOptions(options);
 
             return;
         }
@@ -430,9 +444,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         Widgets.BeginScrollView(inner, ref eyeScroll, new Rect(0f, 0f, width, SectionHeaderHeight + rows));
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_EyeColourHeader".Translate());
-        }
+        DrawSectionHeader(0f, width, "CS_Kandra_EyeColourHeader");
 
         for (int i = 0; i < stones.Count; i++) {
             (string name, string hex, string labelKey) = stones[i];
@@ -460,27 +472,29 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.Label(new Rect(preview.x, preview.yMax, preview.width, 18f), "CS_Kandra_ReshapeAfter".Translate());
         }
 
+        // Held in a local because the summary beside it paints the same colour on its build line.
+        Color material = DesignColour();
+
         DrawPortrait(
             preview,
             forms.TrueBody,
             PreviewSize,
             1.12f,
-            DesignColour(),
+            material,
             designGender,
             designHair,
             designHairColour,
-            designEyeColour
+            designEyeColour,
+            designEyeColourTwo,
+            designIrisSize,
+            designEyeLight
         );
 
         float x = preview.xMax + Spacing.Get();
         float width = inner.xMax - x;
-        TaggedString reads = "CS_Kandra_GenderReads".Translate(designGender.GetLabel().CapitalizeFirst().Named("GENDER"));
-
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
-            Widgets.Label(new Rect(x, inner.y, width, Text.CalcHeight(reads, width)), reads);
-        }
-
         Rect cost = new Rect(x, inner.yMax - ButtonHeight - 18f, width, 18f);
+        DrawSummary(new Rect(x, inner.y, width, cost.y - inner.y), material);
+
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
             Widgets.Label(cost, "CS_Kandra_ReshapeCost".Translate());
         }
@@ -490,9 +504,106 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         if (designMaterial == null) return;
 
         // Written to the comp now, applied when the ten seconds are up. Wearing a face is the same deal.
-        forms.BeginReshape(designMaterial, designGender, designHair, designHairColour, designEyeColour);
+        forms.BeginReshape(
+            designMaterial,
+            designGender,
+            designHair,
+            designHairColour,
+            designEyeColour,
+            designEyeColourTwo,
+            designIrisSize,
+            designEyeLight
+        );
+
         choose(JobDriver.KandraChangeShape.ReshapeIndex);
         Close();
+    }
+
+    /// <summary>
+    ///     What the button is about to commit, in the space the gender toggle used to hold. Iris
+    ///     size is not a line: the portrait beside it already shows the size, and saying it too
+    ///     would double the eye lines the translators have to carry.
+    /// </summary>
+    private void DrawSummary(Rect region, Color material) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+            Widgets.Label(
+                new Rect(region.x, region.y, region.width, SummaryNameHeight),
+                "CS_Kandra_SummaryName".Translate((Pawn?.LabelShortCap ?? string.Empty).Named("PAWN"))
+            );
+        }
+
+        float y = region.y + SummaryNameHeight;
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+            y = SummaryLine(region, y, material, BuildSummary());
+
+            TaggedString? hair = HairSummary();
+            if (hair != null) y = SummaryLine(region, y, HairTint(), hair.Value);
+
+            TaggedString? eyes = EyeSummary();
+            if (eyes == null) return;
+
+            SummaryLine(region, y, KandraAppearance.EyeDrawColorFor(designEyeColour, designEyeLight), eyes.Value);
+        }
+    }
+
+    /// <summary>One summary row: the colour it commits, then what that colour reads as.</summary>
+    private static float SummaryLine(Rect region, float y, Color colour, TaggedString text) {
+        Rect swatch = new Rect(region.x, y + 4f, SummarySwatchSize, SummarySwatchSize);
+        Widgets.DrawBoxSolid(swatch, colour);
+
+        Widgets.Label(
+            new Rect(swatch.xMax + 6f, y, region.width - SummarySwatchSize - 6f, SummaryLineHeight),
+            text
+        );
+
+        return y + SummaryLineHeight;
+    }
+
+    /// <summary>What the body is shaped as, and what it is cut from.</summary>
+    private TaggedString BuildSummary() {
+        return "CS_Kandra_SummaryBuild".Translate(
+            designGender.GetLabel().CapitalizeFirst().Named("GENDER"),
+            MaterialLabel(designMaterial ?? string.Empty).Named("MATERIAL")
+        );
+    }
+
+    /// <summary>The hair line: the cut alone while no dye is named, or nothing while there is no cut.</summary>
+    private TaggedString? HairSummary() {
+        if (designHair == null) return null;
+
+        (string name, string hex, string labelKey)? dye = KandraAppearance.FindHairColour(designHairColour);
+        if (dye == null) return designHair.LabelCap;
+
+        return "CS_Kandra_SummaryHair".Translate(
+            designHair.LabelCap.Named("HAIR"),
+            dye.Value.labelKey.Translate().Named("DYE")
+        );
+    }
+
+    /// <summary>
+    ///     One of four lines, by whether the eyes are odd and whether they carry light. A name the
+    ///     table no longer has, and both sentinels, all read as off.
+    /// </summary>
+    private TaggedString? EyeSummary() {
+        (string name, string hex, string labelKey)? stone = KandraAppearance.FindEyeColour(designEyeColour);
+        if (stone == null) return null;
+
+        (string name, string hex, string labelKey)? second = KandraAppearance.FindEyeColour(designEyeColourTwo);
+        (string name, float strength, string labelKey)? light = KandraAppearance.FindEyeLight(designEyeLight);
+        NamedArgument colour = stone.Value.labelKey.Translate().Named("COLOUR");
+
+        if (second == null) {
+            return light == null
+                ? "CS_Kandra_SummaryEyes".Translate(colour)
+                : "CS_Kandra_SummaryEyesLit".Translate(colour, light.Value.labelKey.Translate().Named("LIGHT"));
+        }
+
+        NamedArgument other = second.Value.labelKey.Translate().Named("COLOURTWO");
+
+        return light == null
+            ? "CS_Kandra_SummaryEyesOdd".Translate(colour, other)
+            : "CS_Kandra_SummaryEyesOddLit".Translate(colour, other, light.Value.labelKey.Translate().Named("LIGHT"));
     }
 
     /// <summary>Says Male and Female because it really does set the pawn's gender.</summary>
@@ -533,11 +644,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         float y = 0f;
 
         foreach ((string group, string labelKey) in KandraAppearance.MaterialGroups) {
-            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-                Widgets.Label(new Rect(0f, y, width, 18f), labelKey.Translate());
-            }
-
-            y += SectionHeaderHeight;
+            y = DrawSectionHeader(y, width, labelKey);
             int shown = 0;
 
             foreach ((string name, string hex, float _, string label, string rowGroup) in KandraAppearance.AllMaterials) {
@@ -593,9 +700,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         Widgets.BeginScrollView(inner, ref hairScroll, new Rect(0f, 0f, width, SectionHeaderHeight + grid));
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_HairHeader".Translate());
-        }
+        DrawSectionHeader(0f, width, "CS_Kandra_HairHeader");
 
         Color tint = HairTint();
 
@@ -627,9 +732,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             new Rect(0f, 0f, width, SectionHeaderHeight + (dyes.Count * SwatchRowHeight))
         );
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BorderColor)) {
-            Widgets.Label(new Rect(0f, 0f, width, 18f), "CS_Kandra_HairColourHeader".Translate());
-        }
+        DrawSectionHeader(0f, width, "CS_Kandra_HairColourHeader");
 
         for (int i = 0; i < dyes.Count; i++) {
             (string name, string hex, string labelKey) = dyes[i];
@@ -852,13 +955,16 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Gender? gender = null,
         HairDef? hair = null,
         string? hairColour = null,
-        string? eyeColour = null
+        string? eyeColour = null,
+        string? eyeColourTwo = null,
+        string? irisSize = null,
+        string? eyeLight = null
     ) {
         Widgets.DrawBoxSolid(well, Widgets.WindowBGFillColor);
 
         // A generated stand-in arrives dressed and human, which is the one thing this is not.
         if (form is { crafted: true }) {
-            DrawTrueBody(well, form, size, tint, gender, hair, hairColour, eyeColour);
+            DrawTrueBody(well, form, size, tint, gender, hair, hairColour, eyeColour, eyeColourTwo, irisSize, eyeLight);
 
             return;
         }
@@ -893,7 +999,10 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Gender? gender,
         HairDef? hair,
         string? hairColour,
-        string? eyeColour
+        string? eyeColour,
+        string? eyeColourTwo,
+        string? irisSize,
+        string? eyeLight
     ) {
         Pawn? pawn = Pawn;
         if (pawn == null) return;
@@ -919,11 +1028,20 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         // Under the hair, because hair is what covers them. The iris rides the head's own quad.
         string? stone = eyeColour ?? form.eyeColourName;
+        string? iris = irisSize ?? form.irisSizeName;
+        string? light = eyeLight ?? form.eyeLightName;
 
         if (stone != null) {
-            GUI.color = KandraAppearance.EyeDrawColorFor(stone, form.eyeLightName);
-            GUI.DrawTexture(head, female ? FemaleIrisLeft : MaleIrisLeft, ScaleMode.ScaleToFit);
-            GUI.DrawTexture(head, female ? FemaleIrisRight : MaleIrisRight, ScaleMode.ScaleToFit);
+            DrawIris(head, IrisLeft(female, iris), stone, light);
+
+            // A second stone cuts the right eye alone, and none of one means the pair matches.
+            string? second = eyeColourTwo ?? form.eyeColourTwoName;
+            DrawIris(
+                head,
+                IrisRight(female, iris),
+                second is null or KandraAppearance.EyeColourNone ? stone : second,
+                light
+            );
         }
 
         // A kandra grows its own hair, so it keeps its own colour rather than the body material.
@@ -953,6 +1071,45 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         } catch (global::System.Exception) {
             return null;
         }
+    }
+
+    /// <summary>The left iris at a gender and size, falling back to the standard art.</summary>
+    private static Texture2D IrisLeft(bool female, string? size) {
+        return Iris(female, size, false) ?? (female ? FemaleIrisLeft : MaleIrisLeft);
+    }
+
+    /// <summary>The right iris. A second stone changes its colour, never its size.</summary>
+    private static Texture2D IrisRight(bool female, string? size) {
+        return Iris(female, size, true) ?? (female ? FemaleIrisRight : MaleIrisRight);
+    }
+
+    /// <summary>The art for one iris, or null when the size names none the table has.</summary>
+    private static Texture2D? Iris(bool female, string? size, bool right) {
+        if (size == null) return null;
+
+        return IrisArt.TryGetValue(IrisKey(female, size, right), out Texture2D? found) ? found : null;
+    }
+
+    /// <summary>Every size the table carries, in both genders and both sides, read once at load.</summary>
+    private static Dictionary<string, Texture2D> BuildIrisArt() {
+        Dictionary<string, Texture2D> art = new Dictionary<string, Texture2D>();
+
+        foreach ((string size, float _, string _) in KandraAppearance.AllIrisSizes) {
+            foreach (bool female in new[] { false, true }) {
+                foreach (bool right in new[] { false, true }) {
+                    string key = IrisKey(female, size, right);
+                    Texture2D? found = ContentFinder<Texture2D>.Get(IrisDir + "Kandra_Eyes_" + key + "_south", false);
+                    if (found != null) art[key] = found;
+                }
+            }
+        }
+
+        return art;
+    }
+
+    /// <summary>The file name for one iris, which is also how the art above is keyed.</summary>
+    private static string IrisKey(bool female, string size, bool right) {
+        return (female ? "Female_" : "Male_") + size.CapitalizeFirst() + (right ? "_Right" : "_Left");
     }
 
     /// <summary>Faction on the left, ideoligion on the right, both along the bottom edge.</summary>

@@ -19,16 +19,13 @@ public partial class Dialog_KandraForms {
     /// <summary>Draws the strip along the top of the region and hands back what is left below it.</summary>
     private Rect DrawTabStrip(Rect region) {
         Rect strip = region.TopPartPixels(TabHeight);
-        float width = (strip.width - (TabStripGap * 2f)) / 3f;
+        float width = strip.width / 3f;
+
+        // One plate under all three, so the joins carry no border of their own.
+        Widgets.DrawMenuSection(strip);
 
         DrawTab(new Rect(strip.x, strip.y, width, TabHeight), DesignerTab.Body, "CS_Kandra_Tab_Body");
-
-        DrawTab(
-            new Rect(strip.x + width + TabStripGap, strip.y, width, TabHeight),
-            DesignerTab.Hair,
-            "CS_Kandra_Tab_Hair"
-        );
-
+        DrawTab(new Rect(strip.x + width, strip.y, width, TabHeight), DesignerTab.Hair, "CS_Kandra_Tab_Hair");
         DrawTab(new Rect(strip.xMax - width, strip.y, width, TabHeight), DesignerTab.Eyes, "CS_Kandra_Tab_Eyes");
 
         float below = TabHeight + Spacing.Get(0.5f);
@@ -39,8 +36,6 @@ public partial class Dialog_KandraForms {
     /// <summary>The live tab reads as the plate below it, carried by a rule in the window's own gold.</summary>
     private void DrawTab(Rect rect, DesignerTab which, string labelKey) {
         bool live = tab == which;
-
-        Widgets.DrawMenuSection(rect);
 
         if (live) {
             Rect rule = new Rect(rect.x, rect.yMax - TabUnderlineHeight, rect.width, TabUnderlineHeight);

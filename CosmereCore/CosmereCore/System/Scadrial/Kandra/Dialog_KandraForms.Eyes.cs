@@ -78,6 +78,9 @@ public partial class Dialog_KandraForms {
 
         Widgets.BeginScrollView(inner, ref eyeOptionScroll, new Rect(0f, 0f, width, content));
 
+        // A bloom ignores the GUI clip, so an off-screen row would draw over the world.
+        Rect seen = new Rect(0f, eyeOptionScroll.y, width, inner.height);
+
         // The size drawn, not the size stored: an undesigned kandra draws standard.
         string drawnIris = KandraAppearance.FindIrisSize(designIrisSize)?.name ?? KandraAppearance.DefaultIris;
 
@@ -88,7 +91,8 @@ public partial class Dialog_KandraForms {
 
             if (!cut) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
 
-            if (DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight) &&
+            if (row.Overlaps(seen) &&
+                DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight) &&
                 cut) {
                 designIrisSize = iris.name;
             }
@@ -126,7 +130,8 @@ public partial class Dialog_KandraForms {
                 Rect row = new Rect(0f, y + (i * IrisRowHeight), width, IrisRowHeight);
 
                 // A flat chip cannot tell two lights apart, so the chip draws the eye itself.
-                if (DrawEyeRow(row, labelKey.Translate(), name == designEyeLight, designIrisSize, name)) {
+                if (row.Overlaps(seen) &&
+                    DrawEyeRow(row, labelKey.Translate(), name == designEyeLight, designIrisSize, name)) {
                     designEyeLight = name;
                 }
             }

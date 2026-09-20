@@ -313,7 +313,10 @@ public class CompKandraForms : ThingComp {
             trueBody.hairColour = Util.KandraAppearance.HairColorFor(pendingHairColour);
         }
 
-        if (Util.KandraAppearance.FindEyeColour(pendingEyeColour) != null) {
+        // the none sentinel puts the eyes out entirely; the guard below clears what hung off them.
+        if (pendingEyeColour == Util.KandraAppearance.EyeColourNone) {
+            trueBody.eyeColourName = null;
+        } else if (Util.KandraAppearance.FindEyeColour(pendingEyeColour) != null) {
             trueBody.eyeColourName = pendingEyeColour;
         }
 

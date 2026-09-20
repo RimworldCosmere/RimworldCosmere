@@ -445,19 +445,25 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         IReadOnlyList<(string name, string hex, string labelKey)> stones = KandraAppearance.AllEyeColours;
         float rows = Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight;
         bool odd = KandraAppearance.FindEyeColour(designEyeColourTwo) != null;
-        float content = SectionHeaderHeight + rows + (odd ? gap + SectionHeaderHeight + rows : 0f);
+        bool cut = KandraAppearance.FindEyeColour(designEyeColour) != null;
+        float top = SectionHeaderHeight + SwatchRowHeight;
+        float content = top + rows + (odd ? gap + SectionHeaderHeight + rows : 0f);
 
         Widgets.BeginScrollView(inner, ref eyeScroll, new Rect(0f, 0f, width, content));
 
         // Named per eye only when they differ, so the common case is one plain list.
         DrawSectionHeader(0f, width, odd ? "CS_Kandra_LeftEyeHeader" : "CS_Kandra_EyeColourHeader");
 
+        // Its own row, not a stone: no eyes is a real answer and everything else hangs off it.
+        Rect none = new Rect(0f, SectionHeaderHeight, width, SwatchRowHeight - 2f);
+        if (DrawNoEyesRow(none, !cut)) designEyeColour = KandraAppearance.EyeColourNone;
+
         for (int i = 0; i < stones.Count; i++) {
             (string name, string hex, string labelKey) = stones[i];
 
             Rect row = new Rect(
                 (i % SwatchColumns) * (column + gap),
-                SectionHeaderHeight + ((i / SwatchColumns) * SwatchRowHeight),
+                top + ((i / SwatchColumns) * SwatchRowHeight),
                 column,
                 SwatchRowHeight - 2f
             );
@@ -466,7 +472,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         }
 
         if (odd) {
-            float y = SectionHeaderHeight + rows + gap;
+            float y = top + rows + gap;
             y = DrawSectionHeader(y, width, "CS_Kandra_RightEyeHeader");
 
             for (int i = 0; i < stones.Count; i++) {
@@ -829,6 +835,29 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     }
 
     /// <summary>One chip row, shared by the material palette and the dye palette.</summary>
+    /// <summary>The row that puts the eyes out, drawn as an empty socket rather than a stone.</summary>
+    private static bool DrawNoEyesRow(Rect row, bool selected) {
+        if (selected) {
+            Widgets.DrawHighlightSelected(row);
+        } else {
+            Widgets.DrawHighlightIfMouseover(row);
+        }
+
+        Rect chip = new Rect(row.x + 4f, row.y + ((row.height - 14f) / 2f), 14f, 14f);
+        Widgets.DrawBoxSolid(chip, BodyColor);
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
+            Widgets.Label(
+                new Rect(chip.xMax + 6f, row.y, row.width - 26f, row.height),
+                "CS_Kandra_EyeColourNone".Translate()
+            );
+        }
+
+        Verse.Sound.MouseoverSounds.DoRegion(row);
+
+        return Widgets.ButtonInvisible(row);
+    }
+
     private static bool DrawSwatch(Rect row, string hex, TaggedString label, bool selected, string? tip = null) {
         if (selected) {
             Widgets.DrawHighlightSelected(row);

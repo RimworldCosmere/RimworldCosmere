@@ -51,7 +51,10 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private const float CardWidth = 118f;
     private const float CardHeight = 132f;
     private const float CardGap = 12f;
-    private const float ScrollbarWidth = 12f;
+
+    /// <summary>The engine's own bar width. A narrower guess leaves content too wide and adds a
+    ///     horizontal scrollbar nobody asked for.</summary>
+    private static readonly float ScrollbarWidth = GenUI.ScrollBarWidth;
 
     private const float ButtonHeight = 32f;
     private const float RailPad = 12f;
@@ -441,10 +444,13 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         IReadOnlyList<(string name, string hex, string labelKey)> stones = KandraAppearance.AllEyeColours;
         float rows = Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight;
+        bool odd = KandraAppearance.FindEyeColour(designEyeColourTwo) != null;
+        float content = SectionHeaderHeight + rows + (odd ? gap + SectionHeaderHeight + rows : 0f);
 
-        Widgets.BeginScrollView(inner, ref eyeScroll, new Rect(0f, 0f, width, SectionHeaderHeight + rows));
+        Widgets.BeginScrollView(inner, ref eyeScroll, new Rect(0f, 0f, width, content));
 
-        DrawSectionHeader(0f, width, "CS_Kandra_EyeColourHeader");
+        // Named per eye only when they differ, so the common case is one plain list.
+        DrawSectionHeader(0f, width, odd ? "CS_Kandra_LeftEyeHeader" : "CS_Kandra_EyeColourHeader");
 
         for (int i = 0; i < stones.Count; i++) {
             (string name, string hex, string labelKey) = stones[i];
@@ -457,6 +463,29 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             );
 
             if (DrawSwatch(row, hex, labelKey.Translate(), name == designEyeColour)) designEyeColour = name;
+        }
+
+        if (odd) {
+            float y = SectionHeaderHeight + rows + gap;
+            y = DrawSectionHeader(y, width, "CS_Kandra_RightEyeHeader");
+
+            for (int i = 0; i < stones.Count; i++) {
+                (string name, string hex, string labelKey) = stones[i];
+
+                // The left eye's own stone is not an odd eye, and picking it would say so in words.
+                if (name == designEyeColour) continue;
+
+                Rect row = new Rect(
+                    (i % SwatchColumns) * (column + gap),
+                    y + ((i / SwatchColumns) * SwatchRowHeight),
+                    column,
+                    SwatchRowHeight - 2f
+                );
+
+                if (DrawSwatch(row, hex, labelKey.Translate(), name == designEyeColourTwo)) {
+                    designEyeColourTwo = name;
+                }
+            }
         }
 
         Widgets.EndScrollView();

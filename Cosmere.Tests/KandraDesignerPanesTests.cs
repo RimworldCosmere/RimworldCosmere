@@ -165,11 +165,24 @@ public class KandraDesignerPanesTests {
             "The eye list does not come from the palette table."
         );
 
-        Assert.AreEqual(
-            2,
-            Regex.Matches(colours, @"stones\.Count").Count,
+        Assert.IsTrue(
+            Regex.Matches(colours, @"stones\.Count").Count >= 2,
             "The eye list does not take both its scroll height and its loop bound from the table, so "
             + "retuning the table leaves rows unreachable or scrolls past nothing."
+        );
+
+        StringAssert.Contains(
+            colours,
+            "CS_Kandra_RightEyeHeader",
+            "The second eye's list is not in this pane. Ka put both lists on the left on 2026-09-20, "
+            + "so a player picks the two stones side by side instead of across the window."
+        );
+
+        StringAssert.Contains(
+            colours,
+            "odd ?",
+            "The pane's scroll height ignores the second list, which appears and disappears with the "
+            + "odd eyes toggle, so the bar is wrong whenever it is on."
         );
     }
 

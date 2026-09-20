@@ -72,6 +72,8 @@
     <CS_Kandra_Tab_Hair>Hair</CS_Kandra_Tab_Hair>
     <CS_Kandra_Tab_Eyes>Eyes</CS_Kandra_Tab_Eyes>
     <CS_Kandra_BuildHeader>Build</CS_Kandra_BuildHeader>
+    <CS_Kandra_LeftEyeHeader>Left eye</CS_Kandra_LeftEyeHeader>
+    <CS_Kandra_RightEyeHeader>Right eye</CS_Kandra_RightEyeHeader>
     <CS_Kandra_EyeColourHeader>Colour</CS_Kandra_EyeColourHeader>
     <CS_Kandra_IrisHeader>Iris</CS_Kandra_IrisHeader>
     <CS_Kandra_OddEyesHeader>Odd eyes</CS_Kandra_OddEyesHeader>

@@ -40,12 +40,12 @@ public partial class Dialog_KandraForms {
     private void DrawTab(Rect rect, DesignerTab which, string labelKey) {
         bool live = tab == which;
 
+        Widgets.DrawMenuSection(rect);
+
         if (live) {
-            Widgets.DrawMenuSection(rect);
             Rect rule = new Rect(rect.x, rect.yMax - TabUnderlineHeight, rect.width, TabUnderlineHeight);
             Widgets.DrawBoxSolid(rule, BorderColor);
         } else {
-            Widgets.DrawLightHighlight(rect);
             Widgets.DrawHighlightIfMouseover(rect);
         }
 

@@ -105,7 +105,7 @@ public class KandraEyeOptionsTests {
         Assert.IsTrue(measured >= 0, "The column no longer measures its own content.");
         Assert.IsTrue(opened > measured, "The scroll view is opened before the content is measured.");
 
-        foreach (string section in new[] { "odd ?", "lit ?" }) {
+        foreach (string section in new[] { "lit ?" }) {
             StringAssert.Contains(
                 source,
                 section,

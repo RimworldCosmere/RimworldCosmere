@@ -74,7 +74,6 @@ public partial class Dialog_KandraForms {
                         + oddNoteHeight
                         + lightNoteHeight
                         + (gap * 2f)
-                        + (odd ? Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight : 0f)
                         + (lit ? lights.Count * IrisRowHeight : 0f);
 
         Widgets.BeginScrollView(inner, ref eyeOptionScroll, new Rect(0f, 0f, width, content));
@@ -107,26 +106,6 @@ public partial class Dialog_KandraForms {
         // The sentinel, never null: null means the player changed nothing, so it cannot turn this off.
         if (wantsOdd != odd) {
             designEyeColourTwo = wantsOdd ? FirstColourApartFrom(designEyeColour) : KandraAppearance.EyeColourNone;
-        }
-
-        if (odd) {
-            for (int i = 0; i < stones.Count; i++) {
-                (string name, string hex, string labelKey) = stones[i];
-
-                Rect row = new Rect(
-                    (i % SwatchColumns) * (column + gap),
-                    y + ((i / SwatchColumns) * SwatchRowHeight),
-                    column,
-                    SwatchRowHeight - 2f
-                );
-
-                // The left eye's own stone is not an odd eye, and picking it would say so in words.
-                if (name == designEyeColour) continue;
-
-                if (DrawSwatch(row, hex, labelKey.Translate(), name == designEyeColourTwo)) designEyeColourTwo = name;
-            }
-
-            y += Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight;
         }
 
         y += gap;

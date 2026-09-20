@@ -84,8 +84,8 @@
     <CS_Kandra_SummaryName>{PAWN}, remade</CS_Kandra_SummaryName>
     <CS_Kandra_SummaryBuild>{GENDER} build, {MATERIAL}</CS_Kandra_SummaryBuild>
     <CS_Kandra_SummaryHair>{HAIR}, {DYE}</CS_Kandra_SummaryHair>
-    <CS_Kandra_SummaryEyes>{COLOUR} eyes</CS_Kandra_SummaryEyes>
-    <CS_Kandra_SummaryEyesOdd>{COLOUR} and {COLOURTWO} eyes</CS_Kandra_SummaryEyesOdd>
-    <CS_Kandra_SummaryEyesLit>{COLOUR} eyes, {LIGHT}</CS_Kandra_SummaryEyesLit>
-    <CS_Kandra_SummaryEyesOddLit>{COLOUR} and {COLOURTWO} eyes, {LIGHT}</CS_Kandra_SummaryEyesOddLit>
+    <CS_Kandra_SummaryEyes>{IRIS} {COLOUR} eyes</CS_Kandra_SummaryEyes>
+    <CS_Kandra_SummaryEyesOdd>{IRIS} {COLOUR} and {COLOURTWO} eyes</CS_Kandra_SummaryEyesOdd>
+    <CS_Kandra_SummaryEyesLit>{IRIS} {COLOUR} eyes, {LIGHT}</CS_Kandra_SummaryEyesLit>
+    <CS_Kandra_SummaryEyesOddLit>{IRIS} {COLOUR} and {COLOURTWO} eyes, {LIGHT}</CS_Kandra_SummaryEyesOddLit>
 </LanguageData>

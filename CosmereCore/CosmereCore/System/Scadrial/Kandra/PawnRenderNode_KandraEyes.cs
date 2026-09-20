@@ -86,7 +86,9 @@ public class PawnRenderNode_KandraEyeGlow : PawnRenderNode_KandraEyes {
     /// <summary>Nothing glows with the light out.</summary>
     public override Graphic? GraphicFor(Pawn pawn) {
         KandraForm? form = FormFor(pawn);
-        if (form?.eyeLightName == null || form.eyeLightName == KandraAppearance.EyeLightOff) return null;
+
+        // A name the table still carries is the only thing that counts as lit, matching the designer.
+        if (KandraAppearance.FindEyeLight(form?.eyeLightName) == null) return null;
 
         return base.GraphicFor(pawn);
     }

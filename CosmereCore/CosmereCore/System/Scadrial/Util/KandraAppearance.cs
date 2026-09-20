@@ -129,7 +129,8 @@ public static class KandraAppearance {
         return picked != null ? Parse(picked.Value.hex) : Color.white;
     }
 
-    private const string DefaultIris = "standard";
+    /// <summary>The iris a kandra draws with when nothing is picked.</summary>
+    public const string DefaultIris = "standard";
 
     /// <summary>How wide the lit part of the eye is drawn, as a multiple of the socket.</summary>
     private static readonly IrisRow[] IrisSizes = [
@@ -181,13 +182,11 @@ public static class KandraAppearance {
     }
 
     /// <summary>
-    ///     The brightness multiple for a stored light name. Undesigned and off both give 1, no
-    ///     lift; a name the table no longer carries falls back to steady.
+    ///     The brightness multiple for a stored light name. Anything the table does not carry gives
+    ///     1 and no lift, so a retuned palette cannot leave a pawn lit that the designer calls dark.
     /// </summary>
     public static float EyeLightStrengthFor(string? name) {
-        if (name is null or EyeLightOff) return 1f;
-
-        return (FindEyeLight(name) ?? FindEyeLight(DefaultEyeLight) ?? EyeLights[0]).strength;
+        return FindEyeLight(name)?.strength ?? 1f;
     }
 
     /// <summary>An unlit iris draws its stone colour exactly, so the palette is what a player sees.</summary>

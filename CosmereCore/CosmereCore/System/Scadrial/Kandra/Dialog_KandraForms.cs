@@ -592,18 +592,36 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         (string name, string hex, string labelKey)? second = KandraAppearance.FindEyeColour(designEyeColourTwo);
         (string name, float strength, string labelKey)? light = KandraAppearance.FindEyeLight(designEyeLight);
         NamedArgument colour = stone.Value.labelKey.Translate().Named("COLOUR");
+        NamedArgument iris = IrisLabel().Named("IRIS");
 
         if (second == null) {
             return light == null
-                ? "CS_Kandra_SummaryEyes".Translate(colour)
-                : "CS_Kandra_SummaryEyesLit".Translate(colour, light.Value.labelKey.Translate().Named("LIGHT"));
+                ? "CS_Kandra_SummaryEyes".Translate(iris, colour)
+                : "CS_Kandra_SummaryEyesLit".Translate(
+                    iris,
+                    colour,
+                    light.Value.labelKey.Translate().Named("LIGHT")
+                );
         }
 
         NamedArgument other = second.Value.labelKey.Translate().Named("COLOURTWO");
 
         return light == null
-            ? "CS_Kandra_SummaryEyesOdd".Translate(colour, other)
-            : "CS_Kandra_SummaryEyesOddLit".Translate(colour, other, light.Value.labelKey.Translate().Named("LIGHT"));
+            ? "CS_Kandra_SummaryEyesOdd".Translate(iris, colour, other)
+            : "CS_Kandra_SummaryEyesOddLit".Translate(
+                iris,
+                colour,
+                other,
+                light.Value.labelKey.Translate().Named("LIGHT")
+            );
+    }
+
+    /// <summary>The iris size, falling back to the table's default when nothing is picked.</summary>
+    private TaggedString IrisLabel() {
+        (string name, float scale, string labelKey)? size =
+            KandraAppearance.FindIrisSize(designIrisSize) ?? KandraAppearance.FindIrisSize(KandraAppearance.DefaultIris);
+
+        return (size?.labelKey ?? KandraAppearance.AllIrisSizes[0].labelKey).Translate();
     }
 
     /// <summary>Says Male and Female because it really does set the pawn's gender.</summary>

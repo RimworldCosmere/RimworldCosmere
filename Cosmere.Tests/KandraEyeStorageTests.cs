@@ -175,7 +175,7 @@ public class KandraEyeStorageTests {
     }
 
     [TestMethod]
-    public void AnUnlitEyeReadsBackAsLitAtSteady() {
+    public void ALightNameTheTableDroppedLeavesThePawnLitAndTheDesignerDark() {
         string path = Path.Combine(
             RepoRoot,
             "CosmereCore",
@@ -187,11 +187,17 @@ public class KandraEyeStorageTests {
         );
         string body = MethodBody(File.ReadAllText(path), "EyeLightStrengthFor");
 
+        Assert.IsFalse(
+            body.Contains("DefaultEyeLight", StringComparison.Ordinal),
+            "EyeLightStrengthFor falls back to a default. Only a row the table still carries counts "
+            + "as lit, and the designer already reads it that way, so a name the palette dropped "
+            + "would draw a lit iris while the toggle beside it says the light is out."
+        );
+
         Assert.IsTrue(
-            Regex.IsMatch(body, @"name is null or EyeLightOff\s*\)\s*return 1f;"),
-            "EyeLightStrengthFor does not send null and \"off\" to 1f. Neither is a row in the "
-            + "table, so both fall through to the steady fallback and every undesigned or "
-            + "put-out kandra reads back lit."
+            Regex.IsMatch(body, @"FindEyeLight\(name\)\?\.strength\s*\?\?\s*1f"),
+            "EyeLightStrengthFor does not send an unknown name to 1f. Null, the off sentinel and a "
+            + "dropped row all have to mean no lift, or an undesigned kandra reads back lit."
         );
     }
 

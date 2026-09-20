@@ -201,6 +201,27 @@ public class KandraEyeStorageTests {
         );
     }
 
+    [TestMethod]
+    public void ASecondStoneAndALightOnAKandraWithNoEyesDescribeEyesThatAreNotThere() {
+        string path = Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "Kandra",
+            "CompKandraForms.cs"
+        );
+        string body = MethodBody(File.ReadAllText(path), "CommitReshape");
+
+        Assert.IsTrue(
+            Regex.IsMatch(body, @"eyeColourName == null"),
+            "CommitReshape stores the second stone and the light without checking the first stone. "
+            + "The designer can commit odd eyes and a light on a kandra that never cut an eye, and "
+            + "the form then carries a right eye colour the render path will never draw."
+        );
+    }
+
     /// <summary>A method body plus the bodies of the same class's methods it calls straight.</summary>
     private static string WithLocalCalls(string source, string method) {
         string body = MethodBody(source, method);

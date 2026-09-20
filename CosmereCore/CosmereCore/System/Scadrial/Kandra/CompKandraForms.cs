@@ -334,6 +334,12 @@ public class CompKandraForms : ThingComp {
             trueBody.eyeLightName = pendingEyeLight;
         }
 
+        // a second stone and a light describe eyes that are not there, so they go with the first one.
+        if (trueBody.eyeColourName == null) {
+            trueBody.eyeColourTwoName = null;
+            trueBody.eyeLightName = null;
+        }
+
         pendingMaterial = null;
         pendingGender = null;
         pendingHair = null;

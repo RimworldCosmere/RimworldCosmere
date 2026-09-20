@@ -53,6 +53,7 @@ public partial class Dialog_KandraForms {
         IReadOnlyList<EyeLightRow> lights = KandraAppearance.AllEyeLights;
 
         // Only a name the table still carries counts as on. Both sentinels and null read as off.
+        bool cut = KandraAppearance.FindEyeColour(designEyeColour) != null;
         bool odd = KandraAppearance.FindEyeColour(designEyeColourTwo) != null;
         bool lit = KandraAppearance.FindEyeLight(designEyeLight) != null;
 
@@ -78,12 +79,15 @@ public partial class Dialog_KandraForms {
 
         Widgets.BeginScrollView(inner, ref eyeOptionScroll, new Rect(0f, 0f, width, content));
 
+        // The size drawn, not the size stored: an undesigned kandra draws standard.
+        string drawnIris = KandraAppearance.FindIrisSize(designIrisSize)?.name ?? KandraAppearance.DefaultIris;
+
         float y = DrawSectionHeader(0f, width, "CS_Kandra_IrisHeader");
 
         foreach (IrisRow iris in irises) {
             Rect row = new Rect(0f, y, width, IrisRowHeight);
 
-            if (DrawEyeRow(row, iris.labelKey.Translate(), iris.name == designIrisSize, iris.name, designEyeLight)) {
+            if (DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight)) {
                 designIrisSize = iris.name;
             }
 
@@ -94,7 +98,7 @@ public partial class Dialog_KandraForms {
         y = DrawSectionHeader(y, width, "CS_Kandra_OddEyesHeader");
 
         bool wantsOdd = odd;
-        DrawCheck(new Rect(0f, y, width, CheckRowHeight), "CS_Kandra_OddEyesToggle", ref wantsOdd);
+        DrawCheck(new Rect(0f, y, width, CheckRowHeight), "CS_Kandra_OddEyesToggle", ref wantsOdd, cut);
         y = DrawNote(y + CheckRowHeight, width, oddNote, oddNoteHeight);
 
         // The sentinel, never null: null means the player changed nothing, so it cannot turn this off.
@@ -123,7 +127,7 @@ public partial class Dialog_KandraForms {
         y = DrawSectionHeader(y, width, "CS_Kandra_EyeLightHeader");
 
         bool wantsLight = lit;
-        DrawCheck(new Rect(0f, y, width, CheckRowHeight), "CS_Kandra_EyeLightToggle", ref wantsLight);
+        DrawCheck(new Rect(0f, y, width, CheckRowHeight), "CS_Kandra_EyeLightToggle", ref wantsLight, cut);
         y = DrawNote(y + CheckRowHeight, width, lightNote, lightNoteHeight);
 
         // steady, not the table's first row: dim sits barely above unlit and reads as a light that failed.
@@ -216,12 +220,14 @@ public partial class Dialog_KandraForms {
     }
 
     /// <summary>A vanilla checkbox that answers the mouse the way the rest of the designer does.</summary>
-    private static void DrawCheck(Rect row, string labelKey, ref bool on) {
+    private static void DrawCheck(Rect row, string labelKey, ref bool on, bool enabled) {
         Widgets.DrawHighlightIfMouseover(row);
         MouseoverSounds.DoRegion(row);
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, BodyTextColor)) {
-            Widgets.CheckboxLabeled(row, labelKey.Translate(), ref on);
+        if (!enabled) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, enabled ? BodyTextColor : BorderColor)) {
+            Widgets.CheckboxLabeled(row, labelKey.Translate(), ref on, !enabled);
         }
     }
 

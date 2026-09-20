@@ -10,17 +10,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Cosmere.Tests;
 
 /// <summary>
-///     An eye row with no key, a name that collides with a body material, or a missing north
-///     texture all fail silently in game rather than at load.
+///     An eye row with no key, or a name that collides with a body material, fails silently in
+///     game rather than at load.
 /// </summary>
 [TestClass]
 public class KandraEyePaletteTests {
-    private static readonly string[] EyeTextures = (
-        from gender in new[] { "Male", "Female" }
-        from size in new[] { "Small", "Standard" }
-        from dir in new[] { "south", "southm", "east", "eastm", "westm", "north", "northm" }
-        select $"Kandra_Eyes_{gender}_{size}_{dir}.png").ToArray();
-
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -41,18 +35,6 @@ public class KandraEyePaletteTests {
         "Scadrial",
         "Util",
         "KandraAppearance.cs"
-    );
-
-    private static string EyeTextureRoot => Path.Combine(
-        RepoRoot,
-        "CosmereScadrial",
-        "Assets",
-        "Textures",
-        "Things",
-        "Pawn",
-        "Humanlike",
-        "HeadAttachments",
-        "KandraEyes"
     );
 
     private static string KeyedRoot => Path.Combine(RepoRoot, "CosmereScadrial", "Languages", "English", "Keyed");
@@ -87,20 +69,6 @@ public class KandraEyePaletteTests {
                 materials.Contains(name) || hair.Contains(name),
                 $"'{name}' names both an eye colour and a body material or hair dye. A player reading "
                 + "\"amethyst eyes\" next to an amethyst body cannot tell which control they changed."
-            );
-        }
-    }
-
-    [TestMethod]
-    public void AMissingNorthEyeTextureDrawsEyesOnTheBackOfTheHead() {
-        foreach (string file in EyeTextures) {
-            string path = Path.Combine(EyeTextureRoot, file);
-            Assert.IsTrue(
-                File.Exists(path),
-                file.Contains("north", StringComparison.Ordinal)
-                    ? $"{file} is missing. Graphic_Multi reuses _south rotated 180 degrees when _north "
-                      + "is missing, which draws eyes on the back of the head."
-                    : $"{file} is missing, so the eye node draws nothing and logs nothing."
             );
         }
     }

@@ -234,15 +234,19 @@ public static class KandraAppearance {
     }
 
     /// <summary>
-    ///     Where the eye art for a pawn and an iris size lives, without the direction. Unlike the
-    ///     body and head paths this never returns null, because it answers where the art is rather
-    ///     than whether the eyes draw - the node's subworker and a missing eye colour already decide
-    ///     that twice over.
+    ///     Where the art for one eye, at a pawn and an iris size, lives, without the direction.
+    ///     Unlike the body and head paths this never returns null, because it answers where the art
+    ///     is rather than whether the eyes draw - the node's subworker and a missing eye colour
+    ///     already decide that twice over.
     /// </summary>
-    public static string EyeGraphicPathFor(Pawn pawn, string? irisSizeName) {
+    public static string EyeGraphicPathFor(Pawn pawn, string? irisSizeName, bool rightEye) {
         string size = (FindIrisSize(irisSizeName) ?? FindIrisSize(DefaultIris) ?? IrisSizes[0]).name;
 
-        return EyeDir + Suffix(pawn).Replace("Kandra_", "Kandra_Eyes_") + "_" + Title(size);
+        return EyeDir
+               + Suffix(pawn).Replace("Kandra_", "Kandra_Eyes_")
+               + "_"
+               + Title(size)
+               + (rightEye ? "_Right" : "_Left");
     }
 
     private static string Title(string name) {

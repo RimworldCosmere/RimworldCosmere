@@ -4,43 +4,40 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Kandra;
 
-/// <summary>
-///     The eyes a kandra built into its own face.
-/// </summary>
-/// <remarks>
-///     Their own node rather than part of the head texture, the same as the koloss eyes: the head
-///     is multiplied by the body colour, so an iris baked into it comes out whatever the kandra
-///     was carved from. The mask puts the left eye on red and the right on green, so one graphic
-///     carries two stones.
-/// </remarks>
+/// <summary>Which of the two eyes a kandra eye node draws. The def picks it per entry with a li Class.</summary>
+public class PawnRenderNodeProperties_KandraEye : PawnRenderNodeProperties {
+    /// <summary>Left unless an entry says otherwise, so a plain li still draws a whole eye.</summary>
+    public bool rightEye;
+}
+
+/// <summary>One of the eyes a kandra built into its own face.</summary>
+/// <remarks>Its own node, like the koloss eyes: the head is multiplied by the body colour.</remarks>
 public class PawnRenderNode_KandraEyes : PawnRenderNode_AttachmentHead {
     public PawnRenderNode_KandraEyes(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
         : base(pawn, props, tree) { }
 
-    /// <summary>
-    ///     CutoutComplex is the cutout shader that reports a _MaskTex. Under plain Cutout the mask
-    ///     is ignored and both eyes silently take one colour.
-    /// </summary>
+    /// <summary>CutoutComplex rather than plain Cutout, which ignores the colour it is handed.</summary>
     protected override UnityEngine.Shader DefaultShader => ShaderDatabase.CutoutComplex;
 
-    /// <summary>
-    ///     Builds the graphic off the form rather than the def's texPath, so the two irises can
-    ///     take different stones. An undesigned kandra has no eye colour and draws nothing.
-    /// </summary>
-    /// <remarks>
-    ///     Iris size is three sets of art, not a scale: a node takes its size from the def's props,
-    ///     which every kandra shares, and scaling the quad walks the irises out of their sockets.
-    /// </remarks>
-    /// <summary>
-    ///     The head's quad, not the hair's. <c>PawnRenderNode_AttachmentHead</c> hands back the hair
-    ///     mesh, which narrows to 1.3 on the six vanilla Narrow head types, while the kandra head is
-    ///     swapped onto <c>PawnRenderNode_Head</c> and stays 1.5 - the irises would slide inward off
-    ///     their painted sockets on any narrow-crowned kandra.
-    /// </summary>
+    /// <summary>Which eye this node is. A base-typed properties entry answers left.</summary>
+    protected bool RightEye => Props is PawnRenderNodeProperties_KandraEye { rightEye: true };
+
+    /// <summary>The head's quad. PawnRenderNode_AttachmentHead's hair mesh narrows to 1.3 on Narrow heads.</summary>
+    /// <remarks>The kandra head stays 1.5, so the iris would slide inward off its painted socket.</remarks>
     public override GraphicMeshSet MeshSetFor(Pawn pawn) {
         return HumanlikeMeshPoolUtility.GetHumanlikeHeadSetForPawn(pawn);
     }
 
+    /// <summary>The west eye draws on the east quad, because the west art is already mirrored.</summary>
+    /// <remarks>The head set flips its west quad, which would mirror the iris back off its socket.</remarks>
+    public override Mesh GetMesh(PawnDrawParms parms) {
+        if (parms.facing == Rot4.West) parms.facing = Rot4.East;
+
+        return base.GetMesh(parms);
+    }
+
+    /// <summary>The art and colour for this node's eye. An undesigned kandra draws nothing.</summary>
+    /// <remarks>Iris size is two sets of art, not a scale - scaling walks the iris out of its socket.</remarks>
     public override Graphic? GraphicFor(Pawn pawn) {
         KandraForm? form = FormFor(pawn);
         if (form?.eyeColourName == null) return null;
@@ -48,19 +45,22 @@ public class PawnRenderNode_KandraEyes : PawnRenderNode_AttachmentHead {
         UnityEngine.Shader shader = ShaderFor(pawn);
         if (shader == null) return null;
 
-        Color left = IrisColorFor(form, form.eyeColourName);
-        string? right = form.eyeColourTwoName;
-
-        // The empty maskPath is the point: Graphic_Multi.Init then finds <path>_<dir>m itself.
         return GraphicDatabase.Get<Graphic_Multi>(
-            KandraAppearance.EyeGraphicPathFor(pawn, form.irisSizeName),
+            KandraAppearance.EyeGraphicPathFor(pawn, form.irisSizeName, RightEye),
             shader,
             Vector2.one,
-            left,
-            right == null || right == KandraAppearance.EyeColourNone ? left : IrisColorFor(form, right),
-            null,
-            string.Empty
+            IrisColorFor(form, StoneFor(form))
         );
+    }
+
+    /// <summary>The stone this node's eye is cut from.</summary>
+    /// <remarks>A second colour never picked, or picked as none, means the eyes match.</remarks>
+    protected string? StoneFor(KandraForm form) {
+        if (!RightEye) return form.eyeColourName;
+
+        string? second = form.eyeColourTwoName;
+
+        return second == null || second == KandraAppearance.EyeColourNone ? form.eyeColourName : second;
     }
 
     /// <summary>What one iris draws with. The glow node lifts this; the cutout takes it as it is.</summary>
@@ -77,23 +77,13 @@ public class PawnRenderNode_KandraEyes : PawnRenderNode_AttachmentHead {
     }
 }
 
-/// <summary>
-///     The bloom over the irises, on the same art one layer up.
-/// </summary>
-/// <remarks>
-///     Two nodes rather than one because the iris colour cannot separate the three light steps on
-///     its own: the lift clamps, and a pale stone like moonstone has 17 of 255 left to give. The
-///     bloom carries that separation instead.
-/// </remarks>
+/// <summary>The bloom over one iris, on the same art one layer up.</summary>
+/// <remarks>The lift clamps on a pale stone like moonstone, so the bloom carries the separation.</remarks>
 public class PawnRenderNode_KandraEyeGlow : PawnRenderNode_KandraEyes {
     public PawnRenderNode_KandraEyeGlow(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
         : base(pawn, props, tree) { }
 
-    /// <summary>
-    ///     MoteGlow adds light rather than cutting out, and declares no _MaskTex, so
-    ///     <c>Graphic_Multi</c> never reads the _m files here and odd eyes bloom in the left eye's
-    ///     colour. Ka accepted that on 2026-09-19.
-    /// </summary>
+    /// <summary>MoteGlow adds light rather than cutting out, which is what makes a bloom a bloom.</summary>
     protected override UnityEngine.Shader DefaultShader => ShaderDatabase.MoteGlow;
 
     /// <summary>Nothing glows with the light out.</summary>
@@ -104,11 +94,8 @@ public class PawnRenderNode_KandraEyeGlow : PawnRenderNode_KandraEyes {
         return base.GraphicFor(pawn);
     }
 
-    /// <summary>
-    ///     The iris colour lifted by the light. Additive blending takes the lift out of alpha, not
-    ///     the channels - dim, steady and burning come out 0.15, 0.4 and 0.75 apart, where the
-    ///     channels would have clamped together on a pale stone.
-    /// </summary>
+    /// <summary>The iris colour lifted by the light, out of alpha rather than the channels.</summary>
+    /// <remarks>Dim, steady and burning come out 0.15, 0.4 and 0.75 apart instead of clamping together.</remarks>
     protected override Color IrisColorFor(KandraForm form, string? colourName) {
         Color iris = base.IrisColorFor(form, colourName);
         iris.a = KandraAppearance.EyeLightStrengthFor(form.eyeLightName) - 1f;

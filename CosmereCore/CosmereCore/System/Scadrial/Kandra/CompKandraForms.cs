@@ -338,7 +338,11 @@ public class CompKandraForms : ThingComp {
         if (trueBody.eyeColourName == null) {
             trueBody.eyeColourTwoName = null;
             trueBody.eyeLightName = null;
+            trueBody.irisSizeName = null;
         }
+
+        // A right eye cut from the left eye's stone is a matched pair, whatever the picker said.
+        if (trueBody.eyeColourTwoName == trueBody.eyeColourName) trueBody.eyeColourTwoName = null;
 
         pendingMaterial = null;
         pendingGender = null;

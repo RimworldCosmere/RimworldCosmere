@@ -87,7 +87,10 @@ public partial class Dialog_KandraForms {
         foreach (IrisRow iris in irises) {
             Rect row = new Rect(0f, y, width, IrisRowHeight);
 
-            if (DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight)) {
+            if (!cut) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
+
+            if (DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight) &&
+                cut) {
                 designIrisSize = iris.name;
             }
 
@@ -116,6 +119,9 @@ public partial class Dialog_KandraForms {
                     column,
                     SwatchRowHeight - 2f
                 );
+
+                // The left eye's own stone is not an odd eye, and picking it would say so in words.
+                if (name == designEyeColour) continue;
 
                 if (DrawSwatch(row, hex, labelKey.Translate(), name == designEyeColourTwo)) designEyeColourTwo = name;
             }

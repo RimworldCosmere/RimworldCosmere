@@ -220,6 +220,21 @@ public class KandraEyeStorageTests {
             + "The designer can commit odd eyes and a light on a kandra that never cut an eye, and "
             + "the form then carries a right eye colour the render path will never draw."
         );
+
+        foreach (string field in new[] { "eyeColourTwoName", "eyeLightName", "irisSizeName" }) {
+            Assert.IsTrue(
+                Regex.IsMatch(body, $@"eyeColourName == null[\s\S]{{0,220}}{field} = null"),
+                $"CommitReshape leaves {field} on a true body with no eye colour. Every eye setting "
+                + "describes eyes that are not there, so they all go when the first stone does."
+            );
+        }
+
+        Assert.IsTrue(
+            Regex.IsMatch(body, @"eyeColourTwoName == trueBody\.eyeColourName"),
+            "CommitReshape stores a right eye cut from the left eye's own stone. The pawn draws a "
+            + "matched pair while the summary line calls them odd, so the words and the picture "
+            + "disagree."
+        );
     }
 
     /// <summary>A method body plus the bodies of the same class's methods it calls straight.</summary>

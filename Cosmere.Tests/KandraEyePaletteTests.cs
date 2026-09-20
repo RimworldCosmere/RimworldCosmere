@@ -15,22 +15,11 @@ namespace Cosmere.Tests;
 /// </summary>
 [TestClass]
 public class KandraEyePaletteTests {
-    private static readonly string[] EyeTextures = [
-        "Kandra_Eyes_Male_south.png",
-        "Kandra_Eyes_Male_southm.png",
-        "Kandra_Eyes_Male_east.png",
-        "Kandra_Eyes_Male_eastm.png",
-        "Kandra_Eyes_Male_westm.png",
-        "Kandra_Eyes_Male_north.png",
-        "Kandra_Eyes_Male_northm.png",
-        "Kandra_Eyes_Female_south.png",
-        "Kandra_Eyes_Female_southm.png",
-        "Kandra_Eyes_Female_east.png",
-        "Kandra_Eyes_Female_eastm.png",
-        "Kandra_Eyes_Female_westm.png",
-        "Kandra_Eyes_Female_north.png",
-        "Kandra_Eyes_Female_northm.png",
-    ];
+    private static readonly string[] EyeTextures = (
+        from gender in new[] { "Male", "Female" }
+        from size in new[] { "Small", "Standard" }
+        from dir in new[] { "south", "southm", "east", "eastm", "westm", "north", "northm" }
+        select $"Kandra_Eyes_{gender}_{size}_{dir}.png").ToArray();
 
     private static string RepoRoot {
         get {
@@ -54,8 +43,6 @@ public class KandraEyePaletteTests {
         "KandraAppearance.cs"
     );
 
-    private static string KeyedRoot => Path.Combine(RepoRoot, "CosmereScadrial", "Languages", "English", "Keyed");
-
     private static string EyeTextureRoot => Path.Combine(
         RepoRoot,
         "CosmereScadrial",
@@ -68,6 +55,8 @@ public class KandraEyePaletteTests {
         "KandraEyes"
     );
 
+    private static string KeyedRoot => Path.Combine(RepoRoot, "CosmereScadrial", "Languages", "English", "Keyed");
+
     [TestMethod]
     public void AnEyeColourWithNoKeyPrintsItsOwnKeyNameAtThePlayer() {
         List<(string name, string key)> rows = Table("EyeColour");
@@ -79,7 +68,7 @@ public class KandraEyePaletteTests {
     [TestMethod]
     public void AnIrisSizeOrLightStrengthWithNoKeyPrintsItsOwnKeyNameAtThePlayer() {
         List<(string name, string key)> iris = Table("Iris");
-        Assert.AreEqual(3, iris.Count, $"Expected three iris sizes, found {iris.Count}.");
+        Assert.AreEqual(2, iris.Count, $"Expected two iris sizes, found {iris.Count}.");
         AssertKeysResolve(iris, "iris size");
 
         List<(string name, string key)> light = Table("EyeLight");

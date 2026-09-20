@@ -86,6 +86,48 @@
     <displayOrderInCategory>202</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
+    <!-- Eyes ride their own node with no colorType and no skin shader, the same as the koloss:
+         flattened into the head they would come out multiplied by the body colour. CutoutComplex
+         is the shader that reports a _MaskTex, so Graphic_Multi picks up the _m files and the left
+         eye (red) and right eye (green) can take different stones. The glow sits one layer up on
+         MoteGlow, which is additive and carries no mask, so the bloom takes the left eye's colour.
+         Both are vetoed while the kandra is wearing somebody else's face. -->
+    <renderNodeProperties>
+      <li>
+        <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraEyes</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <!-- Fallback only. The node picks male or female at draw time. -->
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KandraEyes/Kandra_Eyes_Male_Standard</texPath>
+        <shaderTypeDef>CutoutComplex</shaderTypeDef>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <subworkerClasses>
+          <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_ShowOnlyWhileFormless</li>
+        </subworkerClasses>
+        <drawData>
+          <defaultData>
+            <layer>53</layer>
+          </defaultData>
+        </drawData>
+      </li>
+      <li>
+        <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraEyeGlow</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <!-- Fallback only. The node picks male or female at draw time. -->
+        <texPath>Things/Pawn/Humanlike/HeadAttachments/KandraEyes/Kandra_Eyes_Male_Standard</texPath>
+        <shaderTypeDef>MoteGlow</shaderTypeDef>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh</rotDrawMode>
+        <subworkerClasses>
+          <li>Cosmere.System.Scadrial.Kandra.PawnRenderSubWorker_ShowOnlyWhileFormless</li>
+        </subworkerClasses>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
   </GeneDef>
 
   <!-- Two spikes, and everything depends on them staying in. -->

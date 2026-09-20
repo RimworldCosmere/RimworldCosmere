@@ -19,6 +19,7 @@ namespace Cosmere.System.Scadrial.Util;
 public static class KandraAppearance {
     private const string BodyDir = "Things/Pawn/Humanlike/Bodies/";
     private const string HeadDir = "Things/Pawn/Humanlike/Heads/";
+    private const string EyeDir = "Things/Pawn/Humanlike/HeadAttachments/KandraEyes/";
 
     /// <summary>
     ///     What a kandra built its own body out of. Every entry sits outside the human skin
@@ -134,7 +135,6 @@ public static class KandraAppearance {
     private static readonly IrisRow[] IrisSizes = [
         ("small", 0.58f, "CS_Kandra_Iris_Small"),
         ("standard", 0.80f, "CS_Kandra_Iris_Standard"),
-        ("wide", 1.00f, "CS_Kandra_Iris_Wide"),
     ];
 
     /// <summary>Every iris size, in the order a picker should show them.</summary>
@@ -147,14 +147,6 @@ public static class KandraAppearance {
         }
 
         return null;
-    }
-
-    /// <summary>
-    ///     The drawn scale for a stored iris name. A name the table no longer carries falls back
-    ///     to the standard size, so an old save draws a normal eye rather than none at all.
-    /// </summary>
-    public static float IrisScaleFor(string? name) {
-        return (FindIrisSize(name) ?? FindIrisSize(DefaultIris) ?? IrisSizes[0]).scale;
     }
 
     private const string DefaultEyeLight = "steady";
@@ -239,6 +231,22 @@ public static class KandraAppearance {
     /// <summary>The head texture for a formless kandra, or null when it is wearing a face.</summary>
     public static string? HeadGraphicPathFor(Pawn? pawn) {
         return IsFormless(pawn) ? HeadDir + Suffix(pawn!) : null;
+    }
+
+    /// <summary>
+    ///     Where the eye art for a pawn and an iris size lives, without the direction. Unlike the
+    ///     body and head paths this never returns null, because it answers where the art is rather
+    ///     than whether the eyes draw - the node's subworker and a missing eye colour already decide
+    ///     that twice over.
+    /// </summary>
+    public static string EyeGraphicPathFor(Pawn pawn, string? irisSizeName) {
+        string size = (FindIrisSize(irisSizeName) ?? FindIrisSize(DefaultIris) ?? IrisSizes[0]).name;
+
+        return EyeDir + Suffix(pawn).Replace("Kandra_", "Kandra_Eyes_") + "_" + Title(size);
+    }
+
+    private static string Title(string name) {
+        return char.ToUpperInvariant(name[0]) + name[1..].ToLowerInvariant();
     }
 
     /// <summary>

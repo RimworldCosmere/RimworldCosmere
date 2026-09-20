@@ -165,7 +165,7 @@ public class KandraForm : IExposable {
                 portrait.story.skinColorOverride = skinColour;
             }
 
-            // eyes are not on pawn.story: the render reads them off the form, so nothing to sync
+            // no eyes here: the stand-in has no form on its comp, so the eye nodes find nothing.
             portrait.Drawer?.renderer?.SetAllGraphicsDirty();
             return portrait;
         }

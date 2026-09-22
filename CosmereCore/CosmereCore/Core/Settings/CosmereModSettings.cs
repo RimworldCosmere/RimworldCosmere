@@ -8,10 +8,7 @@ public abstract class CosmereModSettings : IExposable {
 
     public virtual string SkinId => Name;
 
-    /// <summary>
-    ///     The sidebar lists which mod owns the settings; the crest names the investiture
-    ///     system, which is a different word for every shard (Roshar vs Surgebinding).
-    /// </summary>
+    /// <summary>The name the settings window shows, in both the sidebar and the crest.</summary>
     public virtual string DisplayLabel => Name;
 
     public virtual bool Enabled => true;

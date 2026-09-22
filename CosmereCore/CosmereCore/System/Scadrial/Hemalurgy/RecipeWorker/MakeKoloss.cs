@@ -50,6 +50,14 @@ public class MakeKoloss : Recipe_Surgery {
     ) {
         if (pawn.genes == null) return;
 
+        if (billDoer != null) {
+            if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill)) {
+                return;
+            }
+
+            TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
+        }
+
         XenotypeDef? koloss = DefDatabase<XenotypeDef>.GetNamedSilentFail(
             "Cosmere_Scadrial_Xenotype_Koloss"
         );

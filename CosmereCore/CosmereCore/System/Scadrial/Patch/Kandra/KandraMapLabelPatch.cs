@@ -3,7 +3,7 @@ using Cosmere.System.Scadrial.Kandra;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Core.Patch.UI;
+namespace Cosmere.System.Scadrial.Patch.Kandra;
 
 /// <summary>
 ///     Adds the impersonated name to the label under a kandra on the map.

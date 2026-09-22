@@ -231,7 +231,7 @@ public class KandraTests {
     [TestMethod]
     public void OnlyTheMapLabelShowsTheWornName() {
         string path = Path.Combine(
-            RepoRoot, "CosmereCore", "CosmereCore", "Core", "Patch", "UI", "KandraMapLabelPatch.cs"
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Patch", "Kandra", "KandraMapLabelPatch.cs"
         );
         Assert.IsTrue(File.Exists(path), "The map label patch is missing.");
 

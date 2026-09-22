@@ -1,5 +1,6 @@
 using Cosmere.Core.Settings;
 using Cosmere.Core.Settings.Model;
+using Cosmere.Core.Settings.Search;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
@@ -11,11 +12,14 @@ public sealed class SettingsWindow {
     private readonly SettingsContentRenderer contentRenderer = new SettingsContentRenderer();
     private readonly SettingsFooterRenderer footerRenderer = new SettingsFooterRenderer();
     private readonly SettingsNavigationState navigation = new SettingsNavigationState();
+    private readonly SettingsSearchResultsRenderer searchResultsRenderer = new SettingsSearchResultsRenderer();
     private readonly Dictionary<string, IReadOnlyList<SettingSection>> sectionsBySystem = [];
     private readonly List<CosmereModSettings> systems;
 
     private readonly Dictionary<string, string> selectedSectionBySystem = [];
     private readonly List<SettingSection> visibleSections = [];
+
+    private readonly SettingsSearchIndex searchIndex;
 
     private CosmereModSettings selectedSystem;
     private string searchText = string.Empty;
@@ -28,6 +32,8 @@ public sealed class SettingsWindow {
             CosmereModSettings system = systems[i];
             sectionsBySystem.Add(system.Name, system.BuildSections());
         }
+
+        searchIndex = new SettingsSearchIndex(BuildSearchDocuments());
 
         selectedSystem = systems[0];
         navigation.SelectSystem(selectedSystem.Name);
@@ -47,7 +53,13 @@ public sealed class SettingsWindow {
             sections = sectionsBySystem[selectedSystem.Name];
         }
 
-        if (SettingsHeaderRenderer.DrawCrest(layout.Crest, skin)) RequestClose();
+        if (SettingsHeaderRenderer.DrawCrest(layout.Crest, skin, selectedSystem.DisplayLabel)) RequestClose();
+
+        if (!searchText.NullOrEmpty()) {
+            DrawSearchResults(layout.ContentViewport, skin);
+            footerRenderer.Draw(layout.Footer, selectedSystem.Name, selectedSystem.Name, sections, skin, RequestClose);
+            return;
+        }
 
         string activeSectionKey = ActiveSectionKey(sections);
         string? requestedSection = SettingsHeaderRenderer.DrawSectionTabs(
@@ -159,6 +171,57 @@ public sealed class SettingsWindow {
 
     private static bool IsReducedMotionEnabled() {
         return Mod.GetModSettings<CoreModSettings>().reduceMotion;
+    }
+
+    /// <summary>
+    ///     Labels resolve once here, so a language switch needs the window reopened.
+    /// </summary>
+    private List<SettingsSearchDocument> BuildSearchDocuments() {
+        List<SettingsSearchDocument> documents = [];
+
+        for (int i = 0; i < systems.Count; i++) {
+            CosmereModSettings system = systems[i];
+            IReadOnlyList<SettingSection> sections = sectionsBySystem[system.Name];
+
+            for (int s = 0; s < sections.Count; s++) {
+                SettingSection section = sections[s];
+                string sectionName = section.TitleKey.Translate();
+
+                for (int d = 0; d < section.Settings.Count; d++) {
+                    SettingDescriptor descriptor = section.Settings[d];
+                    documents.Add(
+                        new SettingsSearchDocument(
+                            system.Name,
+                            system.Name,
+                            section.Key,
+                            sectionName,
+                            descriptor.Key,
+                            descriptor.LabelKey.Translate(),
+                            descriptor.DescriptionKey?.Translate(),
+                            section,
+                            descriptor
+                        )
+                    );
+                }
+            }
+        }
+
+        return documents;
+    }
+
+    private void DrawSearchResults(Rect viewportRect, ISystemSkin skin) {
+        IReadOnlyList<SettingsSearchResult> results = searchIndex.Search(searchText.Trim());
+        SettingsSearchDocument? chosen = searchResultsRenderer.Draw(viewportRect, skin, results, searchText.Trim());
+        if (chosen == null) return;
+
+        CosmereModSettings? target = systems.Find(system => system.Name == chosen.SystemKey);
+        if (target == null) return;
+
+        searchText = string.Empty;
+        searchResultsRenderer.Reset();
+        SelectSystem(target);
+        selectedSectionBySystem[target.Name] = chosen.SectionKey;
+        navigation.FlashSetting(chosen.SystemKey, chosen.SectionKey, chosen.SettingKey);
     }
 
     private void RequestClose() {

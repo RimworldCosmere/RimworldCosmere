@@ -19,6 +19,12 @@ public sealed class SettingsContentRenderer {
     private const float RowVerticalPadding = 6f;
     private const float LabelWidthRatio = 0.48f;
 
+    private static readonly Color SectionFill = new Color(0.039f, 0.051f, 0.067f, 0.92f);
+    private static readonly Color SectionTopEdge = new Color(0.118f, 0.137f, 0.169f);
+    private static readonly Color SectionBottomEdge = new Color(0.020f, 0.027f, 0.039f);
+    private static readonly Color SectionTitle = new Color(0.604f, 0.635f, 0.675f);
+    private static readonly Color SectionDivider = new Color(0.102f, 0.122f, 0.149f);
+
     private readonly SettingsControlRenderer controlRenderer = new SettingsControlRenderer();
     private readonly List<MeasuredSection> measuredSections = [];
     private readonly List<SettingSectionMeasurement> sectionMeasurements = [];
@@ -177,9 +183,10 @@ public sealed class SettingsContentRenderer {
         bool hasFlash,
         float flashAlpha
     ) {
-        Color fill = new Color(skin.PanelBackgroundColor.r, skin.PanelBackgroundColor.g, skin.PanelBackgroundColor.b, 0.76f);
-        Color border = new Color(skin.BorderTintColor.r, skin.BorderTintColor.g, skin.BorderTintColor.b, 0.55f);
-        Panel.Draw(section.Rect, fill, border);
+        // a sunken well, the way vanilla draws an inset. no shard colour: the crest and the rail carry that.
+        Widgets.DrawBoxSolid(section.Rect, SectionFill);
+        Widgets.DrawBoxSolid(new Rect(section.Rect.x, section.Rect.y, section.Rect.width, 1f), SectionTopEdge);
+        Widgets.DrawBoxSolid(new Rect(section.Rect.x, section.Rect.yMax - 1f, section.Rect.width, 1f), SectionBottomEdge);
 
         Rect titleRect = new Rect(
             section.Rect.x + SectionPadding,
@@ -187,12 +194,12 @@ public sealed class SettingsContentRenderer {
             section.Rect.width - SectionPadding * 2f,
             SectionTitleHeight
         );
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, skin.HeaderTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, SectionTitle)) {
             Widgets.Label(titleRect, ((string)section.Section.TitleKey.Translate()).ToUpperInvariant());
         }
 
         Rect dividerRect = new Rect(titleRect.x, titleRect.yMax + DividerGap, titleRect.width, DividerHeight);
-        Widgets.DrawBoxSolid(dividerRect, new Color(skin.BorderTintColor.r, skin.BorderTintColor.g, skin.BorderTintColor.b, 0.28f));
+        Widgets.DrawBoxSolid(dividerRect, SectionDivider);
 
         for (int i = 0; i < section.Rows.Count; i++) {
             MeasuredRow row = section.Rows[i];

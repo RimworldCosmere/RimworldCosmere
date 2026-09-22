@@ -16,7 +16,7 @@ public static class SettingsHeaderRenderer {
     ///     Vanilla hangs its own close X off the window chrome. This one lives in our top bar
     ///     instead, so the header owns the whole row rather than leaving a gap for it.
     /// </summary>
-    public static bool DrawCrest(Rect rect, ISystemSkin skin) {
+    public static bool DrawCrest(Rect rect, ISystemSkin skin, string label) {
         Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), skin.AccentColor);
 
         Rect closeRect = new Rect(
@@ -44,7 +44,7 @@ public static class SettingsHeaderRenderer {
 
         UIText.EllipsisLabel(
             new Rect(textX, rect.y, closeRect.x - textX - CrestPadding, rect.height),
-            skin.HeaderLabel,
+            label,
             skin.HeaderFont,
             TextAnchor.MiddleLeft,
             skin.HeaderTextColor

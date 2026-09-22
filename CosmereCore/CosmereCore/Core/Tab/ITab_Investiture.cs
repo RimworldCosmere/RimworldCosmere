@@ -42,9 +42,7 @@ public class ITab_Investiture : ITab {
             return;
         }
 
-        if (state.SelectedSystemIndex >= investedProviders.Count) {
-            state.SelectedSystemIndex = 0;
-        }
+        GameComponent_CodexMemory.ApplyTo(state, investedProviders);
 
         Rect tabRect = new Rect(0f, 0f, size.x, size.y);
         IInvestitureProvider active = investedProviders[state.SelectedSystemIndex];
@@ -64,6 +62,7 @@ public class ITab_Investiture : ITab {
         if (hasSwitcher) {
             Rect rail = new Rect(0f, CodexChrome.HeaderHeight, CodexChrome.RailWidth, size.y - CodexChrome.HeaderHeight);
             SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
+            GameComponent_CodexMemory.RememberFrom(state, investedProviders);
         }
 
         if (state.ShowingConnection) {

@@ -71,6 +71,7 @@ public class Highstorm : RimWorld.GameCondition {
         StormShelterManager.ClearCache();
         StormShelterManager.FirstTickOfHighstorm = true;
         SingleMap?.weatherManager.TransitionTo(WeatherDefOf.FoggyRain);
+        SingleMap?.GetComponent<GemheartExpeditionManager>()?.QueueHuntAfterHighstorm();
         highstorm.Destroy();
     }
 

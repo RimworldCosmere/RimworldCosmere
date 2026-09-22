@@ -14,6 +14,8 @@ public static class CodexChrome {
     public const float SubtabBarHeight = 28f;
     public const float Gutter = 8f;
 
+    public const float BodyInset = 1f;
+
     public static void DrawHeader(Rect rect, string label, Color accent, Color? textColor = null) {
         Widgets.DrawBoxSolid(rect, HeaderFill);
         Rect accentLine = new Rect(rect.x, rect.yMax - 2f, rect.width, 2f);
@@ -41,11 +43,11 @@ public static class CodexChrome {
         float top = HeaderHeight + SubtabBarHeight;
         float left = hasSwitcher ? RailWidth : 0f;
 
-        // No horizontal gutter here - rows run to the frame; only the heading block is inset, via ContentHeader.
+        // 1px so a row's own box stops drawing over the window frame.
         return new Rect(
-            tabRect.x + left,
+            tabRect.x + left + BodyInset,
             tabRect.y + top + Gutter,
-            tabRect.width - left,
+            tabRect.width - left - BodyInset * 2f,
             tabRect.height - top - Gutter * 2f
         );
     }

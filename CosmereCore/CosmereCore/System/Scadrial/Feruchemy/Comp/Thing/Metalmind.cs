@@ -32,7 +32,12 @@ public class Metalmind : ThingComp, IMetalmindSource {
     // Keyed by ConnectionKey; empty for every metal but duralumin.
     private Dictionary<string, float> chargeByLedger = [];
 
-    public Pawn? owner { get; private set; }
+    private Pawn? ownerInt;
+
+    public Pawn? owner {
+        get => ownerInt;
+        private set => ownerInt = value;
+    }
 
     private new MetalmindProperties props => (MetalmindProperties)base.props;
 
@@ -91,12 +96,22 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalOccupied);
 
+    /// A gate that ignored the owner said yes where the action said no, so a thief lit the
+    /// tap hediff and got the attribute while the metal never drained.
+    private bool OwnerAllows {
+        get {
+            Pawn? currentHolder = GetHoldingPawn();
+
+            return owner == null || currentHolder == null || owner.Equals(currentHolder);
+        }
+    }
+
     // Both pools draw on the same space, so filling either is bounded by the total.
-    public bool CanStore => Equipped && FreeSpace > 0f;
+    public bool CanStore => Equipped && OwnerAllows && FreeSpace > 0f;
 
-    public bool CanTap => Equipped && StoredAmount > 0f;
+    public bool CanTap => Equipped && OwnerAllows && StoredAmount > 0f;
 
-    public bool CanTapCompounded => Equipped && TotalStored > 0f;
+    public bool CanTapCompounded => Equipped && OwnerAllows && TotalStored > 0f;
 
     // Worn metalminds can hold compounded charge but cannot be compounded into.
     public bool CanStoreCompounded => false;
@@ -313,14 +328,13 @@ public class Metalmind : ThingComp, IMetalmindSource {
         return null;
     }
 
+    // Claims an unowned metalmind for whoever is acting; otherwise reads the same check the gates do.
     private bool ValidateOwner() {
-        Pawn? currentHolder = GetHoldingPawn();
-        if (owner == null) {
-            owner = currentHolder;
-            return true;
-        }
+        if (owner != null) return OwnerAllows;
 
-        return currentHolder == null || owner.Equals(currentHolder);
+        owner = GetHoldingPawn();
+
+        return true;
     }
 
     public override void PostExposeData() {
@@ -332,6 +346,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
         storedMemoriesInt ??= [];
+        Scribe_References.Look(ref ownerInt, "owner");
         Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
         chargeByLedger ??= [];
 
@@ -343,7 +358,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
                 cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
             }
 
-            owner = GetHoldingPawn() ?? owner;
+            // Only saves written before owner was scribed land here, and they claim the holder as they always did.
+            owner ??= GetHoldingPawn();
             storedMemoriesInt ??= [];
 
             // loads over-full when compounding burnt capacity, or when a save predates quality scaling.

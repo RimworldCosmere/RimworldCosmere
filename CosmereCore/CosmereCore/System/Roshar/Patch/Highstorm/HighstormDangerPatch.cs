@@ -13,6 +13,9 @@ public abstract class HighstormDangerPatch {
     private void AfterDangerFor(Pawn p, ControlHandle<Danger> ch) {
         if (ch.ReturnValue == Danger.Deadly) return;
 
+        // Vanilla tolerates a null pawn here; ChildcarerTeach passes one and IsHighstormImmune throws.
+        if (p == null) return;
+
         Room room = Self.Room;
         if (room == null || !room.PsychologicallyOutdoors) return;
 

@@ -43,17 +43,20 @@ public static class CasteUtility {
             RemoveGeneByName(pawn, NahnGeneDefNames[i]);
         }
 
-        AddGeneByName(pawn, LighteyesHeritageDefName);
-        AddGeneByName(pawn, LighteyesSocialDefName);
-        AddGeneByName(pawn, LighteyesEducationDefName);
+        // the Lighteyes xenotype is inheritable, so its caste genes go where SetXenotype put them
+        AddGeneByName(pawn, LighteyesHeritageDefName, xenogene: false);
+        AddGeneByName(pawn, LighteyesSocialDefName, xenogene: false);
+        AddGeneByName(pawn, LighteyesEducationDefName, xenogene: false);
 
         if (dahnGene != null) {
-            AddGeneByName(pawn, dahnGene);
+            AddGeneByName(pawn, dahnGene, xenogene: true);
         }
 
         XenotypeDef? lighteyesXenotype = DefDatabase<XenotypeDef>.GetNamedSilentFail(LighteyesXenotypeDefName);
         if (lighteyesXenotype != null) {
-            pawn.genes.SetXenotype(lighteyesXenotype);
+            // not SetXenotype: it calls ClearXenogenes, which throws away the Nahel bond and the rank
+            pawn.genes.SetXenotypeDirect(lighteyesXenotype);
+            pawn.genes.iconDef = null;
         }
 
         Log.Info($"CasteUtility: {pawn.NameShortColored} transitioned from darkeyes to lighteyes");
@@ -70,7 +73,7 @@ public static class CasteUtility {
         }
     }
 
-    private static void AddGeneByName(Pawn pawn, string defName) {
+    private static void AddGeneByName(Pawn pawn, string defName, bool xenogene) {
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
         if (geneDef == null) {
             Log.Warn($"CasteUtility: Gene '{defName}' not found");
@@ -78,7 +81,7 @@ public static class CasteUtility {
         }
 
         if (!pawn.genes!.HasActiveGene(geneDef)) {
-            pawn.genes.AddGene(geneDef, true);
+            pawn.genes.AddGene(geneDef, xenogene);
         }
     }
 }

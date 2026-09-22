@@ -29,6 +29,24 @@ public class QuestWorldState {
     /// </summary>
     public bool crossWorld;
 
+    /// <summary>Order defName to that pawn's current Ideal, for every bonded Radiant.</summary>
+    public Dictionary<string, int> bondedOrders = new Dictionary<string, int>();
+
+    /// <summary>Quest defName to the thingIDNumbers it is burned for. Empty on Scadrial.</summary>
+    public Dictionary<string, HashSet<int>> pawnBurns = new Dictionary<string, HashSet<int>>();
+
+    /// <summary>
+    ///     HediffDef names on the subject pawn, flattened so the rules stay free of Verse types.
+    /// </summary>
+    public HashSet<string> subjectHediffs = new HashSet<string>();
+
+    /// <summary>thingIDNumber of the subject pawn, or 0 for a colony-scoped quest.</summary>
+    public int subjectPawnId;
+
+    public bool IsBurnedForPawn(string defName, int pawnId) {
+        return pawnBurns.TryGetValue(defName, out HashSet<int>? burned) && burned.Contains(pawnId);
+    }
+
     public CapstoneState StateOf(string defName) {
         return capstoneStates.TryGetValue(defName, out CapstoneState state) ? state : CapstoneState.NotFired;
     }

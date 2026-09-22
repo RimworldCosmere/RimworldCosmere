@@ -81,10 +81,18 @@ public class CosmereQuestManager : GameComponent {
             }
         }
 
+        foreach (KeyValuePair<string, HashSet<int>> pair in pawnBurns) {
+            state.pawnBurns[pair.Key] = new HashSet<int>(pair.Value);
+        }
+
         List<Verse.Map> maps = Find.Maps;
         int colonistCount = 0;
         for (int i = 0; i < maps.Count; i++) {
-            colonistCount += maps[i].mapPawns.FreeColonistsSpawnedCount;
+            List<Pawn> colonists = maps[i].mapPawns.FreeColonistsSpawned;
+            colonistCount += colonists.Count;
+            for (int j = 0; j < colonists.Count; j++) {
+                QuestComponentRegistry.CollectBondedOrders(colonists[j], state.bondedOrders);
+            }
         }
 
         state.freeColonistCount = colonistCount;
@@ -93,6 +101,27 @@ public class CosmereQuestManager : GameComponent {
         for (int i = 0; i < factions.Count; i++) {
             FactionDef? def = factions[i].def;
             if (def != null) state.presentFactions.Add(def.defName);
+        }
+
+        return state;
+    }
+
+    /// <summary>
+    ///     The same snapshot, narrowed to one pawn. Hediffs are flattened to defNames so the
+    ///     prereqs stay free of Verse types.
+    /// </summary>
+    public QuestWorldState BuildWorldState(Pawn? subject) {
+        QuestWorldState state = BuildWorldState();
+        if (subject == null) return state;
+
+        state.subjectPawnId = subject.thingIDNumber;
+
+        List<Verse.Hediff>? hediffs = subject.health?.hediffSet?.hediffs;
+        if (hediffs == null) return state;
+
+        for (int i = 0; i < hediffs.Count; i++) {
+            HediffDef? def = hediffs[i].def;
+            if (def != null) state.subjectHediffs.Add(def.defName);
         }
 
         return state;
@@ -261,6 +290,7 @@ public class CosmereQuestManager : GameComponent {
                 ? existing
                 : CapstoneState.NotFired;
             capstoneStates[defName] = CapstoneStateMachine.OnFailed(current);
+            Log.Info($"Capstone '{defName}' burned campaign-wide.");
             return;
         }
 
@@ -270,6 +300,10 @@ public class CosmereQuestManager : GameComponent {
         }
 
         burnedPawns.Add(subject.thingIDNumber);
+
+        // Back to NotFired, not Burned: this pawn is out, everyone else is still owed the offer.
+        capstoneStates[defName] = CapstoneState.NotFired;
+        Log.Info($"Capstone '{defName}' burned for {subject.LabelShort} only.");
     }
 
     public void SetFlag(string flag) {

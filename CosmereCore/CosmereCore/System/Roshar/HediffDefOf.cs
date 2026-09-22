@@ -56,6 +56,12 @@ public static class HediffDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static HediffDef Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse;
 
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_StormfathersRegard;
+
     static HediffDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
     }

@@ -156,6 +156,7 @@ public class Highstorm : RimWorld.GameCondition {
         if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
         if (thing is Mineable or Plant) return false;
         if (!thing.CanBeMoved() && !thing.def.useHitPoints) return false;
+        if (thing is Pawn called && IsUnderStormfathersRegard(called)) return false;
 
         IntVec3 oldPos = thing.Position;
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
@@ -241,6 +242,25 @@ public class Highstorm : RimWorld.GameCondition {
         return 1f;
     }
 
+    /// <summary>
+    ///     A pawn the Stormfather has called is not tested by the storm, he shelters them: no
+    ///     push, a fraction of the damage, and his regard closing their wounds as it passes.
+    /// </summary>
+    private static bool IsUnderStormfathersRegard(Pawn pawn) {
+        HediffDef? calling = HediffDefOf.Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather;
+        if (calling == null) return false;
+
+        return pawn.health?.hediffSet?.HasHediff(calling) ?? false;
+    }
+
+    private static void ApplyRegard(Pawn pawn) {
+        HediffDef? regard = HediffDefOf.Cosmere_Roshar_Hediff_StormfathersRegard;
+        if (regard == null || pawn.health == null) return;
+        if (pawn.health.hediffSet.HasHediff(regard)) return;
+
+        pawn.health.AddHediff(HediffMaker.MakeHediff(regard, pawn));
+    }
+
     private static bool IsHighstormImmuneBuilding(Building building) {
         if (building.TryGetComp<StormlightReceiver>() != null) return true;
         if (building.def == RimWorld.ThingDefOf.HiddenConduit) return true;
@@ -309,9 +329,16 @@ public class Highstorm : RimWorld.GameCondition {
             case Pawn pawn: {
                     if (pawn.Dead) break;
                     if (StormlightUtility.IsHighstormImmune(pawn)) break;
-                    Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-                    if (surgebinder != null) {
-                        damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
+
+                    // A called pawn is not a Surgebinder yet, so this replaces that reduction rather than stacking.
+                    if (IsUnderStormfathersRegard(pawn)) {
+                        damage.SetAmount(damage.Amount * 0.15f);
+                        ApplyRegard(pawn);
+                    } else {
+                        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+                        if (surgebinder != null) {
+                            damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
+                        }
                     }
 
                     pawn.TakeDamage(damage);

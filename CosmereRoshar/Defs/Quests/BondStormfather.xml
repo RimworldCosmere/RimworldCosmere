@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Quest.CosmereQuestDef>
+        <defName>Cosmere_Roshar_Quest_BondStormfather</defName>
+        <label>The Stormfather's Test</label>
+        <description>The voice has been in their head for weeks now, vast and slow and older than the Oathpact. It does not argue. It does not explain. It simply waits.\n\nThe Stormfather does not give bonds to those who ask for them. He gives them to those who stand in his storm and do not run.\n\nWalk out under open sky before the stormwall arrives, and stay there until it has passed. He will be watching. He is always watching.</description>
+
+        <kind>Capstone</kind>
+        <subject>Pawn</subject>
+        <requiredShards>
+            <li>Honor</li>
+        </requiredShards>
+
+        <prerequisites>
+            <li Class="Cosmere.Core.Quest.Prereq.HediffPrereq">
+                <hediffDefName>Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather</hediffDefName>
+            </li>
+        </prerequisites>
+
+        <!-- 0 means the offer never lapses. The Stormfather is patient. -->
+        <expireAfterDays>0</expireAfterDays>
+        <challengeRating>4</challengeRating>
+
+        <stages>
+            <li>
+                <key>survive</key>
+                <descriptionKey>CRO_Quest_BondStormfather_Stage_Survive</descriptionKey>
+                <objective Class="Cosmere.Core.Quest.Objective.SurviveConditionObjective">
+                    <conditionDef>Cosmere_Roshar_HighstormCondition</conditionDef>
+                    <requireUnroofed>true</requireUnroofed>
+                </objective>
+            </li>
+        </stages>
+
+        <rewards>
+            <li Class="Cosmere.System.Roshar.Quest.GrantOrderReward">
+                <order>Bondsmith</order>
+                <godspren>Stormfather</godspren>
+            </li>
+        </rewards>
+
+        <!-- Going down in the storm is a failure the pawn can survive. The calling stays. -->
+        <onFailure Class="Cosmere.Core.Quest.Outcome.NeverBurns" />
+    </Cosmere.Core.Quest.CosmereQuestDef>
+</Defs>

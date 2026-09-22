@@ -51,6 +51,9 @@ public class DormantConnection : ThingComp {
         base.PostExposeData();
 
         Scribe_Collections.Look(ref hiddenGenes, "hiddenGenes", LookMode.Def);
+
+        // Null when the save has no such node, which is every save written without Cosmere.
+        hiddenGenes ??= [];
     }
 
     public override string CompInspectStringExtra() {

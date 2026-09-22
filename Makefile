@@ -111,7 +111,8 @@ game-log: ## Follow the Cosmere run log
 
 ##@ Pickle
 
-# Pickle exits 0 on an empty run, so the summary.json total is what catches a bad FILTER.
+# summary.json is the verdict. The exit code comes back through xvfb-run, whose cleanup
+# can fail a passing run, so it only decides things when no summary was written.
 pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTANCE=<name> lets runs go in parallel)
 	@echo "$(BLUE)Running Pickle suite...$(NC)"
 	@cd "$(CURDIR)" && gamecrate rimworld $(PICKLE_PROFILE) \
@@ -128,17 +129,21 @@ pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTAN
 		exit 1; \
 	fi; \
 	total=$$(sed -n 's/.*"total":\([0-9]*\).*/\1/p' "$$summary"); \
-	case $$code in \
-		0) if [ "$${total:-0}" -eq 0 ]; then \
-			 echo "$(RED)✗ Zero scenarios ran - check FILTER$(NC)"; \
-			 exit 1; \
-		   fi; \
-		   echo "$(GREEN)✓ All $$total scenario(s) passed - report: $$(dirname "$$summary")$(NC)" ;; \
-		1) echo "$(RED)✗ Scenarios failed ($$total ran) - report: $$(dirname "$$summary")$(NC)" ;; \
-		2) echo "$(RED)✗ Pickle itself failed - report: $$(dirname "$$summary")$(NC)" ;; \
-		*) echo "$(RED)✗ Game exited $$code - the run never finished$(NC)" ;; \
-	esac; \
-	exit $$code
+	failed=$$(sed -n 's/.*"failed":\([0-9]*\).*/\1/p' "$$summary"); \
+	reason=$$(sed -n 's/.*"exitReason":"\([^"]*\)".*/\1/p' "$$summary"); \
+	report=$$(dirname "$$summary"); \
+	if [ "$${total:-0}" -eq 0 ]; then \
+		echo "$(RED)✗ Zero scenarios ran ($$reason) - check FILTER, it wants the full file name$(NC)"; \
+		exit 1; \
+	fi; \
+	if [ "$${failed:-1}" -ne 0 ] || [ "$$reason" != "passed" ]; then \
+		echo "$(RED)✗ $$failed of $$total scenario(s) failed ($$reason, game exit $$code) - report: $$report$(NC)"; \
+		exit 1; \
+	fi; \
+	if [ $$code -ne 0 ]; then \
+		echo "$(YELLOW)! Suite passed but the game exited $$code - likely xvfb-run cleanup$(NC)"; \
+	fi; \
+	echo "$(GREEN)✓ All $$total scenario(s) passed - report: $$report$(NC)"
 
 ##@ Code Generation
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Cosmere.Pickle</AssemblyName>
+    <RootNamespace>Cosmere.Pickle</RootNamespace>
+    <!-- Pickle globs Pickle/Assemblies/*.dll, top directory only. A step class in
+         CosmereCore/Assemblies is never scanned. -->
+    <OutDir>$(MSBuildProjectDirectory)/../CosmereCore/Pickle/Assemblies/</OutDir>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>embedded</DebugType>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Linq"/>
+    <Using Include="System.Collections.Generic"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- ExcludeAssets and PrivateAssets keep a second copy of each reference out of
+         Pickle/Assemblies, where the loader would pick the stub over the real one. -->
+    <PackageReference Include="RimWorks.Pickle.Ref" Version="4.*" ExcludeAssets="runtime" PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="../CosmereCore/CosmereCore/Cosmere.csproj" Private="False"/>
+  </ItemGroup>
+
+  <!-- RimWorld itself, from the same install paths Cosmere.csproj searches. -->
+  <ItemGroup>
+    <Reference Include="../../RimWorldWin64_Data/Managed/*.dll" Condition="Exists('../../RimWorldWin64_Data/Managed')" Private="False"/>
+    <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')" Private="False"/>
+    <Reference Include="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')" Private="False"/>
+    <Reference Include="D:\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\RimWorld\RimWorldWin64_Data\Managed')" Private="False"/>
+    <Reference Include="/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed')" Private="False"/>
+    <Reference Include="/mnt/games/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/RimWorld/RimWorldLinux_Data/Managed')" Private="False"/>
+  </ItemGroup>
+
+  <!-- Krafs is the fallback when no install was found, the same way Cosmere.csproj falls back. -->
+  <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*" ExcludeAssets="runtime" PrivateAssets="all"/>
+  </ItemGroup>
+</Project>

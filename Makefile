@@ -6,7 +6,7 @@
 #   make all      - Full build (clean, generate, build both solutions, build assets)
 #   make quick    - Quick development cycle (generate + build main solution)
 
-.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status sonar sonar-up sonar-down game-kill game-run game-restart game-log
+.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status sonar sonar-up sonar-down game-kill game-run game-restart game-log pickle
 
 # Where the Linux install lives, and the save folder that carries the Cosmere
 # modlist and mod settings. Launching without -savedatafolder picks up whatever
@@ -14,6 +14,28 @@
 RIMWORLD_DIR ?= /mnt/games/RimWorld
 COSMERE_SAVEDATA ?= $(RIMWORLD_DIR)/SaveData-Cosmere
 COSMERE_LOG ?= /tmp/cosmere-run.log
+
+# gamecrate profile the Pickle suite runs under. INSTANCE gives a concurrent run its
+# own lock, saves and container, so several agents can run at once on one profile.
+PICKLE_PROFILE ?= cosmere
+PICKLE_INSTANCE ?= $(INSTANCE)
+
+# Pickle runs every mod that ships a Pickle/ dir, and rimworks.pickle ships 26 features of
+# its own. Without this the suite spends 15 minutes on other people's tests.
+PICKLE_FILTER ?= $(if $(FILTER),$(FILTER),Cosmere - Core)
+
+# /logs is the only writable host bind gamecrate makes (docker/spec.ts binds runDirHost
+# there). A container-local report dir dies with the --rm container.
+PICKLE_CONTAINER_REPORTS := /logs/pickle-reports
+
+# gamecrate's bound-run timeout defaults to 420s and returns Exit.Ok when it trips, so it
+# has to sit above Pickle's own watchdog or a slow suite reports a false pass.
+PICKLE_RUN_TIMEOUT ?= 60
+PICKLE_TIMEOUT ?= 3900
+
+# gamecrate writes an instance under <profileDir>/instances/<name> (launch/instance.ts).
+PICKLE_PROFILE_DIR := $(HOME)/.local/share/gamecrate/rimworld/$(PICKLE_PROFILE)
+PICKLE_INSTANCE_DIR = $(if $(PICKLE_INSTANCE),$(PICKLE_PROFILE_DIR)/instances/$(PICKLE_INSTANCE),$(PICKLE_PROFILE_DIR))
 
 # Use bash with xpg_echo so `echo` interprets \033 escape sequences
 # (default /bin/sh on many distros is dash, which prints them literally)
@@ -86,6 +108,37 @@ game-restart: game-kill game-run ## Stop RimWorld and launch it again
 
 game-log: ## Follow the Cosmere run log
 	@tail -f "$(COSMERE_LOG)"
+
+##@ Pickle
+
+# Pickle exits 0 on an empty run, so the summary.json total is what catches a bad FILTER.
+pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTANCE=<name> lets runs go in parallel)
+	@echo "$(BLUE)Running Pickle suite...$(NC)"
+	@cd "$(CURDIR)" && gamecrate rimworld $(PICKLE_PROFILE) \
+		$(if $(PICKLE_INSTANCE),--instance $(PICKLE_INSTANCE)) \
+		--mode headless --no-detach --no-replace --timeout $(PICKLE_TIMEOUT) -- \
+		"-pickle-run=$(PICKLE_FILTER)" \
+		-pickle-report-dir="$(PICKLE_CONTAINER_REPORTS)" \
+		-pickle-run-timeout=$(PICKLE_RUN_TIMEOUT) \
+		-pickle-no-browser -pickle-no-http; \
+	code=$$?; \
+	summary=$$(ls -1dt "$(PICKLE_INSTANCE_DIR)"/logs/runs/*/pickle-reports/summary.json 2>/dev/null | head -1); \
+	if [ -z "$$summary" ]; then \
+		echo "$(RED)✗ No summary.json was written - the suite never reported (game exit $$code)$(NC)"; \
+		exit 1; \
+	fi; \
+	total=$$(sed -n 's/.*"total":\([0-9]*\).*/\1/p' "$$summary"); \
+	case $$code in \
+		0) if [ "$${total:-0}" -eq 0 ]; then \
+			 echo "$(RED)✗ Zero scenarios ran - check FILTER$(NC)"; \
+			 exit 1; \
+		   fi; \
+		   echo "$(GREEN)✓ All $$total scenario(s) passed - report: $$(dirname "$$summary")$(NC)" ;; \
+		1) echo "$(RED)✗ Scenarios failed ($$total ran) - report: $$(dirname "$$summary")$(NC)" ;; \
+		2) echo "$(RED)✗ Pickle itself failed - report: $$(dirname "$$summary")$(NC)" ;; \
+		*) echo "$(RED)✗ Game exited $$code - the run never finished$(NC)" ;; \
+	esac; \
+	exit $$code
 
 ##@ Code Generation
 

@@ -2,6 +2,7 @@
 *.xcf
 Assets
 CosmereCore
+Pickle
 .gitignore
 .assetbundler.toml
 README.template.md

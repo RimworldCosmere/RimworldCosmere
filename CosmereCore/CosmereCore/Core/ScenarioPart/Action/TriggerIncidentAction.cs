@@ -1,3 +1,5 @@
+using Cosmere.Core.Def;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 
@@ -13,10 +15,25 @@ public class TriggerIncidentAction : ProgressionAction {
             return;
         }
 
+        if (!WorldMatches(incident)) {
+            Log.Warn(
+                $"ScenarioProgression: Incident '{incident}' belongs to another world than " +
+                $"'{WorldUtility.Primary?.defName}'; skipping it"
+            );
+            return;
+        }
+
         Map? map = Find.CurrentMap;
         if (map == null) return;
 
         IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, map);
         def.Worker.TryExecute(parms);
+    }
+
+    private static bool WorldMatches(string incidentDefName) {
+        CosmereWorldDef? owner = WorldUtility.WorldForDefName(incidentDefName);
+        CosmereWorldDef? primary = WorldUtility.Primary;
+
+        return WorldGate.Matches(owner?.defName, primary?.defName, primary?.crossWorld ?? false);
     }
 }

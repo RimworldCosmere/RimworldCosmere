@@ -1,3 +1,4 @@
+using Cosmere.Core.Quest;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
@@ -15,8 +16,10 @@ public class BondsmithCallingLetter : ChoiceLetter {
             yield return new DiaOption("CRO_Bondsmith_Accept".Translate()) {
                 action = () => {
                     Pawn pawn = lookTargets.PrimaryTarget.Pawn;
-                    Find.WindowStack.Add(new Dialog_ChooseRadiantOrder(pawn, sprenName));
                     Find.LetterStack.RemoveLetter(this);
+                    if (TryStartBondQuest(pawn)) return;
+
+                    Find.WindowStack.Add(new Dialog_ChooseRadiantOrder(pawn, sprenName));
                 },
                 resolveTree = true,
             };
@@ -53,6 +56,21 @@ public class BondsmithCallingLetter : ChoiceLetter {
 
     public void Setup(string spren) {
         sprenName = spren;
+    }
+
+    /// <summary>
+    ///     The Stormfather tests rather than hands the bond over. A godspren with no capstone
+    ///     def yet keeps the old dialog, which is still the ordinary spren bond path.
+    /// </summary>
+    private bool TryStartBondQuest(Pawn pawn) {
+        CosmereQuestDef? def =
+            DefDatabase<CosmereQuestDef>.GetNamedSilentFail($"Cosmere_Roshar_Quest_Bond{sprenName}");
+        Verse.Map? map = pawn.MapHeld;
+        if (def == null || map == null) return false;
+
+        CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();
+
+        return manager?.TryStartCapstone(def, map, pawn) ?? false;
     }
 
     public override void ExposeData() {

@@ -88,6 +88,7 @@ public class ImplantedMetalminds : HediffWithComps {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Collections.Look(ref metalminds, "metalminds", LookMode.Deep);
+        metalminds ??= [];
         if (Scribe.mode == LoadSaveMode.PostLoadInit && metalminds != null) {
             for (int i = 0; i < metalminds.Count; i++) {
                 metalminds[i].ReconcileCapacity();

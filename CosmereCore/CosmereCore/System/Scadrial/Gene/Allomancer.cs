@@ -217,6 +217,7 @@ public class Allomancer : Metalborn {
         Scribe_Values.Look(ref currentReserve, "currentReserve");
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
         Scribe_Collections.Look(ref sources, "sources", LookMode.Deep);
+        sources ??= [];
     }
 
     public AcceptanceReport CanBurn(float requiredBreathEquivalentUnits) {

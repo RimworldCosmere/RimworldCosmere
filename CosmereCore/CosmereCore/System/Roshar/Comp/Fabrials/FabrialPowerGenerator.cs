@@ -55,6 +55,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         Scribe_Deep.Look(ref insertedGemstone, "insertedGemstone");
         Scribe_Values.Look(ref powerOn, "PowerOn");
         Scribe_Collections.Look(ref filterListInt, "FilterList", LookMode.Def);
+        filterListInt ??= [];
     }
 
     public void UpdatePowerState(bool flickeredOn) {

@@ -331,6 +331,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         Scribe_Values.Look(ref capacityLostInt, "capacityLost", 0f);
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
+        storedMemoriesInt ??= [];
         Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
         chargeByLedger ??= [];
 

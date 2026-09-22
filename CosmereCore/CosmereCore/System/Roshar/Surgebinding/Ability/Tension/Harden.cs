@@ -103,6 +103,7 @@ public class Harden : SurgebindingAbility {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Collections.Look(ref hardenedStructures, "hardenedStructures", LookMode.Reference);
+        hardenedStructures ??= [];
     }
 
     [Patch(typeof(MemoryUtility))]

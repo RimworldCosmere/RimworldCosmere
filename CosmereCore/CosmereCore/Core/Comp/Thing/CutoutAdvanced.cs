@@ -276,5 +276,6 @@ public class CutoutAdvanced : ThingComp {
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Collections.Look(ref palettes, "palettes", LookMode.Deep);
+        palettes ??= [];
     }
 }

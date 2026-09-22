@@ -123,9 +123,11 @@ pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTAN
 		-pickle-run-timeout=$(PICKLE_RUN_TIMEOUT) \
 		-pickle-no-browser -pickle-no-http; \
 	code=$$?; \
-	summary=$$(ls -1dt "$(PICKLE_INSTANCE_DIR)"/logs/runs/*/pickle-reports/summary.json 2>/dev/null | head -1); \
-	if [ -z "$$summary" ]; then \
-		echo "$(RED)✗ No summary.json was written - the suite never reported (game exit $$code)$(NC)"; \
+	run=$$(/bin/ls -1dt "$(PICKLE_INSTANCE_DIR)"/logs/runs/*/ 2>/dev/null | head -1); \
+	summary="$$run/pickle-reports/summary.json"; \
+	if [ -z "$$run" ] || [ ! -f "$$summary" ]; then \
+		echo "$(RED)✗ This run wrote no summary.json - it never reported (game exit $$code)$(NC)"; \
+		echo "$(RED)  Check $$run/Player.log. A dead X server shows as 'XIO: fatal IO error'.$(NC)"; \
 		exit 1; \
 	fi; \
 	total=$$(sed -n 's/.*"total":\([0-9]*\).*/\1/p' "$$summary"); \

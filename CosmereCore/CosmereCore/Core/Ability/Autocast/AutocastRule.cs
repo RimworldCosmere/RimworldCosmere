@@ -61,6 +61,7 @@ public sealed class AutocastRule : IExposable {
         Scribe_Values.Look(ref Holding, "holding");
         Scribe_Values.Look(ref ToggleOffWhenInactive, "toggleOffWhenInactive");
         Scribe_Collections.Look(ref Triggers, "triggers", LookMode.Deep);
+        Triggers ??= [];
         if (Scribe.mode == LoadSaveMode.PostLoadInit && Triggers == null) {
             Triggers = [];
         }

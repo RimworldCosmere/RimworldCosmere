@@ -146,7 +146,9 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         base.ExposeData();
 
         Scribe_Collections.Look(ref pawnSprens, "spawnedSpren", LookMode.Deep);
+        pawnSprens ??= [];
         Scribe_Collections.Look(ref spawnInfo, "spawnInfo", LookMode.Deep);
+        spawnInfo ??= [];
     }
 
     private class SprenForPawn : IExposable {

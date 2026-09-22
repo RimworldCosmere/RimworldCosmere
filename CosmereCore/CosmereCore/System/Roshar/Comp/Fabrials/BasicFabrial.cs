@@ -63,6 +63,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         Scribe_Deep.Look(ref insertedGemstone, "insertedGemstone");
         Scribe_Values.Look(ref powerOn, "PowerOn");
         Scribe_Collections.Look(ref filterListInt, "filterList", LookMode.Def);
+        filterListInt ??= [];
         SaveExtraData();
     }
 

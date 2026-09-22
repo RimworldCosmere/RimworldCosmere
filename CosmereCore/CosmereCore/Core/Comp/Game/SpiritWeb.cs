@@ -87,6 +87,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         }
 
         Scribe_Collections.Look(ref connectionList, "connections", LookMode.Deep);
+        connectionList ??= [];
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             connections = new Dictionary<(string, string), Connection>();

@@ -153,6 +153,7 @@ public class CompKandraForms : ThingComp {
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Collections.Look(ref known, "knownForms", LookMode.Deep);
+        known ??= [];
         Scribe_Deep.Look(ref current, "currentForm");
         Scribe_Deep.Look(ref trueBody, "trueBody");
         Scribe_Deep.Look(ref mind, "mind");

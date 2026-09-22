@@ -126,7 +126,9 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
         }
 
         Scribe_Collections.Look(ref sourcePawns, "sourcePawns", LookMode.Reference);
+        sourcePawns ??= [];
         Scribe_Collections.Look(ref sourceAbilityDefs, "sourceAbilityDefs", LookMode.Value);
+        sourceAbilityDefs ??= [];
 
         if (Scribe.mode != LoadSaveMode.PostLoadInit) {
             return;

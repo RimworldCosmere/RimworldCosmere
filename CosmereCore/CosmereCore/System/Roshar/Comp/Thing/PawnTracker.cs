@@ -9,6 +9,7 @@ public class PawnTracker : ThingComp {
 
     public override void PostExposeData() {
         Scribe_Collections.Look(ref patientList, "PatientList", LookMode.Reference);
+        patientList ??= [];
         Scribe_Values.Look(ref bondChance, "bondChance");
     }
 

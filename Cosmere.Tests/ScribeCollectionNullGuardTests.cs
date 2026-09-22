@@ -14,31 +14,13 @@ namespace Cosmere.Tests;
 [TestClass]
 public class ScribeCollectionNullGuardTests {
     /// <summary>
-    ///     Sites that were already unguarded when this test was written. The list may shrink,
-    ///     never grow. A fixed site must be removed from it.
+    ///     Reads as unguarded but is not a defect: two locals AshPlume handles, and one field
+    ///     that is nullable by design. The list may shrink, never grow.
     /// </summary>
     private static readonly HashSet<string> KnownUnguarded = [
-        "Core/Ability/Autocast/AutocastRule.cs|Triggers",
-        "Core/Ability/Autocast/GameComponent_Autocast.cs|rulesByPawnId",
-        "Core/Comp/Game/SpiritWeb.cs|connectionList",
-        "Core/Comp/Thing/CutoutAdvanced.cs|palettes",
-        "Core/Hediff/AbstractHediff.cs|sourcePawns",
-        "Core/Hediff/AbstractHediff.cs|sourceAbilityDefs",
-        "Core/Quest/Objective/QuestPart_CosmereChoice.cs|options",
-        "Core/ScenarioPart/Parts/ScenPart_FactionRelations.cs|relations",
-        "Core/ScenarioPart/Parts/ScenPart_FactionRelations.cs|between",
-        "System/Roshar/Comp/Fabrials/BasicFabrial.cs|filterListInt",
-        "System/Roshar/Comp/Fabrials/FabrialPowerGenerator.cs|filterListInt",
-        "System/Roshar/Comp/Map/TrueSprenSpawner.cs|pawnSprens",
-        "System/Roshar/Comp/Map/TrueSprenSpawner.cs|spawnInfo",
-        "System/Roshar/Comp/Thing/PawnTracker.cs|patientList",
-        "System/Roshar/Surgebinding/Ability/Tension/Harden.cs|hardenedStructures",
         "System/Scadrial/Comp/Map/AshDepthTracker.cs|banked",
         "System/Scadrial/Comp/Thing/CompAshVent.cs|banked",
-        "System/Scadrial/Feruchemy/Comp/Thing/Metalmind.cs|storedMemoriesInt",
-        "System/Scadrial/Feruchemy/Hediff/ImplantedMetalminds.cs|metalminds",
-        "System/Scadrial/Gene/Allomancer.cs|sources",
-        "System/Scadrial/Kandra/CompKandraForms.cs|known",
+        "Core/Quest/Objective/QuestPart_CosmereChoice.cs|options",
     ];
 
     private static readonly Regex LookCall = new(@"Scribe_Collections\.Look\(\s*ref\s+(\w+)");

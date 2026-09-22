@@ -88,7 +88,9 @@ public class ScenPart_FactionRelations : ScenPart {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Collections.Look(ref relations, "relations", LookMode.Deep);
+        relations ??= [];
         Scribe_Collections.Look(ref between, "between", LookMode.Deep);
+        between ??= [];
     }
 }
 

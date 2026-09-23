@@ -230,7 +230,7 @@ public class FeruchemySteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            IsNear(moved, expected),
+            CosmereLookup.IsNear(moved, expected),
             $"the last transfer should have moved {expected:0.###}",
             () => $"it moved {moved:0.###}");
     }
@@ -525,7 +525,7 @@ public class FeruchemySteps {
     ) {
         CosmereLookup.AssertThat(
             ctx,
-            IsNear(actual, expected),
+            CosmereLookup.IsNear(actual, expected),
             $"the {scope} {metal} metalmind of '{nickname}' {wanted} {expected:0.###}",
             () => $"it is {actual:0.###}. {Describe(source)}");
     }
@@ -563,12 +563,6 @@ public class FeruchemySteps {
         labels.AddRange(ImplantsOf(pawn).Select(d => "implanted " + d.metalDefName));
 
         return "metalminds on them: " + (labels.Count == 0 ? "(none)" : string.Join(", ", labels));
-    }
-
-    /// <summary>How close two charge figures have to be to count as equal. Charge is banked and
-    /// clamped in floats, so the last fraction of a unit is noise.</summary>
-    private static bool IsNear(float actual, float expected) {
-        return Math.Abs(actual - expected) <= Math.Max(0.01f, Math.Abs(expected) * 0.001f);
     }
 
     /// <summary>Which metalminds the pawn's following transfers reach.</summary>

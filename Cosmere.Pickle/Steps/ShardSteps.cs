@@ -22,7 +22,7 @@ public class ShardSteps {
     /// <param name="shardName">The Shard def to enable.</param>
     [Given("I enable the shard {string}")]
     public void EnableShard(PickleContext ctx, string shardName) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
         // Conflicts respected, the way picking a world does it. Overlap is the ascension beat.
@@ -32,7 +32,7 @@ public class ShardSteps {
             ctx,
             shards.IsEnabled(shard),
             $"the shard '{shardName}' should be enabled",
-            () => Describe(shards));
+            () => CosmereLookup.DescribeShards(shards));
     }
 
     /// <summary>Asserts a Shard holds this cosmere.</summary>
@@ -40,14 +40,14 @@ public class ShardSteps {
     /// <param name="shardName">The Shard def expected to be on.</param>
     [Then("the shard {string} is enabled")]
     public void AssertShardEnabled(PickleContext ctx, string shardName) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
         CosmereLookup.AssertThat(
             ctx,
             shards.IsEnabled(shard),
             $"the shard '{shardName}' should be enabled",
-            () => Describe(shards));
+            () => CosmereLookup.DescribeShards(shards));
     }
 
     /// <summary>Asserts a Shard does not hold this cosmere.</summary>
@@ -55,14 +55,14 @@ public class ShardSteps {
     /// <param name="shardName">The Shard def expected to be off.</param>
     [Then("the shard {string} is disabled")]
     public void AssertShardDisabled(PickleContext ctx, string shardName) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
         CosmereLookup.AssertThat(
             ctx,
             !shards.IsEnabled(shard),
             $"the shard '{shardName}' should be disabled",
-            () => Describe(shards));
+            () => CosmereLookup.DescribeShards(shards));
     }
 
     /// <summary>Ties a pawn to a Shard, topping them up to a strength.</summary>
@@ -73,7 +73,7 @@ public class ShardSteps {
     // Never lowers anyone, the same rule GrantFromMetal follows.
     [Given("{string} has a connection to the shard {string} of {int}")]
     public void GrantConnection(PickleContext ctx, string nickname, string shardName, int strength) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -84,7 +84,7 @@ public class ShardSteps {
         // A disabled Shard has no entity to hang the edge on, so the grant is swallowed whole.
         ctx.Require(
             shards.IsEnabled(shard),
-            $"the shard '{shardName}' is off, so a connection to it cannot be granted. {Describe(shards)}");
+            $"the shard '{shardName}' is off, so a connection to it cannot be granted. {CosmereLookup.DescribeShards(shards)}");
 
         int shortfall = strength - ConnectionUtility.StrengthOf(pawn, shard);
         if (shortfall > 0) {
@@ -95,7 +95,7 @@ public class ShardSteps {
             ctx,
             ConnectionUtility.StrengthOf(pawn, shard) >= strength,
             $"'{nickname}' should reach {strength} toward '{shardName}'",
-            () => Describe(pawn, shard));
+            () => CosmereLookup.DescribeConnection(pawn, shard));
     }
 
     /// <summary>Asserts a pawn's strength toward a Shard, within a point of rounding.</summary>
@@ -121,7 +121,7 @@ public class ShardSteps {
         string shardName,
         int strength,
         int tolerance) {
-        RequireShards(ctx);
+        CosmereLookup.RequireShards(ctx);
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
         int actual = ConnectionUtility.StrengthOf(pawn, shard);
@@ -130,7 +130,7 @@ public class ShardSteps {
             ctx,
             Math.Abs(actual - strength) <= tolerance,
             $"'{nickname}' connection to '{shardName}' should be {strength} give or take {tolerance}",
-            () => Describe(pawn, shard));
+            () => CosmereLookup.DescribeConnection(pawn, shard));
     }
 
     /// <summary>Asserts which band a pawn's tie to a Shard falls in.</summary>
@@ -140,7 +140,7 @@ public class ShardSteps {
     /// <param name="tierName">The tier expected: None, Touched, Bonded, Invested or Ascendant.</param>
     [Then("{string} connection tier to the shard {string} is {word}")]
     public void AssertConnectionTier(PickleContext ctx, string nickname, string shardName, string tierName) {
-        RequireShards(ctx);
+        CosmereLookup.RequireShards(ctx);
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
         ConnectionTier wanted = RequireTier(tierName);
@@ -149,19 +149,7 @@ public class ShardSteps {
             ctx,
             ConnectionUtility.TierOf(pawn, shard) == wanted,
             $"'{nickname}' tier toward '{shardName}' should be {wanted}",
-            () => Describe(pawn, shard));
-    }
-
-    /// <summary>The Shards component, which only exists inside a running game.</summary>
-    private static Shards RequireShards(PickleContext ctx) {
-        Shards? shards = ShardUtility.shards;
-
-        ctx.Require(
-            shards != null,
-            "no game is loaded, so this cosmere has no Shards yet. tag the feature " +
-            "@quickstart:<Name> or load a save fixture before a shard step runs");
-
-        return shards!;
+            () => CosmereLookup.DescribeConnection(pawn, shard));
     }
 
     private static ConnectionTier RequireTier(string tierName) {
@@ -171,21 +159,5 @@ public class ShardSteps {
 
         throw new InvalidOperationException(
             $"'{tierName}' is not a connection tier. try one of: {string.Join(", ", Enum.GetNames(typeof(ConnectionTier)))}");
-    }
-
-    private static string Describe(Shards shards) {
-        return shards.enabledShards.Count == 0
-            ? "no shard holds this cosmere"
-            : $"shards on: {string.Join(", ", shards.enabledShards.Keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))}";
-    }
-
-    // Three of the four parts are recomputed per read, so the parts say why a total is wrong.
-    private static string Describe(Pawn pawn, ShardDef shard) {
-        ConnectionBreakdown parts = ConnectionUtility.BreakdownFor(pawn, shard);
-
-        return $"{pawn.Name?.ToStringShort ?? pawn.LabelShort} reads {parts.Total} toward " +
-            $"{shard.defName} ({ConnectionMath.TierOf(parts.Total)}): ancestry={parts.Ancestry} " +
-            $"residence={parts.Residence} investiture={parts.Investiture} earned={parts.Earned} " +
-            $"held={parts.Held} harmony={parts.Harmony}";
     }
 }

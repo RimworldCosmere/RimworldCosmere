@@ -34,7 +34,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribePawn(nickname),
-            IsNear(holder.currentInvestitureSelf, expected),
+            CosmereLookup.IsNear(holder.currentInvestitureSelf, expected),
             $"should be {expected:0.###}");
     }
 
@@ -93,10 +93,10 @@ public class InvestitureSteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            IsNear(actual, expected),
+            CosmereLookup.IsNear(actual, expected),
             $"{DescribePawn(nickname)} should drain {expected:0.####} investiture per second",
             () => $"it drains {actual:0.####}/sec, summed over " +
-                $"{(genes.Count == 0 ? "the holder's own decay" : $"{genes.Count} invested gene(s): " + string.Join(", ", genes.Select(g => g.def.defName)))}. {Describe(holder)}");
+                $"{(genes.Count == 0 ? "the holder's own decay" : $"{genes.Count} invested gene(s): " + string.Join(", ", genes.Select(g => g.def.defName)))}. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     /// <summary>Sets the Investiture a thing holds, failing when the thing's cap refuses the value.</summary>
@@ -107,7 +107,7 @@ public class InvestitureSteps {
     /// <param name="value">The Investiture to set.</param>
     [Given("the {string} at \\({int}, {int}\\) investiture is set to {float}")]
     public void SetThingInvestiture(PickleContext ctx, string defName, int x, int z, float value) {
-        SetInvestiture(ctx, RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z), value);
+        SetInvestiture(ctx, CosmereLookup.RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z), value);
     }
 
     /// <summary>Asserts the Investiture a thing holds, within a tolerance.</summary>
@@ -118,12 +118,12 @@ public class InvestitureSteps {
     /// <param name="expected">The Investiture expected.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is {float}")]
     public void AssertThingInvestiture(PickleContext ctx, string defName, int x, int z, float expected) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
             holder,
             DescribeThing(defName, x, z),
-            IsNear(holder.currentInvestitureSelf, expected),
+            CosmereLookup.IsNear(holder.currentInvestitureSelf, expected),
             $"should be {expected:0.###}");
     }
 
@@ -135,7 +135,7 @@ public class InvestitureSteps {
     /// <param name="bound">The lower bound, exclusive.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is above {float}")]
     public void AssertThingInvestitureAbove(PickleContext ctx, string defName, int x, int z, float bound) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
             holder,
@@ -152,7 +152,7 @@ public class InvestitureSteps {
     /// <param name="bound">The upper bound, exclusive.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is below {float}")]
     public void AssertThingInvestitureBelow(PickleContext ctx, string defName, int x, int z, float bound) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
             holder,
@@ -176,28 +176,28 @@ public class InvestitureSteps {
     /// <param name="z">The cell's z coordinate.</param>
     [When("I record the investiture of the {string} at \\({int}, {int}\\)")]
     public void RecordThingInvestiture(PickleContext ctx, string defName, int x, int z) {
-        Record(ctx, RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z));
+        Record(ctx, CosmereLookup.RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z));
     }
 
     /// <summary>Asserts the recorded holder has lost Investiture since it was recorded.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture has fallen")]
     public void AssertRecordedFell(PickleContext ctx) {
-        AssertMoved(ctx, (before, now) => now < before - Tolerance(before), "should have fallen");
+        AssertMoved(ctx, (before, now) => now < before - CosmereLookup.Tolerance(before), "should have fallen");
     }
 
     /// <summary>Asserts the recorded holder has gained Investiture since it was recorded.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture has risen")]
     public void AssertRecordedRose(PickleContext ctx) {
-        AssertMoved(ctx, (before, now) => now > before + Tolerance(before), "should have risen");
+        AssertMoved(ctx, (before, now) => now > before + CosmereLookup.Tolerance(before), "should have risen");
     }
 
     /// <summary>Asserts the recorded holder's Investiture has not moved.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture is unchanged")]
     public void AssertRecordedUnchanged(PickleContext ctx) {
-        AssertMoved(ctx, IsNear, "should be unchanged");
+        AssertMoved(ctx, CosmereLookup.IsNear, "should be unchanged");
     }
 
     private static void Record(PickleContext ctx, InvestitureHolder holder, string described) {
@@ -219,16 +219,16 @@ public class InvestitureSteps {
             holds(reading.Value, now),
             $"{reading.Described} investiture {wanted} since it was recorded",
             () => $"it went from {reading.Value:0.###} to {now:0.###} over " +
-                $"{Find.TickManager.TicksGame - reading.Tick} ticks. {Describe(reading.Holder)}");
+                $"{Find.TickManager.TicksGame - reading.Tick} ticks. {CosmereLookup.DescribeHolder(reading.Holder)}");
     }
 
     private static void SetInvestiture(PickleContext ctx, InvestitureHolder holder, string described, float value) {
         holder.currentInvestitureSelf = value;
 
         ctx.Require(
-            IsNear(holder.currentInvestitureSelf, value),
+            CosmereLookup.IsNear(holder.currentInvestitureSelf, value),
             $"{described} would not hold {value:0.###} investiture; it clamped to " +
-            $"{holder.currentInvestitureSelf:0.###}. {Describe(holder)}");
+            $"{holder.currentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     private static void AssertBound(
@@ -242,29 +242,11 @@ public class InvestitureSteps {
             ctx,
             condition,
             $"{described} investiture {wanted}",
-            () => $"it is {holder.currentInvestitureSelf:0.###}. {Describe(holder)}");
+            () => $"it is {holder.currentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     private static InvestitureHolder RequirePawnHolder(PickleContext ctx, string nickname) {
         return RequireHolder(ctx, CosmereLookup.RequirePawn(ctx, nickname), DescribePawn(nickname));
-    }
-
-    private static InvestitureHolder RequireThingHolder(PickleContext ctx, string defName, int x, int z) {
-        Map? map = Find.CurrentMap;
-        ctx.Require(map != null, "no current map; tag the feature with @quickstart: or load a save first");
-
-        ThingDef def = CosmereLookup.RequireDef<ThingDef>(defName);
-        IntVec3 cell = new IntVec3(x, 0, z);
-        ctx.Require(
-            cell.InBounds(map),
-            $"cell ({x}, {z}) is outside the map, which is {map!.Size.x} by {map.Size.z}");
-
-        Verse.Thing? thing = cell.GetThingList(map).FirstOrDefault(t => t.def == def);
-        ctx.Require(
-            thing != null,
-            $"no {defName} at ({x}, {z}); the cell holds: {DescribeCell(map, cell)}");
-
-        return RequireHolder(ctx, thing!, DescribeThing(defName, x, z));
     }
 
     private static InvestitureHolder RequireHolder(PickleContext ctx, Verse.Thing thing, string described) {
@@ -282,34 +264,12 @@ public class InvestitureSteps {
         return holder.drainRate * UpkeepRate.TicksPerSecond / UpkeepRate.TicksPerRareInterval;
     }
 
-    /// <summary>How close two Investiture figures have to be to count as equal. Flat breaks on a
-    /// large reserve and relative breaks near zero, so this takes whichever is looser.</summary>
-    private static float Tolerance(float expected) {
-        return Math.Max(0.01f, Math.Abs(expected) * 0.001f);
-    }
-
-    private static bool IsNear(float actual, float expected) {
-        return Math.Abs(actual - expected) <= Tolerance(expected);
-    }
-
-    // self is what a step sets and reads back; total adds the stack and anything held inside.
-    private static string Describe(InvestitureHolder holder) {
-        return $"self={holder.currentInvestitureSelf:0.###} max={holder.maxInvestitureSelf:0.###} " +
-            $"total={holder.currentInvestiture:0.###} stack={holder.parent.stackCount} " +
-            $"decay={holder.drainRate:0.####} per rare tick";
-    }
-
     private static string DescribePawn(string nickname) {
         return $"pawn '{nickname}'";
     }
 
     private static string DescribeThing(string defName, int x, int z) {
         return $"the {defName} at ({x}, {z})";
-    }
-
-    private static string DescribeCell(Map map, IntVec3 cell) {
-        List<string> labels = [.. cell.GetThingList(map).Select(t => t.def.defName)];
-        return labels.Count == 0 ? "(nothing)" : string.Join(", ", labels);
     }
 
     /// <summary>One holder's Investiture at the moment a step recorded it.</summary>

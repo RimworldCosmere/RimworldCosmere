@@ -13,6 +13,7 @@ using Cosmere.System.Roshar.Comp.Map;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Extension;
 using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Nightwatcher;
 using Cosmere.System.Roshar.Surgebinding.Ability;
 using Cosmere.System.Roshar.Util;
 using RimWorks.Pickle;
@@ -88,6 +89,19 @@ public class SurgebindingSteps {
             !CasteUtility.IsDarkeyes(pawn),
             $"'{nickname}' should be a lighteyes",
             () => $"{nickname} is still a darkeyes. {DescribeBonds(pawn)}");
+    }
+
+    /// <summary>Grants a Nightwatcher boon the way the encounter does, standard effects and the
+    /// boon's own applicator both. The eyes-of-light boon runs the caste transition from here.</summary>
+    /// <param name="ctx">The scenario's context.</param>
+    /// <param name="nickname">The pawn the Nightwatcher answers.</param>
+    /// <param name="boonDefName">The NightwatcherBoonDef to grant.</param>
+    [When("the Nightwatcher grants {string} the boon {string}")]
+    public void GrantBoon(PickleContext ctx, string nickname, string boonDefName) {
+        Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
+        NightwatcherBoonDef boon = CosmereLookup.RequireDef<NightwatcherBoonDef>(boonDefName);
+
+        NightwatcherSystem.ApplyBoon(pawn, boon);
     }
 
     /// <summary>Asserts a pawn carries a Nahel bond to one order.</summary>
@@ -198,7 +212,7 @@ public class SurgebindingSteps {
             ctx,
             !ShardUtility.AreAnyEnabled(ShardDefOf.Honor),
             "Honor should no longer hold this cosmere",
-            () => $"shards on: {string.Join(", ", shards!.enabledShards.Keys)}");
+            () => CosmereLookup.DescribeShards(shards!));
     }
 
     /// <summary>Records a broken bond against a pawn, which is what blocks a rebond for sixty days.</summary>
@@ -569,7 +583,7 @@ public class SurgebindingSteps {
 
         ctx.Require(
             ability != null,
-            $"'{nickname}' does not hold the ability '{abilityDefName}'. {DescribeHeld(pawn)}. " +
+            $"'{nickname}' does not hold the ability '{abilityDefName}'. {CosmereLookup.DescribeHeldAbilities(pawn)}. " +
             DescribeBonds(pawn));
         ctx.Require(
             ability is SurgebindingAbility,
@@ -755,14 +769,6 @@ public class SurgebindingSteps {
         }
 
         return $"charging: {string.Join(", ", charging)}. {DescribeBond(bond)}";
-    }
-
-    private static string DescribeHeld(Pawn pawn) {
-        List<Ability>? held = pawn.abilities?.AllAbilitiesForReading;
-        if (held == null || held.Count == 0) return "the pawn holds no abilities";
-
-        return "the pawn holds: " +
-            string.Join(", ", held.Select(a => a.def.defName).OrderBy(n => n, StringComparer.OrdinalIgnoreCase));
     }
 
     private static string DescribeSpot(Pawn pawn) {

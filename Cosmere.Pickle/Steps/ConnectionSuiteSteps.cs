@@ -36,7 +36,7 @@ public class ConnectionSuiteSteps {
             ctx,
             ConnectionUtility.StrengthOf(pawn, shard) > bound,
             $"'{nickname}' connection to '{shardName}' should be above {bound}",
-            () => Describe(pawn, shard));
+            () => CosmereLookup.DescribeConnection(pawn, shard));
     }
 
     /// <summary>Asserts a pawn's tie to a Shard stays under a ceiling.</summary>
@@ -53,7 +53,7 @@ public class ConnectionSuiteSteps {
             ctx,
             ConnectionUtility.StrengthOf(pawn, shard) < bound,
             $"'{nickname}' connection to '{shardName}' should be below {bound}",
-            () => Describe(pawn, shard));
+            () => CosmereLookup.DescribeConnection(pawn, shard));
     }
 
     /// <summary>Remembers a tie so a later step can say which way it moved.</summary>
@@ -120,7 +120,7 @@ public class ConnectionSuiteSteps {
             $"'{nickname}' breakdown toward '{shardName}' should rebuild the strength the game acts on",
             () => $"the shown parts carry {carried} and the sibling Shards imply a Harmony floor of " +
                 $"{implied}, rebuilding to {rebuilt}, but the strength reads {parts.Total}, a gap of " +
-                $"{parts.Total - rebuilt}. {Describe(pawn, shard)}");
+                $"{parts.Total - rebuilt}. {CosmereLookup.DescribeConnection(pawn, shard)}");
     }
 
     /// <summary>Asserts a pawn is tied deeply enough to burn a god metal.</summary>
@@ -218,7 +218,7 @@ public class ConnectionSuiteSteps {
     /// <param name="z">The cell's z coordinate.</param>
     [When("I fill the {string} at \\({int}, {int}\\) with investiture")]
     public void FillThing(PickleContext ctx, string defName, int x, int z) {
-        RequireThingHolder(ctx, defName, x, z).FillInvestiture();
+        CosmereLookup.RequireThingHolder(ctx, defName, x, z).FillInvestiture();
     }
 
     /// <summary>Takes a thing out of the colony's reach, so only the clock touches it.</summary>
@@ -230,7 +230,7 @@ public class ConnectionSuiteSteps {
     /// the cell. Neither touches the drain rate.</remarks>
     [When("I put the {string} at \\({int}, {int}\\) beyond the colony's reach")]
     public void WithholdThing(PickleContext ctx, string defName, int x, int z) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         holder.sharingInvestiture = false;
         holder.parent.SetForbidden(true, false);
 
@@ -251,7 +251,7 @@ public class ConnectionSuiteSteps {
     [When("I put the {string} at \\({int}, {int}\\) beyond the colony and the clock")]
     public void StillThing(PickleContext ctx, string defName, int x, int z) {
         WithholdThing(ctx, defName, x, z);
-        RequireThingHolder(ctx, defName, x, z).drainRate = 0f;
+        CosmereLookup.RequireThingHolder(ctx, defName, x, z).drainRate = 0f;
     }
 
     /// <summary>Asserts a thing holds every drop it has room for.</summary>
@@ -261,13 +261,13 @@ public class ConnectionSuiteSteps {
     /// <param name="z">The cell's z coordinate.</param>
     [Then("the {string} at \\({int}, {int}\\) is full")]
     public void AssertThingFull(PickleContext ctx, string defName, int x, int z) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
 
         CosmereLookup.AssertThat(
             ctx,
             holder.isFull,
             $"the {defName} at ({x}, {z}) should be full",
-            () => Describe(holder));
+            () => CosmereLookup.DescribeHolder(holder));
     }
 
     /// <summary>Draws Investiture out of one thing and into another, the way a Radiant drinks a
@@ -291,15 +291,15 @@ public class ConnectionSuiteSteps {
         int sourceX,
         int sourceZ
     ) {
-        InvestitureHolder target = RequireThingHolder(ctx, defName, x, z);
-        InvestitureHolder source = RequireThingHolder(ctx, sourceDefName, sourceX, sourceZ);
+        InvestitureHolder target = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder source = CosmereLookup.RequireThingHolder(ctx, sourceDefName, sourceX, sourceZ);
         ctx.Require(amount > 0f, $"a draw needs a positive amount; it was given {amount:0.###}");
 
         bool ran = target.AbsorbInvestitureFrom(source.parent, amount, out float _);
 
         ctx.Require(
             ran,
-            $"the {sourceDefName} at ({sourceX}, {sourceZ}) cannot be drawn from at all. {Describe(source)}");
+            $"the {sourceDefName} at ({sourceX}, {sourceZ}) cannot be drawn from at all. {CosmereLookup.DescribeHolder(source)}");
     }
 
     /// <summary>Runs the clock and asserts a thing bled the Investiture its own decay rate
@@ -314,11 +314,11 @@ public class ConnectionSuiteSteps {
     /// the loss is measured against, give or take one boundary.</remarks>
     [Then("the {string} at \\({int}, {int}\\) loses its declared investiture over {int} ticks", TimeoutSeconds = WaitTimeoutSeconds)]
     public async Task AssertDeclaredDrain(PickleContext ctx, string defName, int x, int z, int ticks) {
-        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         ctx.Require(ticks > 0, $"a drain needs a positive span; it was given {ticks} ticks");
         ctx.Require(
             holder.drainRate > 0f,
-            $"the {defName} at ({x}, {z}) declares no decay, so it can never lose anything. {Describe(holder)}");
+            $"the {defName} at ({x}, {z}) declares no decay, so it can never lose anything. {CosmereLookup.DescribeHolder(holder)}");
 
         float before = holder.currentInvestitureSelf;
         int startedAt = Find.TickManager.TicksGame;
@@ -340,7 +340,7 @@ public class ConnectionSuiteSteps {
             Math.Abs(lost - expected) <= slack,
             $"the {defName} at ({x}, {z}) should lose about {expected:0.###} investiture over {elapsed} ticks",
             () => $"it lost {lost:0.###}, which is {Math.Abs(lost - expected):0.###} off a declared " +
-                $"{holder.drainRate:0.####} per {UpkeepRate.TicksPerRareInterval} ticks. {Describe(holder)}");
+                $"{holder.drainRate:0.####} per {UpkeepRate.TicksPerRareInterval} ticks. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     // Fast mode leaves the game paused and drives ticks by hand, the way the built-in wait step does.
@@ -382,7 +382,7 @@ public class ConnectionSuiteSteps {
             ctx,
             holds(before, now),
             $"'{nickname}' connection to '{shardName}' {wanted} since it was recorded",
-            () => $"it went from {before} to {now}. {Describe(pawn, shard)}");
+            () => $"it went from {before} to {now}. {CosmereLookup.DescribeConnection(pawn, shard)}");
     }
 
     // The floor Harmony lends, rebuilt from the sibling Shards rather than read back off the total.
@@ -425,48 +425,6 @@ public class ConnectionSuiteSteps {
         ctx.Require(metal.godMetal, $"'{metalName}' is not a god metal, so Connection never gates it");
 
         return metal;
-    }
-
-    private static InvestitureHolder RequireThingHolder(PickleContext ctx, string defName, int x, int z) {
-        Map? map = Find.CurrentMap;
-        ctx.Require(map != null, "no current map; tag the feature with @quickstart: or load a save first");
-
-        ThingDef def = CosmereLookup.RequireDef<ThingDef>(defName);
-        IntVec3 cell = new IntVec3(x, 0, z);
-        ctx.Require(
-            cell.InBounds(map),
-            $"cell ({x}, {z}) is outside the map, which is {map!.Size.x} by {map.Size.z}");
-
-        Verse.Thing? thing = cell.GetThingList(map).FirstOrDefault(t => t.def == def);
-        ctx.Require(thing != null, $"no {defName} at ({x}, {z}); the cell holds: {DescribeCell(map, cell)}");
-
-        InvestitureHolder? holder = thing!.TryGetComp<InvestitureHolder>();
-        ctx.Require(
-            holder != null,
-            $"the {defName} at ({x}, {z}) has no InvestitureHolder comp, so it cannot hold investiture");
-
-        return holder!;
-    }
-
-    private static string DescribeCell(Map map, IntVec3 cell) {
-        List<string> labels = [.. cell.GetThingList(map).Select(t => t.def.defName)];
-        return labels.Count == 0 ? "(nothing)" : string.Join(", ", labels);
-    }
-
-    private static string Describe(InvestitureHolder holder) {
-        return $"self={holder.currentInvestitureSelf:0.###} max={holder.maxInvestitureSelf:0.###} " +
-            $"total={holder.currentInvestiture:0.###} of {holder.maxInvestiture:0.###} " +
-            $"stack={holder.parent.stackCount} decay={holder.drainRate:0.####} per rare tick";
-    }
-
-    // Three of the four parts are recomputed per read, so the parts say why a total is wrong.
-    private static string Describe(Pawn pawn, ShardDef shard) {
-        ConnectionBreakdown parts = ConnectionUtility.BreakdownFor(pawn, shard);
-
-        return $"{pawn.Name?.ToStringShort ?? pawn.LabelShort} reads {parts.Total} toward " +
-            $"{shard.defName} ({ConnectionMath.TierOf(parts.Total)}): ancestry={parts.Ancestry} " +
-            $"residence={parts.Residence} investiture={parts.Investiture} earned={parts.Earned} " +
-            $"held={parts.Held} harmony={parts.Harmony}";
     }
 
     private static string DescribeMetal(Pawn pawn, MetalDef metal) {

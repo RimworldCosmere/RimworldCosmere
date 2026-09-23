@@ -50,6 +50,17 @@ Feature: surgebinding
     And "Lopen" gene "Cosmere_Roshar_Gene_RadiantWindrunner" grants ability "Cosmere_Roshar_Ability_BasicLashing"
     And "Lopen" gene "Cosmere_Roshar_Gene_RadiantWindrunner" grants ability "Cosmere_Roshar_Ability_ToggleShardblade"
 
+  # The eyes-of-light boon lightens a darkeyes and grants the lowest dahn as a xenogene, which the
+  # SetXenotype the caste swap used to run wiped one line after it was added.
+  @same-world
+  Scenario: the Nightwatcher lightens the eyes and the rank comes with them
+    Given a colonist "Peet" exists
+    And "Peet" is already darkeyed
+    And "Peet" has no gene "Cosmere_Roshar_Gene_Dahn_Low"
+    When the Nightwatcher grants "Peet" the boon "NW_Boon_Lighteyes"
+    Then "Peet" eyes have lightened
+    And "Peet" has gene "Cosmere_Roshar_Gene_Dahn_Low"
+
   # Lighteyed up front: the scenario below is about what each Ideal opens, not about the caste
   # swap the first one triggers, so the caste is pinned instead of rolled.
   @same-world

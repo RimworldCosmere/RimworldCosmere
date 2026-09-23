@@ -33,7 +33,7 @@ public class AllomancySteps {
     /// <param name="shardName">The Shard def to enable.</param>
     [Given("I enable the shard {string} alongside its conflicts")]
     public void EnableShardWithOverlap(PickleContext ctx, string shardName) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
         shards.EnableShard(shard, allowConflicts: true);
@@ -42,7 +42,7 @@ public class AllomancySteps {
             ctx,
             shards.IsEnabled(shard),
             $"the shard '{shardName}' should be enabled alongside its conflicts",
-            () => DescribeShards(shards));
+            () => CosmereLookup.DescribeShards(shards));
     }
 
     /// <summary>Lights a metal, the way the gizmo does. Forced: it does not ask whether the
@@ -482,14 +482,14 @@ public class AllomancySteps {
     /// <param name="shardName">The Shard def expected.</param>
     [Then("hemalurgy answers to the shard {string}")]
     public void AssertHemalurgicShard(PickleContext ctx, string shardName) {
-        Shards shards = RequireShards(ctx);
+        Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
         CosmereLookup.AssertThat(
             ctx,
             string.Equals(HemalurgicShard.Current?.defName, shard.defName, StringComparison.Ordinal),
             $"hemalurgy should answer to '{shardName}'",
-            () => $"it answers to {HemalurgicShard.Current?.defName ?? "(nothing)"}; {DescribeShards(shards)}");
+            () => $"it answers to {HemalurgicShard.Current?.defName ?? "(nothing)"}; {CosmereLookup.DescribeShards(shards)}");
     }
 
     /// <summary>Asserts this many spikes are enough for Ruin to want something.</summary>
@@ -613,7 +613,7 @@ public class AllomancySteps {
         ctx.Require(
             ability != null,
             $"'{nickname}' does not hold the allomantic ability '{abilityDefName}'. grant the Misting gene " +
-            $"for its metal first. {DescribeHeldAbilities(pawn)}");
+            $"for its metal first. {CosmereLookup.DescribeHeldAbilities(pawn)}");
 
         return ability!;
     }
@@ -675,16 +675,6 @@ public class AllomancySteps {
         return store!;
     }
 
-    private static Shards RequireShards(PickleContext ctx) {
-        Shards? shards = ShardUtility.shards;
-
-        ctx.Require(
-            shards != null,
-            "no game is loaded, so this cosmere has no Shards yet. tag the feature @quickstart:<Name> first");
-
-        return shards!;
-    }
-
     private static Map RequireMap(PickleContext ctx) {
         Map? map = Find.CurrentMap;
 
@@ -701,12 +691,6 @@ public class AllomancySteps {
             $"cell ({x}, {z}) is outside the map, which is {map.Size.x} by {map.Size.z}");
 
         return cell;
-    }
-
-    private static string DescribeShards(Shards shards) {
-        return shards.enabledShards.Count == 0
-            ? "no shard holds this cosmere"
-            : $"shards on: {string.Join(", ", shards.enabledShards.Keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))}";
     }
 
     // the reserve and the vial are the two things CanCast weighs, so both belong in the failure
@@ -777,13 +761,5 @@ public class AllomancySteps {
         return things.Count == 0
             ? "the cell is empty"
             : $"the cell holds: {string.Join(", ", things.Select(t => t.def.defName))}";
-    }
-
-    private static string DescribeHeldAbilities(Pawn pawn) {
-        List<Ability>? held = pawn.abilities?.AllAbilitiesForReading;
-
-        return held == null || held.Count == 0
-            ? "the pawn holds no abilities"
-            : $"the pawn holds: {string.Join(", ", held.Select(a => a.def.defName).OrderBy(n => n, StringComparer.OrdinalIgnoreCase))}";
     }
 }

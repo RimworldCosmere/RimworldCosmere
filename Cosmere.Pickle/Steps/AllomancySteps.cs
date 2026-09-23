@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Util;
 using Cosmere.Pickle.Lookup;
@@ -152,6 +153,39 @@ public class AllomancySteps {
             !ability.CanCast.Accepted,
             $"'{nickname}' should be refused the burn of '{abilityDefName}'",
             () => DescribeBurn(ability));
+    }
+
+    /// <summary>Asserts autocast has reached a pawn and taken no claim on one of their burns.</summary>
+    /// <remarks>The rule is a requirement, not an assertion: only the runner seeds one, so without
+    /// one no autocast pass has run and the scenario around this step proves nothing.</remarks>
+    /// <param name="ctx">The scenario's context.</param>
+    /// <param name="nickname">The Allomancer.</param>
+    /// <param name="abilityDefName">The allomantic ability def to ask about.</param>
+    [Then("autocast has passed over {string} without taking hold of {string}")]
+    public void AssertAutocastNotHolding(PickleContext ctx, string nickname, string abilityDefName) {
+        Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
+        GameComponent_Autocast store = RequireAutocastStore(ctx);
+        AutocastRule? rule = store.GetOrCreateRules(pawn)
+            .FirstOrDefault(r =>
+                r.Kind == AutocastRuleKind.Ability &&
+                string.Equals(r.AbilityDefName, abilityDefName, StringComparison.Ordinal));
+
+        ctx.Require(
+            rule != null,
+            $"autocast holds no rule for '{nickname}' on '{abilityDefName}', so no autocast pass has " +
+            $"reached them and this scenario is watching nothing. wait past a multiple of 60 ticks " +
+            $"with the game running. {DescribeRules(pawn)}");
+
+        ctx.Require(
+            rule!.Enabled && rule.Triggers.Count > 0 && rule.ToggleOffWhenInactive,
+            $"the autocast rule for '{nickname}' on '{abilityDefName}' could never put a burn out, so " +
+            $"this scenario is watching nothing. {DescribeRules(pawn)}");
+
+        CosmereLookup.AssertThat(
+            ctx,
+            !rule.Holding,
+            $"autocast should have no claim on '{nickname}' burning '{abilityDefName}'",
+            () => DescribeRules(pawn));
     }
 
     /// <summary>Lays a nicrosil supercharge on somebody else, the effect the maintain job holds
@@ -633,6 +667,14 @@ public class AllomancySteps {
         return def!;
     }
 
+    private static GameComponent_Autocast RequireAutocastStore(PickleContext ctx) {
+        GameComponent_Autocast? store = Current.Game?.GetComponent<GameComponent_Autocast>();
+
+        ctx.Require(store != null, "no game is loaded, so nothing holds autocast rules yet");
+
+        return store!;
+    }
+
     private static Shards RequireShards(PickleContext ctx) {
         Shards? shards = ShardUtility.shards;
 
@@ -676,6 +718,19 @@ public class AllomancySteps {
         return $"{ability.pawn.LabelShort} burns {ability.metal.defName} at power {ability.status.power} " +
             $"(active={ability.status.IsActive}); reserve={gene.Value:0.###} of {gene.Max:0.###}, " +
             $"rate={gene.BurnRate:0.#####}/charge, vial={ability.pawn.HasVial(ability.metal)}; {refusal}";
+    }
+
+    // holding and fired are the two that say whether the runner has acted on this pawn at all
+    private static string DescribeRules(Pawn pawn) {
+        List<AutocastRule> rules = Current.Game?.GetComponent<GameComponent_Autocast>()?.GetOrCreateRules(pawn) ?? [];
+
+        return rules.Count == 0
+            ? $"{pawn.LabelShort} carries no autocast rules"
+            : $"{pawn.LabelShort} carries: " + string.Join(
+                ", ",
+                rules.Select(r =>
+                    $"{GameComponent_Autocast.TargetOf(r)} (enabled={r.Enabled}, triggers={r.Triggers.Count}, " +
+                    $"releaseOnStop={r.ToggleOffWhenInactive}, holding={r.Holding}, fired={r.FireCount})"));
     }
 
     private static string DescribeSurge(Pawn pawn) {

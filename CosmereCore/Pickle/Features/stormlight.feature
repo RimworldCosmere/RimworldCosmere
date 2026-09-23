@@ -3,9 +3,12 @@
 @timeout:600
 Feature: stormlight
 
+  # Storm waits read against the season's ceiling: a flat 0.7 is out of reach in Winter.
+  # Pause only freezes the gaps between steps: the waits call DoSingleTick themselves.
   Background:
     Given I enable the shard "Honor"
     And no storm is running
+    And game speed is paused
 
   # Every pawn here is drafted first: an idle colonist walks off to work, and the open-ground
   # step pins them, because the storm shoves whoever it reaches two cells west per thirty.
@@ -21,7 +24,7 @@ Feature: stormlight
     Then "Bisig" is exposed to the storm
     When I record the investiture of "Bisig"
     And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     Then "Bisig" is exposed to the storm
     When I wait 300 ticks
     Then the recorded investiture has risen
@@ -44,7 +47,7 @@ Feature: stormlight
     Then "Peet" is sheltered from the storm
     When I record the investiture of "Peet"
     And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     And I wait 600 ticks
     Then "Peet" is sheltered from the storm
     And the recorded investiture has fallen
@@ -62,7 +65,7 @@ Feature: stormlight
     And I heal "Mart"
     Then "Mart" is exposed to the storm
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     Then "Mart" is exposed to the storm
     When I record the health of "Mart"
     And I wait 300 ticks
@@ -80,7 +83,7 @@ Feature: stormlight
     And I heal "Eth"
     Then "Eth" is sheltered from the storm
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     Then "Eth" is sheltered from the storm
     When I record the health of "Eth"
     And I wait 300 ticks

@@ -4,6 +4,11 @@ Feature: investiture steps
   # The holder is the primitive under all three shardworlds, so nothing here names a shard.
   # Every figure the game's own rate decides is asserted as a direction, not a number.
 
+  # The colony settles unpaused, and a rare tick between two steps spends half a point of a gem.
+  # The waits below drive their own ticks, so freezing the clock costs the scenarios nothing.
+  Background:
+    Given game speed is paused
+
   Scenario: a pawn's investiture round trips through the holder
     Given a colonist "Vessel" exists
     When "Vessel" investiture is set to 0.0
@@ -31,9 +36,12 @@ Feature: investiture steps
     Then the recorded investiture is unchanged
     And "Steady" investiture is 1.0
 
+  # Out of the colony's reach but not the clock: a hauler would carry it off the cell and a
+  # Radiant would drink it, and the decay this reads is the whole point of the scenario.
   @same-world @timeout:120
   Scenario: a gem bleeds investiture as the ticks pass
     When I spawn a "RawDiamond" at (37, 37)
+    And I put the "RawDiamond" at (37, 37) beyond the colony's reach
     And the "RawDiamond" at (37, 37) investiture is set to 6.0
     Then the "RawDiamond" at (37, 37) investiture is 6.0
     And the "RawDiamond" at (37, 37) investiture is above 5.0

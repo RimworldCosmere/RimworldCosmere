@@ -4,6 +4,11 @@
 @timeout:900
 Feature: hemalurgy
 
+  # Every spike here sits on open ground where a hauler would carry it off, and a donor's
+  # investiture climbs back between the record and the read. Nothing here needs time to pass.
+  Background:
+    Given game speed is paused
+
   Scenario: a steel spike takes a power, and the donor is left drab and less Invested
     Given I enable the shard "Ruin"
     And a colonist "Kelsier" exists

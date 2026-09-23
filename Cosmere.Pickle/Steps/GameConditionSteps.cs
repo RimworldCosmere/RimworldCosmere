@@ -6,6 +6,7 @@ using RimWorks.Pickle.Runtime;
 using RimWorld;
 using Verse;
 using Highstorm = Cosmere.System.Roshar.GameCondition.Highstorm;
+using HighstormScheduler = Cosmere.System.Roshar.Comp.Map.HighstormScheduler;
 
 namespace Cosmere.Pickle.Steps;
 
@@ -119,6 +120,32 @@ public class GameConditionSteps {
             () => DescribeStorm(map, storm));
     }
 
+    /// <summary>Runs the clock until the highstorm reaches a share of the highest intensity this
+    /// season allows, which is the only ceiling a storm can actually be measured against.</summary>
+    /// <param name="ctx">The scenario's context.</param>
+    /// <param name="maxTicks">How many game ticks to spend waiting.</param>
+    /// <param name="share">The share of the season's ceiling the storm must reach, 0 to 1.</param>
+    /// <returns>A task that completes when the step finishes. A failed assertion faults it.</returns>
+    /// <remarks>A fixed threshold is a seasonal trap: Winter scales every storm by 0.5, so a wait
+    /// for 0.7 there waits out its whole budget on a storm already at its loudest.</remarks>
+    [When(
+        "I wait up to {int} ticks for the highstorm to reach {float} of the season's peak intensity",
+        TimeoutSeconds = WaitTimeoutSeconds)]
+    public async Task WaitForSeasonalShare(PickleContext ctx, int maxTicks, float share) {
+        Map map = RequireMap(ctx);
+        Highstorm storm = RequireHighstorm(ctx, map);
+        ctx.Require(share is > 0f and <= 1f, $"a share of the season's peak runs 0 to 1; got {share}");
+
+        float target = share * SeasonalCeiling(map);
+        bool reached = await AdvanceUntil(ctx, () => storm.CurrentIntensity >= target, maxTicks);
+
+        CosmereLookup.AssertThat(
+            ctx,
+            reached,
+            $"the highstorm should have reached {target:F2}, {share:F2} of this season's peak, within {maxTicks} ticks",
+            () => DescribeStorm(map, storm));
+    }
+
     /// <summary>Asserts the highstorm is in the part of its life that drives pawns to shelter.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Then("the highstorm is dangerous")]
@@ -137,6 +164,11 @@ public class GameConditionSteps {
         Map? map = Find.CurrentMap;
         ctx.Require(map != null, "no current map is loaded; a game condition needs one");
         return map!;
+    }
+
+    // The base curve peaks at 1, so the scheduler's seasonal multiplier is the storm's own ceiling.
+    private static float SeasonalCeiling(Map map) {
+        return map.GetComponent<HighstormScheduler>()?.SeasonalIntensity ?? 1f;
     }
 
     private static Highstorm RequireHighstorm(PickleContext ctx, Map map) {
@@ -192,6 +224,7 @@ public class GameConditionSteps {
             ? DescribeCondition(storm)
             : $"{DescribeCondition(storm)}, already over";
 
-        return $"intensity {storm.CurrentIntensity:F2}, dangerous={storm.IsDangerousPhase}, {running}";
+        return $"intensity {storm.CurrentIntensity:F2} of a seasonal ceiling of {SeasonalCeiling(map):F2}, " +
+               $"dangerous={storm.IsDangerousPhase}, {running}";
     }
 }

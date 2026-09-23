@@ -240,6 +240,20 @@ public class ConnectionSuiteSteps {
             "carry it off the cell this scenario reads");
     }
 
+    /// <summary>Takes a thing out of the colony's reach and stops its decay, so only this
+    /// scenario's own steps can move it.</summary>
+    /// <param name="ctx">The scenario's context.</param>
+    /// <param name="defName">The thing def in the cell.</param>
+    /// <param name="x">The cell's x coordinate.</param>
+    /// <param name="z">The cell's z coordinate.</param>
+    /// <remarks>The save runs unpaused, and a diamond spends half a point every rare tick - a
+    /// third of the figure a transfer scenario asserts. Decay is measured on its own elsewhere.</remarks>
+    [When("I put the {string} at \\({int}, {int}\\) beyond the colony and the clock")]
+    public void StillThing(PickleContext ctx, string defName, int x, int z) {
+        WithholdThing(ctx, defName, x, z);
+        RequireThingHolder(ctx, defName, x, z).drainRate = 0f;
+    }
+
     /// <summary>Asserts a thing holds every drop it has room for.</summary>
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The thing def in the cell.</param>

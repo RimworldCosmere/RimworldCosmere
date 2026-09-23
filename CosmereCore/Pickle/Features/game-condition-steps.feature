@@ -2,6 +2,11 @@
 @quickstart:TrueDesolationQuickstart @same-world
 Feature: game condition steps
 
+  # Storms are the subject here, so the clock stays running. What it must not carry in is a
+  # storm the storyteller started, which every scenario below would read as its own.
+  Background:
+    Given no storm is running
+
   Scenario: a condition starts, reads back, and ends early
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 2000 ticks
     Then game condition "Cosmere_Roshar_HighstormCondition" is active

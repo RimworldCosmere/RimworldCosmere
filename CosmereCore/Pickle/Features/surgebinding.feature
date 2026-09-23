@@ -3,9 +3,12 @@
 @timeout:600
 Feature: surgebinding
 
+  # Storm waits read against the season's ceiling: a flat 0.7 is out of reach in Winter.
+  # Pause only freezes the gaps between steps: the waits call DoSingleTick themselves.
   Background:
     Given I enable the shard "Honor"
     And no storm is running
+    And game speed is paused
 
   # The give step routes a Radiant order through TryAddRadiantOrder, so the Honor gate, the
   # rebond check and the bonded spren all run.
@@ -107,7 +110,7 @@ Feature: surgebinding
     And "Dabbid" is given hediff "Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather"
     Then "Dabbid" is exposed to the storm
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     Then "Dabbid" is exposed to the storm
     When I wait 300 ticks
     Then "Dabbid" has hediff "Cosmere_Roshar_Hediff_StormfathersRegard"
@@ -129,7 +132,7 @@ Feature: surgebinding
     When "Rlain" accepts the capstone "Cosmere_Roshar_Quest_BondStormfather"
     Then the capstone "Cosmere_Roshar_Quest_BondStormfather" is Ongoing
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 2000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     And I wait up to 3000 ticks for game condition "Cosmere_Roshar_HighstormCondition" to end
     And I wait up to 600 ticks for the capstone "Cosmere_Roshar_Quest_BondStormfather" to settle
     Then the capstone "Cosmere_Roshar_Quest_BondStormfather" is EndedSuccess
@@ -151,7 +154,7 @@ Feature: surgebinding
     When the capstone "Cosmere_Roshar_Quest_BondStormfather" is offered to "Roshone"
     And "Roshone" accepts the capstone "Cosmere_Roshar_Quest_BondStormfather"
     And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
-    And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
+    And I wait up to 2000 ticks for the highstorm to reach 0.7 of the season's peak intensity
     And "Roshone" is beaten down
     And I wait up to 600 ticks for the capstone "Cosmere_Roshar_Quest_BondStormfather" to settle
     Then the capstone "Cosmere_Roshar_Quest_BondStormfather" is EndedFailed

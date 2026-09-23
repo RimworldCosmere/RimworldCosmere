@@ -4,6 +4,11 @@
 @timeout:900
 Feature: allomancy
 
+  # A running colony hauls the loose metal the last scenario reads off the ground. Frozen, the
+  # only ticks that pass are the ones a wait step drives itself, which is what these burns need.
+  Background:
+    Given game speed is paused
+
   Scenario: a burning metal spends its reserve and hangs the effect its source declares
     Given I enable the shard "Preservation"
     And a colonist "Spook" exists
@@ -19,6 +24,22 @@ Feature: allomancy
     When "Spook" stops burning "Cosmere_Scadrial_Ability_Pewter"
     Then "Spook" is not burning "Cosmere_Scadrial_Ability_Pewter"
     And "Spook" has no hediff "Cosmere_Scadrial_Hediff_PewterBuff"
+
+  # Autocast seeds a pewter rule that puts the burn out while the pawn is undrafted. It used to
+  # release any burn it found, so a colonist who lit pewter by hand lost it inside sixty ticks.
+  @same-world
+  Scenario: autocast leaves a burn the colonist lit by hand alone
+    Given a colonist "Allrianne" exists
+    And I give "Allrianne" the gene "Cosmere_Scadrial_Gene_MistingPewter"
+    When I undraft "Allrianne"
+    And "Allrianne" gene "Cosmere_Scadrial_Gene_MistingPewter" is set to 0.5
+    And "Allrianne" starts burning "Cosmere_Scadrial_Ability_Pewter"
+    And I wait 180 ticks
+    Then autocast has passed over "Allrianne" without taking hold of "Cosmere_Scadrial_Ability_Pewter"
+    And "Allrianne" is burning "Cosmere_Scadrial_Ability_Pewter"
+    And "Allrianne" burn power for "Cosmere_Scadrial_Ability_Pewter" is 1
+    And "Allrianne" has hediff "Cosmere_Scadrial_Hediff_PewterBuff"
+    And "Allrianne" gene "Cosmere_Scadrial_Gene_MistingPewter" is below 0.5
 
   # Lighting a dry metal on purpose is the point. The gene has to be the thing that notices,
   # the way it does when a burn outlives its vial.

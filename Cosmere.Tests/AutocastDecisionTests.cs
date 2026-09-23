@@ -17,6 +17,7 @@ public class AutocastDecisionTests {
                 active: true,
                 triggersPass: false,
                 releaseOnStop: true,
+                autocastLit: true,
                 targetRequired: false
             )
         );
@@ -35,6 +36,7 @@ public class AutocastDecisionTests {
                 active: true,
                 triggersPass: false,
                 releaseOnStop: true,
+                autocastLit: true,
                 targetRequired: true
             )
         );
@@ -49,6 +51,7 @@ public class AutocastDecisionTests {
                 active: true,
                 triggersPass: false,
                 releaseOnStop: false,
+                autocastLit: true,
                 targetRequired: false
             )
         );
@@ -63,6 +66,7 @@ public class AutocastDecisionTests {
                 active: true,
                 triggersPass: true,
                 releaseOnStop: true,
+                autocastLit: true,
                 targetRequired: false
             )
         );
@@ -77,6 +81,7 @@ public class AutocastDecisionTests {
                 active: false,
                 triggersPass: true,
                 releaseOnStop: true,
+                autocastLit: false,
                 targetRequired: false
             )
         );
@@ -88,6 +93,7 @@ public class AutocastDecisionTests {
                 active: false,
                 triggersPass: true,
                 releaseOnStop: false,
+                autocastLit: false,
                 targetRequired: false
             )
         );
@@ -103,6 +109,7 @@ public class AutocastDecisionTests {
                 active: false,
                 triggersPass: true,
                 releaseOnStop: true,
+                autocastLit: false,
                 targetRequired: true
             )
         );
@@ -117,6 +124,72 @@ public class AutocastDecisionTests {
                 active: false,
                 triggersPass: false,
                 releaseOnStop: true,
+                autocastLit: false,
+                targetRequired: false
+            )
+        );
+    }
+
+    /// <summary>
+    ///     The bug in 992c4ad4: a seeded rule with a Drafted trigger put out a pewter burn the
+    ///     player had lit on an undrafted colonist. Autocast only releases what it started.
+    /// </summary>
+    [TestMethod]
+    public void PlayerLitAbilityIsLeftAloneWhenTriggersStop() {
+        Assert.AreEqual(
+            AutocastAction.None,
+            AutocastDecision.For(
+                toggleable: true,
+                active: true,
+                triggersPass: false,
+                releaseOnStop: true,
+                autocastLit: false,
+                targetRequired: false
+            )
+        );
+    }
+
+    [TestMethod]
+    public void PlayerLitAbilityIsNotCastAgainWhileTriggersPass() {
+        Assert.AreEqual(
+            AutocastAction.None,
+            AutocastDecision.For(
+                toggleable: true,
+                active: true,
+                triggersPass: true,
+                releaseOnStop: true,
+                autocastLit: false,
+                targetRequired: false
+            )
+        );
+    }
+
+    // nothing to turn off on a one-shot, so ownership cannot reach the release branch.
+    [TestMethod]
+    public void NonToggleableAbilityIsNeverTurnedOff() {
+        Assert.AreEqual(
+            AutocastAction.None,
+            AutocastDecision.For(
+                toggleable: false,
+                active: true,
+                triggersPass: false,
+                releaseOnStop: true,
+                autocastLit: true,
+                targetRequired: false
+            )
+        );
+    }
+
+    [TestMethod]
+    public void NonToggleableAbilityFiresAgainWhileTriggersPass() {
+        Assert.AreEqual(
+            AutocastAction.Cast,
+            AutocastDecision.For(
+                toggleable: false,
+                active: true,
+                triggersPass: true,
+                releaseOnStop: true,
+                autocastLit: true,
                 targetRequired: false
             )
         );

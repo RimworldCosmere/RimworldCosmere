@@ -7,6 +7,9 @@ Feature: core shard connection
   # A generated colonist rolls a shardworld xenotype, so nobody starts at nothing. Every
   # scenario pins the xenotype it needs and asserts a direction against a recorded baseline.
 
+  # The clock runs between steps in both modes, and every exact figure below survives it: only
+  # residence grows on a tick, and nothing turns residence on until the last scenario.
+
   # Pinned Scadrian, so Honor carries no ancestry and the total is the grant and nothing else.
   Scenario: the tiers land on the thresholds the math declares
     Given a colonist "Nomad" exists
@@ -100,13 +103,17 @@ Feature: core shard connection
     Then "Sazed" connection to the shard "Harmony" has risen
     And "Sazed" connection breakdown to the shard "Harmony" adds up
 
+  # The one scenario a tick can reach, so every reading here is a delta: from the world step on
+  # the tracker banks an hour of residence an hour, and one point of the scale takes 320 of them.
+
   # Moves the save onto Scadrial, because only a real shardworld naturalises anybody. Last in
   # the file for that reason: every scenario above wants the cross-world sentinel.
   @same-world
   Scenario: living somewhere long enough earns what being born there would have given
     Given a colonist "Sarene" exists
     And "Sarene" xenotype is "Cosmere_Roshar_Xenotype_Darkeyes"
-    # Pinned first: residence seeds from age on its first read, and only for a native.
+    # Pinned before the world: residence seeds from age on its first read and only for a native,
+    # and once the world is set the tracker's own hourly tick can be that read.
     And the save's world is "Scadrial"
     Then "Sarene" may not burn the god metal "Atium"
     When I record "Sarene" connection to the shard "Preservation"

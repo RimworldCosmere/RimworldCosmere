@@ -64,12 +64,12 @@ public sealed class AutocastRunner : GameComponent {
             // an ability that is off is nobody's, so whoever lights it next owns it.
             if (!active) rule.Holding = false;
 
-            // releases only a burn this rule lit; one the player lit stays lit.
             AutocastAction action = AutocastDecision.For(
                 toggleable,
                 active,
                 AllTriggersPass(pawn, rule),
-                rule.ToggleOffWhenInactive && rule.Holding,
+                rule.ToggleOffWhenInactive,
+                rule.Holding,
                 ability.def.targetRequired
             );
 

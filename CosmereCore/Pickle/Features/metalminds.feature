@@ -84,7 +84,7 @@ Feature: metalminds
 
   # A band answers to whoever filled it. A second pawn may carry it and still draw nothing.
   @same-world
-  Scenario: a metalmind keyed to one pawn still offers itself to a second
+  Scenario: a metalmind keyed to one pawn refuses a second
     Given a colonist "Camon" exists
     And a colonist "Dockson" exists
     And "Camon" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBand"

@@ -55,7 +55,10 @@ public sealed class AutocastRunner : GameComponent {
             }
 
             RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
-            if (ability == null) continue;
+            if (ability == null) {
+                rule.Holding = false;
+                continue;
+            }
 
             IToggleableAbility? sustained = ability as IToggleableAbility;
             bool toggleable = sustained?.IsToggleable ?? false;

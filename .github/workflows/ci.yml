@@ -76,8 +76,9 @@ jobs:
     name: Pickle suite
     needs: game-image
     runs-on: ubuntu-latest
-    # A frozen game has to fail in minutes. Healthy is ~15, and Pickle's watchdog fires inside this.
-    timeout-minutes: 40
+    # Above two attempts at PICKLE_RUN_TIMEOUT plus the image pull and staging, so the
+    # watchdog always trips first and the script still writes its verdict.
+    timeout-minutes: 45
     permissions:
       contents: read
       packages: read
@@ -122,6 +123,9 @@ jobs:
           CONFIG: ${{ runner.temp }}/config
           REPORTS: ${{ github.workspace }}/pickle-reports
           FLAKED: ${{ github.workspace }}/pickle-reports-x-server-death
+          # Two attempts must both finish inside timeout-minutes, or GitHub cancels the job
+          # and the always() report and artifact steps with it. A healthy run is ~15.
+          PICKLE_RUN_TIMEOUT: 15
         run: |
           for attempt in 1 2; do
             rc=0

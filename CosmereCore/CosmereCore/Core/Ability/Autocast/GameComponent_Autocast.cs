@@ -75,8 +75,5 @@ public sealed class GameComponent_Autocast : GameComponent {
         base.ExposeData();
         Scribe_Collections.Look(ref rulesByPawnId, "rulesByPawnId", LookMode.Value, LookMode.Deep);
         rulesByPawnId ??= [];
-        if (Scribe.mode == LoadSaveMode.PostLoadInit && rulesByPawnId == null) {
-            rulesByPawnId = [];
-        }
     }
 }

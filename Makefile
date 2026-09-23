@@ -18,7 +18,9 @@ COSMERE_LOG ?= /tmp/cosmere-run.log
 # gamecrate profile the Pickle suite runs under. INSTANCE gives a concurrent run its
 # own lock, saves and container, so several agents can run at once on one profile.
 PICKLE_PROFILE ?= cosmere
-PICKLE_INSTANCE ?= $(INSTANCE)
+
+# Never the bare profile: the suite would share saves and config with the one you play on.
+PICKLE_INSTANCE ?= $(if $(INSTANCE),$(INSTANCE),suite)
 
 # Pickle runs every mod that ships a Pickle/ dir, and rimworks.pickle ships 26 features of
 # its own. Without this the suite spends 15 minutes on other people's tests.

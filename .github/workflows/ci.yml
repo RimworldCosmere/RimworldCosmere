@@ -46,3 +46,112 @@ jobs:
 
       - name: Run tests
         run: dotnet test Cosmere.slnx --configuration Debug --no-build
+
+  # Same arrangement as RimWorks/Pickle: bake the game once, skip when the buildid has not moved.
+  # A fork PR has no Steam secrets and no packages:write, so it skips instead of failing on creds.
+  game-image:
+    name: RimWorld image
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image-ref: ${{ steps.image.outputs.image-ref }}
+    steps:
+      - name: Build the RimWorld game image
+        id: image
+        uses: RimWorks/steam-game-image-action@4062dbf182c73f34b59052a040f0564d63bfd566 # v3.1.0
+        with:
+          steam-username: ${{ secrets.STEAM_USERNAME }}
+          steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+          app-id: '294100'
+          # The version the mod compiles against.
+          branch: 'version-1.6.4633'
+          image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          skip-if-unchanged: 'true'
+
+  pickle:
+    name: Pickle suite
+    needs: game-image
+    runs-on: ubuntu-latest
+    # A frozen game has to fail in minutes. Healthy is ~15, and Pickle's watchdog fires inside this.
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Codegen is gitignored, same as the build job. `quick` is what `make pickle` depends on.
+      - name: Build the mods
+        run: make quick
+
+      - name: Log in to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      # pickle-run.sh wants a mods dir and a config dir. gamecrate builds both locally,
+      # and CI has no gamecrate, so build/stage-pickle-mods.sh does it instead.
+      - name: Stage the dependency mods
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: build/stage-pickle-mods.sh "${{ runner.temp }}/mods" "${{ runner.temp }}/config"
+
+      # One run over the whole suite: splitting per feature would hide cross-feature defects.
+      # Retries only a container whose X server died, never a scenario - see the branches below.
+      - name: Run the Pickle suite
+        env:
+          IMAGE_REF: ${{ needs.game-image.outputs.image-ref }}
+          MODS: ${{ runner.temp }}/mods
+          CONFIG: ${{ runner.temp }}/config
+          REPORTS: ${{ github.workspace }}/pickle-reports
+          FLAKED: ${{ github.workspace }}/pickle-reports-x-server-death
+        run: |
+          for attempt in 1 2; do
+            rc=0
+            build/pickle-run.sh "$IMAGE_REF" "$MODS" "$CONFIG" "$REPORTS" || rc=$?
+            if [ "$rc" = 0 ]; then
+              exit 0
+            fi
+            # 75 is the script's one retryable verdict: no report and a dead X server, read off
+            # both Player.log and the container log. Every other code, 2 included, fails here.
+            if [ "$rc" != 75 ]; then
+              exit 1
+            fi
+            if [ "$attempt" = 2 ]; then
+              echo "the X server died on both attempts - this is the runner, not the suite"
+              exit 1
+            fi
+            echo "::warning title=Pickle::the X server died before the game came up; retrying once"
+            mv "$REPORTS" "$FLAKED"
+          done
+
+      - name: Publish the scenario counts
+        if: always()
+        run: node build/pickle-report.mjs pickle-reports
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: pickle-report
+          path: |
+            pickle-reports/
+            pickle-reports-x-server-death/
+          if-no-files-found: warn

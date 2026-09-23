@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_PerpendicularityBlessing</defName>
+        <label>perpendicularity blessing</label>
+        <description>Pure Investiture flows through this person from an open perpendicularity. It feels like standing in a warm rain that soaks through skin and bone and something deeper. Wounds close. Exhaustion lifts. There is a sense of connection to something vast and brilliant, as if the Spiritual Realm itself is reaching through to mend what is broken.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>3</InjuryHealingFactor>
+                    <ImmunityGainSpeed>2</ImmunityGainSpeed>
+                    <IncomingDamageFactor>0.85</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef Name="Cosmere_StructureBase" Abstract="True" MayRequire="Ludeon.RimWorld.Ideology">
+        <category>Structure</category>
+        <impact>0</impact>
+        <allowSymbolsFromDeity>false</allowSymbolsFromDeity>
+        <symbolPackOverride>true</symbolPackOverride>
+    </MemeDef>
+</Defs>

@@ -1,0 +1,16 @@
+<Project>
+
+  <!-- Comment ceiling, enforced. Briefs asked for it across three tasks and it did not hold. -->
+  <Target Name="CheckCommentLength"
+          Condition="'$(MSBuildProjectName)' == 'Cosmere'"
+          BeforeTargets="Build"
+          Inputs="@(Compile)"
+          Outputs="$(MSBuildThisFileDirectory)obj/comment-length.stamp">
+    <Exec Command="&quot;$(MSBuildThisFileDirectory)build/check-comment-length.sh&quot; &quot;$(MSBuildThisFileDirectory)&quot;"
+          StandardOutputImportance="high"
+          IgnoreExitCode="false" />
+    <MakeDir Directories="$(MSBuildThisFileDirectory)obj" />
+    <Touch Files="$(MSBuildThisFileDirectory)obj/comment-length.stamp" AlwaysCreate="true" />
+  </Target>
+
+</Project>

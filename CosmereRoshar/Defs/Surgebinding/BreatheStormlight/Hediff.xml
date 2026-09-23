@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_BreatheStormlight</defName>
+        <label>breathing stormlight</label>
+        <description>Stormlight suffuses this person, leaking from their skin in wisps of luminous vapor. They feel it with every heartbeat, a warmth that mends torn flesh and quickens the body beyond its natural limits. The glow is faint but unmistakable, curling from the corners of the mouth and the edges of wounds.\n\nIt will not last. Stormlight always fades, seeping away like water through cracked stone.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.BreatheStormlight</hediffClass>
+    </HediffDef>
+</Defs>

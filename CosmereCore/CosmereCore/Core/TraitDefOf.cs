@@ -1,0 +1,18 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using RimWorld;
+
+namespace Cosmere.Core;
+
+[DefOf]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public static class TraitDefOf {
+    public static TraitDef Cosmere_Invested;
+
+    static TraitDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
+    }
+}

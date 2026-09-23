@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_Mists</defName>
+    <label>the mists</label>
+    <description>They come at night and settle, and the people who stay out in them are not always the same afterwards.</description>
+    <world>Scadrial</world>
+    <anyOfShards>
+      <li>Ruin</li>
+      <li>Preservation</li>
+      <li>Harmony</li>
+    </anyOfShards>
+    <listOrder>50</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+  <!-- No Shard requirement. The Ashmounts are Rashek's engineering, so the ash falls because of
+       what he built and stops when the Catacendre undoes it, whoever holds what. -->
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_Ashfall</defName>
+    <label>ashfall</label>
+    <description>The Ashmounts burn and the sky carries what they throw up. It settles on everything, and it has to be swept.</description>
+    <world>Scadrial</world>
+    <listOrder>60</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_PreservationBead</defName>
+    <label>Preservation's gifts</label>
+    <description>A bead of lerasium, very rarely, left where somebody will find it. Preservation was always careful with what little he could still spend.</description>
+    <world>Scadrial</world>
+    <anyOfShards><li>Preservation</li></anyOfShards>
+    <listOrder>70</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+</Defs>

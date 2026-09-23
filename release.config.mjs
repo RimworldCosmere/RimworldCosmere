@@ -1,4 +1,13 @@
-﻿/**
+﻿import { readFileSync } from 'node:fs';
+import { basename } from 'node:path';
+
+const publishedFileIds = JSON.parse(
+    readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
+);
+const descriptionHeader = readFileSync(new URL('./.github/README.header.md', import.meta.url), 'utf8');
+const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', import.meta.url), 'utf8');
+
+/**
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
@@ -15,44 +24,45 @@ export default {
             }
         ],
         [
-            "semantic-release-replace-plugin",
+            "semantic-release-steam",
             {
-                "replacements": [
+                "appId": "294100",
+                "outputReadme": true,
+                "assetDirNameTransform": modPath => [
+                    basename(modPath).replace(/^Cosmere/, '').toLowerCase(),
+                    'fallback',
+                ],
+                "branchTargets": {
+                    "main": "stable",
+                    "beta": "beta"
+                },
+                "descriptionHeader": descriptionHeader,
+                "descriptionFooter": descriptionFooter,
+                "assetBaseUrlTemplate": "https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/{branch}",
+                "mods": [
                     {
-                        "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
-                        "from": "Revision = \".*\";",
-                        "to": "Revision = \"${nextRelease.version}\";",
-                        "results": [
-                            {
-                                "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",
-                                "hasChanged": true,
-                                "numMatches": 1,
-                                "numReplacements": 1
-                            }
-                        ],
-                        "countMatches": true
+                        "name": "CosmereCore",
+                        "path": "CosmereCore",
+                        "workshopIds": publishedFileIds.CosmereCore,
                     },
                     {
-                        "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
-                        "from": "BuildTime = \".*\";",
-                        "to": "BuildTime = \"${(new Date()).toISOString()}\";",
-                        "results": [
-                            {
-                                "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",
-                                "hasChanged": true,
-                                "numMatches": 1,
-                                "numReplacements": 1
-                            }
-                        ],
-                        "countMatches": true
+                        "name": "CosmereScadrial",
+                        "path": "CosmereScadrial",
+                        "workshopIds": publishedFileIds.CosmereScadrial,
+                    },
+                    {
+                        "name": "CosmereRoshar",
+                        "path": "CosmereRoshar",
+                        "workshopIds": publishedFileIds.CosmereRoshar,
                     }
                 ]
             }
         ],
         [
-            "@semantic-release/git",
+            "./tools/semantic-release-betahub/index.mjs",
             {
-                "assets": ["CosmereFramework/CosmereFramework/BuildInfo.cs"]
+                "projectId": "pr-4628785616",
+                "branches": ["beta"]
             }
         ]
     ],

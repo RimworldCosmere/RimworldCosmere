@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <!-- A marker only. Quest.MakeRaw() leaves Quest.root null and vanilla UI reads it, so
+       every quest CosmereQuestBuilder makes points here. It is never run as a script. -->
+  <QuestScriptDef>
+    <defName>Cosmere_Quest_Root</defName>
+    <root Class="QuestNode_Sequence">
+      <nodes />
+    </root>
+  </QuestScriptDef>
+</Defs>

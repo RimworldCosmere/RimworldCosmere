@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.RadiantOrderDef Name="Cosmere_Roshar_RadiantOrder_{{defName order.name}}" ParentName="Cosmere_Roshar_RadiantOrder_Base">
+        <defName>{{defName order.name}}</defName>
+        <label>{{title order.name}}</label>
+        <description>{{order.description}}</description>
+        <gemstone>{{defName order.gemstone}}</gemstone>
+        <color>{{rgb order.color}}</color>
+        <surges>
+            {{#each order.surges}}
+            <li>{{defName this}}</li>
+            {{/each}}
+        </surges>
+        <abilities>
+            {{#each order.abilities}}
+            <li>{{this}}</li>
+            {{/each}}
+        </abilities>
+        <ideals>
+            {{#each order.ideals}}
+            <li>
+                <stormlightMax>{{StormlightMax}}</stormlightMax>
+                <label>{{title label}}</label>
+                <description>{{description}}</description>
+                <quotes>
+                    {{#each quotes}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </quotes>
+                <abilities>
+                    {{#each abilities}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </abilities>
+            </li>
+            {{/each}}
+        </ideals>
+        <sprenLabel>{{title order.sprenType}}</sprenLabel>
+        <sprenDescription>{{order.sprenDescription}}</sprenDescription>
+        <sprenTexturePath>Things/Pawn/Animal/Spren/{{defName order.sprenType}}</sprenTexturePath>
+        <sprenNamePool>
+            {{#each order.sprenNamePool}}
+            <li>{{this}}</li>
+            {{/each}}
+        </sprenNamePool>
+    </Cosmere.System.Roshar.Def.RadiantOrderDef>
+</Defs>

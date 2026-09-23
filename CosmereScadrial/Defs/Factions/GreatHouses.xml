@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- The great houses. Each is its own faction rather than instances of one def so a story beat
+       can name who is at the gates - the Well siege raids Venture and Cett by name. Every
+       scenario's ScenPart_FactionRelations lists all of them, which is what guarantees they
+       exist: FactionDef alone only makes a faction eligible for world generation, not certain. -->
+
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase" Name="Cosmere_Scadrial_GreatHouseBase" Abstract="True">
+    <pawnSingular>nobleman</pawnSingular>
+    <pawnsPlural>nobles</pawnsPlural>
+    <listOrderPriority>45</listOrderPriority>
+    <settlementGenerationWeight>1</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>High Lord</leaderTitle>
+    <leaderTitleFemale>High Lady</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <configurationListOrderPriority>45</configurationListOrderPriority>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.6</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.3</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
+    <!-- The skaa kind names itself and ignores the faction's set, so it stays skaa inside a
+         noble house. Every vanilla kind here takes the house's own xenotypeSet instead and
+         comes out noble, which is what keeps the councilmen and officers aristocratic. -->
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>18</Cosmere_Scadrial_PawnKind_Skaa>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>30</Cosmere_Scadrial_PawnKind_Skaa>
+          <Villager>4</Villager>
+          <Town_Guard>4</Town_Guard>
+          <Town_Councilman>2</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Town_Trader>1</Town_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Alpaca>3</Alpaca>
+        </carriers>
+        <guards>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Cosmere_Scadrial_PawnKind_Skaa>40</Cosmere_Scadrial_PawnKind_Skaa>
+          <Villager>6</Villager>
+          <Town_Guard>5</Town_Guard>
+          <Mercenary_Elite>3</Mercenary_Elite>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseVenture</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Venture</label>
+    <fixedName>House Venture</fixedName>
+    <description>The most powerful house in Luthadel, and the one least interested in pretending otherwise. Straff Venture keeps an army because the others keep armies, and keeps it larger because he intends to be the one still standing.</description>
+    <colorSpectrum>
+      <li>(0.55, 0.15, 0.15)</li>
+      <li>(0.75, 0.25, 0.25)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseElariel</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Elariel</label>
+    <fixedName>House Elariel</fixedName>
+    <description>Old money and older grudges. Elariel plays the court rather than the field, and has never needed to raise a banner to ruin a rival house.</description>
+    <colorSpectrum>
+      <li>(0.30, 0.25, 0.55)</li>
+      <li>(0.45, 0.40, 0.75)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseHasting</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Hasting</label>
+    <fixedName>House Hasting</fixedName>
+    <description>A house built on the canal trade, with a keep like a fortress because the family has always assumed it would one day need to be.</description>
+    <colorSpectrum>
+      <li>(0.20, 0.40, 0.45)</li>
+      <li>(0.30, 0.60, 0.65)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseLekal</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Lekal</label>
+    <fixedName>House Lekal</fixedName>
+    <description>Lekal have spent three generations a rung below the great houses and every one of those generations resenting it. They ally readily and betray on schedule.</description>
+    <colorSpectrum>
+      <li>(0.45, 0.30, 0.20)</li>
+      <li>(0.65, 0.45, 0.30)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseTekiel</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Tekiel</label>
+    <fixedName>House Tekiel</fixedName>
+    <description>Merchants first, nobles second, and quietly among the wealthiest in the city. Tekiel would rather buy a war than fight one.</description>
+    <colorSpectrum>
+      <li>(0.35, 0.45, 0.25)</li>
+      <li>(0.55, 0.65, 0.35)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseRenoux</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Renoux</label>
+    <fixedName>House Renoux</fixedName>
+    <description>A canal house out of Fellise, respectable and unremarkable, which is exactly what makes it useful to people who need a respectable and unremarkable name to stand behind.</description>
+    <colorSpectrum>
+      <li>(0.40, 0.35, 0.30)</li>
+      <li>(0.60, 0.55, 0.45)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseCett</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Cett</label>
+    <fixedName>House Cett</fixedName>
+    <description>Ashweather Cett rules a stretch of the Western Dominance through a mixture of taxation and menace, and sees no reason the arrangement should not extend to Luthadel.</description>
+    <colorSpectrum>
+      <li>(0.50, 0.40, 0.15)</li>
+      <li>(0.70, 0.55, 0.25)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+
+  <!-- The Luthadel koloss. Jastes Lekal bought them with counterfeit coin and marched them on the
+       city, and then they worked out what he had paid them in. They belong to nobody now.
+
+       Permanently hostile, and that is the whole reason they are their own faction rather than a
+       group maker on House Lekal: a house can be allied, and an allied house would send koloss as
+       friendly reinforcements. There is no such thing as a friendly koloss army. -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Koloss</defName>
+    <label>koloss</label>
+    <fixedName>the Luthadel koloss</fixedName>
+    <description>Twenty thousand of them, bought and then abandoned. They keep the loose formation somebody once put them in and follow the last order they were given, which was to march west.</description>
+    <permanentEnemy>true</permanentEnemy>
+    <canMakeRandomly>false</canMakeRandomly>
+    <!-- Whatever is at the front. Nobody leads a koloss army - FactionTick just needs a pawn to
+         name, and logs an error every time it runs without one. -->
+    <fixedLeaderKinds>
+      <li>Cosmere_Scadrial_PawnKind_KolossOvergrown</li>
+    </fixedLeaderKinds>
+    <leaderTitle>largest</leaderTitle>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <colorSpectrum>
+      <li>(0.35, 0.42, 0.50)</li>
+      <li>(0.50, 0.58, 0.66)</li>
+    </colorSpectrum>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Koloss>1.0</Cosmere_Scadrial_Xenotype_Koloss>
+      </xenotypeChances>
+    </xenotypeSet>
+    <pawnGroupMakers>
+      <!-- Its own maker, never mixed into the mercenary list above. ChoosePawnGenOptionsByPoints
+           weights each option through PawnWeightFactorByMostExpensivePawnCostFractionCurve, which
+           returns 0.01 below a fifth of the priciest kind present - so a 300-power koloss sharing
+           a list with a 60-power pirate erases the pirate at a hundred to one. Separate makers
+           means the storyteller picks a koloss raid or a mercenary raid, which is also what the
+           fiction wants: they do not march together.
+
+           Siege is disallowed because koloss do not operate mortars. -->
+      <li>
+        <kindDef>Combat</kindDef>
+        <!-- Stated, because PawnGroupMaker.commonality defaults to 100 and the mercenary maker
+             above takes that default. Setting this to 1 would have made a koloss raid one in a
+             hundred and one, which reads as the feature not working. -->
+        <commonality>100</commonality>
+        <disallowedStrategies>
+          <li>Siege</li>
+        </disallowedStrategies>
+        <options>
+          <Cosmere_Scadrial_PawnKind_KolossYoung>10</Cosmere_Scadrial_PawnKind_KolossYoung>
+          <Cosmere_Scadrial_PawnKind_KolossGrown>6</Cosmere_Scadrial_PawnKind_KolossGrown>
+          <Cosmere_Scadrial_PawnKind_KolossOvergrown>2</Cosmere_Scadrial_PawnKind_KolossOvergrown>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <!-- The base caps one pawn at 150 even at 1300 raid points, so an overgrown koloss at 300
+         could never be selected and the maker silently fell back to mercenaries. -->
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0, 60)</li>
+        <li>(70, 120)</li>
+        <li>(700, 320)</li>
+        <li>(1300, 500)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <!-- RaidAgeRestrictionWorker.ShouldApplyToKind is true for anything Humanlike, so without this
+         child koloss roll at two and a half percent from day fifteen. -->
+    <disallowedRaidAgeRestrictions>
+      <li>Children</li>
+    </disallowedRaidAgeRestrictions>
+    <!-- They do not build up to anything. A koloss army is as dangerous on day one as it will
+         ever be, and the only reason it is not raiding is that it has not arrived. -->
+    <raidCommonalityFromPointsCurve>
+      <points>
+        <li>(0, 0)</li>
+        <li>(400, 0.4)</li>
+        <li>(1200, 1)</li>
+      </points>
+    </raidCommonalityFromPointsCurve>
+  </FactionDef>
+
+  <!-- What Ruin sends: koloss, Inquisitors, and anyone whose spikes it got to. Permanently
+       hostile because it does not negotiate and cannot be bought. Named by every scenario's
+       relations block so it is guaranteed to exist wherever a beat raids with it. -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Ruin</defName>
+    <!-- Ruin took whoever it could spike. Inquisitors were made from skaa and
+         nobles both - Marsh was skaa - and the koloss from anyone at all. Skaa
+         lead only because there were vastly more of them to take. -->
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.55</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Noble>0.35</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
+    <label>Ruin's own</label>
+    <fixedName>Ruin's Own</fixedName>
+    <description>Koloss driven past their own hunger, Inquisitors who stopped pretending to serve the Ministry, and men and women with metal in them who answer something that is not their own thought. They do not raid for food or plunder. They arrive, and then they kill, and Ruin spends them without counting.</description>
+    <pawnSingular>thrall</pawnSingular>
+    <pawnsPlural>thralls</pawnsPlural>
+    <listOrderPriority>70</listOrderPriority>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <permanentEnemy>true</permanentEnemy>
+    <leaderTitle>Steel Inquisitor</leaderTitle>
+    <fixedLeaderKinds>
+      <li>PirateBoss</li>
+    </fixedLeaderKinds>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.25, 0.20, 0.20)</li>
+      <li>(0.45, 0.30, 0.28)</li>
+    </colorSpectrum>
+    <configurationListOrderPriority>70</configurationListOrderPriority>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Heavy>8</Mercenary_Heavy>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Pirate>10</Pirate>
+        </options>
+      </li>
+      <!-- Its own maker, never mixed into the mercenary list above. ChoosePawnGenOptionsByPoints
+           weights each option through PawnWeightFactorByMostExpensivePawnCostFractionCurve, which
+           returns 0.01 below a fifth of the priciest kind present - so a 300-power koloss sharing
+           a list with a 60-power pirate erases the pirate at a hundred to one. Separate makers
+           means the storyteller picks a koloss raid or a mercenary raid, which is also what the
+           fiction wants: they do not march together.
+
+           Siege is disallowed because koloss do not operate mortars. -->
+      <li>
+        <kindDef>Combat</kindDef>
+        <!-- Stated, because PawnGroupMaker.commonality defaults to 100 and the mercenary maker
+             above takes that default. Setting this to 1 would have made a koloss raid one in a
+             hundred and one, which reads as the feature not working. -->
+        <commonality>100</commonality>
+        <disallowedStrategies>
+          <li>Siege</li>
+        </disallowedStrategies>
+        <options>
+          <Cosmere_Scadrial_PawnKind_KolossYoung>10</Cosmere_Scadrial_PawnKind_KolossYoung>
+          <Cosmere_Scadrial_PawnKind_KolossGrown>6</Cosmere_Scadrial_PawnKind_KolossGrown>
+          <Cosmere_Scadrial_PawnKind_KolossOvergrown>2</Cosmere_Scadrial_PawnKind_KolossOvergrown>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <!-- The base caps one pawn at 150 even at 1300 raid points, so an overgrown koloss at 300
+         could never be selected and the maker silently fell back to mercenaries. -->
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0, 60)</li>
+        <li>(70, 120)</li>
+        <li>(700, 320)</li>
+        <li>(1300, 500)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <!-- RaidAgeRestrictionWorker.ShouldApplyToKind is true for anything Humanlike, so without this
+         child koloss roll at two and a half percent from day fifteen. -->
+    <disallowedRaidAgeRestrictions>
+      <li>Children</li>
+    </disallowedRaidAgeRestrictions>
+    <!-- Ruin had none, so from the moment a scenario's CreateFactionAction fires it raided at full
+         weight at every point level. Shaped like vanilla Mechanoid's: nothing early, climbing as
+         the colony becomes worth destroying. -->
+    <raidCommonalityFromPointsCurve>
+      <points>
+        <li>(0, 0)</li>
+        <li>(300, 0)</li>
+        <li>(800, 0.6)</li>
+        <li>(2000, 1)</li>
+      </points>
+    </raidCommonalityFromPointsCurve>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Houses that come out the other side of the Catacendre. Two of them are the crew's own
+       descendants, which is the joke and also the point: the people who broke the empire ended
+       up with the thing they broke it over. -->
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseErikell</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Erikell</label>
+    <fixedName>House Erikell</fixedName>
+    <description>Survived the Collapse by being useful to whoever was winning and by never being important enough to burn. Three hundred years later that is still the house strategy, and it is still working.</description>
+    <colorSpectrum>
+      <li>(0.40, 0.45, 0.25)</li>
+      <li>(0.58, 0.65, 0.38)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseInnate</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Innate</label>
+    <fixedName>House Innate</fixedName>
+    <description>Politics rather than plantations. Innate went into the governance of the Basin early and has stayed there, and when Elendel needs somebody to stand up and be reasonable about a crisis it is usually an Innate doing the standing.</description>
+    <colorSpectrum>
+      <li>(0.28, 0.38, 0.52)</li>
+      <li>(0.42, 0.56, 0.72)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseDemoux</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Demoux</label>
+    <fixedName>House Demoux</fixedName>
+    <description>Descended from a skaa soldier who followed the Survivor and then followed the Ascendant Warrior, and was written down doing it. Being founded by somebody the histories are unambiguous about has been worth more to this house than land ever was.</description>
+    <colorSpectrum>
+      <li>(0.45, 0.32, 0.28)</li>
+      <li>(0.65, 0.48, 0.40)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+  <FactionDef ParentName="Cosmere_Scadrial_GreatHouseBase">
+    <defName>Cosmere_Scadrial_Faction_HouseHammondess</defName>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>1.0</Cosmere_Scadrial_Xenotype_Noble>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <label>House Hammondess</label>
+    <fixedName>House Hammondess</fixedName>
+    <description>The line of a thug who liked arguing philosophy more than hitting people, and who lived long enough to do both at length. His descendants have kept the arguing and mostly given up the other thing.</description>
+    <colorSpectrum>
+      <li>(0.50, 0.42, 0.22)</li>
+      <li>(0.70, 0.60, 0.34)</li>
+    </colorSpectrum>
+  </FactionDef>
+
+</Defs>

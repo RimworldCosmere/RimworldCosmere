@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_MetallicArts</defName>
+		<label>metallic arts</label>
+		<tab>Cosmere</tab>
+		<description>The arcane foundation of Scadrial’s power. This research unlocks the framework for all Metallic Arts—Allomancy, Feruchemy, and Hemalurgy—granting colonists the potential to tap into Investiture through metal.</description>
+		<baseCost>100</baseCost>
+		<tags>
+			<li>ClassicStart</li>
+		</tags>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>0.00</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;the Metallic Arts</li>
+	      <li>subject_story-&gt;catalogued sixteen metals and the argument about the sixteenth</li>
+	      <li>subject_story-&gt;wrote the primer that every later scholar of the Arts complained about and used</li>
+	      <li>subject_story-&gt;spent a life on the question of why it is metal at all</li>
+	      <li>subject_gerund-&gt;studying the Metallic Arts</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Allomancy</defName>
+		<label>allomancy</label>
+		<tab>Cosmere</tab>
+		<description>Harness the power of metal to enhance the body and mind. Allomancers consume metal vials to unlock supernatural abilities such as strength, speed, and influence over others. This research enables the use of Allomantic genes, abilities, and resources.</description>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>0.00</researchViewY>
+		<prerequisites>
+            <li>Cosmere_Scadrial_MetallicArts</li>
+        </prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;Allomancy</li>
+	      <li>subject_story-&gt;burned a metal for the first time and wrote down the exact hour</li>
+	      <li>subject_story-&gt;tested every metal on themselves and recorded the ones that hurt</li>
+	      <li>subject_story-&gt;proved which powers are which, using nothing but patience and bruises</li>
+	      <li>subject_gerund-&gt;studying Allomancy</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Feruchemy</defName>
+		<label>feruchemy</label>
+		<tab>Cosmere</tab>
+		<description>Master the art of balance through storage and retrieval. Feruchemists store their own attributes—such as health, speed, and senses—within metal and draw upon them when needed. Unlocks Feruchemical mechanics, metalminds, and corresponding genetics.</description>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_MetallicArts</li>
+		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;Feruchemy</li>
+	      <li>subject_story-&gt;kept a metalmind ledger for sixty years and never lost a day to it</li>
+	      <li>subject_story-&gt;worked out the exact price of storing health, and paid it deliberately</li>
+	      <li>subject_story-&gt;explained the balance of Feruchemy to a room that did not want to hear it</li>
+	      <li>subject_gerund-&gt;studying Feruchemy</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Compounding</defName>
+		<label>compounding</label>
+		<tab>Cosmere</tab>
+		<description>Burn a metalmind's own metal to draw out what was stored within it, magnified far beyond what was put in. Compounding demands both arts at once, and a metalmind carried inside the body where Allomancy can reach it.</description>
+		<baseCost>1400</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_Feruchemy</li>
+			<li>Cosmere_Scadrial_Allomancy</li>
+		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;compounding</li>
+	      <li>subject_story-&gt;found the loophole between the two Arts and understood what it cost</li>
+	      <li>subject_story-&gt;wrote out the compounding ratios and then hid the pages</li>
+	      <li>subject_story-&gt;proved that the balance can be cheated, and was afraid of the proof</li>
+	      <li>subject_gerund-&gt;compounding metals</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Hemalurgy</defName>
+		<label>hemalurgy</label>
+		<tab>Cosmere</tab>
+		<description>The darkest of the Metallic Arts. Hemalurgy transfers power from one being to another through the violent act of spiking. This research unveils forbidden knowledge: how to craft and implant hemalurgic spikes, and the means to extract abilities - at a cost.</description>
+		<baseCost>1200</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>1.40</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_MetallicArts</li>
+		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;Hemalurgy</li>
+	      <li>subject_story-&gt;studied the third Art and could not make the notes sound clean</li>
+	      <li>subject_story-&gt;documented what a spike takes and what it never gives back</li>
+	      <li>subject_story-&gt;wrote the only honest account of Hemalurgy and burned two drafts first</li>
+	      <li>subject_gerund-&gt;studying Hemalurgy</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+</Defs>

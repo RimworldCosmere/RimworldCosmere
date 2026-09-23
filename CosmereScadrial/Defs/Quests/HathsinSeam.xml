@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Quest.CosmereQuestDef>
+        <defName>Cosmere_Scadrial_Quest_HathsinSeam</defName>
+        <label>Crystal in the Deep</label>
+        <description>A survivor of the Pits of Hathsin has come to the colony, palms scarred through to bone from years spent breaking crystal free of the stone. He remembers a seam the Ministry never found, buried past where the obligators cared to dig. He has marked it on a map and asks nothing for it.\n\nHe was wrong about one thing. The Ministry found it, and left men on it.\n\nTake the seam and cut it out. Roughly one cut in ten frees a bead; the rest is worthless crystal. Work it until there is nothing left worth swinging a pick at, and what you carry out is yours.</description>
+
+        <kind>Repeatable</kind>
+        <subject>Colony</subject>
+        <eras>
+            <li>Cosmere_Scadrial_Era_PreCatacendre</li>
+        </eras>
+
+        <targetFaction>Cosmere_Scadrial_Faction_FinalEmpireNPC</targetFaction>
+
+        <selectionWeight>0.6</selectionWeight>
+        <expireAfterDays>12</expireAfterDays>
+        <cooldownDays>30</cooldownDays>
+        <challengeRating>2</challengeRating>
+        <minColonists>3</minColonists>
+
+        <stages>
+            <li>
+                <key>travel</key>
+                <descriptionKey>CS_Quest_Hathsin_Stage_Travel</descriptionKey>
+                <objective Class="Cosmere.Core.Quest.Objective.TravelToSiteObjective">
+                    <sitePart>PreciousLump</sitePart>
+                    <extraSiteParts>
+                        <li>Cosmere_Scadrial_SitePart_MinistryGarrison</li>
+                    </extraSiteParts>
+                    <preciousLumpResources>MineableAtium</preciousLumpResources>
+                    <siteLabelKey>CS_Quest_Hathsin_Site</siteLabelKey>
+                    <minTiles>10</minTiles>
+                    <maxTiles>22</maxTiles>
+                    <threatPoints>320</threatPoints>
+                    <!-- A mine-out objective can never finish on a site whose map regenerates,
+                         because leaving puts the ore back. -->
+                    <persistent>true</persistent>
+                </objective>
+            </li>
+            <li>
+                <key>carry</key>
+                <descriptionKey>CS_Quest_Hathsin_Stage_Carry</descriptionKey>
+                <objective Class="Cosmere.Core.Quest.Objective.MineOutSiteObjective">
+                    <mineable>MineableAtium</mineable>
+                    <fraction>0.85</fraction>
+                </objective>
+            </li>
+        </stages>
+
+        <rewards>
+            <li Class="Cosmere.Core.Quest.Reward.GodMetalReward">
+                <metal>Atium</metal>
+                <countMin>2</countMin>
+                <countMax>8</countMax>
+                <nearColonist>true</nearColonist>
+            </li>
+            <li Class="Cosmere.Core.Quest.Reward.FlagReward">
+                <flag>HathsinLead</flag>
+            </li>
+        </rewards>
+
+        <onFailure Class="Cosmere.Core.Quest.Outcome.NeverBurns" />
+    </Cosmere.Core.Quest.CosmereQuestDef>
+</Defs>

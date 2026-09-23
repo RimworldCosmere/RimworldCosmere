@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[defName="MentalBreakThreshold"]</xpath>
+        <value>
+            <parts>
+                <li Class="Cosmere.System.Scadrial.StatPart.MemoryLoad" />
+            </parts>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/StatDef[defName="MentalBreakThreshold"]/cacheable</xpath>
+        <value>
+            <cacheable>false</cacheable>
+        </value>
+    </Operation>
+</Patch>

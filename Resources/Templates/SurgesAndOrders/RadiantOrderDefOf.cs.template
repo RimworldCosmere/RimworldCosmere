@@ -1,0 +1,22 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using Cosmere.System.Roshar.Def;
+using RimWorld;
+
+namespace Cosmere.System.Roshar;
+
+[DefOf]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public static class RadiantOrderDefOf {        
+    {{#each orders }}
+    [MayRequire("Cosmere.Roshar")]
+    public static RadiantOrderDef {{defName name}};
+    {{/each}}
+
+    static RadiantOrderDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RadiantOrderDefOf));
+    }
+}

@@ -1,0 +1,29 @@
+using Verse;
+
+namespace Cosmere.Core.ScenarioPart.Action;
+
+public class RemoveGeneAction : ProgressionAction {
+    public string gene = string.Empty;
+    public string pawnName = string.Empty;
+
+    public override void Execute(GameComponent_ScenarioProgression comp) {
+        Pawn? pawn = comp.FindPawnByName(pawnName);
+        if (pawn == null) {
+            Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for RemoveGene");
+            return;
+        }
+
+        GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(gene);
+        if (geneDef == null) {
+            Log.Warn($"ScenarioProgression: Gene '{gene}' not found");
+            return;
+        }
+
+        if (pawn.genes == null) return;
+
+        Verse.Gene? activeGene = pawn.genes.GetGene(geneDef);
+        if (activeGene != null) {
+            pawn.genes.RemoveGene(activeGene);
+        }
+    }
+}

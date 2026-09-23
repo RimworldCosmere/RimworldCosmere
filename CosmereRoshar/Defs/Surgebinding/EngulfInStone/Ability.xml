@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_EngulfInStone</defName>
+        <label>Engulf in Stone</label>
+        <description>Command stone to rise and swallow a target whole. Doors, furniture, walls, it does not matter. The Surge of Tension draws rock up and around the object until nothing remains but solid granite, as if it had always been there. You can raise a wall from bare ground just as easily. The stone answers, and the world reshapes itself.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Tension.EngulfInStone</abilityClass>
+        <beuPerTick>10</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <hostile>false</hostile>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>10</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetLocations>true</canTargetLocations>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

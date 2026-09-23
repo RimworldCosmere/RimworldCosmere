@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <LetterDef ParentName="PositiveEvent">
+        <defName>Cosmere_Roshar_ChooseRadiantOrder</defName>
+        <letterClass>Cosmere.System.Roshar.LetterArrive.ChooseOrder</letterClass>
+    </LetterDef>
+
+    <LetterDef>
+        <defName>Cosmere_Roshar_Letter_BondsmithCalling</defName>
+        <letterClass>Cosmere.System.Roshar.LetterArrive.BondsmithCallingLetter</letterClass>
+        <color>(0.92, 0.79, 0.40)</color>
+        <flashColor>(0.92, 0.79, 0.40)</flashColor>
+        <bounce>true</bounce>
+        <flashInterval>90</flashInterval>
+    </LetterDef>
+
+    <LetterDef>
+        <defName>Cosmere_Roshar_Letter_SpeakOath</defName>
+        <letterClass>Cosmere.System.Roshar.LetterArrive.SpeakOath</letterClass>
+        <color>(0.2, 0.6, 1.0)</color>
+        <flashColor>(0.2, 0.6, 1.0)</flashColor>
+        <bounce>true</bounce>
+        <flashInterval>90</flashInterval>
+    </LetterDef>
+</Defs>

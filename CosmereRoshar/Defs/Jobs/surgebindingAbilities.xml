@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_Roshar_Job_CastSurgebindingAbilityAtTarget</defName>
+        <driverClass>Cosmere.System.Roshar.JobDriver.CastSurgebindingAbilityAtTarget</driverClass>
+        <reportString>Casting surgebinding ability on TargetA.</reportString>
+        <suspendable>true</suspendable>
+    </JobDef>
+    <JobDef>
+        <defName>Cosmere_Roshar_Job_CastInstant</defName>
+        <driverClass>Cosmere.System.Roshar.JobDriver.CastInstant</driverClass>
+        <reportString>Casting surgebinding ability.</reportString>
+        <suspendable>false</suspendable>
+    </JobDef>
+    <JobDef>
+        <defName>Cosmere_Roshar_Job_MaintainSurgebindingTarget</defName>
+        <driverClass>Cosmere.System.Roshar.JobDriver.MaintainSurgebindingTarget</driverClass>
+        <reportString>Maintaining surgebinding effect on TargetA.</reportString>
+        <suspendable>true</suspendable>
+    </JobDef>
+</Defs>

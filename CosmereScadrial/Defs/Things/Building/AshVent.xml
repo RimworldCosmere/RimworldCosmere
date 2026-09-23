@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <ThingDef ParentName="BuildingNaturalBase">
+        <defName>Cosmere_Scadrial_Thing_AshVent</defName>
+        <label>ash vent</label>
+        <description>A crack in the rock where the mountain breathes out. The Ashmounts themselves are a long way off, but the ground between here and there is not solid, and what they push up finds its way to the surface wherever it can. The stone around the opening is warm to the touch and the air above it will not hold still.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <texPath>Things/Building/Natural/AshVent</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>Transparent</shaderType>
+            <drawSize>(4,4)</drawSize>
+        </graphicData>
+        <uiIconScale>0.5</uiIconScale>
+        <altitudeLayer>Floor</altitudeLayer>
+        <rotatable>false</rotatable>
+        <destroyable>false</destroyable>
+        <useHitPoints>false</useHitPoints>
+        <tickerType>Normal</tickerType>
+        <size>(2,2)</size>
+        <neverOverlapFloors>true</neverOverlapFloors>
+        <blockPlants>true</blockPlants>
+        <building>
+            <isEdifice>false</isEdifice>
+            <claimable>false</claimable>
+            <deconstructible>false</deconstructible>
+        </building>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshVent">
+                <millimetresPerDay>140</millimetresPerDay>
+                <skew>0.55</skew>
+                <!-- Cells past its own 2x2 that the vent thins back in. The drift still peaks
+                     against the mouth; this only stops it closing over the top. -->
+                <clearRadius>3</clearRadius>
+                <!-- Per vent, so the six on a mount-adjacent tile throw six times as often as a
+                     lone one out at the belt's edge. -->
+                <throwsPerDay>0.5</throwsPerDay>
+                <!-- The comp's own default, stated because it is the number Aaron tuned to. -->
+                <lumpsPerThrow>1</lumpsPerThrow>
+                <!-- Inside the plume, not past it. Out here the vent's own fall is a fifteenth of
+                     what lands on its mouth, which is the days the player has to come and look. -->
+                <throwRadius>6</throwRadius>
+                <metals>
+                    <li>Cadmium</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Duralumin</li>
+                </metals>
+            </li>
+            <li Class="Cosmere.System.Scadrial.Comp.Thing.CompProperties_AshGas">
+                <!-- Cells past the 2x2 mouth the gas still reaches. The gain and recede crossover
+                     sits about three quarters out, so the last ring or two is already relief. -->
+                <radius>5</radius>
+                <!-- Raw exposure on the mouth itself. The severity rate belongs to AshLungMath;
+                     move this and the hediff's whole stage timeline moves with it. -->
+                <exposureAtMouth>1</exposureAtMouth>
+            </li>
+            <li Class="CompProperties_HeatPusher">
+                <!-- Outdoors a heat push is a no-op, so open ground never warms and this only
+                     bites once somebody roofs the vent in. Then the room cooks. -->
+                <heatPerSecond>30</heatPerSecond>
+                <heatPushMaxTemperature>100</heatPushMaxTemperature>
+            </li>
+        </comps>
+    </ThingDef>
+
+</Defs>

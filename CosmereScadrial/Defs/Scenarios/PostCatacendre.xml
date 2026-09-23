@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <ScenarioDef Name="Cosmere_PostCatacendre" ParentName="ScenarioBase">
-    <defName>Cosmere_Scadrial_PostCatacendre</defName>
-    <label>Cosmere - Scadrial: Post-Catacendre</label>
+    <defName>Cosmere_Scadrial_Scenario_PostCatacendre</defName>
+    <label>Cosmere - Scadrial - Post-Catacendre</label>
     <description>After the Catacendre, the old world has ended. Harmony watches over a new Scadrial. You are Scadrian settlers and Terris scholars forging a fresh future among the stars and storms.</description>
     <scenario>
       <summary>Rebuilders of a new world shaped by Harmony.</summary>
       <playerFaction>
         <def>PlayerFaction</def>
-        <factionDef>PlayerColony</factionDef>
+        <factionDef>Cosmere_Scadrial_Faction_NewScadrial</factionDef>
       </playerFaction>
       <parts>
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
@@ -77,6 +77,33 @@
           <count>250</count>
         </li>
 
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_PostCatacendre</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <!-- The houses that came through. The four that did not are still here at world
+                 generation and get retired twenty days in, once the ledger is finished. -->
+            <Cosmere_Scadrial_Faction_HouseLadrian>20</Cosmere_Scadrial_Faction_HouseLadrian>
+            <Cosmere_Scadrial_Faction_HouseHasting>0</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>20</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>0</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseVenture>-40</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>-40</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseLekal>-40</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseRenoux>0</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
+            <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_Elendel>40</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>
@@ -87,9 +114,12 @@
       </parts>
     </scenario>
     <modExtensions>
-      <li Class="CosmereCore.DefModExtension.Shards">
+      <li Class="Cosmere.Core.DefModExtension.Shards">
         <shards><li>Harmony</li></shards>
         <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PostCatacendre</era>
       </li>
     </modExtensions>
   </ScenarioDef>

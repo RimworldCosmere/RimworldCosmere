@@ -1,0 +1,7 @@
+*.pdb
+*.xcf
+Assets
+.gitignore
+.assetbundler.toml
+README.template.md
+order_colors.md

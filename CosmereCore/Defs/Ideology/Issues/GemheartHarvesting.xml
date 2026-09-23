@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: GEMHEART HARVESTING ========== -->
+    <!-- Attitudes toward harvesting gemhearts from greatshells -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_GemheartHarvesting</defName>
+        <label>gemheart harvesting</label>
+        <iconPath>UI/Ideology/Cosmere/GemheartHarvesting</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HarvestedGemheart</defName>
+        <label>harvested a gemheart</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Sacred Hunt: Traditional Rosharan view -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gemheart_SacredHunt</defName>
+        <issue>Cosmere_GemheartHarvesting</issue>
+        <label>sacred hunt</label>
+        <description>The chasmfiend hunt is a test of courage and skill. To claim a gemheart is to prove one's worth before the Almighty.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_HarvestedGemheart</eventDef>
+                <thought>Cosmere_HarvestedGemheart_SacredHunt</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_HarvestedGemheart</eventDef>
+                <thought>Cosmere_KnowHarvestedGemheart_SacredHunt</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Necessary Resource: Practical view -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gemheart_NecessaryResource</defName>
+        <issue>Cosmere_GemheartHarvesting</issue>
+        <label>necessary resource</label>
+        <description>Greatshells are dangerous predators. Harvesting their gemhearts provides valuable resources for our survival.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Survivorism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_HarvestedGemheart</eventDef>
+                <thought>Cosmere_HarvestedGemheart_NecessaryResource</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Troubling: Stone Shamanism, Parshendi -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gemheart_Troubling</defName>
+        <issue>Cosmere_GemheartHarvesting</issue>
+        <label>troubling</label>
+        <description>The greatshells are living creatures of Roshar. Killing them for their gemhearts troubles the natural order.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_HarvestedGemheart</eventDef>
+                <thought>Cosmere_HarvestedGemheart_Troubling</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Unknown: Scadrial religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gemheart_Unknown</defName>
+        <issue>Cosmere_GemheartHarvesting</issue>
+        <label>unknown practice</label>
+        <description>These strange creatures with gems in their bodies are foreign to our traditions.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HarvestedGemheart_SacredHunt</defName>
+        <durationDays>10</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>victorious hunt</label>
+                <description>I claimed a gemheart from a mighty beast. The Almighty has judged me worthy.</description>
+                <baseMoodEffect>10</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowHarvestedGemheart_SacredHunt</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>30</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>gemheart hunter</label>
+                <baseOpinionOffset>15</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HarvestedGemheart_NecessaryResource</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>gathered resources</label>
+                <description>The gemheart will serve our needs. A practical harvest.</description>
+                <baseMoodEffect>3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HarvestedGemheart_Troubling</defName>
+        <durationDays>5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>killed greatshell</label>
+                <description>We killed a greatshell for its gemheart. These ancient creatures deserve better.</description>
+                <baseMoodEffect>-4</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

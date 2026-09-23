@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- FABRIALS WORKBENCH-->
+    <WorkGiverDef>
+        <defName>Cosmere_Roshar_DoBillsFabrial</defName>
+        <label>make fabrial</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>90</priorityInType>
+        <fixedBillGiverDefs>
+            <li>Cosmere_Roshar_TableFabrials</li>
+        </fixedBillGiverDefs>
+        <verb>stonecut</verb>
+        <gerund>making fabrial at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+
+    <ThingDef ParentName="Cosmere_Core_Table_GemCutter">
+        <defName>Cosmere_Roshar_TableFabrials</defName>
+        <label>fabrial workbench</label>
+        <description>A work station to create fabrials.</description>
+        <costStuffCount>75</costStuffCount>
+        <costList>
+            <Steel>30</Steel>
+        </costList>
+        <stuffCategories>
+            <li>Stony</li>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <statBases>
+            <WorkToBuild>2500</WorkToBuild>
+            <Cleanliness>-3</Cleanliness>
+        </statBases>
+        <uiOrder>2303</uiOrder>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_Research_SprenTrapping</li>
+        </researchPrerequisites>
+    </ThingDef>
+</Defs>

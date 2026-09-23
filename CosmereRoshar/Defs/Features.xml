@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_Highstorms</defName>
+    <label>highstorms</label>
+    <description>Storms out of the east strong enough to hurl boulders, and the Stormlight they leave behind in every gem they pass over.</description>
+    <world>Roshar</world>
+    <anyOfShards><li>Honor</li></anyOfShards>
+    <listOrder>10</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_StormlightNetwork</defName>
+    <label>Stormlight infrastructure</label>
+    <description>Spheres and gems holding Stormlight, and the lamps and fabrials that draw on them.</description>
+    <world>Roshar</world>
+    <anyOfShards><li>Honor</li></anyOfShards>
+    <listOrder>20</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_Spren</defName>
+    <label>spren</label>
+    <description>Living bits of Investiture that gather where the thing they are drawn to is happening - flame, fear, rot, joy.</description>
+    <world>Roshar</world>
+    <anyOfShards>
+      <li>Honor</li>
+      <li>Cultivation</li>
+    </anyOfShards>
+    <listOrder>30</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+  <Cosmere.Core.Def.CosmereFeatureDef>
+    <defName>Cosmere_Feature_Nightwatcher</defName>
+    <label>the Nightwatcher</label>
+    <description>The valley, and what waits in it. She grants a boon and takes a curse, and does not negotiate about which.</description>
+    <world>Roshar</world>
+    <anyOfShards><li>Cultivation</li></anyOfShards>
+    <listOrder>40</listOrder>
+  </Cosmere.Core.Def.CosmereFeatureDef>
+
+</Defs>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<RecipeDef>
+		<defName>Cosmere_Scadrial_Recipe_ImplantMetalmind</defName>
+		<label>implant metalmind</label>
+		<description>Graft a metalmind beneath the skin, binding it to the recipient's body. The Feruchemist will feel the metal as an extension of themselves, able to store and tap its reserves without the risk of loss.</description>
+		<workerClass>Cosmere.System.Scadrial.Feruchemy.RecipeWorker.ImplantMetalmind</workerClass>
+		<jobString>Implanting metalmind.</jobString>
+		<workAmount>2500</workAmount>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>2</workSkillLearnFactor>
+		<targetsBodyPart>true</targetsBodyPart>
+		<anesthetize>true</anesthetize>
+		<surgerySuccessChanceFactor>0.95</surgerySuccessChanceFactor>
+		<deathOnFailedSurgeryChance>0.02</deathOnFailedSurgeryChance>
+		<skillRequirements>
+			<Medicine>4</Medicine>
+		</skillRequirements>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Cosmere_Scadrial_Thing_MetalmindImplant</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<categories>
+						<li>Medicine</li>
+					</categories>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Cosmere_Scadrial_Thing_MetalmindImplant</li>
+			</thingDefs>
+			<categories>
+				<li>Medicine</li>
+			</categories>
+		</fixedIngredientFilter>
+		<researchPrerequisites>
+			<li>Cosmere_Scadrial_Feruchemy</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>Human</li>
+		</recipeUsers>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>Cosmere_Scadrial_Recipe_RemoveMetalmind</defName>
+		<label>remove implanted metalmind</label>
+		<description>Extract an implanted metalmind from beneath the skin. The procedure requires care to avoid damaging the surrounding tissue, but the metalmind can be recovered intact.</description>
+		<workerClass>Cosmere.System.Scadrial.Feruchemy.RecipeWorker.RemoveMetalmind</workerClass>
+		<jobString>Removing implanted metalmind.</jobString>
+		<workAmount>2000</workAmount>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>2</workSkillLearnFactor>
+		<targetsBodyPart>true</targetsBodyPart>
+		<anesthetize>true</anesthetize>
+		<surgerySuccessChanceFactor>0.90</surgerySuccessChanceFactor>
+		<deathOnFailedSurgeryChance>0.02</deathOnFailedSurgeryChance>
+		<skillRequirements>
+			<Medicine>4</Medicine>
+		</skillRequirements>
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Medicine</li>
+					</categories>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Medicine</li>
+			</categories>
+		</fixedIngredientFilter>
+		<researchPrerequisites>
+			<li>Cosmere_Scadrial_Feruchemy</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>Human</li>
+		</recipeUsers>
+	</RecipeDef>
+</Defs>

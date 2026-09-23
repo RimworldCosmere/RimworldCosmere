@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="CosmereMoteAllomancyAura">
+        <defName>Cosmere_Scadrial_Mote_ElectrumShimmer</defName>
+        <label>electrum shimmer</label>
+        <graphicData>
+            <drawSize>2.5</drawSize>
+            <shaderParameters>
+                <_PulseTime>12</_PulseTime>
+                <_Speed>-1</_Speed>
+                <_TrailLength>0.04</_TrailLength>
+                <_Color>(0.714, 0.612, 0.322, 0.5)</_Color>
+                <_Color2>(0.855, 0.733, 0.388, 0.1)</_Color2>
+            </shaderParameters>
+        </graphicData>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_SoulcastBurial</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>10</durationDays>
+        <stackLimit>5</stackLimit>
+        <stages>
+            <li>
+                <label>soulcast burial</label>
+                <description>They soulcast the body. Turned it to stone, clean and permanent. It felt right, somehow. Better than letting the earth take them slowly. They will endure now, unchanging.</description>
+                <baseMoodEffect>5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

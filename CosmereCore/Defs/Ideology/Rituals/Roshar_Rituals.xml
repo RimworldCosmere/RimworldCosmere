@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ROSHARAN RITUALS ========== -->
+
+    <!-- ===== VORINISM ===== -->
+
+    <!-- Glyphward Ceremony: Blessing with holy glyphs -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_GlyphwardCeremony</defName>
+        <label>glyphward ceremony</label>
+        <description>An ardent leads the faithful in a ceremony of protection. Sacred glyphs are drawn and prayers are offered to the Almighty, asking for his blessing upon the community and its endeavors.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Vorinism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Herald's Day: Honoring the Heralds -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_HeraldsDay</defName>
+        <label>Herald's day</label>
+        <description>A solemn festival honoring the ten Heralds who protected humanity from the Voidbringers. The faithful gather to hear stories of their sacrifice and to renew their commitment to the eternal fight against evil.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Vorinism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ===== STONE SHAMANISM ===== -->
+
+    <!-- Stone Consecration: Blessing sacred ground -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_StoneConsecration</defName>
+        <label>stone consecration</label>
+        <description>A shaman leads the faithful in consecrating the ground beneath their feet. The Shin revere stone as sacred, and this ritual honors the earth that sustains all life in Shinovar.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/StoneShamanism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Harvest Thanks: Gratitude for the soil's bounty -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_HarvestThanks</defName>
+        <label>harvest thanks</label>
+        <description>A peaceful gathering where the Shin give thanks for the soil's bounty. Unlike the rest of Roshar, Shinovar has true soil, and the faithful honor this gift with songs and shared meals.</description>
+        <issue>Ritual</issue>
+        <impact>Low</impact>
+        <iconPath>UI/Ideology/Cosmere/StoneShamanism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ===== PARSHENDI RHYTHMS ===== -->
+
+    <!-- Rhythm Circle: Attuning to the rhythms together -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_RhythmCircle</defName>
+        <label>rhythm circle</label>
+        <description>The singers gather in a circle, drumming and humming to attune to the rhythms of Roshar. Each emotion has its rhythm, and together the faithful touch something eternal.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/ParshendriRhythms</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyDanceDrum</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Storm Vigil: Waiting out the highstorm together -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_StormVigil</defName>
+        <label>storm vigil</label>
+        <description>As highstorms rage, the singers gather in shelter to attune to the Rhythm of the Storm. They listen to the Rider's voice in the thunder and draw strength from the eternal cycle.</description>
+        <issue>Ritual</issue>
+        <impact>Low</impact>
+        <iconPath>UI/Ideology/Cosmere/ParshendriRhythms</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <associatedMemes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ===== THE PASSIONS ===== -->
+
+    <!-- Passion Festival: Celebrating strong emotion -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_PassionFestival</defName>
+        <label>passion festival</label>
+        <description>A vibrant celebration where the Thaylen honor strong emotion. Love, anger, joy, sorrow - all passions are sacred when truly felt. The faithful dance, sing, and express themselves freely.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Passions</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyDanceTech</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Passions</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Trade Blessing: Honoring Thaylen mercantile tradition -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_TradeBlessing</defName>
+        <label>trade blessing</label>
+        <description>A gathering where merchants and traders seek blessings for their ventures. The Thaylen believe that passion for one's work brings success, and this ritual honors the sacred act of trade.</description>
+        <issue>Ritual</issue>
+        <impact>Low</impact>
+        <iconPath>UI/Ideology/Cosmere/Passions</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+        </associatedMemes>
+    </PreceptDef>
+
+</Defs>

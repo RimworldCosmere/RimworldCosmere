@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Invisibility</defName>
+        <label>Invisibility</label>
+        <description>Weave light around your body until you vanish. Not hidden. Gone. Enemies look through the space where you stand and see nothing at all. The illusion holds as long as you do not strike, though at higher Ideals, you learn to hold the weave for a heartbeat longer even after attacking.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Illumination.Invisibility</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Invisible</hediff>
+        <beuPerTick>3</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

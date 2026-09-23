@@ -1,0 +1,54 @@
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.Core.UI.Codex;
+
+public static class CodexChrome {
+    // Parchment, the tone vanilla titles sit on. Skins that want their own pass HeaderTextColor in.
+    private static readonly Color TitleText = new Color(0.90f, 0.85f, 0.72f);
+
+    private static readonly Color HeaderFill = new Color(0.08f, 0.08f, 0.1f, 0.85f);
+
+    public const float HeaderHeight = 36f;
+    public const float RailWidth = 40f;
+    public const float SubtabBarHeight = 28f;
+    public const float Gutter = 8f;
+
+    public const float BodyInset = 1f;
+
+    public static void DrawHeader(Rect rect, string label, Color accent, Color? textColor = null) {
+        Widgets.DrawBoxSolid(rect, HeaderFill);
+        Rect accentLine = new Rect(rect.x, rect.yMax - 2f, rect.width, 2f);
+        Widgets.DrawBoxSolid(accentLine, accent);
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, textColor ?? TitleText)) {
+            Rect labelRect = new Rect(rect.x + Gutter, rect.y, rect.width - Gutter * 2f, rect.height);
+            Widgets.Label(labelRect, label);
+        }
+    }
+
+    public static void DrawDivider(Rect rect, Color accent) {
+        Widgets.DrawBoxSolid(rect, new Color(accent.r, accent.g, accent.b, 0.35f));
+    }
+
+    /// <summary>
+    ///     The inset a content provider's heading block sits in, so every art's title and subtitle line
+    ///     up with the panel title above them and with each other. Rows and tables are not padded: they
+    ///     run to the frame.
+    /// </summary>
+    public static Rect ContentHeader(Rect body, float y, float height) {
+        return new Rect(body.x + Gutter, y, body.width - Gutter * 2f, height);
+    }
+
+    public static Rect BodyRect(Rect tabRect, bool hasSwitcher) {
+        float top = HeaderHeight + SubtabBarHeight;
+        float left = hasSwitcher ? RailWidth : 0f;
+
+        // 1px so a row's own box stops drawing over the window frame.
+        return new Rect(
+            tabRect.x + left + BodyInset,
+            tabRect.y + top + Gutter,
+            tabRect.width - left - BodyInset * 2f,
+            tabRect.height - top - Gutter * 2f
+        );
+    }
+}

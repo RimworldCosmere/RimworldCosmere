@@ -1,0 +1,618 @@
+using System;
+using Cosmere.Core.Listing;
+using Cosmere.Core.UI;
+using Cosmere.Core.Window;
+using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Settings;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+using TraitRequirement = Verse.TraitRequirement;
+
+namespace Cosmere.System.Roshar.Dialog;
+
+public enum DialogTab {
+    Overview,
+    Ideals,
+    Traits,
+}
+
+[StaticConstructorOnStartup]
+public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
+    private const float DefaultSurgeHeight = 175f;
+    private const float TabHeight = 35f;
+    private const float TabUnderlineHeight = 3f;
+    private const float IdealDotSize = 12f;
+
+    private const float BannerSize = 160f;
+    private const float BannerOverhang = 15f;
+
+    private const float TimelineDotRadius = 9f;
+    private const float TimelineLineWidth = 3f;
+    private const float TimelineLeftMargin = 28f;
+    private const float TimelineContentIndent = 56f;
+
+    private static readonly Color AchievedColor = new Color(0.3f, 0.85f, 0.3f);
+    private static readonly Color CurrentColor = new Color(0.95f, 0.85f, 0.2f);
+    private static readonly Color FutureColor = new Color(0.5f, 0.5f, 0.5f);
+    private static readonly Color BlockedColor = new Color(0.85f, 0.2f, 0.2f);
+
+    protected static readonly Texture2D CircleTex = CreateCircleTexture(32);
+    protected readonly Color accentColor;
+    protected readonly Pawn? pawn;
+    protected readonly Surgebinder? surgebinder;
+
+    private DialogTab currentTab;
+
+    protected RadiantOrderDef order;
+    private float? surgeHeight;
+
+    protected Dialog_RadiantOrderDialogBase(RadiantOrderDef order, Pawn? pawn = null, Surgebinder? surgebinder = null) {
+        this.order = order;
+        this.pawn = pawn;
+        this.surgebinder = surgebinder;
+        accentColor = order.color;
+        currentTab = DialogTab.Overview;
+    }
+
+    protected override Vector2 initialWindowSize => new Vector2(
+        Spacing.Get(65),
+        Mathf.Max(Spacing.Get(30), Verse.UI.screenHeight - Spacing.Get(10))
+    );
+
+    protected override float headerHeight => Spacing.Get(16);
+
+    /// <summary>Where this order sits in a browsable list. Null when there is nothing to browse.</summary>
+    protected virtual TaggedString? GetPositionReadout() {
+        return null;
+    }
+
+    protected override void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
+        listing.Gap(BannerSize - BannerOverhang + Spacing.Get(0.5f));
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
+            listing.Label($"<b>{order.LabelCap}</b>");
+
+        TaggedString? position = GetPositionReadout();
+        if (position != null) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, bodyTextColor))
+                listing.Label(position.Value);
+        }
+
+        TaggedString title = GetTitle();
+        if (title != null) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor))
+                listing.Label(title);
+        }
+    }
+
+    public override void DoWindowContents(Rect inRect) {
+        base.DoWindowContents(inRect);
+
+        float bannerX = inRect.x + (inRect.width - BannerSize) / 2f;
+        float bannerY = inRect.y - BannerOverhang;
+        Rect bannerRect = new Rect(bannerX, bannerY, BannerSize, BannerSize);
+        GUI.DrawTexture(bannerRect, order.bannerIcon, ScaleMode.ScaleToFit);
+    }
+
+    protected override void DrawBodyContent(FoundationListing listing) {
+        DrawTabBar(listing);
+        listing.Gap();
+
+        switch (currentTab) {
+            case DialogTab.Overview:
+                DrawOverviewTab(listing);
+                break;
+            case DialogTab.Ideals:
+                DrawIdealsTab(listing);
+                break;
+            case DialogTab.Traits:
+                DrawTraitsTab(listing);
+                break;
+        }
+    }
+
+    private void DrawTabBar(FoundationListing listing) {
+        float bodyPad = bodyPadding;
+        Rect tabRow = listing.GetRect(TabHeight);
+        tabRow.x -= bodyPad;
+        tabRow.width += bodyPad * 2;
+        float tabWidth = tabRow.width / 3f;
+
+        DrawTab(
+            new Rect(tabRow.x, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Overview".Translate(),
+            DialogTab.Overview
+        );
+        DrawTab(
+            new Rect(tabRow.x + tabWidth, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Ideals".Translate(),
+            DialogTab.Ideals
+        );
+        DrawTab(
+            new Rect(tabRow.x + tabWidth * 2f, tabRow.y, tabWidth, TabHeight),
+            "CRO_RadiantOrder_Tab_Traits".Translate(),
+            DialogTab.Traits
+        );
+
+        DrawBorder(
+            tabRow.With(y: tabRow.yMax - 1, height: 1),
+            1,
+            bottom: true
+        );
+    }
+
+    private void DrawTab(Rect rect, string label, DialogTab tab) {
+        bool isActive = currentTab == tab;
+
+        Color textColor = isActive ? headerTextColor : bodyTextColor;
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, textColor))
+            Widgets.Label(rect, isActive ? $"<b>{label}</b>" : label);
+
+        if (isActive) {
+            Texture2D accentTexture = accentColor.ToSolidColorTexture();
+            Rect underline = new Rect(rect.x, rect.yMax - TabUnderlineHeight, rect.width, TabUnderlineHeight);
+            GUI.DrawTexture(underline, accentTexture);
+        }
+
+        if (!isActive) Widgets.DrawHighlightIfMouseover(rect);
+        MouseoverSounds.DoRegion(rect);
+
+        if (Widgets.ButtonInvisible(rect)) {
+            currentTab = tab;
+        }
+    }
+
+    protected virtual void DrawOverviewTab(FoundationListing listing) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, bodyTextColor)) {
+            float width = listing.ColumnWidth;
+            float height = Text.CalcHeight(order.description, width);
+            Rect rect = listing.GetRect(height);
+            Widgets.Label(rect, order.description);
+        }
+
+        listing.Gap();
+
+        int quoteIdealIndex = 1;
+        if (surgebinder != null && surgebinder.CurrentIdeal < order.ideals.Count - 1) {
+            quoteIdealIndex = surgebinder.CurrentIdeal + 1;
+        }
+
+        if (quoteIdealIndex < order.ideals.Count && order.ideals[quoteIdealIndex].quotes.Count > 0) {
+            string quote = order.ideals[quoteIdealIndex].quotes[0];
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor))
+                listing.Label($"<i>\"{quote}\"</i>");
+            listing.Gap();
+        }
+
+        listing.GapLine(color: BorderColor);
+        listing.Gap();
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, bodyTextColor)) {
+            TaggedString str = "CRO_Bond_Choose_Surges".Translate(order.LabelCap.Named("ORDER"));
+            Rect labelRect = listing.Label($"<b>{str}</b>");
+            DrawBorder(
+                labelRect.With(y: labelRect.yMax, height: 1),
+                1,
+                bottom: true
+            );
+        }
+
+        listing.Gap();
+
+        Rect surgeRow = listing.GetRect(surgeHeight ?? DefaultSurgeHeight);
+        surgeRow.SplitVerticallyWithMargin(out Rect leftBox, out Rect rightBox, Spacing.Get());
+
+        float leftHeight = DrawSurgeBox(leftBox, order.surges[0]);
+        float rightHeight = DrawSurgeBox(rightBox, order.surges[1]);
+
+        surgeHeight = Mathf.Max(DefaultSurgeHeight, leftHeight, rightHeight);
+    }
+
+    protected float DrawSurgeBox(Rect rect, SurgeDef surge) {
+        float imageSize = Spacing.Get(5);
+        DrawDropShadow(rect);
+        GUI.DrawTexture(rect, HeaderBackground, ScaleMode.StretchToFill);
+
+        Vector2 titleSize;
+        using (new TextBlock(GameFont.Medium)) titleSize = Text.CalcSize(surge.LabelCap);
+
+        Rect inner = rect.ContractedBy(16);
+        inner.SplitVerticallyWithMargin(
+            out Rect leftBox,
+            out Rect rightBox,
+            out float overflow,
+            Spacing.Get(),
+            Mathf.Max(imageSize, titleSize.x)
+        );
+
+        float descriptionHeight;
+        using (new TextBlock(GameFont.Small, null, true))
+            descriptionHeight = Text.CalcHeight(surge.description, rightBox.width);
+        float currentSurgeHeight = surgeHeight ?? DefaultSurgeHeight;
+        float leftPadding = currentSurgeHeight - imageSize - titleSize.y - Spacing.Get(2);
+        float rightPadding = currentSurgeHeight - descriptionHeight - Spacing.Get(2);
+
+        FoundationListing leftListing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
+        leftListing.Begin(leftBox);
+        leftListing.Gap(leftPadding / 2);
+
+        Rect imageRect = leftListing.GetRect(imageSize);
+        Rect centered = new Rect(
+            imageRect.x + (imageRect.width - imageSize) / 2f,
+            imageRect.y,
+            imageSize,
+            imageSize
+        );
+        GUI.DrawTexture(centered, surge.icon, ScaleMode.ScaleToFit);
+        leftListing.Gap();
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
+            leftListing.Label(surge.LabelCap);
+        leftListing.End();
+
+        FoundationListing rightListing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
+        rightListing.Begin(rightBox);
+        rightListing.Gap(rightPadding / 2);
+
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor))
+            rightListing.Label(surge.description);
+
+        rightListing.End();
+        rightListing.Gap();
+
+        return Mathf.Max(leftListing.CurHeight, rightListing.CurHeight);
+    }
+
+    private static Texture2D CreateCircleTexture(int size) {
+        Texture2D tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
+        float radius = size / 2f;
+        float center = size / 2f;
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                float dist = Mathf.Sqrt((x - center) * (x - center) + (y - center) * (y - center));
+                tex.SetPixel(x, y, dist <= radius - 0.5f ? Color.white : Color.clear);
+            }
+        }
+
+        tex.Apply();
+        return tex;
+    }
+
+    protected virtual void DrawIdealsTab(FoundationListing listing) {
+        RosharModSettings settings = Core.Mod.GetModSettings<RosharModSettings>();
+        int CurrentIdealLevel = surgebinder?.CurrentIdeal ?? -1;
+
+        listing.Gap(Spacing.Get());
+
+        for (int i = 0; i < order.ideals.Count; i++) {
+            Ideal ideal = order.ideals[i];
+            IdealStatus status = GetIdealStatus(i, CurrentIdealLevel);
+
+            float rowStartY = listing.CurHeight;
+            DrawIdealRow(listing, ideal, i, status, settings.showIdealRequirements);
+            float rowEndY = listing.CurHeight;
+
+            float dotCenterX = listing.ListingRect.x + TimelineLeftMargin;
+            float dotCenterY = rowStartY + TimelineDotRadius + 4f;
+            float dotDiameter = TimelineDotRadius * 2f;
+
+            if (i < order.ideals.Count - 1) {
+                Color lineColor = status == IdealStatus.Achieved
+                    ? new Color(AchievedColor.r, AchievedColor.g, AchievedColor.b, 0.6f)
+                    : new Color(0.25f, 0.25f, 0.25f);
+                Rect lineRect = new Rect(
+                    dotCenterX - TimelineLineWidth / 2f,
+                    dotCenterY + TimelineDotRadius + 2f,
+                    TimelineLineWidth,
+                    rowEndY - dotCenterY - TimelineDotRadius + Spacing.Get()
+                );
+                Widgets.DrawBoxSolid(lineRect, lineColor);
+            }
+
+            Color statusColor = GetStatusColor(status);
+
+            if (status == IdealStatus.Current) {
+                float glowSize = dotDiameter + 8f;
+                Rect glowRect = new Rect(dotCenterX - glowSize / 2f, dotCenterY - glowSize / 2f, glowSize, glowSize);
+                Color glowColor = new Color(accentColor.r, accentColor.g, accentColor.b, 0.25f);
+                GUI.color = glowColor;
+                GUI.DrawTexture(glowRect, CircleTex);
+                GUI.color = Color.white;
+            }
+
+            Rect dotRect = new Rect(
+                dotCenterX - TimelineDotRadius,
+                dotCenterY - TimelineDotRadius,
+                dotDiameter,
+                dotDiameter
+            );
+            GUI.color = statusColor;
+            GUI.DrawTexture(dotRect, CircleTex);
+            GUI.color = Color.white;
+
+            listing.Gap(Spacing.Get(1.5f));
+        }
+    }
+
+    private static TaggedString GetStatusLabel(IdealStatus status) {
+        return status switch {
+            IdealStatus.Achieved => "CRO_RadiantOrder_Status_Achieved".Translate(),
+            IdealStatus.Current => "CRO_RadiantOrder_Status_Current".Translate(),
+            IdealStatus.Blocked => "CRO_RadiantOrder_Status_Blocked".Translate(),
+            _ => "CRO_RadiantOrder_Status_Future".Translate(),
+        };
+    }
+
+    private Color GetStatusColor(IdealStatus status) {
+        return status switch {
+            IdealStatus.Achieved => AchievedColor,
+            IdealStatus.Current => CurrentColor,
+            IdealStatus.Blocked => BlockedColor,
+            _ => FutureColor,
+        };
+    }
+
+    private IdealStatus GetIdealStatus(int idealIndex, int CurrentIdeal) {
+        if (surgebinder == null) return IdealStatus.Future;
+        if (idealIndex <= CurrentIdeal) return IdealStatus.Achieved;
+
+        if (idealIndex == CurrentIdeal + 1) {
+            if (idealIndex >= 2 &&
+                order.idealChecker != null &&
+                pawn != null &&
+                order.idealChecker.HasIncompatibleTrait(pawn, idealIndex)) {
+                return IdealStatus.Blocked;
+            }
+
+            return IdealStatus.Current;
+        }
+
+        return IdealStatus.Future;
+    }
+
+    private void DrawIdealRow(
+        FoundationListing listing,
+        Ideal ideal,
+        int index,
+        IdealStatus status,
+        bool showRequirements
+    ) {
+        Color statusColor = GetStatusColor(status);
+
+        listing.Indent(TimelineContentIndent);
+        float originalWidth = listing.ColumnWidth;
+        listing.ColumnWidth -= TimelineContentIndent;
+
+        TaggedString heading = "CRO_RadiantOrder_Ideal_Heading".Translate(
+            ideal.label.CapitalizeFirst().Named("IDEAL"),
+            GetStatusLabel(status).Named("STATUS")
+        );
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, statusColor))
+            listing.Label($"<b>{heading}</b>");
+
+        listing.Gap(Spacing.Get(0.25f));
+
+        if (ideal.quotes.Count > 0) {
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, new Color(0.65f, 0.65f, 0.65f)))
+                listing.Label($"<i>\"{ideal.quotes[0]}\"</i>");
+            listing.Gap(Spacing.Get(0.25f));
+        }
+
+        if (showRequirements && status != IdealStatus.Achieved) {
+            string? requirements = GetIdealRequirements(index);
+            if (requirements != null) {
+                listing.Gap(Spacing.Get(0.15f));
+                using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, new Color(0.5f, 0.5f, 0.5f)))
+                    listing.Label(requirements);
+            }
+        }
+
+        List<AbilityDef> abilitiesToShow = [];
+        if (index == 0) {
+            abilitiesToShow.AddRange(order.abilities);
+        }
+
+        for (int s = 0; s < order.surges.Count; s++) {
+            for (int a = 0; a < order.surges[s].abilities.Count; a++) {
+                AbilityDef abilityDef = order.surges[s].abilities[a];
+                int minIdeal = abilityDef is SurgebindingAbilityDef surgeDef
+                    ? surgeDef.GetMinIdealForOrder(order.defName)
+                    : 0;
+                if (minIdeal == index) {
+                    abilitiesToShow.Add(abilityDef);
+                }
+            }
+        }
+
+        if (ideal.abilities != null) {
+            abilitiesToShow.AddRange(ideal.abilities);
+        }
+
+        if (abilitiesToShow.Count > 0) {
+            string abilityNames = GetAbilityNames(abilitiesToShow);
+            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, accentColor))
+                listing.Label("CRO_RadiantOrder_Unlocks".Translate(abilityNames.Named("ABILITIES")));
+        }
+
+        listing.ColumnWidth = originalWidth;
+        listing.Outdent(TimelineContentIndent);
+    }
+
+    private static string GetAbilityNames(List<AbilityDef> abilities) {
+        string result = string.Empty;
+        for (int i = 0; i < abilities.Count; i++) {
+            if (i > 0) result += ", ";
+            result += abilities[i].LabelCap;
+        }
+
+        return result;
+    }
+
+    protected virtual string? GetIdealRequirements(int idealIndex) {
+        if (idealIndex < 0 || idealIndex >= order.ideals.Count) return null;
+
+        string? description = order.ideals[idealIndex].description;
+        string? requirements = order.idealChecker?.GetRequirementsText(idealIndex);
+
+        if (requirements != null && description != null) return $"{description}\n{requirements}";
+        return requirements ?? description;
+    }
+
+    protected virtual void DrawTraitsTab(FoundationListing listing) {
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
+            listing.Label($"<b>{"CRO_RadiantOrder_Traits_Favorable".Translate()}</b>");
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
+            listing.Label("CRO_RadiantOrder_Traits_FavorableEffect".Translate());
+
+        listing.Gap(Spacing.Get(0.5f));
+
+        if (order.favorableTraits != null && order.favorableTraits.Count > 0) {
+            DrawTraitPills(listing, order.favorableTraits, AchievedColor);
+        } else {
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
+                listing.Label("CRO_RadiantOrder_Traits_None".Translate());
+        }
+
+        listing.Gap();
+        listing.GapLine(color: BorderColor);
+        listing.Gap();
+
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
+            listing.Label($"<b>{"CRO_RadiantOrder_Traits_Incompatible".Translate()}</b>");
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
+            listing.Label("CRO_RadiantOrder_Traits_IncompatibleEffect".Translate());
+
+        listing.Gap(Spacing.Get(0.5f));
+
+        if (order.incompatibleTraits != null && order.incompatibleTraits.Count > 0) {
+            DrawTraitPills(listing, order.incompatibleTraits, BlockedColor);
+        } else {
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, FutureColor))
+                listing.Label("CRO_RadiantOrder_Traits_None".Translate());
+        }
+    }
+
+    private void DrawTraitPills(FoundationListing listing, List<TraitRequirement> traits, Color pillColor) {
+        float pillHeight = Spacing.Get(1.75f);
+        float pillPadding = Spacing.Get(0.5f);
+        float x = listing.CurrentX;
+        float maxWidth = listing.ColumnWidth;
+        float currentX = 0f;
+
+        Rect rowRect = listing.GetRect(pillHeight);
+        for (int i = 0; i < traits.Count; i++) {
+            TraitRequirement trait = traits[i];
+            int degree = trait.degree ?? 0;
+            TraitDegreeData? degreeData = null;
+            try {
+                degreeData = trait.def?.DataAtDegree(degree);
+            } catch (Exception ex) {
+                Log.Debug(
+                    $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex}"
+                );
+            }
+
+            string traitLabel = degreeData?.label
+                                ?? trait.def?.label
+                                ?? trait.def?.defName
+                                ?? (string)"CRO_RadiantOrder_Traits_Unknown".Translate();
+            traitLabel = traitLabel.CapitalizeFirst();
+
+            bool pawnHasTrait = pawn != null && trait.HasTrait(pawn);
+
+            Vector2 textSize;
+            using (new TextBlock(GameFont.Small)) textSize = Text.CalcSize(traitLabel);
+
+            float pillWidth = textSize.x + Spacing.Get(1.5f);
+
+            if (currentX + pillWidth > maxWidth && currentX > 0f) {
+                currentX = 0f;
+                rowRect = listing.GetRect(pillHeight);
+            }
+
+            Rect pillRect = new Rect(rowRect.x + currentX, rowRect.y, pillWidth, pillHeight);
+
+            Color bgColor;
+            Color borderCol;
+            Color textColor;
+            if (pawnHasTrait) {
+                bgColor = new Color(pillColor.r, pillColor.g, pillColor.b, 0.4f);
+                borderCol = pillColor;
+                textColor = Color.white;
+            } else {
+                bgColor = new Color(0.3f, 0.3f, 0.3f, 0.2f);
+                borderCol = new Color(0.4f, 0.4f, 0.4f, 0.5f);
+                textColor = new Color(0.55f, 0.55f, 0.55f);
+            }
+
+            Widgets.DrawBoxSolid(pillRect, bgColor);
+            Widgets.DrawBox(pillRect, 1, borderCol.ToSolidColorTexture());
+
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, textColor)) {
+                if (pawnHasTrait) {
+                    Widgets.Label(pillRect, $"<b>{traitLabel}</b>");
+                } else {
+                    Widgets.Label(pillRect, traitLabel);
+                }
+            }
+
+            string? tooltipText = null;
+            TraitDegreeData? tipData = trait.degree.HasValue
+                ? trait.def?.DataAtDegree(trait.degree.Value)
+                : trait.def?.degreeDatas is { Count: > 0 }
+                    ? trait.def.DataAtDegree(0)
+                    : null;
+
+            if (tipData?.description != null) {
+                tooltipText = tipData.description
+                    .Replace("{PAWN_nameDef}", pawn?.Name?.ToStringShort ?? string.Empty)
+                    .Replace("{PAWN_pronoun}", Pronoun(pawn, GenderUtility.GetPronoun, "CRO_Pronoun_They"))
+                    .Replace("{PAWN_possessive}", Pronoun(pawn, GenderUtility.GetPossessive, "CRO_Pronoun_Their"))
+                    .Replace("{PAWN_objective}", Pronoun(pawn, GenderUtility.GetObjective, "CRO_Pronoun_Them"));
+            }
+
+            if (pawn != null) {
+                TaggedString traitStatus = (pawnHasTrait
+                        ? "CRO_RadiantOrder_Trait_Has"
+                        : "CRO_RadiantOrder_Trait_Lacks")
+                    .Translate(pawn.LabelShortCap.Named("PAWN"));
+
+                tooltipText = tooltipText != null
+                    ? "CRO_RadiantOrder_Trait_Tooltip".Translate(
+                        traitStatus.Named("STATUS"),
+                        tooltipText.Named("DESCRIPTION")
+                    ).Resolve()
+                    : traitStatus.Resolve();
+            }
+
+            if (tooltipText != null) {
+                TooltipHandler.TipRegion(pillRect, tooltipText);
+            }
+
+            currentX += pillWidth + pillPadding;
+        }
+    }
+
+    /// <summary>
+    ///     Vanilla resolves Gender.None to "it", which reads wrong on a person, so a genderless
+    ///     or missing pawn falls back to they/them.
+    /// </summary>
+    private static string Pronoun(Pawn? pawn, Func<Gender, string> vanilla, string neutralKey) {
+        return pawn is { gender: Gender.Male or Gender.Female }
+            ? vanilla(pawn.gender)
+            : neutralKey.Translate();
+    }
+
+    private enum IdealStatus {
+        Achieved,
+        Current,
+        Future,
+        Blocked,
+    }
+}

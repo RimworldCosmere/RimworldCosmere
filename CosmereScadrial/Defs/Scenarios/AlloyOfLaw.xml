@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_AlloyOfLaw</defName>
+    <label>Cosmere - Scadrial - The Alloy of Law</label>
+    <description>Three hundred years after the Catacendre. Waxillium Ladrian left the Roughs to reclaim his noble house, but civilization's comforts cannot dull the instincts of a lawman. When the Vanishers begin their campaign of theft and kidnapping, Wax picks up his guns again.</description>
+    <scenario>
+      <summary>Wax and Wayne take on the Vanishers in the post-Catacendre Roughs.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_HouseLadrian</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Waxillium</firstName>
+              <nickName>Wax</nickName>
+              <lastName>Ladrian</lastName>
+              <age>42</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <relations>
+                <li><def>Spouse</def><to>Steris</to></li>
+              </relations>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingSteel</li>
+                <li>Cosmere_Scadrial_Gene_FerringIron</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>16</level></li>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Wayne</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBendalloy</li>
+                <li>Cosmere_Scadrial_Gene_FerringGold</li>
+              </genes>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marasi</firstName>
+              <lastName>Colms</lastName>
+              <age>25</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCadmium</li>
+              </genes>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Shooting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Steris</firstName>
+              <lastName>Harms</lastName>
+              <age>28</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>12</level></li>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ranette</firstName>
+              <age>30</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <traits>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Crafting</def><level>16</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <!-- Sits after ScenPart_NamedPawns on purpose. That part clears the roster
+             and this one regenerates it, with NamedPawns stamping its templates onto
+             each pawn through Notify_PawnGenerated as it comes out. -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>5</pawnChoiceCount>
+          <!-- TotalPawnCount is the sum of these, and it is what sets
+               startingPawnCount. An empty list means zero starting pawns and an
+               index error during map generation. No xenotype named, so the named
+               pawns decide their own. -->
+          <xenotypeCounts>
+            <li>
+              <count>5</count>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_BoltActionRifle</thingDef>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>500</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_AlloyOfLaw</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <!-- Three hundred years on, only the houses that survived the Catacendre are still
+                 answering to their names. Demoux and Hammondess descend from the crew. -->
+            <Cosmere_Scadrial_Faction_Elendel>20</Cosmere_Scadrial_Faction_Elendel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-20</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseTekiel>0</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseCett>0</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_HouseErikell>0</Cosmere_Scadrial_Faction_HouseErikell>
+            <Cosmere_Scadrial_Faction_HouseInnate>-20</Cosmere_Scadrial_Faction_HouseInnate>
+            <Cosmere_Scadrial_Faction_HouseDemoux>40</Cosmere_Scadrial_Faction_HouseDemoux>
+            <Cosmere_Scadrial_Faction_HouseHammondess>40</Cosmere_Scadrial_Faction_HouseHammondess>
+            <Cosmere_Scadrial_Faction_RoughsOutlaws>-100</Cosmere_Scadrial_Faction_RoughsOutlaws>
+          </relations>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>Wax holsters his Sterrion. The Roughs stretch to the horizon - dusty, vast, and full of people who would rather not be found. Wayne adjusts his hat. Marasi checks her notes. Steris has already drafted a contingency plan for seventeen possible emergencies. The eighteenth, she notes, is an acceptable risk.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Harmony</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_AlloyOfLaw</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

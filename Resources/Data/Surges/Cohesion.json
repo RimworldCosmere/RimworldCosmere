@@ -1,0 +1,9 @@
+{
+  "name": "cohesion",
+  "description": "Cohesion grants control over the shape of solid matter, allowing a Surgebinder to mold stone, metal, or other substances like clay. This Surge reflects permanence and sculpting, the power to rewrite the form of the world itself.",
+  "abilities": [
+    "Cosmere_Roshar_Ability_MoldArmor",
+    "Cosmere_Roshar_Ability_SoftenGround",
+    "Cosmere_Roshar_Ability_ShapeStone"
+  ]
+}

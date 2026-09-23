@@ -1,0 +1,228 @@
+using Cosmere.Core.UI.Model;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.Core.Ability.Autocast;
+
+public sealed class AutocastRunner : GameComponent {
+    private const int TickInterval = 60;
+
+    /// <summary>
+    ///     Targets a rule has already claimed this tick. Two rules on one metal would silently
+    ///     race for the last write; the first rule in list order wins, matching panel priority.
+    /// </summary>
+    private static readonly HashSet<string> claimed = [];
+
+    public AutocastRunner(Game game) { }
+
+    public override void GameComponentTick() {
+        if (Find.TickManager.TicksGame % TickInterval != 0) return;
+
+        GameComponent_Autocast store = GameComponent_Autocast.Get();
+        List<Map> maps = Find.Maps;
+        for (int m = 0; m < maps.Count; m++) {
+            List<Pawn> pawns = maps[m].mapPawns.FreeColonistsSpawned;
+            for (int p = 0; p < pawns.Count; p++) {
+                TickPawn(pawns[p], store);
+            }
+        }
+    }
+
+    private static void TickPawn(Pawn pawn, GameComponent_Autocast store) {
+        if (pawn.abilities != null) SeedDefaults(pawn, store);
+        List<AutocastRule> rules = store.GetOrCreateRules(pawn);
+        if (rules.Count == 0) return;
+
+        claimed.Clear();
+
+        for (int r = 0; r < rules.Count; r++) {
+            AutocastRule rule = rules[r];
+
+            // dormant rules still run: a rule switched off mid-hold must put the dial back, not just skip.
+            bool dormant = !rule.Enabled || rule.Triggers.Count == 0;
+
+            if (rule.Kind == AutocastRuleKind.FeruchemyDial) {
+                string key = (int)rule.Kind + ":" + rule.MetalDefName;
+                if (TickDialRule(pawn, rule, dormant || claimed.Contains(key))) claimed.Add(key);
+                continue;
+            }
+
+            // Releases the burn like TickDialRule puts a dial back; dropping the claim strands it.
+            if (dormant || pawn.abilities == null) {
+                ReleaseHeldBurn(pawn, rule);
+                rule.Holding = false;
+                continue;
+            }
+
+            RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
+            if (ability == null) {
+                rule.Holding = false;
+                continue;
+            }
+
+            IToggleableAbility? sustained = ability as IToggleableAbility;
+            bool toggleable = sustained?.IsToggleable ?? false;
+            bool active = sustained?.IsActive ?? false;
+
+            bool wasHolding = rule.Holding && active;
+
+            AutocastAction action = AutocastDecision.For(
+                toggleable,
+                active,
+                AllTriggersPass(pawn, rule),
+                rule.ToggleOffWhenInactive,
+                wasHolding,
+                ability.def.targetRequired
+            );
+
+            if (action == AutocastAction.TurnOff) {
+                rule.Holding = AutocastDecision.NextHolding(false, true, toggleable, active, wasHolding, action);
+                sustained!.TurnOff();
+                continue;
+            }
+
+            // CanCast covers the reserve paying for the ability; switching off never needs it.
+            bool cast = action == AutocastAction.Cast && ability.CanCast;
+            rule.Holding = AutocastDecision.NextHolding(
+                false, true, toggleable, active, wasHolding, cast ? action : AutocastAction.None);
+
+            if (!cast) continue;
+
+            ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+            rule.FireCount++;
+        }
+    }
+
+    /// <summary>
+    ///     A dial is held rather than cast: keeps setting it while triggers pass, puts it back
+    ///     when they stop, and only releases a dial it actually holds, leaving player-set values alone.
+    /// </summary>
+    /// <returns>Whether the rule is holding the dial.</returns>
+    private static bool TickDialRule(Pawn pawn, AutocastRule rule, bool dormant) {
+        IAutocastDial? dial = AutocastDialRegistry.For(rule.Kind);
+        if (dial == null) return false;
+
+        if (!dormant && AllTriggersPass(pawn, rule)) {
+            if (!dial.TrySetTarget(pawn, rule.MetalDefName, rule.ActiveTarget)) return false;
+
+            if (rule.Holding) return true;
+
+            rule.Holding = true;
+            rule.FireCount++;
+            return true;
+        }
+
+        if (!rule.Holding) return false;
+
+        rule.Holding = false;
+        if (rule.Release == AutocastRelease.Leave) return false;
+
+        float release = rule.Release == AutocastRelease.ToRest ? rule.RestTarget : dial.IdleTarget;
+        dial.TrySetTarget(pawn, rule.MetalDefName, release);
+
+        return false;
+    }
+
+    private static void SeedDefaults(Pawn pawn, GameComponent_Autocast store) {
+        List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
+        for (int i = 0; i < abilities.Count; i++) {
+            string defName = abilities[i].def.defName;
+            if (!AutocastDefaults.HasDefaults(defName)) continue;
+            store.GetOrCreateRule(pawn, defName);
+        }
+    }
+
+    /// <summary>Turns off a live toggle this rule lit, so a rule going dormant cannot strand it.</summary>
+    private static void ReleaseHeldBurn(Pawn pawn, AutocastRule rule) {
+        if (pawn.abilities == null) return;
+        if (!AutocastDecision.ReleasesWhenDormant(rule.Holding, rule.ToggleOffWhenInactive)) return;
+
+        RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
+        if (ability is not IToggleableAbility { IsToggleable: true, IsActive: true } sustained) return;
+
+        sustained.TurnOff();
+    }
+
+    private static RimWorld.Ability? FindAbility(Pawn pawn, string defName) {
+        List<RimWorld.Ability> list = pawn.abilities.AllAbilitiesForReading;
+        for (int i = 0; i < list.Count; i++) {
+            if (list[i].def.defName == defName) return list[i];
+        }
+
+        return null;
+    }
+
+    private static bool AllTriggersPass(Pawn pawn, AutocastRule rule) {
+        for (int i = 0; i < rule.Triggers.Count; i++) {
+            if (!Evaluate(pawn, rule.Triggers[i])) return false;
+        }
+
+        return true;
+    }
+
+    private static bool Evaluate(Pawn pawn, AutocastTrigger trigger) {
+        switch (trigger.Kind) {
+            case AutocastTriggerKind.HealthPercent:
+                return Compare(pawn.health.summaryHealth.SummaryHealthPercent, trigger);
+            case AutocastTriggerKind.ReservePercent:
+                return Compare(ResolvePrimaryReserve(pawn), trigger);
+            case AutocastTriggerKind.Drafted:
+                return pawn.Drafted;
+            case AutocastTriggerKind.EnemyProximity:
+                return Compare(NearestDistance(pawn, true), trigger);
+            case AutocastTriggerKind.AllyProximity:
+                return Compare(NearestDistance(pawn, false), trigger);
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>Cells to the closest pawn of the given allegiance.</summary>
+    /// <returns>
+    ///     A distance nothing can be within when there is none, so "an enemy within ten" fails
+    ///     on an empty map instead of firing.
+    /// </returns>
+    private static float NearestDistance(Pawn pawn, bool hostile) {
+        Map? map = pawn.Map;
+        if (map == null) return float.MaxValue;
+
+        IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
+        int best = int.MaxValue;
+        for (int i = 0; i < all.Count; i++) {
+            Pawn other = all[i];
+            if (other == pawn || other.Dead) continue;
+            if (other.HostileTo(pawn) != hostile) continue;
+            if (!hostile && other.Faction != pawn.Faction) continue;
+
+            int sq = (other.Position - pawn.Position).LengthHorizontalSquared;
+            if (sq < best) best = sq;
+        }
+
+        return best == int.MaxValue ? float.MaxValue : Mathf.Sqrt(best);
+    }
+
+    private static float ResolvePrimaryReserve(Pawn pawn) {
+        InvestitureSnapshot? snap = null;
+        IReadOnlyList<IInvestitureProvider> all =
+            InvestitureProviderRegistry.All;
+        for (int i = 0; i < all.Count; i++) {
+            if (!all[i].IsInvested(pawn)) continue;
+            snap = all[i].Snapshot(pawn);
+            if (snap?.PrimaryBar != null) break;
+        }
+
+        if (snap?.PrimaryBar == null) return 0f;
+        if (snap.PrimaryBar.Max <= 0f) return 0f;
+        return snap.PrimaryBar.Current / snap.PrimaryBar.Max;
+    }
+
+    private static bool Compare(float value, AutocastTrigger trigger) {
+        return trigger.Comparison switch {
+            AutocastComparison.LessThan => value < trigger.Threshold,
+            AutocastComparison.GreaterThan => value > trigger.Threshold,
+            AutocastComparison.EqualTo => Mathf.Abs(value - trigger.Threshold) < 0.001f,
+            _ => false,
+        };
+    }
+}

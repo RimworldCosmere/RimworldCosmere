@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <BodyDef>
+        <defName>Cosmere_Roshar_Body_TrueSpren</defName>
+        <label>true spren</label>
+        <corePart>
+            <def>Cosmere_Roshar_Part_TrueSprenTorso</def>
+            <height>Middle</height>
+            <depth>Outside</depth>
+            <groups>
+                <li>Torso</li>
+            </groups>
+            <parts>
+                <li>
+                    <def>Cosmere_Roshar_Part_TrueSprenHead</def>
+                    <height>Top</height>
+                    <coverage>0.2</coverage>
+                    <groups>
+                        <li>HeadAttackTool</li>
+                        <li>UpperHead</li>
+                        <li>FullHead</li>
+                    </groups>
+                    <parts>
+                        <li>
+                            <def>Eye</def>
+                            <customLabel>left eye</customLabel>
+                            <coverage>0.05</coverage>
+                            <groups><li>Eyes</li></groups>
+                        </li>
+                        <li>
+                            <def>Eye</def>
+                            <customLabel>right eye</customLabel>
+                            <coverage>0.05</coverage>
+                            <groups><li>Eyes</li></groups>
+                        </li>
+                    </parts>
+                </li>
+                <li>
+                    <def>Cosmere_Roshar_Part_TrueSprenArm</def>
+                    <customLabel>left arm</customLabel>
+                    <coverage>0.1</coverage>
+                    <groups>
+                        <li>LeftHand</li>
+                    </groups>
+                </li>
+                <li>
+                    <def>Cosmere_Roshar_Part_TrueSprenArm</def>
+                    <customLabel>right arm</customLabel>
+                    <coverage>0.1</coverage>
+                    <groups>
+                        <li>RightHand</li>
+                    </groups>
+                </li>
+                <li>
+                    <def>Cosmere_Roshar_Part_TrueSprenLeg</def>
+                    <customLabel>left leg</customLabel>
+                    <coverage>0.1</coverage>
+                </li>
+                <li>
+                    <def>Cosmere_Roshar_Part_TrueSprenLeg</def>
+                    <customLabel>right leg</customLabel>
+                    <coverage>0.1</coverage>
+                </li>
+            </parts>
+        </corePart>
+    </BodyDef>
+
+    <BodyPartDef>
+        <defName>Cosmere_Roshar_Part_TrueSprenTorso</defName>
+        <label>torso</label>
+        <hitPoints>100</hitPoints>
+        <frostbiteVulnerability>0.001</frostbiteVulnerability>
+        <skinCovered>true</skinCovered>
+        <canScarify>false</canScarify>
+        <beautyRelated>false</beautyRelated>
+        <solid>false</solid>
+        <alive>true</alive>
+        <bleedRate>0</bleedRate>
+        <tags>
+            <li>BloodPumpingSource</li>
+            <li>ConsciousnessSource</li>
+            <li>BreathingSource</li>
+            <li>MetabolismSource</li>
+        </tags>
+    </BodyPartDef>
+
+    <BodyPartDef>
+        <defName>Cosmere_Roshar_Part_TrueSprenHead</defName>
+        <label>head</label>
+        <hitPoints>50</hitPoints>
+        <frostbiteVulnerability>0</frostbiteVulnerability>
+        <skinCovered>true</skinCovered>
+        <canScarify>false</canScarify>
+        <beautyRelated>true</beautyRelated>
+        <solid>false</solid>
+        <alive>true</alive>
+        <bleedRate>0</bleedRate>
+        <tags>
+            <li>SightSource</li>
+            <li>HearingSource</li>
+            <li>ConsciousnessSource</li>
+        </tags>
+    </BodyPartDef>
+
+    <BodyPartDef>
+        <defName>Cosmere_Roshar_Part_TrueSprenArm</defName>
+        <label>arm</label>
+        <hitPoints>40</hitPoints>
+        <frostbiteVulnerability>0</frostbiteVulnerability>
+        <skinCovered>true</skinCovered>
+        <canScarify>false</canScarify>
+        <solid>false</solid>
+        <alive>true</alive>
+        <bleedRate>0</bleedRate>
+        <tags>
+            <li>ManipulationLimbCore</li>
+            <li>ManipulationLimbSegment</li>
+        </tags>
+    </BodyPartDef>
+
+    <BodyPartDef>
+        <defName>Cosmere_Roshar_Part_TrueSprenLeg</defName>
+        <label>leg</label>
+        <hitPoints>40</hitPoints>
+        <frostbiteVulnerability>0</frostbiteVulnerability>
+        <skinCovered>true</skinCovered>
+        <canScarify>false</canScarify>
+        <solid>false</solid>
+        <alive>true</alive>
+        <bleedRate>0</bleedRate>
+        <tags>
+            <li>MovingLimbCore</li>
+            <li>MovingLimbSegment</li>
+        </tags>
+    </BodyPartDef>
+</Defs>

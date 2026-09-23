@@ -1,0 +1,119 @@
+using Cosmere.Core.ShardConnection;
+using Cosmere.System.Scadrial.Def;
+using RimWorld;
+using Verse;
+using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
+
+namespace Cosmere.System.Scadrial.Thing;
+
+public class AllomanticMetal : AllomanticVial {
+    private MetallicArtsMetalDef? cachedMetal;
+
+    public override MetallicArtsMetalDef? metal =>
+        cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(def.defName);
+
+    protected override void PostIngested(Pawn ingester) {
+        if (metal is null) return;
+
+        if (metal.godMetal) {
+            // Nothing to give, so nothing happens and no letter is sent.
+            if (!metal.CanBeIngested) return;
+
+            // float menu already blocks this, but a dev spawn or scripted beat can still reach PostIngested directly
+            if (!ConnectionUtility.MayUseMetal(ingester, metal)) {
+                Messages.Message(
+                    "CS_NotConnectedToShard".Translate(
+                        ingester.Named("PAWN"),
+                        metal.Named("METAL"),
+                        (ConnectionUtility.FirstUnreachedShard(ingester, metal)?.LabelCap
+                            ?? metal.LabelCap).Named("SHARD")
+                    ),
+                    ingester,
+                    MessageTypeDefOf.RejectInput,
+                    false
+                );
+                return;
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
+                GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
+                ingester.FillAllAllomanticReserves();
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 10;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
+                StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(ingester);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
+                GeneUtility.AddFullFeruchemist(ingester, false, true, "ingested Leratium");
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 10;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+                StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
+                GeneUtility.AddGene(ingester, metal.GetMistingGene(), false, true);
+                ingester.FillAllomanticReserves(metal);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
+                MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
+                if (stuffMetal == null) {
+                    Log.Warn(
+                        $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
+                    );
+                    return;
+                }
+
+                GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
+                ingester.FillAllomanticReserves(stuffMetal);
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 5;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasiumAlloy);
+                StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(ingester);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
+                MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
+                if (stuffMetal == null) {
+                    Log.Warn(
+                        $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
+                    );
+                    return;
+                }
+
+                GeneUtility.AddGene(ingester, stuffMetal.GetFerringGene(), false, true);
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 5;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratiumAlloy);
+                StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
+            }
+
+            // after the powers, not before: the grant tops up to a total, and the Mistborn gene just granted counts too
+            ConnectionUtility.GrantFromMetal(ingester, metal);
+
+            Find.LetterStack.ReceiveLetter(
+                "CS_BurnedGodMetal".Translate(ingester.NameShortColored.Named("PAWN"), metal.LabelCap.Named("METAL")),
+                $"CS_BurnedGodMetal_{metal.defName}".Translate(ingester.NameFullColored.Named("PAWN")).Resolve(),
+                LetterDefOf.PositiveEvent,
+                ingester
+            );
+
+            return;
+        }
+
+        Messages.Message(
+            "CS_IngestedThing".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
+            ingester,
+            MessageTypeDefOf.PositiveEvent
+        );
+        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(ScadrialMetallurgyConstants.RawMetalMetalAmount);
+
+        ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedRawMetal);
+    }
+
+    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {
+        yield break;
+    }
+
+    public override IEnumerable<FloatMenuOption> GetMultiSelectFloatMenuOptions(IEnumerable<Pawn> selPawns) {
+        yield break;
+    }
+}

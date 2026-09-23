@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- The eruption's whole behaviour lives on the condition rather than in the worker. Vanilla
+       scribes a GameCondition, so the start tick and the duration persist without a line of ours,
+       and every effect below is derived from those two numbers instead of banked. -->
+  <GameConditionDef>
+    <defName>Cosmere_Scadrial_Condition_AshmountEruption</defName>
+    <label>ashmount eruption</label>
+    <description>A mountain is open somewhere past the horizon. The ash is falling faster than it settles, the vents here are throwing up what they drag with it, and the ground has not finished moving.</description>
+    <conditionClass>Cosmere.System.Scadrial.GameCondition.AshmountEruption</conditionClass>
+    <!-- Vanilla's IncidentWorker_MakeGameCondition reads the letter BODY off the condition and the
+         LABEL off the incident. Leave this empty and the eruption arrives in complete silence. -->
+    <letterText>The sky went the colour of a bruise an hour before anyone felt it. Then the ground moved, once, hard enough to shake grit out of the rafters.\n\nOne of the Ashmounts has opened. Whatever runs beneath the ash joins it to the vents on this land, and they are breathing harder for it. The fall will thicken. Metal will come up with it, more than the vents give in a season, and it will not stay uncovered long.\n\nThe ground near a mouth will keep shifting until the mountain is finished. Nobody has ever built well next to a vent.</letterText>
+    <displayOnUI>true</displayOnUI>
+    <!-- A permanent eruption would hold the ashfall spiked for the rest of the game. -->
+    <canBePermanent>false</canBePermanent>
+    <endMessage>The ground has settled. What is coming down now is only what the Ashmounts always send.</endMessage>
+  </GameConditionDef>
+
+</Defs>

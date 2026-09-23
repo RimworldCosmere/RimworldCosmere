@@ -1,0 +1,79 @@
+using Cosmere.System.Roshar.LesserSpren.CaptureSystem;
+using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
+using Cosmere.System.Roshar.LesserSpren.SprenController;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.System.Roshar.Comp.Thing;
+
+public class SprenContainer : ThingComp {
+    private SprenType? capturedSprenType;
+
+    public bool hasCapturedSpren => capturedSprenType.HasValue;
+
+    public SprenType? CapturedSprenType => capturedSprenType;
+
+    public void CaptureSpren(SprenType sprenType) {
+        capturedSprenType = sprenType;
+    }
+
+    public void ReleaseSpren() {
+        capturedSprenType = null;
+    }
+
+    public override void PostExposeData() {
+        base.PostExposeData();
+        Scribe_Values.Look(ref capturedSprenType, "capturedSprenType");
+    }
+
+    public override string? CompInspectStringExtra() {
+        if (hasCapturedSpren) {
+            return "CRO_SprenContainer_Contains".Translate(capturedSprenType.ToString().Named("SPREN")).Resolve();
+        }
+
+        return null;
+    }
+
+    public override bool AllowStackWith(Verse.Thing other) {
+        SprenContainer? otherComp = other.TryGetComp<SprenContainer>();
+        if (otherComp == null) return true;
+
+        // Only allow stacking if both have the same spren type (or both empty)
+        return capturedSprenType == otherComp.capturedSprenType;
+    }
+
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
+        if (Core.Mod.debugMode) {
+            yield return new Command_Action {
+                defaultLabel = "CRO_SprenContainer_Debug_Label".Translate(),
+                defaultDesc = "CRO_SprenContainer_Debug_Desc".Translate(),
+                icon = TexCommand.DesirePower,
+                action = () => {
+                    IntVec3 position = parent.Position;
+                    Verse.Map? map = parent.Map;
+                    if (map == null) return;
+
+                    Pawn? selectedPawn = Find.Selector.SingleSelectedThing as Pawn;
+                    if (selectedPawn == null) {
+                        Messages.Message("CRO_SprenContainer_SelectPawn".Translate(), MessageTypeDefOf.RejectInput);
+                        return;
+                    }
+
+                    List<BaseSprenController> capturable = LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(
+                        position,
+                        map
+                    );
+
+                    Messages.Message(
+                        "CRO_SprenContainer_Debug_Found".Translate(
+                            capturable.Count.Named("COUNT"),
+                            position.ToString().Named("POSITION"),
+                            string.Join(", ", capturable).Named("TYPES")
+                        ),
+                        MessageTypeDefOf.NeutralEvent
+                    );
+                },
+            };
+        }
+    }
+}

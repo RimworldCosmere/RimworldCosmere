@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <XenotypeDef>
+        <defName>Cosmere_Roshar_Xenotype_Lighteyes</defName>
+        <label>rosharan lighteyes</label>
+        <description>The lighteyed caste rules across the Vorin nations of Roshar. Born to command, educated in warfare and politics, they hold their station by tradition, blade, and blood. Alethi, Veden, Herdazian - the color of the eyes binds them all in shared rank.</description>
+        <displayPriority>4998</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Lighteyes</iconPath>
+        <genes>
+            <li>Cosmere_Roshar_Gene_LighteyesHeritage</li>
+            <li>Cosmere_Roshar_Gene_LighteyesSocial</li>
+            <li>Cosmere_Roshar_Gene_LighteyesEducation</li>
+        </genes>
+    </XenotypeDef>
+
+    <XenotypeDef>
+        <defName>Cosmere_Roshar_Xenotype_Darkeyes</defName>
+        <label>rosharan darkeyes</label>
+        <description>The dark-eyed masses form the foundation of Vorin society. Soldiers, merchants, farmers, craftsmen - their hands build what the lighteyes command. Tough, resilient, and far more numerous than those who rule them.</description>
+        <displayPriority>4997</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Darkeyes</iconPath>
+        <genes>
+            <li>Cosmere_Roshar_Gene_DarkeyesHeritage</li>
+            <li>Cosmere_Roshar_Gene_DarkeyesEndurance</li>
+            <li>Cosmere_Roshar_Gene_DarkeyesResilience</li>
+        </genes>
+    </XenotypeDef>
+</Defs>

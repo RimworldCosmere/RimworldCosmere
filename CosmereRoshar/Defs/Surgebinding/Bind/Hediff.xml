@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_Bound</defName>
+        <label>bound</label>
+        <description>This person's feet are fixed to the ground by the Surge of Adhesion. It is not chains or rope holding them. The surface itself has bonded to them, and no amount of pulling will break the hold. They can fight, they can turn, but they cannot walk. The binding fades slowly as the Stormlight that fuels it seeps away.</description>
+        <isBad>true</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>300~300</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>0</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

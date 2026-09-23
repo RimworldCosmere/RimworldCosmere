@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <toggleable>true</toggleable>
+        <defName>Cosmere_Roshar_Ability_Harden</defName>
+        <label>Harden</label>
+        <description>Push the Surge of Tension into a wall or structure and feel it lock solid. The material becomes rigid beyond anything natural, absorbing blows that should shatter it. You can harden multiple structures at once, each one holding firm as long as you maintain the infusion. Target a hardened structure again to release it.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Tension.Harden</abilityClass>
+        <beuPerTick>1</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>2</minIdeal>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>10</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

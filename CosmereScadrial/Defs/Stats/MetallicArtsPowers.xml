@@ -5,7 +5,7 @@
         <minValue>0</minValue>
         <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
-        <maxValue>1</maxValue>
+        <maxValue>5</maxValue>
         <scenarioRandomizable>false</scenarioRandomizable>
         <showOnDefaultValue>false</showOnDefaultValue>
         <showIfUndefined>false</showIfUndefined>
@@ -20,9 +20,9 @@
         <immutable>true</immutable>
         <cacheable>true</cacheable>
         <parts>
-            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter" />
-            <li Class="CosmereScadrial.StatPart.GenerationalDecay" />
-            <li Class="CosmereScadrial.StatPart.GearPower" />
+            <li Class="Cosmere.System.Scadrial.StatPart.IngestedGodMetalGranter" />
+            <li Class="Cosmere.System.Scadrial.StatPart.GenerationalDecay" />
+            <li Class="Cosmere.System.Scadrial.StatPart.GearPower" />
         </parts>
     </StatDef>
     
@@ -35,9 +35,9 @@
         <immutable>true</immutable>
         <cacheable>true</cacheable>
         <parts>
-            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter" />
-            <li Class="CosmereScadrial.StatPart.GenerationalDecay" />
-            <li Class="CosmereScadrial.StatPart.GearPower" />
+            <li Class="Cosmere.System.Scadrial.StatPart.IngestedGodMetalGranter" />
+            <li Class="Cosmere.System.Scadrial.StatPart.GenerationalDecay" />
+            <li Class="Cosmere.System.Scadrial.StatPart.GearPower" />
         </parts>
     </StatDef>
 </Defs>

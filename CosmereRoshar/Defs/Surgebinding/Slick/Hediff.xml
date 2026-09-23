@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Slicked</defName>
+        <label>slicked</label>
+        <description>Friction has been drained from this person's body. They slide through combat like water through fingers, weapons skating off them without purchase. Their movement is unsettling to watch. Too smooth. Too fast. As if the world itself cannot quite get a grip on them.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Abrasion.Slicked</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statOffsets>
+                    <MeleeDodgeChance>0.30</MeleeDodgeChance>
+                </statOffsets>
+                <statFactors>
+                    <MoveSpeed>1.40</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

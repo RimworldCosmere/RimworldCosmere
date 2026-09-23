@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- INVESTED: Values those with Investiture/magical abilities -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Invested</defName>
+        <label>invested</label>
+        <description>Those touched by Investiture are blessed. The power of the Shards flows through them, setting them apart from ordinary mortals.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Invested</iconPath>
+        <groupDef>Cosmere_Investiture</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Investiture</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->invested</li>
+                <li>memeAdjective->blessed</li>
+                <li>memeAdjective->awakened</li>
+                <li>memeConcept->power</li>
+                <li>memeConcept->investiture</li>
+                <li>memeConcept->the Shards</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>Investism</ideoName>
+                <theme>investiture</theme>
+                <adjective>invested</adjective>
+                <member>vessel</member>
+            </li>
+            <li>
+                <ideoName>The Awakened</ideoName>
+                <theme>awakening</theme>
+                <adjective>awakened</adjective>
+                <member>awakener</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+    <!-- OATHBOUND: Values keeping promises and ideals -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oathbound</defName>
+        <label>oathbound</label>
+        <description>An oath spoken is an oath kept. Words have power, and breaking one's word is the gravest sin.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Oathbound</iconPath>
+        <groupDef>Cosmere_Investiture</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Investiture</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->sworn</li>
+                <li>memeAdjective->bound</li>
+                <li>memeAdjective->honorable</li>
+                <li>memeConcept->oaths</li>
+                <li>memeConcept->honor</li>
+                <li>memeConcept->the Ideals</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>The Oathbound</ideoName>
+                <theme>oaths</theme>
+                <adjective>oathbound</adjective>
+                <member>oathkeeper</member>
+            </li>
+            <li>
+                <ideoName>Idealism</ideoName>
+                <theme>ideals</theme>
+                <adjective>idealist</adjective>
+                <member>idealist</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+    <!-- DEFIANT: Resistance against oppression -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Defiant</defName>
+        <label>defiant</label>
+        <description>No tyrant rules forever. Those who would oppress us will fall, and we will be the ones to push them.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Defiant</iconPath>
+        <groupDef>Cosmere_Society</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Society</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->defiant</li>
+                <li>memeAdjective->rebellious</li>
+                <li>memeAdjective->unbroken</li>
+                <li>memeConcept->freedom</li>
+                <li>memeConcept->resistance</li>
+                <li>memeConcept->defiance</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>Defiance</ideoName>
+                <theme>defiance</theme>
+                <adjective>defiant</adjective>
+                <member>rebel</member>
+            </li>
+            <li>
+                <ideoName>The Unbroken</ideoName>
+                <theme>resistance</theme>
+                <adjective>unbroken</adjective>
+                <member>survivor</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+    <!-- HIERARCHIST: Values strict social order -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hierarchist</defName>
+        <label>hierarchist</label>
+        <description>Order is the foundation of civilization. Each person has their place, and society functions when all accept their station.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Hierarchist</iconPath>
+        <groupDef>Cosmere_Society</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Society</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->ordered</li>
+                <li>memeAdjective->structured</li>
+                <li>memeAdjective->stratified</li>
+                <li>memeConcept->order</li>
+                <li>memeConcept->hierarchy</li>
+                <li>memeConcept->station</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>The Order</ideoName>
+                <theme>order</theme>
+                <adjective>ordered</adjective>
+                <member>orderer</member>
+            </li>
+            <li>
+                <ideoName>Stratism</ideoName>
+                <theme>strata</theme>
+                <adjective>stratified</adjective>
+                <member>stratist</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+    <!-- KEEPER: Knowledge preservation -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Keeper</defName>
+        <label>keeper</label>
+        <description>Knowledge must be preserved against the darkness. Memory is sacred, and what is forgotten is truly lost.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Keeper</iconPath>
+        <groupDef>Cosmere_Investiture</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Investiture</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->learned</li>
+                <li>memeAdjective->remembering</li>
+                <li>memeAdjective->preserving</li>
+                <li>memeConcept->knowledge</li>
+                <li>memeConcept->memory</li>
+                <li>memeConcept->preservation</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>The Keepers</ideoName>
+                <theme>keeping</theme>
+                <adjective>keeping</adjective>
+                <member>keeper</member>
+            </li>
+            <li>
+                <ideoName>Worldbringers</ideoName>
+                <theme>knowledge</theme>
+                <adjective>worldbringing</adjective>
+                <member>worldbringer</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+    <!-- PASSIONATE: Values strong emotion -->
+    <MemeDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Passionate</defName>
+        <label>passionate</label>
+        <description>Feel deeply. Live boldly. Every emotion from love to fury can be sacred when truly felt.</description>
+        <iconPath>UI/Ideology/Cosmere/Memes/Passionate</iconPath>
+        <groupDef>Cosmere_Society</groupDef>
+        <impact>1</impact>
+        <exclusionTags>
+            <li>Cosmere_Society</li>
+        </exclusionTags>
+        <generalRules>
+            <rulesStrings>
+                <li>memeAdjective->passionate</li>
+                <li>memeAdjective->fervent</li>
+                <li>memeAdjective->ardent</li>
+                <li>memeConcept->passion</li>
+                <li>memeConcept->emotion</li>
+                <li>memeConcept->feeling</li>
+            </rulesStrings>
+        </generalRules>
+        <symbolPacks>
+            <li>
+                <ideoName>The Passions</ideoName>
+                <theme>passion</theme>
+                <adjective>passionate</adjective>
+                <member>passionist</member>
+            </li>
+            <li>
+                <ideoName>Fervorism</ideoName>
+                <theme>fervor</theme>
+                <adjective>fervent</adjective>
+                <member>fervorist</member>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+
+</Defs>

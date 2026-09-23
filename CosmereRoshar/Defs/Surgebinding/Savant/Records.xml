@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Adhesion</defName>
+        <label>time spent using Adhesion</label>
+        <description>Total time spent using the Surge of Adhesion</description>
+        <type>Time</type>
+        <displayOrder>1300</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Gravitation</defName>
+        <label>time spent using Gravitation</label>
+        <description>Total time spent using the Surge of Gravitation</description>
+        <type>Time</type>
+        <displayOrder>1310</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Division</defName>
+        <label>time spent using Division</label>
+        <description>Total time spent using the Surge of Division</description>
+        <type>Time</type>
+        <displayOrder>1320</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Abrasion</defName>
+        <label>time spent using Abrasion</label>
+        <description>Total time spent using the Surge of Abrasion</description>
+        <type>Time</type>
+        <displayOrder>1330</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Progression</defName>
+        <label>time spent using Progression</label>
+        <description>Total time spent using the Surge of Progression</description>
+        <type>Time</type>
+        <displayOrder>1340</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Illumination</defName>
+        <label>time spent using Illumination</label>
+        <description>Total time spent using the Surge of Illumination</description>
+        <type>Time</type>
+        <displayOrder>1350</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Transformation</defName>
+        <label>time spent using Transformation</label>
+        <description>Total time spent using the Surge of Transformation</description>
+        <type>Time</type>
+        <displayOrder>1360</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Transportation</defName>
+        <label>time spent using Transportation</label>
+        <description>Total time spent using the Surge of Transportation</description>
+        <type>Time</type>
+        <displayOrder>1370</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Cohesion</defName>
+        <label>time spent using Cohesion</label>
+        <description>Total time spent using the Surge of Cohesion</description>
+        <type>Time</type>
+        <displayOrder>1380</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_TimeSpentUsing_Tension</defName>
+        <label>time spent using Tension</label>
+        <description>Total time spent using the Surge of Tension</description>
+        <type>Time</type>
+        <displayOrder>1390</displayOrder>
+        <workerClass>Cosmere.System.Roshar.Records.Worker.TimeSpentUsingSurgeWorker</workerClass>
+    </RecordDef>
+</Defs>

@@ -40,16 +40,18 @@
     <description>This Skaa is resilient to hunger and disease.</description>
     <statOffsets>
       <MaxNutrition>-0.1</MaxNutrition>
-      <RestFallRateFactor>-0.1</RestFallRateFactor>
       <ImmunityGainSpeed>0.1</ImmunityGainSpeed>
       <ToxicResistance>0.1</ToxicResistance>
       <ToxicEnvironmentResistance>0.1</ToxicEnvironmentResistance>
-      <RestRateMultiplier>0.1</RestRateMultiplier>
-      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
-      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>10</ComfyTemperatureMax>
       <PainShockThreshold>.1</PainShockThreshold>
-      <LifespanFactor>.1</LifespanFactor>
     </statOffsets>
+    <statFactors>
+      <RestFallRateFactor>0.9</RestFallRateFactor>
+      <RestRateMultiplier>1.1</RestRateMultiplier>
+      <LifespanFactor>1.1</LifespanFactor>
+    </statFactors>
   </GeneDef>
   <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
     <defName>Cosmere_Scadrial_Gene_SkaaPurity</defName>

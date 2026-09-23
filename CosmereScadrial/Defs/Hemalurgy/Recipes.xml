@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Charge a spike on a donor -->
+	<RecipeDef>
+		<defName>Cosmere_Scadrial_Recipe_ChargeHemalurgicSpike</defName>
+		<label>charge hemalurgic spike</label>
+		<description>Drive a hemalurgic spike or needle through the subject to capture a fragment of their spirit web. The metal determines what is stolen. A full spike always kills the donor. A thin needle may spare them.</description>
+		<workerClass>Cosmere.System.Scadrial.Hemalurgy.RecipeWorker.ChargeSpike</workerClass>
+		<jobString>Charging hemalurgic spike.</jobString>
+		<workAmount>1500</workAmount>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>2</workSkillLearnFactor>
+		<isViolation>true</isViolation>
+		<targetsBodyPart>true</targetsBodyPart>
+		<anesthetize>false</anesthetize>
+		<surgerySuccessChanceFactor>1.0</surgerySuccessChanceFactor>
+		<deathOnFailedSurgeryChance>0</deathOnFailedSurgeryChance>
+		<skillRequirements>
+			<Medicine>5</Medicine>
+		</skillRequirements>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+						<li>Cosmere_Scadrial_Thing_HemalurgicNeedle</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+				<li>Cosmere_Scadrial_Thing_HemalurgicNeedle</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<researchPrerequisites>
+			<li>Cosmere_Scadrial_Hemalurgy</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>Human</li>
+		</recipeUsers>
+	</RecipeDef>
+
+	<!-- Implant a charged spike -->
+	<RecipeDef>
+		<defName>Cosmere_Scadrial_Recipe_ImplantHemalurgicSpike</defName>
+		<label>implant hemalurgic spike</label>
+		<description>Surgically implant a charged hemalurgic spike or needle, transferring the stolen attribute to the recipient. Each spike weakens the spirit web, opening the recipient to Ruin's influence.</description>
+		<workerClass>Cosmere.System.Scadrial.Hemalurgy.RecipeWorker.ImplantSpike</workerClass>
+		<jobString>Implanting hemalurgic spike.</jobString>
+		<workAmount>2500</workAmount>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>2</workSkillLearnFactor>
+		<targetsBodyPart>true</targetsBodyPart>
+		<anesthetize>true</anesthetize>
+		<surgerySuccessChanceFactor>0.9</surgerySuccessChanceFactor>
+		<deathOnFailedSurgeryChance>0.1</deathOnFailedSurgeryChance>
+		<skillRequirements>
+			<Medicine>4</Medicine>
+		</skillRequirements>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+						<li>Cosmere_Scadrial_Thing_HemalurgicNeedle</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<categories>
+						<li>Medicine</li>
+					</categories>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Cosmere_Scadrial_Thing_HemalurgicSpike</li>
+				<li>Cosmere_Scadrial_Thing_HemalurgicNeedle</li>
+			</thingDefs>
+			<categories>
+				<li>Medicine</li>
+			</categories>
+		</fixedIngredientFilter>
+		<researchPrerequisites>
+			<li>Cosmere_Scadrial_Hemalurgy</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>Human</li>
+		</recipeUsers>
+	</RecipeDef>
+
+	<!-- Remove an implanted spike -->
+	<RecipeDef>
+		<defName>Cosmere_Scadrial_Recipe_RemoveHemalurgicSpike</defName>
+		<label>remove hemalurgic spike</label>
+		<description>Extract an implanted hemalurgic spike. The process is dangerous - the recipient will lose the stolen attribute and suffer injury. The spike retains a weakened charge.</description>
+		<workerClass>Cosmere.System.Scadrial.Hemalurgy.RecipeWorker.RemoveSpike</workerClass>
+		<jobString>Removing hemalurgic spike.</jobString>
+		<workAmount>2000</workAmount>
+		<workSpeedStat>MedicalOperationSpeed</workSpeedStat>
+		<workSkill>Medicine</workSkill>
+		<workSkillLearnFactor>2</workSkillLearnFactor>
+		<targetsBodyPart>true</targetsBodyPart>
+		<anesthetize>true</anesthetize>
+		<surgerySuccessChanceFactor>0.85</surgerySuccessChanceFactor>
+		<deathOnFailedSurgeryChance>0.15</deathOnFailedSurgeryChance>
+		<skillRequirements>
+			<Medicine>4</Medicine>
+		</skillRequirements>
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Medicine</li>
+					</categories>
+				</filter>
+				<count>2</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Medicine</li>
+			</categories>
+		</fixedIngredientFilter>
+		<researchPrerequisites>
+			<li>Cosmere_Scadrial_Hemalurgy</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>Human</li>
+		</recipeUsers>
+	</RecipeDef>
+</Defs>

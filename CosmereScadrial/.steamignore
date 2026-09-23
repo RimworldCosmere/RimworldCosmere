@@ -1,5 +1,6 @@
 *.pdb
 *.xcf
 Assets
-CosmereScadrial
 .gitignore
+.assetbundler.toml
+README.template.md

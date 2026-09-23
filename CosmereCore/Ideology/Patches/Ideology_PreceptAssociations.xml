@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!--
+    Associates Cosmere structure memes with vanilla precepts.
+    When a Cosmere religion is selected, these precepts become more likely.
+
+    Only patches precepts that already have associatedMemes elements.
+    For precepts without the element, we use PatchOperationAdd to create it first.
+    -->
+
+    <!-- ========== STEEL MINISTRY ========== -->
+    <!-- Slavery is honorable under the Lord Ruler -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Slavery_Honorable"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </value>
+    </Operation>
+
+    <!-- ========== CHURCH OF THE SURVIVOR ========== -->
+    <!-- Kelsier freed the skaa - slavery is evil -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Slavery_Abhorrent"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </value>
+    </Operation>
+
+    <!-- Help the downtrodden -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Charity_Essential"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </value>
+    </Operation>
+
+    <!-- ========== SURVIVORISM ========== -->
+    <!-- Rebellion against oppression -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Slavery_Abhorrent"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Survivorism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== SLIVERISM ========== -->
+    <!-- Those who held Infinity revere knowledge and diversity -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="IdeoDiversity_Approved"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Sliverism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== PATHIANISM ========== -->
+    <!-- Harmony values individual choice and community -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Charity_Important"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Pathianism</li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="IdeoDiversity_Approved"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Pathianism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== TRELLISM ========== -->
+    <!-- The faceless god demands darkness -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Darklight_Preferred"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Trellism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== JAGGENISM ========== -->
+    <!-- The Sovereign brought warmth and aid -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Charity_Important"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== TERRIS WORLDBRINGER ========== -->
+    <!-- Knowledge keepers value diversity of thought -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="IdeoDiversity_Approved"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </value>
+    </Operation>
+
+    <!-- ========== THE PASSIONS ========== -->
+    <!-- Thaylens embrace strong emotion and diversity -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="IdeoDiversity_Approved"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Passions</li>
+        </value>
+    </Operation>
+
+    <!-- ========== STONE SHAMANISM ========== -->
+    <!-- Shin value charity and peace - abhor violence via slavery association -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Charity_Important"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </value>
+    </Operation>
+
+    <!-- ========== PARSHENDI RHYTHMS ========== -->
+    <!-- Singers value community -->
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="Charity_Important"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </value>
+    </Operation>
+
+    <!-- ========== VORINISM ========== -->
+    <!-- Vorin faith values conformity and structure -->
+    <!-- Note: IdeoDiversity_Abhorrent has no associatedMemes, so we add the element first -->
+    <Operation Class="PatchOperationSequence" MayRequire="Ludeon.RimWorld.Ideology">
+        <success>Always</success>
+        <operations>
+            <li Class="PatchOperationTest">
+                <xpath>Defs/PreceptDef[defName="IdeoDiversity_Abhorrent"]/associatedMemes</xpath>
+                <success>Invert</success>
+            </li>
+            <li Class="PatchOperationAdd">
+                <xpath>Defs/PreceptDef[defName="IdeoDiversity_Abhorrent"]</xpath>
+                <value>
+                    <associatedMemes />
+                </value>
+            </li>
+        </operations>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.RimWorld.Ideology">
+        <xpath>Defs/PreceptDef[defName="IdeoDiversity_Abhorrent"]/associatedMemes</xpath>
+        <value>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </value>
+    </Operation>
+
+</Patch>

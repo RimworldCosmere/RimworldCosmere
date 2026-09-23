@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <IncidentDef>
+        <defName>Cosmere_Roshar_Incident_GemheartHunt</defName>
+        <workerClass>Cosmere.System.Roshar.Incident.Worker.IncidentWorker_GemheartHunt</workerClass>
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
+        <category>Misc</category>
+        <letterLabel>Chrysalis Spotted</letterLabel>
+        <letterText>Scouts report a chasmfiend chrysalis on a nearby plateau. The beast is dead or dormant, its gemheart still intact within the hardened shell. Send an expedition to claim it before the elements or scavengers do. The plateaus are treacherous, and the chasms between them show no mercy to the careless.</letterText>
+        <letterDef>Cosmere_Roshar_LetterDef_GemheartHunt</letterDef>
+        <minRefireDays>3</minRefireDays>
+    </IncidentDef>
+
+    <LetterDef>
+        <defName>Cosmere_Roshar_LetterDef_GemheartHunt</defName>
+        <letterClass>Cosmere.System.Roshar.Incident.ChoiceLetter_GemheartHunt</letterClass>
+        <color>(0.9, 0.75, 0.4)</color>
+    </LetterDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_GemheartVictory</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>5</durationDays>
+        <stages>
+            <li>
+                <label>gemheart claimed</label>
+                <description>We crossed the plateaus and returned with a gemheart. The chasms did not take us.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_GemheartFailure</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>3</durationDays>
+        <stages>
+            <li>
+                <label>failed plateau run</label>
+                <description>The chasmfiend was too much. We came back empty-handed, and not everyone came back whole.</description>
+                <baseMoodEffect>-6</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

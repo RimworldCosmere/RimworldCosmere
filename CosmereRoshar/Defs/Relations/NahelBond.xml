@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PawnRelationDef>
+        <defName>Cosmere_Roshar_Relation_NahelBond</defName>
+        <label>Nahel bond</label>
+        <labelFemale>Nahel bond</labelFemale>
+        <opinionOffset>0</opinionOffset>
+        <implied>false</implied>
+        <familyByBloodRelation>false</familyByBloodRelation>
+        <romanceChanceFactor>0</romanceChanceFactor>
+    </PawnRelationDef>
+</Defs>

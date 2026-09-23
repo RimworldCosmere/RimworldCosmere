@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Hediff_LightweavingDecoy</defName>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.LightweavingDecoy</hediffClass>
+        <label>lightweaving illusion</label>
+        <description>This figure is not real. It is woven Stormlight given shape, a perfect illusion that moves and breathes but has no substance behind it. When struck hard enough, the light will scatter and the deception will end.</description>
+        <makesSickThought>false</makesSickThought>
+        <isBad>false</isBad>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>1</initialSeverity>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <setMax>0.01</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

@@ -1,0 +1,86 @@
+{
+  "name": "chromium",
+  "description": "Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.",
+  "godMetal": false,
+  "color": [
+    132,
+    134,
+    139
+  ],
+  "colorTwo": [
+    159,
+    171,
+    196
+  ],
+  "marketValue": 10,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "leecher",
+    "description": "Allows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.",
+    "group": "enhancement",
+    "axis": "external",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Chromium"
+    ]
+  },
+  "feruchemy": {
+    "userName": "spinner",
+    "description": "Stores fortune, influencing luck subtly.",
+    "group": "spiritual",
+    "attribute": "fortune",
+    "store": {
+      "description": "This pawn is storing fortune in a chromium metalmind. Chance turns against them. Shots miss, tasks fail, and random events tend to break poorly. They seem cursed, but the bad luck is bottled for future use.",
+      "statFactors": {
+        "MedicalSurgerySuccessChance": 0.333333,
+        "Ability_DetectChancePerEntropy": 0.333333,
+        "MeleeHitChance": 0.333333,
+        "MeleeDodgeChance": 0.333333,
+        "PawnTrapSpringChance": 0.333333,
+        "ArrestSuccessChance": 0.333333,
+        "TameAnimalChance": 0.333333,
+        "TrainAnimalChance": 0.333333,
+        "BondAnimalChanceFactor": 0.333333,
+        "PlantHarvestYield": 0.333333,
+        "DrugHarvestYield": 0.333333,
+        "HuntingStealth": 0.333333,
+        "ConstructSuccessChance": 0.333333,
+        "FixBrokenDownBuildingSuccessChance": 0.333333,
+        "FoodPoisonChance": 3,
+        "ShootingAccuracyPawn": 0.333333,
+        "TradePriceImprovement": 0.333333
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a chromium metalmind, drawing on stored fortune to twist chance in their favor. They dodge danger, succeed unexpectedly, and enjoy improbable good luck. Nothing’s guaranteed, but odds are tilted in their favor.",
+      "statFactors": {
+        "MedicalSurgerySuccessChance": 3,
+        "Ability_DetectChancePerEntropy": 3,
+        "MeleeHitChance": 3,
+        "MeleeDodgeChance": 3,
+        "PawnTrapSpringChance": 3,
+        "ArrestSuccessChance": 3,
+        "TameAnimalChance": 3,
+        "TrainAnimalChance": 3,
+        "BondAnimalChanceFactor": 3,
+        "PlantHarvestYield": 3,
+        "DrugHarvestYield": 3,
+        "HuntingStealth": 3,
+        "ConstructSuccessChance": 3,
+        "FixBrokenDownBuildingSuccessChance": 3,
+        "FoodPoisonChance": 0.333333,
+        "ShootingAccuracyPawn": 3,
+        "TradePriceImprovement": 3
+      }
+    }
+  },
+  "mining": {
+    "hitPoints": 1600,
+    "yield": 30,
+    "commonality": 0.3,
+    "sizeRange": [
+      25,
+      45
+    ]
+  }
+}

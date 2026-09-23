@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_Stiffened</defName>
+        <label>stiffened</label>
+        <description>Something is wrong with this person's joints. They move like a puppet with tangled strings, every step a fight against limbs that refuse to bend properly. The Surge of Tension has locked their body rigid, and their muscles burn with the effort of simply trying to function.</description>
+        <isBad>true</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>900~900</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MoveSpeed>-0.80</MoveSpeed>
+                </statOffsets>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.30</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_StiffenedAlly</defName>
+        <label>stiffened (empowered)</label>
+        <description>Tension has been carefully woven into this person's arms and hands, turning flesh and bone into something closer to rigid steel. Each strike carries a weight that surprises both the wielder and the target. The limbs do not flex on impact. They simply hit.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>900~900</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MeleeHitChance>0.20</MeleeHitChance>
+                </statOffsets>
+                <statFactors>
+                    <MeleeWeapon_DamageMultiplier>1.25</MeleeWeapon_DamageMultiplier>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

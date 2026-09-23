@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_EntropicDecay</defName>
+        <label>entropic aura</label>
+        <description>Division energy pulses outward from this Radiant in invisible waves. Those nearby can feel it, a faint wrongness in the air, as their armor weakens and their skin begins to itch and burn. Matter breaks down in this person's presence. It is not fast, but it is constant, and there is no stopping it while the aura holds.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Division.EntropicDecay</hediffClass>
+    </HediffDef>
+</Defs>

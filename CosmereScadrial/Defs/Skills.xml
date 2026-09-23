@@ -7,6 +7,25 @@
         <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
         <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
         <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresInvestitureSystem>Allomancy</requiresInvestitureSystem>
+            </li>
+        </modExtensions>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Allomancy</li>
+          <li>subject-&gt;metal burning</li>
+          <li>subject-&gt;the pushes and pulls</li>
+          <li>subject-&gt;Mistborn practice</li>
+          <li>subject-&gt;steelpushing</li>
+          <li>subject-&gt;ironpulling</li>
+          <li>subject-&gt;the burnable metals</li>
+          <li>subject-&gt;Misting training</li>
+          <li>subject-&gt;allomantic control</li>
+          <li>subject-&gt;flaring metals</li>
+        </rulesStrings>
+      </generalRules>
     </SkillDef>
     <SkillDef>
         <defName>Cosmere_Scadrial_Skill_FeruchemicPower</defName>
@@ -15,5 +34,50 @@
         <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
         <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
         <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresInvestitureSystem>Feruchemy</requiresInvestitureSystem>
+            </li>
+        </modExtensions>
+      <generalRules>
+        <rulesStrings>
+          <li>subject-&gt;Feruchemy</li>
+          <li>subject-&gt;metalminds</li>
+          <li>subject-&gt;storing and tapping</li>
+          <li>subject-&gt;the Feruchemical balance</li>
+          <li>subject-&gt;coppermind keeping</li>
+          <li>subject-&gt;Terris practice</li>
+          <li>subject-&gt;attribute storage</li>
+          <li>subject-&gt;feruchemical charging</li>
+          <li>subject-&gt;the storage metals</li>
+          <li>subject-&gt;metalmind discipline</li>
+        </rulesStrings>
+      </generalRules>
     </SkillDef>
+
+    <!-- Eating a body's bones teaches a kandra how that body works. The skill decides whether
+         they can shape one from nothing, and how well the disguise holds when somebody who knew
+         the dead looks closely. -->
+    <SkillDef>
+        <defName>Cosmere_Scadrial_Skill_Shapeshift</defName>
+        <!-- Only a kandra ever wears a body that is not theirs, so nobody else needs the row. -->
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.InvestitureSkillExtension">
+                <requiresGene>Cosmere_Scadrial_Gene_BodyAbsorption</requiresGene>
+            </li>
+        </modExtensions>
+        <description>Represents how well a kandra wears a body that is not theirs. Learned by consuming bones, and spent on holding a shape nobody should be able to hold.</description>
+        <skillLabel>shapeshifting</skillLabel>
+        <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
+        <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
+        <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+        <generalRules>
+            <rulesStrings>
+                <li>subject-&gt;shapeshifting</li>
+                <li>subject-&gt;wearing the dead</li>
+                <li>subject_story-&gt;learned the shape of a body nobody missed</li>
+            </rulesStrings>
+        </generalRules>
+    </SkillDef>
+
 </Defs>

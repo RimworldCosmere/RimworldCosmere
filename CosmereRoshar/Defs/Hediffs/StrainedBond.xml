@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Hediff_StrainedBond</defName>
+        <hediffClass>Cosmere.System.Roshar.Hediff.StrainedBond</hediffClass>
+        <label>strained spren bond</label>
+        <description>This Radiant's bond with their spren has been strained by actions contrary to their oaths.</description>
+        <isBad>true</isBad>
+        <makesSickThought>false</makesSickThought>
+        <tendable>false</tendable>
+        <initialSeverity>0.3</initialSeverity>
+        <maxSeverity>1.0</maxSeverity>
+        <stages>
+            <li>
+                <label>strained</label>
+                <minSeverity>0.3</minSeverity>
+            </li>
+            <li>
+                <label>fractured</label>
+                <minSeverity>0.6</minSeverity>
+            </li>
+            <li>
+                <label>breaking</label>
+                <minSeverity>0.85</minSeverity>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

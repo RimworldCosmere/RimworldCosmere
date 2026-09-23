@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_VacuumBurst</defName>
+        <label>Vacuum Burst</label>
+        <description>Rip the air away from everything around you in a single, violent instant. The pressure drops. Then the air rushes back in to fill the void, slamming into everyone nearby with enough force to crack ribs and send bodies tumbling. Those still standing find themselves dazed, ears ringing, struggling to remember which way is up.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.VacuumBurst</abilityClass>
+        <beuPerTick>20</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+        <hostile>true</hostile>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

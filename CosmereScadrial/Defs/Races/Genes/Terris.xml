@@ -5,6 +5,7 @@
     </GeneDef>
     <GeneDef ParentName="Cosmere_Scadrial_Xenotype_TerrisGeneBase">
         <defName>Cosmere_Scadrial_Gene_TerrisHeritage</defName>
+    <geneClass>Cosmere.System.Scadrial.Gene.NormalBodyType</geneClass>
         <label>terris heritage</label>
         <randomChosen>true</randomChosen>
         <description>This Terrisfolk descends from a Terris bloodline. Their Feruchemical potential is increased.</description>

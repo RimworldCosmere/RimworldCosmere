@@ -6,11 +6,38 @@
         <description>The Allomancer is burning electrum, glimpsing their own branching futures to confuse enemies and steel their resolve.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MeleeHitChance>2</MeleeHitChance>
-                    <MeleeDodgeChance>2</MeleeDodgeChance>
-                </statFactors>
+                <statFactorsBySeverity>
+                    <li>
+                        <stat>MeleeHitChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.5714)</li>
+                                <li>(1, 2)</li>
+                                <li>(2, 2.6)</li>
+                                <li>(4, 3.2857)</li>
+                                <li>(8, 3.9091)</li>
+                                <li>(20, 4.4783)</li>
+                                <li>(100, 4.8835)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                    <li>
+                        <stat>MeleeDodgeChance</stat>
+                        <valueBySeverity>
+                            <points>
+                                <li>(0, 1)</li>
+                                <li>(0.5, 1.5714)</li>
+                                <li>(1, 2)</li>
+                                <li>(2, 2.6)</li>
+                                <li>(4, 3.2857)</li>
+                                <li>(8, 3.9091)</li>
+                                <li>(20, 4.4783)</li>
+                                <li>(100, 4.8835)</li>
+                            </points>
+                        </valueBySeverity>
+                    </li>
+                </statFactorsBySeverity>
             </li>
         </stages>
     </HediffDef>

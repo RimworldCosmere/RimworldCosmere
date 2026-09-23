@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Roshar_Hediff_BondsmithCalling_Base" Abstract="True">
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.BondsmithCalling</hediffClass>
+        <isBad>false</isBad>
+        <makesSickThought>false</makesSickThought>
+        <tendable>false</tendable>
+        <initialSeverity>0.01</initialSeverity>
+        <maxSeverity>1.0</maxSeverity>
+        <stages>
+            <li>
+                <becomeVisible>true</becomeVisible>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>900000</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BondsmithCalling_Base">
+        <defName>Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather</defName>
+        <label>hearing the Stormfather</label>
+        <description>This pawn hears a vast, ancient voice calling to them from the storms. The Stormfather — a manifestation of Honor's power — seeks a bond with one who leads and unites.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BondsmithCalling_Base">
+        <defName>Cosmere_Roshar_Hediff_BondsmithCalling_Nightwatcher</defName>
+        <label>hearing the Nightwatcher</label>
+        <description>This pawn senses a presence from the Horneater Peaks — the Nightwatcher, daughter of Cultivation, who grants boons and curses. She seeks a bond with one who saves and heals.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BondsmithCalling_Base">
+        <defName>Cosmere_Roshar_Hediff_BondsmithCalling_Sibling</defName>
+        <label>hearing the Sibling</label>
+        <description>This pawn feels the pulse of something vast and protective beneath the colony. The Sibling — the spren of the tower, of knowledge and shelter — reaches out to one who builds and discovers.</description>
+    </HediffDef>
+</Defs>

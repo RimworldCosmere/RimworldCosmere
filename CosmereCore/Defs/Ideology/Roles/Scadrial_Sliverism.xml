@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Sliver-Herald: single leader -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_SliverHerald</defName>
+        <label>sliver-herald</label>
+        <description>Leader of the Sliverists, charged with proclaiming the deeds of those who briefly held a Shard. The herald ensures the memory of mortal apotheosis is kept whole.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Sliverism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                    <Intellectual>5</Intellectual>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.4</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Counsel</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Disciple: multi moralist role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Disciple</defName>
+        <label>disciple</label>
+        <description>A devoted student of the Slivers' deeds. Disciples recite the histories of Vin, Kelsier, and Elend, reminding the faithful that mortals once wielded the power of gods.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>5</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Sliverism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>4</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.25</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>GlobalLearningFactor</statDef>
+                <modifier>0.15</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>Reassure</li>
+            <li>ConversionRitual</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Lives in Core, not Scadrial, because Roshar inherits from it too. RimWorld resolves
+         ParentName across mods only when the parent's mod loads first, and Roshar loads before
+         Scadrial, so a Scadrial-owned abstract leaves every Roshar aura unresolved. -->
+    <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteBase" Abstract="True">
+        <thingClass>MoteAttached</thingClass>
+        <altitudeLayer>MoteLow</altitudeLayer>
+        <graphicData>
+            <texPath>Empty</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CirclePulse</shaderType>
+            <shaderParameters>
+                <_Radius>1</_Radius> <!-- The radius of the shader circle, in % of image size, so 1 means the total area of the drawSize is used-->
+                <_BorderWidth>0.0005</_BorderWidth> <!-- The width of the border that shows the area-->
+                <_PulseTime>10</_PulseTime> <!-- Time in seconds for a pulse to fully finish-->
+                <_Speed>1</_Speed> <!-- The speed of the pulse, positive goes outward, negative goes inwards-->
+                <_TrailLength>0.1</_TrailLength> <!-- The length of the trail of the pulse -->
+            </shaderParameters>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <mote>
+            <fadeInTime>0.2</fadeInTime>
+            <fadeOutTime>0.5</fadeOutTime>
+            <solidTime>999999</solidTime>
+            <needsMaintenance>True</needsMaintenance>
+        </mote>
+    </ThingDef>
+</Defs>

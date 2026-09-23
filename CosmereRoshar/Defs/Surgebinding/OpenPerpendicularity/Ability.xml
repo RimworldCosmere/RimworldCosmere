@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_HonorsPerpendicularity</defName>
+        <label>Open Honor's Perpendicularity</label>
+        <description>Tear open a hole between the Physical and Spiritual Realms. Pure Investiture pours through in a column of blinding light, flooding everything it touches. Nearby Radiants feel their reserves fill to bursting. Wounds begin to close. Dun spheres flare back to life. The perpendicularity is glorious and terrible, and it devours the Bondsmith's own Stormlight at a staggering rate.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.OpenPerpendicularity</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_PerpendicularityBlessing</hediff>
+        <beuPerTick>8</beuPerTick>
+        <maxPower>1</maxPower>
+        <radiantOrder>Bondsmith</radiantOrder>
+        <minIdeal>2</minIdeal>
+        <orderMinIdeal>
+            <li><order>Bondsmith</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

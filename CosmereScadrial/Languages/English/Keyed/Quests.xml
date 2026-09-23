@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Quest_AtiumCaravan_Ambush_Label>Ambush the convoy</CS_Quest_AtiumCaravan_Ambush_Label>
+    <CS_Quest_AtiumCaravan_Ambush_Tip>Strike the wagons on the open road. The escort carry the atium on their persons, a bead apiece, so nothing is yours until they are down. The Ministry will not forget who struck first.</CS_Quest_AtiumCaravan_Ambush_Tip>
+
+    <CS_Quest_AtiumCaravan_Bribe_Label>Bribe the escort captain</CS_Quest_AtiumCaravan_Bribe_Label>
+    <CS_Quest_AtiumCaravan_Bribe_Tip>Offer the captain silver to look away. He brings the atium to you himself and the wagons roll on. Quieter than steel, and the Ministry need never know.</CS_Quest_AtiumCaravan_Bribe_Tip>
+
+
+
+
+
+
+
+    <CS_Quest_AtiumCaravan_Stage_Choice>Decide how the wagons will be taken.</CS_Quest_AtiumCaravan_Stage_Choice>
+    <CS_Quest_AtiumCaravan_Stage_Travel>Reach the transfer road before the convoy passes.</CS_Quest_AtiumCaravan_Stage_Travel>
+    <CS_Quest_AtiumCaravan_Stage_Clear>Put down the escort, then search them. Each carries a bead. Obligators do not surrender wagons.</CS_Quest_AtiumCaravan_Stage_Clear>
+
+    <CS_Quest_Hathsin_Stage_Travel>Follow the survivor's map to the Pits, past where the obligators cared to dig. Ministry soldiers hold the seam. Take it from them.</CS_Quest_Hathsin_Stage_Travel>
+
+    <CS_Quest_Pits_Stage_Travel>Reach the Pits of Hathsin. Not the seam this time - the farm itself, and the garrison the Lord Ruler keeps on it.</CS_Quest_Pits_Stage_Travel>
+    <CS_Quest_Pits_Stage_Carry>Work the basin out. Leave the last scraps if you like - what matters is that the crop is gone. Come and go as you need; what you take does not grow back, and the Ministry will keep sending men while the ground is still worth holding.</CS_Quest_Pits_Stage_Carry>
+    <CS_Quest_Pits_Site>The Pits of Hathsin</CS_Quest_Pits_Site>
+
+    <CS_Quest_Inquisitor_Stage_Travel>Find the waypoint the Inquisitor has taken for itself, before it finishes working outward to you.</CS_Quest_Inquisitor_Stage_Travel>
+    <CS_Quest_Inquisitor_Stage_Clear>Put it down. Spikes through the eyes, and it still will not stop while it can stand.</CS_Quest_Inquisitor_Stage_Clear>
+    <CS_Quest_Inquisitor_Site>The Inquisitor's waypoint</CS_Quest_Inquisitor_Site>
+    <CS_Quest_Hathsin_Stage_Carry>Cut the seam out. Roughly one cut in ten frees a bead. Work it until there is nothing left worth a pick.</CS_Quest_Hathsin_Stage_Carry>
+
+
+    <CS_Quest_Hathsin_Site>The Pits of Hathsin</CS_Quest_Hathsin_Site>
+    <CS_Quest_AtiumCaravan_Site>Ministry transfer road</CS_Quest_AtiumCaravan_Site>
+
+    <CS_Quest_Reward_Connection>The colony drawn closer to Preservation</CS_Quest_Reward_Connection>
+    <CS_Quest_Reward_Awakened>The Pits woke something. {COUNT} of the crew burn metal now who did not before.</CS_Quest_Reward_Awakened>
+</LanguageData>

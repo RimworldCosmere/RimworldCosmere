@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PatientsSaved</defName>
+        <label>patients saved</label>
+        <description>The number of downed pawns I have saved.</description>
+        <type>Int</type>
+        <displayOrder>1200</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_EnemyPatientsSaved</defName>
+        <label>patients saved</label>
+        <description>The number of downed hostile pawns I have saved.</description>
+        <type>Int</type>
+        <displayOrder>1201</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_BondsFormed</defName>
+        <label>Nahel bonds formed</label>
+        <description>The number of spren I have bonded with.</description>
+        <type>Int</type>
+        <displayOrder>1202</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PatientsDied</defName>
+        <label>patients lost</label>
+        <description>The number of downed pawns I have lost.</description>
+        <type>Int</type>
+        <displayOrder>1203</displayOrder>
+    </RecordDef>
+
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PawnsRescued</defName>
+        <label>pawns rescued</label>
+        <description>The number of pawns I have rescued from danger.</description>
+        <type>Int</type>
+        <displayOrder>1204</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_HostilePawnsRescued</defName>
+        <label>hostile pawns rescued</label>
+        <description>The number of hostile pawns I have rescued from danger.</description>
+        <type>Int</type>
+        <displayOrder>1205</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ArrestsMade</defName>
+        <label>arrests made</label>
+        <description>The number of arrests I have carried out.</description>
+        <type>Int</type>
+        <displayOrder>1206</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ZoneComplianceDays</defName>
+        <label>zone compliance days</label>
+        <description>The number of days I have remained compliant with assigned zones.</description>
+        <type>Int</type>
+        <displayOrder>1207</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_JudgmentsPassed</defName>
+        <label>judgments passed</label>
+        <description>The number of judgments I have rendered.</description>
+        <type>Int</type>
+        <displayOrder>1208</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_FuryMastered</defName>
+        <label>fury mastered</label>
+        <description>The number of times I have mastered my fury in battle.</description>
+        <type>Int</type>
+        <displayOrder>1209</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_CleanRaids</defName>
+        <label>clean raids</label>
+        <description>The number of raids survived without friendly casualties.</description>
+        <type>Int</type>
+        <displayOrder>1210</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ForgottenTended</defName>
+        <label>forgotten tended</label>
+        <description>The number of forgotten or neglected colonists I have tended to.</description>
+        <type>Int</type>
+        <displayOrder>1211</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_DeadHonored</defName>
+        <label>dead honored</label>
+        <description>The number of dead I have honored through burial or ceremony.</description>
+        <type>Int</type>
+        <displayOrder>1212</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_GraveVisits</defName>
+        <label>grave visits</label>
+        <description>The number of times I have visited a grave.</description>
+        <type>Int</type>
+        <displayOrder>1213</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_SocialHealing</defName>
+        <label>social healing</label>
+        <description>The number of times I have helped resolve social conflicts.</description>
+        <type>Int</type>
+        <displayOrder>1214</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_LivesSaved</defName>
+        <label>lives saved</label>
+        <description>The number of lives I have directly saved.</description>
+        <type>Int</type>
+        <displayOrder>1215</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ResearchCompleted</defName>
+        <label>research completed</label>
+        <description>The number of research projects I have completed.</description>
+        <type>Int</type>
+        <displayOrder>1216</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ChallengesSurvived</defName>
+        <label>challenges survived</label>
+        <description>The number of dire challenges I have survived.</description>
+        <type>Int</type>
+        <displayOrder>1217</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PrisonersFreed</defName>
+        <label>prisoners freed</label>
+        <description>The number of prisoners I have set free.</description>
+        <type>Int</type>
+        <displayOrder>1218</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_CaravanTrips</defName>
+        <label>caravan trips</label>
+        <description>The number of caravan trips I have undertaken.</description>
+        <type>Int</type>
+        <displayOrder>1219</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_StructuresBuilt</defName>
+        <label>structures built</label>
+        <description>The number of structures I have built.</description>
+        <type>Int</type>
+        <displayOrder>1220</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_RaidsDefended</defName>
+        <label>raids defended</label>
+        <description>The number of raids I have helped defend against.</description>
+        <type>Int</type>
+        <displayOrder>1221</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_LastStanding</defName>
+        <label>last standing</label>
+        <description>The number of times I was the last one standing in a fight.</description>
+        <type>Int</type>
+        <displayOrder>1222</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_FriendshipsFormed</defName>
+        <label>friendships formed</label>
+        <description>The number of friendships I have formed.</description>
+        <type>Int</type>
+        <displayOrder>1223</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ConflictsResolved</defName>
+        <label>conflicts resolved</label>
+        <description>The number of social conflicts I have helped resolve.</description>
+        <type>Int</type>
+        <displayOrder>1224</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_ColonyStabilityDays</defName>
+        <label>colony stability days</label>
+        <description>The number of days the colony has remained stable under my watch.</description>
+        <type>Int</type>
+        <displayOrder>1225</displayOrder>
+    </RecordDef>
+</Defs>

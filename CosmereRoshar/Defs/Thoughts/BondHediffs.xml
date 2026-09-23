@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_BrokenBond</defName>
+        <label>broken bond</label>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <stackLimit>1</stackLimit>
+        <showBubble>false</showBubble>
+        <stages>
+            <li>
+                <label>broken bond</label>
+                <description>I broke my oath. My spren is a deadeye now — a hollow shell of what it once was. The emptiness where the bond used to be is unbearable.</description>
+                <baseMoodEffect>-20</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_StrainedBond</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Roshar_Hediff_StrainedBond</hediff>
+        <stages>
+            <li>
+                <label>strained bond</label>
+                <description>My bond with my spren feels strained. I need to do better.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>fractured bond</label>
+                <description>The bond with my spren is fracturing. I can feel it weakening.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+            <li>
+                <label>breaking bond</label>
+                <description>My bond is on the verge of shattering. My spren is fading.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

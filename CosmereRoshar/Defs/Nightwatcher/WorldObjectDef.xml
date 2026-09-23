@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RimWorld.WorldObjectDef>
+        <defName>Cosmere_Roshar_NightwatcherValley</defName>
+        <label>Nightwatcher's Valley</label>
+        <description>A sheltered valley where the Old Magic is strong. Those who seek the Nightwatcher come here to ask their boon — and receive their curse in return.</description>
+        <worldObjectClass>Cosmere.System.Roshar.WorldObject.NightwatcherValley</worldObjectClass>
+        <canHaveFaction>false</canHaveFaction>
+        <canHaveMap>false</canHaveMap>
+        <validLaunchTarget>false</validLaunchTarget>
+        <selectable>true</selectable>
+        <neverMultiSelect>true</neverMultiSelect>
+        <texture>UI/Icons/Abilities/CultivationsPerpendicularity</texture>
+    </RimWorld.WorldObjectDef>
+</Defs>

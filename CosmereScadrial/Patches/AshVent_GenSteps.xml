@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+        <value>
+            <li>Cosmere_Scadrial_GenStep_AshVents</li>
+        </value>
+    </Operation>
+</Patch>

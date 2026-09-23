@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- A kandra wearing a wolfhound.
+
+         This is not a dog. It is a person who is currently shaped like one, which is exactly why
+         it inherits from the animal base and then takes humanlike intelligence back. RimWorld
+         will only hand a pawn a draft controller if its race is humanlike or a colony mech, and
+         only offers orders to something IsColonistPlayerControlled, which wants humanlike again.
+         Nothing else gets to be told what to do.
+
+         renderTree is a plain field rather than something derived from intelligence, so the
+         Animal tree keeps it drawn as a dog while the rest of it answers to the player. -->
+    <!-- What a body without hands cannot do, whatever the mind inside it knows. Hauling and
+         cleaning stay: a dog can drag things and does not need thumbs to walk somewhere. -->
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_AnimalShape</defName>
+        <label>wearing an animal</label>
+        <description>Four legs and a mouth. The kandra inside remembers how to set a bone and cannot do it with this body.</description>
+        <!-- Synthesises its own stage from whichever animal is worn: move speed, temperature
+             tolerance and hunger rate all come from the real animal's ThingDef at runtime,
+             because there are 117 animals and one hediff. -->
+        <hediffClass>Cosmere.System.Scadrial.Kandra.Hediff_KandraAnimalShape</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <everCurableByItem>false</everCurableByItem>
+        <makesSickThought>false</makesSickThought>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <disabledWorkTags>
+                    <li>ManualSkilled</li>
+                    <li>Crafting</li>
+                    <li>Artistic</li>
+                    <li>Caring</li>
+                    <li>Cooking</li>
+                    <li>Intellectual</li>
+                    <li>Constructing</li>
+                    <li>Mining</li>
+                    <li>PlantWork</li>
+                    <li>Firefighting</li>
+                    <li>Shooting</li>
+                    <li>Social</li>
+                </disabledWorkTags>
+                <capMods>
+                    <li>
+                        <!-- A real wolf has full Manipulation; it has paws. Dropping this to 0.20
+                             cost about 9.6 MeleeHitChance, since MeleeHitChance carries a
+                             capacityOffsets entry on Manipulation with a scale of 12. -->
+                        <capacity>Manipulation</capacity>
+                        <setMax>0.90</setMax>
+                    </li>
+                    <li>
+                        <capacity>Talking</capacity>
+                        <setMax>0.10</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+            <comps>
+            <li Class="Cosmere.System.Scadrial.Kandra.HediffCompProperties_KandraShapeVerbs" />
+        </comps>
+        <renderNodeProperties>
+            <li>
+                <debugLabel>Kandra shape</debugLabel>
+                <nodeClass>Cosmere.System.Scadrial.Kandra.PawnRenderNode_KandraShape</nodeClass>
+                <workerClass>Cosmere.System.Scadrial.Kandra.PawnRenderNodeWorker_KandraShape</workerClass>
+                <!-- Explicit. Vanilla Body declares none and defaults to 0; so does the carried
+                     node. Leaving ours unset makes the animal-versus-weapon order undefined. -->
+                <baseLayer>0</baseLayer>
+            </li>
+        </renderNodeProperties>
+</HediffDef>
+
+    
+</Defs>

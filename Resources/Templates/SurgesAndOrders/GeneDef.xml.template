@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef ParentName="Cosmere_Roshar_Gene_BaseRadiantOrder" Name="Cosmere_Roshar_Gene_Radiant{{defName order.name}}">
+        <defName>Cosmere_Roshar_Gene_Radiant{{defName order.name}}</defName>
+        <label>{{title order.name}}</label>
+        <description>{{order.description}}</description>
+        <abilities>
+            {{#each order.abilities}}
+            <li>{{this}}</li>
+            {{/each}}
+        </abilities>
+
+        <resourceDescription>{{order.description}}</resourceDescription>
+        <iconPath>UI/Surgebinding/Order/{{defName order.name}}</iconPath>
+        <modExtensions>
+            <li Class="Cosmere.System.Roshar.DefModExtension.RadiantOrder">
+                <order>{{defName order.name}}</order>
+                <trait>Cosmere_Roshar_Trait_Radiant{{defName order.name}}</trait>
+            </li>
+        </modExtensions>
+    </GeneDef>
+
+    <TraitDef ParentName="Cosmere_Roshar_Trait_BaseRadiantOrder" Name="Cosmere_Roshar_Trait_Radiant{{defName order.name}}">
+        <defName>Cosmere_Roshar_Trait_Radiant{{defName order.name}}</defName>
+        <label>{{title order.name}}</label>
+        <description>{{order.description}}</description>
+
+        <degreeDatas>
+            {{#each order.ideals}}
+            <li>
+                <label>{{title label}}</label>
+                <description>{{title description}}</description>
+                <degree>{{@index}}</degree>
+                <commonality>0</commonality>
+            </li>
+            {{/each}}
+        </degreeDatas>
+
+        <modExtensions>
+            <li Class="Cosmere.System.Roshar.DefModExtension.RadiantOrder">
+                <order>{{defName order.name}}</order>
+            </li>
+        </modExtensions>
+    </TraitDef>
+</Defs>

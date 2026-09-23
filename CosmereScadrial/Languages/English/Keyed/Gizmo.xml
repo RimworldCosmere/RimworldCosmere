@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Kandra_TakeForm>Take a form</CS_Kandra_TakeForm>
+    <CS_Kandra_TakeFormDesc>Rearrange into one of the bodies this kandra has eaten. Takes ten seconds. Forms known: {COUNT}.</CS_Kandra_TakeFormDesc>
+    <CS_Kandra_NoFormsYet>This kandra has not taken anyone's bones yet.</CS_Kandra_NoFormsYet>
+    <CS_Kandra_Revert>Return to true body</CS_Kandra_Revert>
+    <CS_Kandra_RevertDesc>Drop the borrowed shape. Others find the sight of a kandra's own body hard to sit with.</CS_Kandra_RevertDesc>
+    <CS_Kandra_ConsumeBones>Take the bones of {FORM}</CS_Kandra_ConsumeBones>
+    <CS_Kandra_PickForm>Take a form</CS_Kandra_PickForm>
+    <CS_Kandra_FormCount>{COUNT} remembered</CS_Kandra_FormCount>
+    <CS_Kandra_PickFormTip>Click to take this shape. It takes about ten seconds.</CS_Kandra_PickFormTip>
+    <CS_Kandra_FreeForm>Shape a stranger</CS_Kandra_FreeForm>
+    <CS_Kandra_FreeFormDesc>Put together a face nobody has ever worn. No bones needed; the kandra has done this enough times to invent one.</CS_Kandra_FreeFormDesc>
+    <CS_Kandra_FreeFormLocked>Shapeshift {LEVEL} required. Until then it can only wear what it has eaten.</CS_Kandra_FreeFormLocked>
+  <CS_Kandra_ChooseTrue>Choose a true form</CS_Kandra_ChooseTrue>
+  <CS_Kandra_TrueFormHeader>TRUE FORM</CS_Kandra_TrueFormHeader>
+  <CS_Kandra_Cancel>Cancel</CS_Kandra_Cancel>
+  <CS_Kandra_NoPortrait>No likeness</CS_Kandra_NoPortrait>
+  <CS_Kandra_CountWearing>{COUNT} remembered, wearing {FORM}</CS_Kandra_CountWearing>
+  <CS_Kandra_ToChooseFrom>{COUNT} to choose from</CS_Kandra_ToChooseFrom>
+  <CS_Kandra_TrueKind_Crafted>The body it built for itself</CS_Kandra_TrueKind_Crafted>
+  <CS_Kandra_TrueKind_Adopted>Adopted the shape of {FORM}</CS_Kandra_TrueKind_Adopted>
+  <CS_Kandra_NoMaterial>Bone, not stone. No material.</CS_Kandra_NoMaterial>
+  <CS_Kandra_Note_Crafted>The body it built for itself. Nobody else wears this one.</CS_Kandra_Note_Crafted>
+  <CS_Kandra_Note_Adopted>It gave up the crafted body for this one.</CS_Kandra_Note_Adopted>
+  <CS_Kandra_Note_Wearing>Wearing {FORM}. The shape underneath is still its own.</CS_Kandra_Note_Wearing>
+  <CS_Kandra_EditTrue>Edit true form</CS_Kandra_EditTrue>
+  <CS_Kandra_EditTrue_NotCrafted>Only a crafted body can be reshaped. This one took a shape it ate.</CS_Kandra_EditTrue_NotCrafted>
+  <CS_Kandra_ChangeTrue>Change true form</CS_Kandra_ChangeTrue>
+  <CS_Kandra_ChangeTrue_Nothing>It has eaten nobody. There is nothing else to be.</CS_Kandra_ChangeTrue_Nothing>
+  <CS_Kandra_PickTrueHint>Pick the shape it returns to.</CS_Kandra_PickTrueHint>
+  <CS_Kandra_PickTrueTip>Click to make this the body it goes back to.</CS_Kandra_PickTrueTip>
+  <CS_Kandra_AdoptTitle>Make this the true form?</CS_Kandra_AdoptTitle>
+  <CS_Kandra_AdoptBody>The shape it goes back to when it is not wearing anybody. Whatever it is now stays in the list, and it can put that on again whenever it likes.</CS_Kandra_AdoptBody>
+  <CS_Kandra_AdoptKeep>Cancel</CS_Kandra_AdoptKeep>
+  <CS_Kandra_AdoptTake>Make it the true form</CS_Kandra_AdoptTake>
+  <CS_Kandra_NoFormsYetHint>A kandra learns a shape from the bones of the dead. Haul a corpse to it and it will remember the face.</CS_Kandra_NoFormsYetHint>
+  <CS_Kandra_Reshape>Reshape</CS_Kandra_Reshape>
+  <CS_Kandra_ReshapeTitle>Reshape the true body</CS_Kandra_ReshapeTitle>
+  <CS_Kandra_ReshapeSub>Pick what it is made of</CS_Kandra_ReshapeSub>
+  <CS_Kandra_ReshapeCost>Ten seconds of work.</CS_Kandra_ReshapeCost>
+  <CS_Kandra_ReshapeNow>Now</CS_Kandra_ReshapeNow>
+  <CS_Kandra_ReshapeAfter>After</CS_Kandra_ReshapeAfter>
+  <CS_Kandra_Gender>Gender</CS_Kandra_Gender>
+  <CS_Kandra_GenderReads>The colony will know it as {GENDER}.</CS_Kandra_GenderReads>
+  <CS_Kandra_MaterialTip>Built from {MATERIAL}.</CS_Kandra_MaterialTip>
+</LanguageData>

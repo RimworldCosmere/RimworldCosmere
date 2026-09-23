@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Borrowed art. The wolf source is greyscale at 0.84 luminance, so without an explicit
+         colour it multiplies by white and renders as a near-white dog with stark eyes. -->
+    <ThingDef ParentName="AnimalThingBase">
+        <defName>Cosmere_Scadrial_Race_Wolfhound</defName>
+        <label>wolfhound</label>
+        <description>Tall, lean, and bred for the hunt. A wolfhound stands higher at the shoulder than most men's waists and runs down what it is set after. Noble houses keep them for the look of the thing as much as the use.</description>
+        <statBases>
+            <MoveSpeed>5.4</MoveSpeed>
+            <MarketValue>320</MarketValue>
+            <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+            <Wildness>0</Wildness>
+        </statBases>
+        <tools>
+            <li>
+                <label>left claw</label>
+                <labelNoLocation>claw</labelNoLocation>
+                <capacities>
+                    <li>Scratch</li>
+                </capacities>
+                <power>10.4</power>
+                <cooldownTime>2</cooldownTime>
+                <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+            </li>
+            <li>
+                <label>right claw</label>
+                <labelNoLocation>claw</labelNoLocation>
+                <capacities>
+                    <li>Scratch</li>
+                </capacities>
+                <power>10.4</power>
+                <cooldownTime>2</cooldownTime>
+                <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+            </li>
+            <li>
+                <capacities>
+                    <li>Bite</li>
+                </capacities>
+                <power>16</power>
+                <cooldownTime>2.6</cooldownTime>
+                <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+                <chanceFactor>0.7</chanceFactor>
+            </li>
+            <li>
+                <label>head</label>
+                <capacities>
+                    <li>Blunt</li>
+                </capacities>
+                <power>6</power>
+                <cooldownTime>2</cooldownTime>
+                <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+                <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+                <chanceFactor>0.2</chanceFactor>
+            </li>
+        </tools>
+        <race>
+            <animalType>Canine</animalType>
+            <body>QuadrupedAnimalWithPawsAndTail</body>
+            <petness>1</petness>
+            <baseBodySize>0.95</baseBodySize>
+            <baseHungerRate>0.55</baseHungerRate>
+            <baseHealthScale>1.1</baseHealthScale>
+            <foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
+            <leatherDef>Leather_Dog</leatherDef>
+            <nameOnTameChance>1</nameOnTameChance>
+            <trainability>Advanced</trainability>
+            <nuzzleMtbHours>14</nuzzleMtbHours>
+            <gestationPeriodDays>10</gestationPeriodDays>
+            <soundEating>PredatorSmall_Eat</soundEating>
+            <litterSizeCurve>
+                <points>
+                    <li>(0.5, 0)</li>
+                    <li>(1, 1)</li>
+                    <li>(2, 1.7)</li>
+                    <li>(2.5, 0.7)</li>
+                    <li>(3, 0)</li>
+                </points>
+            </litterSizeCurve>
+            <lifeExpectancy>10</lifeExpectancy>
+            <lifeStageAges>
+                <li>
+                    <def>AnimalBaby</def>
+                    <minAge>0</minAge>
+                </li>
+                <li>
+                    <def>AnimalJuvenile</def>
+                    <minAge>0.25</minAge>
+                </li>
+                <li>
+                    <def>AnimalAdult</def>
+                    <minAge>0.5</minAge>
+                    <soundWounded>Pawn_Dog_Injured</soundWounded>
+                    <soundDeath>Pawn_Dog_Death</soundDeath>
+                    <soundCall>Pawn_Dog_Call</soundCall>
+                    <soundAngry>Pawn_Dog_Angry</soundAngry>
+                </li>
+            </lifeStageAges>
+            <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+            <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+            <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+            <headPosPerRotation>
+                <li>(0.02, 0, 0.25)</li>
+                <li>(0.24, 0, 0.11)</li>
+                <li>(0.02, 0, -0.16)</li>
+                <li>(-0.24, 0, 0.11)</li>
+            </headPosPerRotation>
+        </race>
+        <tradeTags>
+            <li>AnimalPet</li>
+        </tradeTags>
+    </ThingDef>
+
+    <!-- Adult drawSize stays under KandraShapeEligibility.MaxDrawSize, or a kandra could not
+         wear one and TenSoon would arrive as a person. -->
+    <PawnKindDef ParentName="AnimalKindBase">
+        <defName>Cosmere_Scadrial_Wolfhound</defName>
+        <label>wolfhound</label>
+        <race>Cosmere_Scadrial_Race_Wolfhound</race>
+        <combatPower>60</combatPower>
+        <lifeStages>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Wolf_Timber/Wolf_Timber</texPath>
+                    <color>(0.42, 0.38, 0.34)</color>
+                    <drawSize>1</drawSize>
+                    <shadowData>
+                        <volume>(0.3, 0.25, 0.3)</volume>
+                        <offset>(0, 0, -0.15)</offset>
+                    </shadowData>
+                </bodyGraphicData>
+            </li>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Wolf_Timber/Wolf_Timber</texPath>
+                    <color>(0.42, 0.38, 0.34)</color>
+                    <drawSize>1.4</drawSize>
+                    <shadowData>
+                        <volume>(0.35, 0.3, 0.35)</volume>
+                        <offset>(0, 0, -0.2)</offset>
+                    </shadowData>
+                </bodyGraphicData>
+            </li>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Wolf_Timber/Wolf_Timber</texPath>
+                    <color>(0.42, 0.38, 0.34)</color>
+                    <drawSize>1.75</drawSize>
+                    <shadowData>
+                        <volume>(0.4, 0.35, 0.4)</volume>
+                        <offset>(0, 0, -0.25)</offset>
+                    </shadowData>
+                </bodyGraphicData>
+            </li>
+        </lifeStages>
+    </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneCategoryDef>
+        <defName>Cosmere_Roshar</defName>
+        <label>cosmere - roshar</label>
+        <displayPriorityInXenotype>4998</displayPriorityInXenotype>
+        <displayPriorityInGenepack>4998</displayPriorityInGenepack>
+    </GeneCategoryDef>
+</Defs>

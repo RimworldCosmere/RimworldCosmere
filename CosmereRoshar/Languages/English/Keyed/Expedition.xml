@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_Gemheart_Odds>Likely outcome: {OUTCOME}</CRO_Gemheart_Odds>
+    <CRO_Gemheart_Odds_Victory>Gemheart claimed</CRO_Gemheart_Odds_Victory>
+    <CRO_Gemheart_Odds_HardWon>Gemheart won, with wounds</CRO_Gemheart_Odds_HardWon>
+    <CRO_Gemheart_Odds_Pyrrhic>Gemheart at heavy cost</CRO_Gemheart_Odds_Pyrrhic>
+    <CRO_Gemheart_Odds_Failure>Driven back empty-handed</CRO_Gemheart_Odds_Failure>
+    <CRO_Gemheart_Odds_Disaster>Disaster on the plateaus</CRO_Gemheart_Odds_Disaster>
+    <CRO_Gemheart_Odds_Tooltip>Expedition strength {POWER} against plateau danger {DIFFICULTY}.\n\nStrength comes from Melee and Shooting skill, spoken Ideals, equipped weapons, and the size of the party. Danger rises with the wealth of the colony and the days it has stood. The chasmfiend decides the rest.</CRO_Gemheart_Odds_Tooltip>
+    <CRO_Gemheart_Row_Tooltip>{PAWN} adds {POWER} strength to the expedition. Click to select or remove.</CRO_Gemheart_Row_Tooltip>
+    <CRO_Gemheart_Row_Full>The expedition is full at {MAX}. Remove someone before adding another.</CRO_Gemheart_Row_Full>
+    <CRO_BreakBond_SeverTooltip>Permanently ends the Nahel bond. The spren dies, the Surges are lost, and nothing restores either.</CRO_BreakBond_SeverTooltip>
+</LanguageData>

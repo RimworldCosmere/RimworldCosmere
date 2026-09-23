@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>CryptikLemur</Authors>
+        <AssemblyName>Cosmere.Quickstarts</AssemblyName>
+        <RootNamespace>Cosmere.Core.Quickstart</RootNamespace>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <!-- Loaded only when the Quickstarts mod is active. See ../loadFolders.xml. -->
+        <OutDir>..\Quickstarts\Assemblies\</OutDir>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <Using Include="System.Linq"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="RimWorks.Quickstarts"/>
+        <Using Include="RimWorks.RimLogging.Log" Alias="Log"/>
+        <Using Include="Cosmere.Core.Extension"/>
+        <Using Include="Cosmere.System.Scadrial.Extension"/>
+        <Using Include="Cosmere.System.Roshar.Extension"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RimWorks.Quickstarts.Ref" Version="3.*"/>
+        <PackageReference Include="RimWorks.RimLogging" Version="2.*"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <ProjectReference Include="..\CosmereCore\Cosmere.csproj"/>
+    </ItemGroup>
+
+    <!-- Same game-assembly probe as Cosmere.csproj. Krafs is the fallback when none match. -->
+    <ItemGroup>
+        <Reference Include="..\..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\..\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="D:\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\RimWorld\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="/mnt/games/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/RimWorld/RimWorldLinux_Data/Managed')">
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition="'@(Reference-&gt;WithMetadataValue('Identity', 'Assembly-CSharp')-&gt;Metadata('HintPath')-&gt;Exists())' == ''">
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*"/>
+    </ItemGroup>
+</Project>

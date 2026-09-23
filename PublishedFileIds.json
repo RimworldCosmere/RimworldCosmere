@@ -1,0 +1,13 @@
+{
+  "CosmereCore": {
+    "stable": "3474223604",
+    "beta": "3706851018"
+  },
+  "CosmereScadrial": {
+    "stable": "3474236328",
+    "beta": "3706866071"
+  },
+  "CosmereRoshar": {
+    "beta": "3706867006"
+  }
+}

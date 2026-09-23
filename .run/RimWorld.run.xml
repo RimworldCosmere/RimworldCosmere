@@ -1,0 +1,11 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="RimWorld" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration" focusToolWindowBeforeRun="true">
+    <option name="commandLineOptions" value="-popupwindow -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -screen-monitor 0" />
+    <option name="modListPath" value="" />
+    <option name="saveFilePath" value="" />
+    <option name="scriptName" value="/mnt/games/RimWorld/RimWorldLinux" />
+    <method v="2">
+      <option name="Build Solution" enabled="true" />
+    </method>
+  </configuration>
+</component>

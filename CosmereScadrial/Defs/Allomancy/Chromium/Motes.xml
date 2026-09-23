@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="CosmereMoteAllomancyAura">
+        <defName>Cosmere_Scadrial_Mote_ChromiumAura</defName>
+        <label>chromium aura</label>
+        <graphicData>
+            <drawSize>3</drawSize>
+            <shaderParameters>
+                <_PulseTime>6</_PulseTime>
+                <_Speed>-1</_Speed>
+                <_TrailLength>0.08</_TrailLength>
+                <_Color>(0.518, 0.525, 0.545, 1)</_Color>
+                <_Color2>(0.624, 0.671, 0.769, 0.2)</_Color2>
+            </shaderParameters>
+        </graphicData>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,20 @@
+{
+  "name": "zircon",
+  "descriptions": {
+    "raw": "Pale, near-colorless crystals with a faint iridescent shimmer, like moonlight on still water. Zircon is prized for its subtle clarity and quiet beauty, often overlooked in favor of flashier gems, yet valued by those who understand its properties.",
+    "cut": "A finely cut zircon, its pale facets refracting light into soft, spectral hints of color. Understated and elegant, it is favored by scholars and artisans who value precision over spectacle.",
+    "sphere": "A polished zircon sphere, clear and faintly luminous. It holds Stormlight with quiet efficiency and is often employed in fabrials requiring careful observation or precise measurement."
+  },
+  "color": "f4f8ff",
+  "colorTwo": "7a7c80",
+  "glowColor": "f4f8ff",
+  "baseStormlight": 4,
+  "baseMarketValue": 1,
+  "baseBeauty": 1.5,
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 5,
+    "commonality": 0.3,
+    "sizeRange": [8, 16]
+  }
+}

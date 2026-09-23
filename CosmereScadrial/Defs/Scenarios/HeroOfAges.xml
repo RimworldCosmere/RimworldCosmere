@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_HeroOfAges</defName>
+    <label>Cosmere - Scadrial - Hero of Ages</label>
+    <description>Ruin is free. The ash falls heavier each day, smothering crops and choking rivers. The mists linger past dawn, killing those they touch. Elend and Vin lead what remains of civilization while Sazed searches for an answer he no longer believes exists.</description>
+    <scenario>
+      <summary>Survive the end of the world as Ruin's power grows unchecked.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_NewEmpire</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Elend</firstName>
+              <lastName>Venture</lastName>
+              <age>23</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Noble_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_NobleScholar</adulthood>
+              <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Vin</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
+              <age>18</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_CrewsLuck</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_NobleHeritage</li>
+              </genes>
+              <mistborn>true</mistborn>
+              <apparel>
+                <li>
+                  <thing>Cosmere_Scadrial_Apparel_Mistcloak</thing>
+                  <stuff>Cloth</stuff>
+                </li>
+              </apparel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Cosmere_Scadrial_Skill_AllomanticPower</def><level>1</level><passion>Major</passion></li>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Shooting</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Sazed</firstName>
+              <age>37</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Terris_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Keeper</adulthood>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>NaturalMood</def><degree>-2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Cosmere_Scadrial_Skill_FeruchemicPower</def><level>10</level><passion>Major</passion></li>
+                <li><def>Intellectual</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Lestibournes</firstName>
+              <nickName>Spook</nickName>
+              <age>18</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_StreetUrchin</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Sentry</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingTin</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Edgard</firstName>
+              <lastName>Ladrian</lastName>
+              <nickName>Breeze</nickName>
+              <age>42</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Noble_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Courtier</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBrass</li>
+              </genes>
+              <traits>
+                <li><def>Greedy</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Hammond</firstName>
+              <skinColor>(242, 213, 190)</skinColor>
+              <nickName>Ham</nickName>
+              <age>37</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Thug</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Demoux</firstName>
+              <age>26</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <childhood>Cosmere_Scadrial_Backstory_Skaa_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_Thug</adulthood>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <!-- Sits after ScenPart_NamedPawns on purpose. That part clears the roster
+             and this one regenerates it, with NamedPawns stamping its templates onto
+             each pawn through Notify_PawnGenerated as it comes out. -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>7</pawnChoiceCount>
+          <!-- TotalPawnCount is the sum of these, and it is what sets
+               startingPawnCount. An empty list means zero starting pawns and an
+               index error during map generation. No xenotype named, so the named
+               pawns decide their own. -->
+          <xenotypeCounts>
+            <li>
+              <count>7</count>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>80</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>400</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_HeroOfAges</progression>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_Terris>60</Cosmere_Scadrial_Faction_Terris>
+            <Cosmere_Scadrial_Faction_SkaaRebels>40</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_HouseVenture>-40</Cosmere_Scadrial_Faction_HouseVenture>
+            <!-- Ruin is already loose when this scenario starts; that is its premise. Every
+                 other path creates it at the Well, which a start here never reaches. -->
+            <Cosmere_Scadrial_Faction_Ruin>-100</Cosmere_Scadrial_Faction_Ruin>
+            <Cosmere_Scadrial_Faction_HouseElariel>-40</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseHasting>-40</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseLekal>-40</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseTekiel>-40</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseRenoux>-40</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_HouseCett>-40</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_FinalEmpireNPC>-100</Cosmere_Scadrial_Faction_FinalEmpireNPC>
+          </relations>
+        <between>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_FinalEmpireNPC</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseCett</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseElariel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseHasting</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseLekal</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseRenoux</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseTekiel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseVenture</b>
+            <goodwill>-100</goodwill>
+          </li>
+        </between>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The red sun hangs low. Ash drifts like snow, but there is no beauty in it. The koloss are loose, the Inquisitors hunt freely, and Ruin's influence grows. Your colony may be the last bastion of civilization left standing. Hold. Endure. And pray that someone, somewhere, finds the answer.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

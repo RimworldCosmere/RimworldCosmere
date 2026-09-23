@@ -1,0 +1,11 @@
+#nullable disable
+using RimWorld;
+using Verse;
+
+namespace Cosmere.Core;
+
+public static partial class ThingDefOf {        
+    {{#each metals as | metal |}}
+    public static ThingDef {{defName metal.name}};
+    {{/each}}
+}

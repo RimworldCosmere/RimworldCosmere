@@ -1,0 +1,52 @@
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Roshar.Surgebinding;
+
+public class BondViolationLogEntry : LogEntry {
+    internal string orderLabel = string.Empty;
+    internal Pawn pawn = null!;
+    internal string reason = string.Empty;
+    internal string severityLabel = string.Empty;
+
+    public BondViolationLogEntry() { }
+
+    public BondViolationLogEntry(Pawn pawn, string orderLabel, string reason, string severityLabel) {
+        this.pawn = pawn;
+        this.orderLabel = orderLabel;
+        this.reason = reason;
+        this.severityLabel = severityLabel;
+    }
+
+    public override bool Concerns(Verse.Thing t) {
+        return t == pawn;
+    }
+
+    public override IEnumerable<Verse.Thing> GetConcerns() {
+        if (pawn != null) yield return pawn;
+    }
+
+    public new string ToGameStringFromPOV(Verse.Thing pov, bool forceLog = false) {
+        if (pov != pawn) return ToString();
+
+        return $"Bond strained ({severityLabel}): {reason}";
+    }
+
+    public override void ClickedFromPOV(Verse.Thing pov) { }
+
+    public override Texture2D? IconFromPOV(Verse.Thing pov) {
+        return null;
+    }
+
+    public override string ToString() {
+        return $"{pawn?.NameShortColored ?? "Unknown"}'s {orderLabel} bond strained ({severityLabel}): {reason}";
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_References.Look(ref pawn, "pawn");
+        Scribe_Values.Look(ref orderLabel, "orderLabel", string.Empty);
+        Scribe_Values.Look(ref reason, "reason", string.Empty);
+        Scribe_Values.Look(ref severityLabel, "severityLabel", string.Empty);
+    }
+}

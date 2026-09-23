@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_Bondsmith_Calling_Label>hearing {0}</CRO_Bondsmith_Calling_Label>
+    <CRO_Bondsmith_Calling_Title>{PAWN} Hears the {SPREN}</CRO_Bondsmith_Calling_Title>
+    <CRO_Bondsmith_Calling_Text>{PAWN} has begun hearing a vast, ancient voice. It is the {SPREN} — one of the three godspren of Roshar. The voice calls to them, offering a bond unlike any other. Only three Bondsmiths can exist at once, each bound to one of these immense beings.\n\nWill {PAWN} answer the call?</CRO_Bondsmith_Calling_Text>
+
+    <CRO_Bondsmith_Accept>Answer the Call</CRO_Bondsmith_Accept>
+    <CRO_Bondsmith_NotYet>Not Yet</CRO_Bondsmith_NotYet>
+    <CRO_Bondsmith_Refuse>Refuse the Call</CRO_Bondsmith_Refuse>
+
+    <CRO_Bondsmith_Dialog_Title>{PAWN} — Bond with the {SPREN}</CRO_Bondsmith_Dialog_Title>
+    <CRO_Bondsmith_Dialog_Subtitle>The {SPREN} has chosen you. There is only one path forward.</CRO_Bondsmith_Dialog_Subtitle>
+
+    <CRO_BondDeath_Bondsmith_Text>{PAWN}'s bond with the {SPREN} has been severed. The godspren has withdrawn to the Cognitive Realm, their connection shattered. {PAWN} is no longer a Bondsmith of the {ORDER} order.</CRO_BondDeath_Bondsmith_Text>
+</LanguageData>

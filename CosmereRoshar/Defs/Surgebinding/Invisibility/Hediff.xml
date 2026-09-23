@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Invisible</defName>
+        <label>invisible</label>
+        <description>Light bends around this person as if they are not there. To hostile eyes, the space they occupy is simply empty. It is a perfect deception, but a fragile one. A single act of violence and the weave unravels, light snapping back into place and revealing what was hidden all along.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.Invisible</hediffClass>
+        <comps>
+            <li Class="Verse.HediffCompProperties_Invisibility">
+                <visibleToPlayer>false</visibleToPlayer>
+                <fadeDurationTicks>60</fadeDurationTicks>
+                <recoverFromDisruptedTicks>180</recoverFromDisruptedTicks>
+                <affectedByDisruptor>false</affectedByDisruptor>
+            </li>
+        </comps>
+    </HediffDef>
+</Defs>

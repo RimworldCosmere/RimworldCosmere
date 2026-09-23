@@ -8,6 +8,15 @@
 		<baseCost>600</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>0.00</researchViewX>
-		<researchViewY>0.00</researchViewY>
+		<researchViewY>2.50</researchViewY>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;Investiture</li>
+	      <li>subject_story-&gt;spent a life proving that power obeys laws, and was disliked for it</li>
+	      <li>subject_story-&gt;measured what everyone else was content to call a miracle</li>
+	      <li>subject_story-&gt;wrote the first honest account of how Investiture actually behaves</li>
+	      <li>subject_gerund-&gt;studying Investiture</li>
+	    </rulesStrings>
+	  </generalRules>
 	</ResearchProjectDef>
 </Defs>

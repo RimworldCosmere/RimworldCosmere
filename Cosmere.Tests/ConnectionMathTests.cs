@@ -1,0 +1,590 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Cosmere.Core.ShardConnection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Cosmere.Tests;
+
+/// <summary>
+///     The Connection arithmetic, checked against the worked examples in the design.
+///     <para>
+///         The one that matters most is the refugee: PawnExtension.CanUseMetal short-circuits on
+///         metal.godMetal today, so a vanilla space refugee with no Investiture at all can burn
+///         atium. These numbers are what replaces that clause.
+///     </para>
+/// </summary>
+[TestClass]
+public class ConnectionMathTests {
+    private const int Floor = ConnectionMath.AncestryFloor;
+    private const int Misting = ConnectionMath.SingleInvestitureBonus;
+    private const int Mistborn = ConnectionMath.FullInvestitureBonus;
+
+    [TestMethod]
+    public void TheThreeFloorsAreIndependentlyAddressable() {
+        Assert.AreEqual(30, ConnectionMath.AncestryFloor);
+        Assert.AreEqual(30, ConnectionMath.GodMetalThreshold);
+        Assert.AreEqual(45, ConnectionMath.ResidenceCap);
+    }
+
+    [TestMethod]
+    public void PlanetaryConnectionSourcesStayOnTheSharedScale() {
+        int strength = ConnectionMath.ComposeWorld(
+            ConnectionMath.AncestryFloor,
+            ConnectionMath.ResidenceCap,
+            0,
+            0
+        );
+
+        Assert.AreEqual(75, strength);
+        Assert.IsTrue(strength <= ConnectionMath.Max);
+    }
+
+    [TestMethod]
+    public void GodMetalNeedsTheThresholdExactly() {
+        Assert.IsFalse(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold - 1));
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(ConnectionMath.GodMetalThreshold));
+    }
+
+    [TestMethod]
+    public void TierBoundariesMatchTheDesign() {
+        Assert.AreEqual(ConnectionTier.None, ConnectionMath.TierOf(0));
+        Assert.AreEqual(ConnectionTier.Touched, ConnectionMath.TierOf(1));
+        Assert.AreEqual(ConnectionTier.Touched, ConnectionMath.TierOf(30));
+        Assert.AreEqual(ConnectionTier.Bonded, ConnectionMath.TierOf(31));
+        Assert.AreEqual(ConnectionTier.Bonded, ConnectionMath.TierOf(70));
+        Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(71));
+        Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(99));
+        Assert.AreEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(100));
+    }
+
+    /// <summary>Only a Shardholder reaches Ascendant. Extreme play has to stop at 99.</summary>
+    [TestMethod]
+    public void OrdinarySourcesCannotReachAscendant() {
+        int everything = ConnectionMath.Compose(Floor, 0, Mistborn + Mistborn, 0);
+        Assert.AreEqual(70, everything, "Mistborn and Full Feruchemist together is the top of Bonded.");
+        Assert.AreEqual(ConnectionTier.Bonded, ConnectionMath.TierOf(everything));
+    }
+
+    [TestMethod]
+    public void TheWorkedExamplesHold() {
+        int plain = ConnectionMath.Compose(Floor, 0, 0, 0);
+        Assert.AreEqual(30, plain);
+        Assert.AreEqual(ConnectionTier.Touched, ConnectionMath.TierOf(plain));
+
+        int misting = ConnectionMath.Compose(Floor, 0, Misting, 0);
+        Assert.AreEqual(40, misting);
+        Assert.AreEqual(ConnectionTier.Bonded, ConnectionMath.TierOf(misting));
+
+        int mistborn = ConnectionMath.Compose(Floor, 0, Mistborn, 0);
+        Assert.AreEqual(50, mistborn);
+        Assert.AreEqual(ConnectionTier.Bonded, ConnectionMath.TierOf(mistborn));
+
+        int refugee = ConnectionMath.Compose(0, 0, 0, 0);
+        Assert.AreEqual(0, refugee);
+        Assert.AreEqual(ConnectionTier.None, ConnectionMath.TierOf(refugee));
+    }
+
+    /// <summary>
+    ///     The gate that fixes the reported bug. An off-world refugee must not burn atium; a
+    ///     plain Scadrian must.
+    /// </summary>
+    [TestMethod]
+    public void GodMetalNeedsTouched() {
+        Assert.IsFalse(ConnectionMath.MayUseGodMetal(0), "A refugee with no Investiture cannot burn atium.");
+        Assert.IsFalse(ConnectionMath.MayUseGodMetal(29));
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(30), "A plain Scadrian can.");
+        Assert.IsTrue(ConnectionMath.MayUseGodMetal(100));
+    }
+
+    [TestMethod]
+    public void ResidenceSetsTheShardWorldTie() {
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap, 0, 0),
+            "A decade of residence reaches the cap."
+        );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap / 2,
+            ConnectionMath.Compose(0, ConnectionMath.ResidenceCap / 2, 0, 0),
+            "Halfway there gets halfway."
+        );
+        Assert.AreEqual(
+            ConnectionMath.ResidenceCap,
+            ConnectionMath.Compose(Floor, ConnectionMath.ResidenceCap, 0, 0),
+            "The stronger world tie sets the Shard baseline."
+        );
+    }
+
+    [TestMethod]
+    public void ShardConnectionDoesNotDoubleCountTheWorldTie() {
+        Assert.AreEqual(65, ConnectionMath.Compose(30, 45, 20, 0));
+    }
+
+    /// <summary>Harmony holds both, so Connection to Harmony is Connection to each.</summary>
+    [TestMethod]
+    public void HarmonyCarriesToRuinAndPreservation() {
+        Assert.AreEqual(40, ConnectionMath.WithHarmony(0, 40));
+        Assert.AreEqual(
+            55,
+            ConnectionMath.WithHarmony(55, 40),
+            "Harmony must never lower a strength the pawn already had."
+        );
+        Assert.AreEqual(0, ConnectionMath.WithHarmony(0, 0));
+    }
+
+    [TestMethod]
+    public void ComposeNeverLeavesTheScale() {
+        Assert.AreEqual(100, ConnectionMath.Compose(Floor, 0, 200, 500));
+        Assert.AreEqual(0, ConnectionMath.Compose(0, 0, 0, -50));
+    }
+
+    /// <summary>
+    ///     Storage is the SpiritWeb's 0..1 edge, so the two scales have to round-trip. A drift
+    ///     here would move a pawn across a tier boundary on save and reload.
+    /// </summary>
+    [TestMethod]
+    public void EdgeConversionRoundTrips() {
+        foreach (int strength in new[] { 0, 1, 30, 31, 50, 70, 71, 99, 100 }) {
+            Assert.AreEqual(
+                strength,
+                ConnectionMath.FromEdge(ConnectionMath.ToEdge(strength)),
+                $"{strength} did not survive the trip through the SpiritWeb edge."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     The clause this whole system replaces. CanUseMetal read
+    ///     <c>if (metal.godMetal || ...) return true;</c>, so godMetal short-circuited to true for
+    ///     any pawn at all and a vanilla space refugee could burn atium.
+    /// </summary>
+    [TestMethod]
+    public void GodMetalNoLongerShortCircuitsToTrue() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Extension", "PawnExtension.cs"
+            )
+        );
+
+        int gate = source.IndexOf("ConnectionUtility.MayUse", StringComparison.Ordinal);
+        int shortCircuit = source.IndexOf(
+            "if (metal.godMetal || pawn.IsMistborn()", StringComparison.Ordinal
+        );
+
+        Assert.IsTrue(gate >= 0, "Expected god metal use to go through the Connection gate.");
+        Assert.IsTrue(
+            shortCircuit < 0 || gate < shortCircuit,
+            "The Connection gate has to run before the godMetal short-circuit, or it never fires."
+        );
+    }
+
+    /// <summary>
+    ///     Every god metal has to name the Shards it is made of, or the gate has nothing to
+    ///     check against and silently lets everyone through.
+    /// </summary>
+    [TestMethod]
+    public void EveryGodMetalNamesItsShard() {
+        List<string> offenders = [];
+        int seen = 0;
+
+        foreach (string path in Directory.GetFiles(
+                     Path.Combine(RepoRoot, "Resources", "Data", "Metals"), "*.json")) {
+            string json = File.ReadAllText(path);
+            if (!json.Contains("\"godMetal\": true", StringComparison.OrdinalIgnoreCase)) continue;
+
+            seen++;
+            if (!json.Contains("\"shards\"", StringComparison.Ordinal)) {
+                offenders.Add(Path.GetFileNameWithoutExtension(path));
+            }
+        }
+
+        Assert.IsTrue(seen > 0, "Found no god metals - the walk is wrong, not the data.");
+        Assert.AreEqual(0, offenders.Count, "These god metals name no Shards: " + string.Join(", ", offenders));
+    }
+
+    /// <summary>
+    ///     Ancestry hands out floors from a world's fallback Shards, which on Scadrial are Ruin
+    ///     and Preservation, so nothing ever grants a floor to Harmony. Without this a
+    ///     post-Catacendre native reads 0 to the Shard their own world is held by.
+    /// </summary>
+    [TestMethod]
+    public void BeingTiedToBothHalvesIsBeingTiedToHarmony() {
+        Assert.AreEqual(
+            30,
+            ConnectionMath.HarmonyFrom(30, 30),
+            "A native with the floor to both halves is tied to Harmony."
+        );
+        Assert.AreEqual(
+            0,
+            ConnectionMath.HarmonyFrom(30, 0),
+            "Half of Harmony is not Harmony - one half alone grants nothing."
+        );
+        Assert.AreEqual(20, ConnectionMath.HarmonyFrom(50, 20), "It is the weaker half that decides.");
+        Assert.AreEqual(0, ConnectionMath.HarmonyFrom(0, 0), "An off-worlder is tied to none of it.");
+    }
+
+    /// <summary>The two directions have to agree, or a pawn's Harmony reading depends on which way you ask.</summary>
+    [TestMethod]
+    public void TheHarmonyRuleIsSymmetric() {
+        int viaHalves = ConnectionMath.HarmonyFrom(40, 40);
+        Assert.AreEqual(40, viaHalves);
+        Assert.AreEqual(
+            40,
+            ConnectionMath.WithHarmony(0, viaHalves),
+            "Harmony derived from both halves must carry back to each of them unchanged."
+        );
+    }
+
+    /// <summary>
+    ///     Every place that decides a god metal may be used has to ask about Connection.
+    /// </summary>
+    /// <remarks>
+    ///     Gating PawnExtension.CanUseMetal was not enough: ingestion never goes through it. A
+    ///     baseliner swallowed atium and became a Misting because the float menu and
+    ///     AllomanticMetal.PostIngested each had their own godMetal branch. This fails the build
+    ///     if a third one appears.
+    /// </remarks>
+    [TestMethod]
+    public void EveryGodMetalDecisionAsksAboutConnection() {
+        string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
+
+        // exempt files branch on godMetal without deciding whether a pawn may *use* one, not gating access.
+        string[] exempt = ["ScadrianUtility.cs", "MetalInfo.cs", "GeneUtility.cs"];
+
+        List<string> offenders = [];
+        int seen = 0;
+
+        foreach (string path in Directory.GetFiles(scadrial, "*.cs", SearchOption.AllDirectories)) {
+            string name = Path.GetFileName(path);
+            if (Array.IndexOf(exempt, name) >= 0) continue;
+
+            string source = File.ReadAllText(path);
+            if (!source.Contains("godMetal", StringComparison.Ordinal)) continue;
+
+            seen++;
+            if (!source.Contains("ConnectionUtility", StringComparison.Ordinal)) {
+                offenders.Add(Path.GetRelativePath(scadrial, path));
+            }
+        }
+
+        Assert.IsTrue(seen > 0, "Found no god metal decisions - the walk is wrong, not the code.");
+        Assert.AreEqual(
+            0,
+            offenders.Count,
+            "These branch on godMetal without checking Connection: " + string.Join(", ", offenders)
+        );
+    }
+
+    /// <summary>
+    ///     Ancestry comes from the xenotype and nothing else.
+    /// </summary>
+    /// <remarks>
+    ///     Two rules got this wrong in turn. Falling back to the save's world made a baseliner on
+    ///     Scadrial a native; then the cross-world sentinel handed every world's floor to
+    ///     everyone, so a Crashlanded colony of baseliners started at 30 to Ruin and Preservation
+    ///     and burned atium on day one. Neither pawn had earned anything.
+    /// </remarks>
+    [TestMethod]
+    public void AncestryComesFromTheXenotypeAlone() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", "ConnectionUtility.cs"
+            )
+        );
+
+        int floor = source.IndexOf("private static int AncestryFloor", StringComparison.Ordinal);
+        Assert.IsTrue(floor >= 0, "Expected an AncestryFloor to guard.");
+
+        string body = source[floor..];
+        int end = body.IndexOf("\n    }", StringComparison.Ordinal);
+        if (end > 0) body = body[..end];
+
+        Assert.IsFalse(
+            body.Contains("WorldUtility.Primary", StringComparison.Ordinal),
+            "The save's world must not grant ancestry - that made every baseliner a native."
+        );
+        Assert.IsFalse(
+            body.Contains("crossWorld", StringComparison.Ordinal),
+            "The cross-world sentinel must not grant ancestry either - that gave a Crashlanded "
+            + "colony of baseliners 30 to every Shard before they had done anything."
+        );
+        Assert.IsTrue(
+            body.Contains("WorldForXenotype", StringComparison.Ordinal),
+            "The xenotype is what ancestry is read from."
+        );
+    }
+
+    /// <summary>
+    ///     Residence takes ten years to fill, not one - a lifetime somewhere now outgrows being
+    ///     born there instead of only ever tying it.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceTakesTenYearsToFill() {
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(0));
+        Assert.AreEqual(4, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear));
+        Assert.AreEqual(22, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 5));
+        Assert.AreEqual(45, ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence));
+    }
+
+    // The point of the whole change: a lifetime somewhere beats being born there.
+    [TestMethod]
+    public void ResidenceOvertakesAncestryBeforeSevenYears() {
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 6) < ConnectionMath.AncestryFloor);
+        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 7) > ConnectionMath.AncestryFloor);
+    }
+
+    /// <summary>
+    ///     Residence never rises past the cap however long a pawn stays, and negative time never
+    ///     produces a negative reading.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceStaysAtTheCapAndNeverGoesNegative() {
+        Assert.AreEqual(
+            45,
+            ConnectionMath.ResidenceFrom(ConnectionMath.TicksToFullResidence * 10),
+            "A century is still the cap - naturalising makes you a local, not a native a dozen times over."
+        );
+        Assert.AreEqual(0, ConnectionMath.ResidenceFrom(-1), "Negative time is nothing, not a wrap-around.");
+    }
+
+    [TestMethod]
+    public void ResidenceTicksAreTheInverseOfResidenceStrength() {
+        for (int strength = 0; strength <= ConnectionMath.ResidenceCap; strength++) {
+            int ticks = ConnectionMath.TicksForResidence(strength);
+            Assert.AreEqual(strength, ConnectionMath.ResidenceFrom(ticks), $"strength {strength}");
+        }
+    }
+
+    [TestMethod]
+    public void ResidenceTicksClampToTenYears() {
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(0));
+        Assert.AreEqual(0, ConnectionMath.TicksForResidence(-5));
+        Assert.AreEqual(
+            ConnectionMath.TicksToFullResidence,
+            ConnectionMath.TicksForResidence(ConnectionMath.ResidenceCap)
+        );
+        Assert.AreEqual(ConnectionMath.TicksToFullResidence, ConnectionMath.TicksForResidence(999));
+    }
+
+    /// <summary>
+    ///     A pawn who already has residence ticks and takes a delta near int.MaxValue must clamp,
+    ///     not wrap negative from 32-bit overflow on the addition.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceTicksClampInsteadOfOverflowingOnALargeDelta() {
+        Assert.AreEqual(
+            ConnectionMath.TicksToFullResidence,
+            ConnectionMath.ClampResidenceTicks(100, int.MaxValue),
+            "A huge positive delta must clamp at the ceiling, not wrap past it."
+        );
+        Assert.AreEqual(
+            0,
+            ConnectionMath.ClampResidenceTicks(100, int.MinValue),
+            "A huge negative delta must clamp at zero."
+        );
+    }
+
+    /// <summary>
+    ///     A had already past the ceiling must not let delta move it further, or flip the sign of
+    ///     the caller's intent - the bug that let a 10-point store silently move 22.
+    /// </summary>
+    [TestMethod]
+    public void ClampResidenceTicksNeverOvershootsOrInvertsWhenHadIsAlreadyPastTheCeiling() {
+        const int had = 54_000_000;
+        const int askTicks = 8_000_000; // TicksForResidence(10), what a 10-point move asks for
+
+        int tapMoved = ConnectionMath.ClampResidenceTicks(had, askTicks) - had;
+        Assert.IsTrue(tapMoved >= 0, $"A positive delta must not decrease had; moved {tapMoved}.");
+        Assert.IsTrue(tapMoved <= askTicks, $"A tap must not move more than it asked for; moved {tapMoved}.");
+
+        int storeMoved = ConnectionMath.ClampResidenceTicks(had, -askTicks) - had;
+        Assert.IsTrue(storeMoved <= 0, $"A negative delta must not increase had; moved {storeMoved}.");
+        Assert.IsTrue(-storeMoved <= askTicks, $"A store must not move more than it asked for; moved {storeMoved}.");
+    }
+
+    /// <summary>A had exactly at the ceiling has no headroom left to gain, and everything left to give.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtTheCeilingGainNothingAndStillDrain() {
+        int ceiling = ConnectionMath.TicksToFullResidence;
+
+        Assert.AreEqual(ceiling, ConnectionMath.ClampResidenceTicks(ceiling, 1_000_000));
+        Assert.AreEqual(ceiling - 1_000_000, ConnectionMath.ClampResidenceTicks(ceiling, -1_000_000));
+    }
+
+    /// <summary>A had of exactly zero has nothing left to give, and the whole ceiling left to gain.</summary>
+    [TestMethod]
+    public void ResidenceTicksAtZeroDrainNothingAndStillGain() {
+        Assert.AreEqual(0, ConnectionMath.ClampResidenceTicks(0, -1_000_000));
+        Assert.AreEqual(1_000_000, ConnectionMath.ClampResidenceTicks(0, 1_000_000));
+    }
+
+    /// <summary>
+    ///     GameComponentTick's native check has no pin of its own, so a careless edit could drop it
+    ///     silently - it is what stops every baseliner out of a drop pod reading as a native.
+    /// </summary>
+    [TestMethod]
+    public void ResidenceOnlyReadsNativeFromTheXenotype() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "Core", "ShardConnection", "ResidenceTracker.cs"
+            )
+        );
+
+        int method = source.IndexOf("public override void GameComponentTick", StringComparison.Ordinal);
+        Assert.IsTrue(method >= 0, "Expected GameComponentTick to exist.");
+
+        string body = source[method..];
+        int end = body.IndexOf("\n    }", StringComparison.Ordinal);
+        if (end > 0) body = body[..end];
+
+        Assert.IsTrue(
+            body.Contains("world == WorldUtility.WorldForXenotype(pawn.genes?.Xenotype)", StringComparison.Ordinal),
+            "A newly-seen pawn must be checked against the xenotype's world, or every baseliner out "
+            + "of a drop pod reads as a native."
+        );
+    }
+
+    [TestMethod]
+    public void PlanetConnectionAddsEachIndependentSource() {
+        Assert.AreEqual(90, ConnectionMath.ComposeWorld(30, 45, 10, 5));
+        Assert.AreEqual(ConnectionMath.Max, ConnectionMath.ComposeWorld(30, 45, 20, 10));
+    }
+
+    /// <summary>
+    ///     God metals alloy with each other, so a metal is made of a list of Shards rather than
+    ///     one. Leratium is lerasium and atium together and ties the drinker to Preservation and
+    ///     Ruin both.
+    /// </summary>
+    [TestMethod]
+    public void AlloyedGodMetalsNameEveryShardTheyAreMadeOf() {
+        string dir = Path.Combine(RepoRoot, "Resources", "Data", "Metals");
+
+        Dictionary<string, string[]> expected = new Dictionary<string, string[]> {
+            ["Lerasium"] = ["Preservation"],
+            ["LerasiumAlloy"] = ["Preservation"],
+            ["Leratium"] = ["Preservation", "Ruin"],
+            ["LeratiumAlloy"] = ["Preservation", "Ruin"],
+            ["Atium"] = ["Ruin"],
+        };
+
+        foreach (KeyValuePair<string, string[]> pair in expected) {
+            string json = File.ReadAllText(Path.Combine(dir, pair.Key + ".json"));
+            foreach (string shard in pair.Value) {
+                Assert.IsTrue(
+                    json.Contains($"\"{shard}\"", StringComparison.Ordinal),
+                    $"{pair.Key} should be made of {shard}."
+                );
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Lerasium and everything alloyed with it grant Connection instead of spending it, and
+    ///     so are never gated. Atium spends what you already had.
+    /// </summary>
+    [TestMethod]
+    public void OnlyLerasiumBearingMetalsGrantConnection() {
+        string dir = Path.Combine(RepoRoot, "Resources", "Data", "Metals");
+
+        foreach (string name in new[] { "Lerasium", "LerasiumAlloy", "Leratium", "LeratiumAlloy" }) {
+            Assert.IsTrue(
+                File.ReadAllText(Path.Combine(dir, name + ".json")).Contains("\"grant\"", StringComparison.Ordinal),
+                $"{name} contains lerasium, so burning it has to grant Connection."
+            );
+        }
+
+        foreach (string name in new[] { "Atium", "Harmonium", "Trellium" }) {
+            Assert.IsFalse(
+                File.ReadAllText(Path.Combine(dir, name + ".json")).Contains("\"grant\"", StringComparison.Ordinal),
+                $"{name} has no lerasium in it and must not grant Connection."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     Lerasium makes a Mistborn, and a Mistborn burns atium - so it has to reach far enough
+    ///     into Ruin to allow that, without pretending to be atium itself.
+    /// </summary>
+    [TestMethod]
+    public void LerasiumReachesJustFarEnoughIntoRuin() {
+        string json = File.ReadAllText(
+            Path.Combine(RepoRoot, "Resources", "Data", "Metals", "Lerasium.json")
+        );
+
+        Assert.IsTrue(json.Contains("\"Preservation\"", StringComparison.Ordinal));
+        Assert.IsTrue(json.Contains("\"Ruin\"", StringComparison.Ordinal), "A Mistborn burns atium.");
+        Assert.IsTrue(json.Contains("80", StringComparison.Ordinal), "Preservation is what it truly gives.");
+        Assert.IsTrue(
+            json.Contains("30", StringComparison.Ordinal),
+            "Ruin gets exactly the threshold, no more - lerasium is not atium."
+        );
+        Assert.IsTrue(
+            ConnectionMath.MayUseGodMetal(30),
+            "And thirty has to be enough to burn a god metal, or the grant is pointless."
+        );
+    }
+
+    /// <summary>
+    ///     No pawn is born an atium Misting or Ferring. Those come from swallowing atium,
+    ///     lerasium or leratium, never from the roll at generation.
+    /// </summary>
+    /// <remarks>
+    ///     A full Mistborn still gets the atium gene along with every other, which is canonical -
+    ///     it is the single-metal roll that must never land on a god metal.
+    /// </remarks>
+    [TestMethod]
+    public void GodMetalsAreNeverRolledAtGeneration() {
+        string source = File.ReadAllText(
+            Path.Combine(
+                RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Util", "GeneUtility.cs"
+            )
+        );
+
+        foreach (string method in new[] { "AddRandomAllomanticGene", "AddRandomFeruchemicalGene" }) {
+            int start = source.IndexOf(method, StringComparison.Ordinal);
+            Assert.IsTrue(start >= 0, $"Expected {method} to exist.");
+
+            int end = source.IndexOf("RandomElement", start, StringComparison.Ordinal);
+            Assert.IsTrue(end > start, $"Expected {method} to pick from candidates.");
+
+            Assert.IsTrue(
+                source[start..end].Contains("godMetal", StringComparison.Ordinal),
+                $"{method} must skip god metals, or pawns get born as atium Mistings."
+            );
+        }
+    }
+
+    private static string RepoRoot {
+        get {
+            DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "CosmereScadrial", "Defs"))) {
+                dir = dir.Parent;
+            }
+
+            Assert.IsNotNull(dir, "Could not locate the repo root above the test output directory.");
+            return dir.FullName;
+        }
+    }
+
+    /// <summary>
+    ///     Hemalurgy is Ruin's alone. Every spike is worth ten, composed on the ancestry floor a
+    ///     Scadrian xenotype already carries, and capped short of Ascendant - which is reserved
+    ///     for a Shardholder.
+    /// </summary>
+    [TestMethod]
+    public void EverySpikeIsWorthTenTowardRuin() {
+        Assert.AreEqual(0, ConnectionMath.StrengthFromSpikes(0));
+        Assert.AreEqual(20, ConnectionMath.StrengthFromSpikes(2));
+        Assert.AreEqual(50, ConnectionMath.StrengthFromSpikes(5));
+
+        // Five spikes on a Scadrian: 30 ancestry composed with 50 of spike.
+        int five = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(5), 0);
+        Assert.AreEqual(ConnectionTier.Invested, ConnectionMath.TierOf(five));
+
+        // a kandra wearing all four Blessings carries eight, and still must not read as a Shardholder.
+        int eight = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(8), 0);
+        Assert.IsTrue(eight <= ConnectionMath.OrdinaryMax);
+        Assert.AreNotEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(eight));
+    }
+}

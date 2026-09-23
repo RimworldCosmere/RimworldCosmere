@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Grip</defName>
+        <label>Grip</label>
+        <description>Increase friction across your entire body until you are rooted like stone. Nothing can push you, stagger you, or knock you from your feet. Every strike you make lands with the certainty of a hammer on an anvil. You become the immovable thing that the world breaks against.\n\nCannot be active at the same time as Slick.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Abrasion.Grip</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Gripped</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

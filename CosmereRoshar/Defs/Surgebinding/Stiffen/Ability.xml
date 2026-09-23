@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Stiffen</defName>
+        <label>Stiffen</label>
+        <description>Reach out with the Surge of Tension and stiffen a target's joints. For enemies, every movement becomes a struggle as their limbs resist them. For allies, the effect is different. Their arms become rigid striking instruments, each blow landing with the unyielding force of tempered steel.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Tension.Stiffen</abilityClass>
+        <hediffFriendly>Cosmere_Roshar_Hediff_StiffenedAlly</hediffFriendly>
+        <hediffHostile>Cosmere_Roshar_Hediff_Stiffened</hediffHostile>
+        <beuPerTick>10</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>18</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetMechs>true</canTargetMechs>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

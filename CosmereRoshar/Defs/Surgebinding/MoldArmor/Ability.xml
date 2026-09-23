@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_MoldArmor</defName>
+        <label>Mold Armor</label>
+        <description>Run Cohesion through your clothing and armor, reshaping the material at a fundamental level. Leather hardens. Cloth tightens into something denser than it was. Even the simplest garments gain a resilience that surprises anyone who strikes them. The effect fades, but while it lasts, you wear something that was never meant to be armor and somehow is.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Cohesion.MoldArmor</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_MoldedArmor</hediff>
+        <beuPerTick>10</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Pure timer. It changes nothing about the map on its own - it exists so the siege has a
+       readout the player can watch, because "two armies are coming" with no clock behind it is
+       just a letter they forget. RimWorld draws an active condition's remaining time itself. -->
+  <GameConditionDef>
+    <defName>Cosmere_Scadrial_Condition_ArmiesGathering</defName>
+    <label>armies gathering</label>
+    <description>Two noble armies are camped within sight of the walls, and something worse is walking in from the horizon. They will not wait forever.</description>
+    <conditionClass>GameCondition</conditionClass>
+    <displayOnUI>true</displayOnUI>
+    <canBePermanent>false</canBePermanent>
+    <endMessage>The waiting is over.</endMessage>
+  </GameConditionDef>
+
+</Defs>

@@ -1,0 +1,22 @@
+# Source files - enforce LF line endings
+*.cs text eol=lf
+*.xml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.csx text eol=lf
+*.ps1 text eol=lf
+
+# Binary files
+*.dll binary
+*.png binary
+*.wav binary
+*.ogg binary
+*.unity3d binary
+*.assets binary
+
+# Generated files
+*.generated.* linguist-generated
+*.meta linguist-generated

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Gizmo -->
+    <Cosmere_Roshar_SeekNightwatcher_Label>Seek the Nightwatcher</Cosmere_Roshar_SeekNightwatcher_Label>
+    <Cosmere_Roshar_SeekNightwatcher_Desc>Send {PAWN_nameDef} on a journey to seek the Nightwatcher, daughter of Cultivation, who dwells in the peaks beyond the edge of the world. She will grant a boon, any wish, and in return, will take something of her own choosing.</Cosmere_Roshar_SeekNightwatcher_Desc>
+
+    <!-- Dialog: Boon Tier Headers -->
+    <CRO_NW_Tier1_Label>Minor Boons</CRO_NW_Tier1_Label>
+    <CRO_NW_Tier2_Label>Moderate Boons</CRO_NW_Tier2_Label>
+    <CRO_NW_Tier3_Label>Major Boons</CRO_NW_Tier3_Label>
+    <CRO_NW_Tier1_Desc>Small gifts - a sharpened skill, a shifted temperament. The Nightwatcher gives these freely.</CRO_NW_Tier1_Desc>
+    <CRO_NW_Tier2_Desc>Substantial changes - healed wounds, expanded capacity. These carry a heavier curse.</CRO_NW_Tier2_Desc>
+    <CRO_NW_Tier3_Desc>Transformative power - bonds unlocked, minds awakened. The Old Magic exacts its highest price.</CRO_NW_Tier3_Desc>
+    <CRO_NW_Tier_Tab>{LABEL} ({COUNT})</CRO_NW_Tier_Tab>
+
+    <!-- Dialog: Opening Phase -->
+    <CRO_NW_Opening_Title>The Nightwatcher</CRO_NW_Opening_Title>
+    <CRO_NW_Opening_Text>{PAWN_nameDef} has made the long journey into the mountains and descended into the valley where the Nightwatcher dwells. The air is still. The light is wrong. Something vast and patient turns its attention toward {PAWN_nameDef}.
+
+"I have come to ask a boon," {PAWN_pronoun} says.
+
+The Nightwatcher does not speak in words. But {PAWN_pronoun} understands, somehow, that she is listening.</CRO_NW_Opening_Text>
+    <CRO_NW_Opening_Ask>What do you wish for?</CRO_NW_Opening_Ask>
+
+    <!-- Dialog: Boon Selection Phase -->
+    <CRO_NW_Boon_Title>Choose Your Boon</CRO_NW_Boon_Title>
+    <CRO_NW_Boon_Confirm>Ask for This</CRO_NW_Boon_Confirm>
+    <CRO_NW_Boon_RowTip>Choose this boon. The Nightwatcher grants what is asked, and takes what she wills.</CRO_NW_Boon_RowTip>
+    <CRO_NW_Boon_RowChoiceTip>This boon takes more than one form. Click to pick which.</CRO_NW_Boon_RowChoiceTip>
+    <CRO_NW_Boon_NoSelection>Nothing asked for yet. She waits.</CRO_NW_Boon_NoSelection>
+    <CRO_NW_Boon_ConfirmNeedsBoon>Choose a boon before asking.</CRO_NW_Boon_ConfirmNeedsBoon>
+    <CRO_NW_Boon_ConfirmNeedsChoice>Choose which form this boon takes before asking.</CRO_NW_Boon_ConfirmNeedsChoice>
+
+    <!-- Dialog: Curse Reveal Phase -->
+    <CRO_NW_Curse_Title>And in Return...</CRO_NW_Curse_Title>
+    <CRO_NW_Curse_Text>The boon settles over {PAWN_nameDef} like a second skin. {PAWN_pronoun} can already feel it. The {BOON_label}. The change. It is real.
+
+Then the Nightwatcher reaches for something else.
+
+She does not ask permission. She never does.</CRO_NW_Curse_Text>
+    <CRO_NW_Curse_Accept>Accept and Return</CRO_NW_Curse_Accept>
+
+    <!-- Result Letter -->
+    <CRO_NW_Letter_Title>{PAWN_nameDef}: The Nightwatcher's Gift</CRO_NW_Letter_Title>
+    <CRO_NW_Letter_Text>{PAWN_nameDef} has returned from the Nightwatcher's valley. {PAWN_pronoun} carries something new, and something missing.
+
+Boon granted: {BOON}
+Curse taken: {CURSE}
+
+Both are permanent. Neither can be removed by ordinary means. This is the nature of Old Magic.</CRO_NW_Letter_Text>
+
+    <!-- Boon/Curse Effect Fragments -->
+    <CRO_NW_Effect_Gains>Gains: {LABEL}</CRO_NW_Effect_Gains>
+    <CRO_NW_Effect_Removes>Removes: {LABEL}</CRO_NW_Effect_Removes>
+    <CRO_NW_Effect_Cures>Cures: {LABEL}</CRO_NW_Effect_Cures>
+    <CRO_NW_Effect_Loses>Loses: {LABEL}</CRO_NW_Effect_Loses>
+    <CRO_NW_Effect_SkillBoost>+{LEVELS} {SKILL}</CRO_NW_Effect_SkillBoost>
+    <CRO_NW_Effect_SkillPenalty>-{LEVELS} {SKILL}</CRO_NW_Effect_SkillPenalty>
+    <CRO_NW_Effect_CultivationConnection>+{AMOUNT} Cultivation connection</CRO_NW_Effect_CultivationConnection>
+    <CRO_NW_Effect_PsylinkLevel>+1 Psylink level</CRO_NW_Effect_PsylinkLevel>
+    <CRO_NW_Effect_BiologicalImmortality>Biological immortality</CRO_NW_Effect_BiologicalImmortality>
+    <CRO_NW_Effect_EvolvesAfterYears>Evolves after {YEARS} years</CRO_NW_Effect_EvolvesAfterYears>
+    <CRO_NW_Effect_StatOffset>{SIGN}{VALUE} {STAT}</CRO_NW_Effect_StatOffset>
+    <CRO_NW_Effect_StatFactor>{SIGN}{VALUE}% {STAT}</CRO_NW_Effect_StatFactor>
+    <CRO_NW_Effect_CapacityOffset>{SIGN}{VALUE}% {CAPACITY}</CRO_NW_Effect_CapacityOffset>
+    <CRO_NW_Effect_PainOffset>{SIGN}{VALUE} Pain</CRO_NW_Effect_PainOffset>
+
+    <!-- Cultivation Evolution -->
+    <Cosmere_Roshar_Nightwatcher_Evolution_Title>{PAWN_nameDef}: Cultivation's Touch</Cosmere_Roshar_Nightwatcher_Evolution_Title>
+    <Cosmere_Roshar_Nightwatcher_Evolution_Desc>{PAWN_nameDef}'s curse, the {CURSE}, has changed. Cultivation has been patient. She has been watching. And now, after years of carrying this weight, {PAWN_pronoun} has been shaped by it in ways even the Nightwatcher did not intend.
+
+The curse has not been lifted. But something within it has grown.</Cosmere_Roshar_Nightwatcher_Evolution_Desc>
+</LanguageData>

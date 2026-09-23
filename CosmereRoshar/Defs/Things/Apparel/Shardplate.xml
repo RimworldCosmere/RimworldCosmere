@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Roshar_Thing_Shardplate" ParentName="ApparelBase">
+        <defName>Cosmere_Roshar_Apparel_RadiantShardplate</defName>
+        <label>Radiant Shardplate</label>
+        <description>Living armor formed from hundreds of lesser spren coalescing around a Radiant. Unlike dead Shardplate, this armor moves as a natural extension of the wearer's body, requiring no Stormlight for repairs as the spren simply reform when damaged. The living spren respond to their Radiant's will, providing supernatural protection and strength.</description>
+        <graphicData>
+            <texPath>Things/Pawn/Apparel/Shardplate/Armor</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutAdvanced</shaderType>
+        </graphicData>
+        <techLevel>Animal</techLevel>
+        <smeltable>false</smeltable>
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
+        </stuffCategories>
+        <thingCategories>
+            <li>ApparelArmor</li>
+        </thingCategories>
+        <statBases>
+            <MarketValue>100</MarketValue>
+            <MaxHitPoints>500</MaxHitPoints>
+            <Mass>15</Mass>
+            <EquipDelay>30</EquipDelay>
+            <Flammability>0</Flammability>
+            <ArmorRating_Sharp>2</ArmorRating_Sharp>
+            <ArmorRating_Blunt>2</ArmorRating_Blunt>
+            <ArmorRating_Heat>2</ArmorRating_Heat>
+            <Insulation_Cold>5</Insulation_Cold>
+            <Insulation_Heat>5</Insulation_Heat>
+        </statBases>
+        <equippedStatOffsets>
+            <MoveSpeed>1.5</MoveSpeed>
+            <CarryingCapacity>1.5</CarryingCapacity>
+        </equippedStatOffsets>
+        <!-- Todo, make craftable with Tanavastium & Koravellium maybe? Or Taravangium -->
+        <recipeMaker Inherit="False" IsNull="True"  />
+        <tradeTags>
+            <li>Shardplate</li>
+            <li>Clothing</li>
+            <li>Armor</li>
+        </tradeTags>
+        
+        <apparel>
+            <wornGraphicPath>Things/Pawn/Apparel/Shardplate/Armor/Armor</wornGraphicPath>
+            <bodyPartGroups>
+                <li>Torso</li>
+                <li>Neck</li>
+                <li>Shoulders</li>
+                <li>Arms</li>
+                <li>Legs</li>
+                <li>Hands</li>
+                <li>Feet</li>
+            </bodyPartGroups>
+            <renderSkipFlags>
+                <li>None</li>
+            </renderSkipFlags>
+            <drawData>
+                <defaultData>
+                    <layer>41</layer>
+                </defaultData>
+            </drawData>
+            <layers>
+                <li>Middle</li>
+                <li>Shell</li>
+            </layers>
+            <tags>
+                <li>MedievalMilitary</li>
+                <li>SpacerMilitary</li>
+                <li>PrestigeCombatGear</li>
+                <li>RadiantArmor</li>
+            </tags>
+            <defaultOutfitTags>
+                <li>Soldier</li>
+                <li>Spacefarer</li>
+            </defaultOutfitTags>
+            <useDeflectMetalEffect>true</useDeflectMetalEffect>
+        </apparel>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
+                <blendStrength>.75</blendStrength>
+                <blendMode>Sharp</blendMode>
+                <useWear>true</useWear>
+                <useGlow>true</useGlow>
+                <glowIntensity>3</glowIntensity>
+            </li>
+        </comps>
+        
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <possessionCount>1</possessionCount>
+        <destroyOnDrop>true</destroyOnDrop>
+        <tradeability>None</tradeability>
+        <tradeTags Inherit="False" IsNull="True" />
+    </ThingDef>
+    <ThingDef Name="Cosmere_Roshar_Thing_Shardhelm" ParentName="HatBase">
+        <defName>Cosmere_Roshar_Apparel_RadiantShardhelm</defName>
+        <label>Radiant Shardhelm</label>
+        <description>A protective helm formed from lesser spren who have pledged themselves to their Radiant. The helm flows seamlessly with thought and movement, providing enhanced perception and mental clarity while protecting the wearer's most vital area. Like living Shardplate, it reforms instantly when damaged through the spren's unwavering loyalty.</description>
+        <graphicData>
+            <texPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA_south</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutAdvanced</shaderType>
+        </graphicData>
+        <techLevel>Animal</techLevel>
+        <smeltable>false</smeltable>
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
+        </stuffCategories>
+        <thingCategories>
+            <li>ArmorHeadgear</li>
+        </thingCategories>
+        <statBases>
+            <MarketValue>100</MarketValue>
+            <MaxHitPoints>250</MaxHitPoints>
+            <Mass>5</Mass>
+            <EquipDelay>5</EquipDelay>
+            <Flammability>0</Flammability>
+            <ArmorRating_Sharp>2</ArmorRating_Sharp>
+            <ArmorRating_Blunt>2</ArmorRating_Blunt>
+            <ArmorRating_Heat>2</ArmorRating_Heat>
+            <Insulation_Cold>5</Insulation_Cold>
+            <Insulation_Heat>5</Insulation_Heat>
+        </statBases>
+        <equippedStatOffsets>
+            <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+        </equippedStatOffsets>
+        <!-- Todo, make craftable with Tanavastium & Koravellium maybe? Or Taravangium -->
+        <recipeMaker Inherit="False" IsNull="True"  />
+        <tradeTags>
+            <li>Shardplate</li>
+            <li>Clothing</li>
+            <li>Armor</li>
+        </tradeTags>
+        
+        <apparel>
+            <wornGraphicPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA</wornGraphicPath>
+            <renderSkipFlags>
+                <li>Hair</li>
+                <li>Beard</li>
+            </renderSkipFlags>
+            <bodyPartGroups>
+                <li>FullHead</li>
+            </bodyPartGroups>
+            <layers>
+                <li>Overhead</li>
+            </layers>
+            <tags>
+                <li>MedievalMilitary</li>
+            </tags>
+            <forceEyesVisibleForRotations>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </forceEyesVisibleForRotations>
+            <defaultOutfitTags>
+                <li>Soldier</li>
+                <li>Spacefarer</li>
+            </defaultOutfitTags>
+            <useDeflectMetalEffect>false</useDeflectMetalEffect>
+        </apparel>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
+                <blendStrength>2</blendStrength>
+                <blendMode>Sharp</blendMode>
+                <useWear>true</useWear>
+                <useGlow>true</useGlow>
+                <glowIntensity>3</glowIntensity>
+            </li>
+        </comps>
+        
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <possessionCount>1</possessionCount>
+        <destroyOnDrop>true</destroyOnDrop>
+        <tradeability>None</tradeability>
+        <tradeTags Inherit="False" IsNull="True" />
+    </ThingDef>
+</Defs>

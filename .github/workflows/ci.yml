@@ -1,0 +1,190 @@
+name: CI
+
+# The release workflow only runs on pushes to main/beta/alpha, so nothing built a pull request
+# before it landed. This is the gate that gives contributors a red X instead of a surprise.
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'alpha'
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Generated defs and BetaHubToken.generated.cs are gitignored, so a fresh checkout cannot
+      # compile without this. It tolerates the missing token that a fork PR will have.
+      - name: Run code generation
+        run: make generate
+
+      - name: Restore solution dependencies
+        run: dotnet restore Cosmere.slnx
+
+      - name: Build solution
+        run: dotnet build Cosmere.slnx --configuration Debug --no-restore
+
+      - name: Run tests
+        run: dotnet test Cosmere.slnx --configuration Debug --no-build
+
+  # Same arrangement as RimWorks/Pickle: bake the game once, skip when the buildid has not moved.
+  # A fork PR has no Steam secrets and no packages:write, so it skips instead of failing on creds.
+  game-image:
+    name: RimWorld image
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image-ref: ${{ steps.image.outputs.image-ref }}
+    steps:
+      - name: Build the RimWorld game image
+        id: image
+        uses: RimWorks/steam-game-image-action@4062dbf182c73f34b59052a040f0564d63bfd566 # v3.1.0
+        with:
+          steam-username: ${{ secrets.STEAM_USERNAME }}
+          steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+          app-id: '294100'
+          # The version the mod compiles against.
+          branch: 'version-1.6.4633'
+          image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          skip-if-unchanged: 'true'
+
+  # Textures live in Cosmere*/Assets but the game reads Cosmere*/AssetBundles, which is
+  # gitignored. Same reusable workflow release.yml calls, so one cache serves both.
+  assetbundles:
+    name: Asset bundles
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    uses: ./.github/workflows/assetbundles.yml
+    secrets: inherit
+
+  pickle:
+    name: Pickle suite
+    needs: [ game-image, assetbundles ]
+    runs-on: ubuntu-latest
+    # Above two attempts at PICKLE_RUN_TIMEOUT plus the image pull and staging, so the
+    # watchdog always trips first and the script still writes its verdict.
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # pickle-run.sh mounts the Cosmere mod dirs straight off this checkout, so the bundles
+      # have to land beside Assemblies/ before the container starts.
+      - name: Download the asset bundles
+        uses: actions/download-artifact@v5
+        with:
+          name: all-assetbundles
+
+      - name: Extract the asset bundles
+        run: |
+          shopt -s nullglob
+          found=0
+          for zip in Cosmere*-assetbundles.zip; do
+            mod="${zip%-assetbundles.zip}"
+            unzip -qo "$zip" -d "$mod/"
+            rm "$zip"
+            found=$((found + 1))
+            echo "extracted bundles into $mod/AssetBundles"
+          done
+          # A silent zero here is how the suite lost its textures in the first place.
+          [ "$found" -gt 0 ] || { echo "no asset bundle zips in the artifact"; exit 1; }
+
+      # Codegen is gitignored, same as the build job. `quick` is what `make pickle` depends on.
+      - name: Build the mods
+        run: make quick
+
+      - name: Log in to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      # pickle-run.sh wants a mods dir and a config dir. gamecrate builds both locally,
+      # and CI has no gamecrate, so build/stage-pickle-mods.sh does it instead.
+      - name: Stage the dependency mods
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: build/stage-pickle-mods.sh "${{ runner.temp }}/mods" "${{ runner.temp }}/config"
+
+      # One run over the whole suite: splitting per feature would hide cross-feature defects.
+      # Retries only a container whose X server died, never a scenario - see the branches below.
+      - name: Run the Pickle suite
+        env:
+          IMAGE_REF: ${{ needs.game-image.outputs.image-ref }}
+          MODS: ${{ runner.temp }}/mods
+          CONFIG: ${{ runner.temp }}/config
+          REPORTS: ${{ github.workspace }}/pickle-reports
+          FLAKED: ${{ github.workspace }}/pickle-reports-x-server-death
+          # Two attempts must both finish inside timeout-minutes, or GitHub cancels the job
+          # and the always() report and artifact steps with it. A healthy run is ~15.
+          PICKLE_RUN_TIMEOUT: 15
+        run: |
+          for attempt in 1 2; do
+            rc=0
+            build/pickle-run.sh "$IMAGE_REF" "$MODS" "$CONFIG" "$REPORTS" || rc=$?
+            if [ "$rc" = 0 ]; then
+              exit 0
+            fi
+            # 75 is the script's one retryable verdict: no report and a dead X server, read off
+            # both Player.log and the container log. Every other code, 2 included, fails here.
+            if [ "$rc" != 75 ]; then
+              exit 1
+            fi
+            if [ "$attempt" = 2 ]; then
+              echo "the X server died on both attempts - this is the runner, not the suite"
+              exit 1
+            fi
+            echo "::warning title=Pickle::the X server died before the game came up; retrying once"
+            mv "$REPORTS" "$FLAKED"
+          done
+
+      - name: Publish the scenario counts
+        if: always()
+        run: node build/pickle-report.mjs pickle-reports
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: pickle-report
+          path: |
+            pickle-reports/
+            pickle-reports-x-server-death/
+          if-no-files-found: warn

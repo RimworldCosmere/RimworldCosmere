@@ -21,6 +21,7 @@
         <label>scadrian</label>
         <description>Scadrians are the unified descendants of both Skaa and Nobility following the Catacendre. Strong, capable, and socially adaptive.</description>
         <displayPriority>4999</displayPriority>
+        <inheritable>true</inheritable>
         <iconPath>UI/Icons/Xenotype/Noble</iconPath>
         <genes>
             <li>Cosmere_Scadrial_Gene_ScadrianHeritage</li>
@@ -58,9 +59,70 @@
         <iconPath>UI/Icons/Xenotype/Terris</iconPath>
         <genes>
             <li>Cosmere_Scadrial_Gene_TerrisHeritage</li>
+            <!-- The Terris are a dark-skinned people. Set on the xenotype rather than per pawn
+                 so Sazed, Tindwyl and every generated Terris agree. -->
+            <li>Skin_Melanin8</li>
             <li>Cosmere_Scadrial_Gene_TerrisDeepMemory</li>
             <li>Cosmere_Scadrial_Gene_TerrisPeaceful</li>
             <li>Cosmere_Scadrial_Gene_TerrisStability</li>
         </genes>
     </XenotypeDef>
+
+    <!-- Made, never born. A koloss is what four spikes leave behind, so this xenotype is not
+         inheritable - koloss who breed produce koloss-blooded children instead, which
+         KolossBirthPatch handles. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_Koloss</defName>
+        <label>koloss</label>
+        <description>Four spikes, driven in at once, and what walks away is not the person who lay down. A koloss is enormous, blue-grey and slow of thought, and it grows for the rest of its life until its own skin gives out.</description>
+        <displayPriority>5100</displayPriority>
+        <inheritable>false</inheritable>
+        <!-- Skaa until the koloss icon is drawn. A missing texture is not a blank square here:
+             Widgets.DefIcon hands null to DrawTextureFitted and the whole info card throws, once
+             per frame, for as long as it is open. -->
+        <iconPath>UI/Icons/Xenotype/Koloss</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
+            <li>Cosmere_Scadrial_Gene_NeverStopsGrowing</li>
+            <li>Cosmere_Scadrial_Gene_SkinTooSmall</li>
+            <li>Cosmere_Scadrial_Gene_SpikeBound</li>
+            <li>Cosmere_Scadrial_Gene_EasilyInfluenced</li>
+            <li>Cosmere_Scadrial_Gene_DeadenedNerves</li>
+        </genes>
+    </XenotypeDef>
+
+    <!-- After the Catacendre. Koloss breed true now, and their children are people - taller and
+         stronger than their neighbours, and entirely sane. At twelve one of them may choose the
+         spikes and stop being this. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_KolossBlooded</defName>
+        <label>koloss-blooded</label>
+        <description>Harmony left the koloss able to father children, and those children are men and women. A koloss-blooded person stands a head above the crowd and is stronger than they look, and that is the whole of the inheritance.</description>
+        <displayPriority>5050</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/KolossBlooded</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KolossBlooded</li>
+            <li>Cosmere_Scadrial_Gene_ScadrianHeritage</li>
+        </genes>
+    </XenotypeDef>
+
+    <!-- Made from a mistwraith by driving two spikes into it, so nothing about a kandra is
+         inherited. They do not have children. -->
+    <XenotypeDef>
+        <defName>Cosmere_Scadrial_Xenotype_Kandra</defName>
+        <label>kandra</label>
+        <description>A boneless thing wearing somebody else's shape, held together by two hemalurgic spikes. Kandra serve under contract, count their generations, and remember a great deal more than they admit to.</description>
+        <displayPriority>5120</displayPriority>
+        <inheritable>false</inheritable>
+        <iconPath>UI/Icons/Xenotype/Kandra</iconPath>
+        <genes>
+            <li>Cosmere_Scadrial_Gene_KandraHeritage</li>
+            <li>Cosmere_Scadrial_Gene_Boneless</li>
+            <li>Cosmere_Scadrial_Gene_TrueBody</li>
+            <li>Cosmere_Scadrial_Gene_BlessingBound</li>
+            <li>Cosmere_Scadrial_Gene_BodyAbsorption</li>
+        </genes>
+    </XenotypeDef>
+
 </Defs>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CC_Gizmo_PressToPowerUp>Ctrl-Click to Power Up</CC_Gizmo_PressToPowerUp>
+    <CC_Gizmo_PressToPowerDown>Ctrl-Click to Power Down</CC_Gizmo_PressToPowerDown>
+    <CC_Gizmo_ToggleAutomaticCast_ShiftClick>Shift-click to toggle auto-cast</CC_Gizmo_ToggleAutomaticCast_ShiftClick>
+    <CC_Gizmo_ToggleAutomaticCast_Click>Click to toggle auto-cast</CC_Gizmo_ToggleAutomaticCast_Click>
+    <CC_WillUseWhileDowned>Auto-Casting while downed</CC_WillUseWhileDowned>
+    <CC_WillUseWhileInjured>Auto-Casting while injured</CC_WillUseWhileInjured>
+</LanguageData>

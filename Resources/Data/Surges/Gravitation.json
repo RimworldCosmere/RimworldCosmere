@@ -1,0 +1,9 @@
+{
+  "name": "gravitation",
+  "description": "Gravitation allows the user to alter their relationship with gravity, manipulating local gravitational vectors. This power enables feats like controlled flight or sudden directional shifts, as if the ground itself were reoriented. Skilled Surgebinders can move with impossible agility or soar across the battlefield with grace.",
+  "abilities": [
+    "Cosmere_Roshar_Ability_BasicLashing",
+    "Cosmere_Roshar_Ability_ReverseLashing",
+    "Cosmere_Roshar_Ability_GravitationalPull"
+  ]
+}

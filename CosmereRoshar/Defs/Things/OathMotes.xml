@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="MoteBase">
+        <defName>Cosmere_Roshar_Mote_OathBurst</defName>
+        <graphicData>
+            <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
+            <texPath>Things/Mote/BrightFlash</texPath>
+            <color>(1, 1, 1, 1)</color>
+            <renderInstanced>true</renderInstanced>
+            <shaderType>MoteGlowPulse</shaderType>
+            <shaderParameters>
+                <_Interval>0.2</_Interval>
+                <_PulseMin>0.8</_PulseMin>
+                <_PulseMax>1</_PulseMax>
+            </shaderParameters>
+            <drawSize>1.8</drawSize>
+        </graphicData>
+        <altitudeLayer>MetaOverlays</altitudeLayer>
+        <mote>
+            <fadeInTime>0.15</fadeInTime>
+            <solidTime>0.6</solidTime>
+            <fadeOutTime>1.5</fadeOutTime>
+        </mote>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+    <ThinkTreeDef>
+        <defName>Cosmere_Core_ThinkTree_Splinter</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+
+                <!-- React to close melee threat -->
+                <li Class="JobGiver_ReactToCloseMeleeThreat" />
+
+                <!-- Do a queued job -->
+                <li Class="ThinkNode_QueuedJob" />
+
+                <!-- Leave if timed out -->
+                <li Class="ThinkNode_ConditionalExitTimedOut">
+                    <subNodes>
+                        <li Class="ThinkNode_Tagger">
+                            <tagToGive>Misc</tagToGive>
+                            <subNodes>
+                                <li Class="JobGiver_ExitMapRandom">
+                                    <defaultLocomotion>Sprint</defaultLocomotion>
+                                    <canFlyOutOfMap>true</canFlyOutOfMap>
+                                </li>
+                            </subNodes>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <!-- Mental state non critical -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>MentalStateNonCritical</treeDef>
+                </li>
+
+                <!-- Forced goto -->
+                <li Class="ThinkNode_ConditionalForcedGoto">
+                    <subNodes>
+                        <li Class="ThinkNode_Tagger">
+                            <tagToGive>Misc</tagToGive>
+                            <subNodes>
+                                <li Class="JobGiver_ForcedGoto" />
+                            </subNodes>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <!-- Insertion hook for modders -->
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>Cosmere_Core_Splinter_PreMain</insertTag>
+                </li>
+
+                <!-- Wild animals leave map in some conditions -->
+                <li Class="ThinkNode_ConditionalHasFaction">
+                    <invert>true</invert>
+                    <subNodes>
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>LeaveIfWrongSeason</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <!-- Satisfy basic needs -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>SatisfyBasicNeeds</treeDef>
+                </li>
+
+                <!-- Insertion hook for modders -->
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>Cosmere_Core_Splinter_PreWander</insertTag>
+                </li>
+
+                <!-- Todo: Wander near bonded pawn, check Animal think tree for "Tame animal: wander near colony if possible" -->
+
+
+                <!-- Wander -->
+                <li Class="ThinkNode_Tagger">
+                    <tagToGive>Idle</tagToGive>
+                    <subNodes>
+                        <li Class="ThinkNode_ConditionalTrainableCompleted">
+                            <trainable>Obedience</trainable>
+                            <subNodes>
+                                <li Class="JobGiver_AIFollowMaster" />
+                                <li Class="JobGiver_WanderNearMaster" />
+                            </subNodes>
+                        </li>
+
+                        <li Class="JobGiver_WanderAnywhere">
+                            <maxDanger>Deadly</maxDanger>
+                            <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>Cosmere_Core_Splinter_PostMain</insertTag>
+                </li>
+
+                <li Class="JobGiver_IdleError" />
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+
+    <ThinkTreeDef>
+        <defName>Cosmere_Core_ThinkTree_SplinterConstant</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <!-- Despawned -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>Despawned</treeDef>
+                </li>
+
+                <li Class="ThinkNode_ConditionalCanDoConstantThinkTreeJobNow">
+                    <subNodes>
+                        <!-- Flee enemies, tornados, meteorites, etc. -->
+                        <li Class="JobGiver_AnimalFlee" />
+
+                        <!-- Join auto joinable caravan -->
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>JoinAutoJoinableCaravan</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <li Class="ThinkNode_ConditionalCanDoLordJobNow">
+                    <subNodes>
+                        <!-- Lord directives -->
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>LordDutyConstant</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+</Defs>

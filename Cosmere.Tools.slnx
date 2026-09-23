@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/tools/">
+    <Project Path="tools/Cosmere.Tools.Cli/Cosmere.Tools.Cli.csproj" />
+    <Project Path="tools/Cosmere.Tools/Cosmere.Tools.csproj" />
+  </Folder>
+</Solution>

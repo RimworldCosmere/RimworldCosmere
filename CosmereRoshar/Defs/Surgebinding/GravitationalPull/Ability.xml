@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_GravitationalPull</defName>
+        <label>Gravitational Pull</label>
+        <description>Bend gravity into a distortion field around yourself. Arrows curve. Bullets slow and drift off course. Those standing near you feel something tugging at the air, a wrongness in the way things fall, and realize that the projectiles aimed at them are no longer flying true.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Gravitation.GravitationalPull</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_GravitationallyShielded</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

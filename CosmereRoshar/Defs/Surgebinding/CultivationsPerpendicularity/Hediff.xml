@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_CultivationsPerpendicularityBlessing</defName>
+        <label>cultivation's blessing</label>
+        <description>Cultivation's power flows through this person like sap through a living tree. It is quieter than Honor's Investiture, gentler, but no less potent. Wounds mend with the steady certainty of a plant reaching toward sunlight. The body remembers health and moves toward it, as if guided by something ancient and patient.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>5</InjuryHealingFactor>
+                    <ImmunityGainSpeed>3</ImmunityGainSpeed>
+                    <IncomingDamageFactor>0.85</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

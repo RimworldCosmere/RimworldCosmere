@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- A koloss carries an enormous crude sword it took off a dead koloss, and gets a bigger one
+       the same way. Nobody forges these to a pattern - they are beaten out of whatever was to
+       hand and passed along by inheritance, which is why they are heavy, blunt-edged and far too
+       large for a person to swing properly.
+
+       Its own weaponTag matters twice over: it keeps koloss out of the industrial weapon pools
+       every other faction draws from, and it means the sword drops when the koloss does. -->
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp">
+    <defName>Cosmere_Scadrial_Thing_KolossSword</defName>
+    <label>koloss blade</label>
+    <description>A slab of metal beaten into a curve and bound at one end for a grip. The edge is uneven, the back is thick enough to stop a blow, and the whole of it weighs more than a person can hold up for long. Nothing about it was made for a hand smaller than the one carrying it now.</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/WeaponMelee/KolossSword</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <!-- The mask leaves the grip wrap its own colour and lets the stuff tint only the blade. -->
+      <shaderType>CutoutComplex</shaderType>
+      <!-- The art is drawn along the diagonal, so the canvas is padded down and left to bring the
+           grip onto the centre - the point a pawn's hand is drawn at. That padding is most of the
+           canvas, which is why drawSize is far larger than the sword's actual reach. -->
+      <drawSize>6.25</drawSize>
+    </graphicData>
+    <!-- Its own icon rather than one derived from the world graphic, which inherits drawSize and
+         spills straight out of the gizmo box. Same art without the centring pad. -->
+    <uiIconPath>UI/Icons/Weapons/KolossSword</uiIconPath>
+    <techLevel>Medieval</techLevel>
+    <weaponTags>
+      <li>Cosmere_Scadrial_KolossWeapon</li>
+    </weaponTags>
+    <weaponClasses>
+      <li>Melee</li>
+    </weaponClasses>
+    <!-- Not craftable and not traded. Every one of these came off a dead koloss, which is also
+         the only way a player gets one. -->
+    <tradeability>None</tradeability>
+    <!-- The blade is greyscale, so the game tints it by material the way it does every other
+         melee weapon. A koloss sword is whatever somebody beat it out of. -->
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>140</costStuffCount>
+    <!-- The art is drawn along the diagonal and the engine adds 53 degrees of its own at rest,
+         so this offset is what puts the blade up over the shoulder instead of dragging. -->
+    <equippedAngleOffset>-35</equippedAngleOffset>
+    <statBases>
+      <Mass>7</Mass>
+      <MarketValue>90</MarketValue>
+    </statBases>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.4</cooldownTime>
+      </li>
+      <li>
+        <label>edge</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+      <li>
+        <label>flat</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.6</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,255 @@
+using System.Xml;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.Core.ScenarioPart;
+
+public class NamedPawnDef {
+    public string? adulthood;
+    public int age = 20;
+    public int chronologicalAge = -1;
+    public string? childhood;
+    public string? firstName;
+    public bool fullFeruchemist;
+    public Gender gender = Gender.None;
+    public List<string> genes = [];
+    public int idealLevel;
+
+    /// <summary>Which generation of kandra, 1 to 10. Zero leaves it to the roll.</summary>
+    public int kandraGeneration;
+
+    /// <summary>A PawnKindDef name that is this kandra's true body, as TenSoon chose a wolfhound.</summary>
+    public string? kandraTrueAnimal;
+
+    /// <summary>Faces this kandra already knows, one name per entry. Appearance is rolled.</summary>
+    public List<string> kandraKnownFaces = [];
+
+    /// <summary>A BodyTypeDef name. Left empty, one is chosen to match the gender.</summary>
+    public string? bodyType;
+
+    /// <summary>A HeadTypeDef name. Left empty, one is chosen to match the gender.</summary>
+    public string? headType;
+
+    /// <summary>Skin colour as "(r, g, b)" in 0-255. Overrides whatever the genes rolled.</summary>
+    public string? skinColor;
+    public List<NamedPawnInventoryEntry> apparel = [];
+
+    /// <summary>
+    ///     Ties to other named pawns in the same scenario, by their first name. Applied once
+    ///     every starting pawn exists, because the other half of a relationship is usually not
+    ///     built yet when this one is.
+    /// </summary>
+    public List<NamedPawnRelationEntry> relations = [];
+    public List<NamedPawnInventoryEntry> inventory = [];
+    public string? lastName;
+    public bool mistborn;
+    public string? nickName;
+    public bool noRandomTraits;
+    public string? radiantOrder;
+    public List<NamedPawnSkillEntry> skills = [];
+    public List<NamedPawnTraitEntry> traits = [];
+    public string? xenotype;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "firstName":
+                    firstName = node.InnerText;
+                    break;
+                case "nickName":
+                    nickName = node.InnerText;
+                    break;
+                case "lastName":
+                    lastName = node.InnerText;
+                    break;
+                case "age":
+                    if (!int.TryParse(node.InnerText, out age))
+                        Log.Warn($"NamedPawnDef: invalid age value '{node.InnerText}'");
+                    break;
+                case "chronologicalAge":
+                    if (!int.TryParse(node.InnerText, out chronologicalAge))
+                        Log.Warn($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
+                    break;
+                case "gender":
+                    gender = (Gender)ParseHelper.FromString(node.InnerText, typeof(Gender));
+                    break;
+                case "xenotype":
+                    xenotype = node.InnerText;
+                    break;
+                case "childhood":
+                    childhood = node.InnerText;
+                    break;
+                case "adulthood":
+                    adulthood = node.InnerText;
+                    break;
+                case "noRandomTraits":
+                    if (!bool.TryParse(node.InnerText, out noRandomTraits))
+                        Log.Warn($"NamedPawnDef: invalid noRandomTraits value '{node.InnerText}'");
+                    break;
+                case "traits":
+                    traits = DirectXmlToObject.ObjectFromXml<List<NamedPawnTraitEntry>>(node, false);
+                    break;
+                case "skills":
+                    skills = DirectXmlToObject.ObjectFromXml<List<NamedPawnSkillEntry>>(node, false);
+                    break;
+                case "genes":
+                    genes = DirectXmlToObject.ObjectFromXml<List<string>>(node, false);
+                    break;
+                case "radiantOrder":
+                    radiantOrder = node.InnerText;
+                    break;
+                case "idealLevel":
+                    if (!int.TryParse(node.InnerText, out idealLevel))
+                        Log.Warn($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
+
+                    break;
+                case "kandraGeneration":
+                    if (!int.TryParse(node.InnerText, out kandraGeneration))
+                        Log.Warn($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
+                    break;
+                case "kandraTrueAnimal":
+                    kandraTrueAnimal = node.InnerText;
+                    break;
+                case "kandraKnownFaces":
+                    kandraKnownFaces = DirectXmlToObject.ObjectFromXml<List<string>>(node, false);
+                    break;
+                case "bodyType":
+                    bodyType = node.InnerText;
+                    break;
+                case "headType":
+                    headType = node.InnerText;
+                    break;
+                case "skinColor":
+                    skinColor = node.InnerText;
+                    break;
+                case "mistborn":
+                    if (!bool.TryParse(node.InnerText, out mistborn))
+                        Log.Warn($"NamedPawnDef: invalid mistborn value '{node.InnerText}'");
+                    break;
+                case "fullFeruchemist":
+                    if (!bool.TryParse(node.InnerText, out fullFeruchemist))
+                        Log.Warn($"NamedPawnDef: invalid fullFeruchemist value '{node.InnerText}'");
+                    break;
+                case "inventory":
+                    inventory = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
+                    break;
+                case "apparel":
+                    apparel = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
+                    break;
+                case "relations":
+                    relations = DirectXmlToObject.ObjectFromXml<List<NamedPawnRelationEntry>>(node, false);
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Always a NameTriple, even with no surname: vanilla's spouse-relation generator casts
+    ///     starting pawns' names to NameTriple with no null check, and a NameSingle here takes out map gen.
+    /// </summary>
+    public Name? GetName() {
+        if (firstName == null) return null;
+
+        return new NameTriple(firstName, nickName ?? firstName, lastName ?? string.Empty);
+    }
+
+    public int GetChronologicalAge() {
+        return chronologicalAge > 0 ? chronologicalAge : age;
+    }
+}
+
+public class NamedPawnTraitEntry {
+    public string? def;
+    public int degree;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "def":
+                    def = node.InnerText;
+                    break;
+                case "degree":
+                    if (!int.TryParse(node.InnerText, out degree))
+                        Log.Warn($"NamedPawnTraitEntry: invalid degree value '{node.InnerText}'");
+                    break;
+            }
+        }
+    }
+}
+
+public class NamedPawnSkillEntry {
+    public string? def;
+    public int level;
+    public Passion passion = Passion.None;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "def":
+                    def = node.InnerText;
+                    break;
+                case "level":
+                    if (!int.TryParse(node.InnerText, out level))
+                        Log.Warn($"NamedPawnSkillEntry: invalid level value '{node.InnerText}'");
+                    break;
+                case "passion":
+                    passion = (Passion)ParseHelper.FromString(node.InnerText, typeof(Passion));
+                    break;
+            }
+        }
+    }
+}
+
+public class NamedPawnInventoryEntry {
+    public int count = 1;
+    public string? stuff;
+    public string? thing;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "thing":
+                    thing = node.InnerText;
+                    break;
+                case "stuff":
+                    stuff = node.InnerText;
+                    break;
+                case "count":
+                    if (!int.TryParse(node.InnerText, out count))
+                        Log.Warn($"NamedPawnInventoryEntry: invalid count value '{node.InnerText}'");
+                    break;
+            }
+        }
+    }
+}
+
+public class NamedPawnRelationEntry {
+    /// <summary>A PawnRelationDef name - Spouse, Lover, Fiance, Sibling, Parent, Child.</summary>
+    public string? def;
+
+    /// <summary>The other pawn's first name.</summary>
+    public string? to;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
+        foreach (XmlNode node in xmlRoot.ChildNodes) {
+            if (node.NodeType != XmlNodeType.Element) continue;
+
+            switch (node.Name) {
+                case "def":
+                    def = node.InnerText;
+                    break;
+                case "to":
+                    to = node.InnerText;
+                    break;
+            }
+        }
+    }
+}

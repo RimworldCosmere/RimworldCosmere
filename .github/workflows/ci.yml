@@ -72,9 +72,17 @@ jobs:
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           skip-if-unchanged: 'true'
 
+  # Textures live in Cosmere*/Assets but the game reads Cosmere*/AssetBundles, which is
+  # gitignored. Same reusable workflow release.yml calls, so one cache serves both.
+  assetbundles:
+    name: Asset bundles
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    uses: ./.github/workflows/assetbundles.yml
+    secrets: inherit
+
   pickle:
     name: Pickle suite
-    needs: game-image
+    needs: [ game-image, assetbundles ]
     runs-on: ubuntu-latest
     # Above two attempts at PICKLE_RUN_TIMEOUT plus the image pull and staging, so the
     # watchdog always trips first and the script still writes its verdict.
@@ -97,6 +105,27 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
+      # pickle-run.sh mounts the Cosmere mod dirs straight off this checkout, so the bundles
+      # have to land beside Assemblies/ before the container starts.
+      - name: Download the asset bundles
+        uses: actions/download-artifact@v5
+        with:
+          name: all-assetbundles
+
+      - name: Extract the asset bundles
+        run: |
+          shopt -s nullglob
+          found=0
+          for zip in Cosmere*-assetbundles.zip; do
+            mod="${zip%-assetbundles.zip}"
+            unzip -qo "$zip" -d "$mod/"
+            rm "$zip"
+            found=$((found + 1))
+            echo "extracted bundles into $mod/AssetBundles"
+          done
+          # A silent zero here is how the suite lost its textures in the first place.
+          [ "$found" -gt 0 ] || { echo "no asset bundle zips in the artifact"; exit 1; }
 
       # Codegen is gitignored, same as the build job. `quick` is what `make pickle` depends on.
       - name: Build the mods

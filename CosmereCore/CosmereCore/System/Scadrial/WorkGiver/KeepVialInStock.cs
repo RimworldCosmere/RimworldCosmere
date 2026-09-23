@@ -21,20 +21,32 @@ public class KeepVialInStock : WorkGiver_Scanner {
     public override bool HasJobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
         if (pawn.Downed || pawn.IsAsleep()) return false;
         if (!t.Spawned || t.IsForbidden(pawn)) return false;
-        if (GeneWanting(pawn, t) == null) return false;
+        Allomancer? gene = GeneWanting(pawn, t);
+        if (gene == null) return false;
 
-        return pawn.CanReserveAndReach(t, PathEndMode.ClosestTouch, Danger.None, 10, 1);
+        return pawn.CanReserveAndReach(
+            t, PathEndMode.ClosestTouch, Danger.None, 10, WantedFrom(pawn, gene, t));
     }
 
     public override Job? JobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
         Allomancer? gene = GeneWanting(pawn, t);
         if (gene == null) return null;
 
-        int inStock = StockOf(pawn, gene);
         Job job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeInventory, t);
-        job.count = Math.Min(gene.RequestedVialStock - inStock, t.def.orderedTakeGroup.max - inStock);
+        job.count = WantedFrom(pawn, gene, t);
 
         return job;
+    }
+
+    /// <summary>
+    ///     How many this pawn takes from the stack. The reservation asks for this same number,
+    ///     because reserving one and then taking three throws rather than queueing.
+    /// </summary>
+    private static int WantedFrom(Pawn pawn, Allomancer gene, Verse.Thing vial) {
+        int inStock = StockOf(pawn, gene);
+        int wanted = Math.Min(gene.RequestedVialStock - inStock, vial.def.orderedTakeGroup.max - inStock);
+
+        return Math.Max(1, Math.Min(wanted, vial.stackCount));
     }
 
     /// <summary>

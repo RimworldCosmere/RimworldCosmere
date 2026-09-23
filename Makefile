@@ -117,7 +117,8 @@ game-log: ## Follow the Cosmere run log
 # can fail a passing run, so it only decides things when no summary was written.
 pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTANCE=<name> lets runs go in parallel)
 	@echo "$(BLUE)Running Pickle suite...$(NC)"
-	@cd "$(CURDIR)" && gamecrate rimworld $(PICKLE_PROFILE) \
+	@stamp=$$(mktemp); \
+	cd "$(CURDIR)" && gamecrate rimworld $(PICKLE_PROFILE) \
 		$(if $(PICKLE_INSTANCE),--instance $(PICKLE_INSTANCE)) \
 		--mode headless --no-detach --no-replace --timeout $(PICKLE_TIMEOUT) -- \
 		"-pickle-run=$(PICKLE_FILTER)" \
@@ -127,11 +128,13 @@ pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTAN
 	code=$$?; \
 	run=$$(/bin/ls -1dt "$(PICKLE_INSTANCE_DIR)"/logs/runs/*/ 2>/dev/null | head -1); \
 	summary="$$run/pickle-reports/summary.json"; \
-	if [ -z "$$run" ] || [ ! -f "$$summary" ]; then \
+	if [ -z "$$run" ] || [ ! -f "$$summary" ] || [ ! "$$summary" -nt "$$stamp" ]; then \
+		rm -f "$$stamp"; \
 		echo "$(RED)✗ This run wrote no summary.json - it never reported (game exit $$code)$(NC)"; \
 		echo "$(RED)  Check $$run/Player.log. A dead X server shows as 'XIO: fatal IO error'.$(NC)"; \
 		exit 1; \
 	fi; \
+	rm -f "$$stamp"; \
 	total=$$(sed -n 's/.*"total":\([0-9]*\).*/\1/p' "$$summary"); \
 	failed=$$(sed -n 's/.*"failed":\([0-9]*\).*/\1/p' "$$summary"); \
 	reason=$$(sed -n 's/.*"exitReason":"\([^"]*\)".*/\1/p' "$$summary"); \

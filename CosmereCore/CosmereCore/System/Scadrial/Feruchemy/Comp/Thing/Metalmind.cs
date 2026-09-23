@@ -360,7 +360,6 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
             // Only saves written before owner was scribed land here, and they claim the holder as they always did.
             owner ??= GetHoldingPawn();
-            storedMemoriesInt ??= [];
 
             // loads over-full when compounding burnt capacity, or when a save predates quality scaling.
             float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);

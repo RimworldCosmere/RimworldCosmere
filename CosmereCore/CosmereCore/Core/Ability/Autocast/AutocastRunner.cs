@@ -48,8 +48,9 @@ public sealed class AutocastRunner : GameComponent {
                 continue;
             }
 
-            // a rule switched off holds nothing, so it gives up the burn rather than keeping a claim on it.
+            // Releases the burn like TickDialRule puts a dial back; dropping the claim strands it.
             if (dormant || pawn.abilities == null) {
+                ReleaseHeldBurn(pawn, rule);
                 rule.Holding = false;
                 continue;
             }
@@ -64,31 +65,31 @@ public sealed class AutocastRunner : GameComponent {
             bool toggleable = sustained?.IsToggleable ?? false;
             bool active = sustained?.IsActive ?? false;
 
-            // an ability that is off is nobody's, so whoever lights it next owns it.
-            if (!active) rule.Holding = false;
+            bool wasHolding = rule.Holding && active;
 
             AutocastAction action = AutocastDecision.For(
                 toggleable,
                 active,
                 AllTriggersPass(pawn, rule),
                 rule.ToggleOffWhenInactive,
-                rule.Holding,
+                wasHolding,
                 ability.def.targetRequired
             );
 
             if (action == AutocastAction.TurnOff) {
-                rule.Holding = false;
+                rule.Holding = AutocastDecision.NextHolding(false, true, toggleable, active, wasHolding, action);
                 sustained!.TurnOff();
                 continue;
             }
 
-            if (action != AutocastAction.Cast) continue;
-
             // CanCast covers the reserve paying for the ability; switching off never needs it.
-            if (!ability.CanCast) continue;
+            bool cast = action == AutocastAction.Cast && ability.CanCast;
+            rule.Holding = AutocastDecision.NextHolding(
+                false, true, toggleable, active, wasHolding, cast ? action : AutocastAction.None);
+
+            if (!cast) continue;
 
             ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
-            rule.Holding = toggleable;
             rule.FireCount++;
         }
     }
@@ -130,6 +131,16 @@ public sealed class AutocastRunner : GameComponent {
             if (!AutocastDefaults.HasDefaults(defName)) continue;
             store.GetOrCreateRule(pawn, defName);
         }
+    }
+
+    /// <summary>Turns off a live toggle this rule lit, so a rule going dormant cannot strand it.</summary>
+    private static void ReleaseHeldBurn(Pawn pawn, AutocastRule rule) {
+        if (!rule.Holding || pawn.abilities == null) return;
+
+        RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
+        if (ability is not IToggleableAbility { IsToggleable: true, IsActive: true } sustained) return;
+
+        sustained.TurnOff();
     }
 
     private static RimWorld.Ability? FindAbility(Pawn pawn, string defName) {

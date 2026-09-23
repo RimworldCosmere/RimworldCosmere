@@ -177,7 +177,6 @@ public class CompKandraForms : ThingComp {
         wasEquipped ??= [];
         wasWorn ??= [];
         mind ??= new KandraMind();
-        known ??= [];
     }
 
     /// <summary>Eats a body and remembers it. Duplicate faces are not worth storing twice.</summary>

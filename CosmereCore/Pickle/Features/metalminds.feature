@@ -89,7 +89,8 @@ Feature: metalminds
     And a colonist "Dockson" exists
     And "Camon" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBand"
     When "Camon" stores 400.0 into the "Pewter" metalminds
-    And the "Pewter" metalmind of "Camon" moves to "Dockson"
+    Then the carried "Pewter" metalmind of "Camon" can be tapped
+    When the "Pewter" metalmind of "Camon" moves to "Dockson"
     Then the "Pewter" metalmind of "Dockson" is owned by "Camon"
     When "Dockson" taps 200.0 from the "Pewter" metalminds
     Then the last transfer moved 0.0

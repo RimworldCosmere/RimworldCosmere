@@ -89,7 +89,7 @@ public class ImplantedMetalminds : HediffWithComps {
         base.ExposeData();
         Scribe_Collections.Look(ref metalminds, "metalminds", LookMode.Deep);
         metalminds ??= [];
-        if (Scribe.mode == LoadSaveMode.PostLoadInit && metalminds != null) {
+        if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             for (int i = 0; i < metalminds.Count; i++) {
                 metalminds[i].ReconcileCapacity();
 
@@ -97,8 +97,6 @@ public class ImplantedMetalminds : HediffWithComps {
                 if (metalminds[i].loadId < 0) metalminds[i].loadId = i;
             }
         }
-
-        metalminds ??= [];
     }
 
     private static string GetMetalmindLabel(ImplantedMetalmindData data) {

@@ -194,4 +194,92 @@ public class AutocastDecisionTests {
             )
         );
     }
+
+    [TestMethod]
+    public void ADormantRuleOwnsNothing() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: true,
+            abilityFound: true,
+            toggleable: true,
+            active: true,
+            wasHolding: true,
+            action: AutocastAction.None));
+    }
+
+    [TestMethod]
+    public void LosingTheAbilityDropsTheClaim() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: false,
+            toggleable: true,
+            active: true,
+            wasHolding: true,
+            action: AutocastAction.None));
+    }
+
+    [TestMethod]
+    public void AnAbilityThatIsOffIsNobodys() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: true,
+            active: false,
+            wasHolding: true,
+            action: AutocastAction.None));
+    }
+
+    [TestMethod]
+    public void CastingAToggleClaimsIt() {
+        Assert.IsTrue(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: true,
+            active: false,
+            wasHolding: false,
+            action: AutocastAction.Cast));
+    }
+
+    [TestMethod]
+    public void CastingAOneShotClaimsNothing() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: false,
+            active: false,
+            wasHolding: false,
+            action: AutocastAction.Cast));
+    }
+
+    [TestMethod]
+    public void TurningItOffReleasesTheClaim() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: true,
+            active: true,
+            wasHolding: true,
+            action: AutocastAction.TurnOff));
+    }
+
+    [TestMethod]
+    public void AQuietPassKeepsTheClaimItAlreadyHad() {
+        Assert.IsTrue(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: true,
+            active: true,
+            wasHolding: true,
+            action: AutocastAction.None));
+    }
+
+    [TestMethod]
+    public void AQuietPassDoesNotInventAClaim() {
+        Assert.IsFalse(AutocastDecision.NextHolding(
+            dormant: false,
+            abilityFound: true,
+            toggleable: true,
+            active: true,
+            wasHolding: false,
+            action: AutocastAction.None));
+    }
 }

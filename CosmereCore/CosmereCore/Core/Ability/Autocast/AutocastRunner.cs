@@ -48,21 +48,33 @@ public sealed class AutocastRunner : GameComponent {
                 continue;
             }
 
-            if (dormant || pawn.abilities == null) continue;
+            // a rule switched off holds nothing, so it gives up the burn rather than keeping a claim on it.
+            if (dormant || pawn.abilities == null) {
+                rule.Holding = false;
+                continue;
+            }
 
             RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
             if (ability == null) continue;
 
             IToggleableAbility? sustained = ability as IToggleableAbility;
+            bool toggleable = sustained?.IsToggleable ?? false;
+            bool active = sustained?.IsActive ?? false;
+
+            // an ability that is off is nobody's, so whoever lights it next owns it.
+            if (!active) rule.Holding = false;
+
+            // releases only a burn this rule lit; one the player lit stays lit.
             AutocastAction action = AutocastDecision.For(
-                sustained?.IsToggleable ?? false,
-                sustained?.IsActive ?? false,
+                toggleable,
+                active,
                 AllTriggersPass(pawn, rule),
-                rule.ToggleOffWhenInactive,
+                rule.ToggleOffWhenInactive && rule.Holding,
                 ability.def.targetRequired
             );
 
             if (action == AutocastAction.TurnOff) {
+                rule.Holding = false;
                 sustained!.TurnOff();
                 continue;
             }
@@ -73,6 +85,7 @@ public sealed class AutocastRunner : GameComponent {
             if (!ability.CanCast) continue;
 
             ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+            rule.Holding = toggleable;
             rule.FireCount++;
         }
     }

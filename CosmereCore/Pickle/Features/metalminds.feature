@@ -4,6 +4,11 @@
 @timeout:600
 Feature: metalminds
 
+  # Nothing here needs time to pass, and a running colony ticks genes, jobs and incidents
+  # over the same metalminds. Frozen, the steps are the only thing that moves charge.
+  Background:
+    Given game speed is paused
+
   # Quality outweighs the choice of metalmind: a legendary band carries four awful ones.
   Scenario: quality decides how much a metalmind holds
     Given I enable the shard "Preservation"
@@ -80,12 +85,12 @@ Feature: metalminds
   # A band answers to whoever filled it. A second pawn may carry it and still draw nothing.
   @same-world
   Scenario: a metalmind keyed to one pawn still offers itself to a second
-    Given a colonist "Kelsier" exists
+    Given a colonist "Camon" exists
     And a colonist "Dockson" exists
-    And "Kelsier" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBand"
-    When "Kelsier" stores 400.0 into the "Pewter" metalminds
-    And the "Pewter" metalmind of "Kelsier" moves to "Dockson"
-    Then the "Pewter" metalmind of "Dockson" is owned by "Kelsier"
+    And "Camon" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBand"
+    When "Camon" stores 400.0 into the "Pewter" metalminds
+    And the "Pewter" metalmind of "Camon" moves to "Dockson"
+    Then the "Pewter" metalmind of "Dockson" is owned by "Camon"
     When "Dockson" taps 200.0 from the "Pewter" metalminds
     Then the last transfer moved 0.0
     And the carried "Pewter" metalmind of "Dockson" holds 400.0

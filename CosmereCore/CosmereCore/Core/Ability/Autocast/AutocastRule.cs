@@ -43,8 +43,8 @@ public sealed class AutocastRule : IExposable {
     public bool ToggleOffWhenInactive;
 
     /// <summary>
-    ///     Whether this rule is the reason the dial sits where it does. Persisted so a save
-    ///     made mid-hold releases the dial it set, not one the player moved by hand.
+    ///     Whether this rule is the reason the dial sits where it does, or the burn is lit.
+    ///     Persisted so a save made mid-hold releases what it set, not what the player did by hand.
     /// </summary>
     public bool Holding;
 

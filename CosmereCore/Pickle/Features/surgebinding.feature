@@ -95,26 +95,35 @@ Feature: surgebinding
 
   # A called pawn is not tested by the storm. The regard hediff only lands on that branch,
   # so its arrival is the exemption firing.
+
+  # Healed first, because a generated colonist arrives with whatever injuries rolled for it
+  # and this one stands through a storm. Ten damage rolls at the peak is plenty for the regard.
   @same-world
   Scenario: the storm spares a pawn the Stormfather has called
     Given a colonist "Dabbid" exists
+    And I heal "Dabbid"
     And I draft "Dabbid"
     And "Dabbid" stands in the open
     And "Dabbid" is given hediff "Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather"
     Then "Dabbid" is exposed to the storm
     When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
     And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
-    And I wait 600 ticks
+    Then "Dabbid" is exposed to the storm
+    When I wait 300 ticks
     Then "Dabbid" has hediff "Cosmere_Roshar_Hediff_StormfathersRegard"
     When game condition "Cosmere_Roshar_HighstormCondition" ends
     Then game condition "Cosmere_Roshar_HighstormCondition" is not active
 
+  # The long window in this file, and it stays long: the objective is surviving a whole storm.
+  # Healed first so the survival turns on the storm's damage and not on a rolled bad back.
   @same-world
   Scenario: standing out the whole storm earns the Stormfather's bond
     Given a colonist "Rlain" exists
+    And I heal "Rlain"
     And "Rlain" is given hediff "Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather"
     And I draft "Rlain"
     And "Rlain" stands in the open
+    Then "Rlain" is exposed to the storm
     When the capstone "Cosmere_Roshar_Quest_BondStormfather" is offered to "Rlain"
     Then the capstone "Cosmere_Roshar_Quest_BondStormfather" is NotYetAccepted
     When "Rlain" accepts the capstone "Cosmere_Roshar_Quest_BondStormfather"
@@ -129,11 +138,16 @@ Feature: surgebinding
 
   # No @same-world on purpose. A capstone only starts from NotFired, and the scenario above
   # leaves this one Offered for the rest of its world, so the failure path needs a fresh one.
+
+  # Healed before he is beaten down, so the storm still blowing over a downed pawn takes him
+  # to the failed objective and no further. The last two steps need him alive to read.
   Scenario: going down mid-storm fails the test without burning it
     Given a colonist "Roshone" exists
+    And I heal "Roshone"
     And "Roshone" is given hediff "Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather"
     And I draft "Roshone"
     And "Roshone" stands in the open
+    Then "Roshone" is exposed to the storm
     When the capstone "Cosmere_Roshar_Quest_BondStormfather" is offered to "Roshone"
     And "Roshone" accepts the capstone "Cosmere_Roshar_Quest_BondStormfather"
     And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks

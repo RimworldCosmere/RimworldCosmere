@@ -104,9 +104,10 @@ Feature: core shard connection
   # the file for that reason: every scenario above wants the cross-world sentinel.
   @same-world
   Scenario: living somewhere long enough earns what being born there would have given
-    Given the save's world is "Scadrial"
-    And a colonist "Sarene" exists
+    Given a colonist "Sarene" exists
     And "Sarene" xenotype is "Cosmere_Roshar_Xenotype_Darkeyes"
+    # Pinned first: residence seeds from age on its first read, and only for a native.
+    And the save's world is "Scadrial"
     Then "Sarene" may not burn the god metal "Atium"
     When I record "Sarene" connection to the shard "Preservation"
     And I record "Sarene" connection to the shard "Honor"

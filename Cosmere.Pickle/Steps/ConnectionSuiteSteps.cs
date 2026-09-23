@@ -221,6 +221,25 @@ public class ConnectionSuiteSteps {
         RequireThingHolder(ctx, defName, x, z).FillInvestiture();
     }
 
+    /// <summary>Takes a thing out of the colony's reach, so only the clock touches it.</summary>
+    /// <param name="ctx">The scenario's context.</param>
+    /// <param name="defName">The thing def in the cell.</param>
+    /// <param name="x">The cell's x coordinate.</param>
+    /// <param name="z">The cell's z coordinate.</param>
+    /// <remarks>Sharing off stops a Radiant drinking it, forbidding stops a hauler moving it off
+    /// the cell. Neither touches the drain rate.</remarks>
+    [When("I put the {string} at \\({int}, {int}\\) beyond the colony's reach")]
+    public void WithholdThing(PickleContext ctx, string defName, int x, int z) {
+        InvestitureHolder holder = RequireThingHolder(ctx, defName, x, z);
+        holder.sharingInvestiture = false;
+        holder.parent.SetForbidden(true, false);
+
+        ctx.Require(
+            holder.parent.IsForbidden(Faction.OfPlayer),
+            $"the {defName} at ({x}, {z}) will not take a forbidden flag, so a hauler can still " +
+            "carry it off the cell this scenario reads");
+    }
+
     /// <summary>Asserts a thing holds every drop it has room for.</summary>
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The thing def in the cell.</param>

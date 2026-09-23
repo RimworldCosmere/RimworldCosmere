@@ -7,10 +7,11 @@ Feature: stormlight
     Given I enable the shard "Honor"
     And no storm is running
 
-  # Every pawn here is drafted first. An idle colonist walks off to work, and half these
-  # scenarios turn on where the pawn is standing when the stormwall arrives.
-  # Every reserve starts at half. Under a fifth the Radiant autocasts Breathe Stormlight and
-  # drinks the spheres around them, which would fill a sheltered pawn and prove nothing.
+  # Every pawn here is drafted first: an idle colonist walks off to work, and the open-ground
+  # step pins them, because the storm shoves whoever it reaches two cells west per thirty.
+
+  # Reserves start at half: under a fifth a Radiant drinks the spheres around them. The storm
+  # pours twenty Stormlight a charge, so the reserve caps out well inside a short window.
   Scenario: a highstorm fills a Radiant standing under open sky
     Given a colonist "Bisig" exists
     And I give "Bisig" the gene "Cosmere_Roshar_Gene_RadiantWindrunner"
@@ -21,7 +22,8 @@ Feature: stormlight
     When I record the investiture of "Bisig"
     And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
     And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
-    And I wait 600 ticks
+    Then "Bisig" is exposed to the storm
+    When I wait 300 ticks
     Then the recorded investiture has risen
     And "Bisig" gene "Cosmere_Roshar_Gene_RadiantWindrunner" is above 50.0
     When game condition "Cosmere_Roshar_HighstormCondition" ends
@@ -29,6 +31,9 @@ Feature: stormlight
 
   # Roofed and sealed to the east is what StormShelterManager counts as shelter, and a
   # sheltered pawn never enters the storm's list at all, so no Stormlight reaches them.
+
+  # The one window here that stays long. A sheltered reserve only leaks on its own decay
+  # clock, 0.1 every 250 ticks, so shortening this would leave nothing to read.
   @same-world
   Scenario: a roofed Radiant draws nothing from the same storm
     Given a colonist "Peet" exists
@@ -47,6 +52,8 @@ Feature: stormlight
     When game condition "Cosmere_Roshar_HighstormCondition" ends
     Then game condition "Cosmere_Roshar_HighstormCondition" is not active
 
+  # Health is read across the storm's peak rather than its whole life. The storm rolls for
+  # damage every thirty ticks, and the shorter window is 300 fewer ticks of live colony.
   @same-world
   Scenario: the storm hurts whoever stands out in it
     Given a colonist "Mart" exists
@@ -54,14 +61,17 @@ Feature: stormlight
     And "Mart" stands in the open
     And I heal "Mart"
     Then "Mart" is exposed to the storm
-    When I record the health of "Mart"
-    And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
+    When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
     And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
-    And I wait 900 ticks
+    Then "Mart" is exposed to the storm
+    When I record the health of "Mart"
+    And I wait 300 ticks
     Then the recorded health has fallen
     When game condition "Cosmere_Roshar_HighstormCondition" ends
     Then game condition "Cosmere_Roshar_HighstormCondition" is not active
 
+  # The same peak window as the scenario above, measured against the same storm. Nothing
+  # should touch a sheltered pawn, so every extra tick here is only a chance for something to.
   @same-world
   Scenario: a shelter keeps the same storm off
     Given a colonist "Eth" exists
@@ -69,11 +79,13 @@ Feature: stormlight
     And "Eth" shelters from the storm
     And I heal "Eth"
     Then "Eth" is sheltered from the storm
-    When I record the health of "Eth"
-    And game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
+    When game condition "Cosmere_Roshar_HighstormCondition" starts for 3000 ticks
     And I wait up to 2000 ticks for the highstorm to reach intensity 0.7
-    And I wait 900 ticks
+    Then "Eth" is sheltered from the storm
+    When I record the health of "Eth"
+    And I wait 300 ticks
     Then the recorded health is unchanged
+    And "Eth" is sheltered from the storm
     When game condition "Cosmere_Roshar_HighstormCondition" ends
     Then game condition "Cosmere_Roshar_HighstormCondition" is not active
 

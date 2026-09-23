@@ -4,6 +4,11 @@
 @timeout:600
 Feature: feruchemy
 
+  # Nothing here needs time to pass, and a running colony ticks genes, jobs and incidents
+  # over the same metalminds. Frozen, the steps are the only thing that moves charge.
+  Background:
+    Given game speed is paused
+
   # A metalmind gives back what went in. One rate, one efficiency, no loss in either direction.
   Scenario: a metalmind gives back exactly what was stored
     Given I enable the shard "Preservation"
@@ -19,12 +24,12 @@ Feature: feruchemy
 
   @same-world
   Scenario: an empty metalmind has nothing to give
-    Given a colonist "Demoux" exists
-    And "Demoux" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBracelet"
-    Then the carried "Pewter" metalmind of "Demoux" cannot be tapped
-    When "Demoux" taps 100.0 from the "Pewter" metalminds
+    Given a colonist "Milev" exists
+    And "Milev" carries a "Pewter" "Cosmere_Scadrial_Thing_MetalmindBracelet"
+    Then the carried "Pewter" metalmind of "Milev" cannot be tapped
+    When "Milev" taps 100.0 from the "Pewter" metalminds
     Then the last transfer moved 0.0
-    And the carried "Pewter" metalmind of "Demoux" holds 0.0
+    And the carried "Pewter" metalmind of "Milev" holds 0.0
 
   # The offer is clamped to the room left, and the transfer reports the smaller figure, so
   # nothing is accounted for that the metal never took.

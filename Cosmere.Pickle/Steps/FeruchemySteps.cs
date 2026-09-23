@@ -52,6 +52,11 @@ public class FeruchemySteps {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ctx.Require(pawn.inventory != null, $"pawn '{nickname}' has no inventory to carry a metalmind in");
 
+        // one of this metal already on them splits every transfer, silently.
+        ctx.Require(
+            CarriedOf(pawn, metal).Count == 0,
+            $"pawn '{nickname}' already carries a {metal} metalmind; {Describe(pawn)}");
+
         Verse.Thing thing = MakeMetalmind(ctx, quality, metal, thingDefName);
         ctx.Require(
             pawn.inventory!.innerContainer.TryAdd(thing, false),
@@ -67,6 +72,10 @@ public class FeruchemySteps {
     [Given("{string} has a {string} {string} implanted")]
     public void HasMetalmindImplanted(PickleContext ctx, string nickname, string metal, string thingDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
+        ctx.Require(
+            !ImplantsOf(pawn).Any(d => IsMetal(d.Metal, metal)),
+            $"pawn '{nickname}' already has a {metal} metalmind implanted; {Describe(pawn)}");
+
         Verse.Thing thing = MakeMetalmind(ctx, "Normal", metal, thingDefName);
         Metalmind comp = thing.TryGetComp<Metalmind>()!;
 

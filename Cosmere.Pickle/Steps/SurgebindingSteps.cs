@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Game;
+using Cosmere.Core.Extension;
 using Cosmere.Core.Investiture;
 using Cosmere.Core.Quest;
 using Cosmere.Core.Quest.Objective;
@@ -324,25 +325,31 @@ public class SurgebindingSteps {
             () => $"still running: {string.Join(", ", active.Select(c => c.def.defName))}");
     }
 
-    /// <summary>Puts a pawn on open ground, with nothing roofed around them.</summary>
+    /// <summary>Puts a pawn on open ground, with nothing roofed around them, and drops a plasteel
+    /// windbreak two cells east so the storm leaves them there.</summary>
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
+    /// <remarks><c>Highstorm.MoveItem</c> skips anything with a solid thing within two cells east,
+    /// and changes nothing else: the pawn still takes damage and still drinks Stormlight.</remarks>
     [Given("{string} stands in the open")]
     public void StandInTheOpen(PickleContext ctx, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
         Map map = pawn.Map;
 
-        IntVec3 cell = FindCell(pawn, c => IsClearOpenGround(c, map));
+        IntVec3 cell = FindCell(pawn, c => IsClearOpenGround(c, map) && IsClearOpenGround(Windbreak(c), map));
         ctx.Require(
             cell.IsValid,
-            $"no open, unroofed cell within {SearchRadius:0} of '{nickname}'. {DescribeSpot(pawn)}");
+            $"no open, unroofed cell within {SearchRadius:0} of '{nickname}' had room for a " +
+            $"windbreak two cells east. {DescribeSpot(pawn)}");
 
+        SpawnWall(Windbreak(cell), map);
         Teleport(pawn, cell);
 
         CosmereLookup.AssertThat(
             ctx,
-            !pawn.Position.Roofed(map) && !StormShelterManager.IsInsideShelter(pawn.Position),
-            $"'{nickname}' should be standing under open sky",
+            !pawn.Position.Roofed(map) && !StormShelterManager.IsInsideShelter(pawn.Position) &&
+            pawn.IsBehindSolidThing(IntVec3.East, 2),
+            $"'{nickname}' should be standing under open sky, pinned against the storm's push",
             () => DescribeSpot(pawn));
     }
 
@@ -360,10 +367,8 @@ public class SurgebindingSteps {
             cell.IsValid,
             $"no cell within {SearchRadius:0} of '{nickname}' could take a shelter. {DescribeSpot(pawn)}");
 
-        // Plasteel, because the storm's damage table gives it a multiplier of zero.
         for (int z = -1; z <= 1; z++) {
-            Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, RimWorld.ThingDefOf.Plasteel);
-            GenSpawn.Spawn(wall, new IntVec3(cell.x + 2, 0, cell.z + z), map, WipeMode.Vanish);
+            SpawnWall(new IntVec3(cell.x + 2, 0, cell.z + z), map);
         }
 
         foreach (IntVec3 roofed in Room(cell)) {
@@ -634,6 +639,17 @@ public class SurgebindingSteps {
         return IntVec3.Invalid;
     }
 
+    /// <summary>Where the windbreak goes: two east, the far edge of the range the storm's push checks.</summary>
+    private static IntVec3 Windbreak(IntVec3 cell) {
+        return cell + (IntVec3.East * 2);
+    }
+
+    /// <summary>Plasteel, because the storm's damage table gives it a multiplier of zero.</summary>
+    private static void SpawnWall(IntVec3 cell, Map map) {
+        Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, RimWorld.ThingDefOf.Plasteel);
+        GenSpawn.Spawn(wall, cell, map, WipeMode.Vanish);
+    }
+
     private static bool IsClearOpenGround(IntVec3 cell, Map map) {
         if (!cell.InBounds(map) || !cell.Standable(map)) return false;
         if (cell.Fogged(map) || cell.Roofed(map)) return false;
@@ -754,6 +770,7 @@ public class SurgebindingSteps {
 
         return $"{pawn.LabelShort} at {pawn.Position}: roofed={pawn.Position.Roofed(pawn.Map)}, " +
             $"sheltered={StormShelterManager.IsInsideShelter(pawn.Position)}, " +
+            $"windbroken={pawn.IsBehindSolidThing(IntVec3.East, 2)}, " +
             $"stormWillMove={pawn.ShouldBeMovedByStorm()}, health={HealthOf(pawn):P1}, downed={pawn.Downed}";
     }
 

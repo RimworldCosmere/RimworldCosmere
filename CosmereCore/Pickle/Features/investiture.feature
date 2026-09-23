@@ -46,20 +46,23 @@ Feature: core investiture
     Then the "RawDiamond" at (40, 30) investiture is 2.0
     And the "RawDiamond" at (42, 30) investiture is 0.0
 
-  # Short on purpose. This colony holds twelve Radiants, and any of them will walk over and
-  # drink a charged gem dry, which is gameplay rather than decay.
+  # This colony holds twelve Radiants, and any of them will walk over and drink a charged gem
+  # dry, which is gameplay rather than decay. Withheld first, so only the clock spends it.
   @same-world
   Scenario: a gem bleeds at the rate its own def declares
     When I spawn a "RawDiamond" at (44, 30)
+    And I put the "RawDiamond" at (44, 30) beyond the colony's reach
     And I fill the "RawDiamond" at (44, 30) with investiture
     And I record the investiture of the "RawDiamond" at (44, 30)
     Then the "RawDiamond" at (44, 30) loses its declared investiture over 500 ticks
     And the recorded investiture has fallen
 
-  # Decay stops at empty rather than running the reserve negative.
+  # Decay stops at empty rather than running the reserve negative. Withheld for the same reason
+  # as above: a hauler carrying it to a stockpile would empty the cell the last step reads.
   @same-world
   Scenario: a gem that runs dry stays at zero
     When I spawn a "RawDiamond" at (46, 30)
+    And I put the "RawDiamond" at (46, 30) beyond the colony's reach
     And the "RawDiamond" at (46, 30) investiture is set to 0.2
     And I wait 1000 ticks
     Then the "RawDiamond" at (46, 30) investiture is 0.0

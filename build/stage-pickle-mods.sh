@@ -20,7 +20,7 @@ for spec in ConcordLib/RimWorld:Concord \
             RimWorks/Rimworld-Quickstarts:Quickstarts \
             RimWorks/Rimworld-Pickle:Pickle; do
   name="${spec##*:}"
-  if ! gh release download --repo "${spec%%:*}" --pattern "$name-*.zip" --dir "$WORK"; then
+  if ! gh release download --repo "${spec%%:*}" --pattern "$name-*.zip" --dir "$WORK" --clobber; then
     echo "could not download a release for ${spec%%:*}" >&2
     exit 1
   fi

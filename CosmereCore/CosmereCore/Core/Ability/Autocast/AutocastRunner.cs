@@ -135,7 +135,8 @@ public sealed class AutocastRunner : GameComponent {
 
     /// <summary>Turns off a live toggle this rule lit, so a rule going dormant cannot strand it.</summary>
     private static void ReleaseHeldBurn(Pawn pawn, AutocastRule rule) {
-        if (!rule.Holding || pawn.abilities == null) return;
+        if (pawn.abilities == null) return;
+        if (!AutocastDecision.ReleasesWhenDormant(rule.Holding, rule.ToggleOffWhenInactive)) return;
 
         RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
         if (ability is not IToggleableAbility { IsToggleable: true, IsActive: true } sustained) return;

@@ -61,4 +61,14 @@ public static class AutocastDecision {
 
         return action == AutocastAction.Cast ? toggleable : wasHolding;
     }
+
+    /// <summary>
+    ///     Whether a rule going dormant should put out the burn it lit. A player who turned the
+    ///     release off keeps the burn, the way a dial rule set to Leave keeps its dial.
+    /// </summary>
+    /// <param name="holding">The rule lit this burn itself.</param>
+    /// <param name="releaseOnStop">The player wants the burn released when the rule stops.</param>
+    public static bool ReleasesWhenDormant(bool holding, bool releaseOnStop) {
+        return holding && releaseOnStop;
+    }
 }

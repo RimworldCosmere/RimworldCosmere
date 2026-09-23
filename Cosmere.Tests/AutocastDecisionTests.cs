@@ -282,4 +282,19 @@ public class AutocastDecisionTests {
             wasHolding: false,
             action: AutocastAction.None));
     }
+
+    [TestMethod]
+    public void ADormantRuleReleasesTheBurnItLit() {
+        Assert.IsTrue(AutocastDecision.ReleasesWhenDormant(holding: true, releaseOnStop: true));
+    }
+
+    [TestMethod]
+    public void ADormantRuleKeepsTheBurnWhenThePlayerTurnedReleaseOff() {
+        Assert.IsFalse(AutocastDecision.ReleasesWhenDormant(holding: true, releaseOnStop: false));
+    }
+
+    [TestMethod]
+    public void ADormantRuleNeverReleasesABurnItDidNotLight() {
+        Assert.IsFalse(AutocastDecision.ReleasesWhenDormant(holding: false, releaseOnStop: true));
+    }
 }

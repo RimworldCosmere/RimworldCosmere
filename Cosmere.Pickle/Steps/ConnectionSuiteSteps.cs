@@ -315,7 +315,10 @@ public class ConnectionSuiteSteps {
     [Then("the {string} at \\({int}, {int}\\) loses its declared investiture over {int} ticks", TimeoutSeconds = WaitTimeoutSeconds)]
     public async Task AssertDeclaredDrain(PickleContext ctx, string defName, int x, int z, int ticks) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
-        ctx.Require(ticks > 0, $"a drain needs a positive span; it was given {ticks} ticks");
+        ctx.Require(
+            ticks >= UpkeepRate.TicksPerRareInterval * 2,
+            $"a drain needs at least two rare intervals to be measurable; {ticks} ticks leaves the " +
+            $"tolerance wide enough to swallow the whole expected loss");
         ctx.Require(
             holder.drainRate > 0f,
             $"the {defName} at ({x}, {z}) declares no decay, so it can never lose anything. {CosmereLookup.DescribeHolder(holder)}");
@@ -332,7 +335,7 @@ public class ConnectionSuiteSteps {
 
         int elapsed = Find.TickManager.TicksGame - startedAt;
         float lost = before - holder.currentInvestitureSelf;
-        float expected = holder.drainRate * (elapsed / UpkeepRate.TicksPerRareInterval);
+        float expected = holder.drainRate * (elapsed / (float)UpkeepRate.TicksPerRareInterval);
         float slack = holder.drainRate + 0.001f;
 
         CosmereLookup.AssertThat(

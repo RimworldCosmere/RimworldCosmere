@@ -100,7 +100,7 @@ public class FeruchemySteps {
     /// <param name="group">One of all, external or internal.</param>
     [Given("{string} aims feruchemy at {word} metalminds")]
     public void AimsFeruchemy(PickleContext ctx, string nickname, string group) {
-        CosmereLookup.RequirePawn(ctx, nickname);
+        Pawn aimed = CosmereLookup.RequirePawn(ctx, nickname);
 
         string target = group.ToLowerInvariant() switch {
             "all" => MetalmindDistribution.TargetAll,
@@ -109,7 +109,7 @@ public class FeruchemySteps {
             _ => throw new InvalidOperationException($"'{group}' is not a metalmind group; use all, external or internal"),
         };
 
-        ctx.Set(new Aim(target));
+        Aims(ctx).ByPawn[aimed.thingIDNumber] = target;
     }
 
     /// <summary>Fills the pawn's metalminds of a metal with an attribute.</summary>
@@ -403,14 +403,22 @@ public class FeruchemySteps {
         List<IMetalmindSource> sources = SourcesFor(pawn, metal);
         ctx.Require(sources.Count > 0, $"pawn '{nickname}' has no {metal} metalmind; {Describe(pawn)}");
 
-        ctx.Set(new Moved(MetalmindDistribution.Transfer(sources, operation, CurrentAim(ctx), ledgerKey, amount)));
+        ctx.Set(new Moved(MetalmindDistribution.Transfer(sources, operation, AimFor(ctx, pawn), ledgerKey, amount)));
     }
 
-    private static string CurrentAim(PickleContext ctx) {
+    private static string AimFor(PickleContext ctx, Pawn pawn) {
+        return Aims(ctx).ByPawn.TryGetValue(pawn.thingIDNumber, out string? target)
+            ? target
+            : MetalmindDistribution.TargetAll;
+    }
+
+    private static Aim Aims(PickleContext ctx) {
         try {
-            return ctx.Get<Aim>().Target;
+            return ctx.Get<Aim>();
         } catch (InvalidOperationException) {
-            return MetalmindDistribution.TargetAll;
+            Aim fresh = new Aim();
+            ctx.Set(fresh);
+            return fresh;
         }
     }
 
@@ -565,13 +573,9 @@ public class FeruchemySteps {
         return "metalminds on them: " + (labels.Count == 0 ? "(none)" : string.Join(", ", labels));
     }
 
-    /// <summary>Which metalminds the pawn's following transfers reach.</summary>
+    /// <summary>Which metalminds each pawn's following transfers reach, keyed by thingIDNumber.</summary>
     private sealed class Aim {
-        public Aim(string target) {
-            Target = target;
-        }
-
-        public string Target { get; }
+        public Dictionary<int, string> ByPawn { get; } = [];
     }
 
     /// <summary>What the last transfer actually moved, as opposed to what it was offered.</summary>

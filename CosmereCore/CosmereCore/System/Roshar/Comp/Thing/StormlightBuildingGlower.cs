@@ -35,9 +35,6 @@ public class StormlightBuildingGlower : CompGlower {
             float percent = Mathf.Clamp01(current / max);
             return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
         }
-
-        set {
-        }
     }
 
     protected override bool ShouldBeLitNow {

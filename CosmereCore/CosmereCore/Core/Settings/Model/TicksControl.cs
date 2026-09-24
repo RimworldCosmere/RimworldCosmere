@@ -39,7 +39,7 @@ public sealed record TicksControl : SettingControl {
 
     public string DisplayText => ((int)Value).ToStringTicksToPeriod();
 
-    public override bool IsDefault => Value == Default;
+    public override bool IsDefault => SettingValueMath.NearlyEqual(Value, Default);
 
     public override void Reset() {
         Value = Default;

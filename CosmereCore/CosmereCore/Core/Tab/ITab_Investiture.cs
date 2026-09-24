@@ -55,15 +55,12 @@ public class ITab_Investiture : ITab {
         Color headerAccent = state.ShowingConnection ? ConnectionPalette.Selected : skin.AccentColor;
         CodexChrome.DrawHeader(header, headerLabel, headerAccent);
 
-        // Connection always has a slot, so the rail is shown whenever any system exists.
-        bool hasSwitcher = investedProviders.Count > 0;
-        float contentX = hasSwitcher ? CodexChrome.RailWidth : 0f;
+        // The empty case already returned above, so from here the rail always has a slot to show.
+        float contentX = CodexChrome.RailWidth;
 
-        if (hasSwitcher) {
-            Rect rail = new Rect(0f, CodexChrome.HeaderHeight, CodexChrome.RailWidth, size.y - CodexChrome.HeaderHeight);
-            SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
-            GameComponent_CodexMemory.RememberFrom(state, investedProviders);
-        }
+        Rect rail = new Rect(0f, CodexChrome.HeaderHeight, CodexChrome.RailWidth, size.y - CodexChrome.HeaderHeight);
+        SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
+        GameComponent_CodexMemory.RememberFrom(state, investedProviders);
 
         if (state.ShowingConnection) {
             Rect connectionTabs = new Rect(
@@ -77,7 +74,7 @@ public class ITab_Investiture : ITab {
             Rect connectionDivider = new Rect(connectionTabs.x, connectionTabs.yMax, connectionTabs.width, 1f);
             CodexChrome.DrawDivider(connectionDivider, headerAccent);
 
-            Rect connectionBody = CodexChrome.BodyRect(tabRect, hasSwitcher);
+            Rect connectionBody = CodexChrome.BodyRect(tabRect, hasSwitcher: true);
             ConnectionSubtab.Draw(connectionBody, pawn, state);
             return;
         }
@@ -94,7 +91,7 @@ public class ITab_Investiture : ITab {
         Rect divider = new Rect(subtabBar.x, subtabBar.yMax, subtabBar.width, 1f);
         CodexChrome.DrawDivider(divider, skin.AccentColor);
 
-        Rect body = CodexChrome.BodyRect(tabRect, hasSwitcher);
+        Rect body = CodexChrome.BodyRect(tabRect, hasSwitcher: true);
         DrawSubtabBody(body, pawn, active);
     }
 

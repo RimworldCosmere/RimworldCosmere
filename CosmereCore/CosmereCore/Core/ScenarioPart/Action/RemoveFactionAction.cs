@@ -59,16 +59,16 @@ public class RemoveFactionAction : ProgressionAction {
     }
 
     public override string? Describe() {
-        if (factions.Count == 0) return null;
-
         List<string> labels = [];
         for (int i = 0; i < factions.Count; i++) {
             FactionDef? def = DefDatabase<FactionDef>.GetNamedSilentFail(factions[i]);
             if (def != null) labels.Add(def.label);
         }
 
-        return labels.Count == 0
-            ? null
-            : "CC_Progression_Effect_FactionsGone".Translate(string.Join(", ", labels).Named("FACTIONS")).Resolve();
+        // Nothing to name covers both an empty list and defs that carry no label.
+        string named = string.Join(", ", labels);
+        if (named.Length == 0) return null;
+
+        return "CC_Progression_Effect_FactionsGone".Translate(named.Named("FACTIONS")).Resolve();
     }
 }

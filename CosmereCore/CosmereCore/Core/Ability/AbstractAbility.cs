@@ -354,32 +354,10 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
         Scribe_Deep.Look(ref status, "status");
 
-        switch (Scribe.mode) {
-            case LoadSaveMode.Saving: {
-                    bool localTargetPresent = localTarget.HasValue;
-                    Scribe_Values.Look(ref localTargetPresent, "targetPresent");
-                    if (localTargetPresent) {
-                        LocalTargetInfo temp = localTarget!.Value;
-                        Scribe_TargetInfo.Look(ref temp, "target");
-                    }
-
-                    break;
-                }
-
-            case LoadSaveMode.LoadingVars: {
-                    bool localTargetPresent = false;
-                    Scribe_Values.Look(ref localTargetPresent, "targetPresent");
-                    if (localTargetPresent) {
-                        LocalTargetInfo temp = LocalTargetInfo.Invalid;
-                        Scribe_TargetInfo.Look(ref temp, "target");
-                        localTarget = temp;
-                    } else {
-                        localTarget = null;
-                    }
-
-                    break;
-                }
-        }
+        // A Thing target only becomes real in ResolvingCrossRefs, so run every mode like Job does.
+        LocalTargetInfo target = localTarget ?? LocalTargetInfo.Invalid;
+        Scribe_TargetInfo.Look(ref target, "target");
+        if (Scribe.mode != LoadSaveMode.Saving) localTarget = target.IsValid ? target : null;
     }
 
     public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {

@@ -1,6 +1,14 @@
+using global::System;
+
 namespace Cosmere.Core.Settings.Model;
 
 public static class SettingValueMath {
+    /// Mathf.Approximately without the Unity reference, so the settings model still
+    /// loads outside the game.
+    public static bool NearlyEqual(float a, float b) {
+        return Math.Abs(b - a) < Math.Max(1e-6f * Math.Max(Math.Abs(a), Math.Abs(b)), float.Epsilon * 8f);
+    }
+
     public static float ClampFinite(float value, float fallback, float min, float max) {
         if (float.IsNaN(value) || float.IsInfinity(value)) value = fallback;
         if (value < min) return min;

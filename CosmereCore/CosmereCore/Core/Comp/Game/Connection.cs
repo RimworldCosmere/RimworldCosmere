@@ -16,11 +16,6 @@ public class Connection : IExposable {
 
     public Connection() { }
 
-    public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo) {
-        ObjectOne = objectOne;
-        ObjectTwo = objectTwo;
-    }
-
     public Connection(
         ILoadReferenceable objectOne,
         ILoadReferenceable objectTwo,

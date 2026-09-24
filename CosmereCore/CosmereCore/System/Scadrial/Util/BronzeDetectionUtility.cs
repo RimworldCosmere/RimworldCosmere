@@ -38,7 +38,7 @@ public static class BronzeDetectionUtility {
             List<int> nextFrontier = [];
             List<PlanetTile> neighbors = [];
             for (int i = 0; i < frontier.Count; i++) {
-                neighbors.Clear();
+                // clears the buffer itself, down in PackedListOfLists.GetList
                 Find.WorldGrid.GetTileNeighbors(new PlanetTile(frontier[i]), neighbors);
                 for (int j = 0; j < neighbors.Count; j++) {
                     int neighborId = neighbors[j].tileId;

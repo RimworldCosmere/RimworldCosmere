@@ -14,13 +14,6 @@ public class ThingOwnerWithCapacity<T> : ThingOwner<T>
 
     public ThingOwnerWithCapacity(
         IThingHolder owner,
-        LookMode contentsLookMode = LookMode.Deep,
-        bool removeContentsIfDestroyed = true
-    )
-        : base(owner, contentsLookMode, removeContentsIfDestroyed) { }
-
-    public ThingOwnerWithCapacity(
-        IThingHolder owner,
         int maxCapacity,
         LookMode contentsLookMode = LookMode.Deep,
         bool removeContentsIfDestroyed = true
@@ -29,17 +22,7 @@ public class ThingOwnerWithCapacity<T> : ThingOwner<T>
         this.maxCapacity = maxCapacity;
     }
 
-    public ThingOwnerWithCapacity(
-        IThingHolder owner,
-        int maxCapacity,
-        bool oneStackOnly,
-        LookMode contentsLookMode = LookMode.Deep,
-        bool removeContentsIfDestroyed = true
-    )
-        : base(owner, oneStackOnly, contentsLookMode, removeContentsIfDestroyed) {
-        this.maxCapacity = maxCapacity;
-    }
-
+    // Scribe rebuilds this through Activator, which cannot fill in optional parameters.
     public ThingOwnerWithCapacity(
         IThingHolder owner,
         int maxCapacity,

@@ -119,7 +119,8 @@ public class Dialog_SelectShards : Verse.Window {
         bool toggled = isEnabled;
         Widgets.CheckboxLabeled(labelRect, shard.LabelCap, ref toggled, blocked || isRequired);
 
-        if (toggled != isEnabled && !isRequired) {
+        // CheckboxLabeled skips its toggle entirely when disabled, so a required row can never differ here.
+        if (toggled != isEnabled) {
             if (toggled) {
                 ShardUtility.Enable(shard);
             } else {

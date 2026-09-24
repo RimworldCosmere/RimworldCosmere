@@ -48,11 +48,13 @@ public static class SurgebindingHediffUtility {
     private static bool TryGetHediff(Pawn target, HediffDef def, out SurgebindingHediff hediff) {
         hediff = null!;
 
-        Verse.Hediff? uncastHediff = null;
-        target.health?.hediffSet?.TryGetHediff(def, out uncastHediff);
-        if (uncastHediff == null) return false;
+        Verse.HediffSet? hediffSet = target.health?.hediffSet;
+        if (hediffSet == null) return false;
 
-        hediff = (SurgebindingHediff)uncastHediff;
+        hediffSet.TryGetHediff(def, out Verse.Hediff? uncastHediff);
+        if (uncastHediff is not SurgebindingHediff surgebinding) return false;
+
+        hediff = surgebinding;
         return true;
     }
 }

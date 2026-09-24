@@ -7,7 +7,7 @@ using SoulcastAbility = Cosmere.System.Roshar.Surgebinding.Ability.Transformatio
 namespace Cosmere.System.Roshar.WorkGiver;
 
 public class SoulcastWorkGiver : WorkGiver_Scanner {
-    public override PathEndMode PathEndMode => PathEndMode.Touch;
+    public override PathEndMode PathEndMode => Verse.AI.PathEndMode.Touch;
 
     public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn) {
         if (FindSoulcastAbility(pawn) == null) yield break;

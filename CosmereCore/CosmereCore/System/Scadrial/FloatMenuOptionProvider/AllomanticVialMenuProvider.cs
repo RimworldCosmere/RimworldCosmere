@@ -52,26 +52,26 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         float max = isAllomancy ? AllomanticPower.maxValue : FeruchemicPower.maxValue;
 
         if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
-            if (pawn.IsMistborn() && power.Equals(max)) {
+            if (pawn.IsMistborn() && power >= max) {
                 return "CS_Vial_AlreadyMistborn".Translate();
             }
         }
 
         if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
-            if (pawn.IsFullFeruchemist() && power.Equals(max)) {
+            if (pawn.IsFullFeruchemist() && power >= max) {
                 return "CS_AlreadyFullFeruchemist".Translate();
             }
         }
 
         if (stuffMetal != null) {
             if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
-                if (pawn.IsMisting(stuffMetal) && power.Equals(max)) {
+                if (pawn.IsMisting(stuffMetal) && power >= max) {
                     return "CS_AlreadyMisting".Translate(metal.allomancy!.userName.CapitalizeFirst());
                 }
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
-                if (pawn.IsFerring(stuffMetal) && power.Equals(max)) {
+                if (pawn.IsFerring(stuffMetal) && power >= max) {
                     return "CS_AlreadyFerring".Translate(metal.feruchemy!.userName.CapitalizeFirst());
                 }
             }

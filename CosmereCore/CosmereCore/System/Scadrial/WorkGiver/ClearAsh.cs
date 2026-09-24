@@ -14,7 +14,7 @@ public class ClearAsh : WorkGiver_Scanner {
     /// <summary>Below this a cell is a dusting and not worth a trip.</summary>
     public const int WorthClearingMm = AshDepthMath.DustingMm;
 
-    public override PathEndMode PathEndMode => PathEndMode.Touch;
+    public override PathEndMode PathEndMode => Verse.AI.PathEndMode.Touch;
 
     /// <summary>
     ///     The removal zone plus the home area. Players expect the home area to keep itself

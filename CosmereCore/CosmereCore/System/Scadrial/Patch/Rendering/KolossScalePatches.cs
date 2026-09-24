@@ -34,7 +34,9 @@ public abstract class KolossScalePatch : PawnRenderNodeWorker {
         if (node?.tree == null || node.tree.rootNode != node) return;
 
         float grown = KolossBulk.For(parms.pawn);
-        if (grown != 1f) ch.ReturnValue *= grown;
+
+        // KolossBulk returns exactly 1f for a non-koloss and never less than NewlyMade otherwise.
+        if (grown > 1f) ch.ReturnValue *= grown;
     }
 }
 
@@ -53,7 +55,7 @@ public static class KolossMassPatch {
         if (ch.ReturnValue <= 0f) return;
 
         float grown = KolossBulk.For(p);
-        if (grown == 1f) return;
+        if (grown <= 1f) return;
 
         ch.ReturnValue *= grown * KolossBulk.HaulingBuild;
     }

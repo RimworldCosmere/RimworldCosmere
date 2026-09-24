@@ -568,9 +568,9 @@ public class Feruchemist : Metalborn {
 
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
 
-    /// The compounded dial is off its rest point in either direction. Filling that
-    /// pool is ordinary feruchemical storing; the amplification lives in the burn.
-    public bool isCompounding => compoundedTargetValue != IdleTarget;
+    /// The compounded dial is clear of its rest point. Inside the dead band
+    /// SeverityForTarget is 0, so the dial moves nothing and this must read false.
+    public bool isCompounding => Mathf.Abs(compoundedTargetValue - IdleTarget) >= DeadBand;
 
     /// Compounding pours charge into a metalmind exactly as storing does, so it counts
     /// as storing too - mirroring isTapping, which already covers both channels.

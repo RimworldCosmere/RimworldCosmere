@@ -269,8 +269,6 @@ public abstract class PortalCaravanGizmoPatch : Caravan {
             }
         }
 
-        if (extra.Count > 0) {
-            ch.ReturnValue = ch.ReturnValue.Concat(extra);
-        }
+        ch.ReturnValue = ch.ReturnValue.Concat(extra);
     }
 }

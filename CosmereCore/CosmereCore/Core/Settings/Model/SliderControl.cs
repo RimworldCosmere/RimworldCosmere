@@ -40,7 +40,7 @@ public sealed record SliderControl : SettingControl {
         set => Set(SettingValueMath.ClampFinite(value, Default, Min, Max));
     }
 
-    public override bool IsDefault => Value == Default;
+    public override bool IsDefault => SettingValueMath.NearlyEqual(Value, Default);
 
     public override void Reset() {
         Value = Default;

@@ -126,7 +126,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         List<Pawn> toRemove = [];
         foreach (Pawn pawn in pawnsWithHediff) {
-            if (nearbyPawns.Contains(pawn)) continue;
+            if (StillInReach(pawn, radius)) continue;
             if (ability != null) {
                 AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(
                     (AllomancyAbility)ability,
@@ -142,6 +142,18 @@ public class AllomancyAuraHediffGiver : HediffComp {
         for (int i = 0; i < toRemove.Count; i++) {
             pawnsWithHediff.Remove(toRemove[i]);
         }
+    }
+
+    /// <summary>
+    ///     Measured, not read off the sweep above. The sweep sees one pawn per cell, so a pawn
+    ///     sharing a cell reads as gone there and would lose a source it never walked out of.
+    /// </summary>
+    private bool StillInReach(Pawn other, float radius) {
+        Pawn self = base.parent.pawn;
+        if (other == self) return props.affectsSelf;
+        if (!other.Spawned || other.Map != self.Map) return false;
+
+        return self.DistanceTo(other.Position) <= radius;
     }
 
     public override void CompPostPostRemoved() {

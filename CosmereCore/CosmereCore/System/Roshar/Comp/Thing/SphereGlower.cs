@@ -60,9 +60,6 @@ public class SphereGlower : CompGlower {
             float percent = Mathf.Clamp01(total / max);
             return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
         }
-
-        set {
-        }
     }
 
     public override ColorInt GlowColor {
@@ -82,9 +79,6 @@ public class SphereGlower : CompGlower {
             }
 
             return totalWeight <= 0f ? new ColorInt(Color.black) : new ColorInt(blended / totalWeight);
-        }
-
-        set {
         }
     }
 

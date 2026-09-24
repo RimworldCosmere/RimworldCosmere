@@ -52,21 +52,17 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
         List<AshmountRing.Candidate> candidates = new List<AshmountRing.Candidate>();
         WorldGrid grid = Find.WorldGrid;
 
-        // at order 350 nothing upstream makes a MapParent; kept against a third-party step running earlier.
-        HashSet<int> taken = new HashSet<int>();
-        foreach (MapParent parent in Find.WorldObjects.MapParents) {
-            if (parent.Tile.Layer == layer) taken.Add(parent.Tile.tileId);
-        }
-
         for (int i = 0; i < tileCount; i++) {
             PlanetTile tile = new PlanetTile(i, layer);
-            if (taken.Contains(i)) continue;
 
             Tile data = grid[tile];
             if (data.PrimaryBiome == null || !data.PrimaryBiome.canBuildBase) continue;
 
             float distance = layer.ApproxDistanceInTiles(centre, tile);
             if (distance > OuterRadiusTiles) continue;
+
+            // asked last so it only runs on the ring; at order 350 nothing vanilla has made one yet
+            if (Find.WorldObjects.AnyMapParentAt(tile)) continue;
 
             bool hilly = data.hilliness == Hilliness.LargeHills || data.hilliness == Hilliness.Mountainous;
             candidates.Add(new AshmountRing.Candidate(i, distance, hilly));

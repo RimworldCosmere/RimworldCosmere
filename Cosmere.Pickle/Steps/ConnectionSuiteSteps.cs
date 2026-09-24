@@ -28,7 +28,7 @@ public class ConnectionSuiteSteps {
     /// <param name="shardName">The Shard to read against.</param>
     /// <param name="bound">The lower bound, exclusive.</param>
     [Then("{string} connection to the shard {string} is above {int}")]
-    public void AssertConnectionAbove(PickleContext ctx, string nickname, string shardName, int bound) {
+    public static void AssertConnectionAbove(PickleContext ctx, string nickname, string shardName, int bound) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -45,7 +45,7 @@ public class ConnectionSuiteSteps {
     /// <param name="shardName">The Shard to read against.</param>
     /// <param name="bound">The upper bound, exclusive.</param>
     [Then("{string} connection to the shard {string} is below {int}")]
-    public void AssertConnectionBelow(PickleContext ctx, string nickname, string shardName, int bound) {
+    public static void AssertConnectionBelow(PickleContext ctx, string nickname, string shardName, int bound) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -63,7 +63,7 @@ public class ConnectionSuiteSteps {
     /// <remarks>A generated colonist rolls a shardworld xenotype, so no scenario may assume a
     /// tie starts at nothing. Recording the baseline is how a direction is asserted instead.</remarks>
     [When("I record {string} connection to the shard {string}")]
-    public void RecordConnection(PickleContext ctx, string nickname, string shardName) {
+    public static void RecordConnection(PickleContext ctx, string nickname, string shardName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -75,7 +75,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to read.</param>
     /// <param name="shardName">The Shard to read against.</param>
     [Then("{string} connection to the shard {string} has risen")]
-    public void AssertConnectionRose(PickleContext ctx, string nickname, string shardName) {
+    public static void AssertConnectionRose(PickleContext ctx, string nickname, string shardName) {
         AssertMoved(ctx, nickname, shardName, (before, now) => now > before, "should have risen");
     }
 
@@ -84,7 +84,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to read.</param>
     /// <param name="shardName">The Shard to read against.</param>
     [Then("{string} connection to the shard {string} has fallen")]
-    public void AssertConnectionFell(PickleContext ctx, string nickname, string shardName) {
+    public static void AssertConnectionFell(PickleContext ctx, string nickname, string shardName) {
         AssertMoved(ctx, nickname, shardName, (before, now) => now < before, "should have fallen");
     }
 
@@ -94,7 +94,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to read.</param>
     /// <param name="shardName">The Shard to read against.</param>
     [Then("{string} connection to the shard {string} has not moved")]
-    public void AssertConnectionUnmoved(PickleContext ctx, string nickname, string shardName) {
+    public static void AssertConnectionUnmoved(PickleContext ctx, string nickname, string shardName) {
         AssertMoved(ctx, nickname, shardName, (before, now) => now == before, "should not have moved");
     }
 
@@ -105,7 +105,7 @@ public class ConnectionSuiteSteps {
     /// <remarks>Never reads Harmony, which the breakdown defines as leftover and so absorbs any
     /// gap. The sibling Shards say what that floor should be, so a missed source shows up here.</remarks>
     [Then("{string} connection breakdown to the shard {string} adds up")]
-    public void AssertBreakdownAddsUp(PickleContext ctx, string nickname, string shardName) {
+    public static void AssertBreakdownAddsUp(PickleContext ctx, string nickname, string shardName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
         ConnectionBreakdown parts = ConnectionUtility.BreakdownFor(pawn, shard);
@@ -128,7 +128,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to read.</param>
     /// <param name="metalName">The metal def to ask about.</param>
     [Then("{string} may burn the god metal {string}")]
-    public void AssertMayBurn(PickleContext ctx, string nickname, string metalName) {
+    public static void AssertMayBurn(PickleContext ctx, string nickname, string metalName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         MetalDef metal = RequireGodMetal(ctx, metalName);
 
@@ -144,7 +144,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to read.</param>
     /// <param name="metalName">The metal def to ask about.</param>
     [Then("{string} may not burn the god metal {string}")]
-    public void AssertMayNotBurn(PickleContext ctx, string nickname, string metalName) {
+    public static void AssertMayNotBurn(PickleContext ctx, string nickname, string metalName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         MetalDef metal = RequireGodMetal(ctx, metalName);
 
@@ -159,7 +159,7 @@ public class ConnectionSuiteSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="worldName">The CosmereWorldDef to make primary.</param>
     [Given("the save's world is {string}")]
-    public void SetWorld(PickleContext ctx, string worldName) {
+    public static void SetWorld(PickleContext ctx, string worldName) {
         ctx.Require(Current.Game != null, "no game is loaded, so this save has no world to set");
         CosmereWorldDef world = CosmereLookup.RequireDef<CosmereWorldDef>(worldName);
         WorldUtility.Set(world);
@@ -175,7 +175,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to change.</param>
     /// <param name="xenotypeName">The xenotype def to give them.</param>
     [Given("{string} xenotype is {string}")]
-    public void SetXenotype(PickleContext ctx, string nickname, string xenotypeName) {
+    public static void SetXenotype(PickleContext ctx, string nickname, string xenotypeName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         XenotypeDef xenotype = CosmereLookup.RequireDef<XenotypeDef>(xenotypeName);
         ctx.Require(pawn.genes != null, $"pawn '{nickname}' has no gene tracker, so they have no xenotype");
@@ -195,7 +195,7 @@ public class ConnectionSuiteSteps {
     /// <param name="nickname">The pawn to change.</param>
     /// <param name="years">The years lived here. Residence stops counting at its own cap.</param>
     [Given("{string} has lived on this world for {int} years")]
-    public void SetResidence(PickleContext ctx, string nickname, int years) {
+    public static void SetResidence(PickleContext ctx, string nickname, int years) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ctx.Require(years >= 0 && years <= 100, $"this step takes 0 to 100 years; it was given {years}");
 
@@ -217,7 +217,7 @@ public class ConnectionSuiteSteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [When("I fill the {string} at \\({int}, {int}\\) with investiture")]
-    public void FillThing(PickleContext ctx, string defName, int x, int z) {
+    public static void FillThing(PickleContext ctx, string defName, int x, int z) {
         CosmereLookup.RequireThingHolder(ctx, defName, x, z).FillInvestiture();
     }
 
@@ -229,7 +229,7 @@ public class ConnectionSuiteSteps {
     /// <remarks>Sharing off stops a Radiant drinking it, forbidding stops a hauler moving it off
     /// the cell. Neither touches the drain rate.</remarks>
     [When("I put the {string} at \\({int}, {int}\\) beyond the colony's reach")]
-    public void WithholdThing(PickleContext ctx, string defName, int x, int z) {
+    public static void WithholdThing(PickleContext ctx, string defName, int x, int z) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         holder.sharingInvestiture = false;
         holder.parent.SetForbidden(true, false);
@@ -249,7 +249,7 @@ public class ConnectionSuiteSteps {
     /// <remarks>The save runs unpaused, and a diamond spends half a point every rare tick - a
     /// third of the figure a transfer scenario asserts. Decay is measured on its own elsewhere.</remarks>
     [When("I put the {string} at \\({int}, {int}\\) beyond the colony and the clock")]
-    public void StillThing(PickleContext ctx, string defName, int x, int z) {
+    public static void StillThing(PickleContext ctx, string defName, int x, int z) {
         WithholdThing(ctx, defName, x, z);
         CosmereLookup.RequireThingHolder(ctx, defName, x, z).drainRate = 0f;
     }
@@ -260,7 +260,7 @@ public class ConnectionSuiteSteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Then("the {string} at \\({int}, {int}\\) is full")]
-    public void AssertThingFull(PickleContext ctx, string defName, int x, int z) {
+    public static void AssertThingFull(PickleContext ctx, string defName, int x, int z) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
 
         CosmereLookup.AssertThat(
@@ -281,7 +281,7 @@ public class ConnectionSuiteSteps {
     /// <param name="sourceX">The source's x coordinate.</param>
     /// <param name="sourceZ">The source's z coordinate.</param>
     [When("the {string} at \\({int}, {int}\\) absorbs {float} investiture from the {string} at \\({int}, {int}\\)")]
-    public void AbsorbFromThing(
+    public static void AbsorbFromThing(
         PickleContext ctx,
         string defName,
         int x,
@@ -313,7 +313,7 @@ public class ConnectionSuiteSteps {
     /// <remarks>A holder spends once a rare interval, so the count of intervals crossed is what
     /// the loss is measured against, give or take one boundary.</remarks>
     [Then("the {string} at \\({int}, {int}\\) loses its declared investiture over {int} ticks", TimeoutSeconds = WaitTimeoutSeconds)]
-    public async Task AssertDeclaredDrain(PickleContext ctx, string defName, int x, int z, int ticks) {
+    public static async Task AssertDeclaredDrain(PickleContext ctx, string defName, int x, int z, int ticks) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         ctx.Require(
             ticks >= UpkeepRate.TicksPerRareInterval * 2,

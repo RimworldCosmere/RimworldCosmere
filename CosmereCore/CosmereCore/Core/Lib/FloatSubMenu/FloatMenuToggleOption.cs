@@ -68,8 +68,9 @@ public class FloatMenuToggleOption : FloatMenuOption {
             playSelectionSound,
             orderInPriority,
             graphicIndexOverride
-        )
-        => Setup(checkOn, checkDimmed);
+        ) {
+        Setup(checkOn, checkDimmed);
+    }
 
     public FloatMenuToggleOption(
         string label,
@@ -100,8 +101,9 @@ public class FloatMenuToggleOption : FloatMenuOption {
             playSelectionSound,
             orderInPriority,
             iconJustification
-        )
-        => Setup(checkOn, checkDimmed);
+        ) {
+        Setup(checkOn, checkDimmed);
+    }
 
     private void Setup(Func<bool> checkOn, Func<bool> checkDimmed) {
         this.checkOn = checkOn ?? (() => true);

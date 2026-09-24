@@ -182,7 +182,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         ScheduleNextHighstorm();
     }
 
-    private void SendWarning() {
+    private static void SendWarning() {
         Find.LetterStack.ReceiveLetter(
             "CR_Highstorm_Warning_Title".Translate(),
             "CR_Highstorm_Warning_Message".Translate(),

@@ -12,9 +12,8 @@ public abstract class CultivationSprenPatch : Plant {
     private static readonly List<Building> ActiveLifeSprenBuildings = [];
 
     public static void RegisterBuilding(Building building) {
-        if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == SprenType.Lifespren) {
-            ActiveLifeSprenBuildings.Add(building);
-        } else if (building.GetComp<BasicFabrialDiminisher>()?.currentSpren == SprenType.Lifespren) {
+        if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == SprenType.Lifespren ||
+            building.GetComp<BasicFabrialDiminisher>()?.currentSpren == SprenType.Lifespren) {
             ActiveLifeSprenBuildings.Add(building);
         }
     }

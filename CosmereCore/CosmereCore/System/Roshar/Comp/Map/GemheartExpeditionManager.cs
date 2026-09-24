@@ -167,7 +167,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
         );
     }
 
-    private void ResolveFailure(List<Pawn> pawns) {
+    private static void ResolveFailure(List<Pawn> pawns) {
         ApplyModerateInjuries(pawns, Rand.Range(1, 3));
         ApplyMoodThought(pawns, "Cosmere_Roshar_Thought_GemheartFailure");
 
@@ -178,7 +178,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
         );
     }
 
-    private void ResolveDisaster(List<Pawn> pawns) {
+    private static void ResolveDisaster(List<Pawn> pawns) {
         ApplySeriousInjuries(pawns, pawns.Count);
         ApplyMoodThought(pawns, "Cosmere_Roshar_Thought_GemheartFailure");
 

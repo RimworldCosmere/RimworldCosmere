@@ -164,7 +164,7 @@ public class ScenPart_NamedPawns : ScenPart {
         return "Named characters: " + string.Join(", ", pawns.Select(p => p.firstName ?? "Unknown"));
     }
 
-    private void ApplyTemplate(Pawn pawn, NamedPawnDef template) {
+    private static void ApplyTemplate(Pawn pawn, NamedPawnDef template) {
         Name? name = template.GetName();
         if (name != null) {
             pawn.Name = name;

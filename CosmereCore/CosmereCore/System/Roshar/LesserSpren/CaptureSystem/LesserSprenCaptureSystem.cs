@@ -55,7 +55,7 @@ public static class LesserSprenCaptureSystem {
             return false;
         }
 
-        if (!IsSprenActive(info, map, targetSprenType)) {
+        if (!IsSprenActive(info, targetSprenType)) {
             return false;
         }
 
@@ -87,14 +87,14 @@ public static class LesserSprenCaptureSystem {
         return false;
     }
 
-    private static bool IsSprenActive(SprenSpawnInformation info, Map map, SprenType sprenType) {
+    private static bool IsSprenActive(SprenSpawnInformation info, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return false;
 
         return controller.activeSpawnInfo.Contains(info);
     }
 
-    private static bool IsSprenActive(IntVec3 position, Map map, SprenType sprenType) {
+    private static bool IsSprenActive(IntVec3 position, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return false;
 
@@ -121,7 +121,7 @@ public static class LesserSprenCaptureSystem {
 
         sprenContainer.CaptureSpren(sprenType);
 
-        RemoveSprenWithInfo(info, map, sprenType);
+        RemoveSprenWithInfo(info, sprenType);
 
         Messages.Message(
             $"Successfully captured a {sprenType} in the {gem.Label}!",
@@ -132,7 +132,7 @@ public static class LesserSprenCaptureSystem {
         return true;
     }
 
-    private static void RemoveSprenWithInfo(SprenSpawnInformation info, Map map, SprenType sprenType) {
+    private static void RemoveSprenWithInfo(SprenSpawnInformation info, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return;
 
@@ -161,7 +161,7 @@ public static class LesserSprenCaptureSystem {
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-            if (controller is { canBeCaptured: true } && IsSprenActive(position, map, sprenType)) {
+            if (controller is { canBeCaptured: true } && IsSprenActive(position, sprenType)) {
                 capturableSpren.Add(sprenType);
             }
         }
@@ -181,7 +181,7 @@ public static class LesserSprenCaptureSystem {
         }
 
         SprenSpawnInformation? closestSpren =
-            FindClosestSprenWithinRadius(position, map, targetSprenType, radius);
+            FindClosestSprenWithinRadius(position, targetSprenType, radius);
         if (closestSpren == null) {
             return false;
         }
@@ -219,7 +219,6 @@ public static class LesserSprenCaptureSystem {
 
     private static SprenSpawnInformation? FindClosestSprenWithinRadius(
         IntVec3 position,
-        Map map,
         SprenType sprenType,
         float radius
     ) {

@@ -40,7 +40,7 @@ public class BondsmithCallingChecker : GameComponent {
 
         RadiantTracker? tracker = Current.Game.GetComponent<RadiantTracker>();
         if (tracker == null || !tracker.CanProgressBondsmith()) return;
-        if (tracker.CountNonBondsmithRadiants() < RequiredRadiantsBeforeCalling) return;
+        if (RadiantTracker.CountNonBondsmithRadiants() < RequiredRadiantsBeforeCalling) return;
 
         RecalculateActiveCallings();
         RecalculateBondedGodspren();

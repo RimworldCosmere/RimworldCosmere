@@ -30,7 +30,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal it is made of, by MetalDef name.</param>
     /// <param name="thingDefName">The metalmind ThingDef.</param>
     [Given("{string} carries a {string} {string}")]
-    public void CarriesMetalmind(PickleContext ctx, string nickname, string metal, string thingDefName) {
+    public static void CarriesMetalmind(PickleContext ctx, string nickname, string metal, string thingDefName) {
         CarriesMetalmindOfQuality(ctx, nickname, metal, thingDefName, "Normal");
     }
 
@@ -42,7 +42,7 @@ public class FeruchemySteps {
     /// <param name="thingDefName">The metalmind ThingDef.</param>
     /// <param name="quality">The QualityCategory name.</param>
     [Given("{string} carries a {string} {string} of {word} quality")]
-    public void CarriesMetalmindOfQuality(
+    public static void CarriesMetalmindOfQuality(
         PickleContext ctx,
         string nickname,
         string metal,
@@ -70,14 +70,14 @@ public class FeruchemySteps {
     /// <param name="metal">The metal it is made of, by MetalDef name.</param>
     /// <param name="thingDefName">The metalmind ThingDef.</param>
     [Given("{string} has a {string} {string} implanted")]
-    public void HasMetalmindImplanted(PickleContext ctx, string nickname, string metal, string thingDefName) {
+    public static void HasMetalmindImplanted(PickleContext ctx, string nickname, string metal, string thingDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ctx.Require(
             !ImplantsOf(pawn).Any(d => IsMetal(d.Metal, metal)),
             $"pawn '{nickname}' already has a {metal} metalmind implanted; {Describe(pawn)}");
 
         Verse.Thing thing = MakeMetalmind(ctx, "Normal", metal, thingDefName);
-        Metalmind comp = thing.TryGetComp<Metalmind>()!;
+        Metalmind comp = thing.TryGetComp<Metalmind>();
 
         BodyPartRecord? torso = pawn.health.hediffSet.GetNotMissingParts()
             .FirstOrDefault(p => p.def == pawn.RaceProps.body.corePart.def);
@@ -99,7 +99,7 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn whose transfers this aims.</param>
     /// <param name="group">One of all, external or internal.</param>
     [Given("{string} aims feruchemy at {word} metalminds")]
-    public void AimsFeruchemy(PickleContext ctx, string nickname, string group) {
+    public static void AimsFeruchemy(PickleContext ctx, string nickname, string group) {
         Pawn aimed = CosmereLookup.RequirePawn(ctx, nickname);
 
         string target = group.ToLowerInvariant() switch {
@@ -118,7 +118,7 @@ public class FeruchemySteps {
     /// <param name="amount">The charge offered.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [When("{string} stores {float} into the {string} metalminds")]
-    public void Stores(PickleContext ctx, string nickname, float amount, string metal) {
+    public static void Stores(PickleContext ctx, string nickname, float amount, string metal) {
         Move(ctx, nickname, metal, MetalmindOperation.Store, amount, null);
     }
 
@@ -128,7 +128,7 @@ public class FeruchemySteps {
     /// <param name="amount">The charge asked for.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [When("{string} taps {float} from the {string} metalminds")]
-    public void Taps(PickleContext ctx, string nickname, float amount, string metal) {
+    public static void Taps(PickleContext ctx, string nickname, float amount, string metal) {
         Move(ctx, nickname, metal, MetalmindOperation.Tap, amount, null);
     }
 
@@ -138,7 +138,7 @@ public class FeruchemySteps {
     /// <param name="amount">The charge offered.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [When("{string} compounds {float} into the {string} metalminds")]
-    public void Compounds(PickleContext ctx, string nickname, float amount, string metal) {
+    public static void Compounds(PickleContext ctx, string nickname, float amount, string metal) {
         Move(ctx, nickname, metal, MetalmindOperation.StoreCompounded, amount, null);
     }
 
@@ -148,7 +148,7 @@ public class FeruchemySteps {
     /// <param name="amount">The charge asked for.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [When("{string} burns {float} from the {string} metalminds")]
-    public void Burns(PickleContext ctx, string nickname, float amount, string metal) {
+    public static void Burns(PickleContext ctx, string nickname, float amount, string metal) {
         Move(ctx, nickname, metal, MetalmindOperation.TapCompounded, amount, null);
     }
 
@@ -159,7 +159,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="ledger">The DuraluminLedger name.</param>
     [When("{string} stores {float} into the {string} metalminds under {word}")]
-    public void StoresUnder(PickleContext ctx, string nickname, float amount, string metal, string ledger) {
+    public static void StoresUnder(PickleContext ctx, string nickname, float amount, string metal, string ledger) {
         Move(ctx, nickname, metal, MetalmindOperation.Store, amount, RequireKey(ledger));
     }
 
@@ -170,7 +170,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="ledger">The DuraluminLedger name.</param>
     [When("{string} taps {float} from the {string} metalminds under {word}")]
-    public void TapsUnder(PickleContext ctx, string nickname, float amount, string metal, string ledger) {
+    public static void TapsUnder(PickleContext ctx, string nickname, float amount, string metal, string ledger) {
         Move(ctx, nickname, metal, MetalmindOperation.Tap, amount, RequireKey(ledger));
     }
 
@@ -181,7 +181,7 @@ public class FeruchemySteps {
     /// <param name="mood">The memory's mood offset; its magnitude is the space it costs.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [When("{string} files a memory worth {float} mood in their {string} metalmind")]
-    public void FilesMemory(PickleContext ctx, string nickname, float mood, string metal) {
+    public static void FilesMemory(PickleContext ctx, string nickname, float mood, string metal) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         Metalmind comp = RequireCarried(ctx, metal, nickname);
         comp.StoreMemory(new StoredMemory { moodOffset = mood, owner = pawn });
@@ -194,7 +194,7 @@ public class FeruchemySteps {
     /// <param name="from">The pawn giving it up.</param>
     /// <param name="to">The pawn taking it.</param>
     [When("the {string} metalmind of {string} moves to {string}")]
-    public void MovesTo(PickleContext ctx, string metal, string from, string to) {
+    public static void MovesTo(PickleContext ctx, string metal, string from, string to) {
         Pawn giver = CosmereLookup.RequirePawn(ctx, from);
         Pawn taker = CosmereLookup.RequirePawn(ctx, to);
         ctx.Require(taker.inventory != null, $"pawn '{to}' has no inventory to take a metalmind into");
@@ -210,7 +210,7 @@ public class FeruchemySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn to sweep.</param>
     [When("I sweep burned out metalminds for {string}")]
-    public void SweepBurnedOut(PickleContext ctx, string nickname) {
+    public static void SweepBurnedOut(PickleContext ctx, string nickname) {
         MetalmindBurnout.Sweep(CosmereLookup.RequirePawn(ctx, nickname));
     }
 
@@ -219,7 +219,7 @@ public class FeruchemySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="expected">The charge expected to have moved.</param>
     [Then("the last transfer moved {float}")]
-    public void AssertLastTransfer(PickleContext ctx, float expected) {
+    public static void AssertLastTransfer(PickleContext ctx, float expected) {
         float moved;
         try {
             moved = ctx.Get<Moved>().Amount;
@@ -242,9 +242,9 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn holding it.</param>
     /// <param name="expected">The charge expected.</param>
     [Then("the {word} {string} metalmind of {string} holds {float}")]
-    public void AssertHolds(PickleContext ctx, string scope, string metal, string nickname, float expected) {
+    public static void AssertHolds(PickleContext ctx, string scope, string metal, string nickname, float expected) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
-        AssertFigure(ctx, source, scope, metal, nickname, source.StoredAmount, expected, "should hold");
+        AssertFigure(ctx, source, Subject(scope, metal, nickname), source.StoredAmount, expected, "should hold");
     }
 
     /// <summary>Asserts the compounded charge a metalmind holds. It shares capacity with the
@@ -255,7 +255,7 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn holding it.</param>
     /// <param name="expected">The compounded charge expected.</param>
     [Then("the {word} {string} metalmind of {string} holds {float} compounded")]
-    public void AssertHoldsCompounded(
+    public static void AssertHoldsCompounded(
         PickleContext ctx,
         string scope,
         string metal,
@@ -263,7 +263,7 @@ public class FeruchemySteps {
         float expected
     ) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
-        AssertFigure(ctx, source, scope, metal, nickname, source.CompoundedAmount, expected, "should hold compounded");
+        AssertFigure(ctx, source, Subject(scope, metal, nickname), source.CompoundedAmount, expected, "should hold compounded");
     }
 
     /// <summary>Asserts the charge a metalmind holds under one Connection ledger.</summary>
@@ -274,7 +274,7 @@ public class FeruchemySteps {
     /// <param name="expected">The charge expected under that ledger.</param>
     /// <param name="ledger">The DuraluminLedger name.</param>
     [Then("the {word} {string} metalmind of {string} holds {float} under {word}")]
-    public void AssertHoldsUnder(
+    public static void AssertHoldsUnder(
         PickleContext ctx,
         string scope,
         string metal,
@@ -284,7 +284,7 @@ public class FeruchemySteps {
     ) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
         float actual = source.StoredFor(RequireKey(ledger));
-        AssertFigure(ctx, source, scope, metal, nickname, actual, expected, $"should hold under {ledger}");
+        AssertFigure(ctx, source, Subject(scope, metal, nickname), actual, expected, $"should hold under {ledger}");
     }
 
     /// <summary>Asserts how much a metalmind can hold at all. Burning charge out of one spends
@@ -295,9 +295,9 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn holding it.</param>
     /// <param name="expected">The capacity expected.</param>
     [Then("the {word} {string} metalmind of {string} capacity is {float}")]
-    public void AssertCapacity(PickleContext ctx, string scope, string metal, string nickname, float expected) {
+    public static void AssertCapacity(PickleContext ctx, string scope, string metal, string nickname, float expected) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
-        AssertFigure(ctx, source, scope, metal, nickname, source.MaxAmount, expected, "capacity should be");
+        AssertFigure(ctx, source, Subject(scope, metal, nickname), source.MaxAmount, expected, "capacity should be");
     }
 
     /// <summary>Asserts the room left in a metalmind, which memories eat into as well as charge.</summary>
@@ -307,9 +307,9 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn holding it.</param>
     /// <param name="expected">The free space expected.</param>
     [Then("the {word} {string} metalmind of {string} has {float} free space")]
-    public void AssertFreeSpace(PickleContext ctx, string scope, string metal, string nickname, float expected) {
+    public static void AssertFreeSpace(PickleContext ctx, string scope, string metal, string nickname, float expected) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
-        AssertFigure(ctx, source, scope, metal, nickname, source.FreeSpace, expected, "free space should be");
+        AssertFigure(ctx, source, Subject(scope, metal, nickname), source.FreeSpace, expected, "free space should be");
     }
 
     /// <summary>Asserts a metalmind offers itself to be drawn on.</summary>
@@ -318,7 +318,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="nickname">The pawn holding it.</param>
     [Then("the {word} {string} metalmind of {string} can be tapped")]
-    public void AssertCanBeTapped(PickleContext ctx, string scope, string metal, string nickname) {
+    public static void AssertCanBeTapped(PickleContext ctx, string scope, string metal, string nickname) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
         AssertState(ctx, source, scope, metal, nickname, source.CanTap, "should offer itself to be tapped");
     }
@@ -330,7 +330,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="nickname">The pawn holding it.</param>
     [Then("the {word} {string} metalmind of {string} cannot be tapped")]
-    public void AssertCannotBeTapped(PickleContext ctx, string scope, string metal, string nickname) {
+    public static void AssertCannotBeTapped(PickleContext ctx, string scope, string metal, string nickname) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
         AssertState(ctx, source, scope, metal, nickname, !source.CanTap, "should refuse to be tapped");
     }
@@ -341,7 +341,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="nickname">The pawn holding it.</param>
     [Then("the {word} {string} metalmind of {string} is burned out")]
-    public void AssertBurnedOut(PickleContext ctx, string scope, string metal, string nickname) {
+    public static void AssertBurnedOut(PickleContext ctx, string scope, string metal, string nickname) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
         AssertState(ctx, source, scope, metal, nickname, source.IsBurnedOut, "should be burned out");
     }
@@ -352,7 +352,7 @@ public class FeruchemySteps {
     /// <param name="metal">The metal, by MetalDef name.</param>
     /// <param name="nickname">The pawn holding it.</param>
     [Then("the {word} {string} metalmind of {string} is not burned out")]
-    public void AssertNotBurnedOut(PickleContext ctx, string scope, string metal, string nickname) {
+    public static void AssertNotBurnedOut(PickleContext ctx, string scope, string metal, string nickname) {
         IMetalmindSource source = RequireSource(ctx, scope, metal, nickname);
         AssertState(ctx, source, scope, metal, nickname, !source.IsBurnedOut, "should not be burned out");
     }
@@ -363,7 +363,7 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn holding it now.</param>
     /// <param name="ownerNickname">The pawn it should be keyed to.</param>
     [Then("the {string} metalmind of {string} is owned by {string}")]
-    public void AssertOwnedBy(PickleContext ctx, string metal, string nickname, string ownerNickname) {
+    public static void AssertOwnedBy(PickleContext ctx, string metal, string nickname, string ownerNickname) {
         Metalmind comp = RequireCarried(ctx, metal, nickname);
         Pawn owner = CosmereLookup.RequirePawn(ctx, ownerNickname);
 
@@ -380,7 +380,7 @@ public class FeruchemySteps {
     /// <param name="nickname">The pawn to check.</param>
     /// <param name="metal">The metal, by MetalDef name.</param>
     [Then("{string} carries no {string} metalmind")]
-    public void AssertCarriesNone(PickleContext ctx, string nickname, string metal) {
+    public static void AssertCarriesNone(PickleContext ctx, string nickname, string metal) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         List<Metalmind> carried = CarriedOf(pawn, metal);
 
@@ -521,12 +521,14 @@ public class FeruchemySteps {
         return metalDef != null && string.Equals(metalDef.defName, metal, StringComparison.OrdinalIgnoreCase);
     }
 
+    private static string Subject(string scope, string metal, string nickname) {
+        return $"the {scope} {metal} metalmind of '{nickname}'";
+    }
+
     private static void AssertFigure(
         PickleContext ctx,
         IMetalmindSource source,
-        string scope,
-        string metal,
-        string nickname,
+        string subject,
         float actual,
         float expected,
         string wanted
@@ -534,7 +536,7 @@ public class FeruchemySteps {
         CosmereLookup.AssertThat(
             ctx,
             CosmereLookup.IsNear(actual, expected),
-            $"the {scope} {metal} metalmind of '{nickname}' {wanted} {expected:0.###}",
+            $"{subject} {wanted} {expected:0.###}",
             () => $"it is {actual:0.###}. {Describe(source)}");
     }
 

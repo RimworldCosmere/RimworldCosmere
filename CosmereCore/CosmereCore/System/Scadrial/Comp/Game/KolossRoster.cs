@@ -273,6 +273,16 @@ public class KolossRoster : GameComponent {
             : null;
     }
 
+    private static Allomancer? GeneFor(Pawn holder, KolossBond bond) {
+        if (holder.genes == null) return null;
+
+        Cosmere.Core.Def.MetalDef? metal = bond.metal == null
+            ? null
+            : DefDatabase<Cosmere.Core.Def.MetalDef>.GetNamedSilentFail(bond.metal);
+
+        return metal != null ? holder.genes.GetAllomanticGeneForMetal(metal) : HoldingGene(holder);
+    }
+
     /// <summary>Newest first, so an army built over a campaign outlives a greedy seizure.</summary>
     private List<KolossBond> BondsOf(Pawn holder) {
         List<KolossBond> mine = [];
@@ -283,16 +293,6 @@ public class KolossRoster : GameComponent {
         mine.SortByDescending(b => b.boundAtTick);
 
         return mine;
-    }
-
-    private static Allomancer? GeneFor(Pawn holder, KolossBond bond) {
-        if (holder.genes == null) return null;
-
-        Cosmere.Core.Def.MetalDef? metal = bond.metal == null
-            ? null
-            : DefDatabase<Cosmere.Core.Def.MetalDef>.GetNamedSilentFail(bond.metal);
-
-        return metal != null ? holder.genes.GetAllomanticGeneForMetal(metal) : HoldingGene(holder);
     }
 
     private void Drop(KolossBond bond) {

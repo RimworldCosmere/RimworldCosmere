@@ -48,7 +48,7 @@ public class NamedPawnAppearanceTests {
             "A replacement head must match the template's gender."
         );
 
-        int apply = source.IndexOf("private void ApplyTemplate(", StringComparison.Ordinal);
+        int apply = source.IndexOf("private static void ApplyTemplate(", StringComparison.Ordinal);
         Assert.IsTrue(
             source[apply..].Contains("ApplyAppearance(pawn, template)", StringComparison.Ordinal),
             "ApplyTemplate must run the appearance pass."

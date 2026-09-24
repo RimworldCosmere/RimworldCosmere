@@ -21,7 +21,7 @@ public class ShardSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="shardName">The Shard def to enable.</param>
     [Given("I enable the shard {string}")]
-    public void EnableShard(PickleContext ctx, string shardName) {
+    public static void EnableShard(PickleContext ctx, string shardName) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -39,7 +39,7 @@ public class ShardSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="shardName">The Shard def expected to be on.</param>
     [Then("the shard {string} is enabled")]
-    public void AssertShardEnabled(PickleContext ctx, string shardName) {
+    public static void AssertShardEnabled(PickleContext ctx, string shardName) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -54,7 +54,7 @@ public class ShardSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="shardName">The Shard def expected to be off.</param>
     [Then("the shard {string} is disabled")]
-    public void AssertShardDisabled(PickleContext ctx, string shardName) {
+    public static void AssertShardDisabled(PickleContext ctx, string shardName) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -72,7 +72,7 @@ public class ShardSteps {
     /// <param name="strength">The strength to reach, on the 0 to 100 scale.</param>
     // Never lowers anyone, the same rule GrantFromMetal follows.
     [Given("{string} has a connection to the shard {string} of {int}")]
-    public void GrantConnection(PickleContext ctx, string nickname, string shardName, int strength) {
+    public static void GrantConnection(PickleContext ctx, string nickname, string shardName, int strength) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
@@ -104,7 +104,7 @@ public class ShardSteps {
     /// <param name="shardName">The Shard to read against.</param>
     /// <param name="strength">The strength expected.</param>
     [Then("{string} connection to the shard {string} is {int}")]
-    public void AssertConnection(PickleContext ctx, string nickname, string shardName, int strength) {
+    public static void AssertConnection(PickleContext ctx, string nickname, string shardName, int strength) {
         AssertConnectionWithin(ctx, nickname, shardName, strength, DefaultTolerance);
     }
 
@@ -115,7 +115,7 @@ public class ShardSteps {
     /// <param name="strength">The strength expected.</param>
     /// <param name="tolerance">How far the reading may sit from it.</param>
     [Then("{string} connection to the shard {string} is {int} within {int}")]
-    public void AssertConnectionWithin(
+    public static void AssertConnectionWithin(
         PickleContext ctx,
         string nickname,
         string shardName,
@@ -139,7 +139,7 @@ public class ShardSteps {
     /// <param name="shardName">The Shard to read against.</param>
     /// <param name="tierName">The tier expected: None, Touched, Bonded, Invested or Ascendant.</param>
     [Then("{string} connection tier to the shard {string} is {word}")]
-    public void AssertConnectionTier(PickleContext ctx, string nickname, string shardName, string tierName) {
+    public static void AssertConnectionTier(PickleContext ctx, string nickname, string shardName, string tierName) {
         CosmereLookup.RequireShards(ctx);
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);

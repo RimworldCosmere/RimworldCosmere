@@ -25,7 +25,7 @@ public class GameConditionSteps {
     /// <remarks>The two calls <c>IncidentWorker_Highstorm</c> makes. The incident also sends a
     /// letter and forces the weather, so fire it when a scenario needs those too.</remarks>
     [When("game condition {string} starts for {int} ticks")]
-    public void StartCondition(PickleContext ctx, string defName, int ticks) {
+    public static void StartCondition(PickleContext ctx, string defName, int ticks) {
         Map map = RequireMap(ctx);
         GameConditionDef def = CosmereLookup.RequireDef<GameConditionDef>(defName);
         ctx.Require(ticks > 0, $"a condition needs a positive duration; got {ticks} ticks");
@@ -38,7 +38,7 @@ public class GameConditionSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The condition def to end.</param>
     [When("game condition {string} ends")]
-    public void EndCondition(PickleContext ctx, string defName) {
+    public static void EndCondition(PickleContext ctx, string defName) {
         Map map = RequireMap(ctx);
         GameConditionDef def = CosmereLookup.RequireDef<GameConditionDef>(defName);
 
@@ -54,7 +54,7 @@ public class GameConditionSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The condition def expected.</param>
     [Then("game condition {string} is active")]
-    public void AssertActive(PickleContext ctx, string defName) {
+    public static void AssertActive(PickleContext ctx, string defName) {
         Map map = RequireMap(ctx);
         GameConditionDef def = CosmereLookup.RequireDef<GameConditionDef>(defName);
 
@@ -69,7 +69,7 @@ public class GameConditionSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The condition def that should not be running.</param>
     [Then("game condition {string} is not active")]
-    public void AssertNotActive(PickleContext ctx, string defName) {
+    public static void AssertNotActive(PickleContext ctx, string defName) {
         Map map = RequireMap(ctx);
         GameConditionDef def = CosmereLookup.RequireDef<GameConditionDef>(defName);
 
@@ -86,7 +86,7 @@ public class GameConditionSteps {
     /// <param name="defName">The condition def to wait on.</param>
     /// <returns>A task that completes when the step finishes. A failed assertion faults it.</returns>
     [When("I wait up to {int} ticks for game condition {string} to end", TimeoutSeconds = WaitTimeoutSeconds)]
-    public async Task WaitForEnd(PickleContext ctx, int maxTicks, string defName) {
+    public static async Task WaitForEnd(PickleContext ctx, int maxTicks, string defName) {
         Map map = RequireMap(ctx);
         GameConditionDef def = CosmereLookup.RequireDef<GameConditionDef>(defName);
 
@@ -107,7 +107,7 @@ public class GameConditionSteps {
     /// <remarks>Intensity climbs and falls across a storm's life and only moves every 30 ticks, so
     /// the dangerous part of one cannot be asserted on the tick after it starts.</remarks>
     [When("I wait up to {int} ticks for the highstorm to reach intensity {float}", TimeoutSeconds = WaitTimeoutSeconds)]
-    public async Task WaitForIntensity(PickleContext ctx, int maxTicks, float intensity) {
+    public static async Task WaitForIntensity(PickleContext ctx, int maxTicks, float intensity) {
         Map map = RequireMap(ctx);
         Highstorm storm = RequireHighstorm(ctx, map);
 
@@ -131,7 +131,7 @@ public class GameConditionSteps {
     [When(
         "I wait up to {int} ticks for the highstorm to reach {float} of the season's peak intensity",
         TimeoutSeconds = WaitTimeoutSeconds)]
-    public async Task WaitForSeasonalShare(PickleContext ctx, int maxTicks, float share) {
+    public static async Task WaitForSeasonalShare(PickleContext ctx, int maxTicks, float share) {
         Map map = RequireMap(ctx);
         Highstorm storm = RequireHighstorm(ctx, map);
         ctx.Require(share is > 0f and <= 1f, $"a share of the season's peak runs 0 to 1; got {share}");
@@ -149,7 +149,7 @@ public class GameConditionSteps {
     /// <summary>Asserts the highstorm is in the part of its life that drives pawns to shelter.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Then("the highstorm is dangerous")]
-    public void AssertDangerous(PickleContext ctx) {
+    public static void AssertDangerous(PickleContext ctx) {
         Map map = RequireMap(ctx);
         Highstorm storm = RequireHighstorm(ctx, map);
 

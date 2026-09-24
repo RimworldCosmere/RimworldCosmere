@@ -12,10 +12,17 @@ public static class AshGasFalloff {
     ///     instead of ringing an even-sided mouth in another square.
     /// </summary>
     public static float DistanceToMouth(int x, int z, int minX, int minZ, int maxX, int maxZ) {
-        int dx = x < minX ? minX - x : x > maxX ? x - maxX : 0;
-        int dz = z < minZ ? minZ - z : z > maxZ ? z - maxZ : 0;
+        int dx = OutsideSpan(x, minX, maxX);
+        int dz = OutsideSpan(z, minZ, maxZ);
 
         return (float)Math.Sqrt(dx * dx + dz * dz);
+    }
+
+    /// <summary>How far one coordinate sits outside a span. Zero anywhere inside it.</summary>
+    private static int OutsideSpan(int value, int min, int max) {
+        if (value < min) return min - value;
+
+        return value > max ? value - max : 0;
     }
 
     /// <summary>

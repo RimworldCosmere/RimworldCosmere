@@ -304,8 +304,9 @@ public class Surgebinder : Invested {
         );
     }
 
-    // hook the death-witness patch always calls. no order reacts to a witnessed death yet.
-    public void OnWitnessedDeath(Pawn deceased) { }
+    public void OnWitnessedDeath(Pawn deceased) {
+        // hook the death-witness patch always calls. no order reacts to a witnessed death yet.
+    }
 
     public void OnGriefRecovered() {
         griefRecoveryCount++;

@@ -31,7 +31,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
         }
     }
 
-    private void TriggerEncounterForCaravan(Caravan caravan) {
+    private static void TriggerEncounterForCaravan(Caravan caravan) {
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher)) return;
 
         List<Pawn> pawns = caravan.PawnsListForReading;

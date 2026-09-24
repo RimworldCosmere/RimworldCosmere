@@ -289,15 +289,6 @@ public class AshDepthTracker : MapComponent {
         buried = AshBuriedCells.Restore(saved, count);
     }
 
-    /// <summary>
-    ///     Turns deep cells into ash terrain and hands them back as they thin out. Runs every
-    ///     sweep rather than only on a deposit, so a cell a pawn just shovelled reverts without
-    ///     waiting on the next millimetre to fall.
-    /// </summary>
-    private void SweepTerrain(int stripe) {
-        SweepTerrain(stripe, AshDepthMath.TerrainChangesPerSweep);
-    }
-
     /// <summary>Dev shortcut. Settles every stripe at once instead of waiting out the dwell.</summary>
     public int RunTerrainSweepNow() {
         settleClock.ExpireAll();
@@ -307,6 +298,15 @@ public class AshDepthTracker : MapComponent {
         }
 
         return terrainMemory.SwappedCount;
+    }
+
+    /// <summary>
+    ///     Turns deep cells into ash terrain and hands them back as they thin out. Runs every
+    ///     sweep rather than only on a deposit, so a cell a pawn just shovelled reverts without
+    ///     waiting on the next millimetre to fall.
+    /// </summary>
+    private void SweepTerrain(int stripe) {
+        SweepTerrain(stripe, AshDepthMath.TerrainChangesPerSweep);
     }
 
     private void SweepTerrain(int stripe, int budget, bool ignoreDwell = false) {

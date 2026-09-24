@@ -375,7 +375,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         current?.Use();
     }
 
-    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row, Rect openTile) {
+    private static void DrawStrip(Rect rect, Pawn pawn, MetalRow row, Rect openTile) {
         InvestitureCell cell = row.Cell;
 
         // Nothing to draw for a metal this pawn cannot burn.

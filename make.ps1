@@ -36,7 +36,7 @@ function Write-Info {
     Write-ColoredLine $Text $Blue
 }
 
-function Write-Warning {
+function Write-WarningLine {
     param([string]$Text)
     Write-ColoredLine $Text $Yellow
 }
@@ -44,14 +44,18 @@ function Write-Warning {
 function Invoke-DotNet {
     param([string]$Arguments)
     if ($VerboseOutput) { Write-Host "dotnet $Arguments" -ForegroundColor Gray }
-    Invoke-Expression "dotnet $Arguments"
+    # no call site passes an argument containing a space, so splitting on whitespace is the
+    # whole quoting story here.
+    $argv = $Arguments.Split(@(' '), [StringSplitOptions]::RemoveEmptyEntries)
+    & dotnet @argv
     if ($LASTEXITCODE -ne 0) { throw "Command failed: dotnet $Arguments" }
 }
 
 function Invoke-ToolsCli {
     param([string]$Arguments)
     if ($VerboseOutput) { Write-Host "dotnet run --project tools/Cosmere.Tools.Cli -- $Arguments" -ForegroundColor Gray }
-    Invoke-Expression "dotnet run --project tools/Cosmere.Tools.Cli -- $Arguments"
+    $argv = $Arguments.Split(@(' '), [StringSplitOptions]::RemoveEmptyEntries)
+    & dotnet run --project tools/Cosmere.Tools.Cli -- @argv
     if ($LASTEXITCODE -ne 0) { throw "Tools CLI command failed: $Arguments" }
 }
 
@@ -176,7 +180,7 @@ switch ($Command.ToLower()) {
         } elseif (Test-Path $epicPath) {
             Start-Process $epicPath
         } else {
-            Write-Warning "RimWorld not found in common locations. Please launch manually."
+            Write-WarningLine "RimWorld not found in common locations. Please launch manually."
         }
     }
     
@@ -321,13 +325,13 @@ switch ($Command.ToLower()) {
     
     "format" {
         Write-Info "Formatting code..."
-        Invoke-DotNet "format Cosmere.slnx --include `"**/*.cs`" --verbosity minimal"
-        Invoke-DotNet "format Cosmere.Tools.slnx --include `"**/*.cs`" --verbosity minimal"
+        Invoke-DotNet "format Cosmere.slnx --include **/*.cs --verbosity minimal"
+        Invoke-DotNet "format Cosmere.Tools.slnx --include **/*.cs --verbosity minimal"
     }
     
     "test" {
         Write-Info "Running tests..."
-        Invoke-DotNet "test Cosmere.slnx --configuration Release --logger `"console;verbosity=minimal`""
+        Invoke-DotNet "test Cosmere.slnx --configuration Release --logger console;verbosity=minimal"
     }
     
     "lint" {
@@ -392,7 +396,8 @@ switch ($Command.ToLower()) {
         Invoke-DotNet "list Cosmere.slnx package --outdated"
         Invoke-DotNet "list Cosmere.Tools.slnx package --outdated"
         Write-Info "Checking Node.js dependencies..."
-        try { npm outdated } catch { }
+        # npm outdated reports by exit code, so a throw here means npm itself is missing.
+        try { npm outdated } catch { Write-WarningLine "npm outdated could not run: $($_.Exception.Message)" }
     }
     
     "watch" {
@@ -403,7 +408,7 @@ switch ($Command.ToLower()) {
     "debug-main" {
         Write-Info "Preparing debug build..."
         & $PSCommandPath build-main-debug
-        Write-Warning "Debug build ready. Attach debugger to RimWorld process."
+        Write-WarningLine "Debug build ready. Attach debugger to RimWorld process."
     }
     
     "debug-tools" {
@@ -417,7 +422,7 @@ switch ($Command.ToLower()) {
     }
     
     "clean-all" {
-        Write-Warning "Performing nuclear clean..."
+        Write-WarningLine "Performing nuclear clean..."
         & $PSCommandPath clean
         & $PSCommandPath gen-clean
         Get-ChildItem -Path . -Recurse -Directory -Name "bin" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
@@ -437,18 +442,18 @@ switch ($Command.ToLower()) {
     
     "update-deps" {
         Write-Info "Updating dependencies..."
-        Write-Warning "Run manually: dotnet add package <PackageName>"
+        Write-WarningLine "Run manually: dotnet add package <PackageName>"
         npm update
         Write-Success "Node.js dependencies updated!"
     }
     
     "legacy-generate" {
-        Write-Warning "Using legacy Node.js generator..."
+        Write-WarningLine "Using legacy Node.js generator..."
         npm start -- -f -v
     }
     
     "legacy-clean" {
-        Write-Warning "Using legacy Node.js clean..."
+        Write-WarningLine "Using legacy Node.js clean..."
         npm start -- -d -v
     }
     
@@ -469,7 +474,7 @@ switch ($Command.ToLower()) {
     }
     
     default {
-        Write-Warning "Unknown command: $Command"
+        Write-WarningLine "Unknown command: $Command"
         Write-Host "Run '.\make.ps1 help' to see available commands."
         exit 1
     }

@@ -51,6 +51,8 @@ public static class AshVentSiting {
         if (exposure >= 3f) return MaxVents;
 
         int count = MinVents + (int)((exposure - 1f) / 2f * (MaxVents - MinVents) + 0.5f);
-        return count < MinVents ? MinVents : count > MaxVents ? MaxVents : count;
+        if (count < MinVents) return MinVents;
+
+        return count > MaxVents ? MaxVents : count;
     }
 }

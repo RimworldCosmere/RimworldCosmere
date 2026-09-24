@@ -17,6 +17,13 @@ namespace Cosmere.System.Scadrial.Util;
 ///     paths are swapped at render time instead, the same way koloss bodies are.
 /// </remarks>
 public static class KandraAppearance {
+    /// The material groups. Named so the tables below and <see cref="MaterialGroups" /> cannot drift.
+    private const string Gem = "gem";
+
+    private const string Stone = "stone";
+
+    private const string Wood = "wood";
+
     private const string BodyDir = "Things/Pawn/Humanlike/Bodies/";
     private const string HeadDir = "Things/Pawn/Humanlike/Heads/";
     private const string EyeDir = "Things/Pawn/Humanlike/HeadAttachments/KandraEyes/";
@@ -26,24 +33,24 @@ public static class KandraAppearance {
     ///     gamut - hue 18-24 at up to 0.55 saturation - or it reads as a person wearing nothing.
     /// </summary>
     private static readonly MaterialRow[] Materials = [
-        ("ruby", "e0115f", 1.5f, "CS_Kandra_Material_Ruby", "gem"),
-        ("sapphire", "0f52ba", 1.5f, "CS_Kandra_Material_Sapphire", "gem"),
-        ("emerald", "50c878", 1.5f, "CS_Kandra_Material_Emerald", "gem"),
-        ("topaz", "ffd23f", 1.5f, "CS_Kandra_Material_Topaz", "gem"),
-        ("amethyst", "9966cc", 1.5f, "CS_Kandra_Material_Amethyst", "gem"),
-        ("diamond", "b9f2ff", 1.5f, "CS_Kandra_Material_Diamond", "gem"),
-        ("garnet", "a3123f", 1.5f, "CS_Kandra_Material_Garnet", "gem"),
-        ("heliodor", "d1ee1d", 1.5f, "CS_Kandra_Material_Heliodor", "gem"),
-        ("zircon", "d8e9f0", 1.5f, "CS_Kandra_Material_Zircon", "gem"),
-        ("smokestone", "4a4657", 1.5f, "CS_Kandra_Material_Smokestone", "gem"),
-        ("milky quartzite", "dff0f5", 2f, "CS_Kandra_Material_MilkyQuartzite", "stone"),
-        ("rose quartzite", "f0a8c8", 2f, "CS_Kandra_Material_RoseQuartzite", "stone"),
-        ("smoky quartzite", "9aa3b5", 2f, "CS_Kandra_Material_SmokyQuartzite", "stone"),
-        ("pale wood", "d9a441", 2f, "CS_Kandra_Material_PaleWood", "wood"),
-        ("walnut", "8a4416", 2f, "CS_Kandra_Material_Walnut", "wood"),
-        ("blackwood", "2e1c2a", 2f, "CS_Kandra_Material_Blackwood", "wood"),
-        ("marble", "e4eaf5", 0.8f, "CS_Kandra_Material_Marble", "stone"),
-        ("obsidian", "171320", 0.8f, "CS_Kandra_Material_Obsidian", "stone"),
+        ("ruby", "e0115f", 1.5f, "CS_Kandra_Material_Ruby", Gem),
+        ("sapphire", "0f52ba", 1.5f, "CS_Kandra_Material_Sapphire", Gem),
+        ("emerald", "50c878", 1.5f, "CS_Kandra_Material_Emerald", Gem),
+        ("topaz", "ffd23f", 1.5f, "CS_Kandra_Material_Topaz", Gem),
+        ("amethyst", "9966cc", 1.5f, "CS_Kandra_Material_Amethyst", Gem),
+        ("diamond", "b9f2ff", 1.5f, "CS_Kandra_Material_Diamond", Gem),
+        ("garnet", "a3123f", 1.5f, "CS_Kandra_Material_Garnet", Gem),
+        ("heliodor", "d1ee1d", 1.5f, "CS_Kandra_Material_Heliodor", Gem),
+        ("zircon", "d8e9f0", 1.5f, "CS_Kandra_Material_Zircon", Gem),
+        ("smokestone", "4a4657", 1.5f, "CS_Kandra_Material_Smokestone", Gem),
+        ("milky quartzite", "dff0f5", 2f, "CS_Kandra_Material_MilkyQuartzite", Stone),
+        ("rose quartzite", "f0a8c8", 2f, "CS_Kandra_Material_RoseQuartzite", Stone),
+        ("smoky quartzite", "9aa3b5", 2f, "CS_Kandra_Material_SmokyQuartzite", Stone),
+        ("pale wood", "d9a441", 2f, "CS_Kandra_Material_PaleWood", Wood),
+        ("walnut", "8a4416", 2f, "CS_Kandra_Material_Walnut", Wood),
+        ("blackwood", "2e1c2a", 2f, "CS_Kandra_Material_Blackwood", Wood),
+        ("marble", "e4eaf5", 0.8f, "CS_Kandra_Material_Marble", Stone),
+        ("obsidian", "171320", 0.8f, "CS_Kandra_Material_Obsidian", Stone),
     ];
 
     /// <summary>
@@ -214,9 +221,9 @@ public static class KandraAppearance {
 
     /// <summary>The material groups, in the order a picker should show them.</summary>
     public static readonly (string group, string labelKey)[] MaterialGroups = [
-        ("gem", "CS_Kandra_MaterialGroup_Gem"),
-        ("stone", "CS_Kandra_MaterialGroup_Stone"),
-        ("wood", "CS_Kandra_MaterialGroup_Wood"),
+        (Gem, "CS_Kandra_MaterialGroup_Gem"),
+        (Stone, "CS_Kandra_MaterialGroup_Stone"),
+        (Wood, "CS_Kandra_MaterialGroup_Wood"),
     ];
 
     /// <summary>Every material, sorted into <see cref="MaterialGroups" /> order.</summary>

@@ -225,7 +225,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         return !foundValidSpren ? string.Empty : info.ToString();
     }
 
-    private void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {
+    private static void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {
         info.AppendLine($"  Spawn Chance: {controller.cellSpawnChance:P1}");
         info.AppendLine($"  Particles/Cell: {controller.minParticlesPerCell}-{controller.maxParticlesPerCell}");
         info.AppendLine($"  Color: {controller.sprenColor.ColoredColor()}");

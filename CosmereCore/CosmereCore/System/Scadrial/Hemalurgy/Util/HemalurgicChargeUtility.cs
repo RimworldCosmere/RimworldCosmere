@@ -197,7 +197,13 @@ public static class HemalurgicChargeUtility {
 
         bool hasMastery = HemalurgicDefOf.Cosmere_Scadrial_HemalurgicMastery?.IsFinished ?? false;
         bool hasPrecision = HemalurgicDefOf.Cosmere_Scadrial_HemalurgicPrecision?.IsFinished ?? false;
-        float baseDeathChance = hasMastery ? 0.10f : hasPrecision ? 0.40f : 0.90f;
+        float baseDeathChance = 0.90f;
+        if (hasMastery) {
+            baseDeathChance = 0.10f;
+        } else if (hasPrecision) {
+            baseDeathChance = 0.40f;
+        }
+
         int medicalSkill = surgeon?.skills?.GetSkill(RimWorld.SkillDefOf.Medicine)?.Level ?? 0;
         float deathChance = baseDeathChance * (1f - medicalSkill * 0.02f);
         deathChance = Mathf.Clamp01(deathChance);

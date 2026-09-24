@@ -6,14 +6,12 @@ namespace Cosmere.System.Roshar.Patch.Highstorm;
 
 [Patch]
 public abstract class StormlightOverlayPatch : MainTabWindow_Architect {
-    private static string? stormlightCategoryDefName;
+    private const string StormlightCategoryDefName = "Cosmere_Roshar_DesignationStormlight";
 
     [Inject(At.Return, nameof(WindowUpdate))]
     private void AfterWindowUpdate() {
-        stormlightCategoryDefName ??= "Cosmere_Roshar_DesignationStormlight";
-
         ArchitectCategoryTab? openTab = selectedDesPanel;
-        if (openTab != null && openTab.def.defName == stormlightCategoryDefName) {
+        if (openTab != null && openTab.def.defName == StormlightCategoryDefName) {
             StormlightOverlayDrawHandler.DrawThisFrame();
         }
     }

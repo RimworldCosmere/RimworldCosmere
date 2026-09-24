@@ -16,7 +16,7 @@ public class NightwatcherValleyPlacer : GameComponent {
         PlaceValley();
     }
 
-    private void PlaceValley() {
+    private static void PlaceValley() {
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Nightwatcher)) return;
 
         WorldObjectDef? def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Cosmere_Roshar_NightwatcherValley");

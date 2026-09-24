@@ -39,9 +39,10 @@ public class InvestitureShieldHediff : AllomanticHediff {
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         for (int i = genes.Count - 1; i >= 0; i--) {
-            if (Mathf.Approximately(genes[i].Value, 0f)) {
-                genes.RemoveAt(i);
-            } else if (metal == MetallicArtsMetalDefOf.Aluminum && genes[i].metal == MetallicArtsMetalDefOf.Aluminum) {
+            bool aluminumOnAluminum = metal == MetallicArtsMetalDefOf.Aluminum
+                                      && genes[i].metal == MetallicArtsMetalDefOf.Aluminum;
+
+            if (Mathf.Approximately(genes[i].Value, 0f) || aluminumOnAluminum) {
                 genes.RemoveAt(i);
             }
         }

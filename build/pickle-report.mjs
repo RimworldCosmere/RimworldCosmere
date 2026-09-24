@@ -4,7 +4,7 @@
 // template carries inside report.html, which is the only report file holding step text.
 
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 const EXIT_FAILURES = 1;
 const EXIT_NO_REPORT = 2;
@@ -27,9 +27,9 @@ function readPayload(html) {
 
 function cell(text) {
   return String(text ?? '')
-    .replace(/\|/g, '\\|')
-    .replace(/</g, '&lt;')
-    .replace(/\r?\n/g, '<br>');
+    .replaceAll('|', String.raw`\|`)
+    .replaceAll('<', '&lt;')
+    .replaceAll(/\r?\n/g, '<br>');
 }
 
 function failingStep(steps) {
@@ -37,8 +37,10 @@ function failingStep(steps) {
   return step ? `${step.keyword} ${step.text}` : '(no step failed - a hook or the run itself did)';
 }
 
-const dir = process.argv[2];
-if (!dir) die(EXIT_NO_REPORT, 'usage: pickle-report.mjs <report-dir>');
+const dirArg = process.argv[2];
+if (!dirArg) die(EXIT_NO_REPORT, 'usage: pickle-report.mjs <report-dir>');
+// Resolved once, so the two report paths below are absolute and carry no '..' to walk out on.
+const dir = resolve(dirArg);
 
 const summaryPath = join(dir, 'summary.json');
 const htmlPath = join(dir, 'report.html');

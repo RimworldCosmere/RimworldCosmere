@@ -164,7 +164,7 @@ public abstract class BaseSprenController {
 
     protected static bool TerrainNameContains(TerrainDef terrain, params string[] keywords) {
         string terrainName = terrain.defName;
-        return keywords.Any(keyword => terrainName.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
+        return keywords.Any(keyword => terrainName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
     }
 
     protected static TerrainDef? GetTerrain(IntVec3 position, Map map) {

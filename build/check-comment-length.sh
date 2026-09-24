@@ -13,6 +13,7 @@ list_sources() {
         | tr '\0' '\n' \
         | grep -v '\.generated\.cs$' \
         | sed "s|^|$root/|"
+    return
 }
 
 if ! git -C "$root" rev-parse --git-dir >/dev/null 2>&1; then
@@ -31,7 +32,7 @@ while IFS= read -r file; do
     ' "$file"
 done < <(list_sources) > /tmp/cc0001.txt
 
-if [ -s /tmp/cc0001.txt ]; then
+if [[ -s /tmp/cc0001.txt ]]; then
     cat /tmp/cc0001.txt
     found=$(wc -l < /tmp/cc0001.txt)
     echo "CC000x: $found comment(s) over the one-line ceiling" >&2

@@ -19,7 +19,7 @@ public class InvestitureSteps {
     /// <param name="nickname">The pawn's nickname.</param>
     /// <param name="value">The Investiture to set.</param>
     [Given("{string} investiture is set to {float}")]
-    public void SetPawnInvestiture(PickleContext ctx, string nickname, float value) {
+    public static void SetPawnInvestiture(PickleContext ctx, string nickname, float value) {
         SetInvestiture(ctx, RequirePawnHolder(ctx, nickname), DescribePawn(nickname), value);
     }
 
@@ -28,7 +28,7 @@ public class InvestitureSteps {
     /// <param name="nickname">The pawn's nickname.</param>
     /// <param name="expected">The Investiture expected.</param>
     [Then("{string} investiture is {float}")]
-    public void AssertPawnInvestiture(PickleContext ctx, string nickname, float expected) {
+    public static void AssertPawnInvestiture(PickleContext ctx, string nickname, float expected) {
         InvestitureHolder holder = RequirePawnHolder(ctx, nickname);
         AssertBound(
             ctx,
@@ -43,7 +43,7 @@ public class InvestitureSteps {
     /// <param name="nickname">The pawn's nickname.</param>
     /// <param name="bound">The lower bound, exclusive.</param>
     [Then("{string} investiture is above {float}")]
-    public void AssertPawnInvestitureAbove(PickleContext ctx, string nickname, float bound) {
+    public static void AssertPawnInvestitureAbove(PickleContext ctx, string nickname, float bound) {
         InvestitureHolder holder = RequirePawnHolder(ctx, nickname);
         AssertBound(
             ctx,
@@ -58,7 +58,7 @@ public class InvestitureSteps {
     /// <param name="nickname">The pawn's nickname.</param>
     /// <param name="bound">The upper bound, exclusive.</param>
     [Then("{string} investiture is below {float}")]
-    public void AssertPawnInvestitureBelow(PickleContext ctx, string nickname, float bound) {
+    public static void AssertPawnInvestitureBelow(PickleContext ctx, string nickname, float bound) {
         InvestitureHolder holder = RequirePawnHolder(ctx, nickname);
         AssertBound(
             ctx,
@@ -73,7 +73,7 @@ public class InvestitureSteps {
     /// <param name="nickname">The pawn's nickname.</param>
     /// <param name="expected">The loss per second expected.</param>
     [Then("{string} drains {float} investiture per second")]
-    public void AssertPawnDrainRate(PickleContext ctx, string nickname, float expected) {
+    public static void AssertPawnDrainRate(PickleContext ctx, string nickname, float expected) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         InvestitureHolder holder = RequireHolder(ctx, pawn, DescribePawn(nickname));
 
@@ -106,7 +106,7 @@ public class InvestitureSteps {
     /// <param name="z">The cell's z coordinate.</param>
     /// <param name="value">The Investiture to set.</param>
     [Given("the {string} at \\({int}, {int}\\) investiture is set to {float}")]
-    public void SetThingInvestiture(PickleContext ctx, string defName, int x, int z, float value) {
+    public static void SetThingInvestiture(PickleContext ctx, string defName, int x, int z, float value) {
         SetInvestiture(ctx, CosmereLookup.RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z), value);
     }
 
@@ -117,7 +117,7 @@ public class InvestitureSteps {
     /// <param name="z">The cell's z coordinate.</param>
     /// <param name="expected">The Investiture expected.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is {float}")]
-    public void AssertThingInvestiture(PickleContext ctx, string defName, int x, int z, float expected) {
+    public static void AssertThingInvestiture(PickleContext ctx, string defName, int x, int z, float expected) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
@@ -134,7 +134,7 @@ public class InvestitureSteps {
     /// <param name="z">The cell's z coordinate.</param>
     /// <param name="bound">The lower bound, exclusive.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is above {float}")]
-    public void AssertThingInvestitureAbove(PickleContext ctx, string defName, int x, int z, float bound) {
+    public static void AssertThingInvestitureAbove(PickleContext ctx, string defName, int x, int z, float bound) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
@@ -151,7 +151,7 @@ public class InvestitureSteps {
     /// <param name="z">The cell's z coordinate.</param>
     /// <param name="bound">The upper bound, exclusive.</param>
     [Then("the {string} at \\({int}, {int}\\) investiture is below {float}")]
-    public void AssertThingInvestitureBelow(PickleContext ctx, string defName, int x, int z, float bound) {
+    public static void AssertThingInvestitureBelow(PickleContext ctx, string defName, int x, int z, float bound) {
         InvestitureHolder holder = CosmereLookup.RequireThingHolder(ctx, defName, x, z);
         AssertBound(
             ctx,
@@ -165,7 +165,7 @@ public class InvestitureSteps {
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     /// <param name="nickname">The pawn's nickname.</param>
     [When("I record the investiture of {string}")]
-    public void RecordPawnInvestiture(PickleContext ctx, string nickname) {
+    public static void RecordPawnInvestiture(PickleContext ctx, string nickname) {
         Record(ctx, RequirePawnHolder(ctx, nickname), DescribePawn(nickname));
     }
 
@@ -175,28 +175,28 @@ public class InvestitureSteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [When("I record the investiture of the {string} at \\({int}, {int}\\)")]
-    public void RecordThingInvestiture(PickleContext ctx, string defName, int x, int z) {
+    public static void RecordThingInvestiture(PickleContext ctx, string defName, int x, int z) {
         Record(ctx, CosmereLookup.RequireThingHolder(ctx, defName, x, z), DescribeThing(defName, x, z));
     }
 
     /// <summary>Asserts the recorded holder has lost Investiture since it was recorded.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture has fallen")]
-    public void AssertRecordedFell(PickleContext ctx) {
+    public static void AssertRecordedFell(PickleContext ctx) {
         AssertMoved(ctx, (before, now) => now < before - CosmereLookup.Tolerance(before), "should have fallen");
     }
 
     /// <summary>Asserts the recorded holder has gained Investiture since it was recorded.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture has risen")]
-    public void AssertRecordedRose(PickleContext ctx) {
+    public static void AssertRecordedRose(PickleContext ctx) {
         AssertMoved(ctx, (before, now) => now > before + CosmereLookup.Tolerance(before), "should have risen");
     }
 
     /// <summary>Asserts the recorded holder's Investiture has not moved.</summary>
     /// <param name="ctx">The scenario's context, for assertions, requirements, and waits.</param>
     [Then("the recorded investiture is unchanged")]
-    public void AssertRecordedUnchanged(PickleContext ctx) {
+    public static void AssertRecordedUnchanged(PickleContext ctx) {
         AssertMoved(ctx, CosmereLookup.IsNear, "should be unchanged");
     }
 

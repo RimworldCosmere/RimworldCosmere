@@ -26,7 +26,9 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
     ///     Deliberately empty. This path runs while a save is deserialising, where the world is not
     ///     yet known and adding world objects would be wrong.
     /// </summary>
-    public override void GenerateWithoutWorldData(string seed, PlanetLayer layer) { }
+    public override void GenerateWithoutWorldData(string seed, PlanetLayer layer) {
+        // deliberately empty - see above
+    }
 
     public override void GenerateFresh(string seed, PlanetLayer layer) {
         // WorldBeforeGenerationPatch sets Primary first, so IsActive's null fallback never fires.

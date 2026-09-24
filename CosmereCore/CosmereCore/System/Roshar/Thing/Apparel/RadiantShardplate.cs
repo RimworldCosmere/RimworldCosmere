@@ -11,9 +11,8 @@ namespace Cosmere.System.Roshar.Thing.Apparel;
 public class RadiantShardplate : Shardplate {
     private RadiantOrderDef? radiantOrderInt;
 
-    private RadiantOrderDef? radiantOrder {
-        get => radiantOrderInt ??= SpawnedParentOrMe is Verse.Pawn pawn ? pawn.GetRadiantOrder() : null;
-    }
+    private RadiantOrderDef? radiantOrder =>
+        radiantOrderInt ??= SpawnedParentOrMe is Verse.Pawn pawn ? pawn.GetRadiantOrder() : null;
 
     private GemDef? gemstone => radiantOrder?.gemstone;
 
@@ -46,8 +45,9 @@ public class RadiantShardplate : Shardplate {
         LUTPaletteMaterial colorTwo = !gemstone.colorTwo.HasValue
             ? colorOne
             : new LUTPaletteMaterial { color = gemstone.colorTwo.Value, metallic = .7f, smoothness = .7f };
+        LUTPaletteMaterial fallbackThree = gemstone.colorTwo.HasValue ? colorTwo : colorOne;
         LUTPaletteMaterial colorThree = !gemstone.glowColor.HasValue
-            ? gemstone.colorTwo.HasValue ? colorTwo : colorOne
+            ? fallbackThree
             : new LUTPaletteMaterial { color = gemstone.glowColor.Value, metallic = 0, smoothness = 1f };
 
         if (def == ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm) {

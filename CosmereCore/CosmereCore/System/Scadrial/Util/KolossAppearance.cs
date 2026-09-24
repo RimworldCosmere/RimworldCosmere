@@ -99,13 +99,16 @@ public static class KolossAppearance {
     /// </summary>
     private static bool MoveHead(Pawn pawn, bool mature) {
         bool second = pawn.thingIDNumber % 2 != 0;
-        HeadTypeDef want = mature
-            ? second
+        HeadTypeDef want;
+        if (mature) {
+            want = second
                 ? HeadTypeDefOf.Cosmere_Scadrial_KolossHead_Mature_B
-                : HeadTypeDefOf.Cosmere_Scadrial_KolossHead_Mature_A
-            : second
+                : HeadTypeDefOf.Cosmere_Scadrial_KolossHead_Mature_A;
+        } else {
+            want = second
                 ? HeadTypeDefOf.Cosmere_Scadrial_KolossHead_Young_B
                 : HeadTypeDefOf.Cosmere_Scadrial_KolossHead_Young_A;
+        }
 
         if (want == null || pawn.story.headType == want) return false;
 

@@ -19,10 +19,11 @@ public class Thought_Memory_Coppermind : Thought_Memory {
         }
     }
 
-    public bool IsCoppermindInjected => true;
+    public static bool IsCoppermindInjected => true;
 
     public override bool Save => false;
 
-    // no aging - a stored memory lasts as long as the coppermind holds it, so ShouldDiscard is the only exit.
-    public override void ThoughtInterval() { }
+    public override void ThoughtInterval() {
+        // no aging - a stored memory lasts as long as the coppermind holds it, so ShouldDiscard is the only exit.
+    }
 }

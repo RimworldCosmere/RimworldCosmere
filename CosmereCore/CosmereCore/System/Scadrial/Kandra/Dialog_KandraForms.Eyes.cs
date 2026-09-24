@@ -46,10 +46,8 @@ public partial class Dialog_KandraForms {
     private void DrawEyeOptions(Rect inner) {
         float gap = Spacing.Get(0.5f);
         float width = ColumnContentWidth(inner);
-        float column = (width - gap * (SwatchColumns - 1)) / SwatchColumns;
 
         IReadOnlyList<IrisRow> irises = KandraAppearance.AllIrisSizes;
-        IReadOnlyList<EyeColourRow> stones = KandraAppearance.AllEyeColours;
         IReadOnlyList<EyeLightRow> lights = KandraAppearance.AllEyeLights;
 
         // Only a name the table still carries counts as on. Both sentinels and null read as off.

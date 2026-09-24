@@ -71,7 +71,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         return vialSource != null;
     }
 
-    private bool VialValidator(Pawn pawn, Verse.Thing vial) {
+    private static bool VialValidator(Pawn pawn, Verse.Thing vial) {
         if (!vial.Spawned) return false;
         if (vial.IsForbidden(pawn)) return false;
         if (!vial.Stuff.Equals(pewter.Item)) return false;

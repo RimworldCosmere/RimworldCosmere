@@ -41,11 +41,12 @@ public class ImplantSpike : Verse.AI.JobDriver {
                          !recipient.IsPrisonerOfColony &&
                          !recipient.IsSlaveOfColony;
 
-        DeliveryMode mode = recipientInBed || voluntary && !recipient.Downed
-            ? DeliveryMode.AwaitInBed
-            : recipient.Downed
-                ? DeliveryMode.CarryDirect
-                : DeliveryMode.CarryAnesthetize;
+        DeliveryMode mode;
+        if (recipientInBed || (voluntary && !recipient.Downed)) {
+            mode = DeliveryMode.AwaitInBed;
+        } else {
+            mode = recipient.Downed ? DeliveryMode.CarryDirect : DeliveryMode.CarryAnesthetize;
+        }
 
         if (mode == DeliveryMode.CarryAnesthetize) {
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);

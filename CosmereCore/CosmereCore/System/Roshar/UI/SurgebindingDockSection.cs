@@ -34,6 +34,8 @@ internal static class SurgeMarks {
 public sealed class SurgebindingDockSection : DockSectionBase {
     private const float HeaderHeight = 28f;
 
+    private const string IdealArg = "IDEAL";
+
     /// <summary>
     ///     Dock body is 346px at its narrowest, too tight for the usual 16f spacing unit.
     ///     Three steps instead: Pad/LineGap within a block, BlockGap between, ButtonGap before buttons.
@@ -217,7 +219,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         );
 
         Rect surgeRow = new Rect(inner.x, captionRect.yMax + BlockGap, inner.width, SurgeRowHeight);
-        DrawSurgeRow(surgeRow, pawn, order);
+        DrawSurgeRow(surgeRow, pawn);
         y = surgeRow.yMax;
 
         // clicked surge opens beneath the pair, not replacing them, so the player keeps sight of which cell opened it.
@@ -383,7 +385,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 tab,
                 "CC_Dock_Order_Tab_Tip".Translate(
                     order.LabelCap.Named("ORDER"),
-                    IdealLabel(bonds[i].CurrentIdealDisplay).Named("IDEAL")
+                    IdealLabel(bonds[i].CurrentIdealDisplay).Named(IdealArg)
                 )
             );
             Widgets.DrawHighlightIfMouseover(tab);
@@ -441,7 +443,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
 
         return "CC_Dock_Gauge_NextCeiling".Translate(
-            IdealLabel(next + 1).Named("IDEAL"),
+            IdealLabel(next + 1).Named(IdealArg),
             order.ideals[next].stormlightMax.Named("MAX")
         );
     }
@@ -449,7 +451,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     private static string OathTooltip(Surgebinder gene, RadiantOrderDef order) {
         int next = Mathf.Min(gene.CurrentIdeal + 1, order.ideals.Count - 1);
         return "CC_Dock_Oath_Tip".Translate(
-            IdealLabel(next + 1).Named("IDEAL"),
+            IdealLabel(next + 1).Named(IdealArg),
             order.ideals[next].description.Named("WORDS")
         );
     }
@@ -458,7 +460,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     ///     Two Surges per order, always. Clicking one opens what it can actually do -
     ///     the counts say how many, which is no use when you want to know which.
     /// </summary>
-    private void DrawSurgeRow(Rect row, Pawn pawn, RadiantOrderDef order) {
+    private void DrawSurgeRow(Rect row, Pawn pawn) {
         if (cachedSurges.Count == 0) return;
 
         float cellWidth = (row.width - LineGap * (cachedSurges.Count - 1)) / cachedSurges.Count;
@@ -545,7 +547,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         return rows * AbilityRowHeight + (rows - 1) * LineGap;
     }
 
-    private void DrawAbilityStrip(
+    private static void DrawAbilityStrip(
         Rect rect,
         Pawn pawn,
         Surgebinder gene,
@@ -613,7 +615,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         }
 
         string note = locked
-            ? "CC_Dock_Ability_Locked".Translate(IdealLabel(minIdeal + 1).Named("IDEAL")).Resolve()
+            ? "CC_Dock_Ability_Locked".Translate(IdealLabel(minIdeal + 1).Named(IdealArg)).Resolve()
             : CooldownNote(pawn, def);
 
         float noteWidth = 0f;
@@ -623,12 +625,15 @@ public sealed class SurgebindingDockSection : DockSectionBase {
             }
         }
 
+        Color labelColor = running ? DockPalette.HotLabel : DockPalette.MutedText;
+        if (locked) labelColor = LockedText;
+
         UIText.EllipsisLabel(
             new Rect(icon.xMax + 6f, row.y, row.xMax - icon.xMax - 6f - noteWidth, row.height),
             def.LabelCap.ToString(),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            locked ? LockedText : running ? DockPalette.HotLabel : DockPalette.MutedText,
+            labelColor,
             running
         );
 

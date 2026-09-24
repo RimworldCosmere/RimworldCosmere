@@ -116,21 +116,21 @@ public class ImplantSpike : Recipe_Surgery {
         }
     }
 
-    private void GrantStoredInvestiture(Pawn pawn, float amount) {
+    private static void GrantStoredInvestiture(Pawn pawn, float amount) {
         if (amount <= 0f) return;
         InvestitureHolder? holder = pawn.TryGetComp<InvestitureHolder>();
         if (holder == null) return;
         holder.currentInvestitureSelf += amount;
     }
 
-    private void RemoveDrabIfPresent(Pawn pawn) {
+    private static void RemoveDrabIfPresent(Pawn pawn) {
         Verse.Hediff? drab = pawn.health.hediffSet.GetFirstHediffOfDef(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab);
         if (drab != null) {
             pawn.health.RemoveHediff(drab);
         }
     }
 
-    private void AddToUnifiedHediff(Pawn pawn, ImplantedSpikeData spikeData, BodyPartRecord part) {
+    private static void AddToUnifiedHediff(Pawn pawn, ImplantedSpikeData spikeData, BodyPartRecord part) {
         HemalurgicSpikes? hediff = (HemalurgicSpikes?)pawn.health.hediffSet.GetFirstHediffOfDef(
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
@@ -146,7 +146,7 @@ public class ImplantSpike : Recipe_Surgery {
         hediff.AddSpike(spikeData);
     }
 
-    private void UpdateRuinsInfluence(Pawn pawn) {
+    private static void UpdateRuinsInfluence(Pawn pawn) {
         HemalurgicSpikes? spikesHediff = (HemalurgicSpikes?)pawn.health.hediffSet.GetFirstHediffOfDef(
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
@@ -164,7 +164,7 @@ public class ImplantSpike : Recipe_Surgery {
         ruinsInfluence?.UpdateSpikeCount(spikeCount);
     }
 
-    private HemalurgicSpike? FindChargedSpike(List<Verse.Thing> ingredients) {
+    private static HemalurgicSpike? FindChargedSpike(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {
             HemalurgicSpike? comp = ingredients[i].TryGetComp<HemalurgicSpike>();
             if (comp is { isCharged: true }) return comp;

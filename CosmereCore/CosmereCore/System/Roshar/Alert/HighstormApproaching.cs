@@ -35,7 +35,7 @@ public class HighstormApproaching : Alert_Critical {
         return "CR_Highstorm_Alert_Explanation".Translate();
     }
 
-    private int GetTicksUntilNextStorm() {
+    private static int GetTicksUntilNextStorm() {
         List<Map> maps = Find.Maps;
         for (int i = 0; i < maps.Count; i++) {
             HighstormScheduler scheduler = maps[i].GetComponent<HighstormScheduler>();

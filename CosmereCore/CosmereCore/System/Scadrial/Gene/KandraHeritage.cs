@@ -61,7 +61,7 @@ public class KandraHeritage : Verse.Gene {
     /// </remarks>
     public float ChronologicalYears {
         get {
-            float spread = 0.9f + (Mathf.Abs(pawn.thingIDNumber) % 21) / 100f;
+            float spread = 0.9f + Mathf.Abs(pawn.thingIDNumber) % 21 / 100f;
 
             return Mathf.Lerp(YoungestYears, OldestYears, Seniority) * spread;
         }

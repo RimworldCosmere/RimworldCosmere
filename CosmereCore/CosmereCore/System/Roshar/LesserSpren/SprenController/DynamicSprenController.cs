@@ -18,7 +18,9 @@ public abstract class DynamicSprenController : BaseSprenController {
         return GetDynamicSpawnInfo(map).Find(i => i.position.Equals(position));
     }
 
-    protected override void RefreshValidInfo(Map map) { }
+    protected override void RefreshValidInfo(Map map) {
+        // dynamic controllers build their spawn list per refresh, so there is no static valid set to rebuild.
+    }
 
     protected override void RefreshActiveInfo(Map map) {
         activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);

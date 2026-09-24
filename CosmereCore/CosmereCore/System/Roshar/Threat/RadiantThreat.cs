@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core.Util;
 
 namespace Cosmere.System.Roshar.Threat;
@@ -28,9 +29,7 @@ public static class RadiantThreat {
     public static int MaxIdeal => byIdeal.Length - 1;
 
     public static float ForBond(int currentIdeal) {
-        int ideal = currentIdeal < 0 ? 0
-            : currentIdeal > MaxIdeal ? MaxIdeal
-            : currentIdeal;
+        int ideal = Math.Clamp(currentIdeal, 0, MaxIdeal);
 
         return byIdeal[ideal];
     }

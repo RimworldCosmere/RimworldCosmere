@@ -105,10 +105,8 @@ public abstract class SnapHealthTrackerPatch : Pawn_HealthTracker {
         }
 
         Verse.Hediff heat = hediffSet.GetFirstHediffOfDef(RimWorld.HediffDefOf.Heatstroke);
-        if (heat != null && heat.Severity >= 0.7f) {
-            if (SnapEvents.TemperatureCooldowns.Add(heat.loadID)) {
-                SnapEvents.Snap(pawn, 12, "CS_PawnSnapped_Temperature");
-            }
+        if (heat != null && heat.Severity >= 0.7f && SnapEvents.TemperatureCooldowns.Add(heat.loadID)) {
+            SnapEvents.Snap(pawn, 12, "CS_PawnSnapped_Temperature");
         }
     }
 

@@ -9,7 +9,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
 
     private bool dirty = true;
 
-    private bool enabled => FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_StormlightNetwork);
+    private static bool enabled => FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_StormlightNetwork);
 
     public List<StormlightNetworkGrid> Networks { get; } = [];
 

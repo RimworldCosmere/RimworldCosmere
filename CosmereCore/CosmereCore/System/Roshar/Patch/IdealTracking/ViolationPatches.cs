@@ -58,10 +58,8 @@ public abstract class PawnKillPatch : Pawn {
             } else if (state.downed || state.fleeing) {
                 ViolationUtility.ApplyViolation(killer, 0.3f, "killing a defenseless enemy");
             }
-        } else if (orderDef == RadiantOrderDefOf.Dustbringer) {
-            if (state.colonist && killerInBerserk) {
-                ViolationUtility.ApplyViolation(killer, 0.6f, "killing a colonist in berserk rage");
-            }
+        } else if (orderDef == RadiantOrderDefOf.Dustbringer && state.colonist && killerInBerserk) {
+            ViolationUtility.ApplyViolation(killer, 0.6f, "killing a colonist in berserk rage");
         }
     }
 }

@@ -78,7 +78,7 @@ public static class ScadrialThreat {
     ///     only hides what stands inside it. A cloud burning out in the wilderness conceals nothing.
     /// </summary>
     public static float Coppercloud(float threatValue, float coverage) {
-        float hidden = coverage < 0f ? 0f : coverage > 1f ? 1f : coverage;
+        float hidden = Clamp01(coverage);
 
         return threatValue * (1f - hidden);
     }
@@ -92,11 +92,17 @@ public static class ScadrialThreat {
 
         float total = 0f;
         for (int i = 0; i < strengthPerColonist.Count; i++) {
-            float strength = strengthPerColonist[i];
-            total += strength < 0f ? 0f : strength > 1f ? 1f : strength;
+            total += Clamp01(strengthPerColonist[i]);
         }
 
         return total / strengthPerColonist.Count;
+    }
+
+    /// <summary>Local so this file stays free of UnityEngine, which the test host cannot load.</summary>
+    private static float Clamp01(float value) {
+        if (value < 0f) return 0f;
+
+        return value > 1f ? 1f : value;
     }
 
     /// <summary>

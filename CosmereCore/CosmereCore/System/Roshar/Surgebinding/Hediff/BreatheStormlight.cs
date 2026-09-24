@@ -44,19 +44,17 @@ public class BreatheStormlight : SurgebindingHediff {
         foreach (Verse.Thing thing in things) TryAbsorbFromThing(thing);
     }
 
-    private float TryAbsorbFromThing(Verse.Thing thing) {
-        if (investiture == null) return 0f;
-        if (!thing.TryGetComp(out InvestitureHolder investitureHolder)) return 0f;
-        if (!investitureHolder.sharingInvestiture) return 0f;
-        if (Mathf.Approximately(investitureHolder.currentInvestiture, 0f)) return 0f;
+    private void TryAbsorbFromThing(Verse.Thing thing) {
+        if (investiture == null) return;
+        if (!thing.TryGetComp(out InvestitureHolder investitureHolder)) return;
+        if (!investitureHolder.sharingInvestiture) return;
+        if (Mathf.Approximately(investitureHolder.currentInvestiture, 0f)) return;
         if (investiture.AbsorbInvestitureFrom(
                 thing,
                 BaseAbsorbAmount * (Gene.CurrentIdeal + 1),
-                out float amountDrawn
+                out float _
             )) {
             pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .1f);
         }
-
-        return amountDrawn;
     }
 }

@@ -10,6 +10,8 @@ using Verse;
 namespace Cosmere.System.Roshar.Dev;
 
 public static class IdealDebugCommands {
+    private const string NotASurgebinder = "Not a Surgebinder";
+
     [DebugAction(
         "Cosmere/Roshar/Ideals",
         "Set Ideal Level",
@@ -19,7 +21,7 @@ public static class IdealDebugCommands {
     public static void SetIdealLevel(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 
@@ -103,7 +105,7 @@ public static class IdealDebugCommands {
     public static void TriggerOathNotification(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 
@@ -119,7 +121,7 @@ public static class IdealDebugCommands {
     public static void SpeakOathNow(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 
@@ -135,7 +137,7 @@ public static class IdealDebugCommands {
     public static void AddBondStrain(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 
@@ -247,7 +249,7 @@ public static class IdealDebugCommands {
     public static void ShowIdealInfo(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 
@@ -295,7 +297,7 @@ public static class IdealDebugCommands {
     public static void ResetCooldown(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
-            Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
+            Messages.Message(NotASurgebinder, MessageTypeDefOf.RejectInput);
             return;
         }
 

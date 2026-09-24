@@ -29,10 +29,12 @@ public class ScadrialInvestitureSource : IConnectionInvestitureSource {
 
         if (pawn.genes == null) return spikes;
 
-        bool full = pawn.IsMistborn() || pawn.IsFullFeruchemist();
-        int invested = full
-            ? ConnectionMath.FullInvestitureBonus
-            : HasAnySingleInvestiture(pawn) ? ConnectionMath.SingleInvestitureBonus : 0;
+        int invested = 0;
+        if (pawn.IsMistborn() || pawn.IsFullFeruchemist()) {
+            invested = ConnectionMath.FullInvestitureBonus;
+        } else if (HasAnySingleInvestiture(pawn)) {
+            invested = ConnectionMath.SingleInvestitureBonus;
+        }
 
         // the registry takes the highest reading, not the sum - a Mistborn kandra reads as whichever is worth more
         return global::System.Math.Max(spikes, invested);

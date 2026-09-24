@@ -23,7 +23,10 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CFG="/home/app/.config/unity3d/Ludeon Studios/RimWorld by Ludeon Studios/Config"
 TMP="${RUNNER_TEMP:-/tmp}"
 
-abs() { (cd "$1" 2>/dev/null && pwd) || { echo "error: no directory $1" >&2; exit 1; }; }
+abs() {
+  local dir="$1"
+  (cd "$dir" 2>/dev/null && pwd) || { echo "error: no directory $dir" >&2; exit 1; }
+}
 
 MODS_DIR="$(abs "$MODS_DIR")" || exit 1
 CONFIG_DIR="$(abs "$CONFIG_DIR")" || exit 1

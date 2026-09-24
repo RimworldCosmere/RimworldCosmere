@@ -40,7 +40,13 @@ public class BronzeDetectionWatcher(Verse.Map map) : MapComponent(map) {
     }
 
     private void ReportAdjacentTiles(float strength) {
-        int scanDepth = strength >= 1.5f ? 3 : strength >= 0.75f ? 2 : 1;
+        int scanDepth = 1;
+        if (strength >= 1.5f) {
+            scanDepth = 3;
+        } else if (strength >= 0.75f) {
+            scanDepth = 2;
+        }
+
         List<int> tilesToScan = BronzeDetectionUtility.GetTilesInRange(map.Tile, scanDepth);
         StringBuilder newFinds = new StringBuilder();
         int newTileCount = 0;

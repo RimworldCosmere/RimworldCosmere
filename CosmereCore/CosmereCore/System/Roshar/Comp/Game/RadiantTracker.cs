@@ -30,7 +30,7 @@ public class RadiantTracker : GameComponent {
         if (activeBondsmithCount < 0) activeBondsmithCount = 0;
     }
 
-    public int CountNonBondsmithRadiants() {
+    public static int CountNonBondsmithRadiants() {
         int count = 0;
         List<Verse.Map> maps = Find.Maps;
         for (int m = 0; m < maps.Count; m++) {
@@ -74,7 +74,7 @@ public class RadiantTracker : GameComponent {
         TrackColonyStability();
     }
 
-    private void TrackColonyStability() {
+    private static void TrackColonyStability() {
         List<Verse.Map> maps = Find.Maps;
         for (int m = 0; m < maps.Count; m++) {
             Verse.Map map = maps[m];

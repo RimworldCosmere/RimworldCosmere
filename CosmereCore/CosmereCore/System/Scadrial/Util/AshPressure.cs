@@ -13,7 +13,13 @@ public static class AshPressure {
 
     public static float Target {
         get => target;
-        set => target = value < 0f ? 0f : value > 1f ? 1f : value;
+        set {
+            if (value < 0f) {
+                target = 0f;
+            } else {
+                target = value > 1f ? 1f : value;
+            }
+        }
     }
 
     public static void Reset() {

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text;
 using Concord;
 using Cosmere.Core.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
@@ -57,12 +58,14 @@ public static class NahelBondTooltipPatch {
             _ => "CRO_BondStage_Breaking".Translate(),
         };
 
-        string bondInfo = "\n\n" +
-                          "CRO_NahelBond_SocialTooltip_Header".Translate()
-                              .Resolve()
-                              .Colorize(ColoredText.TipSectionTitleColor);
-        bondInfo += "\n" + "CRO_NahelBond_SocialTooltip_Strength".Translate(percentage.ToString());
-        bondInfo += "\n" + "CRO_NahelBond_SocialTooltip_Stage".Translate(stage);
+        StringBuilder bondInfo = new StringBuilder("\n\n");
+        bondInfo.Append(
+            "CRO_NahelBond_SocialTooltip_Header".Translate()
+                .Resolve()
+                .Colorize(ColoredText.TipSectionTitleColor)
+        );
+        bondInfo.Append('\n').Append("CRO_NahelBond_SocialTooltip_Strength".Translate(percentage.ToString()));
+        bondInfo.Append('\n').Append("CRO_NahelBond_SocialTooltip_Stage".Translate(stage));
 
         SprenBond? sprenBond = otherPawn.TryGetComp<SprenBond>();
         if (sprenBond == null) {
@@ -70,12 +73,12 @@ public static class NahelBondTooltipPatch {
         }
 
         if (sprenBond != null && sprenBond.PersonalityTraits.Count > 0) {
-            bondInfo += "\n" + "CRO_NahelBond_SocialTooltip_Personality".Translate();
+            bondInfo.Append('\n').Append("CRO_NahelBond_SocialTooltip_Personality".Translate());
             for (int i = 0; i < sprenBond.PersonalityTraits.Count; i++) {
-                bondInfo += "\n  - " + sprenBond.PersonalityTraits[i].LabelCap;
+                bondInfo.Append("\n  - ").Append(sprenBond.PersonalityTraits[i].LabelCap);
             }
         }
 
-        ch.ReturnValue += bondInfo;
+        ch.ReturnValue += bondInfo.ToString();
     }
 }

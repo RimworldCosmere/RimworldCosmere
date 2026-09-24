@@ -46,7 +46,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Given("{string} is already darkeyed")]
-    public void MakeDarkeyed(PickleContext ctx, string nickname) {
+    public static void MakeDarkeyed(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ctx.Require(pawn.genes != null, $"'{nickname}' has no gene tracker, so they have no caste");
 
@@ -65,7 +65,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Then("{string} eyes have lightened")]
-    public void AssertLighteyed(PickleContext ctx, string nickname) {
+    public static void AssertLighteyed(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
 
         CosmereLookup.AssertThat(
@@ -80,7 +80,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Given("{string} is already lighteyed")]
-    public void MakeLighteyed(PickleContext ctx, string nickname) {
+    public static void MakeLighteyed(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         CasteUtility.DarkeyesToLighteyes(pawn);
 
@@ -97,7 +97,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn the Nightwatcher answers.</param>
     /// <param name="boonDefName">The NightwatcherBoonDef to grant.</param>
     [When("the Nightwatcher grants {string} the boon {string}")]
-    public void GrantBoon(PickleContext ctx, string nickname, string boonDefName) {
+    public static void GrantBoon(PickleContext ctx, string nickname, string boonDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         NightwatcherBoonDef boon = CosmereLookup.RequireDef<NightwatcherBoonDef>(boonDefName);
 
@@ -109,7 +109,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="orderDefName">The order defName, which is bare: "Windrunner", not a prefixed one.</param>
     [Then("{string} is bonded to the radiant order {string}")]
-    public void AssertBonded(PickleContext ctx, string nickname, string orderDefName) {
+    public static void AssertBonded(PickleContext ctx, string nickname, string orderDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RadiantOrderDef order = CosmereLookup.RequireDef<RadiantOrderDef>(orderDefName);
 
@@ -125,7 +125,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="orderDefName">The order defName that must be absent.</param>
     [Then("{string} is not bonded to the radiant order {string}")]
-    public void AssertNotBonded(PickleContext ctx, string nickname, string orderDefName) {
+    public static void AssertNotBonded(PickleContext ctx, string nickname, string orderDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RadiantOrderDef order = CosmereLookup.RequireDef<RadiantOrderDef>(orderDefName);
 
@@ -143,7 +143,7 @@ public class SurgebindingSteps {
     /// <param name="orderDefName">The order defName.</param>
     /// <param name="ideal">The zero-based Ideal to move to.</param>
     [When("{string} reaches ideal {int} of the radiant order {string}")]
-    public void SetIdeal(PickleContext ctx, string nickname, int ideal, string orderDefName) {
+    public static void SetIdeal(PickleContext ctx, string nickname, int ideal, string orderDefName) {
         ctx.Require(ideal is >= 0 and <= 4, $"an Ideal runs 0 to 4 on the stored scale; got {ideal}");
 
         Surgebinder bond = RequireBond(ctx, nickname, orderDefName);
@@ -162,7 +162,7 @@ public class SurgebindingSteps {
     /// <param name="orderDefName">The order defName.</param>
     /// <param name="ideal">The zero-based Ideal expected.</param>
     [Then("{string} stored ideal in the radiant order {string} is {int}")]
-    public void AssertStoredIdeal(PickleContext ctx, string nickname, string orderDefName, int ideal) {
+    public static void AssertStoredIdeal(PickleContext ctx, string nickname, string orderDefName, int ideal) {
         Surgebinder bond = RequireBond(ctx, nickname, orderDefName);
 
         CosmereLookup.AssertThat(
@@ -179,7 +179,7 @@ public class SurgebindingSteps {
     /// <param name="orderDefName">The order defName.</param>
     /// <param name="ideal">The displayed Ideal expected.</param>
     [Then("{string} ideal in the radiant order {string} reads as {int}")]
-    public void AssertDisplayedIdeal(PickleContext ctx, string nickname, string orderDefName, int ideal) {
+    public static void AssertDisplayedIdeal(PickleContext ctx, string nickname, string orderDefName, int ideal) {
         Surgebinder bond = RequireBond(ctx, nickname, orderDefName);
 
         CosmereLookup.AssertThat(
@@ -194,7 +194,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="orderDefName">The order defName.</param>
     [When("{string} regresses an ideal in the radiant order {string}")]
-    public void RegressIdeal(PickleContext ctx, string nickname, string orderDefName) {
+    public static void RegressIdeal(PickleContext ctx, string nickname, string orderDefName) {
         RequireBond(ctx, nickname, orderDefName).RegressIdeal();
     }
 
@@ -202,7 +202,7 @@ public class SurgebindingSteps {
     /// Re-enable it with the shard step; a feature file that leaves Honor off breaks later scenarios.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Given("Honor no longer holds this cosmere")]
-    public void DisableHonor(PickleContext ctx) {
+    public static void DisableHonor(PickleContext ctx) {
         Shards? shards = ShardUtility.shards;
         ctx.Require(shards != null, "no game is loaded, so this cosmere has no Shards to switch off");
 
@@ -220,7 +220,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="orderDefName">The order defName the bond broke on.</param>
     [Given("{string} has broken a bond to the radiant order {string}")]
-    public void RecordBrokenBond(PickleContext ctx, string nickname, string orderDefName) {
+    public static void RecordBrokenBond(PickleContext ctx, string nickname, string orderDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RadiantOrderDef order = CosmereLookup.RequireDef<RadiantOrderDef>(orderDefName);
         RadiantTracker tracker = RequireTracker(ctx);
@@ -240,7 +240,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="orderDefName">The order defName to ask for.</param>
     [Then("the game refuses to bond {string} to the radiant order {string}")]
-    public void AssertBondRefused(PickleContext ctx, string nickname, string orderDefName) {
+    public static void AssertBondRefused(PickleContext ctx, string nickname, string orderDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RadiantOrderDef order = CosmereLookup.RequireDef<RadiantOrderDef>(orderDefName);
         ctx.Require(pawn.genes != null, $"'{nickname}' has no gene tracker, so no bond can reach them");
@@ -259,7 +259,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="abilityDefName">The surge ability def.</param>
     [When("{string} starts the surge {string}")]
-    public void StartSurge(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void StartSurge(PickleContext ctx, string nickname, string abilityDefName) {
         SurgebindingAbility surge = RequireSurge(ctx, nickname, abilityDefName);
         surge.UpdateStatus(Active.On);
 
@@ -275,7 +275,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="abilityDefName">The surge ability def.</param>
     [When("{string} stops the surge {string}")]
-    public void StopSurge(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void StopSurge(PickleContext ctx, string nickname, string abilityDefName) {
         SurgebindingAbility surge = RequireSurge(ctx, nickname, abilityDefName);
         surge.UpdateStatus(Active.Off);
 
@@ -293,7 +293,7 @@ public class SurgebindingSteps {
     /// <param name="abilityDefName">The surge ability def.</param>
     /// <param name="rate">The Stormlight charged per upkeep charge.</param>
     [Then("{string} surge {string} charges {float} stormlight")]
-    public void AssertSurgeRate(PickleContext ctx, string nickname, string abilityDefName, float rate) {
+    public static void AssertSurgeRate(PickleContext ctx, string nickname, string abilityDefName, float rate) {
         SurgebindingAbility surge = RequireSurge(ctx, nickname, abilityDefName);
         float actual = RateOf(surge.Gene, surge.def);
 
@@ -309,7 +309,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="abilityDefName">The surge ability def.</param>
     [Then("{string} surge {string} charges nothing")]
-    public void AssertSurgeIdle(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertSurgeIdle(PickleContext ctx, string nickname, string abilityDefName) {
         SurgebindingAbility surge = RequireSurge(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -323,7 +323,7 @@ public class SurgebindingSteps {
     /// cannot leave it running over the next scenario in the same world.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Given("no storm is running")]
-    public void NoStormRunning(PickleContext ctx) {
+    public static void NoStormRunning(PickleContext ctx) {
         Map? map = Find.CurrentMap;
         ctx.Require(map != null, "no current map is loaded, so nothing can be blowing over it");
 
@@ -346,7 +346,7 @@ public class SurgebindingSteps {
     /// <remarks><c>Highstorm.MoveItem</c> skips anything with a solid thing within two cells east,
     /// and changes nothing else: the pawn still takes damage and still drinks Stormlight.</remarks>
     [Given("{string} stands in the open")]
-    public void StandInTheOpen(PickleContext ctx, string nickname) {
+    public static void StandInTheOpen(PickleContext ctx, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
         Map map = pawn.Map;
 
@@ -372,7 +372,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Given("{string} shelters from the storm")]
-    public void ShelterFromTheStorm(PickleContext ctx, string nickname) {
+    public static void ShelterFromTheStorm(PickleContext ctx, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
         Map map = pawn.Map;
 
@@ -403,7 +403,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Then("{string} is sheltered from the storm")]
-    public void AssertSheltered(PickleContext ctx, string nickname) {
+    public static void AssertSheltered(PickleContext ctx, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
 
         CosmereLookup.AssertThat(
@@ -417,7 +417,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [Then("{string} is exposed to the storm")]
-    public void AssertExposed(PickleContext ctx, string nickname) {
+    public static void AssertExposed(PickleContext ctx, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
 
         CosmereLookup.AssertThat(
@@ -431,7 +431,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [When("I record the health of {string}")]
-    public void RecordHealth(PickleContext ctx, string nickname) {
+    public static void RecordHealth(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         ctx.Set(new HealthReading(pawn));
     }
@@ -439,14 +439,14 @@ public class SurgebindingSteps {
     /// <summary>Asserts the recorded pawn has taken damage since it was recorded.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Then("the recorded health has fallen")]
-    public void AssertHealthFell(PickleContext ctx) {
+    public static void AssertHealthFell(PickleContext ctx) {
         AssertHealthMoved(ctx, (before, now) => now < before - RateTolerance, "should have fallen");
     }
 
     /// <summary>Asserts the recorded pawn has taken no damage since it was recorded.</summary>
     /// <param name="ctx">The scenario's context.</param>
     [Then("the recorded health is unchanged")]
-    public void AssertHealthUnchanged(PickleContext ctx) {
+    public static void AssertHealthUnchanged(PickleContext ctx) {
         AssertHealthMoved(ctx, (before, now) => Mathf.Abs(now - before) <= RateTolerance, "should be unchanged");
     }
 
@@ -455,7 +455,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [When("{string} is beaten down")]
-    public void BeatDown(PickleContext ctx, string nickname) {
+    public static void BeatDown(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         HealthUtility.DamageUntilDowned(pawn, false);
 
@@ -472,7 +472,7 @@ public class SurgebindingSteps {
     /// <param name="questDefName">The CosmereQuestDef to offer.</param>
     /// <param name="nickname">The pawn the capstone is about.</param>
     [When("the capstone {string} is offered to {string}")]
-    public void OfferCapstone(PickleContext ctx, string questDefName, string nickname) {
+    public static void OfferCapstone(PickleContext ctx, string questDefName, string nickname) {
         Pawn pawn = RequireSpawnedPawn(ctx, nickname);
         CosmereQuestDef def = CosmereLookup.RequireDef<CosmereQuestDef>(questDefName);
         CosmereQuestManager manager = RequireQuestManager(ctx);
@@ -490,7 +490,7 @@ public class SurgebindingSteps {
     /// <param name="nickname">The pawn accepting.</param>
     /// <param name="questDefName">The CosmereQuestDef to accept.</param>
     [When("{string} accepts the capstone {string}")]
-    public void AcceptCapstone(PickleContext ctx, string nickname, string questDefName) {
+    public static void AcceptCapstone(PickleContext ctx, string nickname, string questDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RimWorld.Quest quest = RequireQuest(ctx, questDefName);
 
@@ -512,7 +512,7 @@ public class SurgebindingSteps {
     /// <param name="questDefName">The CosmereQuestDef to read.</param>
     /// <param name="state">A QuestState name: NotYetAccepted, Ongoing, EndedSuccess, EndedFailed.</param>
     [Then("the capstone {string} is {word}")]
-    public void AssertCapstoneState(PickleContext ctx, string questDefName, string state) {
+    public static void AssertCapstoneState(PickleContext ctx, string questDefName, string state) {
         RimWorld.Quest quest = RequireQuest(ctx, questDefName);
         QuestState wanted = ParseQuestState(state);
 
@@ -529,7 +529,7 @@ public class SurgebindingSteps {
     /// <param name="questDefName">The CosmereQuestDef to wait on.</param>
     /// <returns>A task that completes when the step finishes. A failed assertion faults it.</returns>
     [When("I wait up to {int} ticks for the capstone {string} to settle", TimeoutSeconds = 120f)]
-    public async Task WaitForCapstone(PickleContext ctx, int maxTicks, string questDefName) {
+    public static async Task WaitForCapstone(PickleContext ctx, int maxTicks, string questDefName) {
         ctx.Require(maxTicks > 0, $"a wait needs a positive tick budget; got {maxTicks} ticks");
         RimWorld.Quest quest = RequireQuest(ctx, questDefName);
 
@@ -550,7 +550,7 @@ public class SurgebindingSteps {
     /// <param name="questDefName">The CosmereQuestDef to read.</param>
     /// <param name="nickname">The pawn the capstone was about.</param>
     [Then("the capstone {string} is not burned for {string}")]
-    public void AssertNotBurned(PickleContext ctx, string questDefName, string nickname) {
+    public static void AssertNotBurned(PickleContext ctx, string questDefName, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         CosmereQuestDef def = CosmereLookup.RequireDef<CosmereQuestDef>(questDefName);
         QuestWorldState state = RequireQuestManager(ctx).BuildWorldState(pawn);
@@ -589,7 +589,7 @@ public class SurgebindingSteps {
             ability is SurgebindingAbility,
             $"'{abilityDefName}' on '{nickname}' is a {ability!.GetType().Name}, not a surge");
 
-        return (SurgebindingAbility)ability!;
+        return (SurgebindingAbility)ability;
     }
 
     private static RadiantTracker RequireTracker(PickleContext ctx) {
@@ -655,7 +655,7 @@ public class SurgebindingSteps {
 
     /// <summary>Where the windbreak goes: two east, the far edge of the range the storm's push checks.</summary>
     private static IntVec3 Windbreak(IntVec3 cell) {
-        return cell + (IntVec3.East * 2);
+        return cell + IntVec3.East * 2;
     }
 
     /// <summary>Plasteel, because the storm's damage table gives it a multiplier of zero.</summary>

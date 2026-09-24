@@ -32,7 +32,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="shardName">The Shard def to enable.</param>
     [Given("I enable the shard {string} alongside its conflicts")]
-    public void EnableShardWithOverlap(PickleContext ctx, string shardName) {
+    public static void EnableShardWithOverlap(PickleContext ctx, string shardName) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -51,7 +51,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def to light.</param>
     [When("{string} starts burning {string}")]
-    public void StartBurning(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void StartBurning(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
         ability.UpdateStatus(BurningStatus.Burning);
 
@@ -67,7 +67,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def to put out.</param>
     [When("{string} stops burning {string}")]
-    public void StopBurning(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void StopBurning(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
         ability.UpdateStatus(BurningStatus.Off);
 
@@ -83,7 +83,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def expected to be alight.</param>
     [Then("{string} is burning {string}")]
-    public void AssertBurning(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertBurning(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -98,7 +98,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def expected to be out.</param>
     [Then("{string} is not burning {string}")]
-    public void AssertNotBurning(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertNotBurning(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -114,7 +114,7 @@ public class AllomancySteps {
     /// <param name="abilityDefName">The allomantic ability def to read.</param>
     /// <param name="power">The burn power expected.</param>
     [Then("{string} burn power for {string} is {int}")]
-    public void AssertBurnPower(PickleContext ctx, string nickname, string abilityDefName, int power) {
+    public static void AssertBurnPower(PickleContext ctx, string nickname, string abilityDefName, int power) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -130,7 +130,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def to ask about.</param>
     [Then("{string} can burn {string}")]
-    public void AssertCanBurn(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertCanBurn(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -145,7 +145,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def to ask about.</param>
     [Then("{string} cannot burn {string}")]
-    public void AssertCannotBurn(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertCannotBurn(PickleContext ctx, string nickname, string abilityDefName) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, abilityDefName);
 
         CosmereLookup.AssertThat(
@@ -162,7 +162,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer.</param>
     /// <param name="abilityDefName">The allomantic ability def to ask about.</param>
     [Then("autocast has passed over {string} without taking hold of {string}")]
-    public void AssertAutocastNotHolding(PickleContext ctx, string nickname, string abilityDefName) {
+    public static void AssertAutocastNotHolding(PickleContext ctx, string nickname, string abilityDefName) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         GameComponent_Autocast store = RequireAutocastStore(ctx);
         AutocastRule? rule = store.GetOrCreateRules(pawn)
@@ -194,7 +194,7 @@ public class AllomancySteps {
     /// <param name="nickname">The Allomancer burning nicrosil.</param>
     /// <param name="targetNickname">The pawn the charge lands on.</param>
     [When("{string} supercharges {string}")]
-    public void Supercharge(PickleContext ctx, string nickname, string targetNickname) {
+    public static void Supercharge(PickleContext ctx, string nickname, string targetNickname) {
         AllomancyAbility ability = RequireAbility(ctx, nickname, "Cosmere_Scadrial_Ability_Nicrosil");
         Pawn target = CosmereLookup.RequirePawn(ctx, targetNickname);
 
@@ -214,7 +214,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn carrying the charge.</param>
     [When("{string} triggers their supercharge")]
-    public void TriggerSupercharge(PickleContext ctx, string nickname) {
+    public static void TriggerSupercharge(PickleContext ctx, string nickname) {
         RequireSurge(ctx, nickname).Burn();
     }
 
@@ -223,7 +223,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn carrying the charge.</param>
     [When("{string} spends their supercharge")]
-    public void SpendSupercharge(PickleContext ctx, string nickname) {
+    public static void SpendSupercharge(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
         RequireSurge(ctx, nickname).PostBurn();
 
@@ -243,7 +243,7 @@ public class AllomancySteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Then("{string} burning {string} can grasp the {string} at \\({int}, {int}\\)")]
-    public void AssertCanGrasp(
+    public static void AssertCanGrasp(
         PickleContext ctx,
         string nickname,
         string abilityDefName,
@@ -268,7 +268,7 @@ public class AllomancySteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Then("{string} burning {string} cannot grasp the {string} at \\({int}, {int}\\)")]
-    public void AssertCannotGrasp(
+    public static void AssertCannotGrasp(
         PickleContext ctx,
         string nickname,
         string abilityDefName,
@@ -293,7 +293,7 @@ public class AllomancySteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Then("{string} burning {string} shoves the {string} at \\({int}, {int}\\)")]
-    public void AssertShovesTarget(
+    public static void AssertShovesTarget(
         PickleContext ctx,
         string nickname,
         string abilityDefName,
@@ -319,7 +319,7 @@ public class AllomancySteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Then("{string} burning {string} is thrown off the {string} at \\({int}, {int}\\)")]
-    public void AssertShovesCaster(
+    public static void AssertShovesCaster(
         PickleContext ctx,
         string nickname,
         string abilityDefName,
@@ -343,7 +343,7 @@ public class AllomancySteps {
     /// <param name="x">The cell's x coordinate.</param>
     /// <param name="z">The cell's z coordinate.</param>
     [Given("a {string} hemalurgic spike is at \\({int}, {int}\\)")]
-    public void SpikeIsAt(PickleContext ctx, string metalName, int x, int z) {
+    public static void SpikeIsAt(PickleContext ctx, string metalName, int x, int z) {
         Map map = RequireMap(ctx);
         ThingDef spikeDef = RequireSpikeDef(ctx);
         ThingDef stuff = CosmereLookup.RequireDef<ThingDef>(metalName);
@@ -371,7 +371,7 @@ public class AllomancySteps {
     /// <param name="z">The spike cell's z coordinate.</param>
     /// <param name="donorNickname">The donor.</param>
     [When("{string} drives the spike at \\({int}, {int}\\) through {string}")]
-    public void DriveSpike(PickleContext ctx, string nickname, int x, int z, string donorNickname) {
+    public static void DriveSpike(PickleContext ctx, string nickname, int x, int z, string donorNickname) {
         DriveSpikeTakingGene(ctx, nickname, x, z, donorNickname, null);
     }
 
@@ -384,7 +384,7 @@ public class AllomancySteps {
     /// <param name="donorNickname">The donor.</param>
     /// <param name="geneDefName">The gene the spike takes.</param>
     [When("{string} drives the spike at \\({int}, {int}\\) through {string}, taking the gene {string}")]
-    public void DriveSpikeForGene(
+    public static void DriveSpikeForGene(
         PickleContext ctx,
         string nickname,
         int x,
@@ -399,7 +399,7 @@ public class AllomancySteps {
     /// <param name="x">The spike cell's x coordinate.</param>
     /// <param name="z">The spike cell's z coordinate.</param>
     [Then("the spike at \\({int}, {int}\\) is charged")]
-    public void AssertSpikeCharged(PickleContext ctx, int x, int z) {
+    public static void AssertSpikeCharged(PickleContext ctx, int x, int z) {
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
         CosmereLookup.AssertThat(
@@ -414,7 +414,7 @@ public class AllomancySteps {
     /// <param name="x">The spike cell's x coordinate.</param>
     /// <param name="z">The spike cell's z coordinate.</param>
     [Then("the spike at \\({int}, {int}\\) is not charged")]
-    public void AssertSpikeUncharged(PickleContext ctx, int x, int z) {
+    public static void AssertSpikeUncharged(PickleContext ctx, int x, int z) {
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
         CosmereLookup.AssertThat(
@@ -431,7 +431,7 @@ public class AllomancySteps {
     /// <param name="z">The spike cell's z coordinate.</param>
     /// <param name="stolen">The name the charge should carry.</param>
     [Then("the spike at \\({int}, {int}\\) holds {string}")]
-    public void AssertSpikeHolds(PickleContext ctx, int x, int z, string stolen) {
+    public static void AssertSpikeHolds(PickleContext ctx, int x, int z, string stolen) {
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
         CosmereLookup.AssertThat(
@@ -448,7 +448,7 @@ public class AllomancySteps {
     /// <param name="x">The spike cell's x coordinate.</param>
     /// <param name="z">The spike cell's z coordinate.</param>
     [Then("the special filter {string} rejects the spike at \\({int}, {int}\\)")]
-    public void AssertFilterRejects(PickleContext ctx, string filterDefName, int x, int z) {
+    public static void AssertFilterRejects(PickleContext ctx, string filterDefName, int x, int z) {
         SpecialThingFilterDef filter = CosmereLookup.RequireDef<SpecialThingFilterDef>(filterDefName);
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
@@ -465,7 +465,7 @@ public class AllomancySteps {
     /// <param name="x">The spike cell's x coordinate.</param>
     /// <param name="z">The spike cell's z coordinate.</param>
     [Then("the special filter {string} allows the spike at \\({int}, {int}\\)")]
-    public void AssertFilterAllows(PickleContext ctx, string filterDefName, int x, int z) {
+    public static void AssertFilterAllows(PickleContext ctx, string filterDefName, int x, int z) {
         SpecialThingFilterDef filter = CosmereLookup.RequireDef<SpecialThingFilterDef>(filterDefName);
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
@@ -481,7 +481,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="shardName">The Shard def expected.</param>
     [Then("hemalurgy answers to the shard {string}")]
-    public void AssertHemalurgicShard(PickleContext ctx, string shardName) {
+    public static void AssertHemalurgicShard(PickleContext ctx, string shardName) {
         Shards shards = CosmereLookup.RequireShards(ctx);
         ShardDef shard = CosmereLookup.RequireDef<ShardDef>(shardName);
 
@@ -496,7 +496,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="spikes">How many spikes the pawn carries.</param>
     [Then("Ruin has a compulsion for {int} spikes")]
-    public void AssertCompulsionAvailable(PickleContext ctx, int spikes) {
+    public static void AssertCompulsionAvailable(PickleContext ctx, int spikes) {
         CosmereLookup.AssertThat(
             ctx,
             RuinCompulsions.Choose(spikes) != null,
@@ -508,7 +508,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="spikes">How many spikes the pawn carries.</param>
     [Then("Ruin has no compulsion for {int} spikes")]
-    public void AssertNoCompulsionAvailable(PickleContext ctx, int spikes) {
+    public static void AssertNoCompulsionAvailable(PickleContext ctx, int spikes) {
         CosmereLookup.AssertThat(
             ctx,
             RuinCompulsions.Choose(spikes) == null,
@@ -520,7 +520,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn to ask about.</param>
     [Then("Ruin can move {string}")]
-    public void AssertRuinCanMove(PickleContext ctx, string nickname) {
+    public static void AssertRuinCanMove(PickleContext ctx, string nickname) {
         Pawn pawn = CosmereLookup.RequirePawn(ctx, nickname);
 
         CosmereLookup.AssertThat(
@@ -534,7 +534,7 @@ public class AllomancySteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn to ask about.</param>
     [Then("Ruin cannot move {string}")]
-    public void AssertRuinCannotMove(PickleContext ctx, string nickname) {
+    public static void AssertRuinCannotMove(PickleContext ctx, string nickname) {
         Pawn? pawn = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead
             .FirstOrDefault(p => string.Equals(p.Name?.ToStringShort, nickname, StringComparison.OrdinalIgnoreCase));
 
@@ -547,7 +547,7 @@ public class AllomancySteps {
             () => DescribeMovable(pawn!));
     }
 
-    private void DriveSpikeTakingGene(
+    private static void DriveSpikeTakingGene(
         PickleContext ctx,
         string nickname,
         int x,

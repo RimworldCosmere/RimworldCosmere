@@ -76,22 +76,6 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    public void DespawnSpren(Pawn pawn, TrueSpren spren) {
-        pawnSprens.RemoveWhere(d => d.pawn.Equals(pawn) && d.spren.Equals(spren));
-    }
-
-    public void DestroySprenForPawn(Pawn pawn) {
-        for (int i = pawnSprens.Count - 1; i >= 0; i--) {
-            if (!pawnSprens[i].pawn.Equals(pawn)) continue;
-
-            TrueSpren spren = pawnSprens[i].spren;
-            pawnSprens.RemoveAt(i);
-            if (spren is { Spawned: true, Destroyed: false }) {
-                spren.Destroy();
-            }
-        }
-    }
-
     private void SpawnSpren(Pawn pawn, SpawnInfo spawnInfoForPawn) {
         PawnKindDef? kind = PawnKindDefOf.Cosmere_Roshar_Race_UnknownTrueSpren;
 
@@ -142,6 +126,22 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         Find.TickManager.Pause();
     }
 
+    public void DespawnSpren(Pawn pawn, TrueSpren spren) {
+        pawnSprens.RemoveWhere(d => d.pawn.Equals(pawn) && d.spren.Equals(spren));
+    }
+
+    public void DestroySprenForPawn(Pawn pawn) {
+        for (int i = pawnSprens.Count - 1; i >= 0; i--) {
+            if (!pawnSprens[i].pawn.Equals(pawn)) continue;
+
+            TrueSpren spren = pawnSprens[i].spren;
+            pawnSprens.RemoveAt(i);
+            if (spren is { Spawned: true, Destroyed: false }) {
+                spren.Destroy();
+            }
+        }
+    }
+
     public override void ExposeData() {
         base.ExposeData();
 
@@ -151,7 +151,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         spawnInfo ??= [];
     }
 
-    private class SprenForPawn : IExposable {
+    private sealed class SprenForPawn : IExposable {
         public Pawn pawn = null!;
         public TrueSpren spren = null!;
 
@@ -161,7 +161,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    private class SpawnInfo : IExposable {
+    private sealed class SpawnInfo : IExposable {
         public int lastSpawn;
         public Pawn pawn = null!;
 

@@ -262,6 +262,13 @@ public class CompAshVent : ThingComp {
         return changed;
     }
 
+    /// <summary>How far one coordinate sits outside a span. Zero anywhere inside it.</summary>
+    private static int OutsideSpan(int value, int min, int max) {
+        if (value < min) return min - value;
+
+        return value > max ? value - max : 0;
+    }
+
     /// <summary>
     ///     Clears the vent's own cells and thins the drift back in around them, out as far as the
     ///     ground it has warmed. Left alone the thing blowing the ash out disappears under it, and
@@ -284,8 +291,8 @@ public class CompAshVent : ThingComp {
                 if (!cell.InBounds(map)) continue;
 
                 // straight-line distance out of the rect, so falloff rounds the corners, not another square
-                int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
-                int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
+                int dx = OutsideSpan(x, mouth.minX, mouth.maxX);
+                int dz = OutsideSpan(z, mouth.minZ, mouth.maxZ);
                 float distance = Mathf.Sqrt(dx * dx + dz * dz);
 
                 int index = indices.CellToIndex(cell);
@@ -331,8 +338,8 @@ public class CompAshVent : ThingComp {
                 if (!cell.InBounds(map)) continue;
 
                 // out of the rect, not a centre - rounds the corners, not a square; squared to skip the Sqrt
-                int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
-                int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
+                int dx = OutsideSpan(x, mouth.minX, mouth.maxX);
+                int dz = OutsideSpan(z, mouth.minZ, mouth.maxZ);
                 int distanceSquared = dx * dx + dz * dz;
                 if (!AshVentSoilSpread.Reaches(distanceSquared, soilRadius)) continue;
 

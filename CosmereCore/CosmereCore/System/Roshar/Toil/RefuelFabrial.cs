@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace Cosmere.System.Roshar.Toil;
 
-public class RefuelFabrial {
+public static class RefuelFabrial {
     public static Verse.AI.Toil SwapInNewGemstone(TargetIndex gemInd, TargetIndex fabrialInd) {
         Verse.AI.Toil toil = ToilMaker.MakeToil();
         toil.initAction = () => {

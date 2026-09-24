@@ -72,7 +72,9 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         return metal.godMetal;
     }
 
-    private AcceptanceReport CanIngest(Pawn pawn, MetallicArtsMetalDef metal, MetallicArtsMetalDef? stuffMetal) {
+    private static AcceptanceReport CanIngest(
+        Pawn pawn, MetallicArtsMetalDef metal, MetallicArtsMetalDef? stuffMetal
+    ) {
         if (metal.godMetal) {
             return CanIngestGodMetal(pawn, metal, stuffMetal);
         }

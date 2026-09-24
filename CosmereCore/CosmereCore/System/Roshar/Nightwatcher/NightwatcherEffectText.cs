@@ -11,6 +11,9 @@ namespace Cosmere.System.Roshar.Nightwatcher;
 ///     tooltip so a gift with no hediff of its own still says what it changed.
 /// </summary>
 public static class NightwatcherEffectText {
+    private const string LabelArg = "LABEL";
+    private const string ValueArg = "VALUE";
+
     public static string Boon(NightwatcherBoonDef boon, string? choiceKey = null) {
         List<string> effects = [];
 
@@ -24,16 +27,16 @@ public static class NightwatcherEffectText {
 
         if (boon.grantTrait != null) {
             string label = boon.grantTrait.DataAtDegree(boon.grantTraitDegree).label.CapitalizeFirst();
-            effects.Add("CRO_NW_Effect_Gains".Translate(label.Named("LABEL")));
+            effects.Add("CRO_NW_Effect_Gains".Translate(label.Named(LabelArg)));
         }
 
         if (boon.removeTrait != null) {
             string label = boon.removeTrait.degreeDatas[0].label.CapitalizeFirst();
-            effects.Add("CRO_NW_Effect_Removes".Translate(label.Named("LABEL")));
+            effects.Add("CRO_NW_Effect_Removes".Translate(label.Named(LabelArg)));
         }
 
         if (boon.removeHediff != null) {
-            effects.Add("CRO_NW_Effect_Cures".Translate(boon.removeHediff.LabelCap.Named("LABEL")));
+            effects.Add("CRO_NW_Effect_Cures".Translate(boon.removeHediff.LabelCap.Named(LabelArg)));
         }
 
         if (boon.surgebindingConnectionBoost > 0f) {
@@ -72,13 +75,13 @@ public static class NightwatcherEffectText {
                                               .FirstOrDefault(d => d.degree == curse.forceTraitDegree) ??
                                           curse.forceTrait.degreeDatas.FirstOrDefault();
             if (degreeData != null) {
-                effects.Add("CRO_NW_Effect_Gains".Translate(degreeData.label.CapitalizeFirst().Named("LABEL")));
+                effects.Add("CRO_NW_Effect_Gains".Translate(degreeData.label.CapitalizeFirst().Named(LabelArg)));
             }
         }
 
         if (curse.stripTrait != null && curse.stripTrait.degreeDatas.Count > 0) {
             string label = curse.stripTrait.degreeDatas[0].label.CapitalizeFirst();
-            effects.Add("CRO_NW_Effect_Loses".Translate(label.Named("LABEL")));
+            effects.Add("CRO_NW_Effect_Loses".Translate(label.Named(LabelArg)));
         }
 
         if (curse.penaltySkill != null) {
@@ -116,7 +119,7 @@ public static class NightwatcherEffectText {
                 string sign = mod.value >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatOffset".Translate(
                     sign.Named("SIGN"),
-                    mod.value.ToString("0.##").Named("VALUE"),
+                    mod.value.ToString("0.##").Named(ValueArg),
                     mod.stat.LabelCap.Named("STAT")
                 ));
             }
@@ -129,7 +132,7 @@ public static class NightwatcherEffectText {
                 string sign = pct >= 0 ? "+" : string.Empty;
                 effects.Add("CRO_NW_Effect_StatFactor".Translate(
                     sign.Named("SIGN"),
-                    pct.ToString("0.#").Named("VALUE"),
+                    pct.ToString("0.#").Named(ValueArg),
                     mod.stat.LabelCap.Named("STAT")
                 ));
             }
@@ -142,7 +145,7 @@ public static class NightwatcherEffectText {
                     string sign = cap.offset >= 0 ? "+" : string.Empty;
                     effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
                         sign.Named("SIGN"),
-                        (cap.offset * 100f).ToString("0.#").Named("VALUE"),
+                        (cap.offset * 100f).ToString("0.#").Named(ValueArg),
                         cap.capacity.LabelCap.Named("CAPACITY")
                     ));
                 }
@@ -153,7 +156,7 @@ public static class NightwatcherEffectText {
             string sign = stage.painOffset >= 0 ? "+" : string.Empty;
             effects.Add("CRO_NW_Effect_PainOffset".Translate(
                 sign.Named("SIGN"),
-                stage.painOffset.ToString("0.##").Named("VALUE")
+                stage.painOffset.ToString("0.##").Named(ValueArg)
             ));
         }
 

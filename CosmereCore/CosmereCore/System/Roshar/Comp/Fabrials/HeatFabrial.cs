@@ -22,9 +22,6 @@ public class BuildingHeatrialAdvanced : Building {
     public override void TickRare() {
         compHeatrial.UpdatePowerState(compFlickerable.SwitchIsOn);
         if (compHeatrial.powerOn) {
-            float ambientTemperature = AmbientTemperature;
-            float efficiency = ambientTemperature < 20f ? 1f :
-                !(ambientTemperature > 120f) ? Mathf.InverseLerp(120f, 20f, ambientTemperature) : 0f;
             float tempChange = GenTemperature.ControlTemperatureTempChange(Position, Map, 15f, 18f);
             if (!Mathf.Approximately(tempChange, 0f)) {
                 this.GetRoom().Temperature += tempChange;

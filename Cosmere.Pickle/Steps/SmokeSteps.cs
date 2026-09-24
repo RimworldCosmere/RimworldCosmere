@@ -13,7 +13,7 @@ public class SmokeSteps {
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The metal def expected.</param>
     [Then("the Cosmere metal {string} is loaded")]
-    public void AssertMetalLoaded(PickleContext ctx, string defName) {
+    public static void AssertMetalLoaded(PickleContext ctx, string defName) {
         MetalDef? metal = DefDatabase<MetalDef>.GetNamedSilentFail(defName);
 
         CosmereLookup.AssertThat(

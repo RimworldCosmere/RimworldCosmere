@@ -98,7 +98,7 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
         StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(pawn);
     }
 
-    private void SpawnRashek(Pawn nearby) {
+    private static void SpawnRashek(Pawn nearby) {
         Map? map = nearby.MapHeld;
         if (map == null) return;
 

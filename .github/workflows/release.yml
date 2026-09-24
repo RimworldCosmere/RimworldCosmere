@@ -10,16 +10,12 @@ on:
       - 'beta'
       - 'alpha'
 
-permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-  id-token: write # to enable use of OIDC for npm provenance
-
 jobs:
   # Determine which Cosmere mods need to be built.
   get-mods:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
     steps:
@@ -63,16 +59,22 @@ jobs:
   build-assetbundles:
     needs: get-mods
     uses: RimWorks/mod-ci/.github/workflows/assetbundles.yml@v1
+    permissions:
+      contents: read
     with:
       mods: |
         CosmereCore
         CosmereRoshar
         CosmereScadrial
-    secrets: inherit
+    secrets:
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
   prepare:
     needs: [ get-mods, build-assetbundles ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
@@ -117,7 +119,7 @@ jobs:
 
       - name: Install steamdown + steam-totp
         working-directory: RimworldCosmere
-        run: npm install -g @steamdown/cli@1.0.0 tsx
+        run: npm install -g --ignore-scripts @steamdown/cli@1.0.0 tsx@4.23.15
 
       - name: Run code generation
         working-directory: RimworldCosmere
@@ -235,6 +237,11 @@ jobs:
     needs: prepare
     if: needs.prepare.result == 'success' && github.ref_type != 'tag'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -249,9 +256,11 @@ jobs:
       - name: Set up SteamCMD
         uses: buildalon/setup-steamcmd@v1
       - name: Restore Steam config
+        env:
+          STEAM_CONFIG_VDF_B64: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
         run: |
           mkdir -p "$STEAM_DIR/config"
-          printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$STEAM_DIR/config/config.vdf"
+          printf '%s' "$STEAM_CONFIG_VDF_B64" | base64 -d > "$STEAM_DIR/config/config.vdf"
           echo "STEAM_CONFIG_VDF=$STEAM_DIR/config/config.vdf" >> "$GITHUB_ENV"
 
       - name: Steam login preflight
@@ -286,7 +295,9 @@ jobs:
           STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
           STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
           BETA_HUB_API_KEY: ${{ secrets.BETA_HUB_API_KEY }}
-        run: npx semantic-release
+        # --no runs the copy npm ci installed and fails if it is missing, instead of fetching
+        # an unpinned semantic-release off the registry and running its lifecycle scripts.
+        run: npx --no semantic-release
 
       - uses: RimWorks/mod-ci/.github/actions/discord-release@v1
         with:

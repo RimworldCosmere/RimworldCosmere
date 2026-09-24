@@ -28,7 +28,7 @@ public class GeneSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="geneDefName">The gene def to grant.</param>
     [When("I give {string} the gene {string}")]
-    public void GiveGene(PickleContext ctx, string nickname, string geneDefName) {
+    public static void GiveGene(PickleContext ctx, string nickname, string geneDefName) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         GeneDef geneDef = CosmereLookup.RequireDef<GeneDef>(geneDefName);
 
@@ -54,7 +54,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The gene def to remove.</param>
     /// <param name="nickname">The pawn's short name.</param>
     [When("I take the gene {string} from {string}")]
-    public void TakeGene(PickleContext ctx, string geneDefName, string nickname) {
+    public static void TakeGene(PickleContext ctx, string geneDefName, string nickname) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         GeneDef geneDef = CosmereLookup.RequireDef<GeneDef>(geneDefName);
 
@@ -72,7 +72,7 @@ public class GeneSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="geneDefName">The gene def expected.</param>
     [Then("{string} has gene {string}")]
-    public void AssertHasGene(PickleContext ctx, string nickname, string geneDefName) {
+    public static void AssertHasGene(PickleContext ctx, string nickname, string geneDefName) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         GeneDef geneDef = CosmereLookup.RequireDef<GeneDef>(geneDefName);
 
@@ -88,7 +88,7 @@ public class GeneSteps {
     /// <param name="nickname">The pawn's short name.</param>
     /// <param name="geneDefName">The gene def that must be absent.</param>
     [Then("{string} has no gene {string}")]
-    public void AssertLacksGene(PickleContext ctx, string nickname, string geneDefName) {
+    public static void AssertLacksGene(PickleContext ctx, string nickname, string geneDefName) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         GeneDef geneDef = CosmereLookup.RequireDef<GeneDef>(geneDefName);
 
@@ -106,7 +106,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The invested gene def.</param>
     /// <param name="amount">The reserve to set.</param>
     [When("{string} gene {string} is set to {float}")]
-    public void SetReserve(PickleContext ctx, string nickname, string geneDefName, float amount) {
+    public static void SetReserve(PickleContext ctx, string nickname, string geneDefName, float amount) {
         Invested gene = RequireInvested(ctx, nickname, geneDefName);
         gene.SetReserve(amount);
 
@@ -124,7 +124,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The invested gene def.</param>
     /// <param name="percent">The share of the ceiling, 0 to 100.</param>
     [When("{string} gene {string} is set to {int} percent")]
-    public void SetReservePercent(PickleContext ctx, string nickname, string geneDefName, int percent) {
+    public static void SetReservePercent(PickleContext ctx, string nickname, string geneDefName, int percent) {
         ctx.Require(percent is >= 0 and <= 100, $"a reserve share must be 0 to 100; got {percent}");
 
         Invested gene = RequireInvested(ctx, nickname, geneDefName);
@@ -144,7 +144,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The invested gene def.</param>
     /// <param name="amount">The reserve expected.</param>
     [Then("{string} gene {string} is {float}")]
-    public void AssertReserve(PickleContext ctx, string nickname, string geneDefName, float amount) {
+    public static void AssertReserve(PickleContext ctx, string nickname, string geneDefName, float amount) {
         Invested gene = RequireInvested(ctx, nickname, geneDefName);
 
         CosmereLookup.AssertThat(
@@ -161,7 +161,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The invested gene def.</param>
     /// <param name="bound">The lower bound, exclusive.</param>
     [Then("{string} gene {string} is above {float}")]
-    public void AssertReserveAbove(PickleContext ctx, string nickname, string geneDefName, float bound) {
+    public static void AssertReserveAbove(PickleContext ctx, string nickname, string geneDefName, float bound) {
         Invested gene = RequireInvested(ctx, nickname, geneDefName);
 
         CosmereLookup.AssertThat(
@@ -177,7 +177,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The invested gene def.</param>
     /// <param name="bound">The upper bound, exclusive.</param>
     [Then("{string} gene {string} is below {float}")]
-    public void AssertReserveBelow(PickleContext ctx, string nickname, string geneDefName, float bound) {
+    public static void AssertReserveBelow(PickleContext ctx, string nickname, string geneDefName, float bound) {
         Invested gene = RequireInvested(ctx, nickname, geneDefName);
 
         CosmereLookup.AssertThat(
@@ -194,7 +194,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The gene def.</param>
     /// <param name="abilityDefName">The ability def expected.</param>
     [Then("{string} gene {string} grants ability {string}")]
-    public void AssertGrantsAbility(PickleContext ctx, string nickname, string geneDefName, string abilityDefName) {
+    public static void AssertGrantsAbility(PickleContext ctx, string nickname, string geneDefName, string abilityDefName) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         Verse.Gene gene = RequireGene(ctx, pawn, geneDefName);
         AbilityDef abilityDef = CosmereLookup.RequireDef<AbilityDef>(abilityDefName);
@@ -212,7 +212,7 @@ public class GeneSteps {
     /// <param name="geneDefName">The gene def.</param>
     /// <param name="abilityDefName">The ability def that must be absent.</param>
     [Then("{string} gene {string} does not grant ability {string}")]
-    public void AssertLacksAbility(PickleContext ctx, string nickname, string geneDefName, string abilityDefName) {
+    public static void AssertLacksAbility(PickleContext ctx, string nickname, string geneDefName, string abilityDefName) {
         Pawn pawn = RequireGeneCarrier(ctx, nickname);
         Verse.Gene gene = RequireGene(ctx, pawn, geneDefName);
         AbilityDef abilityDef = CosmereLookup.RequireDef<AbilityDef>(abilityDefName);

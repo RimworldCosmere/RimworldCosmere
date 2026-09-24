@@ -84,7 +84,9 @@ public class KandraTrueBodyArtTests {
         Assert.IsTrue(start >= 0, "KandraAppearance no longer declares a Materials table.");
 
         string table = source[start..source.IndexOf("];", start, StringComparison.Ordinal)];
-        MatchCollection rows = Regex.Matches(table, @"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f, ""([^""]+)"", ""([^""]+)""\)");
+
+        // the group column is a named constant, not a literal, so it matches as an identifier
+        MatchCollection rows = Regex.Matches(table, @"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f, ""([^""]+)"", (\w+)\)");
 
         Assert.IsTrue(rows.Count >= 10, $"Only {rows.Count} true-body materials; the table looks cut.");
 

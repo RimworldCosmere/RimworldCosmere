@@ -14,6 +14,9 @@ namespace Cosmere.System.Scadrial.Dev;
 ///     them wasted a launch, so this asks.
 /// </remarks>
 public static class KandraAppearanceReport {
+    /// A blank column and an undesigned one read the same, so name the gap.
+    private const string NotDesigned = "not designed";
+
     [DebugAction(
         "Cosmere/Core",
         "Report kandra appearance",
@@ -86,20 +89,6 @@ public static class KandraAppearanceReport {
         for (int i = 0; i < node.children.Length; i++) Describe(node.children[i], text, depth + 1);
     }
 
-    private static string DescribeEyes(Kandra.KandraForm? form) {
-        if (form == null) return "no true body";
-
-        // "not designed" and a blank column read the same otherwise.
-        return $"colour={form.eyeColourName ?? "not designed"}"
-               + $" colourTwo={form.eyeColourTwoName ?? "not designed"}"
-               + $" iris={form.irisSizeName ?? "not designed"}"
-               + $" light={form.eyeLightName ?? "not designed"}";
-    }
-
-    private static HediffDef? HediffFor() {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AnimalShape");
-    }
-
     private static string Describe(Kandra.KandraForm? form) {
         if (form == null) return "nothing (own shape)";
         if (form.IsAnimal) return $"animal {form.animalKind?.defName}";
@@ -107,6 +96,19 @@ public static class KandraAppearanceReport {
         return $"{form.Label} headType={form.headType?.defName ?? "NULL"}"
                + $" bodyType={form.bodyType?.defName ?? "NULL"}"
                + $" hair={form.hair?.defName ?? "NULL"} gender={form.gender}";
+    }
+
+    private static string DescribeEyes(Kandra.KandraForm? form) {
+        if (form == null) return "no true body";
+
+        return $"colour={form.eyeColourName ?? NotDesigned}"
+               + $" colourTwo={form.eyeColourTwoName ?? NotDesigned}"
+               + $" iris={form.irisSizeName ?? NotDesigned}"
+               + $" light={form.eyeLightName ?? NotDesigned}";
+    }
+
+    private static HediffDef? HediffFor() {
+        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AnimalShape");
     }
 
     /// <summary>

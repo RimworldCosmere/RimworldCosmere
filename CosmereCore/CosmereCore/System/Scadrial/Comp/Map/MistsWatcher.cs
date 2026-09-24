@@ -16,7 +16,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     private int mistsStartTick;
     private int nextMistsStartTick = -1;
 
-    private bool enabled {
+    private static bool enabled {
         get {
             if (!Mod.enableMists) return false;
 

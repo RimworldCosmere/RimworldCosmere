@@ -189,18 +189,6 @@ public static class Profiler {
         }
     }
 
-    private static void EmitSnapshot(Agg.Snapshot snapshot) {
-        double tickToMs = 1000.0 / Stopwatch.Frequency;
-        double totalMs = snapshot.totalTicks * tickToMs;
-        double meanMs = snapshot.totalTicks / Math.Max(1.0, snapshot.samples) * tickToMs;
-
-        string mode = snapshot.mode == ProfileMode.Sampling ? "SAMP" : "INST";
-        string cat = string.IsNullOrEmpty(snapshot.category) ? string.Empty : $" [{snapshot.category}]";
-        Log.Debug(
-            $"{mode}{cat} {snapshot.label}: calls={snapshot.calls}, samples={snapshot.samples}, mean≈{meanMs:F3}ms, total≈{totalMs:F1}ms, min≈{snapshot.minTicks * tickToMs:F3}ms, max≈{snapshot.maxTicks * tickToMs:F3}ms"
-        );
-    }
-
     /// <summary>
     ///     Begin a disposable profiling scope. Use with: using var _ = Profiler.Scope("Label", ...).
     /// </summary>
@@ -236,6 +224,18 @@ public static class Profiler {
                 if (!agg.TryConsume(out Agg.Snapshot s)) continue;
                 EmitSnapshot(s);
             }
+        }
+
+        private static void EmitSnapshot(Agg.Snapshot snapshot) {
+            double tickToMs = 1000.0 / Stopwatch.Frequency;
+            double totalMs = snapshot.totalTicks * tickToMs;
+            double meanMs = snapshot.totalTicks / Math.Max(1.0, snapshot.samples) * tickToMs;
+
+            string mode = snapshot.mode == ProfileMode.Sampling ? "SAMP" : "INST";
+            string cat = string.IsNullOrEmpty(snapshot.category) ? string.Empty : $" [{snapshot.category}]";
+            Log.Debug(
+                $"{mode}{cat} {snapshot.label}: calls={snapshot.calls}, samples={snapshot.samples}, mean≈{meanMs:F3}ms, total≈{totalMs:F1}ms, min≈{snapshot.minTicks * tickToMs:F3}ms, max≈{snapshot.maxTicks * tickToMs:F3}ms"
+            );
         }
 #pragma warning restore CS9113
     }

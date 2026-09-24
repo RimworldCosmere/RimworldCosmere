@@ -8,4 +8,5 @@ public class StormlightBatteryProperties : CompProperties {
     }
 }
 
+// bound by def xml as a comp class, so the empty body is the whole point
 public class StormlightBattery : StormlightNode { }

@@ -4,41 +4,15 @@ using Cosmere.System.Scadrial.Gene;
 namespace Cosmere.System.Scadrial.UI.Feruchemy;
 
 internal readonly struct FeruchemyCapacity {
-    public FeruchemyCapacity(
-        float internalHeld,
-        float externalHeld,
-        float internalMax,
-        float externalMax,
-        float max,
-        bool hasMetalmind,
-        bool canTap,
-        bool canStore,
-        bool canTapCompounded,
-        bool canStoreCompounded,
-        float compoundedRate
-    ) {
-        Internal = internalHeld;
-        External = externalHeld;
-        InternalMax = internalMax;
-        ExternalMax = externalMax;
-        Max = max;
-        HasMetalmind = hasMetalmind;
-        CanTap = canTap;
-        CanStore = canStore;
-        CanTapCompounded = canTapCompounded;
-        CanStoreCompounded = canStoreCompounded;
-        CompoundedRate = compoundedRate;
-    }
-
     // Charge held in implanted metalminds.
-    public float Internal { get; }
+    public float Internal { get; init; }
 
     // Charge held in worn and carried metalminds.
-    public float External { get; }
+    public float External { get; init; }
 
-    public float InternalMax { get; }
+    public float InternalMax { get; init; }
 
-    public float ExternalMax { get; }
+    public float ExternalMax { get; init; }
 
     /// Each kind of metalmind reads against its own capacity - a kind the pawn has none of
     /// is left out rather than shown as a flat zero.
@@ -75,20 +49,20 @@ internal readonly struct FeruchemyCapacity {
         }
     }
 
-    public float Max { get; }
+    public float Max { get; init; }
 
-    public bool HasMetalmind { get; }
+    public bool HasMetalmind { get; init; }
 
-    public bool CanTap { get; }
+    public bool CanTap { get; init; }
 
-    public bool CanStore { get; }
+    public bool CanStore { get; init; }
 
-    public bool CanTapCompounded { get; }
+    public bool CanTapCompounded { get; init; }
 
-    public bool CanStoreCompounded { get; }
+    public bool CanStoreCompounded { get; init; }
 
     // Positive while filling the pool, negative while burning the metalmind.
-    public float CompoundedRate { get; }
+    public float CompoundedRate { get; init; }
 
     public float Fraction => Max > 0f ? (Internal + External) / Max : 0f;
 
@@ -119,18 +93,18 @@ internal readonly struct FeruchemyCapacity {
             max += sources[i].MaxAmount;
         }
 
-        return new FeruchemyCapacity(
-            internalHeld,
-            externalHeld,
-            internalMax,
-            externalMax,
-            max,
-            sources.Count > 0,
-            gene.canTap,
-            gene.canStore,
-            gene.canTapCompounded,
-            gene.canStoreCompounded,
-            gene.CompoundedRatePerSecond
-        );
+        return new FeruchemyCapacity {
+            Internal = internalHeld,
+            External = externalHeld,
+            InternalMax = internalMax,
+            ExternalMax = externalMax,
+            Max = max,
+            HasMetalmind = sources.Count > 0,
+            CanTap = gene.canTap,
+            CanStore = gene.canStore,
+            CanTapCompounded = gene.canTapCompounded,
+            CanStoreCompounded = gene.canStoreCompounded,
+            CompoundedRate = gene.CompoundedRatePerSecond,
+        };
     }
 }

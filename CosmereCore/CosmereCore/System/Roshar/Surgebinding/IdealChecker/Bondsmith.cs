@@ -68,8 +68,4 @@ public class Bondsmith(RadiantOrderDef def) : AbstractIdealChecker(def) {
             _ => null,
         };
     }
-
-    public override bool ConsummateOath(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
-        return base.ConsummateOath(pawn, surgebinder, nextLevel);
-    }
 }

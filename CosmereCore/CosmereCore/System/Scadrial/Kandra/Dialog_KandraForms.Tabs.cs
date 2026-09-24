@@ -11,7 +11,6 @@ namespace Cosmere.System.Scadrial.Kandra;
 /// </summary>
 public partial class Dialog_KandraForms {
     private const float TabHeight = 32f;
-    private const float TabStripGap = 2f;
     private const float TabUnderlineHeight = 2f;
 
     private DesignerTab tab = DesignerTab.Body;

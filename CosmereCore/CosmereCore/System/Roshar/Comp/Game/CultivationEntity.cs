@@ -10,8 +10,4 @@ public class CultivationEntity : GameComponent, ILoadReferenceable {
     public string GetUniqueLoadID() {
         return "Cosmere_CultivationEntity";
     }
-
-    public override void ExposeData() {
-        base.ExposeData();
-    }
 }

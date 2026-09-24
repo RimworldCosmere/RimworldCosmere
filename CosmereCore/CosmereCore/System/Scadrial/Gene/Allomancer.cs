@@ -81,7 +81,7 @@ public class Allomancer : Metalborn {
         set => currentReserve = value;
     }
 
-    public float GetMetalNeededForBreathEquivalentUnits(float requiredBreathEquivalentUnits) {
+    public static float GetMetalNeededForBreathEquivalentUnits(float requiredBreathEquivalentUnits) {
         return requiredBreathEquivalentUnits / ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
     }
 

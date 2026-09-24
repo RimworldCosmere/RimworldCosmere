@@ -12,11 +12,13 @@ public sealed class FeruchemyDialWidget {
 
     private string? draggingDial;
 
-    internal static bool ShowsCompoundToggle(Feruchemist gene) => gene.TargetIsInternalOnly;
+    internal static bool ShowsCompoundToggle(Feruchemist gene) {
+        return gene.TargetIsInternalOnly;
+    }
 
     /// Compounding is only offered on an implanted metalmind - burning one destroys it, and a worn
     /// band is not what the pawn means to set alight. The toggle parks the other pool so only one moves.
-    internal float DrawCompoundToggle(Rect inner, float y, Pawn pawn, Feruchemist gene, float buttonHeight) {
+    internal static float DrawCompoundToggle(Rect inner, float y, Pawn pawn, Feruchemist gene, float buttonHeight) {
         // internal group is every implant - compounding reaches it the same as a single one.
         bool eligible = ShowsCompoundToggle(gene);
         AcceptanceReport report = CompoundingAccess.Gate(pawn, gene);
@@ -32,16 +34,17 @@ public sealed class FeruchemyDialWidget {
         bool on = gene.compounding;
         Rect rect = new Rect(inner.x, y, inner.width, buttonHeight);
 
-        TooltipHandler.TipRegion(
-            rect,
-            report.Accepted
-                ? "CC_Dock_Feruchemy_CompoundTip".Translate()
-                : "CC_Dock_Feruchemy_CompoundBlocked".Translate(
-                    (report.Reason.NullOrEmpty()
-                        ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
-                        : report.Reason).Named("REASON")
-                )
-        );
+        TaggedString tip;
+        if (report.Accepted) {
+            tip = "CC_Dock_Feruchemy_CompoundTip".Translate();
+        } else {
+            string reason = report.Reason.NullOrEmpty()
+                ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
+                : report.Reason;
+            tip = "CC_Dock_Feruchemy_CompoundBlocked".Translate(reason.Named("REASON"));
+        }
+
+        TooltipHandler.TipRegion(rect, tip);
 
         string label = on
             ? "CC_Dock_Feruchemy_StopCompound".Translate()
@@ -118,10 +121,10 @@ public sealed class FeruchemyDialWidget {
     /// Shared by both dials. Compounded runs tap-only, so its reachable span stops at the
     /// idle point rather than continuing into the store half.
     private void HandleDialDrag(Rect rect, string dialId, Feruchemist gene, FeruchemyCapacity capacity, bool compounded) {
-        float min = (compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded)
-            ? 0f
-            : IdleTarget;
-        float max = (compounded ? capacity.CanStoreCompounded : capacity.CanStore) ? 100f : IdleTarget;
+        bool tappable = compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded;
+        bool storable = compounded ? capacity.CanStoreCompounded : capacity.CanStore;
+        float min = tappable ? 0f : IdleTarget;
+        float max = storable ? 100f : IdleTarget;
 
         Event? e = Event.current;
         if (e == null) return;

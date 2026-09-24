@@ -1,12 +1,17 @@
-using System;
+using Verse;
 
 namespace Cosmere.Core.Quest;
 
 /// <summary>
-///     Indirection so a reward can set a CosmereQuestFlag without depending on the
-///     GameComponent that owns them. CosmereQuestManager assigns these on construction.
+///     Indirection so a reward can set a CosmereQuestFlag without holding a reference to the
+///     GameComponent that owns them. The flags themselves live on CosmereQuestManager.
 /// </summary>
 public static class QuestFlagStore {
-    public static Action<string> SetFlag = _ => { };
-    public static Func<string, bool> HasFlag = _ => false;
+    public static void SetFlag(string flag) {
+        Current.Game?.GetComponent<CosmereQuestManager>()?.SetFlag(flag);
+    }
+
+    public static bool HasFlag(string flag) {
+        return Current.Game?.GetComponent<CosmereQuestManager>()?.HasFlag(flag) ?? false;
+    }
 }

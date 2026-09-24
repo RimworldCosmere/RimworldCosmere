@@ -32,7 +32,9 @@ public class BondViolationLogEntry : LogEntry {
         return $"Bond strained ({severityLabel}): {reason}";
     }
 
-    public override void ClickedFromPOV(Verse.Thing pov) { }
+    public override void ClickedFromPOV(Verse.Thing pov) {
+        // a bond strain entry has nowhere to jump to, so a click does nothing
+    }
 
     public override Texture2D? IconFromPOV(Verse.Thing pov) {
         return null;

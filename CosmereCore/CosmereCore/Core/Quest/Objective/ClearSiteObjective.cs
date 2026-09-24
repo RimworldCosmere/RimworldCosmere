@@ -19,7 +19,7 @@ public class ClearSiteObjective : QuestObjective {
             quest = quest,
             site = arrival.site,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(cleared);
     }

@@ -52,7 +52,7 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
 
         int budget = forcedLumpSize > 0 ? forcedLumpSize : 16;
         List<CellRect> usedRects = MapGenerator.GetOrGenerateVar<List<CellRect>>("UsedRects");
-        HashSet<IntVec3> placed = new HashSet<IntVec3>();
+        HashSet<IntVec3> placed = [];
 
         // Breadth-first so every arm grows evenly and the budget runs out at the tips, not on one arm.
         Queue<(IntVec3 from, float angle, int depth)> queue = new Queue<(IntVec3, float, int)>();
@@ -130,32 +130,31 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
                 // Rim cells land only most of the time, so the edge breaks up instead of a clean arc.
                 if (distance > sqr - radius && !Rand.Chance(0.55f)) continue;
 
-                TryPlace(new IntVec3(centre.x + dx, 0, centre.z + dz), map, thingDef, usedRects, placed);
+                Place(new IntVec3(centre.x + dx, 0, centre.z + dz), map, thingDef, usedRects, placed);
             }
         }
     }
 
-    private static bool TryPlace(
+    private static void Place(
         IntVec3 cell,
         Map map,
         ThingDef thingDef,
         List<CellRect> usedRects,
         HashSet<IntVec3> placed
     ) {
-        if (placed.Contains(cell) || !cell.InBounds(map)) return false;
+        if (placed.Contains(cell) || !cell.InBounds(map)) return;
 
         for (int i = 0; i < usedRects.Count; i++) {
-            if (usedRects[i].Contains(cell)) return false;
+            if (usedRects[i].Contains(cell)) return;
         }
 
         // Deliberately not restricted to existing rock: requiring it threw away most of a field this size.
-        if (cell.GetTerrain(map).IsWater) return false;
+        if (cell.GetTerrain(map).IsWater) return;
 
         // Skip occupied cells instead of clearing: destroying rock mid-gen can cascade and overflow the stack.
-        if (cell.GetEdifice(map) != null) return false;
+        if (cell.GetEdifice(map) != null) return;
 
         GenSpawn.Spawn(thingDef, cell, map);
         placed.Add(cell);
-        return true;
     }
 }

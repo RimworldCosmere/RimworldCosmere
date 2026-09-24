@@ -73,7 +73,7 @@ public class NamedPawnDef {
                         Log.Warn($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
                     break;
                 case "gender":
-                    gender = (Gender)ParseHelper.FromString(node.InnerText, typeof(Gender));
+                    gender = ParseHelper.FromString<Gender>(node.InnerText);
                     break;
                 case "xenotype":
                     xenotype = node.InnerText;
@@ -199,7 +199,7 @@ public class NamedPawnSkillEntry {
                         Log.Warn($"NamedPawnSkillEntry: invalid level value '{node.InnerText}'");
                     break;
                 case "passion":
-                    passion = (Passion)ParseHelper.FromString(node.InnerText, typeof(Passion));
+                    passion = ParseHelper.FromString<Passion>(node.InnerText);
                     break;
             }
         }

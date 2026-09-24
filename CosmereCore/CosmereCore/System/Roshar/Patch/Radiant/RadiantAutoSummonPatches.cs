@@ -11,7 +11,7 @@ namespace Cosmere.System.Roshar.Patch.Radiant;
 public static class RadiantAutoSummon {
     private const int DismissGraceTicks = 5000;
     private static readonly HashSet<int> AutoSummonedPawns = [];
-    private static readonly Dictionary<int, int> LastCombatTick = new Dictionary<int, int>();
+    private static readonly Dictionary<int, int> LastCombatTick = [];
 
     private static AbilityDef? cachedBladeAbilityDef;
     private static AbilityDef? cachedPlateAbilityDef;

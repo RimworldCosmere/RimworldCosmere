@@ -9,7 +9,7 @@ namespace Cosmere.System.Scadrial.Comp.Game;
 ///     recomputed because the mounts never move and the sum is over every mount on the planet.
 /// </summary>
 public class AshmountExposureCache : GameComponent {
-    private Dictionary<int, float> exposure = new Dictionary<int, float>();
+    private Dictionary<int, float> exposure = [];
 
     public AshmountExposureCache(Verse.Game game) { }
 
@@ -38,6 +38,6 @@ public class AshmountExposureCache : GameComponent {
 
     public override void ExposeData() {
         Scribe_Collections.Look(ref exposure, "ashmountExposure", LookMode.Value, LookMode.Value);
-        exposure ??= new Dictionary<int, float>();
+        exposure ??= [];
     }
 }

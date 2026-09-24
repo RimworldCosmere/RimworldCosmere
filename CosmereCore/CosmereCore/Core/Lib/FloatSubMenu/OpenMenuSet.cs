@@ -4,11 +4,10 @@ using Verse;
 namespace Cosmere.Core.Lib.FloatSubMenu;
 
 internal class OpenMenuSet {
-    private static readonly Dictionary<FloatMenu, OpenMenuSet> sets =
-        new Dictionary<FloatMenu, OpenMenuSet>();
+    private static readonly Dictionary<FloatMenu, OpenMenuSet> sets = [];
 
-    private readonly List<FloatMenu> menus = new List<FloatMenu>();
-    private readonly List<Rect> rects = new List<Rect>();
+    private readonly List<FloatMenu> menus = [];
+    private readonly List<Rect> rects = [];
     private float cachedDistance;
     private Vector2 cachedPosition;
 

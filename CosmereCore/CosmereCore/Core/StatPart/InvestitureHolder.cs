@@ -20,7 +20,7 @@ public class InvestitureHolder : RimWorld.StatPart {
         return null;
     }
 
-    private bool TryGetValue(StatRequest req, out float value) {
+    private static bool TryGetValue(StatRequest req, out float value) {
         if (!req.HasThing || !req.Thing.TryGetComp(out Comp.Thing.InvestitureHolder investitureHolder)) {
             value = 0;
             return false;

@@ -44,7 +44,7 @@ public static class QuestSilver {
 
     private static List<Verse.Thing> CollectStacks() {
         List<Map> maps = Find.Maps;
-        List<Verse.Thing> stacks = new List<Verse.Thing>();
+        List<Verse.Thing> stacks = [];
 
         for (int i = 0; i < maps.Count; i++) {
             Map map = maps[i];

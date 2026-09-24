@@ -53,7 +53,7 @@ public class RemoveSpike : Recipe_Surgery {
         KandraUtility.ReconcileSpikes(pawn);
     }
 
-    private void RemoveGrantedGene(Pawn pawn, ImplantedSpikeData spike) {
+    private static void RemoveGrantedGene(Pawn pawn, ImplantedSpikeData spike) {
         if (HemalurgicConstants.IsAllomanticSteal(spike.stealType) ||
             HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
             spike.stealType == HemalurgicStealType.AnyPower) {
@@ -65,7 +65,7 @@ public class RemoveSpike : Recipe_Surgery {
         }
     }
 
-    private void TryRemoveGene(Pawn pawn, string geneDefName) {
+    private static void TryRemoveGene(Pawn pawn, string geneDefName) {
         if (geneDefName.NullOrEmpty()) return;
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(geneDefName);
         if (geneDef == null) return;
@@ -75,7 +75,7 @@ public class RemoveSpike : Recipe_Surgery {
         }
     }
 
-    private void SpawnExtractedSpike(Pawn pawn, ImplantedSpikeData spike) {
+    private static void SpawnExtractedSpike(Pawn pawn, ImplantedSpikeData spike) {
         ThingDef? metalStuff = DefDatabase<ThingDef>.GetNamedSilentFail(spike.metalDefName);
         if (metalStuff == null) return;
 
@@ -101,7 +101,7 @@ public class RemoveSpike : Recipe_Surgery {
         GenPlace.TryPlaceThing(spikeItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);
     }
 
-    private void UpdateRuinsInfluence(Pawn pawn) {
+    private static void UpdateRuinsInfluence(Pawn pawn) {
         HemalurgicSpikes? spikesHediff = GetSpikesHediff(pawn);
         int spikeCount = spikesHediff?.spikeCount ?? 0;
 
@@ -117,7 +117,7 @@ public class RemoveSpike : Recipe_Surgery {
         }
     }
 
-    private HemalurgicSpikes? GetSpikesHediff(Pawn pawn) {
+    private static HemalurgicSpikes? GetSpikesHediff(Pawn pawn) {
         return (HemalurgicSpikes?)pawn.health.hediffSet.GetFirstHediffOfDef(
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );

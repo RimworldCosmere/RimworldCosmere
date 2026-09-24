@@ -14,7 +14,7 @@ public class CarryHomeObjective : QuestObjective {
             requiredThing = thingDef,
             requiredCount = count,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(carry);
     }

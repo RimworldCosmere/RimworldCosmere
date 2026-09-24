@@ -88,7 +88,7 @@ public class Dialog_KolossRoster : Window {
             inRect.x,
             header.yMax + Unit,
             inRect.width,
-            inRect.height - header.height - footer.height - (Unit * 2f)
+            inRect.height - header.height - footer.height - Unit * 2f
         );
 
         DrawHeader(header, held);
@@ -148,7 +148,7 @@ public class Dialog_KolossRoster : Window {
         Rect portrait = text.LeftPartPixels(RowHeight);
         DrawPortrait(portrait, koloss);
 
-        Rect name = new(portrait.xMax + (Unit / 2f), text.y, text.width - portrait.width - (Unit / 2f), text.height);
+        Rect name = new(portrait.xMax + Unit / 2f, text.y, text.width - portrait.width - Unit / 2f, text.height);
         bool loose = koloss.InMentalState;
 
         using (new TextBlock(GameFont.Small, TextAnchor.LowerLeft)) {
@@ -195,7 +195,7 @@ public class Dialog_KolossRoster : Window {
     private void DrawRowButtons(Rect rect, Pawn koloss) {
         float third = rect.width / 3f;
         float inset = (third - IconSize) / 2f;
-        float top = rect.y + ((rect.height - IconSize) / 2f);
+        float top = rect.y + (rect.height - IconSize) / 2f;
 
         Rect info = new(rect.x + inset, top, IconSize, IconSize);
         if (Draw(info, TexButton.Info, "CS_KolossRoster_InfoTip".Translate(), true)) {
@@ -207,15 +207,16 @@ public class Dialog_KolossRoster : Window {
         bool canDraft = koloss.drafter != null && koloss.IsColonistPlayerControlled;
 
         // reason beats a bare grey button: a koloss in bloodlust isnt yours to command.
-        TaggedString draftTip = canDraft
-            ? drafted ? "CS_KolossRoster_Undraft".Translate() : "CS_KolossRoster_DraftTip".Translate()
-            : "CS_KolossRoster_CannotDraft".Translate();
+        TaggedString draftedTip = drafted
+            ? "CS_KolossRoster_Undraft".Translate()
+            : "CS_KolossRoster_DraftTip".Translate();
+        TaggedString draftTip = canDraft ? draftedTip : "CS_KolossRoster_CannotDraft".Translate();
 
         if (Draw(draft, TexCommand.Draft, draftTip, canDraft) && canDraft) {
             koloss.drafter!.Drafted = !drafted;
         }
 
-        Rect release = new(rect.x + (third * 2f) + inset, top, IconSize, IconSize);
+        Rect release = new(rect.x + third * 2f + inset, top, IconSize, IconSize);
         if (!Draw(release, LetGo, "CS_KolossRoster_LetTip".Translate(), true)) return;
 
         foreach (Pawn one in picked.Contains(koloss) ? picked.ToList() : [koloss]) {
@@ -241,7 +242,7 @@ public class Dialog_KolossRoster : Window {
     }
 
     private void DrawFooter(Rect rect, List<Pawn> held) {
-        float width = (rect.width - (Unit * 2f)) / 3f;
+        float width = (rect.width - Unit * 2f) / 3f;
 
         Rect all = new(rect.x, rect.y, width, rect.height);
         if (Widgets.ButtonText(all, "CS_KolossRoster_SelectAll".Translate())) {
@@ -302,7 +303,7 @@ public class Dialog_KolossRoster : Window {
         }
 
         lastPicked = index;
-        Select(picked.ToList());
+        Select([.. picked]);
     }
 
     /// <summary>

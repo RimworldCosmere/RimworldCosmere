@@ -145,7 +145,9 @@ public class FloatSubMenu : FloatMenuOption {
 
     private FloatMenuFilter Filter => filter ?? (filter = new FloatMenuFilter());
 
-    private static void NoAction() { }
+    private static void NoAction() {
+        // The parent row only opens the submenu; choosing it does nothing.
+    }
 
     public bool DrawExtra(Rect rect) {
         extraGUIRect = rect.RightPartPixels(ArrowExtraWidth);
@@ -206,7 +208,7 @@ public class FloatSubMenu : FloatMenuOption {
         return subOptions.Any(x => predicate(x) || (recursive && SubAnyMatches(x, predicate)));
     }
 
-    private bool SubAnyMatches(FloatMenuOption opt, Func<FloatMenuOption, bool> predicate) {
+    private static bool SubAnyMatches(FloatMenuOption opt, Func<FloatMenuOption, bool> predicate) {
         return opt is FloatSubMenu sub && sub.AnyMatches(predicate, true);
     }
 
@@ -246,7 +248,7 @@ public class FloatSubMenu : FloatMenuOption {
         parentCloseCallback?.Invoke();
     }
 
-    private MouseArea FindMouseArea(Rect option, FloatMenu menu) {
+    private static MouseArea FindMouseArea(Rect option, FloatMenu menu) {
         option.height--;
         if (Mouse.IsOver(option)) {
             return MouseArea.Option;

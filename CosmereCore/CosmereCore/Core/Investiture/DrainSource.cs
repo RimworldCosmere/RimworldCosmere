@@ -32,6 +32,14 @@ public struct DrainSource : IExposable, IEquatable<DrainSource> {
         return Def?.GetHashCode() ?? 0;
     }
 
+    public static bool operator ==(DrainSource left, DrainSource right) {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(DrainSource left, DrainSource right) {
+        return !left.Equals(right);
+    }
+
     public static implicit operator (AbilityDef def, float rate)(DrainSource source) {
         return (source.Def, source.Rate);
     }

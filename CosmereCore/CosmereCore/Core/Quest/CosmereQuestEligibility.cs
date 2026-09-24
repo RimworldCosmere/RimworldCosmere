@@ -80,7 +80,7 @@ public static class CosmereQuestEligibility {
     ///     directly instead.
     /// </summary>
     public static List<QuestCandidate> Filter(List<QuestCandidate>? candidates, QuestWorldState state) {
-        List<QuestCandidate> result = new List<QuestCandidate>();
+        List<QuestCandidate> result = [];
         if (candidates == null) return result;
 
         for (int i = 0; i < candidates.Count; i++) {

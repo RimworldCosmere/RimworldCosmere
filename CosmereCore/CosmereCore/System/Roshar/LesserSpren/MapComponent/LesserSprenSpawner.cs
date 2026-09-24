@@ -23,8 +23,7 @@ public static class LesserSprenSpawnerStateClearer {
 public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     private static readonly List<SprenType> PendingInitialization = [];
 
-    private static readonly Dictionary<SprenType, SprenParticleSystem> SprenSystems =
-        new Dictionary<SprenType, SprenParticleSystem>();
+    private static readonly Dictionary<SprenType, SprenParticleSystem> SprenSystems = [];
 
     private bool initialized;
     private int lastDynamicUpdateTick;

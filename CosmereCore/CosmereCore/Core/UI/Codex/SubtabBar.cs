@@ -15,8 +15,7 @@ public static class SubtabBar {
 
     private static readonly Color HoverFill = new Color(1f, 1f, 1f, 0.04f);
 
-    private static readonly List<(CodexSubtab tab, string labelKey)> buffer =
-        new List<(CodexSubtab tab, string labelKey)>();
+    private static readonly List<(CodexSubtab tab, string labelKey)> buffer = [];
 
     public static void Draw(Rect rect, Pawn pawn, CodexState state, IInvestitureProvider active, Color accent) {
         buffer.Clear();

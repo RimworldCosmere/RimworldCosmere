@@ -7,12 +7,21 @@ namespace Cosmere.System.Roshar.Comp.Map;
 
 public static class StormShelterManager {
     private static readonly Dictionary<IntVec3, int> CellToRegionIndex
-        = new Dictionary<IntVec3, int>();
-
-    public static bool FirstTickOfHighstorm = true;
+        = [];
 
     private static readonly List<RegionInfo> Regions
         = [];
+
+    private static bool cacheStale = true;
+
+    /// <summary>
+    ///     Rebuilds once per storm. An empty Regions list cannot stand in for this: a colony with
+    ///     no roof at all is a legitimately empty cache, and it would re-scan the map every tick.
+    /// </summary>
+    public static void EnsureShelterCache(Verse.Map map) {
+        if (!cacheStale) return;
+        RebuildShelterCache(map);
+    }
 
     public static void RebuildShelterCache(Verse.Map map) {
         CellToRegionIndex.Clear();
@@ -39,6 +48,8 @@ public static class StormShelterManager {
                 CellToRegionIndex[c] = regionIndex;
             }
         }
+
+        cacheStale = false;
     }
 
     public static bool IsInsideShelter(IntVec3 pos) {
@@ -78,6 +89,7 @@ public static class StormShelterManager {
     public static void ClearCache() {
         CellToRegionIndex.Clear();
         Regions.Clear();
+        cacheStale = true;
     }
 
     private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Verse.Map map) {

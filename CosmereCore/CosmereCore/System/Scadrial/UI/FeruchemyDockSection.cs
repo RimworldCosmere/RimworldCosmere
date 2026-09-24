@@ -33,10 +33,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     }
 
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
+    private static readonly Color EndLabelLive = new Color(0.498f, 0.541f, 0.565f);
+    private static readonly Color EndLabelBlocked = new Color(0.310f, 0.286f, 0.255f);
+    private static readonly Color RateIdle = new Color(0.376f, 0.353f, 0.318f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
 
     private readonly ScadrialCrest crest = new ScadrialCrest(true);
-    private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> labelCache = [];
     private readonly Reveal reveal = new Reveal();
     private readonly FeruchemyDialWidget dial = new FeruchemyDialWidget();
 
@@ -146,13 +149,17 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         FeruchemyCapacity capacity = FeruchemyCapacity.Of(gene);
 
         bool compounding = gene?.isCompounding ?? false;
-        MetalTileState state = !capacity.HasMetalmind
-            ? MetalTileState.Inert
-            : compounding
-                ? MetalTileState.Flaring
-                : gene != null && (gene.isTapping || gene.isStoring)
-                    ? MetalTileState.Active
-                    : MetalTileState.Idle;
+        MetalTileState state = MetalTileState.Idle;
+        if (!capacity.HasMetalmind) state = MetalTileState.Inert;
+        else if (compounding) state = MetalTileState.Flaring;
+        else if (gene != null && (gene.isTapping || gene.isStoring)) state = MetalTileState.Active;
+
+        string? foldLabel = null;
+        if (capacity.HasMetalmind) {
+            foldLabel = revealedMetal == cell.SubsystemId
+                ? (string)"CC_Dock_Fold_Hide".Translate()
+                : (string)"CC_Dock_Fold_Show".Translate();
+        }
 
         MetalTile.Draw(
             rect,
@@ -166,11 +173,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.CanStoreCompounded || capacity.Internal > 0f ? FeruchemyPalette.CompoundTint : null,
             SavantStageFor(pawn, cell),
             revealedMetal == cell.SubsystemId,
-            capacity.HasMetalmind
-                ? revealedMetal == cell.SubsystemId
-                    ? (string)"CC_Dock_Fold_Hide".Translate()
-                    : (string)"CC_Dock_Fold_Show".Translate()
-                : null
+            foldLabel
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell, capacity), cell.SubsystemId.GetHashCode());
@@ -199,15 +202,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
         // burning reads first - the loudest thing happening, and the only one that destroys something.
-        string direction = capacity.CompoundedRate < 0f
-            ? "CC_Dock_Feruchemy_BurningMetalmind".Translate()
-            : capacity.CompoundedRate > 0f
-                ? "CC_Dock_Feruchemy_Compounding".Translate()
-                : gene.isTapping
-                    ? "CC_Dock_Feruchemy_Tapping".Translate()
-                    : gene.isStoring
-                        ? "CC_Dock_Feruchemy_Storing".Translate()
-                        : "CC_Dock_Feruchemy_Idle".Translate();
+        string direction;
+        if (capacity.CompoundedRate < 0f) direction = "CC_Dock_Feruchemy_BurningMetalmind".Translate();
+        else if (capacity.CompoundedRate > 0f) direction = "CC_Dock_Feruchemy_Compounding".Translate();
+        else if (gene.isTapping) direction = "CC_Dock_Feruchemy_Tapping".Translate();
+        else if (gene.isStoring) direction = "CC_Dock_Feruchemy_Storing".Translate();
+        else direction = "CC_Dock_Feruchemy_Idle".Translate();
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
             direction,
@@ -230,43 +230,42 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         dial.DrawDial(sliderRect, cell.SubsystemId, gene, capacity, compounded);
 
         Rect endsRect = new Rect(inner.x, sliderRect.yMax + 3f, inner.width, tinyH);
+        bool tapReachable = compounded ? capacity.CanTapCompounded : capacity.CanTap;
+        bool storeReachable = compounded ? capacity.CanStoreCompounded : capacity.CanStore;
+        Color endLive = compounded ? FeruchemyPalette.CompoundTint : EndLabelLive;
+
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Tap".Translate(),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
-            (compounded ? capacity.CanTapCompounded : capacity.CanTap)
-                ? compounded ? FeruchemyPalette.CompoundTint : new Color(0.498f, 0.541f, 0.565f)
-                : new Color(0.310f, 0.286f, 0.255f)
+            tapReachable ? endLive : EndLabelBlocked
         );
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Store".Translate(),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
-            (compounded ? capacity.CanStoreCompounded : capacity.CanStore)
-                ? compounded ? FeruchemyPalette.CompoundTint : new Color(0.498f, 0.541f, 0.565f)
-                : new Color(0.310f, 0.286f, 0.255f)
+            storeReachable ? endLive : EndLabelBlocked
         );
 
         float rate = gene.TransferRatePerSecond;
+        Color rateTint;
+        if (gene.isCompounding) rateTint = FeruchemyPalette.CompoundTint;
+        else if (Mathf.Approximately(rate, 0f)) rateTint = RateIdle;
+        else rateTint = rate < 0f ? FeruchemyPalette.TapFill : FeruchemyPalette.StoreFill;
+
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
             GameFont.Tiny,
             TextAnchor.MiddleCenter,
-            gene.isCompounding
-                ? FeruchemyPalette.CompoundTint
-                : Mathf.Approximately(rate, 0f)
-                    ? new Color(0.376f, 0.353f, 0.318f)
-                    : rate < 0f
-                        ? FeruchemyPalette.TapFill
-                        : FeruchemyPalette.StoreFill
+            rateTint
         );
 
         float afterTarget = FeruchemyTargetRow.Draw(inner, endsRect.yMax + 6f, gene);
         afterTarget = FeruchemyLedgerRow.Draw(inner, afterTarget, gene);
-        float buttonY = dial.DrawCompoundToggle(inner, afterTarget + 6f, pawn, gene, StripButtonHeight) + 8f;
+        float buttonY = FeruchemyDialWidget.DrawCompoundToggle(inner, afterTarget + 6f, pawn, gene, StripButtonHeight) + 8f;
 
         if (DockButton.Draw(
                 new Rect(inner.x, buttonY, inner.width, StripButtonHeight),

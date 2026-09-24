@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Cosmere.Core.Listing;
 using Cosmere.Core.UI;
 using Cosmere.Core.Window;
@@ -24,7 +25,6 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     private const float DefaultSurgeHeight = 175f;
     private const float TabHeight = 35f;
     private const float TabUnderlineHeight = 3f;
-    private const float IdealDotSize = 12f;
 
     private const float BannerSize = 160f;
     private const float BannerOverhang = 15f;
@@ -223,7 +223,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         inner.SplitVerticallyWithMargin(
             out Rect leftBox,
             out Rect rightBox,
-            out float overflow,
+            out _,
             Spacing.Get(),
             Mathf.Max(imageSize, titleSize.x)
         );
@@ -346,7 +346,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         };
     }
 
-    private Color GetStatusColor(IdealStatus status) {
+    private static Color GetStatusColor(IdealStatus status) {
         return status switch {
             IdealStatus.Achieved => AchievedColor,
             IdealStatus.Current => CurrentColor,
@@ -443,13 +443,13 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     }
 
     private static string GetAbilityNames(List<AbilityDef> abilities) {
-        string result = string.Empty;
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < abilities.Count; i++) {
-            if (i > 0) result += ", ";
-            result += abilities[i].LabelCap;
+            if (i > 0) result.Append(", ");
+            result.Append(abilities[i].LabelCap);
         }
 
-        return result;
+        return result.ToString();
     }
 
     protected virtual string? GetIdealRequirements(int idealIndex) {
@@ -501,7 +501,6 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     private void DrawTraitPills(FoundationListing listing, List<TraitRequirement> traits, Color pillColor) {
         float pillHeight = Spacing.Get(1.75f);
         float pillPadding = Spacing.Get(0.5f);
-        float x = listing.CurrentX;
         float maxWidth = listing.ColumnWidth;
         float currentX = 0f;
 
@@ -563,11 +562,9 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             }
 
             string? tooltipText = null;
-            TraitDegreeData? tipData = trait.degree.HasValue
-                ? trait.def?.DataAtDegree(trait.degree.Value)
-                : trait.def?.degreeDatas is { Count: > 0 }
-                    ? trait.def.DataAtDegree(0)
-                    : null;
+            TraitDegreeData? tipData = null;
+            if (trait.degree.HasValue) tipData = trait.def?.DataAtDegree(trait.degree.Value);
+            else if (trait.def?.degreeDatas is { Count: > 0 }) tipData = trait.def.DataAtDegree(0);
 
             if (tipData?.description != null) {
                 tooltipText = tipData.description

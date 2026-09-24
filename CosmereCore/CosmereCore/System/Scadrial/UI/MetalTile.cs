@@ -67,11 +67,11 @@ public static class MetalTile {
         Rect iconRect = new Rect(rect.x + 6f, rect.y + 3f, GlyphSize, GlyphSize);
         if (icon != null) {
             Color prev = GUI.color;
-            GUI.color = inert
-                ? new Color(1f, 1f, 1f, 0.35f)
-                : empty
-                    ? new Color(1f, 1f, 1f, 0.55f)
-                    : Color.white;
+            Color iconTint = Color.white;
+            if (inert) iconTint = new Color(1f, 1f, 1f, 0.35f);
+            else if (empty) iconTint = new Color(1f, 1f, 1f, 0.55f);
+
+            GUI.color = iconTint;
             GUI.DrawTexture(iconRect, icon);
             GUI.color = prev;
         }
@@ -97,13 +97,10 @@ public static class MetalTile {
         UIText.EllipsisLabel(noteRect, note, GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.365f, 0.337f, 0.290f));
 
         Rect nameRect = new Rect(iconRect.xMax + 5f, textY, noteRect.x - iconRect.xMax - 7f, tinyH);
-        Color nameColor = inert
-            ? new Color(0.435f, 0.412f, 0.373f)
-            : hot
-                ? new Color(0.949f, 0.965f, 0.980f)
-                : empty
-                    ? new Color(0.678f, 0.651f, 0.600f)
-                    : new Color(0.769f, 0.737f, 0.675f);
+        Color nameColor = new Color(0.769f, 0.737f, 0.675f);
+        if (inert) nameColor = new Color(0.435f, 0.412f, 0.373f);
+        else if (hot) nameColor = new Color(0.949f, 0.965f, 0.980f);
+        else if (empty) nameColor = new Color(0.678f, 0.651f, 0.600f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
         if (!inert) Panel.Hover(rect, Border, joinedBelow ? MetallicArtsTable.JoinGap : 0f);

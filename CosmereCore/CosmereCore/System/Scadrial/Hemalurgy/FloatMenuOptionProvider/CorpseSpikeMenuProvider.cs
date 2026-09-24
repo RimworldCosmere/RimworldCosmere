@@ -7,6 +7,8 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.Hemalurgy.FloatMenuOptionProvider;
 
 public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
+    private const string ChargeCorpseSpikeKey = "CS_Hemalurgy_ChargeCorpseSpike";
+
     protected override bool Drafted => false;
 
     protected override bool Undrafted => true;
@@ -25,7 +27,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         if (corpse.Age > HemalurgicConstants.CorpseFreshnessTickLimit) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ChargeCorpseSpikeKey.Translate(corpse.InnerPawn.LabelShortCap) +
                 ": " +
                 "CS_Hemalurgy_CorpseTooOld".Translate(),
                 null
@@ -35,7 +37,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         Verse.Thing? spike = FindNearestUnchargedSpike(pawn);
         if (spike == null) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ChargeCorpseSpikeKey.Translate(corpse.InnerPawn.LabelShortCap) +
                 ": " +
                 "CS_Hemalurgy_NoUnchargedSpike".Translate(),
                 null
@@ -44,7 +46,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         if (!pawn.CanReach(corpse, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ChargeCorpseSpikeKey.Translate(corpse.InnerPawn.LabelShortCap) +
                 ": " +
                 "NoPath".Translate().CapitalizeFirst(),
                 null
@@ -53,7 +55,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         if (!pawn.CanReach(spike, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ChargeCorpseSpikeKey.Translate(corpse.InnerPawn.LabelShortCap) +
                 ": " +
                 "NoPath".Translate().CapitalizeFirst(),
                 null
@@ -62,7 +64,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         return FloatMenuUtility.DecoratePrioritizedTask(
             new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap),
+                ChargeCorpseSpikeKey.Translate(corpse.InnerPawn.LabelShortCap),
                 () => {
                     Verse.Thing? spikeNow = FindNearestUnchargedSpike(pawn);
                     if (spikeNow == null) return;
@@ -80,7 +82,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         );
     }
 
-    private Verse.Thing? FindNearestUnchargedSpike(Pawn pawn) {
+    private static Verse.Thing? FindNearestUnchargedSpike(Pawn pawn) {
         Map map = pawn.Map;
         Verse.Thing? best = null;
         float bestDist = float.MaxValue;

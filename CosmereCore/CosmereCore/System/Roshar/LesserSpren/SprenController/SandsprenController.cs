@@ -34,13 +34,8 @@ public class SandsprenController : StaticSprenController {
         if (!IsInBounds(position, map)) return null;
 
         TerrainDef? terrain = GetTerrain(position, map!);
-        if (terrain != null) {
-            bool hasRockTag = HasTerrainTag(terrain, "Rock");
-            bool hasRockName = TerrainNameContains(terrain, "rock", "stone", "granite", "marble", "slate", "rubble");
-
-            if (terrain.categoryType.Equals(TerrainDef.TerrainCategoryType.Sand)) {
-                return defaultSpawnInformation.With(map, position);
-            }
+        if (terrain != null && terrain.categoryType.Equals(TerrainDef.TerrainCategoryType.Sand)) {
+            return defaultSpawnInformation.With(map, position);
         }
 
         bool thingChecks = map!.thingGrid.ThingsListAt(position)

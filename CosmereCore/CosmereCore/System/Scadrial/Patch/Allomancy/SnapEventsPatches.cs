@@ -15,12 +15,11 @@ public static class SnapEvents {
         PawnRelationDefOf.Bond,
     ];
 
-    internal static readonly Dictionary<int, int> StarvationCooldowns = new Dictionary<int, int>();
+    internal static readonly Dictionary<int, int> StarvationCooldowns = [];
     internal static readonly HashSet<int> TemperatureCooldowns = [];
     internal static readonly HashSet<int> WithdrawalCooldowns = [];
 
-    internal static readonly Dictionary<int, (int startTick, int count, bool triggered)> ColonyDestructionTracker =
-        new Dictionary<int, (int startTick, int count, bool triggered)>();
+    internal static readonly Dictionary<int, (int startTick, int count, bool triggered)> ColonyDestructionTracker = [];
 
     internal static void Snap(Pawn pawn, int oneInChance, string? cause = null) {
         if (!Rand.Chance(1f / oneInChance)) return;

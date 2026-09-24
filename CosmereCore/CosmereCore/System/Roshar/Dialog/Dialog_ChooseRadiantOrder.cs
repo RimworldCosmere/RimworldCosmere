@@ -44,8 +44,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
 
             if (availableOrders.Count == 0) availableOrders = RadiantOrders;
         } else {
-            normalOrders ??= BuildNormalOrders();
-            availableOrders = normalOrders;
+            availableOrders = NormalOrders;
         }
 
         radiantOrderIndex = 0;
@@ -55,6 +54,8 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
     }
 
     protected override bool hasFooter => true;
+
+    private static List<RadiantOrderDef> NormalOrders => normalOrders ??= BuildNormalOrders();
 
     private static List<RadiantOrderDef> BuildNormalOrders() {
         List<RadiantOrderDef> result = [];
@@ -138,7 +139,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
     }
 
     /// <summary>Chevron points the way it moves, generated pre-turned so nothing rotates at draw time.</summary>
-    private bool DrawEdgeArrow(Rect rect, bool pointsLeft) {
+    private static bool DrawEdgeArrow(Rect rect, bool pointsLeft) {
         float glyph = Spacing.Get(2);
         Rect chevronRect = new Rect(
             rect.center.x - glyph / 2f,
@@ -204,7 +205,9 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             }
 
             Color dotColor = blocked ? UnavailableDotColor : sigilOrder.color;
-            float alpha = selected ? 1f : Mouse.IsOver(dotRect) ? HoverDotAlpha : RestDotAlpha;
+            float alpha = RestDotAlpha;
+            if (selected) alpha = 1f;
+            else if (Mouse.IsOver(dotRect)) alpha = HoverDotAlpha;
 
             using (new TextBlock(new Color(dotColor.r, dotColor.g, dotColor.b, alpha)))
                 GUI.DrawTexture(dotRect, CircleTex);

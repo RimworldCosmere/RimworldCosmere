@@ -55,9 +55,9 @@ public class AshDepthTracker : MapComponent {
     private float severityTarget;
     private bool metalSeen;
 
-    private readonly List<Comp.Thing.CompAshVent> vents = new List<Comp.Thing.CompAshVent>();
+    private readonly List<Comp.Thing.CompAshVent> vents = [];
 
-    private readonly List<Comp.Thing.CompAshGas> gasVents = new List<Comp.Thing.CompAshGas>();
+    private readonly List<Comp.Thing.CompAshGas> gasVents = [];
 
     public AshDepthTracker(Verse.Map map) : base(map) {
         grid = new AshGrid(map);

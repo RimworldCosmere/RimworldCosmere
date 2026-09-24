@@ -25,7 +25,7 @@ public class GenStep_SeedPawnLoot : GenStep {
         }
 
         Faction player = Faction.OfPlayer;
-        List<Pawn> candidates = new List<Pawn>();
+        List<Pawn> candidates = [];
         IReadOnlyList<Pawn> spawned = map.mapPawns.AllPawnsSpawned;
         for (int i = 0; i < spawned.Count; i++) {
             Pawn pawn = spawned[i];

@@ -66,7 +66,7 @@ public class ImplantMetalmind : Recipe_Surgery {
         );
     }
 
-    private Metalmind? FindMetalmind(List<Verse.Thing> ingredients) {
+    private static Metalmind? FindMetalmind(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {
             Metalmind? comp = ingredients[i].TryGetComp<Metalmind>();
             if (comp != null) return comp;

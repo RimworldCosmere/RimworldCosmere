@@ -24,6 +24,10 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
     public override IReadOnlyList<string> shards => [];
 
     public override void PostStart() {
+        EnableDebugOverlays();
+    }
+
+    private static void EnableDebugOverlays() {
         DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
@@ -81,7 +85,7 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
             broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
         }
 
-        pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
+        pouch.TryGetComp<InnerStorage>().innerContainer.TryAdd(broam);
         pawn.apparel.Wear(pouch);
     }
 }

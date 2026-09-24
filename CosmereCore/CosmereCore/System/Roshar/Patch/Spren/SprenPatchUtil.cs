@@ -5,8 +5,9 @@ using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.Light
 namespace Cosmere.System.Roshar.Patch.Spren;
 
 internal static class SprenPatchUtil {
-    internal static bool IsSprenOrDecoy(Pawn pawn) =>
-        pawn.TryGetComp<SprenBond>() != null || DecoyHediff.IsDecoy(pawn);
+    internal static bool IsSprenOrDecoy(Pawn pawn) {
+        return pawn.TryGetComp<SprenBond>() != null || DecoyHediff.IsDecoy(pawn);
+    }
 
     internal static void RemoveSprenAndDecoys(List<Pawn> pawns) {
         for (int i = pawns.Count - 1; i >= 0; i--) {

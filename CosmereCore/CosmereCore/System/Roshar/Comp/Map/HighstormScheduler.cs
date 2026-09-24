@@ -7,9 +7,6 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Map;
 
 public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
-    private const int WeepingStartDay = WeepingSchedule.StartDay;
-    private const int DaysPerYear = WeepingSchedule.DaysPerYear;
-
     private static readonly Color WeepingBlue = new Color(0.5f, 0.7f, 0.9f);
 
     private int lastHighstormTick = -1;
@@ -21,7 +18,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private bool warningShown;
     private bool weepingActive;
 
-    private bool enabled {
+    private static bool enabled {
         get {
             if (!Mod.enableHighstorms) return false;
             return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Highstorms);
@@ -32,7 +29,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     ///     Whether storms are running at all on this map. False on a world with no Honor, or
     ///     with highstorms switched off in settings.
     /// </summary>
-    public bool IsScheduling => enabled;
+    public static bool IsScheduling => enabled;
 
     /// <summary>
     ///     Never negative. With no storm scheduled - which is every map on a world without

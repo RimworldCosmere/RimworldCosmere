@@ -23,5 +23,6 @@ public class Thought_Memory_Coppermind : Thought_Memory {
 
     public override bool Save => false;
 
+    // no aging - a stored memory lasts as long as the coppermind holds it, so ShouldDiscard is the only exit.
     public override void ThoughtInterval() { }
 }

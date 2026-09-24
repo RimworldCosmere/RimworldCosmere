@@ -43,7 +43,7 @@ public class CompAshGas : ThingComp {
         parent.Map?.GetComponent<Map.AshDepthTracker>()?.RegisterGas(this);
     }
 
-    public override void PostDeSpawn(Verse.Map map, DestroyMode mode) {
+    public override void PostDeSpawn(Verse.Map map, DestroyMode mode = DestroyMode.Vanish) {
         base.PostDeSpawn(map, mode);
         map.GetComponent<Map.AshDepthTracker>()?.DeregisterGas(this);
     }

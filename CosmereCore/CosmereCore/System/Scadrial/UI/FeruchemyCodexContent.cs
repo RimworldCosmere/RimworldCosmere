@@ -271,11 +271,10 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         GUI.enabled = true;
 
         if (!enabled && Mouse.IsOver(rect)) {
-            string tooltipKey = !hasCopperminds
-                ? "CC_Codex_Feruchemy_StoreMemory_Disabled_NoCopperminds"
-                : !hasMemories
-                    ? "CC_Codex_Feruchemy_StoreMemory_Disabled_NoMemories"
-                    : "CC_Codex_Feruchemy_StoreMemory_Disabled_NoRoom";
+            string tooltipKey;
+            if (!hasCopperminds) tooltipKey = "CC_Codex_Feruchemy_StoreMemory_Disabled_NoCopperminds";
+            else if (!hasMemories) tooltipKey = "CC_Codex_Feruchemy_StoreMemory_Disabled_NoMemories";
+            else tooltipKey = "CC_Codex_Feruchemy_StoreMemory_Disabled_NoRoom";
             TooltipHandler.TipRegion(rect, tooltipKey.Translate());
         }
     }

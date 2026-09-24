@@ -288,7 +288,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
             return order.ideals[ideal - 1].label.CapitalizeFirst();
         }
 
-        return (string)"CC_Codex_Surgebinding_IdealUnsworn".Translate(ideal.Named("IDEAL")).Resolve();
+        return "CC_Codex_Surgebinding_IdealUnsworn".Translate(ideal.Named("IDEAL")).Resolve();
     }
 
     private static float EstimateProgressionHeight(RadiantOrderDef order, int CurrentIdealDisplay, float contentWidth) {

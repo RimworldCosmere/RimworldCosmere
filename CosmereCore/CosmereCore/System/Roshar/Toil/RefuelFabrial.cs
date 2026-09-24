@@ -79,10 +79,6 @@ public class RefuelFabrial {
         fabComp.RemoveGemstone();
     }
 
-    private static bool IsGemstone(Verse.Thing thing) {
-        return thing.HasComp<InvestitureHolder>();
-    }
-
     private static bool IsHeatrial(Verse.Thing thing) {
         return thing.TryGetComp(out CompHeatrial _);
     }

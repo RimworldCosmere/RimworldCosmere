@@ -218,12 +218,10 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         }
 
         bool showSpeakWords = mode == RadiantOrderInfoMode.SpeakOath || surgebinder!.PendingOath;
-        if (showSpeakWords) {
-            if (CTAButtonText(centerButtonRect, "CRO_SpeakOath_SpeakTheWords".Translate())) {
-                surgebinder!.SpeakOath();
-                Close();
-                return;
-            }
+        if (showSpeakWords && CTAButtonText(centerButtonRect, "CRO_SpeakOath_SpeakTheWords".Translate())) {
+            surgebinder!.SpeakOath();
+            Close();
+            return;
         }
 
         TooltipHandler.TipRegion(rightButtonRect, "CRO_BreakBond_SeverTooltip".Translate());

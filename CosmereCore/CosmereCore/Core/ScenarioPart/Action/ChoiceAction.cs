@@ -65,7 +65,7 @@ public class ChoiceAction : ProgressionAction {
         comp.AskChoice(() => new Dialog_ProgressionChoice(
             titleKey.Translate(),
             textKey.Translate(),
-            new List<ProgressionChoiceOption> {
+            [
                 new ProgressionChoiceOption(
                     acceptKey.Translate(),
                     acceptTipKey.Length > 0 ? acceptTipKey.Translate().Resolve() : null,
@@ -76,7 +76,7 @@ public class ChoiceAction : ProgressionAction {
                     declineTipKey.Length > 0 ? declineTipKey.Translate().Resolve() : null,
                     () => Resolve(onDecline, comp, continuation, declineKey)
                 ),
-            }
+            ]
         ));
     }
 

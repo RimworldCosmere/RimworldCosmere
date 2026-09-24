@@ -10,5 +10,7 @@ public class CultivationsPerpendicularity : OpenPerpendicularity {
 
     protected override string AuraMoteDefName => "Cosmere_Roshar_Thing_CultivationsPerpendicularityAura";
 
-    protected override void RefillRadiantStormlight(Pawn ally) { }
+    protected override void RefillRadiantStormlight(Pawn ally) {
+        // cultivation's perpendicularity grows and heals, it does not hand back stormlight
+    }
 }

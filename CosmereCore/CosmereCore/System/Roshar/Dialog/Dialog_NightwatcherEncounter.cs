@@ -37,17 +37,21 @@ public class Dialog_NightwatcherEncounter : Window {
     private static readonly Color RowSelectedEdge = new Color(0.35f, 0.82f, 0.55f, 0.85f);
     private static readonly Color PanelFill = new Color(1f, 1f, 1f, 0.03f);
 
-    private static string GetTierLabel(int tier) => tier switch {
-        1 => "CRO_NW_Tier1_Label".Translate(),
-        2 => "CRO_NW_Tier2_Label".Translate(),
-        _ => "CRO_NW_Tier3_Label".Translate(),
-    };
+    private static string GetTierLabel(int tier) {
+        return tier switch {
+            1 => "CRO_NW_Tier1_Label".Translate(),
+            2 => "CRO_NW_Tier2_Label".Translate(),
+            _ => "CRO_NW_Tier3_Label".Translate(),
+        };
+    }
 
-    private static string GetTierDesc(int tier) => tier switch {
-        1 => "CRO_NW_Tier1_Desc".Translate(),
-        2 => "CRO_NW_Tier2_Desc".Translate(),
-        _ => "CRO_NW_Tier3_Desc".Translate(),
-    };
+    private static string GetTierDesc(int tier) {
+        return tier switch {
+            1 => "CRO_NW_Tier1_Desc".Translate(),
+            2 => "CRO_NW_Tier2_Desc".Translate(),
+            _ => "CRO_NW_Tier3_Desc".Translate(),
+        };
+    }
 
     private readonly Pawn pawn;
     private readonly List<BoonRowLayout> rowLayouts = [];
@@ -138,7 +142,9 @@ public class Dialog_NightwatcherEncounter : Window {
     }
 
     // Clamped so a def with a stray tier still lands in exactly one tab instead of vanishing.
-    private static int TierOf(NightwatcherBoonDef boon) => Mathf.Clamp(boon.powerTier, 1, 3);
+    private static int TierOf(NightwatcherBoonDef boon) {
+        return Mathf.Clamp(boon.powerTier, 1, 3);
+    }
 
     private List<NightwatcherBoonDef> BoonsForTier(int tier) {
         if (tierBuckets.TryGetValue(tier, out List<NightwatcherBoonDef>? cached)) return cached;
@@ -443,14 +449,6 @@ public class Dialog_NightwatcherEncounter : Window {
         }
 
         Find.WindowStack.Add(new FloatMenu(options));
-    }
-
-    private static string GetHediffLabel(HediffDef hediff) {
-        if (hediff.stages != null && hediff.stages.Count > 0 && hediff.stages[0].label != null) {
-            return hediff.stages[0].label.CapitalizeFirst();
-        }
-
-        return hediff.LabelCap;
     }
 
     private void SendResultLetter() {

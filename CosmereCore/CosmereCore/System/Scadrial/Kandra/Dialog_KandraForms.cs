@@ -216,7 +216,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.DrawMenuSection(rail);
 
         float x = rail.x + RailPad;
-        float width = rail.width - (RailPad * 2f);
+        float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
@@ -237,7 +237,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             DrawMaterial(new Rect(x, y + 18f, width, 18f));
         }
 
-        DrawRailButtons(new Rect(x, rail.yMax - RailPad - (ButtonHeight * 3f) - 16f, width, ButtonHeight));
+        DrawRailButtons(new Rect(x, rail.yMax - RailPad - ButtonHeight * 3f - 16f, width, ButtonHeight));
     }
 
     private void DrawRailButtons(Rect first) {
@@ -348,7 +348,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.DrawMenuSection(rail);
 
         float x = rail.x + RailPad;
-        float width = rail.width - (RailPad * 2f);
+        float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
@@ -440,7 +440,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private void DrawEyeColours(Rect inner) {
         float gap = Spacing.Get(0.5f);
         float width = ColumnContentWidth(inner);
-        float column = (width - (gap * (SwatchColumns - 1))) / SwatchColumns;
+        float column = (width - gap * (SwatchColumns - 1)) / SwatchColumns;
 
         IReadOnlyList<(string name, string hex, string labelKey)> stones = KandraAppearance.AllEyeColours;
         float rows = Mathf.CeilToInt(stones.Count / (float)SwatchColumns) * SwatchRowHeight;
@@ -462,9 +462,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         for (int i = 0; i < stones.Count; i++) {
             (string name, string hex, string labelKey) = stones[i];
 
+            int col = i % SwatchColumns;
+            int gridRow = i / SwatchColumns;
+
             Rect row = new Rect(
-                (i % SwatchColumns) * (column + gap),
-                top + ((i / SwatchColumns) * SwatchRowHeight),
+                col * (column + gap),
+                top + gridRow * SwatchRowHeight,
                 column,
                 SwatchRowHeight - 2f
             );
@@ -483,9 +486,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
                 // The left eye's own stone is not an odd eye, and picking it would say so in words.
                 if (name == designEyeColour) continue;
 
+                int col = slot % SwatchColumns;
+                int gridRow = slot / SwatchColumns;
+
                 Rect row = new Rect(
-                    (slot % SwatchColumns) * (column + gap),
-                    y + ((slot / SwatchColumns) * SwatchRowHeight),
+                    col * (column + gap),
+                    y + gridRow * SwatchRowHeight,
                     column,
                     SwatchRowHeight - 2f
                 );
@@ -673,7 +679,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.DrawHighlightIfMouseover(rect);
         }
 
-        Rect thumb = new Rect(rect.x + 8f, rect.y + ((rect.height - 28f) / 2f), 22f, 28f);
+        Rect thumb = new Rect(rect.x + 8f, rect.y + (rect.height - 28f) / 2f, 22f, 28f);
         Color previous = GUI.color;
         GUI.color = DesignColour();
         GUI.DrawTexture(thumb, gender == Gender.Female ? FemaleTrueBody : MaleTrueBody, ScaleMode.ScaleToFit);
@@ -694,7 +700,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private void DrawPalette(Rect inner) {
         float gap = Spacing.Get(0.5f);
         float width = ColumnContentWidth(inner);
-        float column = (width - (gap * (SwatchColumns - 1))) / SwatchColumns;
+        float column = (width - gap * (SwatchColumns - 1)) / SwatchColumns;
 
         Widgets.BeginScrollView(inner, ref materialScroll, new Rect(0f, 0f, width, PaletteHeight(gap)));
 
@@ -707,9 +713,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             foreach ((string name, string hex, float _, string label, string rowGroup) in KandraAppearance.AllMaterials) {
                 if (rowGroup != group) continue;
 
+                int col = shown % SwatchColumns;
+                int gridRow = shown / SwatchColumns;
+
                 Rect row = new Rect(
-                    (shown % SwatchColumns) * (column + gap),
-                    y + ((shown / SwatchColumns) * SwatchRowHeight),
+                    col * (column + gap),
+                    y + gridRow * SwatchRowHeight,
                     column,
                     SwatchRowHeight - 2f
                 );
@@ -740,7 +749,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
                 if (rowGroup == group) count++;
             }
 
-            height += SectionHeaderHeight + (Mathf.CeilToInt(count / (float)SwatchColumns) * SwatchRowHeight) + gap;
+            height += SectionHeaderHeight + Mathf.CeilToInt(count / (float)SwatchColumns) * SwatchRowHeight + gap;
         }
 
         return height;
@@ -750,7 +759,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     private void DrawHairGrid(Rect inner) {
         float gap = Spacing.Get(0.5f);
         float width = ColumnContentWidth(inner);
-        float cell = (width - (gap * (HairColumns - 1))) / HairColumns;
+        float cell = (width - gap * (HairColumns - 1)) / HairColumns;
 
         List<HairDef> loaded = Hairs;
         float grid = Mathf.CeilToInt(loaded.Count / (float)HairColumns) * (HairCellHeight + gap);
@@ -762,9 +771,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Color tint = HairTint();
 
         for (int i = 0; i < loaded.Count; i++) {
+            int col = i % HairColumns;
+            int gridRow = i / HairColumns;
+
             Rect box = new Rect(
-                (i % HairColumns) * (cell + gap),
-                SectionHeaderHeight + ((i / HairColumns) * (HairCellHeight + gap)),
+                col * (cell + gap),
+                SectionHeaderHeight + gridRow * (HairCellHeight + gap),
                 cell,
                 HairCellHeight
             );
@@ -786,14 +798,14 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.BeginScrollView(
             inner,
             ref dyeScroll,
-            new Rect(0f, 0f, width, SectionHeaderHeight + (dyes.Count * SwatchRowHeight))
+            new Rect(0f, 0f, width, SectionHeaderHeight + dyes.Count * SwatchRowHeight)
         );
 
         DrawSectionHeader(0f, width, "CS_Kandra_HairColourHeader");
 
         for (int i = 0; i < dyes.Count; i++) {
             (string name, string hex, string labelKey) = dyes[i];
-            Rect row = new Rect(0f, SectionHeaderHeight + (i * SwatchRowHeight), width, SwatchRowHeight - 2f);
+            Rect row = new Rect(0f, SectionHeaderHeight + i * SwatchRowHeight, width, SwatchRowHeight - 2f);
 
             if (DrawSwatch(row, hex, labelKey.Translate(), name == designHairColour)) designHairColour = name;
         }
@@ -815,7 +827,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         if (mane != null) {
             Rect thumb = new Rect(
-                cell.x + ((cell.width - HairThumbSize) / 2f),
+                cell.x + (cell.width - HairThumbSize) / 2f,
                 cell.y + 2f,
                 HairThumbSize,
                 HairThumbSize
@@ -847,7 +859,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.DrawHighlightIfMouseover(row);
         }
 
-        Rect chip = new Rect(row.x + 4f, row.y + ((row.height - 14f) / 2f), 14f, 14f);
+        Rect chip = new Rect(row.x + 4f, row.y + (row.height - 14f) / 2f, 14f, 14f);
         Widgets.DrawBoxSolid(chip, BodyColor);
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
@@ -869,7 +881,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.DrawHighlightIfMouseover(row);
         }
 
-        Rect chip = new Rect(row.x + 4f, row.y + ((row.height - 14f) / 2f), 14f, 14f);
+        Rect chip = new Rect(row.x + 4f, row.y + (row.height - 14f) / 2f, 14f, 14f);
         Widgets.DrawBoxSolid(chip, Parse(hex));
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
@@ -913,9 +925,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.BeginScrollView(region, ref scroll, view);
 
         for (int i = 0; i < known.Count; i++) {
+            int col = i % columns;
+            int gridRow = i / columns;
+
             Rect card = new Rect(
-                (i % columns) * (CardWidth + CardGap),
-                (i / columns) * (CardHeight + CardGap),
+                col * (CardWidth + CardGap),
+                gridRow * (CardHeight + CardGap),
                 CardWidth,
                 CardHeight
             );
@@ -967,7 +982,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.DrawMenuSection(rail);
 
         float x = rail.x + RailPad;
-        float width = rail.width - (RailPad * 2f);
+        float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
         using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
@@ -995,7 +1010,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             Widgets.Label(new Rect(now.x, now.yMax + 4f, now.width, 28f), form.Label);
         }
 
-        Rect keep = new Rect(x, rail.yMax - RailPad - (ButtonHeight * 2f) - 8f, width, ButtonHeight);
+        Rect keep = new Rect(x, rail.yMax - RailPad - ButtonHeight * 2f - 8f, width, ButtonHeight);
         if (Widgets.ButtonText(keep, "CS_Kandra_AdoptKeep".Translate())) confirming = null;
 
         Rect take = new Rect(x, keep.yMax + 8f, width, ButtonHeight);
@@ -1059,8 +1074,8 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         }
 
         Rect inner = new Rect(
-            well.x + ((well.width - size.x) / 2f),
-            well.y + ((well.height - size.y) / 2f),
+            well.x + (well.width - size.x) / 2f,
+            well.y + (well.height - size.y) / 2f,
             size.x,
             size.y
         );
@@ -1091,8 +1106,8 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         bool female = (gender ?? form.gender) == Gender.Female;
         float side = Mathf.Min(size.x, size.y);
         Rect body = new Rect(
-            well.x + ((well.width - side) / 2f),
-            well.y + ((well.height - side) / 2f),
+            well.x + (well.width - side) / 2f,
+            well.y + (well.height - side) / 2f,
             side,
             side
         );
@@ -1172,7 +1187,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
     /// <summary>Every size the table carries, in both genders and both sides, read once at load.</summary>
     private static Dictionary<string, Texture2D> BuildIrisArt() {
-        Dictionary<string, Texture2D> art = new Dictionary<string, Texture2D>();
+        Dictionary<string, Texture2D> art = [];
 
         foreach ((string size, float _, string _) in KandraAppearance.AllIrisSizes) {
             foreach (bool female in new[] { false, true }) {

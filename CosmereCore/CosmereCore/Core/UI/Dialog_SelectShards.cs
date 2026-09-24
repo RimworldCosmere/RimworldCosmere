@@ -34,11 +34,12 @@ public class Dialog_SelectShards : Verse.Window {
 
     public Dialog_SelectShards(List<ShardDef> permitted, IEnumerable<string>? requiredShards = null) {
         // Grouped once here rather than in DoWindowContents, which ran it every OnGUI frame.
-        grouped = permitted
-            .GroupBy(s => s.planet)
-            .OrderBy(g => g.Key == "N/A" ? 0 : 1)
-            .ThenBy(g => g.Key)
-            .ToList();
+        grouped = [
+            .. permitted
+                .GroupBy(s => s.planet)
+                .OrderBy(g => g.Key == "N/A" ? 0 : 1)
+                .ThenBy(g => g.Key),
+        ];
 
         required = requiredShards == null ? [] : [..requiredShards];
 

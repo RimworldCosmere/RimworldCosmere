@@ -27,9 +27,7 @@ public class Regrowth : SurgebindingHediff {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
-        List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs
-            .Where(h => h.CanBeHealedByInvestiture())
-            .ToList();
+        List<Verse.Hediff> hediffs = [.. pawn.health.hediffSet.hediffs.Where(h => h.CanBeHealedByInvestiture())];
 
         if (DeactivateIfFullyHealed(hediffs)) return;
 

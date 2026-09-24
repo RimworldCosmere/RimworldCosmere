@@ -340,7 +340,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         accordion.Draw(bodyRect, pawn, snapshots, ctx);
     }
 
-    private DockDensityMode PickDensity(
+    private static DockDensityMode PickDensity(
         Pawn pawn,
         IReadOnlyList<InvestitureSnapshot> snapshots,
         float availableHeight
@@ -420,14 +420,14 @@ public sealed class InvestitureDockWindow : Verse.Window {
             height += section.GetHeaderHeight();
             if (accordion.ExpandedSystemId == section.SystemId) {
                 // The pinned strip sits between header and body, so the window grows by it.
-                float pinned = section.GetPinnedHeight(pawn, snapshots[i], probeCtx);
-                height += pinned;
+                float pinnedHeight = section.GetPinnedHeight(pawn, snapshots[i], probeCtx);
+                height += pinnedHeight;
 
                 // Capped the same way the accordion caps it, or the window sizes to a body about to be scrolled.
                 height += DockBodyBudget.For(
                     section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx),
                     sectionMax,
-                    pinned
+                    pinnedHeight
                 );
             }
         }

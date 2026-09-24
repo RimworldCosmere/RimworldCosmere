@@ -14,7 +14,7 @@ public class FeruchemyDockSectionTests {
         Assert.IsTrue(
             dial.Contains("internal static bool ShowsCompoundToggle(Feruchemist gene)", StringComparison.Ordinal)
         );
-        Assert.IsTrue(dial.Contains("=> gene.TargetIsInternalOnly;", StringComparison.Ordinal));
+        Assert.IsTrue(dial.Contains("return gene.TargetIsInternalOnly;", StringComparison.Ordinal));
         Assert.IsTrue(dial.Contains("bool eligible = ShowsCompoundToggle(gene);", StringComparison.Ordinal));
         Assert.IsFalse(dial.Contains("bool eligible = gene.TargetIsInternalOnly;", StringComparison.Ordinal));
         Assert.IsTrue(

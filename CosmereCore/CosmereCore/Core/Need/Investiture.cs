@@ -108,23 +108,23 @@ public class Investiture : RimWorld.Need {
         return 0;
     }
 
-    public override void SetInitialLevel() { }
+    public override void SetInitialLevel() {
+        // Investiture starts empty; the gene fills it.
+    }
 
     public override void NeedInterval() {
         pawn.story?.EnsureTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));
 
-        if (cachedGlower == null) {
-            if (!pawn.TryGetComp(out cachedGlower)) {
-                cachedGlower = new CompGlower();
-                cachedGlower.parent = pawn;
-                cachedGlower.Initialize(
-                    new CompProperties_Glower {
-                        glowRadius = Mathf.Clamp(CurLevel, 0f, 3f),
-                        overlightRadius = 2f,
-                        glowColor = new ColorInt(new Color(.25f, .95f, .95f, .2f)),
-                    }
-                );
-            }
+        if (cachedGlower == null && !pawn.TryGetComp(out cachedGlower)) {
+            cachedGlower = new CompGlower();
+            cachedGlower.parent = pawn;
+            cachedGlower.Initialize(
+                new CompProperties_Glower {
+                    glowRadius = Mathf.Clamp(CurLevel, 0f, 3f),
+                    overlightRadius = 2f,
+                    glowColor = new ColorInt(new Color(.25f, .95f, .95f, .2f)),
+                }
+            );
         }
 
         cachedGlower!.GlowRadius = Mathf.Clamp(CurLevel, 0f, 3f);

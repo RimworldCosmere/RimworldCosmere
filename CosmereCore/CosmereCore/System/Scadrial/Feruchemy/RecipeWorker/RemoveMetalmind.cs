@@ -46,7 +46,7 @@ public class RemoveMetalmind : Recipe_Surgery {
         pawn.TakeDamage(damage);
     }
 
-    private void SpawnExtractedMetalmind(Pawn pawn, ImplantedMetalmindData removed) {
+    private static void SpawnExtractedMetalmind(Pawn pawn, ImplantedMetalmindData removed) {
         ThingDef? metalmindDef = DefDatabase<ThingDef>.GetNamedSilentFail(removed.metalmindType);
         if (metalmindDef == null) return;
 
@@ -70,7 +70,7 @@ public class RemoveMetalmind : Recipe_Surgery {
         GenPlace.TryPlaceThing(metalmindItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);
     }
 
-    private ImplantedMetalminds? GetMetalmindsHediff(Pawn pawn) {
+    private static ImplantedMetalminds? GetMetalmindsHediff(Pawn pawn) {
         return pawn.health.hediffSet.GetFirstHediffOfDef(
             HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds
         ) as ImplantedMetalminds;

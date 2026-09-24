@@ -23,7 +23,7 @@ public class SpawnThingObjective : QuestObjective {
             thingDef = thingDef,
             count = count,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(spawn);
     }

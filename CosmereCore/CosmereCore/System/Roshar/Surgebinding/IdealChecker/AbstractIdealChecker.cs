@@ -19,7 +19,7 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) : IIdealChecker 
         return null;
     }
 
-    protected float ApplyDifficulty(float threshold) {
+    protected static float ApplyDifficulty(float threshold) {
         RosharModSettings settings = Core.Mod.GetModSettings<RosharModSettings>();
         return threshold * settings.progressionDifficulty;
     }
@@ -51,7 +51,7 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) : IIdealChecker 
         }
     }
 
-    private void RemoveBondStrain(Pawn pawn) {
+    private static void RemoveBondStrain(Pawn pawn) {
         Verse.Hediff? stainedBond =
             pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
         if (stainedBond != null) {
@@ -103,7 +103,7 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) : IIdealChecker 
         return 1f;
     }
 
-    private void ApplyWitnessThoughts(Pawn oathSpeaker) {
+    private static void ApplyWitnessThoughts(Pawn oathSpeaker) {
         Map map = oathSpeaker.Map;
         if (map == null) return;
 

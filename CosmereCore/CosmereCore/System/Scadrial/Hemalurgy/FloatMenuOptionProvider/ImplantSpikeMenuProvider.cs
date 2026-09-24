@@ -39,7 +39,7 @@ public class ImplantSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
         );
     }
 
-    private List<FloatMenuOption> BuildSpikeOptions(Pawn surgeon, Pawn target, List<Verse.Thing> spikes) {
+    private static List<FloatMenuOption> BuildSpikeOptions(Pawn surgeon, Pawn target, List<Verse.Thing> spikes) {
         List<FloatMenuOption> options = [];
         for (int i = 0; i < spikes.Count; i++) {
             Verse.Thing spike = spikes[i];

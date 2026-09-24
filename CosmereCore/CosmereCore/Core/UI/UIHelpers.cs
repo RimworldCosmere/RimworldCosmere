@@ -64,7 +64,7 @@ public static class UIHelpers {
 
     public static Dictionary<string, int> GetEnumValues<T>()
         where T : Enum {
-        Dictionary<string, int> result = new Dictionary<string, int>();
+        Dictionary<string, int> result = [];
         Array values = Enum.GetValues(typeof(T));
         for (int i = 0; i < values.Length; i++) {
             T v = (T)values.GetValue(i);

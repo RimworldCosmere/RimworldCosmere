@@ -5,8 +5,8 @@ using Verse;
 namespace Cosmere.Core.Lib.FloatSubMenu;
 
 public static class ExtensionMethods {
-    public static FloatMenuOption MenuOption(this Pawn pawn, Action action, bool shortName = true)
-        => new FloatMenuOption(
+    public static FloatMenuOption MenuOption(this Pawn pawn, Action action, bool shortName = true) {
+        return new FloatMenuOption(
             shortName ? pawn.LabelShortCap : pawn.LabelCap,
             action,
             null,
@@ -15,6 +15,7 @@ public static class ExtensionMethods {
             extraPartOnGUI: r => DrawPawn(r, pawn),
             extraPartRightJustified: true
         );
+    }
 
     public static FloatMenuOption MenuOption(this Pawn pawn, Action<Pawn> action, bool shortName = true) {
         return pawn.MenuOption(() => action(pawn), shortName);
@@ -26,7 +27,7 @@ public static class ExtensionMethods {
     }
 
     public static void OpenMenu(this IEnumerable<FloatMenuOption> menu) {
-        Find.WindowStack.Add(new FloatMenu(menu.ToList()));
+        Find.WindowStack.Add(new FloatMenu([.. menu]));
     }
 
     public static void OpenMenu(this List<FloatMenuOption> menu) {

@@ -19,7 +19,7 @@ namespace Cosmere.System.Roshar.UI;
 ///     pixels get repainted. Built on demand, since SurgeDef resolves its icon inside a LongEventHandler.
 /// </summary>
 internal static class SurgeMarks {
-    private static readonly Dictionary<string, Texture2D?> Cache = new Dictionary<string, Texture2D?>();
+    private static readonly Dictionary<string, Texture2D?> Cache = [];
 
     public static Texture2D? White(SurgeDef surge) {
         if (Cache.TryGetValue(surge.defName, out Texture2D? cached)) return cached;
@@ -558,7 +558,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         DrawAbilityGrid(rect.ContractedBy(StripPad), pawn, gene, order, abilities);
     }
 
-    private void DrawAbilityGrid(
+    private static void DrawAbilityGrid(
         Rect rect,
         Pawn pawn,
         Surgebinder gene,
@@ -582,7 +582,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
     ///     Draws one ability: what it is, whether the pawn can use it now, and a way to use it.
     ///     A locked ability still shows - knowing what's an Oath away is the point, it just won't click.
     /// </summary>
-    private void DrawAbilityCell(
+    private static void DrawAbilityCell(
         Rect row,
         Pawn pawn,
         AbilityDef def,

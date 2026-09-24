@@ -62,7 +62,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     ///     A ThingFilter has no way back to its owner, and the vanilla method we replace is handed
     ///     only the filter. Weak so a destroyed container does not keep its settings alive.
     /// </remarks>
-    private static readonly ConditionalWeakTable<ThingFilter, InnerStorage> BandByFilter = new();
+    private static readonly ConditionalWeakTable<ThingFilter, InnerStorage> BandByFilter = [];
 
     public ThingOwnerWithCapacity<Verse.Thing> innerContainer = null!;
 

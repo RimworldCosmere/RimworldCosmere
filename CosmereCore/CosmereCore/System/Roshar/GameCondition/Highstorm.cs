@@ -9,7 +9,6 @@ using Verse;
 
 namespace Cosmere.System.Roshar.GameCondition;
 
-// TODO: force the weather, warn at the top of the screen, and nudge pawns indoors (maybe a workgiver)
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
 
@@ -69,7 +68,6 @@ public class Highstorm : RimWorld.GameCondition {
     public override void End() {
         base.End();
         StormShelterManager.ClearCache();
-        StormShelterManager.FirstTickOfHighstorm = true;
         SingleMap?.weatherManager.TransitionTo(WeatherDefOf.FoggyRain);
         SingleMap?.GetComponent<GemheartExpeditionManager>()?.QueueHuntAfterHighstorm();
         highstorm.Destroy();
@@ -87,13 +85,9 @@ public class Highstorm : RimWorld.GameCondition {
             return;
         }
 
-        if (StormShelterManager.FirstTickOfHighstorm) {
-            Map? shelterMap = SingleMap ?? Find.CurrentMap;
-            if (shelterMap != null) {
-                StormShelterManager.RebuildShelterCache(shelterMap);
-            }
-
-            StormShelterManager.FirstTickOfHighstorm = false;
+        Map? shelterMap = SingleMap ?? Find.CurrentMap;
+        if (shelterMap != null) {
+            StormShelterManager.EnsureShelterCache(shelterMap);
         }
 
         if (!GenTicks.IsTickInterval(tickInterval)) return;
@@ -131,13 +125,13 @@ public class Highstorm : RimWorld.GameCondition {
             if (thing?.Map == null) continue;
 
             MoveItem(thing);
-            if (thing?.Map == null) continue;
+            if (thing.Map == null) continue;
 
             if (!thing.Position.Roofed(thing.Map)) {
                 DamageItem(thing);
             }
 
-            if (thing?.Map == null) continue;
+            if (thing.Map == null) continue;
 
             if (!thing.Position.Roofed(thing.Map) &&
                 thing.TryGetComp(out InvestitureHolder investiture) &&
@@ -148,9 +142,9 @@ public class Highstorm : RimWorld.GameCondition {
     }
 
     /// <summary>
-    ///     Moves items from right to left.
+    ///     Moves items from right to left. Shelter is one boolean per cell; telling how much
+    ///     shelter a cell has from a given direction would need a per-cell component instead.
     /// </summary>
-    /// TODO: MAJOR overhaul idea: Have a component that keeps track of how much shelter a cell has from any given direction
     private bool MoveItem(Verse.Thing thing) {
         if (!Mod.enableHighstormPushing) return false;
         if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
@@ -177,11 +171,9 @@ public class Highstorm : RimWorld.GameCondition {
             DamageItem(thing);
         }
 
-        if (newPos.DistanceToEdge(map) == 0) {
-            if (thing is not Pawn) {
-                thing.DeSpawn();
-                return true;
-            }
+        if (newPos.DistanceToEdge(map) == 0 && thing is not Pawn) {
+            thing.DeSpawn();
+            return true;
         }
 
         if (!newPos.InBounds(map)) return true;
@@ -219,7 +211,7 @@ public class Highstorm : RimWorld.GameCondition {
         return true;
     }
 
-    private bool CanMoveToNewPosition(Verse.Thing thing, IntVec3 newPos) {
+    private static bool CanMoveToNewPosition(Verse.Thing thing, IntVec3 newPos) {
         if (!thing.CanBeMoved()) return false;
         if (!newPos.InBounds(thing.Map)) return true;
 

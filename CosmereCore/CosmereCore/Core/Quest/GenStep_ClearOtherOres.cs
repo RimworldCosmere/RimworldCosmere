@@ -23,7 +23,7 @@ public class GenStep_ClearOtherOres : GenStep {
             return;
         }
 
-        List<Verse.Thing> doomed = new List<Verse.Thing>();
+        List<Verse.Thing> doomed = [];
         List<Verse.Thing> all = map.listerThings.AllThings;
         for (int i = 0; i < all.Count; i++) {
             Verse.Thing thing = all[i];

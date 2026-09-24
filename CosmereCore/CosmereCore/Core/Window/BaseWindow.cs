@@ -29,13 +29,13 @@ public abstract class BaseWindow : Verse.Window {
     protected static readonly Color InactiveCTALabelColor = new Color(.72f, .70f, .66f, .6f);
     protected static readonly Texture2D BorderTexture = BorderColor.ToSolidColorTexture();
     protected static readonly Texture2D CloseButton = ContentFinder<Texture2D>.Get("UI/Buttons/Abandon");
-    protected static float DropShadowContract = -7f;
-    protected static float DropShadowX = 1f;
-    protected static float DropShadowY = 1f;
+    protected static readonly float DropShadowContract = -7f;
+    protected static readonly float DropShadowX = 1f;
+    protected static readonly float DropShadowY = 1f;
 
-    public static Texture2D CTAButtonBGAtlas = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBG");
-    public static Texture2D CTAButtonBGAtlasMouseover = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGMouseover");
-    public static Texture2D CTAButtonBGAtlasClick = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGClick");
+    public static readonly Texture2D CTAButtonBGAtlas = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBG");
+    public static readonly Texture2D CTAButtonBGAtlasMouseover = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGMouseover");
+    public static readonly Texture2D CTAButtonBGAtlasClick = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGClick");
 
     private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
 
@@ -145,13 +145,13 @@ public abstract class BaseWindow : Verse.Window {
     protected virtual void DrawFooter(Rect rect) { }
 
     protected virtual bool CloseButtonFor(Rect rectToClose) {
-        float padding = Spacing.Get(.5);
+        float buttonPadding = Spacing.Get(.5);
         float imageWidth = Spacing.Get(1.5);
 
         return Widgets.ButtonImage(
             new Rect(
-                rectToClose.x + rectToClose.width - padding - imageWidth,
-                rectToClose.y + padding,
+                rectToClose.x + rectToClose.width - buttonPadding - imageWidth,
+                rectToClose.y + buttonPadding,
                 imageWidth,
                 imageWidth
             ),
@@ -215,7 +215,7 @@ public abstract class BaseWindow : Verse.Window {
         if (left) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, thickness, rect.height), thickness, texture);
     }
 
-    protected void DrawDropShadow(Rect rect) {
+    protected static void DrawDropShadow(Rect rect) {
         Rect rect1 = rect.ContractedBy(DropShadowContract);
         rect1.x += DropShadowX;
         rect1.y += DropShadowY;

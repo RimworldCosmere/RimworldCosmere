@@ -88,7 +88,7 @@ public class ImplantSpike : Recipe_Surgery {
         );
     }
 
-    private void ApplyHemalurgicEffect(Pawn pawn, ImplantedSpikeData spike) {
+    private static void ApplyHemalurgicEffect(Pawn pawn, ImplantedSpikeData spike) {
         if (HemalurgicConstants.IsAllomanticSteal(spike.stealType) ||
             HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
             spike.stealType == HemalurgicStealType.AnyPower) {
@@ -102,7 +102,7 @@ public class ImplantSpike : Recipe_Surgery {
         }
     }
 
-    private void GrantGene(Pawn pawn, string geneDefName) {
+    private static void GrantGene(Pawn pawn, string geneDefName) {
         if (geneDefName.NullOrEmpty()) return;
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(geneDefName);
         if (geneDef == null) return;
@@ -110,7 +110,7 @@ public class ImplantSpike : Recipe_Surgery {
         pawn.genes.AddGene(geneDef, true);
     }
 
-    private void ApplyConnectionImplant(Pawn pawn) {
+    private static void ApplyConnectionImplant(Pawn pawn) {
         if (!pawn.IsSnapped()) {
             SnapUtility.Snap(pawn, "CS_Hemalurgy_SnappedByConnection");
         }

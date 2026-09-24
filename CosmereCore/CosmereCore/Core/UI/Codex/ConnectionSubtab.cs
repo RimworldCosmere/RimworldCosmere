@@ -14,6 +14,8 @@ public static class ConnectionSubtab {
         (ConnectionCodexPage.Planets, "CC_Connection_Tab_Planets"),
     ];
 
+    private const string ValueArg = "VALUE";
+
     private const float ShardRowHeight = 34f;
     private const float PlanetRowHeight = 70f;
     private const float PlanetSummaryHeight = 34f;
@@ -132,7 +134,7 @@ public static class ConnectionSubtab {
                 ? "CC_Connection_RowTip".Translate(
                     shard.LabelCap.Named("SHARD"),
                     ConnectionPalette.LabelKeyFor(tier).Translate().Named("TIER"),
-                    strength.Named("VALUE")
+                    strength.Named(ValueArg)
                 )
                 : "CC_Connection_AbsentTip".Translate(shard.LabelCap.Named("SHARD"))
         );
@@ -167,13 +169,13 @@ public static class ConnectionSubtab {
         Rect investiture = new Rect(detailX, detailY + PlanetDetailHeight, detailWidth, PlanetDetailHeight);
         Rect earned = new Rect(investiture.xMax, investiture.y, detailWidth, PlanetDetailHeight);
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, ConnectionPalette.GroupLabel)) {
-            Widgets.Label(ancestry, "CC_PlanetConnection_Ancestry".Translate(connection.Ancestry.Named("VALUE")).Truncate(ancestry.width));
-            Widgets.Label(residence, "CC_PlanetConnection_Residence".Translate(connection.Residence.Named("VALUE")).Truncate(residence.width));
+            Widgets.Label(ancestry, "CC_PlanetConnection_Ancestry".Translate(connection.Ancestry.Named(ValueArg)).Truncate(ancestry.width));
+            Widgets.Label(residence, "CC_PlanetConnection_Residence".Translate(connection.Residence.Named(ValueArg)).Truncate(residence.width));
             Widgets.Label(
                 investiture,
-                "CC_PlanetConnection_Investiture".Translate(connection.Investiture.Named("VALUE")).Truncate(investiture.width)
+                "CC_PlanetConnection_Investiture".Translate(connection.Investiture.Named(ValueArg)).Truncate(investiture.width)
             );
-            Widgets.Label(earned, "CC_PlanetConnection_Earned".Translate(connection.Earned.Named("VALUE")).Truncate(earned.width));
+            Widgets.Label(earned, "CC_PlanetConnection_Earned".Translate(connection.Earned.Named(ValueArg)).Truncate(earned.width));
         }
 
         Widgets.DrawHighlightIfMouseover(row);

@@ -39,7 +39,7 @@ public class SetSkillAction : ProgressionAction {
         if (levelOffset != 0) record.Level += levelOffset;
 
         if (passion != null) {
-            record.passion = (Passion)ParseHelper.FromString(passion, typeof(Passion));
+            record.passion = ParseHelper.FromString<Passion>(passion);
         }
 
         if (passionOffset != 0) {

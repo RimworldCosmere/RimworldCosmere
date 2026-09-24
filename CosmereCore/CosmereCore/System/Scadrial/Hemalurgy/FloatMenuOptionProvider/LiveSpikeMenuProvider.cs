@@ -97,7 +97,7 @@ public class LiveSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
         return options;
     }
 
-    private void StartChargeJob(
+    private static void StartChargeJob(
         Pawn surgeon,
         Pawn target,
         Verse.Thing spike,

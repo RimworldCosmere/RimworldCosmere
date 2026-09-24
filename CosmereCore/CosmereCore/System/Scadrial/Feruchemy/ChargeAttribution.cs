@@ -27,7 +27,7 @@ public static class ChargeAttribution {
         }
 
         float factor = target / total;
-        List<string> keys = new List<string>(map.Keys);
+        List<string> keys = [..map.Keys];
         for (int i = 0; i < keys.Count; i++) map[keys[i]] = Math.Max(0f, map[keys[i]] * factor);
     }
 
@@ -43,7 +43,7 @@ public static class ChargeAttribution {
         }
 
         float factor = amount / total;
-        List<string> keys = new List<string>(map.Keys);
+        List<string> keys = [..map.Keys];
         for (int i = 0; i < keys.Count; i++) map[keys[i]] = Math.Max(0f, map[keys[i]] * (1f - factor));
 
         return amount;

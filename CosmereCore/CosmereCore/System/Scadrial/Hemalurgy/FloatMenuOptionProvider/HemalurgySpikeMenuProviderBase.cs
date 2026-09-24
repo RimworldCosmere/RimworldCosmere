@@ -11,7 +11,7 @@ public abstract class HemalurgySpikeMenuProviderBase : RimWorld.FloatMenuOptionP
 
     protected override bool Multiselect => false;
 
-    protected bool ValidateSurgeryPair(
+    protected static bool ValidateSurgeryPair(
         Verse.Thing clickedThing,
         FloatMenuContext context,
         out Pawn target,

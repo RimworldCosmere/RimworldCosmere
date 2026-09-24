@@ -137,10 +137,8 @@ public class OpenPerpendicularity : SurgebindingAbility {
         for (int i = alliesInArea.Count - 1; i >= 0; i--) {
             Pawn ally = alliesInArea[i];
             if (ally == null || ally.Dead || !ally.Position.InHorDistOf(pawn.Position, currentRadius)) {
-                if (ally != null && !ally.Dead) {
-                    if (def.hediff != null) {
-                        SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
-                    }
+                if (ally != null && !ally.Dead && def.hediff != null) {
+                    SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
                 }
 
                 alliesInArea.RemoveAt(i);

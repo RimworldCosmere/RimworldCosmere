@@ -138,8 +138,16 @@ public static class MetalGroupTable {
 
     private static string Glyph(AllomancyPolarity polarity, AllomancyAxis axis) {
         if (polarity == AllomancyPolarity.None && axis == AllomancyAxis.None) return string.Empty;
-        string p = polarity == AllomancyPolarity.Pushing ? "^" : polarity == AllomancyPolarity.Pulling ? "v" : string.Empty;
-        string a = axis == AllomancyAxis.External ? "E" : axis == AllomancyAxis.Internal ? "I" : string.Empty;
+        string p = polarity switch {
+            AllomancyPolarity.Pushing => "^",
+            AllomancyPolarity.Pulling => "v",
+            _ => string.Empty,
+        };
+        string a = axis switch {
+            AllomancyAxis.External => "E",
+            AllomancyAxis.Internal => "I",
+            _ => string.Empty,
+        };
         return p + a;
     }
 

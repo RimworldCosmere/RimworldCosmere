@@ -6,11 +6,13 @@ using Verse.Sound;
 
 namespace Cosmere.System.Roshar.Dialog;
 
+internal static class SphereFilterColors {
+    internal static readonly Color Header = new Color(0.86f, 0.90f, 0.93f);
+    internal static readonly Color Empty = new Color(0.62f, 0.66f, 0.69f);
+}
+
 public class SphereFilter<T> : Window
     where T : ThingComp, IFilterableComp {
-    private static readonly Color HeaderColor = new Color(0.86f, 0.90f, 0.93f);
-    private static readonly Color EmptyColor = new Color(0.62f, 0.66f, 0.69f);
-
     private readonly T thing;
     private Vector2 scrollPosition;
 
@@ -51,7 +53,7 @@ public class SphereFilter<T> : Window
 
     public override void DoWindowContents(Rect inRect) {
         Rect headerRect = new Rect(inRect.x, inRect.y, inRect.width, SphereFilterLayout.HeaderHeight);
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, HeaderColor)) {
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, SphereFilterColors.Header)) {
             Widgets.Label(headerRect, "CRO_SphereFilter_Title".Translate());
         }
 
@@ -59,7 +61,7 @@ public class SphereFilter<T> : Window
         int count = thing.AllowedSpheres.Count;
 
         if (count == 0) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, EmptyColor)) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, SphereFilterColors.Empty)) {
                 Widgets.Label(outRect, "CRO_SphereFilter_Empty".Translate());
             }
         } else {

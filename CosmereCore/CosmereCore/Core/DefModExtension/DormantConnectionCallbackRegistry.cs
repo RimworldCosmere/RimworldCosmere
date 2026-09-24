@@ -3,7 +3,7 @@ using System;
 namespace Cosmere.Core.DefModExtension;
 
 public static class DormantConnectionCallbackRegistry {
-    private static readonly Dictionary<Type, IDormantConnectionCallback> Registered = new();
+    private static readonly Dictionary<Type, IDormantConnectionCallback> Registered = [];
 
     public static void Register<T>(T instance)
         where T : IDormantConnectionCallback {

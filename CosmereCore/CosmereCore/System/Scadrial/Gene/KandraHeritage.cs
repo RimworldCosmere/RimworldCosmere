@@ -43,7 +43,7 @@ public class KandraHeritage : Verse.Gene {
     }
 
     /// <summary>1.0 for the first generation, tailing to 0.0 for the tenth.</summary>
-    public float Seniority => 1f - ((Generation - Earliest) / (float)(Latest - Earliest));
+    public float Seniority => 1f - (Generation - Earliest) / (float)(Latest - Earliest);
 
     /// <summary>Years the first generation has been walking around. Made at the Ascension.</summary>
     private const float OldestYears = 1000f;

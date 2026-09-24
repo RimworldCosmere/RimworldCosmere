@@ -546,7 +546,7 @@ public class KandraAnimalFormTests {
     public void PracticeShrinksBothTheRangeAndTheChance() {
         string disguise = Kandra("KandraDisguise.cs");
 
-        Assert.IsTrue(disguise.Contains("NoticeRange - (skill * NoticeRangePerSkill)", StringComparison.Ordinal));
+        Assert.IsTrue(disguise.Contains("NoticeRange - skill * NoticeRangePerSkill", StringComparison.Ordinal));
         Assert.IsTrue(
             disguise.Contains("BaseSuspicion * (1f - forms.Conviction)", StringComparison.Ordinal),
             "Conviction runs 0 to 1 off the same skill."

@@ -254,7 +254,7 @@ public class KolossRoster : GameComponent {
                 }
 
                 owed.TryGetValue(through, out float running);
-                owed[through] = running + (through.beuPerTick * HoldFraction);
+                owed[through] = running + through.beuPerTick * HoldFraction;
             }
 
             foreach ((Cosmere.Core.Def.AbilityDef through, float rate) in owed) {

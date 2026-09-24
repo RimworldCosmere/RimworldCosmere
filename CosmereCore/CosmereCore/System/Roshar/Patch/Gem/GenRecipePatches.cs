@@ -17,7 +17,7 @@ public static class GenRecipePatch {
         IEnumerable<Verse.Thing> result,
         Verse.Thing dominantIngredient
     ) {
-        List<Verse.Thing> products = result.ToList();
+        List<Verse.Thing> products = [.. result];
         if (products.Count != 1) {
             foreach (Verse.Thing product in products) {
                 yield return product;

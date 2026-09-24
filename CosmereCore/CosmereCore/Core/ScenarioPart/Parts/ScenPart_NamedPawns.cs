@@ -84,7 +84,7 @@ public class ScenPart_NamedPawns : ScenPart {
     private static void ClearRomance(Pawn pawn) {
         if (pawn.relations == null) return;
 
-        List<DirectPawnRelation> existing = new List<DirectPawnRelation>(pawn.relations.DirectRelations);
+        List<DirectPawnRelation> existing = [.. pawn.relations.DirectRelations];
         for (int i = 0; i < existing.Count; i++) {
             PawnRelationDef def = existing[i].def;
             if (def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
@@ -208,14 +208,14 @@ public class ScenPart_NamedPawns : ScenPart {
     ///     arrives as itself rather than as a stranger who has eaten nobody.
     /// </summary>
     private static void ApplyKandraBodies(Pawn pawn, NamedPawnDef template) {
-        var forms = pawn.TryGetComp<System.Scadrial.Kandra.CompKandraForms>();
+        System.Scadrial.Kandra.CompKandraForms? forms = pawn.TryGetComp<System.Scadrial.Kandra.CompKandraForms>();
         if (forms == null) return;
 
         // Snapshots the generated humanlike shape, which AdoptTrueBody then files as a known face.
         forms.RememberTrueBody();
 
         ApplyKandraTrueAnimal(pawn, template, forms);
-        ApplyKandraKnownFaces(pawn, template, forms);
+        ApplyKandraKnownFaces(template, forms);
     }
 
     private static void ApplyKandraTrueAnimal(
@@ -246,7 +246,6 @@ public class ScenPart_NamedPawns : ScenPart {
     ///     shape is concrete and survives a save rather than being re-rolled on every portrait.
     /// </summary>
     private static void ApplyKandraKnownFaces(
-        Pawn pawn,
         NamedPawnDef template,
         System.Scadrial.Kandra.CompKandraForms forms
     ) {

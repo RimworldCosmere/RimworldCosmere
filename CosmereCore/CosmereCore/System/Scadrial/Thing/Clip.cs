@@ -38,7 +38,7 @@ public class Clip : Bullet {
         );
     }
 
-    private CoinshotAbility GetAbility(Pawn pawn) {
+    private static CoinshotAbility GetAbility(Pawn pawn) {
         return (CoinshotAbility)pawn.abilities.GetAbility(AbilityDefOf.Cosmere_Scadrial_Ability_SteelCoinshot);
     }
 }

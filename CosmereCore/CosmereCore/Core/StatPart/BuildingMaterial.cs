@@ -21,7 +21,7 @@ public class BuildingMaterial : RimWorld.StatPart {
         return "CC_StatsReport_BuildingMaterial".Translate() + ": x" + mass.ToStringPercent();
     }
 
-    private bool TryGetBuildingMass(StatRequest req, out float mass) {
+    private static bool TryGetBuildingMass(StatRequest req, out float mass) {
         float buildingMass = req.BuildableDef.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
         mass = (buildingMass + baseMultiplier) *
                req.Thing.def.Size.x *

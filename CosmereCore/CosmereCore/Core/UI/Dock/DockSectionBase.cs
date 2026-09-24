@@ -9,7 +9,7 @@ namespace Cosmere.Core.UI.Dock;
 
 public abstract class DockSectionBase : IDockSection {
     /// Folded groups, by label key. Session-only - a fold is a glance, not a setting.
-    private readonly HashSet<string> collapsedGroups = new HashSet<string>();
+    private readonly HashSet<string> collapsedGroups = [];
 
     public abstract string SystemId { get; }
 
@@ -51,7 +51,9 @@ public abstract class DockSectionBase : IDockSection {
     }
 
     // A section with nothing to pin costs a zero and a skipped rect.
-    public virtual float GetPinnedHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) => 0f;
+    public virtual float GetPinnedHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        return 0f;
+    }
 
     public virtual void DrawPinned(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) { }
 }

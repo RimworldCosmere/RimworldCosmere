@@ -20,7 +20,7 @@ public class SurviveConditionObjective : QuestObjective {
             conditionDef = conditionDef,
             requireUnroofed = requireUnroofed,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(survive);
     }

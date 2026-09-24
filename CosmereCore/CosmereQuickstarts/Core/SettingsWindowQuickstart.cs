@@ -13,6 +13,10 @@ public class SettingsWindowQuickstart : CosmereQuickstartBase {
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
 
     public override void PostStart() {
+        EnableDebugOverlays();
+    }
+
+    private static void EnableDebugOverlays() {
         DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;

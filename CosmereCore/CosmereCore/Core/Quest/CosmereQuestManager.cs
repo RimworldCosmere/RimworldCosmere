@@ -16,18 +16,18 @@ public class CosmereQuestManager : GameComponent {
     /// <summary>
     ///     Supplies the era a running quickstart forces. Null when nothing is forcing one.
     /// </summary>
-    public static Func<string?>? eraProvider;
+    public static Func<string?>? eraProvider { get; set; }
 
-    private Dictionary<string, CapstoneState> capstoneStates = new Dictionary<string, CapstoneState>();
-    private Dictionary<string, HashSet<int>> pawnBurns = new Dictionary<string, HashSet<int>>();
-    private HashSet<string> flags = new HashSet<string>();
+    private Dictionary<string, CapstoneState> capstoneStates = [];
+    private Dictionary<string, HashSet<int>> pawnBurns = [];
+    private HashSet<string> flags = [];
 
     /// <summary>
     ///     The era the campaign has reached, once the story has moved it on. Null until then,
     ///     when the scenario's own declared era stands.
     /// </summary>
     public string? currentEra;
-    private Dictionary<string, int> lastOfferedTick = new Dictionary<string, int>();
+    private Dictionary<string, int> lastOfferedTick = [];
 
     /// <summary>
     ///     pawnBurns pairs a quest defName with the thingIDNumbers of pawns that have burned that
@@ -39,14 +39,11 @@ public class CosmereQuestManager : GameComponent {
     ///     shadow list that is rebuilt on PostLoadInit. These two fields are that same shadow,
     ///     used only for serialization; pawnBurns above remains the real, authoritative field.
     /// </summary>
-    private List<string> savedPawnBurnDefNames = new List<string>();
+    private List<string> savedPawnBurnDefNames = [];
 
-    private List<int> savedPawnBurnPawnIds = new List<int>();
+    private List<int> savedPawnBurnPawnIds = [];
 
-    public CosmereQuestManager(Verse.Game game) {
-        QuestFlagStore.SetFlag = SetFlag;
-        QuestFlagStore.HasFlag = HasFlag;
-    }
+    public CosmereQuestManager(Verse.Game game) { }
 
     public QuestWorldState BuildWorldState() {
         Cosmere.Core.Def.CosmereWorldDef? world = WorldUtility.Primary;
@@ -82,7 +79,7 @@ public class CosmereQuestManager : GameComponent {
         }
 
         foreach (KeyValuePair<string, HashSet<int>> pair in pawnBurns) {
-            state.pawnBurns[pair.Key] = new HashSet<int>(pair.Value);
+            state.pawnBurns[pair.Key] = [..pair.Value];
         }
 
         List<Verse.Map> maps = Find.Maps;
@@ -135,7 +132,7 @@ public class CosmereQuestManager : GameComponent {
         QuestWorldState state = BuildWorldState();
 
         List<CosmereQuestDef> defs = DefDatabase<CosmereQuestDef>.AllDefsListForReading;
-        List<CosmereQuestDef> eligible = new List<CosmereQuestDef>();
+        List<CosmereQuestDef> eligible = [];
         float totalWeight = 0f;
         for (int i = 0; i < defs.Count; i++) {
             QuestCandidate candidate = defs[i].ToCandidate();
@@ -295,7 +292,7 @@ public class CosmereQuestManager : GameComponent {
         }
 
         if (!pawnBurns.TryGetValue(defName, out HashSet<int>? burnedPawns)) {
-            burnedPawns = new HashSet<int>();
+            burnedPawns = [];
             pawnBurns[defName] = burnedPawns;
         }
 
@@ -346,13 +343,13 @@ public class CosmereQuestManager : GameComponent {
         Scribe_Values.Look(ref currentEra, "currentEra");
 
         Scribe_Collections.Look(ref capstoneStates, "capstoneStates", LookMode.Value, LookMode.Value);
-        capstoneStates ??= new Dictionary<string, CapstoneState>();
+        capstoneStates ??= [];
 
         Scribe_Collections.Look(ref flags, "flags", LookMode.Value);
-        flags ??= new HashSet<string>();
+        flags ??= [];
 
         Scribe_Collections.Look(ref lastOfferedTick, "lastOfferedTick", LookMode.Value, LookMode.Value);
-        lastOfferedTick ??= new Dictionary<string, int>();
+        lastOfferedTick ??= [];
 
         if (Scribe.mode == LoadSaveMode.Saving) {
             savedPawnBurnDefNames.Clear();
@@ -367,16 +364,16 @@ public class CosmereQuestManager : GameComponent {
 
         Scribe_Collections.Look(ref savedPawnBurnDefNames, "pawnBurnDefNames", LookMode.Value);
         Scribe_Collections.Look(ref savedPawnBurnPawnIds, "pawnBurnPawnIds", LookMode.Value);
-        savedPawnBurnDefNames ??= new List<string>();
-        savedPawnBurnPawnIds ??= new List<int>();
+        savedPawnBurnDefNames ??= [];
+        savedPawnBurnPawnIds ??= [];
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
-            pawnBurns = new Dictionary<string, HashSet<int>>();
+            pawnBurns = [];
             int pairCount = Math.Min(savedPawnBurnDefNames.Count, savedPawnBurnPawnIds.Count);
             for (int i = 0; i < pairCount; i++) {
                 string defName = savedPawnBurnDefNames[i];
                 if (!pawnBurns.TryGetValue(defName, out HashSet<int>? burnedPawns)) {
-                    burnedPawns = new HashSet<int>();
+                    burnedPawns = [];
                     pawnBurns[defName] = burnedPawns;
                 }
 

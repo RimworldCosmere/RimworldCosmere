@@ -10,7 +10,11 @@ public class SiblingBlessing : OpenPerpendicularity {
 
     protected override string AuraMoteDefName => "Cosmere_Roshar_Thing_SiblingBlessingAura";
 
-    protected override void RefillRadiantStormlight(Pawn ally) { }
+    protected override void RefillRadiantStormlight(Pawn ally) {
+        // the sibling's blessing only sustains the tower, it grants nothing to the pawn
+    }
 
-    protected override void HealAlly(Pawn ally) { }
+    protected override void HealAlly(Pawn ally) {
+        // the sibling's blessing only sustains the tower, it grants nothing to the pawn
+    }
 }

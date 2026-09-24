@@ -228,16 +228,8 @@ public static class GeneUtility {
         return pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_NobleHeritage) == true;
     }
 
-    private static bool IsSkaa(Pawn pawn) {
-        return pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaHeritage) == true;
-    }
-
     private static bool IsMetalbornBlocked(Pawn pawn) {
         return !isHarmony && pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaPurity) == true;
-    }
-
-    private static bool RollChance(int oneIn) {
-        return RollChance(oneIn, out _);
     }
 
     /// <summary>

@@ -11,7 +11,9 @@ public class BondToThing : ThinkNode_JobGiver {
         if (pawn.CurJobDef == JobDefOf.Cosmere_BondToThing) return null;
 
         // Lookup owned pawns
-        List<Pawn> pawns = pawn.Map.listerThings.AllThings
+        List<Pawn> pawns =
+        [
+            .. pawn.Map.listerThings.AllThings
             .Where(t => t is Pawn)
             .Cast<Pawn>()
             .Where(t => {
@@ -23,8 +25,8 @@ public class BondToThing : ThinkNode_JobGiver {
 
                 return conn.Value < 1f;
             }
-            )
-            .ToList();
+            ),
+        ];
 
         if (pawns.NullOrEmpty()) return null;
 

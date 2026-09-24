@@ -137,7 +137,7 @@ public class ChargeSpike : Recipe_Surgery {
         }
     }
 
-    private HemalurgicSpike? FindUnchargedSpike(List<Verse.Thing> ingredients) {
+    private static HemalurgicSpike? FindUnchargedSpike(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {
             HemalurgicSpike? comp = ingredients[i].TryGetComp<HemalurgicSpike>();
             if (comp != null && !comp.isCharged) return comp;

@@ -29,7 +29,7 @@ public class TimedWorkObjective : QuestObjective {
                 ? null
                 : Find.FactionManager.FirstFactionOfDef(ctx.def.targetFaction),
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(work);
     }

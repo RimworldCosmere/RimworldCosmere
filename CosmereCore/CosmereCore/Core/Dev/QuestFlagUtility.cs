@@ -22,7 +22,7 @@ public static class QuestFlagUtility {
         CosmereQuestManager? manager = Current.Game?.GetComponent<CosmereQuestManager>();
         if (manager == null) return;
 
-        List<DebugMenuOption> options = new List<DebugMenuOption>();
+        List<DebugMenuOption> options = [];
         foreach (string flag in KnownFlags()) {
             string label = manager.HasFlag(flag) ? flag + " (already set)" : flag;
             options.Add(
@@ -51,7 +51,7 @@ public static class QuestFlagUtility {
     ///     drift out of step with the content.
     /// </summary>
     private static List<string> KnownFlags() {
-        SortedSet<string> flags = new SortedSet<string>();
+        SortedSet<string> flags = [];
 
         List<CosmereQuestDef> defs = DefDatabase<CosmereQuestDef>.AllDefsListForReading;
         for (int i = 0; i < defs.Count; i++) {
@@ -73,6 +73,6 @@ public static class QuestFlagUtility {
             }
         }
 
-        return new List<string>(flags);
+        return [.. flags];
     }
 }

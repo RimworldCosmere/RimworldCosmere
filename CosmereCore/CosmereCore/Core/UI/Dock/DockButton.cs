@@ -33,11 +33,11 @@ public static class DockButton {
         Texture2D? icon = null,
         string? aside = null
     ) {
-        Color text = !enabled
-            ? DisabledText
-            : active
-                ? accent
-                : LabelText;
+        Color text = (enabled, active) switch {
+            (false, _) => DisabledText,
+            (true, true) => accent,
+            _ => LabelText,
+        };
 
         // the oath button breathes on the lettering now that no button carries a coloured wash
         if (enabled && pulse) {

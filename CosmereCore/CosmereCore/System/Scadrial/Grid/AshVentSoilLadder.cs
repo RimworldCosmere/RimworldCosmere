@@ -10,6 +10,9 @@ public static class AshVentSoilLadder {
     /// <summary>Where the chain ends. Our own soil, richer than anything vanilla grows.</summary>
     public const string TopRung = "Cosmere_Scadrial_Terrain_VentSoil";
 
+    /// <summary>The last vanilla rung, and the one three different starting grounds converge on.</summary>
+    private const string RichSoil = "SoilRich";
+
     /// <summary>Days a cell holds one rung. Sand to vent soil is four of them.</summary>
     public const float DaysPerRung = 8f;
 
@@ -24,10 +27,10 @@ public static class AshVentSoilLadder {
         { "Mud", "Sand" },
         { "Sand", "Gravel" },
         { "Gravel", "Soil" },
-        { "Soil", "SoilRich" },
-        { "MossyTerrain", "SoilRich" },
-        { "MarshyTerrain", "SoilRich" },
-        { "SoilRich", TopRung },
+        { "Soil", RichSoil },
+        { "MossyTerrain", RichSoil },
+        { "MarshyTerrain", RichSoil },
+        { RichSoil, TopRung },
         { "Riverbank", TopRung },
     };
 

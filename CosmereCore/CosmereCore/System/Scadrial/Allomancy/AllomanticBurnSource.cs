@@ -32,6 +32,14 @@ public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource
         return Def?.GetHashCode() ?? 0;
     }
 
+    public static bool operator ==(AllomanticBurnSource left, AllomanticBurnSource right) {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(AllomanticBurnSource left, AllomanticBurnSource right) {
+        return !left.Equals(right);
+    }
+
     public static implicit operator (AllomanticAbilityDef? def, float rate)(AllomanticBurnSource source) {
         return (source.Def, source.Rate);
     }

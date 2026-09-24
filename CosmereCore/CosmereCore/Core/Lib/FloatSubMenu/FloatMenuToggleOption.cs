@@ -104,19 +104,11 @@ public class FloatMenuToggleOption : FloatMenuOption {
         => Setup(checkOn, checkDimmed);
 
     private void Setup(Func<bool> checkOn, Func<bool> checkDimmed) {
-        this.checkOn = checkOn ?? True;
-        this.checkDimmed = checkDimmed ?? False;
+        this.checkOn = checkOn ?? (() => true);
+        this.checkDimmed = checkDimmed ?? (() => false);
 
         extraPartOnGUI = DrawCheck;
         extraPartRightJustified = true;
-    }
-
-    private static bool True() {
-        return true;
-    }
-
-    private static bool False() {
-        return false;
     }
 
     private bool DrawCheck(Rect r) {

@@ -14,10 +14,6 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
 
     private Pawn donor => (Pawn)job.targetA.Thing;
 
-    private Verse.Thing spike => job.targetB.Thing;
-
-    private Building_Bed? bed => job.targetC.Thing as Building_Bed;
-
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         if (!pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed)) return false;
         if (!pawn.Reserve(job.targetB, job, 10, 1, errorOnFailed: errorOnFailed)) return false;

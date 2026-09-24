@@ -97,7 +97,7 @@ public class Dialog_GemheartExpedition : Window {
         if (Widgets.ButtonText(sendRect, "CRO_Gemheart_March".Translate(), active: enoughSelected)) {
             GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
             if (manager != null) {
-                manager.StartExpedition(selected.ToList());
+                manager.StartExpedition([.. selected]);
                 SoundDefOf.Quest_Accepted.PlayOneShotOnCamera();
                 Messages.Message(
                     "CRO_Gemheart_Marching".Translate(selected.Count.Named("COUNT")),
@@ -165,7 +165,7 @@ public class Dialog_GemheartExpedition : Window {
         GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
         if (manager == null) return;
 
-        float power = GemheartExpeditionManager.ExpeditionPower(selected.ToList());
+        float power = GemheartExpeditionManager.ExpeditionPower([.. selected]);
         float difficulty = manager.CurrentDifficulty;
         GemheartOutcome outcome = GemheartOdds.Classify(GemheartOdds.Ratio(power, difficulty));
 

@@ -29,7 +29,6 @@ public class BondToThing : Verse.AI.JobDriver {
         Connection? conn = pawn.GetConnection(Target);
         this.FailOn(() => conn == null || conn.Value >= 1);
 
-        // yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
         yield return new Toil {
             initAction = () => {
                 if (pawn.DistanceTo(Target) <= 5) return;

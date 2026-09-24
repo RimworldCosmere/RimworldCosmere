@@ -9,8 +9,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transportation;
 
 public class Portal : SurgebindingAbility {
-    internal static int pendingPortalTile = -1;
-    internal static readonly Dictionary<int, Portal> activePortals = new Dictionary<int, Portal>();
+    internal static readonly Dictionary<int, Portal> activePortals = [];
     private SurgePortal? portal;
     private List<Pawn>? selectedPawns;
     private Map? sourceMap;
@@ -21,7 +20,7 @@ public class Portal : SurgebindingAbility {
 
     public Portal(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
+    private static ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -31,7 +30,6 @@ public class Portal : SurgebindingAbility {
         base.OnEnable();
         sourceMap = pawn.Map;
         activePortals[pawn.thingIDNumber] = this;
-        pendingPortalTile = -1;
 
         Find.WorldRoutePlanner.Stop();
         Dialog_FormCaravan dialog = new Dialog_FormCaravan(sourceMap, false, OnDialogClosed);
@@ -52,7 +50,6 @@ public class Portal : SurgebindingAbility {
         portal = null;
         sourceMap = null;
         selectedPawns = null;
-        pendingPortalTile = -1;
         activePortals.Remove(pawn.thingIDNumber);
     }
 

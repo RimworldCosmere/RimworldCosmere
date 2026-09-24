@@ -34,7 +34,7 @@ public class MineOutSiteObjective : QuestObjective {
             mineable = mineable,
             fraction = fraction,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(minedOut);
     }

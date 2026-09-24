@@ -53,11 +53,10 @@ public class CaptureSpren : Verse.AI.JobDriver {
         );
 
         captureToil.tickAction = () => {
-            if (Find.TickManager.TicksGame % 60 == 0) {
-                // Check if spren is still available
-                if (!LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(targetCell, Map).Any()) {
-                    EndJobWith(JobCondition.Incompletable);
-                }
+            // Check if spren is still available
+            if (Find.TickManager.TicksGame % 60 == 0 &&
+                !LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(targetCell, Map).Any()) {
+                EndJobWith(JobCondition.Incompletable);
             }
         };
 

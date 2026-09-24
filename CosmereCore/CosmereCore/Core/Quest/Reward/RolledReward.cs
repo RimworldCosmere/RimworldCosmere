@@ -14,7 +14,7 @@ public class RolledReward : QuestReward {
     public override void Give(QuestBuildContext ctx) {
         if (branches == null || branches.Count == 0) return;
 
-        List<RewardTableEntry> entries = new List<RewardTableEntry>();
+        List<RewardTableEntry> entries = [];
         for (int i = 0; i < branches.Count; i++) {
             entries.Add(new RewardTableEntry { key = branches[i].key, weight = branches[i].weight });
         }
@@ -44,8 +44,8 @@ public class RolledReward : QuestReward {
     public override string? ConfigError() {
         if (branches == null || branches.Count == 0) return "RolledReward has no branches.";
 
-        List<RewardTableEntry> entries = new List<RewardTableEntry>();
-        List<string> keys = new List<string>();
+        List<RewardTableEntry> entries = [];
+        List<string> keys = [];
         for (int i = 0; i < branches.Count; i++) {
             RolledRewardBranch branch = branches[i];
             string? key = branch.key;
@@ -58,7 +58,7 @@ public class RolledReward : QuestReward {
             keys.Add(key);
         }
 
-        HashSet<string> seenKeys = new HashSet<string>();
+        HashSet<string> seenKeys = [];
         for (int i = 0; i < keys.Count; i++) {
             if (!seenKeys.Add(keys[i])) return $"RolledReward has duplicate branch key '{keys[i]}'.";
         }

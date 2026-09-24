@@ -37,7 +37,7 @@ public sealed class Reveal {
         if (steppedFrame == Time.frameCount) return current;
 
         steppedFrame = Time.frameCount;
-        progress = Mathf.Min(1f, progress + (Time.unscaledDeltaTime / Duration));
+        progress = Mathf.Min(1f, progress + Time.unscaledDeltaTime / Duration);
         current = Mathf.Lerp(from, goal, Smoothstep(progress));
 
         return current;
@@ -45,6 +45,6 @@ public sealed class Reveal {
 
     // Leaves and lands without a visible stop at either end.
     private static float Smoothstep(float t) {
-        return t * t * (3f - (2f * t));
+        return t * t * (3f - 2f * t);
     }
 }

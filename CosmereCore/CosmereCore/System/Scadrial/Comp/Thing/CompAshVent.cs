@@ -106,7 +106,7 @@ public class CompAshVent : ThingComp {
         get {
             if (offsets != null) return offsets;
 
-            offsets = new List<IntVec3>();
+            offsets = [];
             for (int x = -AshPlume.RadiusCells; x <= AshPlume.RadiusCells; x++) {
                 for (int z = -AshPlume.RadiusCells; z <= AshPlume.RadiusCells; z++) {
                     if (AshPlume.InRange(x, z)) offsets.Add(new IntVec3(x, 0, z));
@@ -125,7 +125,7 @@ public class CompAshVent : ThingComp {
         parent.Map?.GetComponent<Map.AshDepthTracker>()?.RegisterVent(this);
     }
 
-    public override void PostDeSpawn(Verse.Map map, DestroyMode mode) {
+    public override void PostDeSpawn(Verse.Map map, DestroyMode mode = DestroyMode.Vanish) {
         base.PostDeSpawn(map, mode);
         map.GetComponent<Map.AshDepthTracker>()?.DeregisterVent(this);
     }
@@ -333,7 +333,7 @@ public class CompAshVent : ThingComp {
                 // out of the rect, not a centre - rounds the corners, not a square; squared to skip the Sqrt
                 int dx = x < mouth.minX ? mouth.minX - x : x > mouth.maxX ? x - mouth.maxX : 0;
                 int dz = z < mouth.minZ ? mouth.minZ - z : z > mouth.maxZ ? z - mouth.maxZ : 0;
-                int distanceSquared = (dx * dx) + (dz * dz);
+                int distanceSquared = dx * dx + dz * dz;
                 if (!AshVentSoilSpread.Reaches(distanceSquared, soilRadius)) continue;
 
                 if (ClimbOneRung(map, tracker, cell, distanceSquared, daysBefore)) budget--;

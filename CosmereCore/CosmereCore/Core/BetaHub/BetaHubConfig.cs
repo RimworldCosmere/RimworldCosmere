@@ -18,9 +18,13 @@ public static class BetaHubConfig {
 
     public static string FeatureRequestsUrl => $"{ProjectUrl}/feature_requests.json";
 
-    public static string LogFilesUrl(string issueId) => $"{ProjectUrl}/issues/{issueId}/log_files.json";
+    public static string LogFilesUrl(string issueId) {
+        return $"{ProjectUrl}/issues/{issueId}/log_files.json";
+    }
 
-    public static string ScreenshotsUrl(string issueId) => $"{ProjectUrl}/issues/{issueId}/screenshots.json";
+    public static string ScreenshotsUrl(string issueId) {
+        return $"{ProjectUrl}/issues/{issueId}/screenshots.json";
+    }
 
     public static bool ShouldShowFeedbackUi => BetaHubGate.ShouldShow(
         BuildInfo.Revision,

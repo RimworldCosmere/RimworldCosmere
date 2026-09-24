@@ -25,7 +25,7 @@ public sealed class SettingsWindow {
     private string searchText = string.Empty;
 
     public SettingsWindow(List<CosmereModSettings> allModSettings) {
-        systems = new List<CosmereModSettings>(allModSettings);
+        systems = [.. allModSettings];
         systems.Sort(CompareSystems);
 
         for (int i = 0; i < systems.Count; i++) {
@@ -114,7 +114,7 @@ public sealed class SettingsWindow {
         return firstVisible ?? string.Empty;
     }
 
-    private IReadOnlyList<SettingSection> SectionsFor(IReadOnlyList<SettingSection> sections, string sectionKey) {
+    private List<SettingSection> SectionsFor(IReadOnlyList<SettingSection> sections, string sectionKey) {
         visibleSections.Clear();
         for (int i = 0; i < sections.Count; i++) {
             SettingSection section = sections[i];

@@ -8,8 +8,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
     public const string ChangedSignal = "Cosmere_Connection_Changed";
     private List<Connection> connectionList = [];
 
-    private Dictionary<(string, string), Connection> connections =
-        new Dictionary<(string, string), Connection>();
+    private Dictionary<(string, string), Connection> connections = [];
 
     public static SpiritWeb? Instance => Current.Game?.GetComponent<SpiritWeb>();
 
@@ -46,7 +45,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         return connections.TryGetValue(NormalizeKey(targetOne, targetTwo), out Connection? c) ? c : null;
     }
 
-    public Connection SetConnectionValue(Connection connection, float value) {
+    public static Connection SetConnectionValue(Connection connection, float value) {
         float oldValue = connection.Value;
         connection.Value = value;
         connection.NotifyChange(value, oldValue);
@@ -83,14 +82,14 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         base.ExposeData();
 
         if (Scribe.mode == LoadSaveMode.Saving) {
-            connectionList = connections.Values.Where(c => c.ShouldSave()).ToList();
+            connectionList = [.. connections.Values.Where(c => c.ShouldSave())];
         }
 
         Scribe_Collections.Look(ref connectionList, "connections", LookMode.Deep);
         connectionList ??= [];
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
-            connections = new Dictionary<(string, string), Connection>();
+            connections = [];
             foreach (Connection conn in connectionList) {
                 (string, string) key = NormalizeKey(conn.ObjectOne, conn.ObjectTwo);
                 connections[key] = conn;

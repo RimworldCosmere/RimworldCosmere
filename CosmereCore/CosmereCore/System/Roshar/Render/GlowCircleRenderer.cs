@@ -1,11 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Render;
 
 public static class GlowCircleRenderer {
-    private static Dictionary<Color, Material> CachedMaterials = new Dictionary<Color, Material>();
-
     public static void DrawCustomCircle(Pawn caster, float radius, Color color) {
         color.a = 0.15f;
         Vector3 center = caster.DrawPos;

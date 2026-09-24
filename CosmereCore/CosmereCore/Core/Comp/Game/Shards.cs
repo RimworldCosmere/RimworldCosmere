@@ -12,7 +12,7 @@ public class Shards : GameComponent {
 
     public override void ExposeData() {
         if (Scribe.mode == LoadSaveMode.Saving) {
-            savedShardDefs = enabledShards.Values.Select(s => s.def).ToList();
+            savedShardDefs = [.. enabledShards.Values.Select(s => s.def)];
         }
 
         Scribe_Collections.Look(ref savedShardDefs, "enabledShardDefs", LookMode.Def);

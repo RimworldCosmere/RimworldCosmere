@@ -1,3 +1,5 @@
+using Math = global::System.Math;
+
 namespace Cosmere.System.Scadrial.Threat;
 
 /// <summary>
@@ -56,10 +58,10 @@ public static class ScadrialThreat {
 
         float allomancy = isMistborn
             ? MistbornGain
-            : Min(allomantic * AllomanticMetalWorth, MistbornGain);
+            : Math.Min(allomantic * AllomanticMetalWorth, MistbornGain);
         float feruchemy = isFullFeruchemist
             ? FullFeruchemistGain
-            : Min(feruchemic * FeruchemicMetalWorth, FullFeruchemistGain);
+            : Math.Min(feruchemic * FeruchemicMetalWorth, FullFeruchemistGain);
 
         float worth = 1f + allomancy + feruchemy;
         if (allomancy > 0f && feruchemy > 0f) worth += TwinbornPremium;
@@ -102,13 +104,9 @@ public static class ScadrialThreat {
     ///     a reserve is right now, so threat does not flicker every time a vial is drained.
     /// </summary>
     public static float ForGear(int chargedMetalminds, int vials) {
-        float minds = Min(Max(chargedMetalminds, 0) * ChargedMetalmindWorth, MetalmindCeiling);
-        float metal = Min(Max(vials, 0) * VialWorth, VialCeiling);
+        float minds = Math.Min(Math.Max(chargedMetalminds, 0) * ChargedMetalmindWorth, MetalmindCeiling);
+        float metal = Math.Min(Math.Max(vials, 0) * VialWorth, VialCeiling);
 
         return minds + metal;
     }
-
-    private static int Max(int a, int b) => a > b ? a : b;
-
-    private static float Min(float a, float b) => a < b ? a : b;
 }

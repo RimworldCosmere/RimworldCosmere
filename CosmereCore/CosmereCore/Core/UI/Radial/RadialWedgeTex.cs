@@ -8,12 +8,12 @@ namespace Cosmere.Core.UI.Radial;
 [StaticConstructorOnStartup]
 public static class RadialWedgeTex {
     private const int TexSize = 256;
-    private static readonly Dictionary<int, Texture2D> cache = new Dictionary<int, Texture2D>();
+    private static readonly Dictionary<int, Texture2D> cache = [];
     private static Texture2D? discCache;
     private static Texture2D? vignetteCache;
     private static Texture2D? backingCache;
-    private static readonly Dictionary<int, Texture2D> edgeCache = new Dictionary<int, Texture2D>();
-    private static readonly Dictionary<int, Texture2D> separatorCache = new Dictionary<int, Texture2D>();
+    private static readonly Dictionary<int, Texture2D> edgeCache = [];
+    private static readonly Dictionary<int, Texture2D> separatorCache = [];
     private static Texture2D? gizmoIconCache;
 
     /// <summary>
@@ -40,8 +40,8 @@ public static class RadialWedgeTex {
 
                 float ring = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
 
-                // Carve evenly spaced spokes out of the ring.
-                float theta = Mathf.Atan2(x, y);
+                // Spokes are evenly spaced clockwise from straight up, so Atan2 takes the axes swapped.
+                float theta = Mathf.Atan2(y: x, x: y);
                 float step = Mathf.PI * 2f / spokes;
                 float offset = Mathf.Abs(Mathf.Repeat(theta + step * 0.5f, step) - step * 0.5f);
                 float gap = Mathf.Clamp01((offset - halfSpoke) / (aa * 2f));
@@ -210,8 +210,9 @@ public static class RadialWedgeTex {
     }
 
     // Absolute angular distance from the wedge's own centre line, wrapped to +/-pi.
-    private static float AngleFrom(float x, float y, float offset) {
-        float signed = Mathf.Atan2(x, y) - offset;
+    private static float AngleFrom(float dx, float dy, float offset) {
+        // wedges are measured clockwise from straight up, so Atan2 takes the axes swapped.
+        float signed = Mathf.Atan2(dx, dy) - offset;
 
         return Mathf.Abs(Mathf.Repeat(signed + Mathf.PI, 2f * Mathf.PI) - Mathf.PI);
     }

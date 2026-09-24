@@ -49,7 +49,7 @@ public class GenStep_SiteGarrison : GenStep {
             inhabitants = true,
         };
 
-        List<Pawn> defenders = new List<Pawn>();
+        List<Pawn> defenders = [];
         foreach (Pawn pawn in PawnGroupMakerUtility.GeneratePawns(groupParms, true)) {
             IntVec3 cell = CellFinder.RandomSpawnCellForPawnNear(center, map, spawnRadius);
             GenSpawn.Spawn(pawn, cell, map);

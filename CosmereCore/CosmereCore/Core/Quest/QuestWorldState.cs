@@ -8,18 +8,18 @@ namespace Cosmere.Core.Quest;
 ///     Verse types on purpose.
 /// </summary>
 public class QuestWorldState {
-    public Dictionary<string, CapstoneState> capstoneStates = new Dictionary<string, CapstoneState>();
-    public HashSet<string> completedCapstones = new HashSet<string>();
+    public Dictionary<string, CapstoneState> capstoneStates = [];
+    public HashSet<string> completedCapstones = [];
     public int currentTick;
     public int daysElapsed;
-    public HashSet<string> enabledShards = new HashSet<string>();
+    public HashSet<string> enabledShards = [];
     public string? era;
-    public HashSet<string> flags = new HashSet<string>();
+    public HashSet<string> flags = [];
     public int freeColonistCount;
-    public Dictionary<string, int> lastOfferedTick = new Dictionary<string, int>();
+    public Dictionary<string, int> lastOfferedTick = [];
 
     /// <summary>FactionDef names with a live faction in this world.</summary>
-    public HashSet<string> presentFactions = new HashSet<string>();
+    public HashSet<string> presentFactions = [];
 
     /// <summary>The CosmereWorldDef this save runs on, or null before one is chosen.</summary>
     public string? world;
@@ -30,15 +30,15 @@ public class QuestWorldState {
     public bool crossWorld;
 
     /// <summary>Order defName to that pawn's current Ideal, for every bonded Radiant.</summary>
-    public Dictionary<string, int> bondedOrders = new Dictionary<string, int>();
+    public Dictionary<string, int> bondedOrders = [];
 
     /// <summary>Quest defName to the thingIDNumbers it is burned for. Empty on Scadrial.</summary>
-    public Dictionary<string, HashSet<int>> pawnBurns = new Dictionary<string, HashSet<int>>();
+    public Dictionary<string, HashSet<int>> pawnBurns = [];
 
     /// <summary>
     ///     HediffDef names on the subject pawn, flattened so the rules stay free of Verse types.
     /// </summary>
-    public HashSet<string> subjectHediffs = new HashSet<string>();
+    public HashSet<string> subjectHediffs = [];
 
     /// <summary>thingIDNumber of the subject pawn, or 0 for a colony-scoped quest.</summary>
     public int subjectPawnId;

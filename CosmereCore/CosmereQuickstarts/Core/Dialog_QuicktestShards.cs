@@ -43,10 +43,11 @@ public class Dialog_QuicktestShards : Verse.Window {
         float listTop = inRect.y + TitleHeight + Spacing.Get(0.5f);
         float listBottom = inRect.yMax - ButtonHeight - Spacing.Get(0.5f);
 
-        List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading
-            .GroupBy(s => s.planet)
-            .OrderBy(g => g.Key)
-            .ToList();
+        List<IGrouping<string?, ShardDef>> grouped = [
+            .. DefDatabase<ShardDef>.AllDefsListForReading
+                .GroupBy(s => s.planet)
+                .OrderBy(g => g.Key),
+        ];
 
         Rect scrollArea = new Rect(inRect.x, listTop, inRect.width, listBottom - listTop);
         float totalHeight = grouped.Sum(g => g.Count() * RowHeight + PlanetHeaderHeight);

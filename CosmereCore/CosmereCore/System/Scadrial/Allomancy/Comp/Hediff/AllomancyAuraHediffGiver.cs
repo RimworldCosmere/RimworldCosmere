@@ -128,7 +128,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         foreach (Pawn pawn in pawnsWithHediff) {
             if (StillInReach(pawn, radius)) continue;
             if (ability != null) {
-                AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(
+                AllomanticHediff? hediff = pawn.GetOrAddHediff(
                     (AllomancyAbility)ability,
                     props,
                     Pawn
@@ -218,7 +218,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff((AllomancyAbility)ability, props, Pawn);
+        AllomanticHediff? hediff = target.GetOrAddHediff((AllomancyAbility)ability, props, Pawn);
         if (hediff == null) return;
         pawnsWithHediff.Add(target);
 

@@ -27,14 +27,15 @@ public class FloatMenuDivider : FloatMenuOption {
         GameFont font = Text.Font;
         Text.Font = GameFont.Tiny;
         labelWidth = Text.CalcSize(label).x;
-        float height = Text.CalcHeight(label, MaxTextWidth);
         size.x = Mathf.Min(labelWidth + 2 * HorizMargin, MinWidth);
         size.y = 2 * VertMargin + Text.CalcHeight(Label, MaxTextWidth);
         Text.Font = font;
         SetupSize();
     }
 
-    private static void NoAction() { }
+    private static void NoAction() {
+        // A divider is not clickable; FloatMenuOption still demands an action.
+    }
 
     private void SetupSize() {
         CachedWidthField.SetValue(this, size.x);

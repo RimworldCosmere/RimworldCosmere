@@ -31,25 +31,25 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
     public override void GenerateFresh(string seed, PlanetLayer layer) {
         // WorldBeforeGenerationPatch sets Primary first, so IsActive's null fallback never fires.
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) {
-            AshmountExposureCache.Set(new Dictionary<int, float>());
+            AshmountExposureCache.Set([]);
             return;
         }
 
         if (!layer.IsRootSurface) {
-            AshmountExposureCache.Set(new Dictionary<int, float>());
+            AshmountExposureCache.Set([]);
             return;
         }
 
         int tileCount = layer.TilesCount;
         if (tileCount <= 0) {
-            AshmountExposureCache.Set(new Dictionary<int, float>());
+            AshmountExposureCache.Set([]);
             return;
         }
 
         int centreId = Rand.Range(0, tileCount);
         PlanetTile centre = new PlanetTile(centreId, layer);
 
-        List<AshmountRing.Candidate> candidates = new List<AshmountRing.Candidate>();
+        List<AshmountRing.Candidate> candidates = [];
         WorldGrid grid = Find.WorldGrid;
 
         for (int i = 0; i < tileCount; i++) {
@@ -95,8 +95,8 @@ public class WorldGenStep_Ashmounts : WorldGenStep {
     }
 
     private static void CacheExposure(PlanetLayer layer, List<int> mounts, int tileCount) {
-        Dictionary<int, float> exposure = new Dictionary<int, float>();
-        List<float> distances = new List<float>();
+        Dictionary<int, float> exposure = [];
+        List<float> distances = [];
 
         for (int i = 0; i < tileCount; i++) {
             distances.Clear();

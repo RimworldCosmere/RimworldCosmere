@@ -39,9 +39,6 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public GlobalTargetInfo? globalTarget;
     protected Job? job;
-    private bool lastWasAsleep;
-
-    private bool lastWasDowned;
     private bool lastWasPaused;
     public LocalTargetInfo? localTarget;
     public bool paused;
@@ -49,9 +46,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public bool willUseWhileDowned;
     public bool willUseWhileInjured;
 
-    public AbstractAbility(Pawn pawn) : base(pawn) { }
+    protected AbstractAbility(Pawn pawn) : base(pawn) { }
 
-    public AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+    protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
         Initialize();
     }
 
@@ -69,7 +66,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public override string Tooltip {
         get {
-            List<string> tooltipByLine = base.Tooltip.Split('\n').ToList();
+            List<string> tooltipByLine = [.. base.Tooltip.Split('\n')];
 
             if (def.beuPerTick > 0) {
                 if (def.toggleable) {
@@ -89,7 +86,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                 tooltipByLine.Insert(2, "CC_WillUseWhileInjured".Translate().Colorize(ColorLibrary.Green));
             }
 
-            return string.Join("\n", tooltipByLine.ToArray());
+            return string.Join("\n", tooltipByLine);
         }
     }
 
@@ -150,7 +147,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         nextStatus = null;
     }
 
-    public new virtual bool GizmosVisible() => base.GizmosVisible();
+    public new virtual bool GizmosVisible() {
+        return base.GizmosVisible();
+    }
 
     public new virtual void Initialize() {
         if (def.comps.Any<AbilityCompProperties>()) {
@@ -204,7 +203,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         ApplyAutoTriggers(isDowned);
 
         if (!status.IsActive) {
-            CommitStateSnapshot(isDowned, isAsleep, paused);
+            lastWasPaused = paused;
             return;
         }
 
@@ -222,7 +221,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
             OnEnable();
             if (status.IsPoweredUp) OnPowerUp();
-            CommitStateSnapshot(isDowned, isAsleep, paused: false);
+            lastWasPaused = false;
             return;
         }
 
@@ -234,14 +233,13 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             }
         }
 
-        CommitStateSnapshot(isDowned, isAsleep, paused);
+        lastWasPaused = paused;
     }
 
     private void ApplyAutoTriggers(bool isDowned) {
-        if (willUseWhileDowned && isDowned && !pawn.Dead && status.IsActive) {
-            if (Gene.CanLowerReserve(def.beuPerTick)) {
-                UpdateStatus(Active.On);
-            }
+        if (willUseWhileDowned && isDowned && !pawn.Dead && status.IsActive &&
+            Gene.CanLowerReserve(def.beuPerTick)) {
+            UpdateStatus(Active.On);
         }
 
         if (willUseWhileInjured && Gene.CanLowerReserve(def.beuPerTick)) {
@@ -254,12 +252,6 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                 }
             }
         }
-    }
-
-    private void CommitStateSnapshot(bool isDowned, bool isAsleep, bool paused) {
-        lastWasDowned = isDowned;
-        lastWasAsleep = isAsleep;
-        lastWasPaused = paused;
     }
 
     protected virtual float GetMoteScale() {
@@ -387,17 +379,17 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             UpdateStatus(nextStatus.Value);
         }
 
-        Job? job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
-        job.source = this;
-        job.ability = this;
-        job.verbToUse = verb;
-        job.playerForced = true;
-        job.targetA = targetInfo;
-        job.targetB = destination;
-        job.count = nextStatus?.power ?? status.power;
-        job.followRadius = def.verbProperties.range / 2f;
+        Job? castJob = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
+        castJob.source = this;
+        castJob.ability = this;
+        castJob.verbToUse = verb;
+        castJob.playerForced = true;
+        castJob.targetA = targetInfo;
+        castJob.targetB = destination;
+        castJob.count = nextStatus?.power ?? status.power;
+        castJob.followRadius = def.verbProperties.range / 2f;
 
-        return job;
+        return castJob;
     }
 
     protected override void PreActivate(LocalTargetInfo? target) {

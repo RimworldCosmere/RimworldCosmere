@@ -10,10 +10,9 @@ namespace Cosmere.System.Roshar.Thing.Apparel;
 
 public class RadiantShardplate : Shardplate {
     private RadiantOrderDef? radiantOrderInt;
-    private Color[] storedColors = new Color[4];
 
     private RadiantOrderDef? radiantOrder {
-        get { return radiantOrderInt ??= SpawnedParentOrMe is Verse.Pawn pawn ? pawn.GetRadiantOrder() : null; }
+        get => radiantOrderInt ??= SpawnedParentOrMe is Verse.Pawn pawn ? pawn.GetRadiantOrder() : null;
     }
 
     private GemDef? gemstone => radiantOrder?.gemstone;

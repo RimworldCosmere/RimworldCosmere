@@ -10,7 +10,7 @@ public class GemStuff : Verse.Graphic {
 
     public override Material MatSingle => subGraphics[GemDefOf.Diamond.index].MatSingle;
 
-    private ThingDef StuffOfThing(Verse.Thing thing) {
+    private static ThingDef StuffOfThing(Verse.Thing thing) {
         return thing is IConstructible constructible ? constructible.EntityToBuildStuff() : thing.Stuff;
     }
 
@@ -29,8 +29,7 @@ public class GemStuff : Verse.Graphic {
             GemDef gem = defsListForReading[index];
             string folderPath = req.path;
             Texture2D texture2D = ContentFinder<Texture2D>.GetAllInFolder(folderPath)
-                .Where(x => x.name.EndsWith(gem.defName))
-                .First();
+                .First(x => x.name.EndsWith(gem.defName));
             subGraphics[index] = GraphicDatabase.Get<Graphic_Single>(
                 $"{folderPath}/{texture2D.name}",
                 req.shader,

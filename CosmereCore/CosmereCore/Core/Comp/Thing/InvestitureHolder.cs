@@ -259,9 +259,7 @@ public class InvestitureHolder : ThingComp {
 
     public override void PostPostMake() {
         base.PostPostMake();
-        if (parent.def.tickerType != TickerType.Normal) {
-            parent.def.tickerType = TickerType.Normal;
-        }
+        parent.def.tickerType = TickerType.Normal;
 
         maxInvestitureSelf = props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value;
     }

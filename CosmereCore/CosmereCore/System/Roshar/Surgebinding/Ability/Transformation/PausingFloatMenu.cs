@@ -7,25 +7,21 @@ public class PausingFloatMenu : FloatMenu {
     private static int openCount;
 
     public PausingFloatMenu(List<FloatMenuOption> options) : base(options) {
-        if (savedSpeed == null) {
-            savedSpeed = Find.TickManager.CurTimeSpeed;
-        }
-
-        Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
-        openCount++;
+        PauseAndCount();
     }
 
     public override void PostClose() {
         base.PostClose();
-        openCount--;
-
-        if (openCount <= 0) {
-            openCount = 0;
-            RestoreSpeed();
-        }
+        ReleasePause();
     }
 
     public static void KeepPaused() {
+        openCount++;
+    }
+
+    private static void PauseAndCount() {
+        savedSpeed ??= Find.TickManager.CurTimeSpeed;
+        Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
         openCount++;
     }
 

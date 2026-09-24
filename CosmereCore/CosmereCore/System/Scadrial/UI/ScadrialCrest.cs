@@ -35,6 +35,7 @@ public static class ScadrialMarks {
 /// </summary>
 public sealed class ScadrialCrest {
     public const float Gap = 6f;
+    private const string CountArg = "COUNT";
     public const float RuleGap = 7f;
 
     /// <summary>
@@ -111,7 +112,7 @@ public sealed class ScadrialCrest {
         marks.Clear();
 
         List<InvestitureCell> cells = snapshot.Cells;
-        rank = "CC_Dock_Crest_MetalCount".Translate(cells.Count.Named("COUNT")).Resolve();
+        rank = "CC_Dock_Crest_MetalCount".Translate(cells.Count.Named(CountArg)).Resolve();
 
         if (feruchemy ? pawn.IsFullFeruchemist() : pawn.IsMistborn()) {
             glyph = feruchemy ? ScadrialMarks.FullFeruchemist : ScadrialMarks.Mistborn;
@@ -152,13 +153,17 @@ public sealed class ScadrialCrest {
         }
 
         subtitleColor = burning + flaring > 0 ? LiveColor : IdleColor;
-        subtitle = burning > 0 && flaring > 0
-            ? "CC_Dock_Crest_BurningFlaring".Translate(burning.Named("BURNING"), flaring.Named("FLARING")).Resolve()
-            : flaring > 0
-                ? "CC_Dock_Crest_Flaring".Translate(flaring.Named("COUNT")).Resolve()
-                : burning > 0
-                    ? "CC_Dock_Crest_Burning".Translate(burning.Named("COUNT")).Resolve()
-                    : "CC_Dock_Crest_NothingBurning".Translate().Resolve();
+        if (burning > 0 && flaring > 0) {
+            subtitle = "CC_Dock_Crest_BurningFlaring"
+                .Translate(burning.Named("BURNING"), flaring.Named("FLARING"))
+                .Resolve();
+        } else if (flaring > 0) {
+            subtitle = "CC_Dock_Crest_Flaring".Translate(flaring.Named(CountArg)).Resolve();
+        } else if (burning > 0) {
+            subtitle = "CC_Dock_Crest_Burning".Translate(burning.Named(CountArg)).Resolve();
+        } else {
+            subtitle = "CC_Dock_Crest_NothingBurning".Translate().Resolve();
+        }
     }
 
     /// <summary>
@@ -186,13 +191,17 @@ public sealed class ScadrialCrest {
         }
 
         subtitleColor = tapping + storing > 0 ? LiveColor : IdleColor;
-        subtitle = tapping > 0 && storing > 0
-            ? "CC_Dock_Crest_TappingStoring".Translate(tapping.Named("TAPPING"), storing.Named("STORING")).Resolve()
-            : tapping > 0
-                ? "CC_Dock_Crest_Tapping".Translate(tapping.Named("COUNT")).Resolve()
-                : storing > 0
-                    ? "CC_Dock_Crest_Storing".Translate(storing.Named("COUNT")).Resolve()
-                    : "CC_Dock_Crest_NothingMoving".Translate().Resolve();
+        if (tapping > 0 && storing > 0) {
+            subtitle = "CC_Dock_Crest_TappingStoring"
+                .Translate(tapping.Named("TAPPING"), storing.Named("STORING"))
+                .Resolve();
+        } else if (tapping > 0) {
+            subtitle = "CC_Dock_Crest_Tapping".Translate(tapping.Named(CountArg)).Resolve();
+        } else if (storing > 0) {
+            subtitle = "CC_Dock_Crest_Storing".Translate(storing.Named(CountArg)).Resolve();
+        } else {
+            subtitle = "CC_Dock_Crest_NothingMoving".Translate().Resolve();
+        }
     }
 
     private static string MetalLabel(string subsystemId) {

@@ -205,9 +205,9 @@ public static class KandraAppearance {
         float lift = (EyeLightStrengthFor(lightName) - 1f) * LightLift;
 
         return new Color(
-            Mathf.Clamp01((stone.r * UnlitDim) + lift),
-            Mathf.Clamp01((stone.g * UnlitDim) + lift),
-            Mathf.Clamp01((stone.b * UnlitDim) + lift),
+            Mathf.Clamp01(stone.r * UnlitDim + lift),
+            Mathf.Clamp01(stone.g * UnlitDim + lift),
+            Mathf.Clamp01(stone.b * UnlitDim + lift),
             stone.a
         );
     }

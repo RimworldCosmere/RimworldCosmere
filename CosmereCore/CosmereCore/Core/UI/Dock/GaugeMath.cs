@@ -12,7 +12,7 @@ public static class GaugeMath {
     public static float SnapTarget(float fraction, float max) {
         if (max <= 0f) return 0f;
 
-        float clamped = fraction < 0f ? 0f : fraction > 1f ? 1f : fraction;
+        float clamped = Math.Clamp(fraction, 0f, 1f);
 
         return (float)Math.Round(clamped / SnapStep) * SnapStep * max;
     }

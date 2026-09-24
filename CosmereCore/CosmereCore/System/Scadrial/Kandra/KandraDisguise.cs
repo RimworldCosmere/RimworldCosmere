@@ -86,7 +86,7 @@ public static class KandraDisguise {
     private static float BronzeRange(Pawn seeker) {
         int skill = seeker.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)?.Level ?? 0;
 
-        return 12f + (skill * 1.5f);
+        return 12f + skill * 1.5f;
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ public static class KandraDisguise {
     public static float RangeFor(Pawn disguised) {
         int skill = disguised.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_Shapeshift)?.Level ?? 0;
 
-        return Mathf.Max(5f, NoticeRange - (skill * NoticeRangePerSkill));
+        return Mathf.Max(5f, NoticeRange - skill * NoticeRangePerSkill);
     }
 
     /// <summary>

@@ -38,7 +38,7 @@ public class GoldAbility : AllomancyAbility {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-        hediff = (AllomanticHediff?)GetOrAddHediff(pawn);
+        hediff = GetOrAddHediff(pawn);
         if (hediff != null) hediff.ExtraSeverity += 0.06f;
     }
 

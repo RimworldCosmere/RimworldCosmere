@@ -1,7 +1,7 @@
 namespace Cosmere.Core.Ability.Autocast;
 
 public static class AutocastDefaults {
-    private static readonly Dictionary<string, List<AutocastTrigger>> seeds = new();
+    private static readonly Dictionary<string, List<AutocastTrigger>> seeds = [];
     private static readonly HashSet<string> releaseOnStop = [];
 
     public static IEnumerable<string> SeededAbilityDefNames => seeds.Keys;

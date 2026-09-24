@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Cosmere.Core;
 using Cosmere.Core.Comp.Thing;
 using RimWorld;
@@ -67,14 +67,6 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
             IntVec3 dropPosition = parent.Position;
             GenPlace.TryPlaceThing(gemstoneToDrop, dropPosition, parent.Map, ThingPlaceMode.Near);
         }
-    }
-
-    public override void PostSpawnSetup(bool respawningAfterLoad) {
-        base.PostSpawnSetup(respawningAfterLoad);
-    }
-
-    public override void PostExposeData() {
-        base.PostExposeData();
     }
 
     public void UpdatePowerState(bool flickeredOn) {

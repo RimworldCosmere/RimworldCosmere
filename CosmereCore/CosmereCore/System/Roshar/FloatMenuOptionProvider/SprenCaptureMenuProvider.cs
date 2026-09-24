@@ -1,4 +1,3 @@
-using System;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.LesserSpren.CaptureSystem;
@@ -11,9 +10,6 @@ using Verse.AI;
 namespace Cosmere.System.Roshar.FloatMenuOptionProvider;
 
 public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
-    private static readonly List<SprenType> AllSprenTypes =
-        Enum.GetValues(typeof(SprenType)).Cast<SprenType>().ToList();
-
     protected override bool Drafted => true;
 
     protected override bool Undrafted => true;
@@ -52,7 +48,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
             return [];
         }
 
-        ThingWithComps suitableGem = suitableGems.First();
+        ThingWithComps suitableGem = suitableGems[0];
         bool gemInInventory = pawn.inventory?.innerContainer?.Contains(suitableGem) == true;
 
         foreach (BaseSprenController? controller in capturableSpren) {
@@ -101,7 +97,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     ) {
         List<ThingWithComps> suitableGems = [];
 
-        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn, controllers.Select(x => x.sprenType).ToList());
+        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn, [.. controllers.Select(x => x.sprenType)]);
         if (inventoryGem != null) {
             suitableGems.Add(inventoryGem);
             return suitableGems;
@@ -109,7 +105,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         List<ThingWithComps> mapGems = FindSuitableGemsOnMapForSprenTypes(
             pawn,
-            controllers.Select(x => x.sprenType).ToList()
+            [.. controllers.Select(x => x.sprenType)]
         );
         suitableGems.AddRange(mapGems);
 
@@ -133,16 +129,18 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     private static List<ThingWithComps> FindSuitableGemsOnMapForSprenTypes(Pawn pawn, List<SprenType> sprenTypes) {
         if (pawn.Map == null) return [];
 
-        List<ThingWithComps> availableGems = pawn.Map.listerThings.AllThings
-            .Where(thing => thing is ThingWithComps gem &&
-                            IsGemSuitableForSprenTypes(gem, sprenTypes) &&
-                            pawn.CanReach(thing, PathEndMode.ClosestTouch, Danger.Deadly) &&
-                            !thing.IsForbidden(pawn)
-            )
-            .Cast<ThingWithComps>()
-            .ToList();
+        List<ThingWithComps> availableGems =
+        [
+            .. pawn.Map.listerThings.AllThings
+                .Where(thing => thing is ThingWithComps gem &&
+                                IsGemSuitableForSprenTypes(gem, sprenTypes) &&
+                                pawn.CanReach(thing, PathEndMode.ClosestTouch, Danger.Deadly) &&
+                                !thing.IsForbidden(pawn)
+                )
+                .Cast<ThingWithComps>(),
+        ];
 
-        return availableGems.OrderBy(gem => pawn.Position.DistanceTo(gem.Position)).ToList();
+        return [.. availableGems.OrderBy(gem => pawn.Position.DistanceTo(gem.Position))];
     }
 
     private static bool IsGemSuitableForSprenTypes(ThingWithComps gem, List<SprenType> sprenTypes) {

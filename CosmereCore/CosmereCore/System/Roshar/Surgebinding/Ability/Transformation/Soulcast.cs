@@ -336,7 +336,7 @@ public class Soulcast : SurgebindingAbility {
         return !target.Destroyed && TryPayCost(cost);
     }
 
-    private void SpawnFleck(IntVec3 pos, Map map) {
+    private static void SpawnFleck(IntVec3 pos, Map map) {
         FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
     }
 

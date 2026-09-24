@@ -262,20 +262,13 @@ public class Feruchemist : Metalborn {
     private HediffDef? tapHediffDef =>
         cachedTapHediffDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + metal.defName);
 
-    private Hediff? tapHediff => pawn.health.hediffSet.GetFirstHediffOfDef(tapHediffDef);
-
     private HediffDef? storeHediffDef =>
         cachedStoreHediffDef ??=
             DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.defName);
 
-    private Hediff? storeHediff => pawn.health.hediffSet.GetFirstHediffOfDef(storeHediffDef);
-
     private HediffDef? tapCompoundedHediffDef =>
         cachedTapCompoundedHediffDef ??=
             DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_TapCompounded" + metal.defName);
-
-    private Verse.Hediff? tapCompoundedHediff =>
-        tapCompoundedHediffDef == null ? null : pawn.health.hediffSet.GetFirstHediffOfDef(tapCompoundedHediffDef);
 
     private HediffDef? savantHediffDef =>
         cachedSavantHediffDef ??= ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(metal);
@@ -638,7 +631,7 @@ public class Feruchemist : Metalborn {
 
     private float effectiveSeverity => SeverityForTarget(targetValue);
 
-    private float SeverityForTarget(float target) {
+    private static float SeverityForTarget(float target) {
         float delta = target - IdleTarget;
         if (Mathf.Abs(delta) < DeadBand) return 0f;
 

@@ -32,7 +32,7 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
         if (job.targetQueueB == null) return;
 
         foreach (LocalTargetInfo localTargetInfo in job.targetQueueB) {
-            if (!TargetC.HasThing || !(localTargetInfo == (LocalTargetInfo)TargetThingC)) {
+            if (!TargetC.HasThing || localTargetInfo != (LocalTargetInfo)TargetThingC) {
                 ReserveEnroute(localTargetInfo.Thing, ref count);
             }
         }

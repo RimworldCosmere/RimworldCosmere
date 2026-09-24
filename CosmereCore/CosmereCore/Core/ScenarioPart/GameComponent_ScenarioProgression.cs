@@ -13,7 +13,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
     private ScenarioProgressionDef? handedOffDef;
     private HashSet<string> firedEvents = [];
     private int lastCheckTick = -1;
-    private Dictionary<string, int> lastFireTicks = new Dictionary<string, int>();
+    private Dictionary<string, int> lastFireTicks = [];
 
     /// <summary>When the running arc took over. Negative while the campaign is on its first.</summary>
     private int arcStartTick = -1;
@@ -183,7 +183,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
     public string? PendingEffects { get; private set; }
 
     private static string? Summarise(List<ProgressionAction> actions) {
-        List<string> lines = new List<string>();
+        List<string> lines = [];
         for (int i = 0; i < actions.Count; i++) {
             string? line = actions[i].Describe();
             if (line != null && line.Length > 0) lines.Add(line);
@@ -240,6 +240,6 @@ public class GameComponent_ScenarioProgression : GameComponent {
         Scribe_Collections.Look(ref firedEvents, "firedEvents", LookMode.Value);
         Scribe_Collections.Look(ref lastFireTicks, "lastFireTicks", LookMode.Value, LookMode.Value);
         firedEvents ??= [];
-        lastFireTicks ??= new Dictionary<string, int>();
+        lastFireTicks ??= [];
     }
 }

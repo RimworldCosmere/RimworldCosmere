@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Cosmere.Core.UI.Skin;
 
 public static class SkinFontCache {
-    private static readonly Dictionary<string, Font?> cache = new Dictionary<string, Font?>();
+    private static readonly Dictionary<string, Font?> cache = [];
 
     public static Font? Resolve(string[] families, int pixelSize) {
         if (families == null || families.Length == 0) return null;

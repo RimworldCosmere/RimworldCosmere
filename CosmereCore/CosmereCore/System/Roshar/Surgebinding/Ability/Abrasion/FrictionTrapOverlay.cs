@@ -56,7 +56,7 @@ public static class FrictionTrapOverlay {
     /// </summary>
     private static List<IntVec3> CellsFor(IntVec3 center, float radius, Map map) {
         int radiusCeil = (int)radius + 1;
-        List<IntVec3> cells = new List<IntVec3>();
+        List<IntVec3> cells = [];
         for (int dx = -radiusCeil; dx <= radiusCeil; dx++) {
             for (int dz = -radiusCeil; dz <= radiusCeil; dz++) {
                 IntVec3 cell = new IntVec3(center.x + dx, 0, center.z + dz);

@@ -6,7 +6,7 @@ namespace Cosmere.System.Scadrial.Util;
 
 public static class BronzeDetectionUtility {
     public static string? GetTileResourceReport(int tileId) {
-        List<ThingDef> rockTypes = Find.World.NaturalRockTypesIn(new PlanetTile(tileId)).ToList();
+        List<ThingDef> rockTypes = [.. Find.World.NaturalRockTypesIn(new PlanetTile(tileId))];
         if (rockTypes.Count == 0) return null;
 
         StringBuilder sb = new StringBuilder();

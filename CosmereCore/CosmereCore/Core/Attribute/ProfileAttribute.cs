@@ -8,7 +8,7 @@ public enum ProfileMode {
 }
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class Profile(
+public sealed class ProfileAttribute(
     string? label = null,
     ProfileMode mode = ProfileMode.Instrumentation,
     float sampleProbability = 0.01f,

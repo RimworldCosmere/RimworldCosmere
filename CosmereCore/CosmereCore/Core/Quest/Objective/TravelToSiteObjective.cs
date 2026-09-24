@@ -54,7 +54,7 @@ public class TravelToSiteObjective : QuestObjective {
     public WorldObjectDef? worldObject;
 
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
-        if (!TryFindTile(ctx, out PlanetTile tile)) {
+        if (!TryFindTile(out PlanetTile tile)) {
             Log.Error($"TravelToSiteObjective on {ctx.def?.defName} found no tile. Quest aborted.");
             throw new QuestBuildFailure("no site tile available");
         }
@@ -63,7 +63,7 @@ public class TravelToSiteObjective : QuestObjective {
             ? null
             : Find.FactionManager.FirstFactionOfDef(ctx.def.targetFaction);
 
-        List<SitePartDef> siteParts = new List<SitePartDef>();
+        List<SitePartDef> siteParts = [];
         if (sitePart != null) siteParts.Add(sitePart);
 
         // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the quest layers on.
@@ -119,7 +119,7 @@ public class TravelToSiteObjective : QuestObjective {
             site = site,
             arrivalSignal = siteTag + "." + QuestUtility.QuestTargetSignalPart_MapGenerated,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(arrived);
 
@@ -137,7 +137,7 @@ public class TravelToSiteObjective : QuestObjective {
         arrived.keeper = keeper;
     }
 
-    private bool TryFindTile(QuestBuildContext ctx, out PlanetTile tile) {
+    private bool TryFindTile(out PlanetTile tile) {
         if (allowedBiomes == null && allowedHilliness == null) {
             return TileFinder.TryFindNewSiteTile(out tile, minTiles, maxTiles);
         }

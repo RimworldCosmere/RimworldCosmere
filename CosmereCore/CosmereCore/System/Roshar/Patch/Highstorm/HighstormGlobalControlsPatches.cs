@@ -14,7 +14,7 @@ namespace Cosmere.System.Roshar.Patch.Highstorm;
 /// </summary>
 [StaticConstructorOnStartup]
 public static class HighstormGlobalControlsPatch {
-    public static bool showHighstormReadout = true;
+    private static bool showHighstormReadout = true;
 
     private static Texture2D? highstormIcon;
 

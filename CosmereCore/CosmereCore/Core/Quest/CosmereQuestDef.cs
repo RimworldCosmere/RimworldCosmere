@@ -87,7 +87,7 @@ public class CosmereQuestDef : Verse.Def {
         }
 
         if (stages != null) {
-            HashSet<string> seenKeys = new HashSet<string>();
+            HashSet<string> seenKeys = [];
             for (int i = 0; i < stages.Count; i++) {
                 CosmereQuestStage stage = stages[i];
                 string? key = stage.key;
@@ -138,7 +138,7 @@ public class CosmereQuestDef : Verse.Def {
     ///     dead stage or a reward that vanished. Catch it at load instead.
     /// </summary>
     private IEnumerable<string> BranchErrors() {
-        HashSet<string> choiceKeys = new HashSet<string>();
+        HashSet<string> choiceKeys = [];
         if (stages != null) {
             for (int i = 0; i < stages.Count; i++) {
                 if (stages[i].objective is not Objective.ChoiceObjective choice) continue;

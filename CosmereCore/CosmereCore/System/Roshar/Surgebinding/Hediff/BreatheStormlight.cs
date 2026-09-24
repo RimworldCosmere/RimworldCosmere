@@ -21,23 +21,27 @@ public class BreatheStormlight : SurgebindingHediff {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
         if (investiture == null || investiture.isFull) return;
 
-        float amountDrawn = 0f;
         if (pawn.apparel?.WornApparel != null) {
-            amountDrawn += pawn.apparel.WornApparel.Sum(TryAbsorbFromThing);
+            AbsorbFromAll(pawn.apparel.WornApparel);
         }
 
         if (pawn.equipment?.AllEquipmentListForReading != null) {
-            amountDrawn += pawn.equipment.AllEquipmentListForReading.Sum(TryAbsorbFromThing);
+            AbsorbFromAll(pawn.equipment.AllEquipmentListForReading);
         }
 
         if (pawn.inventory?.innerContainer != null) {
-            amountDrawn += pawn.inventory.innerContainer.Sum(TryAbsorbFromThing);
+            AbsorbFromAll(pawn.inventory.innerContainer);
         }
 
         if (pawn.Spawned && pawn.Map != null) {
-            amountDrawn += pawn.GetCellsAround(MaxDrawDistance)
-                .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));
+            foreach (IntVec3 cell in pawn.GetCellsAround(MaxDrawDistance)) {
+                AbsorbFromAll(cell.GetThingList(pawn.Map));
+            }
         }
+    }
+
+    private void AbsorbFromAll(IEnumerable<Verse.Thing> things) {
+        foreach (Verse.Thing thing in things) TryAbsorbFromThing(thing);
     }
 
     private float TryAbsorbFromThing(Verse.Thing thing) {

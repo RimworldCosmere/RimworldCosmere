@@ -34,8 +34,8 @@ public partial class Dialog_KandraForms {
 
     /// <summary>The window above in UV, where row 0 is the bottom of the texture.</summary>
     private static readonly Rect IrisChipCoords = new Rect(
-        (IrisMarkX - (IrisChipWindow / 2f)) / IrisCanvasSize,
-        1f - ((IrisMarkY + (IrisChipWindow / 2f)) / IrisCanvasSize),
+        (IrisMarkX - IrisChipWindow / 2f) / IrisCanvasSize,
+        1f - (IrisMarkY + IrisChipWindow / 2f) / IrisCanvasSize,
         IrisChipWindow / IrisCanvasSize,
         IrisChipWindow / IrisCanvasSize
     );
@@ -46,7 +46,7 @@ public partial class Dialog_KandraForms {
     private void DrawEyeOptions(Rect inner) {
         float gap = Spacing.Get(0.5f);
         float width = ColumnContentWidth(inner);
-        float column = (width - (gap * (SwatchColumns - 1))) / SwatchColumns;
+        float column = (width - gap * (SwatchColumns - 1)) / SwatchColumns;
 
         IReadOnlyList<IrisRow> irises = KandraAppearance.AllIrisSizes;
         IReadOnlyList<EyeColourRow> stones = KandraAppearance.AllEyeColours;
@@ -68,12 +68,12 @@ public partial class Dialog_KandraForms {
         }
 
         // Two of the three sections come and go, so the height is measured rather than assumed.
-        float content = (SectionHeaderHeight * 3f)
-                        + (irises.Count * IrisRowHeight)
-                        + (CheckRowHeight * 2f)
+        float content = SectionHeaderHeight * 3f
+                        + irises.Count * IrisRowHeight
+                        + CheckRowHeight * 2f
                         + oddNoteHeight
                         + lightNoteHeight
-                        + (gap * 2f)
+                        + gap * 2f
                         + (lit ? lights.Count * IrisRowHeight : 0f);
 
         Widgets.BeginScrollView(inner, ref eyeOptionScroll, new Rect(0f, 0f, width, content));
@@ -127,7 +127,7 @@ public partial class Dialog_KandraForms {
         if (lit) {
             for (int i = 0; i < lights.Count; i++) {
                 (string name, float _, string labelKey) = lights[i];
-                Rect row = new Rect(0f, y + (i * IrisRowHeight), width, IrisRowHeight);
+                Rect row = new Rect(0f, y + i * IrisRowHeight, width, IrisRowHeight);
 
                 // A flat chip cannot tell two lights apart, so the chip draws the eye itself.
                 if (row.Overlaps(seen) &&
@@ -148,7 +148,7 @@ public partial class Dialog_KandraForms {
             Widgets.DrawHighlightIfMouseover(row);
         }
 
-        Rect socket = new Rect(row.x + 4f, row.y + ((row.height - IrisChipSize) / 2f), IrisChipSize, IrisChipSize);
+        Rect socket = new Rect(row.x + 4f, row.y + (row.height - IrisChipSize) / 2f, IrisChipSize, IrisChipSize);
         Widgets.DrawBoxSolid(socket, BodyColor);
 
         // Every size shares a canvas, so cropping all of them to one window keeps the sizes to scale.

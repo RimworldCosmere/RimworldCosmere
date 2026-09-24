@@ -3,8 +3,7 @@ using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public static class SprenControllerRegistry {
-    private static readonly Dictionary<SprenType, BaseSprenController> Controllers =
-        new Dictionary<SprenType, BaseSprenController>();
+    private static readonly Dictionary<SprenType, BaseSprenController> Controllers = [];
 
     private static List<BaseSprenController> cachedEnabled = [];
     private static List<BaseSprenController> cachedStatic = [];

@@ -35,7 +35,7 @@ public static class BetaHubStatusMapper {
     public static bool IsMissingReleasePermission(long httpStatus, string? body) {
         return httpStatus == 403
                && body != null
-               && body.IndexOf(ReleasePermissionMarker, global::System.StringComparison.OrdinalIgnoreCase) >= 0;
+               && body.Contains(ReleasePermissionMarker, global::System.StringComparison.OrdinalIgnoreCase);
     }
 
     public static string MessageKey(SubmitOutcome outcome) {

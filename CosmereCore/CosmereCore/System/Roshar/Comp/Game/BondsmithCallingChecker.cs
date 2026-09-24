@@ -71,7 +71,7 @@ public class BondsmithCallingChecker : GameComponent {
         }
     }
 
-    private bool MeetsCallingCriteria(Pawn pawn, string sprenName, Verse.Map map) {
+    private static bool MeetsCallingCriteria(Pawn pawn, string sprenName, Verse.Map map) {
         if (!IsGodsprenAvailable(sprenName)) return false;
         return sprenName switch {
             "Stormfather" => MeetsStormfatherCriteria(pawn, map),
@@ -90,7 +90,7 @@ public class BondsmithCallingChecker : GameComponent {
         };
     }
 
-    private bool MeetsStormfatherCriteria(Pawn pawn, Verse.Map map) {
+    private static bool MeetsStormfatherCriteria(Pawn pawn, Verse.Map map) {
         bool isFactionLeader = pawn.Faction?.leader == pawn;
         if (isFactionLeader) {
             float avgOpinion = GetAverageColonyOpinion(pawn, map);
@@ -106,7 +106,7 @@ public class BondsmithCallingChecker : GameComponent {
         return highOpinionCount >= 3;
     }
 
-    private bool MeetsNightwatcherCriteria(Pawn pawn) {
+    private static bool MeetsNightwatcherCriteria(Pawn pawn) {
         int medSkill = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Medicine)?.Level ?? 0;
         int rescued = (int)pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_PawnsRescued);
 
@@ -125,7 +125,7 @@ public class BondsmithCallingChecker : GameComponent {
         return hasCaring && hasMedPassion && rescued >= 3;
     }
 
-    private bool MeetsSiblingCriteria(Pawn pawn) {
+    private static bool MeetsSiblingCriteria(Pawn pawn) {
         int intSkill = pawn.skills?.GetSkill(RimWorld.SkillDefOf.Intellectual)?.Level ?? 0;
         int research = (int)pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_ResearchCompleted);
 

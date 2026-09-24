@@ -1,6 +1,6 @@
 ﻿namespace Cosmere.Core.UI;
 
-public class Spacing {
+public static class Spacing {
     public const int BaseUnit = 16;
     public const float FontBaseUnit = 16f;
 

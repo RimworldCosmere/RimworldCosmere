@@ -5,6 +5,8 @@ using Verse;
 namespace Cosmere.Core.Ability.Autocast;
 
 public sealed class AutocastRuleEditorDialog : Verse.Window {
+    private const string PercentArg = "PERCENT";
+
     private static readonly AutocastComparison[] Comparisons =
         (AutocastComparison[])Enum.GetValues(typeof(AutocastComparison));
 
@@ -24,8 +26,17 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         draggable = false;
     }
 
-    public override Vector2 InitialSize =>
-        new Vector2(520f, rule.Kind == AutocastRuleKind.FeruchemyDial ? 520f : toggleable ? 490f : 460f);
+    public override Vector2 InitialSize {
+        get {
+            float height = rule.Kind switch {
+                AutocastRuleKind.FeruchemyDial => 520f,
+                _ when toggleable => 490f,
+                _ => 460f,
+            };
+
+            return new Vector2(520f, height);
+        }
+    }
 
     public override void DoWindowContents(Rect inRect) {
         float y = inRect.y;
@@ -92,7 +103,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
     private float DrawCastSettings(Rect inRect, float y) {
         Widgets.Label(
             new Rect(inRect.x, y, 160f, 24f),
-            "CC_Autocast_Editor_MaxReserveSpend".Translate(((int)(rule.CostCapFraction * 100f)).Named("PERCENT"))
+            "CC_Autocast_Editor_MaxReserveSpend".Translate(((int)(rule.CostCapFraction * 100f)).Named(PercentArg))
         );
 
         Rect capSlider = new Rect(inRect.x + 170f, y + 4f, inRect.width - 180f, 18f);
@@ -141,7 +152,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(rateSlider.xMax + 6f, y, 50f, 24f),
-                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(moved * 100f).Named("PERCENT"))
+                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(moved * 100f).Named(PercentArg))
             );
         }
 
@@ -188,7 +199,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(restSlider.xMax + 6f, y, 50f, 24f),
-                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(restMoved * 100f).Named("PERCENT"))
+                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(restMoved * 100f).Named(PercentArg))
             );
         }
 
@@ -276,7 +287,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
                     valueLabel,
                     isPercent
                         ? "CC_Autocast_Editor_PercentLabel".Translate(
-                            ((int)(trigger.Threshold * 100f)).Named("PERCENT")
+                            ((int)(trigger.Threshold * 100f)).Named(PercentArg)
                         )
                         : "CC_Autocast_Editor_CellsLabel".Translate(((int)trigger.Threshold).Named("COUNT"))
                 );

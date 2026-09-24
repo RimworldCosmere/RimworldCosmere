@@ -70,10 +70,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
             Allomancer.MaxRequestedVialStock,
             true
         );
-        int newStockInt = Mathf.RoundToInt(newStock);
-        if (newStockInt != gene.RequestedVialStock) {
-            gene.RequestedVialStock = newStockInt;
-        }
+        gene.RequestedVialStock = Mathf.RoundToInt(newStock);
 
         y += 28f;
 

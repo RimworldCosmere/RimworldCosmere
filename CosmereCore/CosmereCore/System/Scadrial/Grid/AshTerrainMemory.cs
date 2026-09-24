@@ -102,7 +102,7 @@ public class AshTerrainMemory : IExposable {
     /// </summary>
     private static TerrainDef Lookup(ushort hash) {
         if (byHash == null) {
-            byHash = new Dictionary<ushort, TerrainDef>();
+            byHash = [];
             foreach (TerrainDef def in DefDatabase<TerrainDef>.AllDefs) {
                 byHash[def.shortHash] = def;
             }

@@ -28,7 +28,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         return new FloatMenuOption("CS_CannotIngest".Translate() + ": " + reason, null);
     }
 
-    private AcceptanceReport CanIngestGodMetal(
+    private static AcceptanceReport CanIngestGodMetal(
         Pawn pawn,
         MetallicArtsMetalDef metal,
         MetallicArtsMetalDef? stuffMetal
@@ -51,29 +51,21 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         float power = pawn.GetStatValue(isAllomancy ? AllomanticPower : FeruchemicPower);
         float max = isAllomancy ? AllomanticPower.maxValue : FeruchemicPower.maxValue;
 
-        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
-            if (pawn.IsMistborn() && power >= max) {
-                return "CS_Vial_AlreadyMistborn".Translate();
-            }
+        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && pawn.IsMistborn() && power >= max) {
+            return "CS_Vial_AlreadyMistborn".Translate();
         }
 
-        if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
-            if (pawn.IsFullFeruchemist() && power >= max) {
-                return "CS_AlreadyFullFeruchemist".Translate();
-            }
+        if (metal.Equals(MetallicArtsMetalDefOf.Leratium) && pawn.IsFullFeruchemist() && power >= max) {
+            return "CS_AlreadyFullFeruchemist".Translate();
         }
 
         if (stuffMetal != null) {
-            if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
-                if (pawn.IsMisting(stuffMetal) && power >= max) {
-                    return "CS_AlreadyMisting".Translate(metal.allomancy!.userName.CapitalizeFirst());
-                }
+            if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy) && pawn.IsMisting(stuffMetal) && power >= max) {
+                return "CS_AlreadyMisting".Translate(metal.allomancy!.userName.CapitalizeFirst());
             }
 
-            if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
-                if (pawn.IsFerring(stuffMetal) && power >= max) {
-                    return "CS_AlreadyFerring".Translate(metal.feruchemy!.userName.CapitalizeFirst());
-                }
+            if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy) && pawn.IsFerring(stuffMetal) && power >= max) {
+                return "CS_AlreadyFerring".Translate(metal.feruchemy!.userName.CapitalizeFirst());
             }
         }
 

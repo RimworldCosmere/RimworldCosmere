@@ -13,8 +13,8 @@ namespace Cosmere.Core;
 public static class Profiler {
     // Flush every N seconds (wall time) to avoid spam (only when aggregate=true)
     private const int FlushSeconds = 5;
-    private static readonly Dictionary<MethodBase, Profile> Attrs = new Dictionary<MethodBase, Profile>();
-    private static readonly Dictionary<MethodBase, string> Labels = new Dictionary<MethodBase, string>();
+    private static readonly Dictionary<MethodBase, ProfileAttribute> Attrs = [];
+    private static readonly Dictionary<MethodBase, string> Labels = [];
     private static readonly ConcurrentDictionary<string, Agg> ScopeAggs = new ConcurrentDictionary<string, Agg>();
 
     // Instrumentation stopwatches (per-call)
@@ -37,7 +37,7 @@ public static class Profiler {
         try {
             int attributed = 0;
             foreach (MethodInfo method in profiledMethods) {
-                Profile attr = method.GetCustomAttribute<Profile>();
+                ProfileAttribute attr = method.GetCustomAttribute<ProfileAttribute>();
                 Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Attrs[method] = attr;
                 attributed++;
@@ -65,12 +65,12 @@ public static class Profiler {
             .Where(m =>
                 !m.IsAbstract &&
                 !m.ContainsGenericParameters &&
-                m.GetCustomAttribute<Profile>() != null &&
+                m.GetCustomAttribute<ProfileAttribute>() != null &&
                 m.DeclaringType == m.ReflectedType
             )
             .Distinct(new MethodComparer());
 
-    private static IEnumerable<Type> SafeGetTypes(Assembly a) {
+    private static Type[] SafeGetTypes(Assembly a) {
         try {
             return a.GetTypes();
         } catch (Exception ex) {
@@ -79,7 +79,7 @@ public static class Profiler {
         }
     }
 
-    private static IEnumerable<MethodInfo> SafeGetMethods(Type t) {
+    private static MethodInfo[] SafeGetMethods(Type t) {
         try {
             return t.GetMethods(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
@@ -91,7 +91,7 @@ public static class Profiler {
     }
 
     public static void StartProfiling(MethodBase __originalMethod) {
-        if (!Attrs.TryGetValue(__originalMethod, out Profile? attr)) return;
+        if (!Attrs.TryGetValue(__originalMethod, out ProfileAttribute? attr)) return;
 
         if (attr.Mode == ProfileMode.Instrumentation) {
             (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
@@ -114,12 +114,12 @@ public static class Profiler {
     }
 
     public static void EndProfiling(MethodBase __originalMethod) {
-        if (!Attrs.TryGetValue(__originalMethod, out Profile? attr)) return;
+        if (!Attrs.TryGetValue(__originalMethod, out ProfileAttribute? attr)) return;
         string label = Labels.TryGetValue(__originalMethod, out string? l) ? l : __originalMethod.Name;
 
         if (attr.Mode == ProfileMode.Instrumentation) {
             (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
-            if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.Count == 0) return;
+            if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.IsEmpty) return;
 
             if (!stack.TryPop(out Stopwatch sw)) return;
             sw.Stop();
@@ -162,7 +162,7 @@ public static class Profiler {
     public static void CleanupProfiling(MethodBase __originalMethod) {
         // For instrumentation, if an exception bypassed EndProfiling, pop & drop
         (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
-        if (InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) && stack.Count > 0) {
+        if (InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) && !stack.IsEmpty) {
             stack.TryPop(out _);
 
             // we could log as "faulted" if desired; for now just discard
@@ -171,9 +171,8 @@ public static class Profiler {
         // For sampling, unwind if needed (in case EndProfiling wasn’t hit)
         Stack<SampleToken>? sstack = SampleStack.Value;
         if (sstack.Count > 0) {
-            SampleToken token = sstack.Pop();
-
             // discard on exception path
+            sstack.Pop();
         }
     }
 
@@ -187,22 +186,6 @@ public static class Profiler {
             Log.Info($"[Profile] {label} took {microseconds}μs");
         } else {
             Log.Info($"[Profile] {label} took {nanoseconds}ns");
-        }
-    }
-
-    private static void Flush() {
-        // Existing method aggregates
-        foreach (KeyValuePair<MethodBase, Agg> kvp in Aggs) {
-            Agg? agg = kvp.Value;
-            if (!agg.TryConsume(out Agg.Snapshot s)) continue;
-            EmitSnapshot(s);
-        }
-
-        // Scope aggregates
-        foreach (KeyValuePair<string, Agg> kvp in ScopeAggs) {
-            Agg? agg = kvp.Value;
-            if (!agg.TryConsume(out Agg.Snapshot s)) continue;
-            EmitSnapshot(s);
         }
     }
 
@@ -237,6 +220,22 @@ public static class Profiler {
     private sealed class ProfilerFlushComponent(Game _) : GameComponent {
         public override void GameComponentUpdate() {
             if ((int)Time.time % FlushSeconds == 0) Flush();
+        }
+
+        private static void Flush() {
+            // Existing method aggregates
+            foreach (KeyValuePair<MethodBase, Agg> kvp in Aggs) {
+                Agg? agg = kvp.Value;
+                if (!agg.TryConsume(out Agg.Snapshot s)) continue;
+                EmitSnapshot(s);
+            }
+
+            // Scope aggregates
+            foreach (KeyValuePair<string, Agg> kvp in ScopeAggs) {
+                Agg? agg = kvp.Value;
+                if (!agg.TryConsume(out Agg.Snapshot s)) continue;
+                EmitSnapshot(s);
+            }
         }
 #pragma warning restore CS9113
     }

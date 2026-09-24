@@ -21,7 +21,7 @@ public static class MineableUtility {
         Verse.Map? map = Find.CurrentMap;
         if (map == null) return;
 
-        List<DebugMenuOption> options = new List<DebugMenuOption>();
+        List<DebugMenuOption> options = [];
         foreach (ThingDef keep in OresOn(map)) {
             options.Add(new DebugMenuOption(keep.label, DebugMenuOptionMode.Action, () => Strip(map, keep)));
         }
@@ -39,7 +39,7 @@ public static class MineableUtility {
     ///     so a whole mountainside does not turn into thousands of chunks.
     /// </summary>
     private static void Strip(Verse.Map map, ThingDef keep) {
-        List<Verse.Thing> doomed = new List<Verse.Thing>();
+        List<Verse.Thing> doomed = [];
 
         List<Verse.Thing> all = map.listerThings.AllThings;
         for (int i = 0; i < all.Count; i++) {
@@ -69,13 +69,13 @@ public static class MineableUtility {
     }
 
     private static List<ThingDef> OresOn(Verse.Map map) {
-        HashSet<ThingDef> found = new HashSet<ThingDef>();
+        HashSet<ThingDef> found = [];
 
         List<Verse.Thing> all = map.listerThings.AllThings;
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Mineable && all[i].def.building?.isResourceRock == true) found.Add(all[i].def);
         }
 
-        return new List<ThingDef>(found);
+        return [.. found];
     }
 }

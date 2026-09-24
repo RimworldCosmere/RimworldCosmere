@@ -15,7 +15,7 @@ public class ChoiceObjective : QuestObjective {
             options = options,
             targetFaction = ctx.def.targetFaction,
             inSignalEnable = inSignal,
-            outSignalsCompleted = new List<string> { outSignal },
+            outSignalsCompleted = [outSignal],
         };
         quest.AddPart(choice);
     }

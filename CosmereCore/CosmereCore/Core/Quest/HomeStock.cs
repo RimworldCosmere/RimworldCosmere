@@ -12,7 +12,7 @@ namespace Cosmere.Core.Quest;
 /// </summary>
 public static class HomeStock {
     public static int Count(ThingDef? def) {
-        List<Verse.Thing> found = new List<Verse.Thing>();
+        List<Verse.Thing> found = [];
         Collect(def, found);
 
         int count = 0;

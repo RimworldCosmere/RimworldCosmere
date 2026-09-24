@@ -8,9 +8,9 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
-    private MetalDef pewter => MetalDefOf.Pewter;
+    private static MetalDef pewter => MetalDefOf.Pewter;
 
-    private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
+    private static ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
 

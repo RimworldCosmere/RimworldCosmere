@@ -34,10 +34,10 @@ public static class AshmountRing {
         Func<int, int, float> distanceBetween,
         int seed
     ) {
-        List<int> chosen = new List<int>();
+        List<int> chosen = [];
         if (candidates.Count == 0 || wanted <= 0) return chosen;
 
-        List<Candidate> pool = new List<Candidate>();
+        List<Candidate> pool = [];
         for (int i = 0; i < candidates.Count; i++) {
             float d = candidates[i].DistanceFromCentre;
             if (d < innerRadius || d > outerRadius) continue;

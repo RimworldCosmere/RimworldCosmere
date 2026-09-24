@@ -36,8 +36,6 @@ public class JoysprenController : DynamicSprenController {
         IEnumerable<Pawn> happyPawns = map.mapPawns.FreeColonistsSpawned
             .Where(pawn => pawn?.needs?.mood?.CurLevel > 0.75f);
 
-        return happyPawns.Select(pawn => defaultSpawnInformation.With(map, pawn.Position)
-            )
-            .ToList();
+        return [.. happyPawns.Select(pawn => defaultSpawnInformation.With(map, pawn.Position))];
     }
 }

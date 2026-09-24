@@ -28,7 +28,7 @@ public static class StringExtension {
         float ratio = value / baseline;
 
         // Sort breakpoints by threshold
-        KeyValuePair<float, Color>[] sortedBreakpoints = breakpoints.OrderBy(kvp => kvp.Key).ToArray();
+        KeyValuePair<float, Color>[] sortedBreakpoints = [.. breakpoints.OrderBy(kvp => kvp.Key)];
 
         Color? color = null;
 

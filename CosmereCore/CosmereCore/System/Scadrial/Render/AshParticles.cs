@@ -16,13 +16,13 @@ namespace Cosmere.System.Scadrial.Render;
 [StaticConstructorOnStartup]
 public class AshParticles {
     /// <summary>Particles per second at severity 1. Mutable so the dev tuner can drive it live.</summary>
-    public static float MaxEmissionRate = 1035f;
+    public static float MaxEmissionRate { get; set; } = 1035f;
 
     /// <summary>Particles per second at severity 0.</summary>
-    public static float MinEmissionRate = 15f;
+    public static float MinEmissionRate { get; set; } = 15f;
 
     /// <summary>Curve between the two. Above 1 keeps the low end sparse; 1 is linear.</summary>
-    public static float EmissionExponent = 2f;
+    public static float EmissionExponent { get; set; } = 2f;
 
     /// <summary>Live count, for the dev tuner readout.</summary>
     public int LiveCount => system == null ? 0 : system.particleCount;

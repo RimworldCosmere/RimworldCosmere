@@ -22,6 +22,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private static readonly Color FlaringTint = new Color(0.878f, 0.416f, 0.271f);
     private static readonly Color QuadHeader = new Color(0.490f, 0.384f, 0.259f);
 
+    private const string AbilityArg = "ABILITY";
+
     private const float StripPadding = 7f;
     private const float ReserveBarHeight = 10f;
 
@@ -46,7 +48,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
     }
 
     private readonly ScadrialCrest crest = new ScadrialCrest(false);
-    private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> labelCache = [];
     private readonly Reveal reveal = new Reveal();
 
     private string? expandedMetal;
@@ -151,7 +153,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
     private static int BurningRowCount(Pawn pawn, IReadOnlyList<MetalGroup> groups) {
         int count = 0;
         for (int g = 0; g < groups.Count; g++) {
-            IReadOnlyList<MetalRow> rows = groups[g].Rows;
+            List<MetalRow> rows = groups[g].Rows;
             for (int r = 0; r < rows.Count; r++) {
                 IReadOnlyList<InvestitureAbility> abilities = rows[r].Cell.Abilities;
                 for (int a = 0; a < abilities.Count; a++) {
@@ -213,7 +215,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         IReadOnlyList<MetalGroup> groups = GroupsFor(pawn, snapshot);
 
         for (int g = 0; g < groups.Count; g++) {
-            IReadOnlyList<MetalRow> rows = groups[g].Rows;
+            List<MetalRow> rows = groups[g].Rows;
             for (int r = 0; r < rows.Count; r++) {
                 InvestitureCell cell = rows[r].Cell;
                 for (int a = 0; a < cell.Abilities.Count; a++) {
@@ -246,7 +248,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
             UIText.EllipsisLabel(
                 new Rect(rect.x, rect.y, rect.width * 0.55f, rect.height),
-                "CC_Dock_Burning_Row".Translate(MetalLabel(cell).Named("METAL"), label.Named("ABILITY")),
+                "CC_Dock_Burning_Row".Translate(MetalLabel(cell).Named("METAL"), label.Named(AbilityArg)),
                 GameFont.Tiny,
                 TextAnchor.MiddleLeft,
                 DockPalette.HotLabel
@@ -277,7 +279,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             new Rect(rect.x, rect.y, rect.width * 0.55f, rect.height),
             "CC_Dock_Burning_Row".Translate(
                 MetalLabel(cell).Named("METAL"),
-                ability.Label.Named("ABILITY")
+                ability.Label.Named(AbilityArg)
             ),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
@@ -295,7 +297,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             DockPalette.MutedText
         );
 
-        TooltipHandler.TipRegion(rect, "CC_Dock_Burning_StopTip".Translate(ability.Label.Named("ABILITY")));
+        TooltipHandler.TipRegion(rect, "CC_Dock_Burning_StopTip".Translate(ability.Label.Named(AbilityArg)));
         MouseoverSounds.DoRegion(rect);
         if (!Widgets.ButtonInvisible(rect)) return;
 
@@ -328,16 +330,21 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private void DrawTile(Rect rect, Pawn pawn, MetalRow row) {
         InvestitureCell cell = row.Cell;
-        MetalTileState state = cell.IsFlaring
-            ? MetalTileState.Flaring
-            : cell.IsActive || UnclaimedDrainCount(pawn, cell) > 0
-                ? MetalTileState.Active
-                : MetalTileState.Idle;
+        MetalTileState state = MetalTileState.Idle;
+        if (cell.IsFlaring) state = MetalTileState.Flaring;
+        else if (cell.IsActive || UnclaimedDrainCount(pawn, cell) > 0) state = MetalTileState.Active;
 
         MetallicArtsMetalDef? def = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
         int savant = def != null && pawn.records != null
             ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, def)
             : 0;
+
+        string? foldLabel = null;
+        if (FindGene(pawn, cell.SubsystemId) != null) {
+            foldLabel = revealedMetal == cell.SubsystemId
+                ? (string)"CC_Dock_Fold_Hide".Translate()
+                : (string)"CC_Dock_Fold_Show".Translate();
+        }
 
         MetalTile.Draw(
             rect,
@@ -349,11 +356,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             state,
             savantStage: savant,
             joinedBelow: revealedMetal == cell.SubsystemId,
-            foldLabel: FindGene(pawn, cell.SubsystemId) == null
-                ? null
-                : revealedMetal == cell.SubsystemId
-                    ? (string)"CC_Dock_Fold_Hide".Translate()
-                    : (string)"CC_Dock_Fold_Show".Translate()
+            foldLabel: foldLabel
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell), cell.SubsystemId.GetHashCode());
@@ -439,7 +442,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         );
     }
 
-    private void DrawAbilityRow(Rect rect, Pawn pawn, InvestitureCell cell, InvestitureAbility ability) {
+    private static void DrawAbilityRow(Rect rect, Pawn pawn, InvestitureCell cell, InvestitureAbility ability) {
         // rate, not IsActive: a koloss hold drains through an ability whose status reads idle
         float burnRate = BurnReservePercentPerSecond(pawn, cell, ability);
         float chipWidth = ability.CanFlare ? 44f : 0f;
@@ -451,7 +454,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         TooltipHandler.TipRegion(
             mainRect,
             blocked ?? "CC_Dock_Allomancy_AbilityTip".Translate(
-                ability.Label.Named("ABILITY"),
+                ability.Label.Named(AbilityArg),
                 (ability.Def.description ?? string.Empty).Named("DESC")
             )
         );
@@ -481,7 +484,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         Rect chipRect = new Rect(rect.xMax - chipWidth, rect.y, chipWidth, rect.height);
         TooltipHandler.TipRegion(
             chipRect,
-            flareBlocked ?? "CC_Dock_Allomancy_AbilityFlareTip".Translate(ability.Label.Named("ABILITY"))
+            flareBlocked ?? "CC_Dock_Allomancy_AbilityFlareTip".Translate(ability.Label.Named(AbilityArg))
         );
         if (DockButton.Draw(
                 chipRect,
@@ -539,11 +542,9 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private string Tooltip(Pawn pawn, InvestitureCell cell) {
         // Carries its own newline so an idle metal does not leave a blank line.
-        string state = cell.IsFlaring
-            ? "\n" + "CC_Dock_State_Flaring".Translate()
-            : cell.IsActive
-                ? "\n" + "CC_Dock_State_Burning".Translate()
-                : string.Empty;
+        string state = string.Empty;
+        if (cell.IsFlaring) state = "\n" + "CC_Dock_State_Flaring".Translate();
+        else if (cell.IsActive) state = "\n" + "CC_Dock_State_Burning".Translate();
 
         return "CC_Dock_Allomancy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),

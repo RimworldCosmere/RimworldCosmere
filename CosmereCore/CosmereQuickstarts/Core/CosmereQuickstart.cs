@@ -30,7 +30,7 @@ public class CosmereQuickstart : CosmereQuickstartBase {
 
     public override void PostApplyConfiguration() {
         Find.GameInitData.startingPawnCount = 16;
-        List<ScenPart> parts = Find.Scenario.AllParts.ToList();
+        List<ScenPart> parts = [.. Find.Scenario.AllParts];
         for (int i = 0; i < parts.Count; i++) {
             if (parts[i] is ScenPart_ConfigPage_ConfigureStartingPawns startingPawns) {
                 startingPawns.pawnCount = 16;
@@ -39,6 +39,10 @@ public class CosmereQuickstart : CosmereQuickstartBase {
     }
 
     public override void PostStart() {
+        EnableDebugOverlays();
+    }
+
+    private static void EnableDebugOverlays() {
         DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
@@ -70,72 +74,12 @@ public class CosmereQuickstart : CosmereQuickstartBase {
     }
 
     private static void SetupCharacter(int index, Pawn pawn) {
-        switch (index) {
-            case 0:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                Find.Selector.Select(pawn, false);
-                break;
-            case 1:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 2:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 3:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 4:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 5:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 6:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 7:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 8:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 9:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 10:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 11:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 12:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 13:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 14:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
-            case 15:
-                pawn.GetInvestiture()!.currentInvestitureSelf = 500;
-                QuickstartCharacterSetupRegistry.Apply(index, pawn);
-                break;
+        if (index is < 0 or > 15) return;
+
+        pawn.GetInvestiture()!.currentInvestitureSelf = 500;
+        QuickstartCharacterSetupRegistry.Apply(index, pawn);
+        if (index == 0) {
+            Find.Selector.Select(pawn, false);
         }
     }
 }

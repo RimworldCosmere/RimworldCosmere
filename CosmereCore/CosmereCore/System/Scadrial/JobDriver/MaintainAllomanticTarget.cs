@@ -81,7 +81,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
     }
 
     protected virtual void MaintainEffectOnTarget() {
-        AllomanticHediff? hediff = (AllomanticHediff?)targetPawn!.GetOrAddHediff(ability, ability.def, pawn);
+        AllomanticHediff? hediff = targetPawn!.GetOrAddHediff(ability, ability.def, pawn);
 
         hediff?.TryGetComp<DisappearsScaled>()?.CompPostMake();
     }

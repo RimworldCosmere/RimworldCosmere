@@ -159,14 +159,15 @@ public static class BetaHubClient {
         if (value.IndexOf('\\') < 0) return value;
 
         StringBuilder builder = new StringBuilder(value.Length);
-        for (int i = 0; i < value.Length; i++) {
+        int i = 0;
+        while (i < value.Length) {
             char c = value[i];
-            if (c != '\\' || i == value.Length - 1) {
+            i++;
+            if (c != '\\' || i == value.Length) {
                 builder.Append(c);
                 continue;
             }
 
-            i++;
             builder.Append(value[i] switch {
                 'n' => '\n',
                 'r' => '\r',
@@ -175,6 +176,7 @@ public static class BetaHubClient {
                 'f' => '\f',
                 var other => other,
             });
+            i++;
         }
 
         return builder.ToString();

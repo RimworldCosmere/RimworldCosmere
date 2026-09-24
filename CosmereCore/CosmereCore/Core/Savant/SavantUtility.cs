@@ -153,10 +153,9 @@ public static class SavantUtility {
             if (existing is not null) pawn.health.RemoveHediff(existing);
         }
 
-        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null) {
-            if (!pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
-                pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
-            }
+        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null &&
+            !pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
+            pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
         }
     }
 

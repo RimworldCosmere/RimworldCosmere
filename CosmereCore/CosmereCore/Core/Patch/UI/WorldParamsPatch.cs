@@ -82,7 +82,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
                 DrawWorldRow(main.x, y, controlWidth, worlds, comp, locked);
             }
 
-            DrawShardRow(main.x, y + RowPitch, controlWidth, comp);
+            DrawShardRow(main.x, y + RowPitch, controlWidth);
 
             // only a cross-world save asks this; every other world answers it for itself.
             if (comp.primary?.crossWorld == true) {
@@ -129,7 +129,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         Find.WindowStack.Add(new FloatMenu(options));
     }
 
-    private static void DrawShardRow(float x, float y, float controlWidth, CosmereWorld comp) {
+    private static void DrawShardRow(float x, float y, float controlWidth) {
         Widgets.Label(new Rect(x, y, LabelWidth, RowHeight), "CC_World_ShardsLabel".Translate());
 
         Rect control = new Rect(x + LabelWidth, y, controlWidth, RowHeight);

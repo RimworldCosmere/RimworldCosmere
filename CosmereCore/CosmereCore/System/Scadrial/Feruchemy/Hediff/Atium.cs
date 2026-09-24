@@ -8,7 +8,6 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Atium : HediffWithComps {
-    private const int TicksPerDay = GenDate.TicksPerDay;
     private const float AgeTicksPerGameTick = 43200f;
 
     /// How young atium will take a pawn. Flat rather than read off the race, since

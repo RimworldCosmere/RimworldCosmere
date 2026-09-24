@@ -10,7 +10,7 @@ public class RadiantTracker : GameComponent {
     public const int MaxBondsmiths = 3;
 
     private int activeBondsmithCount;
-    private Dictionary<int, BrokenBondRecord> brokenBonds = new Dictionary<int, BrokenBondRecord>();
+    private Dictionary<int, BrokenBondRecord> brokenBonds = [];
     private int lastStabilityCheckTick = -1;
 
     public RadiantTracker(Verse.Game game) { }
@@ -134,7 +134,7 @@ public class RadiantTracker : GameComponent {
         Scribe_Values.Look(ref activeBondsmithCount, "activeBondsmithCount");
         Scribe_Values.Look(ref lastStabilityCheckTick, "lastStabilityCheckTick", -1);
         Scribe_Collections.Look(ref brokenBonds, "brokenBonds", LookMode.Value, LookMode.Deep);
-        brokenBonds ??= new Dictionary<int, BrokenBondRecord>();
+        brokenBonds ??= [];
     }
 
     public override void FinalizeInit() {

@@ -34,31 +34,31 @@ public struct LUTPaletteMaterial : IExposable {
 }
 
 public static class CutoutAdvancedShaderProperties {
-    public static int MainTex = UnityEngine.Shader.PropertyToID("_MainTex");
-    public static int ColorMaskTex = UnityEngine.Shader.PropertyToID("_ColorMaskTex");
-    public static int WearMaskTex = UnityEngine.Shader.PropertyToID("_WearMaskTex");
-    public static int GlowMaskTex = UnityEngine.Shader.PropertyToID("_GlowMaskTex");
-    public static int SpecialMaskTex = UnityEngine.Shader.PropertyToID("_SpecialMaskTex");
+    public static readonly int MainTex = UnityEngine.Shader.PropertyToID("_MainTex");
+    public static readonly int ColorMaskTex = UnityEngine.Shader.PropertyToID("_ColorMaskTex");
+    public static readonly int WearMaskTex = UnityEngine.Shader.PropertyToID("_WearMaskTex");
+    public static readonly int GlowMaskTex = UnityEngine.Shader.PropertyToID("_GlowMaskTex");
+    public static readonly int SpecialMaskTex = UnityEngine.Shader.PropertyToID("_SpecialMaskTex");
 
-    public static int BlendStrength = UnityEngine.Shader.PropertyToID("_BlendStrength");
-    public static int ColorCount = UnityEngine.Shader.PropertyToID("_ColorCount");
-    public static int Colors = UnityEngine.Shader.PropertyToID("_Colors");
-    public static int MaterialIntensity = UnityEngine.Shader.PropertyToID("_MaterialIntensity");
-    public static int MetallicValues = UnityEngine.Shader.PropertyToID("_MetallicValues");
-    public static int SmoothnessValues = UnityEngine.Shader.PropertyToID("_SmoothnessValues");
+    public static readonly int BlendStrength = UnityEngine.Shader.PropertyToID("_BlendStrength");
+    public static readonly int ColorCount = UnityEngine.Shader.PropertyToID("_ColorCount");
+    public static readonly int Colors = UnityEngine.Shader.PropertyToID("_Colors");
+    public static readonly int MaterialIntensity = UnityEngine.Shader.PropertyToID("_MaterialIntensity");
+    public static readonly int MetallicValues = UnityEngine.Shader.PropertyToID("_MetallicValues");
+    public static readonly int SmoothnessValues = UnityEngine.Shader.PropertyToID("_SmoothnessValues");
 
-    public static int UseWearMask = UnityEngine.Shader.PropertyToID("_UseWearMask");
-    public static int UseGlowMask = UnityEngine.Shader.PropertyToID("_UseGlowMask");
-    public static int UseSpecialMask = UnityEngine.Shader.PropertyToID("_UseSpecialMask");
-    public static int WearLevelCount = UnityEngine.Shader.PropertyToID("_WearLevelCount");
-    public static int GlowLevelCount = UnityEngine.Shader.PropertyToID("_GlowLevelCount");
-    public static int CurrentWearLevel = UnityEngine.Shader.PropertyToID("_CurrentWearLevel");
-    public static int CurrentGlowLevel = UnityEngine.Shader.PropertyToID("_CurrentGlowLevel");
+    public static readonly int UseWearMask = UnityEngine.Shader.PropertyToID("_UseWearMask");
+    public static readonly int UseGlowMask = UnityEngine.Shader.PropertyToID("_UseGlowMask");
+    public static readonly int UseSpecialMask = UnityEngine.Shader.PropertyToID("_UseSpecialMask");
+    public static readonly int WearLevelCount = UnityEngine.Shader.PropertyToID("_WearLevelCount");
+    public static readonly int GlowLevelCount = UnityEngine.Shader.PropertyToID("_GlowLevelCount");
+    public static readonly int CurrentWearLevel = UnityEngine.Shader.PropertyToID("_CurrentWearLevel");
+    public static readonly int CurrentGlowLevel = UnityEngine.Shader.PropertyToID("_CurrentGlowLevel");
 
-    public static int WearDarkness = UnityEngine.Shader.PropertyToID("_WearDarkness");
-    public static int GlowColor = UnityEngine.Shader.PropertyToID("_GlowColor");
-    public static int GlowIntensity = UnityEngine.Shader.PropertyToID("_GlowIntensity");
+    public static readonly int WearDarkness = UnityEngine.Shader.PropertyToID("_WearDarkness");
+    public static readonly int GlowColor = UnityEngine.Shader.PropertyToID("_GlowColor");
+    public static readonly int GlowIntensity = UnityEngine.Shader.PropertyToID("_GlowIntensity");
 
-    public static int HighlightParams = UnityEngine.Shader.PropertyToID("_HighlightParams");
-    public static int RimLightCenter = UnityEngine.Shader.PropertyToID("_RimLightCenter");
+    public static readonly int HighlightParams = UnityEngine.Shader.PropertyToID("_HighlightParams");
+    public static readonly int RimLightCenter = UnityEngine.Shader.PropertyToID("_RimLightCenter");
 }

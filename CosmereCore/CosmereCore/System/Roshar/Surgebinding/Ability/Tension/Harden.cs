@@ -8,7 +8,7 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class Harden : SurgebindingAbility {
-    private static readonly Dictionary<Building, float> hardenedBuildings = new Dictionary<Building, float>();
+    private static readonly Dictionary<Building, float> hardenedBuildings = [];
 
     /// <summary>
     ///     The hit point multiplier a building is currently hardened by, if any. The map itself
@@ -93,7 +93,6 @@ public class Harden : SurgebindingAbility {
     }
 
     private void RemoveHardening(Building building) {
-        int oldMax = building.MaxHitPoints;
         hardenedBuildings.Remove(building);
         hardenedStructures.Remove(building);
         int newMax = building.MaxHitPoints;

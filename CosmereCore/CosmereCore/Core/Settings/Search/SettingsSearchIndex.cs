@@ -7,9 +7,9 @@ namespace Cosmere.Core.Settings.Search;
 public sealed class SettingsSearchIndex {
     private static readonly IReadOnlyList<SettingsSearchResult> EmptyResults = [];
 
-    private readonly IReadOnlyList<SettingsSearchDocument> documents;
-    private readonly IReadOnlyList<string> haystacks;
-    private readonly IReadOnlyList<bool> searchable;
+    private readonly List<SettingsSearchDocument> documents;
+    private readonly List<string> haystacks;
+    private readonly List<bool> searchable;
 
     public SettingsSearchIndex(IReadOnlyList<SettingsSearchDocument> sourceDocuments) {
         List<SettingsSearchDocument> indexedDocuments = new List<SettingsSearchDocument>(sourceDocuments.Count);
@@ -38,7 +38,7 @@ public sealed class SettingsSearchIndex {
     public IReadOnlyList<SettingsSearchResult> Search(string query) {
         if (string.IsNullOrWhiteSpace(query)) return EmptyResults;
 
-        List<SettingsSearchResult> results = new List<SettingsSearchResult>();
+        List<SettingsSearchResult> results = [];
 
         for (int index = 0; index < documents.Count; index++) {
             if (!searchable[index]) continue;
@@ -51,7 +51,7 @@ public sealed class SettingsSearchIndex {
     }
 
     public IReadOnlyDictionary<string, int> CountBySystem(string query) {
-        Dictionary<string, int> counts = new Dictionary<string, int>();
+        Dictionary<string, int> counts = [];
 
         if (string.IsNullOrWhiteSpace(query)) return counts;
 

@@ -22,7 +22,7 @@ public static class HaulToContainerJobPatch {
         );
         Type innerStorageType = typeof(Comp.Thing.InnerStorage);
 
-        List<CodeInstruction> code = instructions.ToList();
+        List<CodeInstruction> code = [.. instructions];
 
         // qualified: Concord.Label collides with System.Reflection.Emit.Label, needed here for OpCodes.
         Concord.Label continueLabel = context.DefineLabel();

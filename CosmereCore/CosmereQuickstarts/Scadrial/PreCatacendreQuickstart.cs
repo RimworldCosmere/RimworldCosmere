@@ -29,6 +29,10 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
     public override IReadOnlyList<string> shards => [];
 
     public override void PostStart() {
+        EnableDebugOverlays();
+    }
+
+    private static void EnableDebugOverlays() {
         DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
@@ -252,7 +256,7 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
         if (bed is Building_Bed built) built.Medical = true;
     }
 
-    private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, float? fixedAge = null) {
+    private static Pawn GeneratePawn(Gender gender, XenotypeDef xenotype, float? fixedAge = null) {
         return PawnGenerator.GeneratePawn(
             new PawnGenerationRequest(
                 RimWorld.PawnKindDefOf.Colonist,

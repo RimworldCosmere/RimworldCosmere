@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core.Def;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
@@ -162,8 +163,8 @@ public abstract class BaseSprenController {
     }
 
     protected static bool TerrainNameContains(TerrainDef terrain, params string[] keywords) {
-        string terrainName = terrain.defName.ToLower();
-        return keywords.Any(keyword => terrainName.Contains(keyword.ToLower()));
+        string terrainName = terrain.defName;
+        return keywords.Any(keyword => terrainName.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
     }
 
     protected static TerrainDef? GetTerrain(IntVec3 position, Map map) {

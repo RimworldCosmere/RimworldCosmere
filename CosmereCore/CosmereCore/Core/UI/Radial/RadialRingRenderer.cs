@@ -15,7 +15,6 @@ public static class RadialRingRenderer {
         DrawRing(
             center,
             systems.Count,
-            (RadialLayout.SystemRingInner + RadialLayout.SystemRingOuter) / 2f,
             hoveredIndex,
             i => (systems[i].Label, systems[i].Icon, null, null, false, false, false, false, null, false)
         );
@@ -29,7 +28,6 @@ public static class RadialRingRenderer {
         DrawRing(
             center,
             system.Subsections.Count,
-            (RadialLayout.SubsectionRingInner + RadialLayout.SubsectionRingOuter) / 2f,
             hoveredIndex,
             i => {
                 RadialSubsection subsection = system.Subsections[i];
@@ -67,7 +65,6 @@ public static class RadialRingRenderer {
         DrawRing(
             center,
             subsection.Leaves.Count,
-            (RadialLayout.AbilityRingInner + RadialLayout.AbilityRingOuter) / 2f,
             hoveredIndex,
             i => {
                 RadialLeaf leaf = subsection.Leaves[i];
@@ -90,14 +87,12 @@ public static class RadialRingRenderer {
     private static void DrawRing(
         Vector2 center,
         int count,
-        float radius,
         int hoveredIndex,
         Func<int, (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
             bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources)> getAt
     ) {
         if (count <= 0) return;
 
-        float arcDeg = 360f / count;
         float texDrawSize = RadialLayout.AbilityRingOuter * 2f;
         Rect texRect = new Rect(center.x - texDrawSize / 2f, center.y - texDrawSize / 2f, texDrawSize, texDrawSize);
 
@@ -107,8 +102,8 @@ public static class RadialRingRenderer {
         GUI.color = backingPrev;
 
         for (int i = 0; i < count; i++) {
-            (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
-                    bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) = getAt(i);
+            (string label, Texture2D? icon, Color? tint, _, bool isActive, bool isFlaring,
+                    bool isSustained, bool isLocked, _, bool hasInsufficientResources) = getAt(i);
 
             Color bg = tint.HasValue
                 ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
@@ -193,13 +188,11 @@ public static class RadialRingRenderer {
             bool flareArmed = i == hoveredIndex
                 && !disabled
                 && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            Color labelColor = disabled
-                ? new Color(0.36f, 0.42f, 0.46f)
-                : flareArmed
-                    ? DockPalette.Flare
-                    : i == hoveredIndex
-                        ? Color.white
-                        : new Color(0.81f, 0.85f, 0.87f);
+            Color labelColor;
+            if (disabled) labelColor = new Color(0.36f, 0.42f, 0.46f);
+            else if (flareArmed) labelColor = DockPalette.Flare;
+            else if (i == hoveredIndex) labelColor = Color.white;
+            else labelColor = new Color(0.81f, 0.85f, 0.87f);
 
             // wrapped, not truncated: wedge is short on width but has height, and "Summon Sh..." tells nothing.
             UIText.WrappedLabel(labelMid, labelWidth, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);

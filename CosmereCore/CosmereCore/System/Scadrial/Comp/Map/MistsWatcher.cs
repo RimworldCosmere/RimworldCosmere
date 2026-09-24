@@ -120,7 +120,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         Scribe_Values.Look(ref lastMistsStartTick, "lastMistsStartTick", -1);
     }
 
-    private int GetIntervalTicks() {
+    private static int GetIntervalTicks() {
         return Mod.mistsFrequency switch {
             MistsFrequency.Daily => GenDate.TicksPerDay,
             MistsFrequency.Weekly => 7 * GenDate.TicksPerDay,

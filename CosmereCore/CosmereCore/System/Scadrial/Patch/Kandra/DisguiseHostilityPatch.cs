@@ -19,7 +19,7 @@ namespace Cosmere.System.Scadrial.Patch.Kandra;
 /// </remarks>
 [Patch(typeof(GenHostility))]
 public static class DisguiseHostilityPatch {
-    [Inject(At.Return, nameof(GenHostility.HostileTo), 0u, new[] { typeof(Verse.Thing), typeof(Verse.Thing) })]
+    [Inject(At.Return, nameof(GenHostility.HostileTo), 0u, [typeof(Verse.Thing), typeof(Verse.Thing)])]
     private static void AfterHostileTo(Verse.Thing a, Verse.Thing b, ControlHandle<bool> ch) {
         if (!ch.ReturnValue) return;
         if (a == null || b == null) return;

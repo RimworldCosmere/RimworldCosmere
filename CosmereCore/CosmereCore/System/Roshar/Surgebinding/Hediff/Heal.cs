@@ -23,9 +23,7 @@ public class Heal : SurgebindingHediff {
         if (!Gene.CanLowerReserve(ability.def.beuPerTick)) ability.UpdateStatus(Active.Off);
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
-        List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs
-            .Where(h => h.CanBeHealedByInvestiture())
-            .ToList();
+        List<Verse.Hediff> hediffs = [.. pawn.health.hediffSet.hediffs.Where(h => h.CanBeHealedByInvestiture())];
 
         DeactivateIfFullyHealed(hediffs);
 

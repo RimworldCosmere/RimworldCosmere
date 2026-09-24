@@ -29,7 +29,7 @@ public sealed class Dialog_StoreMemory : Window {
         this.pawn = pawn;
 
         // a copy - the heaviest-first order is this window's, not the caller's list to keep
-        this.memories = new List<Thought_Memory>(memories);
+        this.memories = [..memories];
         this.memories.Sort((a, b) => MemoryMagnitude.CompareByWeight(a.MoodOffset(), b.MoodOffset()));
         this.copperminds = copperminds;
         doCloseX = true;

@@ -17,7 +17,7 @@ internal static class CosmerePatchGuard {
 
 public abstract class CosmereMod<TSettings> : Verse.Mod
     where TSettings : CosmereModSettings, new() {
-    public CosmereMod(ModContentPack content) : base(content) {
+    protected CosmereMod(ModContentPack content) : base(content) {
         LongEventHandler.QueueLongEvent(
             () => {
                 if (!CosmerePatchGuard.Patched) {

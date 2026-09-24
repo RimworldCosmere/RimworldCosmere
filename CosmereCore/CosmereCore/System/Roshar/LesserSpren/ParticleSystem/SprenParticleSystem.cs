@@ -129,12 +129,9 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
                 emitParamsList.Add(emitParams);
             }
 
-            if (particleCache.ContainsKey(position)) {
-                particleCache[position] = (particleCache[position].Item1 + particlesForThisCell,
-                    particleSystem!.main.duration + Time.time);
-            } else {
-                particleCache[position] = (particlesForThisCell, particleSystem!.main.duration + Time.time);
-            }
+            int alreadyCached = particleCache.TryGetValue(position, out (int, float) cached) ? cached.Item1 : 0;
+            particleCache[position] = (alreadyCached + particlesForThisCell,
+                particleSystem!.main.duration + Time.time);
         }
 
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {

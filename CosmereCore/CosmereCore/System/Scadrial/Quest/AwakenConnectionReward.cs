@@ -27,7 +27,7 @@ public class AwakenConnectionReward : QuestReward {
         Verse.Map? map = ctx.map;
         if (map == null) return;
 
-        List<Pawn> candidates = new List<Pawn>();
+        List<Pawn> candidates = [];
         List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn pawn = colonists[i];

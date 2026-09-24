@@ -14,16 +14,17 @@ public abstract class Renderer<T>(Verse.Map map) : MapComponent(map) {
     protected abstract void RenderItem(T item);
 
     public static void Add(object source, T item) {
-        if (!ToRender.ContainsKey(source)) {
-            ToRender[source] = [];
+        if (!ToRender.TryGetValue(source, out HashSet<T>? items)) {
+            items = [];
+            ToRender[source] = items;
         }
 
-        ToRender[source].Add(item);
+        items.Add(item);
     }
 
     public static void Clear(object source) {
-        if (ToRender.ContainsKey(source)) {
-            ToRender[source].Clear();
+        if (ToRender.TryGetValue(source, out HashSet<T>? items)) {
+            items.Clear();
         }
     }
 

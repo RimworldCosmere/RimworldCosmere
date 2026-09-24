@@ -24,6 +24,9 @@ using RadiantOrder = Cosmere.System.Roshar.DefModExtension.RadiantOrder;
 namespace Cosmere.System.Roshar.Gene;
 
 public class Surgebinder : Invested {
+    /// <summary>Placeholder name for the radiant order in keyed strings.</summary>
+    private const string OrderArg = "ORDER";
+
     private static readonly List<int> SkillRequirements = [0, 4, 8, 14, 18];
     private static readonly List<int> IdealCooldownDays = [0, 0, 3, 7, 15];
     private static readonly HediffDef LifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
@@ -35,7 +38,7 @@ public class Surgebinder : Invested {
 
     public Pawn? bondedSpren;
 
-    private Dictionary<string, int> cachedSavantStages = new Dictionary<string, int>();
+    private Dictionary<string, int> cachedSavantStages = [];
 
     private int CurrentIdealInt;
     public string godsprenName = string.Empty;
@@ -51,7 +54,7 @@ public class Surgebinder : Invested {
     private int mentalBreaksSurvived;
     private bool pendingOath;
     private bool recoveredFromMajorHediff;
-    private Dictionary<string, float> savantDecayOffsets = new Dictionary<string, float>();
+    private Dictionary<string, float> savantDecayOffsets = [];
     private int traumaEventCount;
     private bool wasDownedInCombat;
     private bool wasImprisoned;
@@ -79,9 +82,7 @@ public class Surgebinder : Invested {
 
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
 
-    private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();
-
-    public override List<AbilityDef> Abilities => radiantOrderDef.GetAbilities(CurrentIdeal).ToList();
+    public override List<AbilityDef> Abilities => [.. radiantOrderDef.GetAbilities(CurrentIdeal)];
 
     public override string ResourceLabel {
         get {
@@ -192,7 +193,7 @@ public class Surgebinder : Invested {
             "CRO_IdealRegressed_Title".Translate(pawn.NameShortColored.Named("PAWN")),
             "CRO_IdealRegressed_Text".Translate(
                 pawn.NameFullColored.Named("PAWN"),
-                orderLabel.Named("ORDER"),
+                orderLabel.Named(OrderArg),
                 (previousIdeal + 1).Named("OLDIDEAL"),
                 (CurrentIdealInt + 1).Named("NEWIDEAL")
             ),
@@ -284,14 +285,14 @@ public class Surgebinder : Invested {
         string bodyKey = isBondsmith ? "CRO_BondDeath_Bondsmith_Text" : "CRO_BondDeath_Text";
         string bodyText = bodyKey.Translate(
             pawn.NameFullColored.Named("PAWN"),
-            radiantOrderDef.LabelCap.Named("ORDER"),
+            radiantOrderDef.LabelCap.Named(OrderArg),
             godsprenName.Named("SPREN")
         );
         if (droppedBlade) {
             bodyText += "\n\n" +
                         "CRO_DeadBlade_Text".Translate(
                             pawn.NameFullColored.Named("PAWN"),
-                            radiantOrderDef.LabelCap.Named("ORDER")
+                            radiantOrderDef.LabelCap.Named(OrderArg)
                         );
         }
 
@@ -303,6 +304,7 @@ public class Surgebinder : Invested {
         );
     }
 
+    // hook the death-witness patch always calls. no order reacts to a witnessed death yet.
     public void OnWitnessedDeath(Pawn deceased) { }
 
     public void OnGriefRecovered() {
@@ -513,13 +515,13 @@ public class Surgebinder : Invested {
 
         string title = "CRO_SpeakOath_Title".Translate(
             pawn.NameShortColored.Named("PAWN"),
-            radiantOrderDef.LabelCap.Named("ORDER"),
+            radiantOrderDef.LabelCap.Named(OrderArg),
             ideal.label.Named("IDEAL")
         );
 
         string text = "CRO_SpeakOath_Text".Translate(
             pawn.NameFullColored.Named("PAWN"),
-            radiantOrderDef.LabelCap.Named("ORDER"),
+            radiantOrderDef.LabelCap.Named(OrderArg),
             ideal.label.Named("IDEAL"),
             oathText.Named("OATH"),
             idealLabel.Named("IDEALLABEL")
@@ -643,11 +645,13 @@ public class Surgebinder : Invested {
         }
     }
 
-    private void EnforceLightweaverStagnation(int currentTick) =>
+    private void EnforceLightweaverStagnation(int currentTick) {
         EnforceStagnation(ref lastCreativeOutputTick, currentTick, 0.3f, "creative stagnation");
+    }
 
-    private void EnforceElsecallerStagnation(int currentTick) =>
+    private void EnforceElsecallerStagnation(int currentTick) {
         EnforceStagnation(ref lastSkillGainTick, currentTick, 0.1f, "intellectual stagnation");
+    }
 
     private void EnforceStagnation(ref int lastTick, int currentTick, float violationWeight, string reason) {
         int stagnationThresholdTicks = 30 * GenDate.TicksPerDay;
@@ -776,7 +780,7 @@ public class Surgebinder : Invested {
         CurrentIdeal = nextIdeal;
         radiantOrderDef.idealChecker.ConsummateOath(pawn, this, CurrentIdeal);
 
-        List<AbilityDef> granted = radiantOrderDef.GetAbilities(CurrentIdealInt).ToList();
+        List<AbilityDef> granted = [.. radiantOrderDef.GetAbilities(CurrentIdealInt)];
         Log.Info(
             $"{pawn.LabelShort}: {radiantOrderDef.defName} ideal -> {CurrentIdealDisplay}, " +
             $"abilities now [{string.Join(", ", granted.Select(a => a.defName))}]"
@@ -906,9 +910,9 @@ public class Surgebinder : Invested {
         Scribe_Values.Look(ref lastCreativeOutputTick, "lastCreativeOutputTick", -1);
         Scribe_Values.Look(ref lastSkillGainTick, "lastSkillGainTick", -1);
         Scribe_Collections.Look(ref cachedSavantStages, "cachedSavantStages", LookMode.Value, LookMode.Value);
-        cachedSavantStages ??= new Dictionary<string, int>();
+        cachedSavantStages ??= [];
         Scribe_Collections.Look(ref savantDecayOffsets, "savantDecayOffsets", LookMode.Value, LookMode.Value);
-        savantDecayOffsets ??= new Dictionary<string, float>();
+        savantDecayOffsets ??= [];
     }
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {

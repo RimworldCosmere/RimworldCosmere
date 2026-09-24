@@ -6,12 +6,12 @@ using Verse;
 namespace Cosmere.Core.Util;
 
 public static class MetalDetector {
-    private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
-    private static readonly Dictionary<Verse.Thing, float> MetalThingCache = new Dictionary<Verse.Thing, float>();
+    private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = [];
+    private static readonly Dictionary<Verse.Thing, float> MetalThingCache = [];
 
     // keyed by def, not by the throwaway sample Thing, or every recipe walk re-makes and re-walks every ingredient
-    private static readonly Dictionary<(ThingDef, bool), float> SampleMassCache = new Dictionary<(ThingDef, bool), float>();
-    private static readonly HashSet<(ThingDef, bool)> SamplesInProgress = new HashSet<(ThingDef, bool)>();
+    private static readonly Dictionary<(ThingDef, bool), float> SampleMassCache = [];
+    private static readonly HashSet<(ThingDef, bool)> SamplesInProgress = [];
 
     public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
         return thingDef?.category is ThingCategory.Item
@@ -25,7 +25,7 @@ public static class MetalDetector {
 
         List<MetalDef> metals = thingDef.GetModExtension<MetalsLinked>()?.Metals ?? [];
 
-        return allowAluminum ? metals : metals.Where(x => !x.Equals(MetalDefOf.Aluminum)).ToList();
+        return allowAluminum ? metals : [.. metals.Where(x => !x.Equals(MetalDefOf.Aluminum))];
     }
 
     public static bool HasMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
@@ -144,12 +144,13 @@ public static class MetalDetector {
     }
 
     public static List<RecipeDef> RecipesThatMake(ThingDef thingDef) {
-        return DefDatabase<RecipeDef>.AllDefsListForReading
-            .Where(recipe =>
-                recipe.products != null &&
-                recipe.products.Any(p => p.thingDef == thingDef)
-            )
-            .ToList();
+        return [
+            .. DefDatabase<RecipeDef>.AllDefsListForReading
+                .Where(recipe =>
+                    recipe.products != null &&
+                    recipe.products.Any(p => p.thingDef == thingDef)
+                ),
+        ];
     }
 
     public static bool RecipeUsesMetalIngredient(RecipeDef recipe, int depth, bool allowAluminum = false) {

@@ -114,7 +114,7 @@ public static class AshPlume {
     public static float[]? RestoreBank(List<float>? saved, int cellCount) {
         if (saved == null || saved.Count != cellCount) return null;
 
-        return saved.ToArray();
+        return [..saved];
     }
 
     /// <summary>Walks the disc once so neither the count nor the mass is paid for again.</summary>

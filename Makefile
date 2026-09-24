@@ -140,7 +140,7 @@ pickle: quick ## Run the Pickle suite headless (FILTER=<term> narrows it, INSTAN
 	reason=$$(sed -n 's/.*"exitReason":"\([^"]*\)".*/\1/p' "$$summary"); \
 	report=$$(dirname "$$summary"); \
 	if [ "$${total:-0}" -eq 0 ]; then \
-		echo "$(RED)✗ Zero scenarios ran ($$reason) - check FILTER, it wants the full file name$(NC)"; \
+		echo "$(RED)✗ Zero scenarios ran ($$reason) - check FILTER matches a feature file or the mod name$(NC)"; \
 		exit 1; \
 	fi; \
 	if [ "$${failed:-1}" -ne 0 ] || [ "$$reason" != "passed" ]; then \

@@ -99,7 +99,7 @@ if (total === 0) {
   code = EXIT_EMPTY;
   verdict =
     `**Zero scenarios ran** (exitReason \`${exitReason}\`). Pickle exits 0 for an empty run, ` +
-    'so this is a failure here. A filter term needs the full feature file name; a stem matches nothing.';
+    'so this is a failure here. Check the filter matches a feature file name or the mod name.';
 } else if (failed > 0) {
   code = EXIT_FAILURES;
   verdict = `**${failed} of ${total} scenarios failed.**`;

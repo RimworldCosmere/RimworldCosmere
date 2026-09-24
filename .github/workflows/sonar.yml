@@ -1,0 +1,36 @@
+name: sonar
+
+on:
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: analyze
+    uses: RimWorks/mod-ci/.github/workflows/sonar.yml@v1
+    permissions:
+      contents: read
+    with:
+      solution: Cosmere.slnx
+      project-key: RimworldCosmere_RimworldCosmere
+      dotnet-version: 9.0.x
+      # Generated defs and BetaHubToken.generated.cs are gitignored, so a fresh checkout
+      # cannot compile without this. Same reason ci.yml runs it.
+      pre-scan-command: make generate
+      exclusions: Styles/**,Cosmere*/AssetBundles/**,Cosmere*/Assets/**,Cosmere*/Assemblies/**,**/bin/**,**/obj/**,**/*.generated.cs
+      # UI, gizmos, patches and quickstarts only run inside the game, so the test project
+      # cannot reach them and a coverage number here would be theatre.
+      coverage-exclusions: CosmereCore/CosmereCore/**/UI/**,CosmereCore/CosmereCore/**/Patch/**,CosmereCore/CosmereQuickstarts/**,Cosmere.Pickle/**,tools/**
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

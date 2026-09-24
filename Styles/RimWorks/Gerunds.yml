@@ -1,0 +1,14 @@
+extends: existence
+message: "'%s' opens a sentence with an -ing form. Prefer a plain verb (ASD-STE100 rule 5.3)."
+link: https://www.asd-ste100.org/
+level: suggestion
+nonword: true
+exceptions:
+  - Everything
+  - Nothing
+  - Something
+  - Anything
+  - During
+  - String
+raw:
+  - '(?:^|\. )([A-Z]\w+ing)\b'

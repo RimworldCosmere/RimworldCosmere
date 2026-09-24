@@ -1,0 +1,13 @@
+name: dependabot-automerge
+
+on: pull_request_target
+
+permissions:
+  contents: read
+
+jobs:
+  automerge:
+    uses: RimWorks/mod-ci/.github/workflows/dependabot-automerge.yml@v1
+    permissions:
+      contents: write
+      pull-requests: write

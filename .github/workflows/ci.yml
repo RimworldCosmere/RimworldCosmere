@@ -14,6 +14,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prose:
+    name: Prose
+    uses: RimWorks/mod-ci/.github/workflows/prose.yml@v1
+    permissions:
+      contents: read
+
+  links:
+    name: Links
+    uses: RimWorks/mod-ci/.github/workflows/links.yml@v1
+    permissions:
+      contents: read
+    with:
+      args: --config lychee.toml --no-progress README.md CONTRIBUTING.md SECURITY.md chipping-in.md
+
   build:
     name: Build and test
     runs-on: ubuntu-latest
@@ -61,7 +75,7 @@ jobs:
     steps:
       - name: Build the RimWorld game image
         id: image
-        uses: RimWorks/steam-game-image-action@4062dbf182c73f34b59052a040f0564d63bfd566 # v3.1.0
+        uses: RimWorks/steam-game-image-action@v3
         with:
           steam-username: ${{ secrets.STEAM_USERNAME }}
           steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
@@ -77,7 +91,12 @@ jobs:
   assetbundles:
     name: Asset bundles
     if: github.event.pull_request.head.repo.full_name == github.repository
-    uses: ./.github/workflows/assetbundles.yml
+    uses: RimWorks/mod-ci/.github/workflows/assetbundles.yml@v1
+    with:
+      mods: |
+        CosmereCore
+        CosmereRoshar
+        CosmereScadrial
     secrets: inherit
 
   pickle:

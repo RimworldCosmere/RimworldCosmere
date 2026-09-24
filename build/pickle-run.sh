@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # pickle-run.sh <image-ref> <mods-dir> <config-dir> <report-dir>
 # Runs the Cosmere Pickle suite headless in the RimWorld game image. summary.json is the
-# verdict, never the exit code: Pickle exits 0 when zero scenarios ran, and xvfb-run
-# teardown can fail a run whose scenarios all passed.
+# verdict, never the exit code: xvfb-run teardown can fail a run whose scenarios all passed,
+# and a Pickle before 1c18a3a exits 0 when a run discovered no scenarios at all.
 # Exit 0 pass, 1 failure, 75 no report plus a dead X server, which is worth a retry.
 set -uo pipefail
 
@@ -123,7 +123,7 @@ total="${fields[0]}" failed="${fields[1]}" reason="${fields[2]}"
 
 if (( total == 0 )); then
   echo "FAIL: zero scenarios ran ($reason) - the filter '$SUITE_FILTER' matched nothing"
-  echo "      a term wants the full feature file name or the mod name; a stem matches nothing"
+  echo "      a term should match a feature file name or the mod name"
   exit 1
 fi
 

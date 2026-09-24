@@ -24,7 +24,19 @@ for spec in ConcordLib/RimWorld:Concord \
     echo "could not download a release for ${spec%%:*}" >&2
     exit 1
   fi
-  unzip -qo "$WORK/$name-"*.zip -d "$MODS" || exit 1
+  zip=$(echo "$WORK/$name-"*.zip)
+
+  # These survive floating versions, unlike a sha256, so they cost nothing here.
+  if unzip -Z1 "$zip" | grep -qE '(^|/)\.\./|^/'; then
+    echo "error: the $name zip has a path traversal or absolute entry, refusing to extract" >&2
+    exit 1
+  fi
+  if unzip -Z "$zip" | grep -qE '^l'; then
+    echo "error: the $name zip has a symlink entry, refusing to extract" >&2
+    exit 1
+  fi
+
+  unzip -qo "$zip" -d "$MODS" || exit 1
   echo "staged $name"
 done
 

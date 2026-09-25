@@ -178,8 +178,8 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
                 one.ageTracker.AgeChronologicalTicks = (i + 1) * GenDate.TicksPerYear;
             }
 
-            // midpoint of this koloss's slice of the range, so the spread holds at any Band, one included
-            Grow(one, (i + 0.5f) / Band);
+            // endpoint to endpoint, so the band holds both a freshly spiked koloss and a full one
+            Grow(one, i / (float)(Band - 1));
 
             GenSpawn.Spawn(one, CellFinder.RandomClosewalkCellNear(nearby.Position, map, 10), map);
         }

@@ -117,8 +117,7 @@ dotnet_diagnostic.SA1616.severity = none  # returns tag must have text
 # block above - Scribe and the XML def loader bind by public field, [DefOf] fills
 # public static fields by reflection, and vanilla owns both the Designator_ /
 # Dialog_ / IncidentWorker_ class names and the parameter names our overrides
-# inherit. Reading vanilla privates is the job, not a smell, and a reward
-# table wants Rand rather than a cryptographic rng.
+# inherit. Reading vanilla privates is the job, not a smell.
 dotnet_diagnostic.S1104.severity = none  # field must be private behind a property
 dotnet_diagnostic.S2223.severity = none  # non-private static must be readonly
 dotnet_diagnostic.S101.severity = none   # class name pascal case

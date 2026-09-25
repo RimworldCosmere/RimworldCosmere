@@ -33,7 +33,7 @@ public partial class ScadrialDeadConditionTests {
     [GeneratedRegex(@"const\s+int\s+Band\s*=\s*\d+\s*;")]
     private static partial Regex BandConstant { get; }
 
-    [GeneratedRegex(@"Grow\(\s*one\s*,\s*\(\s*i\s*\+\s*0\.5f\s*\)\s*/\s*Band\s*\)")]
+    [GeneratedRegex(@"Grow\(\s*one\s*,\s*i\s*/\s*\(float\)\s*\(\s*Band\s*-\s*1\s*\)\s*\)")]
     private static partial Regex BandSpreadCall { get; }
 
     [GeneratedRegex(@"Band\s*[=!]=\s*1\b")]

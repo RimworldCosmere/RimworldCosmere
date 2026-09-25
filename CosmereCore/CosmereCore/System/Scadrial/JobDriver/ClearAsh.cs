@@ -99,6 +99,8 @@ public class ClearAsh : Verse.AI.JobDriver {
     }
 }
 
+// [DefOf] rebinds this by reflection, and the file name puts it outside the *DefOf*.cs rule.
+#pragma warning disable CA2211
 [DefOf]
 public static class ThingDefOf_Ash {
     public static ThingDef Cosmere_Scadrial_Thing_Ash = null!;
@@ -107,3 +109,4 @@ public static class ThingDefOf_Ash {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf_Ash));
     }
 }
+#pragma warning restore CA2211

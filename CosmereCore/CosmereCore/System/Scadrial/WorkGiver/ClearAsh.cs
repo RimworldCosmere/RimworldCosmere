@@ -53,6 +53,8 @@ public class ClearAsh : WorkGiver_Scanner {
     }
 }
 
+// [DefOf] rebinds this by reflection, and the file name puts it outside the *DefOf*.cs rule.
+#pragma warning disable CA2211
 [DefOf]
 public static class JobDefOf_Ash {
     public static JobDef Cosmere_Scadrial_Job_ClearAsh = null!;
@@ -61,3 +63,4 @@ public static class JobDefOf_Ash {
         DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf_Ash));
     }
 }
+#pragma warning restore CA2211

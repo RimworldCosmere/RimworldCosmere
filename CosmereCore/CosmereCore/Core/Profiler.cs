@@ -118,43 +118,51 @@ public static class Profiler {
         string label = Labels.TryGetValue(__originalMethod, out string? l) ? l : __originalMethod.Name;
 
         if (attr.Mode == ProfileMode.Instrumentation) {
-            (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
-            if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.IsEmpty) return;
-
-            if (!stack.TryPop(out Stopwatch sw)) return;
-            sw.Stop();
-
-            if (attr.Aggregate) {
-                Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
-                agg.Add(sw.ElapsedTicks, 1, 1.0f);
-            } else {
-                LogElapsed(label, sw.ElapsedTicks);
-            }
+            EndInstrumentation(__originalMethod, attr, label);
 
             return;
         }
 
         // Sampling
         if (attr.Mode == ProfileMode.Sampling) {
-            Stack<SampleToken>? stack = SampleStack.Value;
-            if (stack.Count == 0) return;
-            SampleToken token = stack.Pop();
+            EndSampling(__originalMethod, attr, label);
+        }
+    }
 
-            if (token.sampled && token.sw != null) {
-                token.sw.Stop();
+    private static void EndInstrumentation(MethodBase __originalMethod, ProfileAttribute attr, string label) {
+        (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
+        if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.IsEmpty) return;
 
-                // Scale by 1/p to get unbiased estimate
-                float p = Mathf.Clamp(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability, 0.000001f, 1f);
-                double weight = 1.0 / p;
+        if (!stack.TryPop(out Stopwatch sw)) return;
+        sw.Stop();
 
-                if (attr.Aggregate) {
-                    Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
-                    agg.Add(token.sw.ElapsedTicks, 1, weight);
-                } else {
-                    long estTicks = (long)(token.sw.ElapsedTicks * weight);
-                    LogElapsed($"[SAMP] {label}", estTicks);
-                }
-            }
+        if (attr.Aggregate) {
+            Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
+            agg.Add(sw.ElapsedTicks, 1, 1.0f);
+        } else {
+            LogElapsed(label, sw.ElapsedTicks);
+        }
+    }
+
+    private static void EndSampling(MethodBase __originalMethod, ProfileAttribute attr, string label) {
+        Stack<SampleToken>? stack = SampleStack.Value;
+        if (stack.Count == 0) return;
+        SampleToken token = stack.Pop();
+
+        if (!token.sampled || token.sw == null) return;
+
+        token.sw.Stop();
+
+        // Scale by 1/p to get unbiased estimate
+        float p = Mathf.Clamp(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability, 0.000001f, 1f);
+        double weight = 1.0 / p;
+
+        if (attr.Aggregate) {
+            Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
+            agg.Add(token.sw.ElapsedTicks, 1, weight);
+        } else {
+            long estTicks = (long)(token.sw.ElapsedTicks * weight);
+            LogElapsed($"[SAMP] {label}", estTicks);
         }
     }
 

@@ -124,6 +124,11 @@ public class AllomancyAuraHediffGiver : HediffComp {
             TrySeize(pawn);
         }
 
+        ReleasePawnsOutOfReach(radius);
+    }
+
+    /// <summary>Drops the source from everyone who walked out of the aura, and forgets them.</summary>
+    private void ReleasePawnsOutOfReach(float radius) {
         List<Pawn> toRemove = [];
         foreach (Pawn pawn in pawnsWithHediff) {
             if (StillInReach(pawn, radius)) continue;

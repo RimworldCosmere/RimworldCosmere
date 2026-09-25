@@ -44,53 +44,64 @@ public static class GeneUtility {
             return;
         }
 
-        // Preservation logic
-        string roll;
-        bool success;
         if (isPreservation) {
-            float preservation = ConnectionFactor(pawn, ShardDefOf.Preservation);
-            if (isNoble) {
-                success = RollChance(Eased(128, preservation), out roll);
-                Log.Debug(
-                    $"Trying for Mistborn. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
-                );
-                if (success) {
-                    AddMistborn(pawn);
-                } else {
-                    success = RollChance(Eased(16, preservation), out roll);
-                    Log.Debug(
-                        $"Trying for Misting. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
-                    );
-                    if (success) AddRandomAllomanticGene(pawn);
-                }
-            }
-
-            // Ruin logic
-            if (!isRuin) return;
-            if (!isTerris) return;
-
-            // Full Feruchemists were far more common than Ferrings among Terris - most were Full, or nothing.
-            success = RollChance(16, out roll);
-            Log.Debug(
-                $"Trying for full feruchemist. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
-            );
-            if (success) {
-                AddFullFeruchemist(pawn);
-            } else {
-                success = RollChance(64, out roll);
-                Log.Debug(
-                    $"Trying for Ferring. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
-                );
-                if (success) AddRandomFeruchemicalGene(pawn);
-            }
-
+            AssignPreservationGenes(pawn, isNoble, isTerris);
             return;
         }
 
         // Harmony system: no nobles, no block, no mistborn/full feruchemists
-        if (!isHarmony) return;
+        if (isHarmony) AssignHarmonyGenes(pawn, isTerris);
+    }
 
-        success = RollChance(Eased(16, ConnectionFactor(pawn, ShardDefOf.Harmony)), out roll);
+    /// <summary>Preservation and Ruin, the pre-Catacendre split: nobles roll Allomancy, Terris Feruchemy.</summary>
+    private static void AssignPreservationGenes(Pawn pawn, bool isNoble, bool isTerris) {
+        float preservation = ConnectionFactor(pawn, ShardDefOf.Preservation);
+        if (isNoble) RollAllomanticLineage(pawn, preservation);
+
+        // Ruin logic
+        if (!isRuin) return;
+        if (!isTerris) return;
+
+        RollFeruchemicLineage(pawn);
+    }
+
+    private static void RollAllomanticLineage(Pawn pawn, float preservation) {
+        bool success = RollChance(Eased(128, preservation), out string roll);
+        Log.Debug(
+            $"Trying for Mistborn. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
+        );
+        if (success) {
+            AddMistborn(pawn);
+            return;
+        }
+
+        success = RollChance(Eased(16, preservation), out roll);
+        Log.Debug(
+            $"Trying for Misting. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
+        );
+        if (success) AddRandomAllomanticGene(pawn);
+    }
+
+    /// Full Feruchemists were far more common than Ferrings among Terris - most were Full, or nothing.
+    private static void RollFeruchemicLineage(Pawn pawn) {
+        bool success = RollChance(16, out string roll);
+        Log.Debug(
+            $"Trying for full feruchemist. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
+        );
+        if (success) {
+            AddFullFeruchemist(pawn);
+            return;
+        }
+
+        success = RollChance(64, out roll);
+        Log.Debug(
+            $"Trying for Ferring. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
+        );
+        if (success) AddRandomFeruchemicalGene(pawn);
+    }
+
+    private static void AssignHarmonyGenes(Pawn pawn, bool isTerris) {
+        bool success = RollChance(Eased(16, ConnectionFactor(pawn, ShardDefOf.Harmony)), out string roll);
         Log.Debug(
             $"Trying for random misting. Pawn={GenerationLabel(pawn)} Success={success} Roll={roll}"
         );

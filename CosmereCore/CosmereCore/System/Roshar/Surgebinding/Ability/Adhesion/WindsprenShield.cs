@@ -81,31 +81,12 @@ public class WindsprenShield : SurgebindingAbility {
         }
 
         if (pawn.IsHashIntervalTick(15)) {
-            IntVec3 randomCell = pawn.Position + GenRadial.RadialPattern[Rand.Range(1, (int)(radius * radius))];
-            if (randomCell.InBounds(pawn.Map)) {
-                FleckMaker.ThrowDustPuffThick(
-                    randomCell.ToVector3Shifted(),
-                    pawn.Map,
-                    0.5f,
-                    new Color(0.7f, 0.85f, 1f, 0.4f)
-                );
-            }
+            ThrowShieldDust();
         }
 
         float currentRadius = radius;
 
-        for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
-            Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn == null ||
-                targetPawn.Dead ||
-                !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
-                if (targetPawn != null && !targetPawn.Dead) {
-                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
-                }
-
-                pawnsInArea.RemoveAt(i);
-            }
-        }
+        PruneDepartedPawns(currentRadius);
 
         if (!pawn.IsHashIntervalTick(30)) return;
 
@@ -121,6 +102,33 @@ public class WindsprenShield : SurgebindingAbility {
 
             SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
             pawnsInArea.AddDistinct(targetPawn);
+        }
+    }
+
+    private void ThrowShieldDust() {
+        IntVec3 randomCell = pawn.Position + GenRadial.RadialPattern[Rand.Range(1, (int)(radius * radius))];
+        if (!randomCell.InBounds(pawn.Map)) return;
+
+        FleckMaker.ThrowDustPuffThick(
+            randomCell.ToVector3Shifted(),
+            pawn.Map,
+            0.5f,
+            new Color(0.7f, 0.85f, 1f, 0.4f)
+        );
+    }
+
+    private void PruneDepartedPawns(float currentRadius) {
+        for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
+            Pawn targetPawn = pawnsInArea[i];
+            if (targetPawn == null ||
+                targetPawn.Dead ||
+                !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
+                if (targetPawn != null && !targetPawn.Dead) {
+                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+                }
+
+                pawnsInArea.RemoveAt(i);
+            }
         }
     }
 

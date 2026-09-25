@@ -60,6 +60,19 @@ public class StrainedBond : HediffWithComps {
 
         Severity = 1f - connection;
 
+        UpdateBondWarnings(surgebinder, connection);
+
+        if (connection <= 0.15f && !hasRegressedThisCycle) {
+            hasRegressedThisCycle = true;
+            surgebinder.RegressIdeal();
+        }
+
+        if (connection <= 0.0f) {
+            surgebinder.CatastrophicBondDeath();
+        }
+    }
+
+    private void UpdateBondWarnings(Surgebinder surgebinder, float connection) {
         string orderLabel = surgebinder.radiantOrderDef.LabelCap;
 
         if (connection < 0.15f && !sentBreakingWarning) {
@@ -105,15 +118,6 @@ public class StrainedBond : HediffWithComps {
         if (connection >= 0.15f) {
             sentBreakingWarning = false;
             hasRegressedThisCycle = false;
-        }
-
-        if (connection <= 0.15f && !hasRegressedThisCycle) {
-            hasRegressedThisCycle = true;
-            surgebinder.RegressIdeal();
-        }
-
-        if (connection <= 0.0f) {
-            surgebinder.CatastrophicBondDeath();
         }
     }
 

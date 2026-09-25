@@ -60,6 +60,26 @@ public class Lifesurge : SurgebindingAbility {
     }
 
     private void HealWounds(Pawn targetPawn, int ideal) {
+        List<Hediff_Injury> injuries = CollectHealableInjuries(targetPawn, ideal);
+        if (injuries.Count == 0) return;
+
+        int maxWounds = ideal < MaxWoundsToHeal.Length ? MaxWoundsToHeal[ideal] : int.MaxValue;
+        injuries.Sort((a, b) => a.Severity.CompareTo(b.Severity));
+
+        if (ideal >= 4) {
+            HealEveryInjury(injuries);
+            return;
+        }
+
+        if (ideal == 3) {
+            HealShallowInjuries(injuries);
+            return;
+        }
+
+        HealUpTo(injuries, maxWounds);
+    }
+
+    private static List<Hediff_Injury> CollectHealableInjuries(Pawn targetPawn, int ideal) {
         List<Hediff_Injury> injuries = [];
         List<Verse.Hediff> hediffs = targetPawn.health.hediffSet.hediffs;
         for (int i = 0; i < hediffs.Count; i++) {
@@ -70,35 +90,30 @@ public class Lifesurge : SurgebindingAbility {
             }
         }
 
-        if (injuries.Count == 0) return;
+        return injuries;
+    }
 
-        int maxWounds = ideal < MaxWoundsToHeal.Length ? MaxWoundsToHeal[ideal] : int.MaxValue;
-        injuries.Sort((a, b) => a.Severity.CompareTo(b.Severity));
-
-        if (ideal >= 4) {
-            for (int i = 0; i < injuries.Count; i++) {
-                float healCost = def.beuPerTick * WoundHealCostFraction;
-                if (!Gene.CanLowerReserve(healCost)) break;
-                Gene.RemoveFromReserve(healCost);
-                injuries[i].Heal(injuries[i].Severity);
-            }
-
-            return;
+    private void HealEveryInjury(List<Hediff_Injury> injuries) {
+        for (int i = 0; i < injuries.Count; i++) {
+            float healCost = def.beuPerTick * WoundHealCostFraction;
+            if (!Gene.CanLowerReserve(healCost)) break;
+            Gene.RemoveFromReserve(healCost);
+            injuries[i].Heal(injuries[i].Severity);
         }
+    }
 
-        if (ideal == 3) {
-            for (int i = 0; i < injuries.Count; i++) {
-                float partMaxHp = injuries[i].Part?.def.hitPoints ?? 30f;
-                if (injuries[i].Severity > partMaxHp * 0.5f) continue;
-                float healCost = def.beuPerTick * WoundHealCostFraction;
-                if (!Gene.CanLowerReserve(healCost)) break;
-                Gene.RemoveFromReserve(healCost);
-                injuries[i].Heal(injuries[i].Severity);
-            }
-
-            return;
+    private void HealShallowInjuries(List<Hediff_Injury> injuries) {
+        for (int i = 0; i < injuries.Count; i++) {
+            float partMaxHp = injuries[i].Part?.def.hitPoints ?? 30f;
+            if (injuries[i].Severity > partMaxHp * 0.5f) continue;
+            float healCost = def.beuPerTick * WoundHealCostFraction;
+            if (!Gene.CanLowerReserve(healCost)) break;
+            Gene.RemoveFromReserve(healCost);
+            injuries[i].Heal(injuries[i].Severity);
         }
+    }
 
+    private void HealUpTo(List<Hediff_Injury> injuries, int maxWounds) {
         int healed = 0;
         for (int i = 0; i < injuries.Count && healed < maxWounds; i++) {
             float healCost = def.beuPerTick * WoundHealCostFraction;
@@ -138,26 +153,8 @@ public class Lifesurge : SurgebindingAbility {
         List<Verse.Hediff> hediffs = targetPawn.health.hediffSet.hediffs;
 
         for (int i = 0; i < hediffs.Count; i++) {
-            Verse.Hediff hediff = hediffs[i];
-            if (!hediff.def.isBad) continue;
-            if (hediff is Hediff_MissingPart) continue;
-            if (hediff is Hediff_Injury) continue;
-            if (InvestitureHealExclusionRegistry.IsExcluded(hediff)) continue;
-
-            if (ideal >= 2 &&
-                RimWorld.HediffDefOf.WoundInfection != null &&
-                hediff.def == RimWorld.HediffDefOf.WoundInfection) {
-                toRemove.Add(hediff);
-                continue;
-            }
-
-            if (ideal >= 3 && hediff.def.makesSickThought) {
-                toRemove.Add(hediff);
-                continue;
-            }
-
-            if (ideal >= 4) {
-                toRemove.Add(hediff);
+            if (ShouldCure(hediffs[i], ideal)) {
+                toRemove.Add(hediffs[i]);
             }
         }
 
@@ -167,6 +164,23 @@ public class Lifesurge : SurgebindingAbility {
             Gene.RemoveFromReserve(cureCost);
             targetPawn.health.RemoveHediff(toRemove[i]);
         }
+    }
+
+    private static bool ShouldCure(Verse.Hediff hediff, int ideal) {
+        if (!hediff.def.isBad) return false;
+        if (hediff is Hediff_MissingPart) return false;
+        if (hediff is Hediff_Injury) return false;
+        if (InvestitureHealExclusionRegistry.IsExcluded(hediff)) return false;
+
+        if (ideal >= 2 &&
+            RimWorld.HediffDefOf.WoundInfection != null &&
+            hediff.def == RimWorld.HediffDefOf.WoundInfection) {
+            return true;
+        }
+
+        if (ideal >= 3 && hediff.def.makesSickThought) return true;
+
+        return ideal >= 4;
     }
 
     private void ApplyLifesurgeHediff(Pawn targetPawn, int ideal) {

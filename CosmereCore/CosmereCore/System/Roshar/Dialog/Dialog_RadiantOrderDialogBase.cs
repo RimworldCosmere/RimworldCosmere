@@ -411,26 +411,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
             }
         }
 
-        List<AbilityDef> abilitiesToShow = [];
-        if (index == 0) {
-            abilitiesToShow.AddRange(order.abilities);
-        }
-
-        for (int s = 0; s < order.surges.Count; s++) {
-            for (int a = 0; a < order.surges[s].abilities.Count; a++) {
-                AbilityDef abilityDef = order.surges[s].abilities[a];
-                int minIdeal = abilityDef is SurgebindingAbilityDef surgeDef
-                    ? surgeDef.GetMinIdealForOrder(order.defName)
-                    : 0;
-                if (minIdeal == index) {
-                    abilitiesToShow.Add(abilityDef);
-                }
-            }
-        }
-
-        if (ideal.abilities != null) {
-            abilitiesToShow.AddRange(ideal.abilities);
-        }
+        List<AbilityDef> abilitiesToShow = CollectAbilitiesForIdeal(ideal, index);
 
         if (abilitiesToShow.Count > 0) {
             string abilityNames = GetAbilityNames(abilitiesToShow);
@@ -440,6 +421,31 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
         listing.ColumnWidth = originalWidth;
         listing.Outdent(TimelineContentIndent);
+    }
+
+    private List<AbilityDef> CollectAbilitiesForIdeal(Ideal ideal, int index) {
+        List<AbilityDef> abilities = [];
+        if (index == 0) {
+            abilities.AddRange(order.abilities);
+        }
+
+        for (int s = 0; s < order.surges.Count; s++) {
+            for (int a = 0; a < order.surges[s].abilities.Count; a++) {
+                AbilityDef abilityDef = order.surges[s].abilities[a];
+                int minIdeal = abilityDef is SurgebindingAbilityDef surgeDef
+                    ? surgeDef.GetMinIdealForOrder(order.defName)
+                    : 0;
+                if (minIdeal == index) {
+                    abilities.Add(abilityDef);
+                }
+            }
+        }
+
+        if (ideal.abilities != null) {
+            abilities.AddRange(ideal.abilities);
+        }
+
+        return abilities;
     }
 
     private static string GetAbilityNames(List<AbilityDef> abilities) {
@@ -507,22 +513,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         Rect rowRect = listing.GetRect(pillHeight);
         for (int i = 0; i < traits.Count; i++) {
             TraitRequirement trait = traits[i];
-            int degree = trait.degree ?? 0;
-            TraitDegreeData? degreeData = null;
-            try {
-                degreeData = trait.def?.DataAtDegree(degree);
-            } catch (Exception ex) {
-                Log.Debug(
-                    $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex}"
-                );
-            }
-
-            string traitLabel = degreeData?.label
-                                ?? trait.def?.label
-                                ?? trait.def?.defName
-                                ?? (string)"CRO_RadiantOrder_Traits_Unknown".Translate();
-            traitLabel = traitLabel.CapitalizeFirst();
-
+            string traitLabel = TraitPillLabel(trait);
             bool pawnHasTrait = pawn != null && trait.HasTrait(pawn);
 
             Vector2 textSize;
@@ -537,63 +528,84 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
             Rect pillRect = new Rect(rowRect.x + currentX, rowRect.y, pillWidth, pillHeight);
 
-            Color bgColor;
-            Color borderCol;
-            Color textColor;
-            if (pawnHasTrait) {
-                bgColor = new Color(pillColor.r, pillColor.g, pillColor.b, 0.4f);
-                borderCol = pillColor;
-                textColor = Color.white;
-            } else {
-                bgColor = new Color(0.3f, 0.3f, 0.3f, 0.2f);
-                borderCol = new Color(0.4f, 0.4f, 0.4f, 0.5f);
-                textColor = new Color(0.55f, 0.55f, 0.55f);
-            }
+            DrawPill(pillRect, traitLabel, pawnHasTrait, pillColor);
 
-            Widgets.DrawBoxSolid(pillRect, bgColor);
-            Widgets.DrawBox(pillRect, 1, borderCol.ToSolidColorTexture());
-
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, textColor)) {
-                if (pawnHasTrait) {
-                    Widgets.Label(pillRect, $"<b>{traitLabel}</b>");
-                } else {
-                    Widgets.Label(pillRect, traitLabel);
-                }
-            }
-
-            string? tooltipText = null;
-            TraitDegreeData? tipData = null;
-            if (trait.degree.HasValue) tipData = trait.def?.DataAtDegree(trait.degree.Value);
-            else if (trait.def?.degreeDatas is { Count: > 0 }) tipData = trait.def.DataAtDegree(0);
-
-            if (tipData?.description != null) {
-                tooltipText = tipData.description
-                    .Replace("{PAWN_nameDef}", pawn?.Name?.ToStringShort ?? string.Empty)
-                    .Replace("{PAWN_pronoun}", Pronoun(pawn, GenderUtility.GetPronoun, "CRO_Pronoun_They"))
-                    .Replace("{PAWN_possessive}", Pronoun(pawn, GenderUtility.GetPossessive, "CRO_Pronoun_Their"))
-                    .Replace("{PAWN_objective}", Pronoun(pawn, GenderUtility.GetObjective, "CRO_Pronoun_Them"));
-            }
-
-            if (pawn != null) {
-                TaggedString traitStatus = (pawnHasTrait
-                        ? "CRO_RadiantOrder_Trait_Has"
-                        : "CRO_RadiantOrder_Trait_Lacks")
-                    .Translate(pawn.LabelShortCap.Named("PAWN"));
-
-                tooltipText = tooltipText != null
-                    ? "CRO_RadiantOrder_Trait_Tooltip".Translate(
-                        traitStatus.Named("STATUS"),
-                        tooltipText.Named("DESCRIPTION")
-                    ).Resolve()
-                    : traitStatus.Resolve();
-            }
-
+            string? tooltipText = TraitPillTooltip(trait, pawnHasTrait);
             if (tooltipText != null) {
                 TooltipHandler.TipRegion(pillRect, tooltipText);
             }
 
             currentX += pillWidth + pillPadding;
         }
+    }
+
+    private string TraitPillLabel(TraitRequirement trait) {
+        int degree = trait.degree ?? 0;
+        TraitDegreeData? degreeData = null;
+        try {
+            degreeData = trait.def?.DataAtDegree(degree);
+        } catch (Exception ex) {
+            Log.Debug(
+                $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex}"
+            );
+        }
+
+        string traitLabel = degreeData?.label
+                            ?? trait.def?.label
+                            ?? trait.def?.defName
+                            ?? (string)"CRO_RadiantOrder_Traits_Unknown".Translate();
+        return traitLabel.CapitalizeFirst();
+    }
+
+    private static void DrawPill(Rect pillRect, string traitLabel, bool pawnHasTrait, Color pillColor) {
+        Color bgColor;
+        Color borderCol;
+        Color textColor;
+        if (pawnHasTrait) {
+            bgColor = new Color(pillColor.r, pillColor.g, pillColor.b, 0.4f);
+            borderCol = pillColor;
+            textColor = Color.white;
+        } else {
+            bgColor = new Color(0.3f, 0.3f, 0.3f, 0.2f);
+            borderCol = new Color(0.4f, 0.4f, 0.4f, 0.5f);
+            textColor = new Color(0.55f, 0.55f, 0.55f);
+        }
+
+        Widgets.DrawBoxSolid(pillRect, bgColor);
+        Widgets.DrawBox(pillRect, 1, borderCol.ToSolidColorTexture());
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, textColor)) {
+            Widgets.Label(pillRect, pawnHasTrait ? $"<b>{traitLabel}</b>" : traitLabel);
+        }
+    }
+
+    private string? TraitPillTooltip(TraitRequirement trait, bool pawnHasTrait) {
+        string? tooltipText = null;
+        TraitDegreeData? tipData = null;
+        if (trait.degree.HasValue) tipData = trait.def?.DataAtDegree(trait.degree.Value);
+        else if (trait.def?.degreeDatas is { Count: > 0 }) tipData = trait.def.DataAtDegree(0);
+
+        if (tipData?.description != null) {
+            tooltipText = tipData.description
+                .Replace("{PAWN_nameDef}", pawn?.Name?.ToStringShort ?? string.Empty)
+                .Replace("{PAWN_pronoun}", Pronoun(pawn, GenderUtility.GetPronoun, "CRO_Pronoun_They"))
+                .Replace("{PAWN_possessive}", Pronoun(pawn, GenderUtility.GetPossessive, "CRO_Pronoun_Their"))
+                .Replace("{PAWN_objective}", Pronoun(pawn, GenderUtility.GetObjective, "CRO_Pronoun_Them"));
+        }
+
+        if (pawn == null) return tooltipText;
+
+        TaggedString traitStatus = (pawnHasTrait
+                ? "CRO_RadiantOrder_Trait_Has"
+                : "CRO_RadiantOrder_Trait_Lacks")
+            .Translate(pawn.LabelShortCap.Named("PAWN"));
+
+        return tooltipText != null
+            ? "CRO_RadiantOrder_Trait_Tooltip".Translate(
+                traitStatus.Named("STATUS"),
+                tooltipText.Named("DESCRIPTION")
+            ).Resolve()
+            : traitStatus.Resolve();
     }
 
     /// <summary>

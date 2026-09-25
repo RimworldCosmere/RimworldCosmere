@@ -14,7 +14,7 @@ public class SpawnThingObjective : QuestObjective {
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         QuestPart_ArrivedAtSite? arrival = quest.GetFirstPartOfType<QuestPart_ArrivedAtSite>();
         if (arrival?.site == null) {
-            throw new QuestBuildFailure("SpawnThingObjective found no preceding TravelToSiteObjective");
+            throw new QuestBuildFailureException("SpawnThingObjective found no preceding TravelToSiteObjective");
         }
 
         QuestPart_SpawnThing spawn = new QuestPart_SpawnThing {

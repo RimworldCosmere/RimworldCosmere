@@ -37,61 +37,63 @@ public sealed class AutocastRunner : GameComponent {
         claimed.Clear();
 
         for (int r = 0; r < rules.Count; r++) {
-            AutocastRule rule = rules[r];
-
-            // dormant rules still run: a rule switched off mid-hold must put the dial back, not just skip.
-            bool dormant = !rule.Enabled || rule.Triggers.Count == 0;
-
-            if (rule.Kind == AutocastRuleKind.FeruchemyDial) {
-                string key = (int)rule.Kind + ":" + rule.MetalDefName;
-                if (TickDialRule(pawn, rule, dormant || claimed.Contains(key))) claimed.Add(key);
-                continue;
-            }
-
-            // Releases the burn like TickDialRule puts a dial back; dropping the claim strands it.
-            if (dormant || pawn.abilities == null) {
-                ReleaseHeldBurn(pawn, rule);
-                rule.Holding = false;
-                continue;
-            }
-
-            RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
-            if (ability == null) {
-                rule.Holding = false;
-                continue;
-            }
-
-            IToggleableAbility? sustained = ability as IToggleableAbility;
-            bool toggleable = sustained?.IsToggleable ?? false;
-            bool active = sustained?.IsActive ?? false;
-
-            bool wasHolding = rule.Holding && active;
-
-            AutocastAction action = AutocastDecision.For(
-                toggleable,
-                active,
-                AllTriggersPass(pawn, rule),
-                rule.ToggleOffWhenInactive,
-                wasHolding,
-                ability.def.targetRequired
-            );
-
-            if (action == AutocastAction.TurnOff) {
-                rule.Holding = AutocastDecision.NextHolding(false, true, toggleable, active, wasHolding, action);
-                sustained!.TurnOff();
-                continue;
-            }
-
-            // CanCast covers the reserve paying for the ability; switching off never needs it.
-            bool cast = action == AutocastAction.Cast && ability.CanCast;
-            rule.Holding = AutocastDecision.NextHolding(
-                false, true, toggleable, active, wasHolding, cast ? action : AutocastAction.None);
-
-            if (!cast) continue;
-
-            ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
-            rule.FireCount++;
+            TickRule(pawn, rules[r]);
         }
+    }
+
+    private static void TickRule(Pawn pawn, AutocastRule rule) {
+        // dormant rules still run: a rule switched off mid-hold must put the dial back, not just skip.
+        bool dormant = !rule.Enabled || rule.Triggers.Count == 0;
+
+        if (rule.Kind == AutocastRuleKind.FeruchemyDial) {
+            string key = (int)rule.Kind + ":" + rule.MetalDefName;
+            if (TickDialRule(pawn, rule, dormant || claimed.Contains(key))) claimed.Add(key);
+            return;
+        }
+
+        // Releases the burn like TickDialRule puts a dial back; dropping the claim strands it.
+        if (dormant || pawn.abilities == null) {
+            ReleaseHeldBurn(pawn, rule);
+            rule.Holding = false;
+            return;
+        }
+
+        RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
+        if (ability == null) {
+            rule.Holding = false;
+            return;
+        }
+
+        IToggleableAbility? sustained = ability as IToggleableAbility;
+        bool toggleable = sustained?.IsToggleable ?? false;
+        bool active = sustained?.IsActive ?? false;
+
+        bool wasHolding = rule.Holding && active;
+
+        AutocastAction action = AutocastDecision.For(
+            toggleable,
+            active,
+            AllTriggersPass(pawn, rule),
+            rule.ToggleOffWhenInactive,
+            wasHolding,
+            ability.def.targetRequired
+        );
+
+        if (action == AutocastAction.TurnOff) {
+            rule.Holding = AutocastDecision.NextHolding(false, true, toggleable, active, wasHolding, action);
+            sustained!.TurnOff();
+            return;
+        }
+
+        // CanCast covers the reserve paying for the ability; switching off never needs it.
+        bool cast = action == AutocastAction.Cast && ability.CanCast;
+        rule.Holding = AutocastDecision.NextHolding(
+            false, true, toggleable, active, wasHolding, cast ? action : AutocastAction.None);
+
+        if (!cast) return;
+
+        ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+        rule.FireCount++;
     }
 
     /// <summary>

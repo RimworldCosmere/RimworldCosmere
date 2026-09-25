@@ -65,16 +65,7 @@ public static class MetalTile {
 
         // glyph is white, not the metal's colour - copper/bronze are dark browns, unreadable on a dark tile.
         Rect iconRect = new Rect(rect.x + 6f, rect.y + 3f, GlyphSize, GlyphSize);
-        if (icon != null) {
-            Color prev = GUI.color;
-            Color iconTint = Color.white;
-            if (inert) iconTint = new Color(1f, 1f, 1f, 0.35f);
-            else if (empty) iconTint = new Color(1f, 1f, 1f, 0.55f);
-
-            GUI.color = iconTint;
-            GUI.DrawTexture(iconRect, icon);
-            GUI.color = prev;
-        }
+        DrawGlyph(iconRect, icon, inert, empty);
 
         // measured, not reserved - axis mark is 2 chars, capacity reading is 5; a flat reservation starves the name.
         float noteWidth;
@@ -97,31 +88,55 @@ public static class MetalTile {
         UIText.EllipsisLabel(noteRect, note, GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.365f, 0.337f, 0.290f));
 
         Rect nameRect = new Rect(iconRect.xMax + 5f, textY, noteRect.x - iconRect.xMax - 7f, tinyH);
-        Color nameColor = new Color(0.769f, 0.737f, 0.675f);
-        if (inert) nameColor = new Color(0.435f, 0.412f, 0.373f);
-        else if (hot) nameColor = new Color(0.949f, 0.965f, 0.980f);
-        else if (empty) nameColor = new Color(0.678f, 0.651f, 0.600f);
-        UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
+        UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, NameColor(inert, hot, empty));
 
         if (!inert) Panel.Hover(rect, Border, joinedBelow ? MetallicArtsTable.JoinGap : 0f);
-
-        bool twoPools = compoundedTint.HasValue;
-        float bandTop = rect.yMax - BandLift
-            - (twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight);
 
         // skip the band here - the panel below repeats the reading. Height stays fixed either way, or the row jumps.
         if (joinedBelow) return;
 
-        // two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
+        DrawBands(rect, inert ? 0f : fraction, metalColor, inert ? 0f : compoundedFraction, compoundedTint);
+    }
+
+    /// <summary>The metal's mark, dimmed to say inert or empty without a second label for it.</summary>
+    private static void DrawGlyph(Rect iconRect, Texture2D? icon, bool inert, bool empty) {
+        if (icon == null) return;
+
+        Color prev = GUI.color;
+        Color iconTint = Color.white;
+        if (inert) iconTint = new Color(1f, 1f, 1f, 0.35f);
+        else if (empty) iconTint = new Color(1f, 1f, 1f, 0.55f);
+
+        GUI.color = iconTint;
+        GUI.DrawTexture(iconRect, icon);
+        GUI.color = prev;
+    }
+
+    private static Color NameColor(bool inert, bool hot, bool empty) {
+        if (inert) return new Color(0.435f, 0.412f, 0.373f);
+        if (hot) return new Color(0.949f, 0.965f, 0.980f);
+        if (empty) return new Color(0.678f, 0.651f, 0.600f);
+
+        return new Color(0.769f, 0.737f, 0.675f);
+    }
+
+    /// Two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
+    private static void DrawBands(
+        Rect rect, float fraction, Color metalColor, float compoundedFraction, Color? compoundedTint
+    ) {
+        bool twoPools = compoundedTint.HasValue;
+        float bandTop = rect.yMax - BandLift
+            - (twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight);
+
         Rect band = new Rect(rect.x + 4f, bandTop, rect.width - 8f, BandHeight);
-        DrawGauge(band, inert ? 0f : fraction, metalColor, new Color(0.047f, 0.043f, 0.035f));
+        DrawGauge(band, fraction, metalColor, new Color(0.047f, 0.043f, 0.035f));
 
         if (!twoPools) return;
 
         Rect compoundedBand = new Rect(band.x, band.yMax + BandGap, band.width, CompoundedBandHeight);
         DrawGauge(
             compoundedBand,
-            inert ? 0f : compoundedFraction,
+            compoundedFraction,
             compoundedTint!.Value,
             new Color(0.286f, 0.216f, 0.098f)
         );

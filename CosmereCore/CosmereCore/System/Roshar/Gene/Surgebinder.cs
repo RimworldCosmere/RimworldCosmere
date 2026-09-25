@@ -245,40 +245,47 @@ public class Surgebinder : Invested {
 
     private bool DropDeadBladeAndKillSpren(bool isBondsmith, int idealBeforeDeath) {
         if (bondedSpren == null || isBondsmith) return false;
-        bool droppedBlade = false;
-        if (idealBeforeDeath >= 2 && pawn.Map != null) {
-            ThingDef bladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_DeadShardblade;
-            if (bladeDef != null) {
-                Verse.Thing deadBlade = ThingMaker.MakeThing(bladeDef, radiantOrderDef.gemstone?.Item);
-                string? sprenName = bondedSpren.Name?.ToStringShort;
-                if (sprenName != null) {
-                    deadBlade.TryGetComp<CompQuality>()
-                        ?.SetQuality(QualityCategory.Normal, ArtGenerationContext.Colony);
-                }
 
-                droppedBlade = GenPlace.TryPlaceThing(deadBlade, pawn.Position, pawn.Map, ThingPlaceMode.Near);
-            }
-        }
-
+        bool droppedBlade = TryDropDeadBlade(idealBeforeDeath);
         if (!bondedSpren.Dead && !bondedSpren.Destroyed) {
-            IntVec3 deathPos = bondedSpren.PositionHeld;
-            Map? deathMap = bondedSpren.MapHeld;
-            bondedSpren.Kill(null);
-            if (deathMap != null) {
-                List<Verse.Thing> atCell = deathPos.GetThingList(deathMap);
-                for (int i = atCell.Count - 1; i >= 0; i--) {
-                    if (atCell[i] is Corpse corpse && corpse.InnerPawn == bondedSpren) {
-                        corpse.Destroy();
-                        break;
-                    }
-                }
-            }
-
-            if (!bondedSpren.Destroyed) bondedSpren.Destroy();
+            KillBondedSpren();
         }
 
         bondedSpren = null;
         return droppedBlade;
+    }
+
+    private bool TryDropDeadBlade(int idealBeforeDeath) {
+        if (idealBeforeDeath < 2 || pawn.Map == null) return false;
+
+        ThingDef bladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_DeadShardblade;
+        if (bladeDef == null) return false;
+
+        Verse.Thing deadBlade = ThingMaker.MakeThing(bladeDef, radiantOrderDef.gemstone?.Item);
+        string? sprenName = bondedSpren!.Name?.ToStringShort;
+        if (sprenName != null) {
+            deadBlade.TryGetComp<CompQuality>()
+                ?.SetQuality(QualityCategory.Normal, ArtGenerationContext.Colony);
+        }
+
+        return GenPlace.TryPlaceThing(deadBlade, pawn.Position, pawn.Map, ThingPlaceMode.Near);
+    }
+
+    private void KillBondedSpren() {
+        IntVec3 deathPos = bondedSpren!.PositionHeld;
+        Map? deathMap = bondedSpren.MapHeld;
+        bondedSpren.Kill(null);
+        if (deathMap != null) {
+            List<Verse.Thing> atCell = deathPos.GetThingList(deathMap);
+            for (int i = atCell.Count - 1; i >= 0; i--) {
+                if (atCell[i] is Corpse corpse && corpse.InnerPawn == bondedSpren) {
+                    corpse.Destroy();
+                    break;
+                }
+            }
+        }
+
+        if (!bondedSpren.Destroyed) bondedSpren.Destroy();
     }
 
     private void SendBondDeathLetter(bool isBondsmith, bool droppedBlade) {
@@ -852,29 +859,14 @@ public class Surgebinder : Invested {
         float ticks = pawn.records.GetValue(recordDef) - decayOffset;
         int newStage = SurgebindingSavantUtility.GetStage(ticks);
 
-        if (newStage == 1) {
-            bool surgeActive = false;
-            for (int i = 0; i < sources.Count; i++) {
-                List<AbilityDef> surgeAbilities = surge.abilities;
-                for (int j = 0; j < surgeAbilities.Count; j++) {
-                    if (sources[i].Def == surgeAbilities[j]) {
-                        surgeActive = true;
-                        break;
-                    }
-                }
-
-                if (surgeActive) break;
-            }
-
-            if (!surgeActive) {
-                float decayAmount = ticks *
-                                    SavantUtility.Stage1DecayPerDayFraction /
-                                    GenDate.TicksPerDay *
-                                    GenTicks.TickLongInterval;
-                savantDecayOffsets[surgeName] = decayOffset + decayAmount;
-                ticks -= decayAmount;
-                newStage = SurgebindingSavantUtility.GetStage(ticks);
-            }
+        if (newStage == 1 && !IsSurgeActive(surge)) {
+            float decayAmount = ticks *
+                                SavantUtility.Stage1DecayPerDayFraction /
+                                GenDate.TicksPerDay *
+                                GenTicks.TickLongInterval;
+            savantDecayOffsets[surgeName] = decayOffset + decayAmount;
+            ticks -= decayAmount;
+            newStage = SurgebindingSavantUtility.GetStage(ticks);
         }
 
         cachedSavantStages[surgeName] = newStage;
@@ -886,6 +878,17 @@ public class Surgebinder : Invested {
         if (newStage > previousStage && newStage > 0) {
             SavantUtility.SendSavantLetter(pawn, newStage, "Surgebinding", surge.LabelCap);
         }
+    }
+
+    private bool IsSurgeActive(SurgeDef surge) {
+        List<AbilityDef> surgeAbilities = surge.abilities;
+        for (int i = 0; i < sources.Count; i++) {
+            for (int j = 0; j < surgeAbilities.Count; j++) {
+                if (sources[i].Def == surgeAbilities[j]) return true;
+            }
+        }
+
+        return false;
     }
 
     public override void ExposeData() {

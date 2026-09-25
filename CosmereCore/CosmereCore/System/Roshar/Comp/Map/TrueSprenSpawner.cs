@@ -56,15 +56,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         foreach (Pawn pawn in pawns) {
             SpawnInfo spawnInfoForPawn = GetSpawnInfo(pawn);
             if (spawnInfoForPawn.ticksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMinIntervalTicks) continue;
-            bool hasSpawnedSpren = false;
-            for (int i = 0; i < pawnSprens.Count; i++) {
-                if (pawnSprens[i].pawn.Equals(pawn) && pawnSprens[i].spren.Spawned) {
-                    hasSpawnedSpren = true;
-                    break;
-                }
-            }
-
-            if (hasSpawnedSpren) continue;
+            if (HasSpawnedSpren(pawn)) continue;
             if (pawn.IsAsleep()) continue;
 
             if (!Rand.Chance(baseSpawnChance) &&
@@ -74,6 +66,14 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
 
             SpawnSpren(pawn, spawnInfoForPawn);
         }
+    }
+
+    private bool HasSpawnedSpren(Pawn pawn) {
+        for (int i = 0; i < pawnSprens.Count; i++) {
+            if (pawnSprens[i].pawn.Equals(pawn) && pawnSprens[i].spren.Spawned) return true;
+        }
+
+        return false;
     }
 
     private void SpawnSpren(Pawn pawn, SpawnInfo spawnInfoForPawn) {

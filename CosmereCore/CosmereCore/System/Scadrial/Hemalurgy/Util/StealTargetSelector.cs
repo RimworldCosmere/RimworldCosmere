@@ -38,37 +38,38 @@ public static class StealTargetSelector {
         List<GeneDef> candidates = [];
 
         if (HemalurgicConstants.IsAllomanticSteal(stealType)) {
-            string[] groupMetals = HemalurgicConstants.GetAllomanticGroupMetals(stealType);
-            for (int i = 0; i < groupMetals.Length; i++) {
-                MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(groupMetals[i]);
-                if (metalDef == null) continue;
-                GeneDef? geneDef = metalDef.GetMistingGene();
-                if (geneDef != null && donor.genes.HasActiveGene(geneDef)) {
-                    candidates.Add(geneDef);
-                }
-            }
+            AddGroupGenes(candidates, donor, HemalurgicConstants.GetAllomanticGroupMetals(stealType), true);
         } else if (HemalurgicConstants.IsFeruchemicSteal(stealType)) {
-            string[] groupMetals = HemalurgicConstants.GetFeruchemicGroupMetals(stealType);
-            for (int i = 0; i < groupMetals.Length; i++) {
-                MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(groupMetals[i]);
-                if (metalDef == null) continue;
-                GeneDef? geneDef = metalDef.GetFerringGene();
-                if (geneDef != null && donor.genes.HasActiveGene(geneDef)) {
-                    candidates.Add(geneDef);
-                }
-            }
+            AddGroupGenes(candidates, donor, HemalurgicConstants.GetFeruchemicGroupMetals(stealType), false);
         } else if (stealType == HemalurgicStealType.AnyPower) {
-            List<Allomancer> allomantic = donor.genes.GetAllomanticGenes();
-            for (int i = 0; i < allomantic.Count; i++) {
-                candidates.Add(allomantic[i].def);
-            }
-
-            List<Feruchemist> feruchemic = donor.genes.GetFeruchemicGenes();
-            for (int i = 0; i < feruchemic.Count; i++) {
-                candidates.Add(feruchemic[i].def);
-            }
+            AddEveryPower(candidates, donor);
         }
 
         return candidates;
+    }
+
+    /// <summary>The genes of one metal group the donor actually has, allomantic or feruchemic.</summary>
+    private static void AddGroupGenes(List<GeneDef> candidates, Pawn donor, string[] groupMetals, bool allomantic) {
+        for (int i = 0; i < groupMetals.Length; i++) {
+            MetalDef? metalDef = DefDatabase<MetalDef>.GetNamedSilentFail(groupMetals[i]);
+            if (metalDef == null) continue;
+
+            GeneDef? geneDef = allomantic ? metalDef.GetMistingGene() : metalDef.GetFerringGene();
+            if (geneDef != null && donor.genes.HasActiveGene(geneDef)) {
+                candidates.Add(geneDef);
+            }
+        }
+    }
+
+    private static void AddEveryPower(List<GeneDef> candidates, Pawn donor) {
+        List<Allomancer> allomantic = donor.genes.GetAllomanticGenes();
+        for (int i = 0; i < allomantic.Count; i++) {
+            candidates.Add(allomantic[i].def);
+        }
+
+        List<Feruchemist> feruchemic = donor.genes.GetFeruchemicGenes();
+        for (int i = 0; i < feruchemic.Count; i++) {
+            candidates.Add(feruchemic[i].def);
+        }
     }
 }

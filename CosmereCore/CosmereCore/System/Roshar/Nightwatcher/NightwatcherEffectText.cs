@@ -113,44 +113,9 @@ public static class NightwatcherEffectText {
         HediffStage stage = hediff.stages[0];
         int startCount = effects.Count;
 
-        if (stage.statOffsets != null) {
-            for (int i = 0; i < stage.statOffsets.Count; i++) {
-                StatModifier mod = stage.statOffsets[i];
-                string sign = mod.value >= 0 ? "+" : string.Empty;
-                effects.Add("CRO_NW_Effect_StatOffset".Translate(
-                    sign.Named("SIGN"),
-                    mod.value.ToString("0.##").Named(ValueArg),
-                    mod.stat.LabelCap.Named("STAT")
-                ));
-            }
-        }
-
-        if (stage.statFactors != null) {
-            for (int i = 0; i < stage.statFactors.Count; i++) {
-                StatModifier mod = stage.statFactors[i];
-                float pct = (mod.value - 1f) * 100f;
-                string sign = pct >= 0 ? "+" : string.Empty;
-                effects.Add("CRO_NW_Effect_StatFactor".Translate(
-                    sign.Named("SIGN"),
-                    pct.ToString("0.#").Named(ValueArg),
-                    mod.stat.LabelCap.Named("STAT")
-                ));
-            }
-        }
-
-        if (stage.capMods != null) {
-            for (int i = 0; i < stage.capMods.Count; i++) {
-                PawnCapacityModifier cap = stage.capMods[i];
-                if (cap.offset != 0f) {
-                    string sign = cap.offset >= 0 ? "+" : string.Empty;
-                    effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
-                        sign.Named("SIGN"),
-                        (cap.offset * 100f).ToString("0.#").Named(ValueArg),
-                        cap.capacity.LabelCap.Named("CAPACITY")
-                    ));
-                }
-            }
-        }
+        AppendStatOffsets(stage.statOffsets, effects);
+        AppendStatFactors(stage.statFactors, effects);
+        AppendCapMods(stage.capMods, effects);
 
         if (stage.painOffset != 0f) {
             string sign = stage.painOffset >= 0 ? "+" : string.Empty;
@@ -161,5 +126,50 @@ public static class NightwatcherEffectText {
         }
 
         return effects.Count > startCount;
+    }
+
+    private static void AppendStatOffsets(List<StatModifier>? statOffsets, List<string> effects) {
+        if (statOffsets == null) return;
+
+        for (int i = 0; i < statOffsets.Count; i++) {
+            StatModifier mod = statOffsets[i];
+            string sign = mod.value >= 0 ? "+" : string.Empty;
+            effects.Add("CRO_NW_Effect_StatOffset".Translate(
+                sign.Named("SIGN"),
+                mod.value.ToString("0.##").Named(ValueArg),
+                mod.stat.LabelCap.Named("STAT")
+            ));
+        }
+    }
+
+    private static void AppendStatFactors(List<StatModifier>? statFactors, List<string> effects) {
+        if (statFactors == null) return;
+
+        for (int i = 0; i < statFactors.Count; i++) {
+            StatModifier mod = statFactors[i];
+            float pct = (mod.value - 1f) * 100f;
+            string sign = pct >= 0 ? "+" : string.Empty;
+            effects.Add("CRO_NW_Effect_StatFactor".Translate(
+                sign.Named("SIGN"),
+                pct.ToString("0.#").Named(ValueArg),
+                mod.stat.LabelCap.Named("STAT")
+            ));
+        }
+    }
+
+    private static void AppendCapMods(List<PawnCapacityModifier>? capMods, List<string> effects) {
+        if (capMods == null) return;
+
+        for (int i = 0; i < capMods.Count; i++) {
+            PawnCapacityModifier cap = capMods[i];
+            if (cap.offset == 0f) continue;
+
+            string sign = cap.offset >= 0 ? "+" : string.Empty;
+            effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
+                sign.Named("SIGN"),
+                (cap.offset * 100f).ToString("0.#").Named(ValueArg),
+                cap.capacity.LabelCap.Named("CAPACITY")
+            ));
+        }
     }
 }

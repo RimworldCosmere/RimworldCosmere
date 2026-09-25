@@ -92,48 +92,8 @@ public class ITab_StorageWithInventory : ITab_Storage {
         Rect rect = new Rect(0f, y, width, 28f);
         Widgets.InfoCardButton(rect.width - 24f, y, thing);
         rect.width -= 24f;
-        bool disabled = false;
-        if (canControl) {
-            Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
-            bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
-            disabled = dropLocked;
-            if (Mouse.IsOver(rect2)) {
-                if (dropLocked) {
-                    TooltipHandler.TipRegion(rect2, "DropThingLocked".Translate());
-                } else {
-                    TooltipHandler.TipRegion(rect2, "DropThing".Translate());
-                }
-            }
-
-            Color color = disabled ? Color.grey : Color.white;
-            Color mouseoverColor = disabled ? color : GenUI.MouseoverColor;
-            if (Widgets.ButtonImage(rect2, TexButton.Drop, color, mouseoverColor, !disabled) && !disabled) {
-                Action action = () => {
-                    RimWorld.SoundDefOf.Tick_High.PlayOneShotOnCamera();
-                    InterfaceDrop(thing);
-                };
-                if (!ModsConfig.BiotechActive ||
-                    SelPawn == null ||
-                    !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
-                    action();
-                }
-            }
-
-            rect.width -= 24f;
-        }
-
-        if (canControlColonist) {
-            if (SelPawn != null && FoodUtility.WillIngestFromInventoryNow(SelPawn, thing)) {
-                Rect rect3 = new Rect(rect.width - 24f, y, 24f, 24f);
-                TooltipHandler.TipRegionByKey(rect3, "ConsumeThing", thing.LabelNoCount, thing);
-                if (Widgets.ButtonImage(rect3, TexButton.Ingest)) {
-                    RimWorld.SoundDefOf.Tick_High.PlayOneShotOnCamera();
-                    FoodUtility.IngestFromInventoryNow(SelPawn, thing);
-                }
-            }
-
-            rect.width -= 24f;
-        }
+        bool disabled = DrawDropButton(ref rect, y, thing);
+        DrawIngestButton(ref rect, y, thing);
 
         Rect rect4 = rect;
         rect4.xMin = rect4.xMax - 60f;
@@ -170,6 +130,52 @@ public class ITab_StorageWithInventory : ITab_Storage {
         }
 
         y += 28f;
+    }
+
+    /// <summary>
+    ///     Drop button and its tooltip. Returns whether the thing is drop-locked, which the label
+    ///     row also needs.
+    /// </summary>
+    private bool DrawDropButton(ref Rect rect, float y, Verse.Thing thing) {
+        if (!canControl) return false;
+
+        Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
+        bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
+        if (Mouse.IsOver(rect2)) {
+            TooltipHandler.TipRegion(rect2, dropLocked ? "DropThingLocked".Translate() : "DropThing".Translate());
+        }
+
+        Color color = dropLocked ? Color.grey : Color.white;
+        Color mouseoverColor = dropLocked ? color : GenUI.MouseoverColor;
+        if (Widgets.ButtonImage(rect2, TexButton.Drop, color, mouseoverColor, !dropLocked) && !dropLocked) {
+            Action action = () => {
+                RimWorld.SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                InterfaceDrop(thing);
+            };
+            if (!ModsConfig.BiotechActive ||
+                SelPawn == null ||
+                !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
+                action();
+            }
+        }
+
+        rect.width -= 24f;
+        return dropLocked;
+    }
+
+    private void DrawIngestButton(ref Rect rect, float y, Verse.Thing thing) {
+        if (!canControlColonist) return;
+
+        if (SelPawn != null && FoodUtility.WillIngestFromInventoryNow(SelPawn, thing)) {
+            Rect rect3 = new Rect(rect.width - 24f, y, 24f, 24f);
+            TooltipHandler.TipRegionByKey(rect3, "ConsumeThing", thing.LabelNoCount, thing);
+            if (Widgets.ButtonImage(rect3, TexButton.Ingest)) {
+                RimWorld.SoundDefOf.Tick_High.PlayOneShotOnCamera();
+                FoodUtility.IngestFromInventoryNow(SelPawn, thing);
+            }
+        }
+
+        rect.width -= 24f;
     }
 
     private void InterfaceDrop(Verse.Thing t) {

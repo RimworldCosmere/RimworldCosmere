@@ -49,11 +49,8 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
         int patchedCount = 0;
 
         for (int i = 0; i < code.Count; i++) {
-            if (i == 0) continue;
+            if (!IsSlotGroupParentCheck(code, i)) continue;
 
-            if (!code[i - 1].opcode.Equals(OpCodes.Ldloc_S)) continue;
-            if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
-            if (code[i].operand is not Type operand || operand != typeof(ISlotGroupParent)) continue;
             if (patchedCount > 2) {
                 Log.Warn(
                     "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
@@ -63,24 +60,8 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
 
             List<CodeInstruction> newInstructions = [];
             if (patchedCount == 0) {
-                haulDestination = (LocalRef)code[i - 1].operand!;
-                LocalRef intVec3 = (LocalRef)code[i + 3].operand!;
-                object? skipLabel = code[i + 4].operand;
                 newInstructions.AddRange(
-                    [
-                        new CodeInstruction(OpCodes.Isinst, innerStorageType), // is InnerStorage?
-                        new CodeInstruction(OpCodes.Stloc_S, innerStorage), // Store in `innerStorage`
-                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
-                        new CodeInstruction(OpCodes.Brfalse_S, continueLabelOne), // skip if not
-
-                        new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
-                        new CodeInstruction(OpCodes.Call, ParentThingGetter),
-                        new CodeInstruction(OpCodes.Call, PositionGetter),
-                        new CodeInstruction(OpCodes.Stloc_S, intVec3),
-                        new CodeInstruction(OpCodes.Br_S, skipLabel),
-                        new CodeInstruction(OpCodes.Ldloc_S, haulDestination)
-                            .WithLabels(continueLabelOne), // haulDestination
-                    ]
+                    BuildFirstSite(code, i, innerStorage, continueLabelOne, out haulDestination)
                 );
             }
 
@@ -127,5 +108,42 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
         }
 
         return code;
+    }
+
+    /// <summary>Whether <paramref name="i" /> is a `ldloc.s` followed by `isinst ISlotGroupParent`.</summary>
+    private static bool IsSlotGroupParentCheck(List<CodeInstruction> code, int i) {
+        if (i == 0) return false;
+        if (!code[i - 1].opcode.Equals(OpCodes.Ldloc_S)) return false;
+        if (!code[i].opcode.Equals(OpCodes.Isinst)) return false;
+
+        return code[i].operand is Type operand && operand == typeof(ISlotGroupParent);
+    }
+
+    private static List<CodeInstruction> BuildFirstSite(
+        List<CodeInstruction> code,
+        int i,
+        LocalRef innerStorage,
+        Concord.Label continueLabelOne,
+        out LocalRef haulDestination
+    ) {
+        Type innerStorageType = typeof(Comp.Thing.InnerStorage);
+        haulDestination = (LocalRef)code[i - 1].operand!;
+        LocalRef intVec3 = (LocalRef)code[i + 3].operand!;
+        object? skipLabel = code[i + 4].operand;
+
+        return [
+            new CodeInstruction(OpCodes.Isinst, innerStorageType), // is InnerStorage?
+            new CodeInstruction(OpCodes.Stloc_S, innerStorage), // Store in `innerStorage`
+            new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
+            new CodeInstruction(OpCodes.Brfalse_S, continueLabelOne), // skip if not
+
+            new CodeInstruction(OpCodes.Ldloc_S, innerStorage), // Load from `innerStorage`
+            new CodeInstruction(OpCodes.Call, ParentThingGetter),
+            new CodeInstruction(OpCodes.Call, PositionGetter),
+            new CodeInstruction(OpCodes.Stloc_S, intVec3),
+            new CodeInstruction(OpCodes.Br_S, skipLabel),
+            new CodeInstruction(OpCodes.Ldloc_S, haulDestination)
+                .WithLabels(continueLabelOne), // haulDestination
+        ];
     }
 }

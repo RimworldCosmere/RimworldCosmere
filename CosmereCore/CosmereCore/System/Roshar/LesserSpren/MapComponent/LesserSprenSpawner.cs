@@ -177,52 +177,61 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller == null || !controller.isEnabled) continue;
-
-            // Get actual spawn information for this position
-            SprenSpawnInformation? positionSpawnInfo = controller.GetSprenSpawnInformation(position, map);
-            bool isValidAtPosition = positionSpawnInfo != null;
-            bool isInActiveCells = controller.activeSpawnInfo.Any(info => info.position == position);
-            bool isInValidCells = controller.validSpawnInfo.Any(info => info.position == position);
-
-            bool shouldShow = isValidAtPosition || isInActiveCells || isInValidCells;
-
-            if (controller is StaticSprenController) {
-                // For nature spren, also check if it would be valid even if not currently active
-                shouldShow = isValidAtPosition || isInValidCells;
-            } else {
-                // For dynamic spren, check dynamic cells
-                List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
-                bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
-                shouldShow = shouldShow || isInDynamicCells;
-            }
-
-            if (!shouldShow) continue;
-
-            foundValidSpren = true;
-            info.AppendLine($"\n{sprenType} ({(controller is StaticSprenController ? "Static" : "Dynamic")}):");
-
-            info.AppendLine($"  Valid at Position: {isValidAtPosition.ColoredBool()}");
-            info.AppendLine($"  In Active Cells: {isInActiveCells.ColoredBool()}");
-            info.AppendLine($"  In Valid Cells: {isInValidCells.ColoredBool()}");
-
-            if (controller is not StaticSprenController) {
-                List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
-                bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
-                info.AppendLine($"  In Dynamic Cells: {isInDynamicCells.ColoredBool()}");
-            }
-
-            // Show actual spawn information if available
-            if (positionSpawnInfo != null) {
-                info.AppendLine($"  Actual Spawn Chance: {positionSpawnInfo.spawnChance:P2}");
-            }
-
-            AppendControllerSettings(info, controller);
-
-            string controllerDebug = controller.DebugStringAt(position);
-            if (!string.IsNullOrEmpty(controllerDebug)) info.Append(controllerDebug);
+            if (AppendSprenDebug(info, controller, sprenType, position)) foundValidSpren = true;
         }
 
         return !foundValidSpren ? string.Empty : info.ToString();
+    }
+
+    private bool AppendSprenDebug(
+        StringBuilder info,
+        BaseSprenController controller,
+        SprenType sprenType,
+        IntVec3 position
+    ) {
+        // Get actual spawn information for this position
+        SprenSpawnInformation? positionSpawnInfo = controller.GetSprenSpawnInformation(position, map);
+        bool isValidAtPosition = positionSpawnInfo != null;
+        bool isInActiveCells = controller.activeSpawnInfo.Any(i => i.position == position);
+        bool isInValidCells = controller.validSpawnInfo.Any(i => i.position == position);
+
+        bool shouldShow = isValidAtPosition || isInActiveCells || isInValidCells;
+
+        if (controller is StaticSprenController) {
+            // For nature spren, also check if it would be valid even if not currently active
+            shouldShow = isValidAtPosition || isInValidCells;
+        } else {
+            // For dynamic spren, check dynamic cells
+            List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
+            bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
+            shouldShow = shouldShow || isInDynamicCells;
+        }
+
+        if (!shouldShow) return false;
+
+        info.AppendLine($"\n{sprenType} ({(controller is StaticSprenController ? "Static" : "Dynamic")}):");
+
+        info.AppendLine($"  Valid at Position: {isValidAtPosition.ColoredBool()}");
+        info.AppendLine($"  In Active Cells: {isInActiveCells.ColoredBool()}");
+        info.AppendLine($"  In Valid Cells: {isInValidCells.ColoredBool()}");
+
+        if (controller is not StaticSprenController) {
+            List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
+            bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
+            info.AppendLine($"  In Dynamic Cells: {isInDynamicCells.ColoredBool()}");
+        }
+
+        // Show actual spawn information if available
+        if (positionSpawnInfo != null) {
+            info.AppendLine($"  Actual Spawn Chance: {positionSpawnInfo.spawnChance:P2}");
+        }
+
+        AppendControllerSettings(info, controller);
+
+        string controllerDebug = controller.DebugStringAt(position);
+        if (!string.IsNullOrEmpty(controllerDebug)) info.Append(controllerDebug);
+
+        return true;
     }
 
     private static void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {

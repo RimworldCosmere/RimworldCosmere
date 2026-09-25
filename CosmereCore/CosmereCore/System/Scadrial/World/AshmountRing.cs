@@ -37,13 +37,7 @@ public static class AshmountRing {
         List<int> chosen = [];
         if (candidates.Count == 0 || wanted <= 0) return chosen;
 
-        List<Candidate> pool = [];
-        for (int i = 0; i < candidates.Count; i++) {
-            float d = candidates[i].DistanceFromCentre;
-            if (d < innerRadius || d > outerRadius) continue;
-
-            pool.Add(candidates[i]);
-        }
+        List<Candidate> pool = InsideAnnulus(candidates, innerRadius, outerRadius);
 
         // Hills first, then a seeded hash so order is stable per seed without biasing toward low tile ids.
         pool.Sort((a, b) => {
@@ -53,19 +47,33 @@ public static class AshmountRing {
 
         for (int i = 0; i < pool.Count && chosen.Count < wanted; i++) {
             int tile = pool[i].TileId;
-
-            bool crowded = false;
-            for (int j = 0; j < chosen.Count; j++) {
-                if (distanceBetween(tile, chosen[j]) < minSpacing) {
-                    crowded = true;
-                    break;
-                }
-            }
-
-            if (!crowded) chosen.Add(tile);
+            if (!Crowded(tile, chosen, minSpacing, distanceBetween)) chosen.Add(tile);
         }
 
         return chosen;
+    }
+
+    /// <summary>Only the candidates sitting inside the band, in the order they came.</summary>
+    private static List<Candidate> InsideAnnulus(
+        IReadOnlyList<Candidate> candidates, float innerRadius, float outerRadius
+    ) {
+        List<Candidate> pool = [];
+        for (int i = 0; i < candidates.Count; i++) {
+            float d = candidates[i].DistanceFromCentre;
+            if (d < innerRadius || d > outerRadius) continue;
+
+            pool.Add(candidates[i]);
+        }
+
+        return pool;
+    }
+
+    private static bool Crowded(int tile, List<int> chosen, float minSpacing, Func<int, int, float> distanceBetween) {
+        for (int j = 0; j < chosen.Count; j++) {
+            if (distanceBetween(tile, chosen[j]) < minSpacing) return true;
+        }
+
+        return false;
     }
 
     private static uint Shuffle(int tileId, int seed) {

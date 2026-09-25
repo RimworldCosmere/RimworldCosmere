@@ -103,75 +103,18 @@ public sealed class FeedbackDialog : BaseWindow {
         MarkIfMissing(listing, titleRect, report.Title);
         listing.Gap(Spacing.Get(0.5));
 
-        listing.Label(
-            report.Kind == FeedbackKind.Bug
-                ? "CC_BetaHub_Field_Description".Translate()
-                : "CC_BetaHub_Field_Idea".Translate()
-        );
-
-        Rect descriptionRect = listing.GetRect(Spacing.Get(7));
-        if (locked) {
-            Widgets.Label(descriptionRect, report.Description);
-        } else {
-            report.Description = Widgets.TextArea(descriptionRect, report.Description);
-        }
-
-        int needed = FeedbackValidator.RemainingCharacters(report.Kind, report.Description);
-        bool descriptionInvalid = validationAttempted && needed > 0;
-
-        if (descriptionInvalid) Widgets.DrawBox(descriptionRect, 1, ErrorBorderTexture);
-
-        if (descriptionInvalid) {
-            using (new TextBlock(GameFont.Tiny, ErrorColor)) {
-                listing.Label(
-                    string.IsNullOrWhiteSpace(report.Description)
-                        ? "CC_BetaHub_Field_Required".Translate()
-                        : "CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT"))
-                );
-            }
-        } else if (needed > 0) {
-            using (new TextBlock(GameFont.Tiny, CounterColor)) {
-                listing.Label("CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT")));
-            }
-        }
-
+        DrawDescriptionField(listing, locked);
         listing.Gap(Spacing.Get(0.5));
 
         if (report.Kind == FeedbackKind.Bug) {
-            listing.Label("CC_BetaHub_Field_Steps".Translate());
-            Rect stepsRect = listing.GetRect(Spacing.Get(4));
-            if (locked) {
-                Widgets.Label(stepsRect, report.StepsToReproduce);
-            } else {
-                report.StepsToReproduce = Widgets.TextArea(stepsRect, report.StepsToReproduce);
-            }
-
-            MarkIfMissing(listing, stepsRect, report.StepsToReproduce);
-            listing.Gap(Spacing.Get(0.5));
+            DrawStepsField(listing, locked);
         }
 
         listing.Label("CC_BetaHub_Field_Mod".Translate());
         DrawTargetSegments(listing, locked);
         listing.Gap(Spacing.Get(0.5));
 
-        listing.Label("CC_BetaHub_Field_Discord".Translate());
-        Rect discordRect = listing.GetRect(Spacing.Get(1.75));
-        TooltipHandler.TipRegion(discordRect, "CC_BetaHub_Field_DiscordTip".Translate());
-        report.DiscordUsername = locked
-            ? report.DiscordUsername
-            : Widgets.TextField(discordRect, report.DiscordUsername ?? string.Empty);
-
-        if (locked) Widgets.Label(discordRect, report.DiscordUsername ?? string.Empty);
-
-        listing.Gap(Spacing.Get(0.5));
-        listing.Label("CC_BetaHub_Field_Video".Translate());
-        Rect videoRect = listing.GetRect(Spacing.Get(1.75));
-        TooltipHandler.TipRegion(videoRect, "CC_BetaHub_Field_VideoTip".Translate());
-        report.VideoUrl = locked
-            ? report.VideoUrl
-            : Widgets.TextField(videoRect, report.VideoUrl ?? string.Empty);
-
-        if (locked) Widgets.Label(videoRect, report.VideoUrl ?? string.Empty);
+        DrawContactFields(listing, locked);
 
         if (report.Kind != FeedbackKind.Bug || screenshot == null) return;
 
@@ -225,6 +168,74 @@ public sealed class FeedbackDialog : BaseWindow {
     /// <summary>
     ///     Red border plus a red note, in the same slot the character counter uses.
     /// </summary>
+    private void DrawDescriptionField(FoundationListing listing, bool locked) {
+        listing.Label(
+            report.Kind == FeedbackKind.Bug
+                ? "CC_BetaHub_Field_Description".Translate()
+                : "CC_BetaHub_Field_Idea".Translate()
+        );
+
+        Rect descriptionRect = listing.GetRect(Spacing.Get(7));
+        if (locked) {
+            Widgets.Label(descriptionRect, report.Description);
+        } else {
+            report.Description = Widgets.TextArea(descriptionRect, report.Description);
+        }
+
+        int needed = FeedbackValidator.RemainingCharacters(report.Kind, report.Description);
+        bool descriptionInvalid = validationAttempted && needed > 0;
+
+        if (descriptionInvalid) Widgets.DrawBox(descriptionRect, 1, ErrorBorderTexture);
+
+        if (descriptionInvalid) {
+            using (new TextBlock(GameFont.Tiny, ErrorColor)) {
+                listing.Label(
+                    string.IsNullOrWhiteSpace(report.Description)
+                        ? "CC_BetaHub_Field_Required".Translate()
+                        : "CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT"))
+                );
+            }
+        } else if (needed > 0) {
+            using (new TextBlock(GameFont.Tiny, CounterColor)) {
+                listing.Label("CC_BetaHub_CharsNeeded".Translate(needed.Named("COUNT")));
+            }
+        }
+    }
+
+    private void DrawStepsField(FoundationListing listing, bool locked) {
+        listing.Label("CC_BetaHub_Field_Steps".Translate());
+        Rect stepsRect = listing.GetRect(Spacing.Get(4));
+        if (locked) {
+            Widgets.Label(stepsRect, report.StepsToReproduce);
+        } else {
+            report.StepsToReproduce = Widgets.TextArea(stepsRect, report.StepsToReproduce);
+        }
+
+        MarkIfMissing(listing, stepsRect, report.StepsToReproduce);
+        listing.Gap(Spacing.Get(0.5));
+    }
+
+    private void DrawContactFields(FoundationListing listing, bool locked) {
+        listing.Label("CC_BetaHub_Field_Discord".Translate());
+        Rect discordRect = listing.GetRect(Spacing.Get(1.75));
+        TooltipHandler.TipRegion(discordRect, "CC_BetaHub_Field_DiscordTip".Translate());
+        report.DiscordUsername = locked
+            ? report.DiscordUsername
+            : Widgets.TextField(discordRect, report.DiscordUsername ?? string.Empty);
+
+        if (locked) Widgets.Label(discordRect, report.DiscordUsername ?? string.Empty);
+
+        listing.Gap(Spacing.Get(0.5));
+        listing.Label("CC_BetaHub_Field_Video".Translate());
+        Rect videoRect = listing.GetRect(Spacing.Get(1.75));
+        TooltipHandler.TipRegion(videoRect, "CC_BetaHub_Field_VideoTip".Translate());
+        report.VideoUrl = locked
+            ? report.VideoUrl
+            : Widgets.TextField(videoRect, report.VideoUrl ?? string.Empty);
+
+        if (locked) Widgets.Label(videoRect, report.VideoUrl ?? string.Empty);
+    }
+
     private void MarkIfMissing(FoundationListing listing, Rect rect, string value) {
         if (!validationAttempted || !string.IsNullOrWhiteSpace(value)) return;
 

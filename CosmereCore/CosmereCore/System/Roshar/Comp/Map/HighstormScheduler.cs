@@ -79,44 +79,14 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         int currentTick = Find.TickManager.TicksGame;
 
         if (stormActive) {
-            List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
-            bool found = false;
-            for (int i = 0; i < conditions.Count; i++) {
-                if (conditions[i] is Highstorm) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
+            if (!HasActiveHighstorm()) {
                 stormActive = false;
             }
 
             return;
         }
 
-        if (Mod.enableWeeping) {
-            bool currentlyWeeping = IsWeeping(map);
-            if (currentlyWeeping && !weepingActive) {
-                weepingActive = true;
-                Find.LetterStack.ReceiveLetter(
-                    "CR_Weeping_Start_Title".Translate(),
-                    "CR_Weeping_Start_Message".Translate(),
-                    RimWorld.LetterDefOf.NeutralEvent,
-                    TargetInfo.Invalid
-                );
-            } else if (!currentlyWeeping && weepingActive) {
-                weepingActive = false;
-                Find.LetterStack.ReceiveLetter(
-                    "CR_Weeping_End_Title".Translate(),
-                    "CR_Weeping_End_Message".Translate(),
-                    RimWorld.LetterDefOf.NeutralEvent,
-                    TargetInfo.Invalid
-                );
-            }
-
-            if (currentlyWeeping) return;
-        }
+        if (Mod.enableWeeping && UpdateWeeping()) return;
 
         if (!warningShown && currentTick >= nextHighstormTick - GenDate.TicksPerDay) {
             SendWarning();
@@ -126,6 +96,38 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (currentTick >= nextHighstormTick) {
             TriggerHighstorm();
         }
+    }
+
+    private bool HasActiveHighstorm() {
+        List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
+        for (int i = 0; i < conditions.Count; i++) {
+            if (conditions[i] is Highstorm) return true;
+        }
+
+        return false;
+    }
+
+    private bool UpdateWeeping() {
+        bool currentlyWeeping = IsWeeping(map);
+        if (currentlyWeeping && !weepingActive) {
+            weepingActive = true;
+            Find.LetterStack.ReceiveLetter(
+                "CR_Weeping_Start_Title".Translate(),
+                "CR_Weeping_Start_Message".Translate(),
+                RimWorld.LetterDefOf.NeutralEvent,
+                TargetInfo.Invalid
+            );
+        } else if (!currentlyWeeping && weepingActive) {
+            weepingActive = false;
+            Find.LetterStack.ReceiveLetter(
+                "CR_Weeping_End_Title".Translate(),
+                "CR_Weeping_End_Message".Translate(),
+                RimWorld.LetterDefOf.NeutralEvent,
+                TargetInfo.Invalid
+            );
+        }
+
+        return currentlyWeeping;
     }
 
     private void ScheduleNextHighstorm() {

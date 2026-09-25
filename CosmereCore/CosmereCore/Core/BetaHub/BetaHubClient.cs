@@ -44,45 +44,57 @@ public static class BetaHubClient {
 
         BetaHubRequestPump.Send(
             request,
-            done => {
-                SubmitOutcome outcome = BetaHubStatusMapper.Map(done.responseCode);
-                string body = done.downloadHandler?.text ?? string.Empty;
-
-                SubmitResult result = new SubmitResult {
-                    Outcome = outcome,
-                    IssueUrl = ReadJsonString(body, "url"),
-                    ServerMessage = ReadJsonString(body, "error"),
-                };
-
-                if (outcome != SubmitOutcome.Success) {
-                    Log.Warn($"BetaHub submit failed with {done.responseCode}: {body}");
-
-                    // a 403 here means CI hasn't published this release yet; retry without the label.
-                    if (includeReleaseLabel && BetaHubStatusMapper.IsMissingReleasePermission(done.responseCode, body)) {
-                        Log.Warn("Retrying the BetaHub submit without a release label.");
-                        Post(report, screenshotJpeg, onDone, includeReleaseLabel: false);
-
-                        return;
-                    }
-
-                    onDone(result);
-
-                    return;
-                }
-
-                if (report.Kind == FeedbackKind.Bug) {
-                    string? issuePath = ReadIssuePath(result.IssueUrl);
-                    if (issuePath != null) {
-                        AttachLog(issuePath);
-                        if (report.IncludeScreenshot && screenshotJpeg != null) {
-                            AttachScreenshot(issuePath, screenshotJpeg);
-                        }
-                    }
-                }
-
-                onDone(result);
-            }
+            done => HandleResponse(report, screenshotJpeg, onDone, includeReleaseLabel, done)
         );
+    }
+
+    private static void HandleResponse(
+        FeedbackReport report,
+        byte[]? screenshotJpeg,
+        Action<SubmitResult> onDone,
+        bool includeReleaseLabel,
+        UnityWebRequest done
+    ) {
+        SubmitOutcome outcome = BetaHubStatusMapper.Map(done.responseCode);
+        string body = done.downloadHandler?.text ?? string.Empty;
+
+        SubmitResult result = new SubmitResult {
+            Outcome = outcome,
+            IssueUrl = ReadJsonString(body, "url"),
+            ServerMessage = ReadJsonString(body, "error"),
+        };
+
+        if (outcome != SubmitOutcome.Success) {
+            Log.Warn($"BetaHub submit failed with {done.responseCode}: {body}");
+
+            // a 403 here means CI hasn't published this release yet; retry without the label.
+            if (includeReleaseLabel && BetaHubStatusMapper.IsMissingReleasePermission(done.responseCode, body)) {
+                Log.Warn("Retrying the BetaHub submit without a release label.");
+                Post(report, screenshotJpeg, onDone, includeReleaseLabel: false);
+
+                return;
+            }
+
+            onDone(result);
+
+            return;
+        }
+
+        if (report.Kind == FeedbackKind.Bug) {
+            AttachArtifacts(report, screenshotJpeg, result.IssueUrl);
+        }
+
+        onDone(result);
+    }
+
+    private static void AttachArtifacts(FeedbackReport report, byte[]? screenshotJpeg, string? issueUrl) {
+        string? issuePath = ReadIssuePath(issueUrl);
+        if (issuePath == null) return;
+
+        AttachLog(issuePath);
+        if (report.IncludeScreenshot && screenshotJpeg != null) {
+            AttachScreenshot(issuePath, screenshotJpeg);
+        }
     }
 
     private static void Authorize(UnityWebRequest request) {

@@ -691,16 +691,21 @@ public class SurgebindingSteps {
 
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
-                IntVec3 cell = new IntVec3(middle.x + x, 0, middle.z + z);
-                if (!cell.InBounds(map) || cell.Fogged(map)) return false;
-
-                bool isWallCell = x == 2 && z is >= -1 and <= 1;
-                if (isWallCell && cell.GetEdifice(map) != null) return false;
-                if (!isWallCell && cell.Roofed(map)) return false;
+                if (!SurroundIsClear(new IntVec3(middle.x + x, 0, middle.z + z), map, x, z)) return false;
             }
         }
 
         return true;
+    }
+
+    /// <summary>The east face takes the sealing wall, so it only has to be free of an edifice.
+    /// Every other cell around the room has to be unroofed.</summary>
+    private static bool SurroundIsClear(IntVec3 cell, Map map, int x, int z) {
+        if (!cell.InBounds(map) || cell.Fogged(map)) return false;
+
+        bool isWallCell = x == 2 && z is >= -1 and <= 1;
+
+        return isWallCell ? cell.GetEdifice(map) == null : !cell.Roofed(map);
     }
 
     private static void Teleport(Pawn pawn, IntVec3 cell) {

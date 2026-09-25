@@ -70,24 +70,28 @@ public class CompAshGas : ThingComp {
 
         IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
         for (int i = 0; i < pawns.Count; i++) {
-            Pawn pawn = pawns[i];
-            if (!pawn.RaceProps.IsFlesh) continue;
-
-            float raw = breathing ? RawExposureFor(pawn.Position, vents) : 0f;
-
-            pawn.health.hediffSet.TryGetHediff(ashLung, out Verse.Hediff? lung);
-            if (raw <= 0f && lung == null) continue;
-
-            // skip the stat read when raw is 0 - a pawn only here to recede shouldn't pay for it
-            float worn = raw > 0f ? pawn.GetStatValue(filtration) : 0f;
-            float delta = AshLungMath.SeverityDeltaPerHour(raw, worn) * hours;
-
-            if (lung == null && delta <= 0f) continue;
-
-            // Vanilla drops the hediff itself once severity reaches zero, so recede needs no undo.
-            lung ??= pawn.health.GetOrAddHediff(ashLung);
-            lung.Severity += delta;
+            BreatheOn(pawns[i], vents, breathing, hours);
         }
+    }
+
+    /// <summary>One pawn's share of the cycle: what the gas added, or what the lungs cleared.</summary>
+    private static void BreatheOn(Pawn pawn, List<CompAshGas> vents, bool breathing, float hours) {
+        if (!pawn.RaceProps.IsFlesh) return;
+
+        float raw = breathing ? RawExposureFor(pawn.Position, vents) : 0f;
+
+        pawn.health.hediffSet.TryGetHediff(ashLung, out Verse.Hediff? lung);
+        if (raw <= 0f && lung == null) return;
+
+        // skip the stat read when raw is 0 - a pawn only here to recede shouldn't pay for it
+        float worn = raw > 0f ? pawn.GetStatValue(filtration) : 0f;
+        float delta = AshLungMath.SeverityDeltaPerHour(raw, worn) * hours;
+
+        if (lung == null && delta <= 0f) return;
+
+        // Vanilla drops the hediff itself once severity reaches zero, so recede needs no undo.
+        lung ??= pawn.health.GetOrAddHediff(ashLung);
+        lung.Severity += delta;
     }
 
     /// <summary>Worst exposure any one vent puts on the cell, not the sum of all of them.</summary>

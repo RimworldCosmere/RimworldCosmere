@@ -193,15 +193,7 @@ public class AshDepthTracker : MapComponent {
             AccumulateStripe(stripe);
 
             // Stripe 0 only: a vent's plume is a bounded write, so it runs once per sweep cycle.
-            if (stripe == 0 && vents.Count > 0) {
-                float cycleDays = Stripes / (float)GenDate.TicksPerDay;
-                bool changed = false;
-                for (int i = 0; i < vents.Count; i++) {
-                    if (vents[i].ContributeToGrid(Grid, cycleDays)) changed = true;
-                }
-
-                if (changed) NotifyAshChanged();
-            }
+            if (stripe == 0 && vents.Count > 0) RunVentPlumes();
         }
 
         // Outside the era branch: the gas stops at the Catacendre, ash lung still has to recede.
@@ -211,6 +203,17 @@ public class AshDepthTracker : MapComponent {
 
         // outside the era branch on purpose: terrain unwinds off the draining grid, not the era flip
         SweepTerrain(stripe);
+    }
+
+    /// <summary>One cycle's share from every vent on the map, dirtying the mesh once between them.</summary>
+    private void RunVentPlumes() {
+        float cycleDays = Stripes / (float)GenDate.TicksPerDay;
+        bool changed = false;
+        for (int i = 0; i < vents.Count; i++) {
+            if (vents[i].ContributeToGrid(Grid, cycleDays)) changed = true;
+        }
+
+        if (changed) NotifyAshChanged();
     }
 
     /// <summary>Rain carries ash off exactly as it washes vanilla filth away.</summary>
@@ -324,26 +327,30 @@ public class AshDepthTracker : MapComponent {
             // The budget rations terrain swaps only. Burial has to finish the stripe.
             if (budget <= 0) continue;
 
-            AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(i));
-
-            if (action == AshTerrainAction.Leave) {
-                settleClock.Cancel(i);
-                continue;
-            }
-
-            // each cell holds its own 7-30 day dwell before swapping, so the map turns over in patches
-            bool settling = action == AshTerrainAction.Swap;
-            if (!ignoreDwell && !settleClock.IsDue(i, today, settling)) continue;
-
-            bool changed = settling ? SwapToAsh(i) : RestoreUnderAsh(i);
-            if (!changed) continue;
-
-            settleClock.Cancel(i);
-            budget--;
+            if (TryTurnOverCell(i, mm, today, ignoreDwell)) budget--;
         }
 
         // The depth write dirtied the mesh up to 64 ticks before this stripe turned it into a flip.
         if (flipped) NotifyAshChanged();
+    }
+
+    /// <summary>One cell's swap or restore, once its dwell is up. True only when the terrain moved.</summary>
+    private bool TryTurnOverCell(int index, int mm, int today, bool ignoreDwell) {
+        AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(index));
+
+        if (action == AshTerrainAction.Leave) {
+            settleClock.Cancel(index);
+            return false;
+        }
+
+        // each cell holds its own 7-30 day dwell before swapping, so the map turns over in patches
+        bool settling = action == AshTerrainAction.Swap;
+        if (!ignoreDwell && !settleClock.IsDue(index, today, settling)) return false;
+
+        if (!(settling ? SwapToAsh(index) : RestoreUnderAsh(index))) return false;
+
+        settleClock.Cancel(index);
+        return true;
     }
 
     /// <summary>Only natural ground goes under. A floor the colony laid stays theirs.</summary>

@@ -36,14 +36,17 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    private void RebuildNetworks() {
+    private void DetachAllNodes() {
         for (int i = 0; i < Networks.Count; i++) {
             StormlightNetworkGrid grid = Networks[i];
             for (int j = 0; j < grid.receivers.Count; j++) grid.receivers[j].Network = null;
             for (int j = 0; j < grid.batteries.Count; j++) grid.batteries[j].Network = null;
             for (int j = 0; j < grid.chargers.Count; j++) grid.chargers[j].Network = null;
         }
+    }
 
+    private void RebuildNetworks() {
+        DetachAllNodes();
         Networks.Clear();
 
         HashSet<IntVec3> visited = [];

@@ -37,32 +37,13 @@ public static class MetalDetector {
         if (thing?.def == null || depth > 25) return 0f;
 
         List<MetalDef> metals = GetLinkedMetals(thing.def, allowAluminum);
-        if (metals.Count > 0 ||
-            thing.def.IsMetal &&
-            (allowAluminum || !thing.def.Equals(ThingDefOf.Aluminum))) {
-            if (thing.def.category != ThingCategory.Building) {
-                return thing.GetStatValue(RimWorld.StatDefOf.Mass);
-            }
-
-            if (thing.def.defName.StartsWith("Mineable")) {
-                return thing.def.building.mineableYield *
-                       10 *
-                       metals.First().Item.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
-            }
-        }
+        if (DirectMetalMass(thing, metals, allowAluminum) is float directMass) return directMass;
 
         if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") {
             return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         }
 
-        if (thing.Stuff != null) {
-            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(ThingDefOf.Aluminum) ||
-                GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
-                float mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass, thing.Stuff);
-
-                return mass * thing.def.CostStuffCount;
-            }
-        }
+        if (StuffMetalMass(thing, allowAluminum) is float stuffMass) return stuffMass;
 
         if (thing.def.defName.Contains("Ancient")) {
             if (thing.def.defName != "AncientFence") return 1;
@@ -73,18 +54,7 @@ public static class MetalDetector {
         }
 
         if (thing.def.category == ThingCategory.Pawn && thing is Pawn pawn) {
-            float combinedMass =
-                (pawn.inventory?.innerContainer ?? []).Sum(item =>
-                    GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
-                );
-            combinedMass +=
-                (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
-                );
-            combinedMass +=
-                (pawn.equipment?.AllEquipmentListForReading ?? []).Sum(item =>
-                    GetMetalMass(item, depth + 1) * item.stackCount
-                );
-
+            float combinedMass = CarriedMetalMass(pawn, depth, allowAluminum);
             if (combinedMass > 0f) return combinedMass;
         }
 
@@ -97,6 +67,56 @@ public static class MetalDetector {
         }
 
         return 0f;
+    }
+
+    /// <summary>The thing is itself made of metal, or is a mineable node that yields one.</summary>
+    private static float? DirectMetalMass(Verse.Thing thing, List<MetalDef> metals, bool allowAluminum) {
+        bool isMetal = metals.Count > 0 ||
+                       thing.def.IsMetal &&
+                       (allowAluminum || !thing.def.Equals(ThingDefOf.Aluminum));
+        if (!isMetal) return null;
+
+        if (thing.def.category != ThingCategory.Building) {
+            return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+        }
+
+        if (thing.def.defName.StartsWith("Mineable")) {
+            return thing.def.building.mineableYield *
+                   10 *
+                   metals.First().Item.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
+        }
+
+        return null;
+    }
+
+    /// <summary>The thing is built out of a metal stuff, so the metal mass is the stuff cost.</summary>
+    private static float? StuffMetalMass(Verse.Thing thing, bool allowAluminum) {
+        if (thing.Stuff == null) return null;
+
+        bool stuffIsMetal = thing.Stuff.IsMetal && !thing.Stuff.Equals(ThingDefOf.Aluminum) ||
+                            GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0;
+        if (!stuffIsMetal) return null;
+
+        float mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass, thing.Stuff);
+
+        return mass * thing.def.CostStuffCount;
+    }
+
+    /// <summary>Metal a pawn carries: inventory, worn apparel and equipment.</summary>
+    private static float CarriedMetalMass(Pawn pawn, int depth, bool allowAluminum) {
+        float combinedMass =
+            (pawn.inventory?.innerContainer ?? []).Sum(item =>
+                GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
+            );
+        combinedMass +=
+            (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetalMass(item, depth + 1, allowAluminum) * item.stackCount
+            );
+        combinedMass +=
+            (pawn.equipment?.AllEquipmentListForReading ?? []).Sum(item =>
+                GetMetalMass(item, depth + 1) * item.stackCount
+            );
+
+        return combinedMass;
     }
 
     /// <summary>

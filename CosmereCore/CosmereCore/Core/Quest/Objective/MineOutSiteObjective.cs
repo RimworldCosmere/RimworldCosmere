@@ -25,7 +25,7 @@ public class MineOutSiteObjective : QuestObjective {
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         QuestPart_ArrivedAtSite? arrival = quest.GetFirstPartOfType<QuestPart_ArrivedAtSite>();
         if (arrival?.site == null) {
-            throw new QuestBuildFailure("MineOutSiteObjective found no preceding TravelToSiteObjective");
+            throw new QuestBuildFailureException("MineOutSiteObjective found no preceding TravelToSiteObjective");
         }
 
         QuestPart_SiteMinedOut minedOut = new QuestPart_SiteMinedOut {

@@ -72,47 +72,65 @@ public class CosmereQuestDef : Verse.Def {
             yield return $"{defName}: repeatable quests need a positive expireAfterDays.";
         }
 
-        if (eras != null) {
-            for (int i = 0; i < eras.Count; i++) {
-                string? name = eras[i];
-                if (name == null || name.Length == 0) {
-                    yield return $"{defName}: eras[{i}] is empty.";
-                    continue;
-                }
-
-                if (Verse.DefDatabase<EraDef>.GetNamedSilentFail(name) == null) {
-                    yield return $"{defName}: era '{name}' does not resolve.";
-                }
-            }
+        foreach (string error in EraErrors()) {
+            yield return error;
         }
 
-        if (stages != null) {
-            HashSet<string> seenKeys = [];
-            for (int i = 0; i < stages.Count; i++) {
-                CosmereQuestStage stage = stages[i];
-                string? key = stage.key;
-                if (key == null || key.Length == 0) {
-                    yield return $"{defName}: stage {i} has no key.";
-                } else if (!seenKeys.Add(key)) {
-                    yield return $"{defName}: duplicate stage key '{key}'.";
-                }
-
-                if (stage.objective == null) {
-                    yield return $"{defName}: stage '{stage.key}' has no objective.";
-                    continue;
-                }
-
-                string? objectiveError = stage.objective.ConfigError();
-                if (objectiveError != null) {
-                    yield return $"{defName}: stage '{stage.key}': {objectiveError}";
-                }
-            }
+        foreach (string error in StageErrors()) {
+            yield return error;
         }
 
         foreach (string error in BranchErrors()) {
             yield return error;
         }
 
+        foreach (string error in OutcomeErrors()) {
+            yield return error;
+        }
+    }
+
+    private IEnumerable<string> EraErrors() {
+        if (eras == null) yield break;
+
+        for (int i = 0; i < eras.Count; i++) {
+            string? name = eras[i];
+            if (name == null || name.Length == 0) {
+                yield return $"{defName}: eras[{i}] is empty.";
+                continue;
+            }
+
+            if (Verse.DefDatabase<EraDef>.GetNamedSilentFail(name) == null) {
+                yield return $"{defName}: era '{name}' does not resolve.";
+            }
+        }
+    }
+
+    private IEnumerable<string> StageErrors() {
+        if (stages == null) yield break;
+
+        HashSet<string> seenKeys = [];
+        for (int i = 0; i < stages.Count; i++) {
+            CosmereQuestStage stage = stages[i];
+            string? key = stage.key;
+            if (key == null || key.Length == 0) {
+                yield return $"{defName}: stage {i} has no key.";
+            } else if (!seenKeys.Add(key)) {
+                yield return $"{defName}: duplicate stage key '{key}'.";
+            }
+
+            if (stage.objective == null) {
+                yield return $"{defName}: stage '{stage.key}' has no objective.";
+                continue;
+            }
+
+            string? objectiveError = stage.objective.ConfigError();
+            if (objectiveError != null) {
+                yield return $"{defName}: stage '{stage.key}': {objectiveError}";
+            }
+        }
+    }
+
+    private IEnumerable<string> OutcomeErrors() {
         if (prerequisites != null) {
             for (int i = 0; i < prerequisites.Count; i++) {
                 string? error = prerequisites[i].ConfigError();
@@ -128,8 +146,8 @@ public class CosmereQuestDef : Verse.Def {
         }
 
         if (onFailure != null) {
-            string? error = onFailure.ConfigError();
-            if (error != null) yield return $"{defName}: onFailure: {error}";
+            string? failureError = onFailure.ConfigError();
+            if (failureError != null) yield return $"{defName}: onFailure: {failureError}";
         }
     }
 
@@ -138,39 +156,57 @@ public class CosmereQuestDef : Verse.Def {
     ///     dead stage or a reward that vanished. Catch it at load instead.
     /// </summary>
     private IEnumerable<string> BranchErrors() {
+        HashSet<string> choiceKeys = CollectChoiceKeys();
+
+        foreach (string error in StageBranchErrors(choiceKeys)) {
+            yield return error;
+        }
+
+        foreach (string error in RewardBranchErrors(choiceKeys)) {
+            yield return error;
+        }
+    }
+
+    private HashSet<string> CollectChoiceKeys() {
         HashSet<string> choiceKeys = [];
-        if (stages != null) {
-            for (int i = 0; i < stages.Count; i++) {
-                if (stages[i].objective is not Objective.ChoiceObjective choice) continue;
+        if (stages == null) return choiceKeys;
 
-                List<Objective.QuestChoiceOption>? options = choice.options;
-                if (options == null) continue;
-                for (int j = 0; j < options.Count; j++) {
-                    string? key = options[j].key;
-                    if (key != null && key.Length > 0) choiceKeys.Add(key);
-                }
+        for (int i = 0; i < stages.Count; i++) {
+            if (stages[i].objective is not Objective.ChoiceObjective choice) continue;
+
+            List<Objective.QuestChoiceOption>? options = choice.options;
+            if (options == null) continue;
+            for (int j = 0; j < options.Count; j++) {
+                string? key = options[j].key;
+                if (key != null && key.Length > 0) choiceKeys.Add(key);
             }
         }
 
-        if (stages != null) {
-            for (int i = 0; i < stages.Count; i++) {
-                string? branch = stages[i].afterChoice;
-                if (branch == null || branch.Length == 0) continue;
-                if (!choiceKeys.Contains(branch)) {
-                    yield return $"{defName}: stage '{stages[i].key}' is tagged afterChoice " +
-                                 $"'{branch}', which no ChoiceObjective option declares.";
-                }
+        return choiceKeys;
+    }
+
+    private IEnumerable<string> StageBranchErrors(HashSet<string> choiceKeys) {
+        if (stages == null) yield break;
+
+        for (int i = 0; i < stages.Count; i++) {
+            string? branch = stages[i].afterChoice;
+            if (branch == null || branch.Length == 0) continue;
+            if (!choiceKeys.Contains(branch)) {
+                yield return $"{defName}: stage '{stages[i].key}' is tagged afterChoice " +
+                             $"'{branch}', which no ChoiceObjective option declares.";
             }
         }
+    }
 
-        if (rewards != null) {
-            for (int i = 0; i < rewards.Count; i++) {
-                string? branch = rewards[i].afterChoice;
-                if (branch == null || branch.Length == 0) continue;
-                if (!choiceKeys.Contains(branch)) {
-                    yield return $"{defName}: reward {i} is tagged afterChoice '{branch}', " +
-                                 "which no ChoiceObjective option declares.";
-                }
+    private IEnumerable<string> RewardBranchErrors(HashSet<string> choiceKeys) {
+        if (rewards == null) yield break;
+
+        for (int i = 0; i < rewards.Count; i++) {
+            string? branch = rewards[i].afterChoice;
+            if (branch == null || branch.Length == 0) continue;
+            if (!choiceKeys.Contains(branch)) {
+                yield return $"{defName}: reward {i} is tagged afterChoice '{branch}', " +
+                             "which no ChoiceObjective option declares.";
             }
         }
     }

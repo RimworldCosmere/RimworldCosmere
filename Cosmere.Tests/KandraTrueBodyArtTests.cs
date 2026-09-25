@@ -298,15 +298,15 @@ public class KandraTrueBodyArtTests {
             )
         );
 
-        int start = source.IndexOf("private static void StowGear", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "KandraShapeshift no longer has StowGear.");
+        int start = source.IndexOf("private static void StowApparel", StringComparison.Ordinal);
+        Assert.IsTrue(start >= 0, "KandraShapeshift no longer has StowApparel.");
 
         string body = source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
 
         // TryDrop routes through MapHeld. A scenario pawn has none, so it logs one error a garment.
         Assert.IsTrue(
             body.Contains("!pawn.Spawned", StringComparison.Ordinal),
-            "StowGear no longer checks Spawned, so dressing a scenario kandra errors once per garment."
+            "StowApparel no longer checks Spawned, so dressing a scenario kandra errors once per garment."
         );
     }
 

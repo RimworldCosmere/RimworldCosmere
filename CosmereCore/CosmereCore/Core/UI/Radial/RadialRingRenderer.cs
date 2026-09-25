@@ -105,28 +105,9 @@ public static class RadialRingRenderer {
             (string label, Texture2D? icon, Color? tint, _, bool isActive, bool isFlaring,
                     bool isSustained, bool isLocked, _, bool hasInsufficientResources) = getAt(i);
 
-            Color bg = tint.HasValue
-                ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
-                : new Color(0.16f, 0.175f, 0.205f);
-            bg.a = 0.97f;
-
             // locked or unaffordable wedges do not highlight on hover: that would invite a click that fails.
             bool disabled = isLocked || hasInsufficientResources;
-
-            // active metal keeps a warm fill so it reads as burning even off-hover; hover still wins over it.
-            if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
-            if (i == hoveredIndex && !disabled) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
-
-            // drained of colour, not just faded: washed-out reads as unavailable, translucent just looks tinted.
-            if (disabled) {
-                float grey = (bg.r + bg.g + bg.b) / 3f;
-                bg = new Color(
-                    Mathf.Lerp(bg.r, grey, 0.8f) * 0.75f,
-                    Mathf.Lerp(bg.g, grey, 0.8f) * 0.75f,
-                    Mathf.Lerp(bg.b, grey, 0.8f) * 0.75f,
-                    isLocked ? 0.45f : 0.7f
-                );
-            }
+            Color bg = WedgeFill(tint, isActive, i == hoveredIndex, disabled, isLocked);
 
             Texture2D wedgeTex = RadialWedgeTex.Get(count, i);
             Color prevColor = GUI.color;
@@ -150,32 +131,8 @@ public static class RadialRingRenderer {
 
             Vector2 iconMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.IconBandRadius, center);
             Rect iconRect = new Rect(iconMid.x - 16f, iconMid.y - 16f, 32f, 32f);
-            if (icon != null) {
-                Color originalGui = GUI.color;
-                GUI.color = new Color(0f, 0f, 0f, 0.45f);
-                GUI.DrawTexture(iconRect.ExpandedBy(5f), RadialWedgeTex.Disc());
-                GUI.color = disabled ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
-                GUI.DrawTexture(iconRect, icon);
-                GUI.color = originalGui;
-            }
-
-            if (isSustained) {
-                Rect dot = new Rect(iconRect.xMax + 2f, iconRect.y + 2f, 5f, 5f);
-                Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
-            }
-
-            // A bare "1%" under an icon reads as a chance or a progress bar. Say the actual problem.
-            if (!isLocked && hasInsufficientResources) {
-                Rect reasonRect = new Rect(iconMid.x - 45f, iconRect.yMax + 3f, 90f, Text.LineHeightOf(GameFont.Tiny));
-                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
-                    Widgets.Label(reasonRect, "CC_Radial_CannotAfford".Translate());
-            }
-
-            if (isLocked) {
-                Rect lockRect = new Rect(iconMid.x - 5f, iconRect.yMax + 3f, 10f, Text.LineHeightOf(GameFont.Tiny));
-                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
-                    Widgets.Label(lockRect, "x");
-            }
+            DrawWedgeIcon(iconRect, icon, disabled);
+            DrawWedgeBadges(iconRect, iconMid, isSustained, isLocked, hasInsufficientResources);
 
             Vector2 labelMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.LabelBandRadius, center);
             float labelWidth = RadialLayout.LabelFitWidthAt(
@@ -188,14 +145,16 @@ public static class RadialRingRenderer {
             bool flareArmed = i == hoveredIndex
                 && !disabled
                 && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            Color labelColor;
-            if (disabled) labelColor = new Color(0.36f, 0.42f, 0.46f);
-            else if (flareArmed) labelColor = DockPalette.Flare;
-            else if (i == hoveredIndex) labelColor = Color.white;
-            else labelColor = new Color(0.81f, 0.85f, 0.87f);
 
             // wrapped, not truncated: wedge is short on width but has height, and "Summon Sh..." tells nothing.
-            UIText.WrappedLabel(labelMid, labelWidth, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
+            UIText.WrappedLabel(
+                labelMid,
+                labelWidth,
+                label,
+                GameFont.Tiny,
+                TextAnchor.MiddleCenter,
+                WedgeLabelColor(disabled, flareArmed, i == hoveredIndex)
+            );
         }
 
         // Every divider in one unrotated draw, laid over the fills.
@@ -203,5 +162,75 @@ public static class RadialRingRenderer {
         GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
         GUI.DrawTexture(texRect, RadialWedgeTex.Separators(count));
         GUI.color = sepPrev;
+    }
+
+    private static Color WedgeFill(Color? tint, bool isActive, bool hovered, bool disabled, bool isLocked) {
+        Color bg = tint.HasValue
+            ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
+            : new Color(0.16f, 0.175f, 0.205f);
+        bg.a = 0.97f;
+
+        // active metal keeps a warm fill so it reads as burning even off-hover; hover still wins over it.
+        if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
+        if (hovered && !disabled) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
+
+        if (!disabled) return bg;
+
+        // drained of colour, not just faded: washed-out reads as unavailable, translucent just looks tinted.
+        float grey = (bg.r + bg.g + bg.b) / 3f;
+        return new Color(
+            Mathf.Lerp(bg.r, grey, 0.8f) * 0.75f,
+            Mathf.Lerp(bg.g, grey, 0.8f) * 0.75f,
+            Mathf.Lerp(bg.b, grey, 0.8f) * 0.75f,
+            isLocked ? 0.45f : 0.7f
+        );
+    }
+
+    private static void DrawWedgeIcon(Rect iconRect, Texture2D? icon, bool disabled) {
+        if (icon == null) return;
+
+        Color originalGui = GUI.color;
+        GUI.color = new Color(0f, 0f, 0f, 0.45f);
+        GUI.DrawTexture(iconRect.ExpandedBy(5f), RadialWedgeTex.Disc());
+        GUI.color = disabled ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
+        GUI.DrawTexture(iconRect, icon);
+        GUI.color = originalGui;
+    }
+
+    /// <summary>
+    ///     The three marks that hang off an icon: the sustained dot, the unaffordable line and the
+    ///     lock cross.
+    /// </summary>
+    private static void DrawWedgeBadges(
+        Rect iconRect,
+        Vector2 iconMid,
+        bool isSustained,
+        bool isLocked,
+        bool hasInsufficientResources
+    ) {
+        if (isSustained) {
+            Rect dot = new Rect(iconRect.xMax + 2f, iconRect.y + 2f, 5f, 5f);
+            Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
+        }
+
+        // A bare "1%" under an icon reads as a chance or a progress bar. Say the actual problem.
+        if (!isLocked && hasInsufficientResources) {
+            Rect reasonRect = new Rect(iconMid.x - 45f, iconRect.yMax + 3f, 90f, Text.LineHeightOf(GameFont.Tiny));
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
+                Widgets.Label(reasonRect, "CC_Radial_CannotAfford".Translate());
+        }
+
+        if (isLocked) {
+            Rect lockRect = new Rect(iconMid.x - 5f, iconRect.yMax + 3f, 10f, Text.LineHeightOf(GameFont.Tiny));
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
+                Widgets.Label(lockRect, "x");
+        }
+    }
+
+    private static Color WedgeLabelColor(bool disabled, bool flareArmed, bool hovered) {
+        if (disabled) return new Color(0.36f, 0.42f, 0.46f);
+        if (flareArmed) return DockPalette.Flare;
+        if (hovered) return Color.white;
+        return new Color(0.81f, 0.85f, 0.87f);
     }
 }

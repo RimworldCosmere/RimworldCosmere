@@ -16,16 +16,7 @@ public class BondToThing : ThinkNode_JobGiver {
             .. pawn.Map.listerThings.AllThings
             .Where(t => t is Pawn)
             .Cast<Pawn>()
-            .Where(t => {
-                if (t.playerSettings?.Master != null && t.playerSettings.Master != pawn) return false;
-                Connection? conn = pawn.GetConnection(t);
-                if (conn == null) return false;
-                if (conn.ObjectOne.Equals(pawn) && !conn.CanBondObjectTwo) return false;
-                if (conn.ObjectTwo.Equals(pawn) && !conn.CanBondObjectOne) return false;
-
-                return conn.Value < 1f;
-            }
-            ),
+            .Where(t => CanBondWith(pawn, t)),
         ];
 
         if (pawns.NullOrEmpty()) return null;
@@ -36,5 +27,16 @@ public class BondToThing : ThinkNode_JobGiver {
         if (target == null || !pawn.CanReach(target, PathEndMode.Touch, Danger.None)) return null;
 
         return JobMaker.MakeJob(JobDefOf.Cosmere_BondToThing, pawn, target);
+    }
+
+    private static bool CanBondWith(Pawn pawn, Pawn candidate) {
+        if (candidate.playerSettings?.Master != null && candidate.playerSettings.Master != pawn) return false;
+
+        Connection? conn = pawn.GetConnection(candidate);
+        if (conn == null) return false;
+        if (conn.ObjectOne.Equals(pawn) && !conn.CanBondObjectTwo) return false;
+        if (conn.ObjectTwo.Equals(pawn) && !conn.CanBondObjectOne) return false;
+
+        return conn.Value < 1f;
     }
 }

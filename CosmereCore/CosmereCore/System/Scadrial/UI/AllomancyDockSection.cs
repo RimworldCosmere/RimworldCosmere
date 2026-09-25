@@ -479,6 +479,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
         if (!ability.CanFlare) return;
 
+        DrawFlareChip(rect, pawn, ability, chipWidth);
+    }
+
+    /// <summary>The flare half of a row, with its own blocked reason and its own tooltip.</summary>
+    private static void DrawFlareChip(Rect rect, Pawn pawn, InvestitureAbility ability, float chipWidth) {
         string? flareBlocked = BurnBlockedReason(pawn, ability, true);
 
         Rect chipRect = new Rect(rect.xMax - chipWidth, rect.y, chipWidth, rect.height);

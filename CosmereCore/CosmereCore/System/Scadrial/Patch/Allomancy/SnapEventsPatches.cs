@@ -34,6 +34,21 @@ public static class SnapEvents {
         Snap(killer, 4, "CS_PawnSnapped_FirstKill");
     }
 
+    /// <summary>Third building inside the window is the shock that snaps the colony.</summary>
+    internal static void CountDestruction(Map map, int mapId, (int startTick, int count, bool triggered) data) {
+        int newCount = data.count + 1;
+        if (newCount < 3 || data.triggered) {
+            ColonyDestructionTracker[mapId] = (data.startTick, newCount, data.triggered);
+            return;
+        }
+
+        ColonyDestructionTracker[mapId] = (data.startTick, newCount, true);
+        List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
+        for (int i = 0; i < colonists.Count; i++) {
+            Snap(colonists[i], 10, "CS_PawnSnapped_ColonyDestruction");
+        }
+    }
+
     internal static bool IsCloseRelation(PawnRelationDef def) {
         for (int i = 0; i < CloseRelations.Length; i++) {
             if (CloseRelations[i] == def) return true;
@@ -287,26 +302,15 @@ public abstract class SnapFromColonyDestructionPatch : Building {
         int mapId = map.uniqueID;
         int currentTick = Find.TickManager.TicksGame;
 
-        if (SnapEvents.ColonyDestructionTracker.TryGetValue(
+        if (!SnapEvents.ColonyDestructionTracker.TryGetValue(
                 mapId,
                 out (int startTick, int count, bool triggered) data
-            )) {
-            if (currentTick - data.startTick > 2500) {
-                SnapEvents.ColonyDestructionTracker[mapId] = (currentTick, 1, false);
-            } else {
-                int newCount = data.count + 1;
-                if (newCount >= 3 && !data.triggered) {
-                    SnapEvents.ColonyDestructionTracker[mapId] = (data.startTick, newCount, true);
-                    List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
-                    for (int i = 0; i < colonists.Count; i++) {
-                        SnapEvents.Snap(colonists[i], 10, "CS_PawnSnapped_ColonyDestruction");
-                    }
-                } else {
-                    SnapEvents.ColonyDestructionTracker[mapId] = (data.startTick, newCount, data.triggered);
-                }
-            }
-        } else {
+            ) ||
+            currentTick - data.startTick > 2500) {
             SnapEvents.ColonyDestructionTracker[mapId] = (currentTick, 1, false);
+            return;
         }
+
+        SnapEvents.CountDestruction(map, mapId, data);
     }
 }

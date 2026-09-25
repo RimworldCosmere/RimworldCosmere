@@ -17,8 +17,16 @@ public abstract class RaidDefenseTrackingPatch : Lord {
         if (lordJob is not LordJob_AssaultColony and not LordJob_AssaultThings) return;
 
         List<Pawn> colonists = Map.mapPawns.FreeColonistsSpawned;
-        int downedCount = 0;
-        int standingCount = 0;
+        CountColonistStates(colonists, out int downedCount, out int standingCount);
+
+        for (int i = 0; i < colonists.Count; i++) {
+            CreditRaidDefense(colonists[i], standingCount, downedCount);
+        }
+    }
+
+    private static void CountColonistStates(List<Pawn> colonists, out int downedCount, out int standingCount) {
+        downedCount = 0;
+        standingCount = 0;
 
         for (int i = 0; i < colonists.Count; i++) {
             Pawn colonist = colonists[i];
@@ -28,23 +36,22 @@ public abstract class RaidDefenseTrackingPatch : Lord {
                 standingCount++;
             }
         }
+    }
 
-        for (int i = 0; i < colonists.Count; i++) {
-            Pawn colonist = colonists[i];
-            if (colonist.Dead || colonist.Downed) continue;
+    private static void CreditRaidDefense(Pawn colonist, int standingCount, int downedCount) {
+        if (colonist.Dead || colonist.Downed) return;
 
-            Surgebinder? surgebinder = colonist.genes?.GetFirstGeneOfType<Surgebinder>();
-            if (surgebinder == null) continue;
+        Surgebinder? surgebinder = colonist.genes?.GetFirstGeneOfType<Surgebinder>();
+        if (surgebinder == null) return;
 
-            if (colonist.Drafted ||
-                colonist.CurJobDef == RimWorld.JobDefOf.AttackMelee ||
-                colonist.CurJobDef == RimWorld.JobDefOf.AttackStatic) {
-                colonist.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_RaidsDefended, 1);
-            }
+        if (colonist.Drafted ||
+            colonist.CurJobDef == RimWorld.JobDefOf.AttackMelee ||
+            colonist.CurJobDef == RimWorld.JobDefOf.AttackStatic) {
+            colonist.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_RaidsDefended, 1);
+        }
 
-            if (standingCount <= 2 && downedCount >= 2) {
-                colonist.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_LastStanding, 1);
-            }
+        if (standingCount <= 2 && downedCount >= 2) {
+            colonist.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_LastStanding, 1);
         }
     }
 }

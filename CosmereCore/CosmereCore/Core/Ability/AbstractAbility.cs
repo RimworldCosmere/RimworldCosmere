@@ -208,11 +208,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         }
 
         if (isAsleep) {
-            if (!def.canUseWhileAsleep) {
-                UpdateStatus(Active.Off);
-            } else if (status.IsPoweredUp) {
-                UpdateStatus(Active.On);
-            }
+            ApplyAsleepTransitions();
         } else if (paused) {
             paused = false;
             if (lastWasPaused) {
@@ -226,14 +222,26 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         }
 
         if (isDowned) {
-            if (status.IsPoweredUp && (!def.canUseWhileDowned || !willUseWhileDowned)) {
-                UpdateStatus(Active.Off);
-            } else if (status == Active.Off && willUseWhileDowned) {
-                UpdateStatus(Active.On);
-            }
+            ApplyDownedTransitions();
         }
 
         lastWasPaused = paused;
+    }
+
+    private void ApplyAsleepTransitions() {
+        if (!def.canUseWhileAsleep) {
+            UpdateStatus(Active.Off);
+        } else if (status.IsPoweredUp) {
+            UpdateStatus(Active.On);
+        }
+    }
+
+    private void ApplyDownedTransitions() {
+        if (status.IsPoweredUp && (!def.canUseWhileDowned || !willUseWhileDowned)) {
+            UpdateStatus(Active.Off);
+        } else if (status == Active.Off && willUseWhileDowned) {
+            UpdateStatus(Active.On);
+        }
     }
 
     private void ApplyAutoTriggers(bool isDowned) {

@@ -50,23 +50,7 @@ public static class MetalmindDistribution {
         float remaining = amount;
 
         for (int i = 0; i < sources.Count && remaining > 0f; i++) {
-            IMetalmindSource source = sources[i];
-            if (!MatchesTarget(source, target)) continue;
-            if (!IsEligible(source, operation)) continue;
-
-            float space = Room(source, operation);
-
-            // the bound the whole feature rides on: a keyed withdrawal cannot reach another key's charge.
-            if (!IsFill(operation) && ledgerKey.HasValue) {
-                float attributed = source.StoredFor(ledgerKey.Value);
-                if (attributed < space) space = attributed;
-            }
-
-            float take = space < remaining ? space : remaining;
-            if (take <= 0f) continue;
-
-            // use what it took, not the offer: AddStored can refuse via ValidateOwner and take less.
-            float took = Apply(source, operation, ledgerKey, take);
+            float took = TakeFrom(sources[i], operation, target, ledgerKey, remaining);
             if (took <= 0f) continue;
 
             remaining -= took;
@@ -74,6 +58,32 @@ public static class MetalmindDistribution {
         }
 
         return moved;
+    }
+
+    /// <summary>What one source will take of the remainder, after the target and key bounds.</summary>
+    private static float TakeFrom(
+        IMetalmindSource source,
+        MetalmindOperation operation,
+        string target,
+        ConnectionKey? ledgerKey,
+        float remaining
+    ) {
+        if (!MatchesTarget(source, target)) return 0f;
+        if (!IsEligible(source, operation)) return 0f;
+
+        float space = Room(source, operation);
+
+        // the bound the whole feature rides on: a keyed withdrawal cannot reach another key's charge.
+        if (!IsFill(operation) && ledgerKey.HasValue) {
+            float attributed = source.StoredFor(ledgerKey.Value);
+            if (attributed < space) space = attributed;
+        }
+
+        float take = space < remaining ? space : remaining;
+        if (take <= 0f) return 0f;
+
+        // use what it took, not the offer: AddStored can refuse via ValidateOwner and take less.
+        return Apply(source, operation, ledgerKey, take);
     }
 
     /// Only the stores get an unbounded walk. An operation nobody added here is bounded by the

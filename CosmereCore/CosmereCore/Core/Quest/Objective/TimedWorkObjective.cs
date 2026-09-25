@@ -16,7 +16,7 @@ public class TimedWorkObjective : QuestObjective {
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         QuestPart_ArrivedAtSite? arrival = quest.GetFirstPartOfType<QuestPart_ArrivedAtSite>();
         if (arrival?.site == null) {
-            throw new QuestBuildFailure("TimedWorkObjective found no preceding TravelToSiteObjective");
+            throw new QuestBuildFailureException("TimedWorkObjective found no preceding TravelToSiteObjective");
         }
 
         QuestPart_TimedWork work = new QuestPart_TimedWork {

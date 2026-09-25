@@ -134,67 +134,76 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
         y += 30f;
 
         for (int i = 0; i < 5; i++) {
-            int idealNumber = i + 1;
-            bool achieved = idealNumber <= s.CurrentIdealDisplay;
-            Color dotColor = achieved
-                ? Color.Lerp(accent, new Color(0.95f, 0.85f, 0.35f), 0.3f)
-                : new Color(0.35f, 0.35f, 0.4f);
-            Color headerColor = achieved ? Color.white : new Color(0.6f, 0.6f, 0.65f);
+            y = DrawIdealBlock(rect, order, s, accent, i, y);
+            y += 6f;
+        }
+    }
 
-            Rect header = new Rect(rect.x, y, rect.width, 24f);
-            Rect dot = new Rect(header.x + 4f, header.y + 5f, 14f, 14f);
-            Widgets.DrawBoxSolid(dot, dotColor);
+    private static float DrawIdealBlock(Rect rect, RadiantOrderDef order, Surgebinder s, Color accent, int i, float y) {
+        int idealNumber = i + 1;
+        bool achieved = idealNumber <= s.CurrentIdealDisplay;
+        Color dotColor = achieved
+            ? Color.Lerp(accent, new Color(0.95f, 0.85f, 0.35f), 0.3f)
+            : new Color(0.35f, 0.35f, 0.4f);
+        Color headerColor = achieved ? Color.white : new Color(0.6f, 0.6f, 0.65f);
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerColor)) {
+        Rect header = new Rect(rect.x, y, rect.width, 24f);
+        Rect dot = new Rect(header.x + 4f, header.y + 5f, 14f, 14f);
+        Widgets.DrawBoxSolid(dot, dotColor);
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerColor)) {
+            Widgets.Label(
+                new Rect(dot.xMax + 10f, header.y, header.width - dot.xMax - rect.x - 10f, header.height),
+                IdealLabel(order, idealNumber, achieved)
+            );
+        }
+
+        y += 26f;
+
+        if (achieved && i < order.ideals.Count) {
+            string? desc = order.ideals[i].description;
+            if (!desc.NullOrEmpty()) {
+                using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, new Color(0.78f, 0.78f, 0.82f))) {
+                    float descHeight = Text.CalcHeight(desc, rect.width - 40f);
+                    Widgets.Label(new Rect(rect.x + 32f, y, rect.width - 40f, descHeight), desc);
+                    y += descHeight + 2f;
+                }
+            }
+        }
+
+        return DrawUnlockRows(rect, GetAbilitiesUnlockedAt(order, i), achieved, y);
+    }
+
+    private static float DrawUnlockRows(Rect rect, List<AbilityDef> unlocks, bool achieved, float y) {
+        Color abilityColor = achieved ? new Color(0.88f, 0.88f, 0.9f) : new Color(0.5f, 0.5f, 0.55f);
+
+        for (int k = 0; k < unlocks.Count; k++) {
+            AbilityDef ability = unlocks[k];
+
+            Rect abilityRow = new Rect(rect.x + 32f, y, rect.width - 36f, 22f);
+            Rect iconRect = new Rect(abilityRow.x, abilityRow.y + 3f, 16f, 16f);
+            if (ability.uiIcon != null) {
+                GUI.color = abilityColor;
+                GUI.DrawTexture(iconRect, ability.uiIcon);
+                GUI.color = Color.white;
+            }
+
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, abilityColor)) {
                 Widgets.Label(
-                    new Rect(dot.xMax + 10f, header.y, header.width - dot.xMax - rect.x - 10f, header.height),
-                    IdealLabel(order, idealNumber, achieved)
+                    new Rect(
+                        iconRect.xMax + 6f,
+                        abilityRow.y,
+                        abilityRow.width - iconRect.width - 6f,
+                        abilityRow.height
+                    ),
+                    ability.LabelCap
                 );
             }
 
-            y += 26f;
-
-            if (achieved && i < order.ideals.Count) {
-                string? desc = order.ideals[i].description;
-                if (!desc.NullOrEmpty()) {
-                    using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, new Color(0.78f, 0.78f, 0.82f))) {
-                        float descHeight = Text.CalcHeight(desc, rect.width - 40f);
-                        Widgets.Label(new Rect(rect.x + 32f, y, rect.width - 40f, descHeight), desc);
-                        y += descHeight + 2f;
-                    }
-                }
-            }
-
-            List<AbilityDef> unlocks = GetAbilitiesUnlockedAt(order, i);
-            for (int k = 0; k < unlocks.Count; k++) {
-                AbilityDef ability = unlocks[k];
-                Color abilityColor = achieved ? new Color(0.88f, 0.88f, 0.9f) : new Color(0.5f, 0.5f, 0.55f);
-
-                Rect abilityRow = new Rect(rect.x + 32f, y, rect.width - 36f, 22f);
-                Rect iconRect = new Rect(abilityRow.x, abilityRow.y + 3f, 16f, 16f);
-                if (ability.uiIcon != null) {
-                    GUI.color = abilityColor;
-                    GUI.DrawTexture(iconRect, ability.uiIcon);
-                    GUI.color = Color.white;
-                }
-
-                using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, abilityColor)) {
-                    Widgets.Label(
-                        new Rect(
-                            iconRect.xMax + 6f,
-                            abilityRow.y,
-                            abilityRow.width - iconRect.width - 6f,
-                            abilityRow.height
-                        ),
-                        ability.LabelCap
-                    );
-                }
-
-                y += 22f;
-            }
-
-            y += 6f;
+            y += 22f;
         }
+
+        return y;
     }
 
     private static void DrawSprenStrip(Rect rect, List<Surgebinder> bonds, CodexState state) {
@@ -319,37 +328,47 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
         List<AbilityDef> result = [];
         HashSet<AbilityDef> seen = [];
 
-        if (idealIndex == 0 && order.abilities != null) {
-            for (int i = 0; i < order.abilities.Count; i++) {
-                if (seen.Add(order.abilities[i])) result.Add(order.abilities[i]);
-            }
+        if (idealIndex == 0) {
+            AddUnique(order.abilities, seen, result);
         }
 
         if (order.ideals != null && idealIndex < order.ideals.Count) {
-            List<AbilityDef>? idealAbilities = order.ideals[idealIndex].abilities;
-            if (idealAbilities != null) {
-                for (int i = 0; i < idealAbilities.Count; i++) {
-                    if (seen.Add(idealAbilities[i])) result.Add(idealAbilities[i]);
-                }
-            }
+            AddUnique(order.ideals[idealIndex].abilities, seen, result);
         }
 
-        if (order.surges != null) {
-            for (int i = 0; i < order.surges.Count; i++) {
-                List<AbilityDef>? surgeAbilities = order.surges[i].abilities;
-                if (surgeAbilities == null) continue;
-                for (int j = 0; j < surgeAbilities.Count; j++) {
-                    AbilityDef def = surgeAbilities[j];
-                    int minIdeal = def is SurgebindingAbilityDef sd
-                        ? sd.GetMinIdealForOrder(order.defName)
-                        : 0;
-                    if (minIdeal != idealIndex) continue;
-                    if (seen.Add(def)) result.Add(def);
-                }
-            }
-        }
+        AddSurgeAbilities(order, idealIndex, seen, result);
 
         return result;
+    }
+
+    private static void AddUnique(List<AbilityDef>? source, HashSet<AbilityDef> seen, List<AbilityDef> result) {
+        if (source == null) return;
+
+        for (int i = 0; i < source.Count; i++) {
+            if (seen.Add(source[i])) result.Add(source[i]);
+        }
+    }
+
+    private static void AddSurgeAbilities(
+        RadiantOrderDef order,
+        int idealIndex,
+        HashSet<AbilityDef> seen,
+        List<AbilityDef> result
+    ) {
+        if (order.surges == null) return;
+
+        for (int i = 0; i < order.surges.Count; i++) {
+            List<AbilityDef>? surgeAbilities = order.surges[i].abilities;
+            if (surgeAbilities == null) continue;
+
+            for (int j = 0; j < surgeAbilities.Count; j++) {
+                AbilityDef def = surgeAbilities[j];
+                int minIdeal = def is SurgebindingAbilityDef sd
+                    ? sd.GetMinIdealForOrder(order.defName)
+                    : 0;
+                if (minIdeal == idealIndex && seen.Add(def)) result.Add(def);
+            }
+        }
     }
 
     public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {

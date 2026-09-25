@@ -124,37 +124,44 @@ public static class KandraShapeshift {
         List<Verse.Thing> equipped = [];
         List<Verse.Thing> worn = [];
 
-        if (pawn.equipment != null) {
-            List<ThingWithComps> weapons = [.. pawn.equipment.AllEquipmentListForReading];
-            for (int i = 0; i < weapons.Count; i++) {
-                if (!pawn.equipment.TryTransferEquipmentToContainer(weapons[i], pawn.inventory.innerContainer)) {
-                    continue;
-                }
-
-                equipped.Add(weapons[i]);
-            }
-        }
-
-        if (pawn.apparel != null) {
-            List<Apparel> clothes = [.. pawn.apparel.WornApparel];
-            for (int i = 0; i < clothes.Count; i++) {
-                // TryDrop needs MapHeld, which a scenario pawn does not have yet.
-                if (!pawn.Spawned) {
-                    pawn.apparel.Remove(clothes[i]);
-                    pawn.apparel.Notify_ApparelRemoved(clothes[i]);
-                    if (pawn.inventory.innerContainer.TryAdd(clothes[i])) worn.Add(clothes[i]);
-                    continue;
-                }
-
-                if (!pawn.apparel.TryDrop(clothes[i], out Apparel? dropped, pawn.Position, false)) continue;
-                if (dropped == null) continue;
-
-                if (dropped.Spawned) dropped.DeSpawn();
-                if (pawn.inventory.innerContainer.TryAdd(dropped)) worn.Add(dropped);
-            }
-        }
+        StowWeapons(pawn, equipped);
+        StowApparel(pawn, worn);
 
         forms.RememberGear(equipped, worn);
+    }
+
+    private static void StowWeapons(Pawn pawn, List<Verse.Thing> equipped) {
+        if (pawn.equipment == null) return;
+
+        List<ThingWithComps> weapons = [.. pawn.equipment.AllEquipmentListForReading];
+        for (int i = 0; i < weapons.Count; i++) {
+            if (!pawn.equipment.TryTransferEquipmentToContainer(weapons[i], pawn.inventory.innerContainer)) {
+                continue;
+            }
+
+            equipped.Add(weapons[i]);
+        }
+    }
+
+    private static void StowApparel(Pawn pawn, List<Verse.Thing> worn) {
+        if (pawn.apparel == null) return;
+
+        List<Apparel> clothes = [.. pawn.apparel.WornApparel];
+        for (int i = 0; i < clothes.Count; i++) {
+            // TryDrop needs MapHeld, which a scenario pawn does not have yet.
+            if (!pawn.Spawned) {
+                pawn.apparel.Remove(clothes[i]);
+                pawn.apparel.Notify_ApparelRemoved(clothes[i]);
+                if (pawn.inventory.innerContainer.TryAdd(clothes[i])) worn.Add(clothes[i]);
+                continue;
+            }
+
+            if (!pawn.apparel.TryDrop(clothes[i], out Apparel? dropped, pawn.Position, false)) continue;
+            if (dropped == null) continue;
+
+            if (dropped.Spawned) dropped.DeSpawn();
+            if (pawn.inventory.innerContainer.TryAdd(dropped)) worn.Add(dropped);
+        }
     }
 
     /// <summary>

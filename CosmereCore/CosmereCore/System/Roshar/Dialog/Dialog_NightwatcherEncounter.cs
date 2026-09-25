@@ -225,6 +225,27 @@ public class Dialog_NightwatcherEncounter : Window {
         float contentWidth = listRect.width - ScrollbarWidth;
         float textWidth = contentWidth - Pad * 2f;
 
+        float totalHeight = MeasureBoonRows(boons, textWidth);
+
+        Rect viewRect = new Rect(0f, 0f, contentWidth, totalHeight);
+        Widgets.BeginScrollView(listRect, ref boonScrollPos, viewRect);
+
+        float rowY = 0f;
+        for (int i = 0; i < boons.Count; i++) {
+            NightwatcherBoonDef boon = boons[i];
+            BoonRowLayout layout = rowLayouts[i];
+            Rect rowRect = new Rect(0f, rowY, viewRect.width, layout.rowHeight);
+            rowY += layout.rowHeight;
+
+            if (rowRect.yMax < boonScrollPos.y || rowRect.y > boonScrollPos.y + listRect.height) continue;
+
+            DrawBoonRow(boon, layout, rowRect, textWidth);
+        }
+
+        Widgets.EndScrollView();
+    }
+
+    private float MeasureBoonRows(List<NightwatcherBoonDef> boons, float textWidth) {
         rowLayouts.Clear();
         float totalHeight = 0f;
         for (int i = 0; i < boons.Count; i++) {
@@ -241,69 +262,58 @@ public class Dialog_NightwatcherEncounter : Window {
             rowLayouts.Add(layout);
         }
 
-        Rect viewRect = new Rect(0f, 0f, contentWidth, totalHeight);
-        Widgets.BeginScrollView(listRect, ref boonScrollPos, viewRect);
+        return totalHeight;
+    }
 
-        float rowY = 0f;
-        for (int i = 0; i < boons.Count; i++) {
-            NightwatcherBoonDef boon = boons[i];
-            BoonRowLayout layout = rowLayouts[i];
-            Rect rowRect = new Rect(0f, rowY, viewRect.width, layout.rowHeight);
-            rowY += layout.rowHeight;
-
-            if (rowRect.yMax < boonScrollPos.y || rowRect.y > boonScrollPos.y + listRect.height) continue;
-
-            if (selectedBoon == boon) {
-                Widgets.DrawBoxSolid(rowRect, RowSelectedFill);
-                Widgets.DrawBoxSolid(new Rect(rowRect.x, rowRect.y, 2f, rowRect.height), RowSelectedEdge);
-            } else {
-                Widgets.DrawHighlightIfMouseover(rowRect);
-            }
-
-            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, NightwatcherGreen)) {
-                Widgets.Label(new Rect(Pad, rowRect.y + 4f, textWidth, 24f), boon.LabelCap);
-            }
-
-            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, MutedText)) {
-                Widgets.Label(
-                    new Rect(Pad, rowRect.y + RowHeaderHeight, textWidth, layout.descHeight),
-                    layout.descText
-                );
-            }
-
-            if (layout.effectsText.Length > 0) {
-                using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, EffectColor)) {
-                    Widgets.Label(
-                        new Rect(
-                            Pad,
-                            rowRect.y + RowHeaderHeight + layout.descHeight + 4f,
-                            textWidth,
-                            layout.effectsHeight
-                        ),
-                        layout.effectsText
-                    );
-                }
-            }
-
-            bool needsChoice = boon.Applicator is INightwatcherChoiceProvider;
-            TooltipHandler.TipRegion(
-                rowRect,
-                needsChoice ? "CRO_NW_Boon_RowChoiceTip".Translate() : "CRO_NW_Boon_RowTip".Translate()
-            );
-            MouseoverSounds.DoRegion(rowRect);
-            if (Widgets.ButtonInvisible(rowRect)) {
-                if (needsChoice) {
-                    ShowChoiceMenu(boon);
-                } else {
-                    selectedBoon = boon;
-                    selectedChoiceKey = null;
-                }
-            }
-
-            Widgets.DrawLineHorizontal(4f, rowRect.yMax - 1f, rowRect.width - 8f);
+    private void DrawBoonRow(NightwatcherBoonDef boon, BoonRowLayout layout, Rect rowRect, float textWidth) {
+        if (selectedBoon == boon) {
+            Widgets.DrawBoxSolid(rowRect, RowSelectedFill);
+            Widgets.DrawBoxSolid(new Rect(rowRect.x, rowRect.y, 2f, rowRect.height), RowSelectedEdge);
+        } else {
+            Widgets.DrawHighlightIfMouseover(rowRect);
         }
 
-        Widgets.EndScrollView();
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, NightwatcherGreen)) {
+            Widgets.Label(new Rect(Pad, rowRect.y + 4f, textWidth, 24f), boon.LabelCap);
+        }
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, MutedText)) {
+            Widgets.Label(
+                new Rect(Pad, rowRect.y + RowHeaderHeight, textWidth, layout.descHeight),
+                layout.descText
+            );
+        }
+
+        if (layout.effectsText.Length > 0) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, EffectColor)) {
+                Widgets.Label(
+                    new Rect(
+                        Pad,
+                        rowRect.y + RowHeaderHeight + layout.descHeight + 4f,
+                        textWidth,
+                        layout.effectsHeight
+                    ),
+                    layout.effectsText
+                );
+            }
+        }
+
+        bool needsChoice = boon.Applicator is INightwatcherChoiceProvider;
+        TooltipHandler.TipRegion(
+            rowRect,
+            needsChoice ? "CRO_NW_Boon_RowChoiceTip".Translate() : "CRO_NW_Boon_RowTip".Translate()
+        );
+        MouseoverSounds.DoRegion(rowRect);
+        if (Widgets.ButtonInvisible(rowRect)) {
+            if (needsChoice) {
+                ShowChoiceMenu(boon);
+            } else {
+                selectedBoon = boon;
+                selectedChoiceKey = null;
+            }
+        }
+
+        Widgets.DrawLineHorizontal(4f, rowRect.yMax - 1f, rowRect.width - 8f);
     }
 
     private void DrawSelectionPanel(Rect rect) {

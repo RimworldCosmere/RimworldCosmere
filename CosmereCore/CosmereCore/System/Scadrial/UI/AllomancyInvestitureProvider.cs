@@ -114,35 +114,6 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
             if (matched.Count == 0) continue;
 
             float reserveFraction = a.Max > 0f ? a.Value / a.Max : 0f;
-            List<RadialLeaf> leaves = [];
-            for (int j = 0; j < matched.Count; j++) {
-                AllomancyAbility ability = matched[j];
-                bool targeted = ability.def.targetRequired;
-
-                leaves.Add(
-                    new RadialLeaf(
-                        LeafId: ability.def.defName,
-                        Label: ability.atLeastBurning
-                            ? "CC_Radial_Action_StopBurning".Translate(ability.def.LabelCap.Named("METAL"))
-                            : ability.def.LabelCap,
-                        Icon: a.metal.allomancy?.invertedIcon,
-                        Kind: targeted ? RadialActionKind.CastAbility : RadialActionKind.StartAllomancyBurn,
-                        AbilityDef: ability.def,
-                        IsActive: ability.atLeastBurning,
-                        IsFlaring: ability.status.power > 1,
-                        CanFlare: ability.def.maxPower > 1,
-                        IsSustained: ability.def.toggleable && ability.status.IsActive,
-                        IsLocked: false,
-                        LockReason: null,
-                        ReserveFraction: reserveFraction,
-                        HasInsufficientResources: reserveFraction <= 0f,
-                        CostHint:
-                        $"{ability.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
-                        Description: ability.def.description,
-                        CooldownTicksRemaining: 0
-                    )
-                );
-            }
 
             subs.Add(
                 new RadialSubsection(
@@ -150,7 +121,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
                     a.metal.LabelCap,
                     a.metal.allomancy?.invertedIcon,
                     new Color(0.75f, 0.65f, 0.45f),
-                    leaves
+                    BuildLeaves(matched, a, reserveFraction)
                 )
             );
         }
@@ -158,5 +129,42 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
         if (subs.Count == 0) return null;
 
         return RadialSystem.ForSystem("Allomancy", subs);
+    }
+
+    /// <summary>One leaf per ability the metal carries, all reading the same reserve.</summary>
+    private static List<RadialLeaf> BuildLeaves(
+        List<AllomancyAbility> matched, Allomancer gene, float reserveFraction
+    ) {
+        List<RadialLeaf> leaves = [];
+        for (int j = 0; j < matched.Count; j++) {
+            AllomancyAbility ability = matched[j];
+            bool targeted = ability.def.targetRequired;
+
+            leaves.Add(
+                new RadialLeaf(
+                    LeafId: ability.def.defName,
+                    Label: ability.atLeastBurning
+                        ? "CC_Radial_Action_StopBurning".Translate(ability.def.LabelCap.Named("METAL"))
+                        : ability.def.LabelCap,
+                    Icon: gene.metal.allomancy?.invertedIcon,
+                    Kind: targeted ? RadialActionKind.CastAbility : RadialActionKind.StartAllomancyBurn,
+                    AbilityDef: ability.def,
+                    IsActive: ability.atLeastBurning,
+                    IsFlaring: ability.status.power > 1,
+                    CanFlare: ability.def.maxPower > 1,
+                    IsSustained: ability.def.toggleable && ability.status.IsActive,
+                    IsLocked: false,
+                    LockReason: null,
+                    ReserveFraction: reserveFraction,
+                    HasInsufficientResources: reserveFraction <= 0f,
+                    CostHint:
+                    $"{ability.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
+                    Description: ability.def.description,
+                    CooldownTicksRemaining: 0
+                )
+            );
+        }
+
+        return leaves;
     }
 }

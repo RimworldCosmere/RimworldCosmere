@@ -99,22 +99,7 @@ public class Atium : HediffWithComps {
         long current = pawn.ageTracker.AgeBiologicalTicks;
 
         if (direction < 0f) {
-            // natural aging ticks them back above the floor between rare ticks; check ticks left, not equality.
-            long available = current - MinAgeTicks;
-            if (available <= 0L) {
-                ParkDial();
-
-                return;
-            }
-
-            long applied = Math.Min(requested, available);
-            pawn.ageTracker.AgeBiologicalTicks = current - applied;
-
-            // only charge for years actually shed; refund the rest and park, the floor buys nothing further.
-            if (applied < requested) {
-                RefundUnused(1f - applied / (float)requested);
-                ParkDial();
-            }
+            if (!ShedAge(requested, current)) return;
         } else {
             pawn.ageTracker.AgeBiologicalTicks = current + requested;
         }
@@ -133,5 +118,27 @@ public class Atium : HediffWithComps {
             pawn.health.RemoveHediff(h);
             return;
         }
+    }
+
+    /// <summary>Takes the years off, down to the floor. False once the floor stopped it.</summary>
+    private bool ShedAge(long requested, long current) {
+        // natural aging ticks them back above the floor between rare ticks; check ticks left, not equality.
+        long available = current - MinAgeTicks;
+        if (available <= 0L) {
+            ParkDial();
+
+            return false;
+        }
+
+        long applied = Math.Min(requested, available);
+        pawn.ageTracker.AgeBiologicalTicks = current - applied;
+
+        // only charge for years actually shed; refund the rest and park, the floor buys nothing further.
+        if (applied < requested) {
+            RefundUnused(1f - applied / (float)requested);
+            ParkDial();
+        }
+
+        return true;
     }
 }

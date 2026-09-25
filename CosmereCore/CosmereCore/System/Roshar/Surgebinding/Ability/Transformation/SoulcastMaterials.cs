@@ -41,21 +41,23 @@ public static class SoulcastMaterials {
     };
 
     public static SoulcastCategory Categorize(LocalTargetInfo target, Map map) {
-        if (target.HasThing && target.Thing != null && !target.Thing.Destroyed) {
-            Verse.Thing thing = target.Thing;
+        if (!target.HasThing || target.Thing == null || target.Thing.Destroyed) return SoulcastCategory.Terrain;
 
-            if (thing is Fire) return SoulcastCategory.Fire;
-            if (thing is Pawn) return SoulcastCategory.Pawn;
-            if (thing is Corpse) return SoulcastCategory.Corpse;
-            if (thing.def == RimWorld.ThingDefOf.SteamGeyser) return SoulcastCategory.SteamGeyser;
-            if (thing.def.mineable) return SoulcastCategory.Mineable;
-            if (thing.def.plant != null) return SoulcastCategory.Plant;
-            if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing))
-                return SoulcastCategory.StuffedThing;
-            return SoulcastCategory.DroppedItem;
+        return CategorizeThing(target.Thing);
+    }
+
+    private static SoulcastCategory CategorizeThing(Verse.Thing thing) {
+        if (thing is Fire) return SoulcastCategory.Fire;
+        if (thing is Pawn) return SoulcastCategory.Pawn;
+        if (thing is Corpse) return SoulcastCategory.Corpse;
+        if (thing.def == RimWorld.ThingDefOf.SteamGeyser) return SoulcastCategory.SteamGeyser;
+        if (thing.def.mineable) return SoulcastCategory.Mineable;
+        if (thing.def.plant != null) return SoulcastCategory.Plant;
+        if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing)) {
+            return SoulcastCategory.StuffedThing;
         }
 
-        return SoulcastCategory.Terrain;
+        return SoulcastCategory.DroppedItem;
     }
 
     public static bool IsDroppedItem(Verse.Thing thing) {

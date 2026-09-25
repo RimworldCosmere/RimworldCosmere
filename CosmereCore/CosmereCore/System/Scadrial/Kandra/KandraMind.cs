@@ -93,32 +93,39 @@ public class KandraMind : IExposable {
     public void Restore(Pawn pawn) {
         if (!held) return;
 
-        if (pawn.skills?.skills != null) {
-            for (int i = 0; i < skills.Count; i++) {
-                if (skills[i].skill == null) continue;
-
-                SkillRecord? record = pawn.skills.GetSkill(skills[i].skill);
-                if (record == null) continue;
-
-                record.Level = skills[i].level;
-                record.xpSinceLastLevel = skills[i].xp;
-                record.passion = skills[i].passion;
-            }
-        }
-
-        MemoryThoughtHandler? handler = pawn.needs?.mood?.thoughts?.memories;
-        if (handler != null) {
-            for (int i = 0; i < memories.Count; i++) {
-                if (memories[i] == null) continue;
-
-                handler.TryGainMemory(memories[i]);
-            }
-        }
+        RestoreSkills(pawn);
+        RestoreMemories(pawn);
 
         skills = [];
         memories = [];
         shape = null;
         held = false;
+    }
+
+    private void RestoreSkills(Pawn pawn) {
+        if (pawn.skills?.skills == null) return;
+
+        for (int i = 0; i < skills.Count; i++) {
+            if (skills[i].skill == null) continue;
+
+            SkillRecord? record = pawn.skills.GetSkill(skills[i].skill);
+            if (record == null) continue;
+
+            record.Level = skills[i].level;
+            record.xpSinceLastLevel = skills[i].xp;
+            record.passion = skills[i].passion;
+        }
+    }
+
+    private void RestoreMemories(Pawn pawn) {
+        MemoryThoughtHandler? handler = pawn.needs?.mood?.thoughts?.memories;
+        if (handler == null) return;
+
+        for (int i = 0; i < memories.Count; i++) {
+            if (memories[i] == null) continue;
+
+            handler.TryGainMemory(memories[i]);
+        }
     }
 
     public void ExposeData() {

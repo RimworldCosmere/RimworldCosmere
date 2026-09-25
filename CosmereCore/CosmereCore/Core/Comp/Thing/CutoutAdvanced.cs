@@ -185,26 +185,8 @@ public class CutoutAdvanced : ThingComp {
         block.SetLUTColorMask(palettes);
         block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, props.materialIntesity);
 
-        block.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, props.useWear ? 1 : 0);
-        if (props.useWear) {
-            block.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, props.wearDarkness);
-            block.SetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel, currentWearLevel);
-            block.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, props.wearLevelCount);
-            if (wearMask?.mask != null) {
-                block.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, wearMask.mask);
-            }
-        }
-
-        block.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, props.useGlow ? 1 : 0);
-        if (props.useGlow) {
-            block.SetColor(CutoutAdvancedShaderProperties.GlowColor, props.glowColor);
-            block.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, props.glowIntensity);
-            block.SetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel, currentGlowLevel);
-            block.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, props.glowLevelCount);
-            if (glowMask?.mask != null) {
-                block.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, glowMask.mask);
-            }
-        }
+        ApplyWear(block, wearMask);
+        ApplyGlow(block, glowMask);
 
         block.SetFloat(CutoutAdvancedShaderProperties.UseSpecialMask, props.useSpecial ? 1 : 0);
         if (props.useSpecial && specialMask?.mask != null) {
@@ -224,6 +206,31 @@ public class CutoutAdvanced : ThingComp {
         block.SetVector(CutoutAdvancedShaderProperties.RimLightCenter, new Vector2(0.5f, 0.5f));
 
         return block;
+    }
+
+    private void ApplyWear(MaterialPropertyBlock block, Mask? wearMask) {
+        block.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, props.useWear ? 1 : 0);
+        if (!props.useWear) return;
+
+        block.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, props.wearDarkness);
+        block.SetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel, currentWearLevel);
+        block.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, props.wearLevelCount);
+        if (wearMask?.mask != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, wearMask.mask);
+        }
+    }
+
+    private void ApplyGlow(MaterialPropertyBlock block, Mask? glowMask) {
+        block.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, props.useGlow ? 1 : 0);
+        if (!props.useGlow) return;
+
+        block.SetColor(CutoutAdvancedShaderProperties.GlowColor, props.glowColor);
+        block.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, props.glowIntensity);
+        block.SetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel, currentGlowLevel);
+        block.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, props.glowLevelCount);
+        if (glowMask?.mask != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, glowMask.mask);
+        }
     }
 
     public override void CompDrawWornExtras() {

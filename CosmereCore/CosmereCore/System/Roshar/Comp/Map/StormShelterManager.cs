@@ -103,24 +103,29 @@ public static class StormShelterManager {
         queue.Enqueue(start);
 
         while (queue.Count > 0) {
-            IntVec3 current = queue.Dequeue();
-
-            foreach (IntVec3 dir in GenAdj.CardinalDirections) {
-                IntVec3 next = current + dir;
-
-                if (!next.InBounds(map)) continue;
-                if (visited.Contains(next)) continue;
-                if (!next.Roofed(map)) continue;
-
-                Building b = next.GetEdifice(map);
-                if (IsWallOrClosedDoor(b)) continue;
-
-                visited.Add(next);
-                queue.Enqueue(next);
-            }
+            EnqueueRoofedNeighbors(queue.Dequeue(), map, visited, queue);
         }
 
         return visited;
+    }
+
+    private static void EnqueueRoofedNeighbors(
+        IntVec3 current,
+        Verse.Map map,
+        HashSet<IntVec3> visited,
+        Queue<IntVec3> queue
+    ) {
+        foreach (IntVec3 dir in GenAdj.CardinalDirections) {
+            IntVec3 next = current + dir;
+
+            if (!next.InBounds(map)) continue;
+            if (visited.Contains(next)) continue;
+            if (!next.Roofed(map)) continue;
+            if (IsWallOrClosedDoor(next.GetEdifice(map))) continue;
+
+            visited.Add(next);
+            queue.Enqueue(next);
+        }
     }
 
     private static bool IsWallOrClosedDoor(Building b) {
@@ -140,18 +145,20 @@ public static class StormShelterManager {
 
         foreach (IntVec3 pos in area) {
             if (pos.x != maxX) continue;
-
-            IntVec3 east = pos + IntVec3.East;
-            if (!east.InBounds(map)) continue;
-
-            Building eastBuilding = east.GetEdifice(map);
-            if (eastBuilding == null) return false;
-            if (eastBuilding.def.passability == Traversability.Impassable) continue;
-            if (eastBuilding.def.IsDoor) continue;
-            return false;
+            if (!IsEastSideBlocked(pos, map)) return false;
         }
 
         return true;
+    }
+
+    private static bool IsEastSideBlocked(IntVec3 pos, Verse.Map map) {
+        IntVec3 east = pos + IntVec3.East;
+        if (!east.InBounds(map)) return true;
+
+        Building eastBuilding = east.GetEdifice(map);
+        if (eastBuilding == null) return false;
+        if (eastBuilding.def.passability == Traversability.Impassable) return true;
+        return eastBuilding.def.IsDoor;
     }
 
     private struct RegionInfo {

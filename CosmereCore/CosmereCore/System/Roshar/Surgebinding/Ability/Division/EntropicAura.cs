@@ -71,28 +71,32 @@ public class EntropicAura : SurgebindingAbility {
                      currentRadius,
                      true
                  )) {
-            if (thing == pawn) continue;
-            if (thing.Faction == pawn.Faction) continue;
+            ApplyEntropyTo(thing, currentDamage, structureDamage);
+        }
+    }
 
-            if (thing is Pawn targetPawn) {
-                if (targetPawn.Dead) continue;
+    private void ApplyEntropyTo(Verse.Thing thing, float currentDamage, float structureDamage) {
+        if (thing == pawn) return;
+        if (thing.Faction == pawn.Faction) return;
 
-                DamageInfo dinfo = new DamageInfo(
-                    DamageDefOf.Burn,
-                    currentDamage,
-                    instigator: pawn
-                );
-                targetPawn.TakeDamage(dinfo);
+        if (thing is Pawn targetPawn) {
+            if (targetPawn.Dead) return;
 
-                if (Gene.CurrentIdeal >= 3) {
-                    DegradeEquipment(targetPawn);
-                }
-            } else if (thing is Building && thing.def.useHitPoints) {
-                int dmg = Math.Max(1, (int)structureDamage);
-                thing.HitPoints -= dmg;
-                if (thing.HitPoints <= 0) {
-                    thing.Destroy(DestroyMode.KillFinalize);
-                }
+            DamageInfo dinfo = new DamageInfo(
+                DamageDefOf.Burn,
+                currentDamage,
+                instigator: pawn
+            );
+            targetPawn.TakeDamage(dinfo);
+
+            if (Gene.CurrentIdeal >= 3) {
+                DegradeEquipment(targetPawn);
+            }
+        } else if (thing is Building && thing.def.useHitPoints) {
+            int dmg = Math.Max(1, (int)structureDamage);
+            thing.HitPoints -= dmg;
+            if (thing.HitPoints <= 0) {
+                thing.Destroy(DestroyMode.KillFinalize);
             }
         }
     }

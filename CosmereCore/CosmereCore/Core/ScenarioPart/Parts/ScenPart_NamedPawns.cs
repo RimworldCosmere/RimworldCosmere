@@ -56,29 +56,37 @@ public class ScenPart_NamedPawns : ScenPart {
             if (self?.relations == null) continue;
 
             for (int r = 0; r < template.relations.Count; r++) {
-                NamedPawnRelationEntry entry = template.relations[r];
-                if (entry.def == null || entry.to == null) continue;
-
-                PawnRelationDef? def = DefDatabase<PawnRelationDef>.GetNamedSilentFail(entry.def);
-                if (def == null) {
-                    Log.Warn($"ScenPart_NamedPawns: PawnRelationDef '{entry.def}' not found");
-                    continue;
-                }
-
-                Pawn? other = FindNamed(entry.to);
-                if (other == null || other == self) continue;
-                if (self.relations.DirectRelationExists(def, other)) continue;
-
-                if (def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
-                    def == PawnRelationDefOf.Fiance) {
-                    ClearRomance(self);
-                    ClearRomance(other);
-                }
-
-                self.relations.AddDirectRelation(def, other);
-                Log.Info($"ScenPart_NamedPawns: {template.firstName} is {def.defName} to {entry.to}.");
+                ApplyRelation(self, template, template.relations[r]);
             }
         }
+    }
+
+    private static void ApplyRelation(Pawn self, NamedPawnDef template, NamedPawnRelationEntry entry) {
+        if (entry.def == null || entry.to == null) return;
+
+        PawnRelationDef? def = DefDatabase<PawnRelationDef>.GetNamedSilentFail(entry.def);
+        if (def == null) {
+            Log.Warn($"ScenPart_NamedPawns: PawnRelationDef '{entry.def}' not found");
+
+            return;
+        }
+
+        Pawn? other = FindNamed(entry.to);
+        if (other == null || other == self) return;
+        if (self.relations.DirectRelationExists(def, other)) return;
+
+        if (IsRomantic(def)) {
+            ClearRomance(self);
+            ClearRomance(other);
+        }
+
+        self.relations.AddDirectRelation(def, other);
+        Log.Info($"ScenPart_NamedPawns: {template.firstName} is {def.defName} to {entry.to}.");
+    }
+
+    private static bool IsRomantic(PawnRelationDef def) {
+        return def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
+               def == PawnRelationDefOf.Fiance;
     }
 
     private static void ClearRomance(Pawn pawn) {
@@ -86,9 +94,7 @@ public class ScenPart_NamedPawns : ScenPart {
 
         List<DirectPawnRelation> existing = [.. pawn.relations.DirectRelations];
         for (int i = 0; i < existing.Count; i++) {
-            PawnRelationDef def = existing[i].def;
-            if (def == PawnRelationDefOf.Spouse || def == PawnRelationDefOf.Lover ||
-                def == PawnRelationDefOf.Fiance) {
+            if (IsRomantic(existing[i].def)) {
                 pawn.relations.RemoveDirectRelation(existing[i]);
             }
         }
@@ -343,33 +349,10 @@ public class ScenPart_NamedPawns : ScenPart {
     private static void ApplyAppearance(Pawn pawn, NamedPawnDef template) {
         if (pawn.story == null) return;
 
-        BodyTypeDef? body = template.bodyType == null
-            ? null
-            : DefDatabase<BodyTypeDef>.GetNamedSilentFail(template.bodyType);
-
-        // No explicit body, but the rolled one belongs to the other gender.
-        if (body == null && template.gender != Gender.None) {
-            bool mismatched = (template.gender == Gender.Male && pawn.story.bodyType == BodyTypeDefOf.Female)
-                              || (template.gender == Gender.Female && pawn.story.bodyType == BodyTypeDefOf.Male);
-            if (mismatched) {
-                body = template.gender == Gender.Male ? BodyTypeDefOf.Male : BodyTypeDefOf.Female;
-            }
-        }
-
+        BodyTypeDef? body = ResolveBodyType(pawn.story, template);
         if (body != null) pawn.story.bodyType = body;
 
-        HeadTypeDef? head = template.headType == null
-            ? null
-            : DefDatabase<HeadTypeDef>.GetNamedSilentFail(template.headType);
-
-        // Head types carry a gender of their own, so a rolled one can contradict the template.
-        if (head == null && template.gender != Gender.None) {
-            HeadTypeDef? current = pawn.story.headType;
-            if (current != null && current.gender != Gender.None && current.gender != template.gender) {
-                head = Util.HeadTypeUtility.RandomFor(template.gender, pawn, current);
-            }
-        }
-
+        HeadTypeDef? head = ResolveHeadType(pawn, pawn.story, template);
         if (head != null) pawn.story.headType = head;
 
         // Hair carries a style gender too, and a rolled one contradicts the template just as readily as the head did.
@@ -389,6 +372,35 @@ public class ScenPart_NamedPawns : ScenPart {
         if (template.skinColor != null && ParseColour(template.skinColor) is UnityEngine.Color skin) {
             pawn.story.skinColorOverride = skin;
         }
+    }
+
+    private static BodyTypeDef? ResolveBodyType(Pawn_StoryTracker story, NamedPawnDef template) {
+        BodyTypeDef? body = template.bodyType == null
+            ? null
+            : DefDatabase<BodyTypeDef>.GetNamedSilentFail(template.bodyType);
+
+        // No explicit body, but the rolled one belongs to the other gender.
+        if (body != null || template.gender == Gender.None) return body;
+
+        bool mismatched = (template.gender == Gender.Male && story.bodyType == BodyTypeDefOf.Female)
+                          || (template.gender == Gender.Female && story.bodyType == BodyTypeDefOf.Male);
+        if (!mismatched) return null;
+
+        return template.gender == Gender.Male ? BodyTypeDefOf.Male : BodyTypeDefOf.Female;
+    }
+
+    private static HeadTypeDef? ResolveHeadType(Pawn pawn, Pawn_StoryTracker story, NamedPawnDef template) {
+        HeadTypeDef? head = template.headType == null
+            ? null
+            : DefDatabase<HeadTypeDef>.GetNamedSilentFail(template.headType);
+
+        // Head types carry a gender of their own, so a rolled one can contradict the template.
+        if (head != null || template.gender == Gender.None) return head;
+
+        HeadTypeDef? current = story.headType;
+        if (current == null || current.gender == Gender.None || current.gender == template.gender) return null;
+
+        return Util.HeadTypeUtility.RandomFor(template.gender, pawn, current);
     }
 
     /// <summary>

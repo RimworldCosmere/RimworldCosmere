@@ -84,19 +84,7 @@ public partial class Dialog_KandraForms {
 
         float y = DrawSectionHeader(0f, width, "CS_Kandra_IrisHeader");
 
-        foreach (IrisRow iris in irises) {
-            Rect row = new Rect(0f, y, width, IrisRowHeight);
-
-            if (!cut) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
-
-            if (row.Overlaps(seen) &&
-                DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight) &&
-                cut) {
-                designIrisSize = iris.name;
-            }
-
-            y += IrisRowHeight;
-        }
+        y = DrawIrisRows(y, width, irises, seen, cut, drawnIris);
 
         y += gap;
         y = DrawSectionHeader(y, width, "CS_Kandra_OddEyesHeader");
@@ -122,20 +110,43 @@ public partial class Dialog_KandraForms {
             designEyeLight = wantsLight ? KandraAppearance.DefaultEyeLight : KandraAppearance.EyeLightOff;
         }
 
-        if (lit) {
-            for (int i = 0; i < lights.Count; i++) {
-                (string name, float _, string labelKey) = lights[i];
-                Rect row = new Rect(0f, y + i * IrisRowHeight, width, IrisRowHeight);
-
-                // A flat chip cannot tell two lights apart, so the chip draws the eye itself.
-                if (row.Overlaps(seen) &&
-                    DrawEyeRow(row, labelKey.Translate(), name == designEyeLight, designIrisSize, name)) {
-                    designEyeLight = name;
-                }
-            }
-        }
+        if (lit) DrawEyeLightRows(y, width, lights, seen);
 
         Widgets.EndScrollView();
+    }
+
+    /// <summary>One row per iris size, culled to what the scroll view can actually show.</summary>
+    private float DrawIrisRows(
+        float y, float width, IReadOnlyList<IrisRow> irises, Rect seen, bool cut, string drawnIris
+    ) {
+        foreach (IrisRow iris in irises) {
+            Rect row = new Rect(0f, y, width, IrisRowHeight);
+
+            if (!cut) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
+
+            if (row.Overlaps(seen) &&
+                DrawEyeRow(row, iris.labelKey.Translate(), iris.name == drawnIris, iris.name, designEyeLight) &&
+                cut) {
+                designIrisSize = iris.name;
+            }
+
+            y += IrisRowHeight;
+        }
+
+        return y;
+    }
+
+    private void DrawEyeLightRows(float y, float width, IReadOnlyList<EyeLightRow> lights, Rect seen) {
+        for (int i = 0; i < lights.Count; i++) {
+            (string name, float _, string labelKey) = lights[i];
+            Rect row = new Rect(0f, y + i * IrisRowHeight, width, IrisRowHeight);
+
+            // A flat chip cannot tell two lights apart, so the chip draws the eye itself.
+            if (row.Overlaps(seen) &&
+                DrawEyeRow(row, labelKey.Translate(), name == designEyeLight, designIrisSize, name)) {
+                designEyeLight = name;
+            }
+        }
     }
 
     /// <summary>A row previewing the eye it would pick: one iris, at a size, under a light.</summary>

@@ -146,48 +146,7 @@ public class Portal : SurgebindingAbility {
         activePortals[pawn.thingIDNumber] = this;
 
         Find.WorldTargeter.BeginTargeting(
-            t => {
-                PlanetTile tile = t.Tile;
-                if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
-
-                float cost = 30f / (1 << Gene.CurrentIdeal);
-                if (!Gene.CanLowerReserve(cost)) {
-                    Messages.Message("CRO_Surgebinding_NotEnoughStormlight".Translate(), MessageTypeDefOf.RejectInput);
-                    return false;
-                }
-
-                Gene.RemoveFromReserve(cost);
-
-                Map? destinationMap = null;
-                List<Map> maps = Find.Maps;
-                for (int i = 0; i < maps.Count; i++) {
-                    if (maps[i].Tile == tile) {
-                        destinationMap = maps[i];
-                        break;
-                    }
-                }
-
-                if (destinationMap != null) {
-                    CaravanEnterMapUtility.Enter(
-                        caravan,
-                        destinationMap,
-                        CaravanEnterMode.Center
-                    );
-                } else {
-                    caravan.pather.StopDead();
-                    caravan.Tile = tile;
-                    caravan.Notify_Teleported();
-                }
-
-                Messages.Message(
-                    "CRO_Portal_CaravanMoved".Translate(pawn.NameShortColored.Named("PAWN")),
-                    destinationMap != null ? (LookTargets)destinationMap.Parent : caravan,
-                    MessageTypeDefOf.PositiveEvent
-                );
-
-                activePortals.Remove(pawn.thingIDNumber);
-                return true;
-            },
+            t => MoveCaravanThroughPortal(caravan, t),
             true,
             null,
             true,
@@ -198,6 +157,49 @@ public class Portal : SurgebindingAbility {
                 return "CRO_Portal_OpenHere".Translate();
             }
         );
+    }
+
+    private bool MoveCaravanThroughPortal(Caravan caravan, GlobalTargetInfo target) {
+        PlanetTile tile = target.Tile;
+        if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
+
+        float cost = 30f / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) {
+            Messages.Message("CRO_Surgebinding_NotEnoughStormlight".Translate(), MessageTypeDefOf.RejectInput);
+            return false;
+        }
+
+        Gene.RemoveFromReserve(cost);
+
+        Map? destinationMap = null;
+        List<Map> maps = Find.Maps;
+        for (int i = 0; i < maps.Count; i++) {
+            if (maps[i].Tile == tile) {
+                destinationMap = maps[i];
+                break;
+            }
+        }
+
+        if (destinationMap != null) {
+            CaravanEnterMapUtility.Enter(
+                caravan,
+                destinationMap,
+                CaravanEnterMode.Center
+            );
+        } else {
+            caravan.pather.StopDead();
+            caravan.Tile = tile;
+            caravan.Notify_Teleported();
+        }
+
+        Messages.Message(
+            "CRO_Portal_CaravanMoved".Translate(pawn.NameShortColored.Named("PAWN")),
+            destinationMap != null ? (LookTargets)destinationMap.Parent : caravan,
+            MessageTypeDefOf.PositiveEvent
+        );
+
+        activePortals.Remove(pawn.thingIDNumber);
+        return true;
     }
 
     public override void ExposeData() {
@@ -239,33 +241,37 @@ public abstract class PortalCaravanGizmoPatch : Caravan {
         List<Verse.Gizmo> extra = [];
         List<Pawn> pawns = self.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
-            Pawn p = pawns[i];
-            if (p.abilities == null) continue;
-
-            List<RimWorld.Ability> abilities = p.abilities.AllAbilitiesForReading;
-            for (int j = 0; j < abilities.Count; j++) {
-                if (abilities[j] is not Portal portalAbility) continue;
-
-                Portal captured = portalAbility;
-                extra.Add(
-                    new Command_Action {
-                        defaultLabel = "CRO_Portal_Caravan_Label".Translate(p.LabelShort.Named("PAWN")),
-                        defaultDesc = "CRO_Portal_Caravan_Desc".Translate(),
-                        icon = PortalIcon,
-                        action = () => {
-                            if (Portal.activePortals.Count > 0 && !Find.WorldTargeter.IsTargeting) {
-                                Portal.activePortals.Clear();
-                            }
-
-                            if (Portal.activePortals.Count > 0) return;
-                            captured.ActivateFromCaravan(self);
-                        },
-                    }
-                );
-                break;
-            }
+            Verse.Gizmo? gizmo = MakePortalGizmo(pawns[i], self);
+            if (gizmo != null) extra.Add(gizmo);
         }
 
         ch.ReturnValue = ch.ReturnValue.Concat(extra);
+    }
+
+    private static Verse.Gizmo? MakePortalGizmo(Pawn p, Caravan caravan) {
+        if (p.abilities == null) return null;
+
+        List<RimWorld.Ability> abilities = p.abilities.AllAbilitiesForReading;
+        for (int i = 0; i < abilities.Count; i++) {
+            if (abilities[i] is not Portal portalAbility) continue;
+
+            return new Command_Action {
+                defaultLabel = "CRO_Portal_Caravan_Label".Translate(p.LabelShort.Named("PAWN")),
+                defaultDesc = "CRO_Portal_Caravan_Desc".Translate(),
+                icon = PortalIcon,
+                action = () => OpenPortalForCaravan(portalAbility, caravan),
+            };
+        }
+
+        return null;
+    }
+
+    private static void OpenPortalForCaravan(Portal portalAbility, Caravan caravan) {
+        if (Portal.activePortals.Count > 0 && !Find.WorldTargeter.IsTargeting) {
+            Portal.activePortals.Clear();
+        }
+
+        if (Portal.activePortals.Count > 0) return;
+        portalAbility.ActivateFromCaravan(caravan);
     }
 }

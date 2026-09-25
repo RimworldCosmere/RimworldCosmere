@@ -53,17 +53,7 @@ public class BasicLashing : SurgebindingAbility {
     }
 
     private void UpdateGroupLashing() {
-        for (int i = lashedAllies.Count - 1; i >= 0; i--) {
-            Pawn ally = lashedAllies[i];
-            if (ally == null || ally.Dead || !ally.Position.InHorDistOf(pawn.Position, GroupRadius)) {
-                if (ally != null && !ally.Dead) {
-                    FlyingPawns.Remove(ally);
-                    SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
-                }
-
-                lashedAllies.RemoveAt(i);
-            }
-        }
+        PruneDepartedAllies();
 
         if (!pawn.IsHashIntervalTick(30)) return;
 
@@ -81,6 +71,20 @@ public class BasicLashing : SurgebindingAbility {
             FlyingPawns.Add(ally);
             SurgebindingHediffUtility.GetOrAddHediff(ally, this, def.hediff);
             lashedAllies.Add(ally);
+        }
+    }
+
+    private void PruneDepartedAllies() {
+        for (int i = lashedAllies.Count - 1; i >= 0; i--) {
+            Pawn ally = lashedAllies[i];
+            if (ally == null || ally.Dead || !ally.Position.InHorDistOf(pawn.Position, GroupRadius)) {
+                if (ally != null && !ally.Dead) {
+                    FlyingPawns.Remove(ally);
+                    SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
+                }
+
+                lashedAllies.RemoveAt(i);
+            }
         }
     }
 

@@ -103,35 +103,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
         particleCache.RemoveAll(p => Time.time > p.Value.Item2);
         foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
-            IntVec3 position = info.position!.Value;
-            if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
-            int existingParticles = particleCache.TryGetValue(position, (0, 0)).Item1;
-            if (existingParticles > minParticles) continue;
-            int particlesForThisCell = Random.Range(minParticles, maxParticles + 1) - existingParticles;
-            if (particlesForThisCell < 0) continue;
-
-            for (int i = 0; i < particlesForThisCell; i++) {
-                UnityEngine.ParticleSystem.EmitParams emitParams = default(UnityEngine.ParticleSystem.EmitParams);
-
-                Vector3 randomOffset = new Vector3(
-                    Random.Range(-0.5f, 0.5f),
-                    0f,
-                    Random.Range(-0.5f, 0.5f)
-                );
-                emitParams.position = position.ToVector3Shifted() + randomOffset;
-
-                emitParams.velocity = new Vector3(
-                    Random.Range(-0.5f, 0.5f),
-                    Random.Range(0.1f, 0.3f),
-                    Random.Range(-0.5f, 0.5f)
-                );
-
-                emitParamsList.Add(emitParams);
-            }
-
-            int alreadyCached = particleCache.TryGetValue(position, out (int, float) cached) ? cached.Item1 : 0;
-            particleCache[position] = (alreadyCached + particlesForThisCell,
-                particleSystem!.main.duration + Time.time);
+            QueueCellParticles(info, rect, emitParamsList, minParticles, maxParticles);
         }
 
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
@@ -139,6 +111,44 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         }
 
         lastEmit = Time.time;
+    }
+
+    private void QueueCellParticles(
+        SprenSpawnInformation info,
+        CellRect rect,
+        List<UnityEngine.ParticleSystem.EmitParams> emitParamsList,
+        int minParticles,
+        int maxParticles
+    ) {
+        IntVec3 position = info.position!.Value;
+        if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) return;
+        int existingParticles = particleCache.TryGetValue(position, (0, 0)).Item1;
+        if (existingParticles > minParticles) return;
+        int particlesForThisCell = Random.Range(minParticles, maxParticles + 1) - existingParticles;
+        if (particlesForThisCell < 0) return;
+
+        for (int i = 0; i < particlesForThisCell; i++) {
+            UnityEngine.ParticleSystem.EmitParams emitParams = default(UnityEngine.ParticleSystem.EmitParams);
+
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.5f, 0.5f),
+                0f,
+                Random.Range(-0.5f, 0.5f)
+            );
+            emitParams.position = position.ToVector3Shifted() + randomOffset;
+
+            emitParams.velocity = new Vector3(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0.1f, 0.3f),
+                Random.Range(-0.5f, 0.5f)
+            );
+
+            emitParamsList.Add(emitParams);
+        }
+
+        int alreadyCached = particleCache.TryGetValue(position, out (int, float) cached) ? cached.Item1 : 0;
+        particleCache[position] = (alreadyCached + particlesForThisCell,
+            particleSystem!.main.duration + Time.time);
     }
 
     public void SetVisible(bool visible) {

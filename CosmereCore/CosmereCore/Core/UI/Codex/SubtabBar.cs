@@ -64,19 +64,7 @@ public static class SubtabBar {
             // Every label key owes a matching _Tip key, or the tab shows the key name back at the player.
             TooltipHandler.TipRegion(tab, (tabs[i].labelKey + "_Tip").Translate());
 
-            if (isSelected) {
-                // Flush at the frame ends - an underline stopping short there left a visible notch.
-                const float inset = 6f;
-                float left = i == 0 ? 0f : inset;
-                float right = i == tabs.Count - 1 ? 0f : inset;
-                float width = tab.width - left - right;
-
-                Rect glow = new Rect(tab.x + left, tab.yMax - 4f, width, 4f);
-                Widgets.DrawBoxSolid(glow, new Color(accent.r, accent.g, accent.b, 0.18f));
-
-                Rect underline = new Rect(tab.x + left, tab.yMax - 2f, width, 2f);
-                Widgets.DrawBoxSolid(underline, accent);
-            }
+            if (isSelected) DrawUnderline(tab, i, tabs.Count, accent);
 
             MouseoverSounds.DoRegion(tab);
             if (Widgets.ButtonInvisible(tab)) {
@@ -86,5 +74,21 @@ public static class SubtabBar {
         }
 
         return false;
+    }
+
+    /// <summary>
+    ///     Flush at the frame ends - an underline stopping short there left a visible notch.
+    /// </summary>
+    private static void DrawUnderline(Rect tab, int index, int count, Color accent) {
+        const float inset = 6f;
+        float left = index == 0 ? 0f : inset;
+        float right = index == count - 1 ? 0f : inset;
+        float width = tab.width - left - right;
+
+        Rect glow = new Rect(tab.x + left, tab.yMax - 4f, width, 4f);
+        Widgets.DrawBoxSolid(glow, new Color(accent.r, accent.g, accent.b, 0.18f));
+
+        Rect underline = new Rect(tab.x + left, tab.yMax - 2f, width, 2f);
+        Widgets.DrawBoxSolid(underline, accent);
     }
 }

@@ -112,26 +112,24 @@ public class GameComponent_ScenarioProgression : GameComponent {
     private void CheckProgression() {
         for (int i = 0; i < activeDef!.events.Count; i++) {
             ProgressionEvent evt = activeDef.events[i];
-
-            if (firedEvents.Contains(evt.key) && !evt.repeatable) continue;
-
-            if (evt.repeatable && lastFireTicks.TryGetValue(evt.key, out int lastTick)) {
-                int intervalTicks = evt.repeatIntervalDays * GenDate.TicksPerDay;
-                if (Find.TickManager.TicksGame - lastTick < intervalTicks) continue;
-            }
-
-            bool allMet = true;
-            for (int t = 0; t < evt.triggers.Count; t++) {
-                if (!evt.triggers[t].IsMet(this)) {
-                    allMet = false;
-                    break;
-                }
-            }
-
-            if (!allMet) continue;
-
-            ExecuteEvent(evt);
+            if (ShouldFire(evt)) ExecuteEvent(evt);
         }
+    }
+
+    /// <summary>Whether the cooldown has passed and every trigger on the event is met.</summary>
+    private bool ShouldFire(ProgressionEvent evt) {
+        if (firedEvents.Contains(evt.key) && !evt.repeatable) return false;
+
+        if (evt.repeatable && lastFireTicks.TryGetValue(evt.key, out int lastTick)) {
+            int intervalTicks = evt.repeatIntervalDays * GenDate.TicksPerDay;
+            if (Find.TickManager.TicksGame - lastTick < intervalTicks) return false;
+        }
+
+        for (int t = 0; t < evt.triggers.Count; t++) {
+            if (!evt.triggers[t].IsMet(this)) return false;
+        }
+
+        return true;
     }
 
     private void ExecuteEvent(ProgressionEvent evt) {

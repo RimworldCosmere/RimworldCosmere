@@ -201,16 +201,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        // burning reads first - the loudest thing happening, and the only one that destroys something.
-        string direction;
-        if (capacity.CompoundedRate < 0f) direction = "CC_Dock_Feruchemy_BurningMetalmind".Translate();
-        else if (capacity.CompoundedRate > 0f) direction = "CC_Dock_Feruchemy_Compounding".Translate();
-        else if (gene.isTapping) direction = "CC_Dock_Feruchemy_Tapping".Translate();
-        else if (gene.isStoring) direction = "CC_Dock_Feruchemy_Storing".Translate();
-        else direction = "CC_Dock_Feruchemy_Idle".Translate();
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
-            direction,
+            DirectionLabel(gene, capacity),
             GameFont.Tiny,
             TextAnchor.MiddleLeft,
             new Color(0.604f, 0.659f, 0.678f)
@@ -250,17 +243,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float rate = gene.TransferRatePerSecond;
-        Color rateTint;
-        if (gene.isCompounding) rateTint = FeruchemyPalette.CompoundTint;
-        else if (Mathf.Approximately(rate, 0f)) rateTint = RateIdle;
-        else rateTint = rate < 0f ? FeruchemyPalette.TapFill : FeruchemyPalette.StoreFill;
-
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
             GameFont.Tiny,
             TextAnchor.MiddleCenter,
-            rateTint
+            RateTint(gene, rate)
         );
 
         float afterTarget = FeruchemyTargetRow.Draw(inner, endsRect.yMax + 6f, gene);
@@ -275,6 +263,23 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             gene.Reset();
             Event.current?.Use();
         }
+    }
+
+    /// Burning reads first - the loudest thing happening, and the only one that destroys something.
+    private static string DirectionLabel(Feruchemist gene, FeruchemyCapacity capacity) {
+        if (capacity.CompoundedRate < 0f) return "CC_Dock_Feruchemy_BurningMetalmind".Translate();
+        if (capacity.CompoundedRate > 0f) return "CC_Dock_Feruchemy_Compounding".Translate();
+        if (gene.isTapping) return "CC_Dock_Feruchemy_Tapping".Translate();
+        if (gene.isStoring) return "CC_Dock_Feruchemy_Storing".Translate();
+
+        return "CC_Dock_Feruchemy_Idle".Translate();
+    }
+
+    private static Color RateTint(Feruchemist gene, float rate) {
+        if (gene.isCompounding) return FeruchemyPalette.CompoundTint;
+        if (Mathf.Approximately(rate, 0f)) return RateIdle;
+
+        return rate < 0f ? FeruchemyPalette.TapFill : FeruchemyPalette.StoreFill;
     }
 
     private string Tooltip(Pawn pawn, InvestitureCell cell, FeruchemyCapacity capacity) {

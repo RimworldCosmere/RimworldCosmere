@@ -54,14 +54,21 @@ public class RadiantTracker : GameComponent {
         for (int m = 0; m < maps.Count; m++) {
             List<Pawn> colonists = maps[m].mapPawns.FreeColonistsSpawned;
             for (int i = 0; i < colonists.Count; i++) {
-                List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
-                for (int g = 0; g < genes.Count; g++) {
-                    if (genes[g] is not Surgebinder surgebinder) continue;
-                    if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
-                    if (surgebinder.CurrentIdeal >= 1) activeBondsmithCount++;
-                }
+                activeBondsmithCount += CountSwornBondsmithGenes(colonists[i]);
             }
         }
+    }
+
+    private static int CountSwornBondsmithGenes(Pawn pawn) {
+        int count = 0;
+        List<Verse.Gene> genes = pawn.genes?.GenesListForReading ?? [];
+        for (int g = 0; g < genes.Count; g++) {
+            if (genes[g] is not Surgebinder surgebinder) continue;
+            if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+            if (surgebinder.CurrentIdeal >= 1) count++;
+        }
+
+        return count;
     }
 
     public override void GameComponentTick() {
@@ -82,27 +89,32 @@ public class RadiantTracker : GameComponent {
 
             List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
             if (colonists.Count == 0) continue;
+            if (AverageMood(colonists) <= 0.6f) continue;
 
-            float totalMood = 0f;
-            int moodCount = 0;
-            for (int i = 0; i < colonists.Count; i++) {
-                Need_Mood? mood = colonists[i].needs?.mood;
-                if (mood == null) continue;
-                totalMood += mood.CurLevelPercentage;
-                moodCount++;
-            }
+            CreditBondsmiths(colonists);
+        }
+    }
 
-            if (moodCount == 0) continue;
-            float averageMood = totalMood / moodCount;
-            if (averageMood <= 0.6f) continue;
+    private static float AverageMood(List<Pawn> colonists) {
+        float totalMood = 0f;
+        int moodCount = 0;
+        for (int i = 0; i < colonists.Count; i++) {
+            Need_Mood? mood = colonists[i].needs?.mood;
+            if (mood == null) continue;
+            totalMood += mood.CurLevelPercentage;
+            moodCount++;
+        }
 
-            for (int i = 0; i < colonists.Count; i++) {
-                Surgebinder? surgebinder = colonists[i].genes?.GetFirstGeneOfType<Surgebinder>();
-                if (surgebinder == null) continue;
-                if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+        return moodCount == 0 ? 0f : totalMood / moodCount;
+    }
 
-                colonists[i].records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ColonyStabilityDays, 1);
-            }
+    private static void CreditBondsmiths(List<Pawn> colonists) {
+        for (int i = 0; i < colonists.Count; i++) {
+            Surgebinder? surgebinder = colonists[i].genes?.GetFirstGeneOfType<Surgebinder>();
+            if (surgebinder == null) continue;
+            if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+
+            colonists[i].records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ColonyStabilityDays, 1);
         }
     }
 

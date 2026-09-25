@@ -183,26 +183,34 @@ public class Allomancer : Metalborn {
             return;
         }
 
-        if (Burning) {
-            Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef);
-            if (existing != null) {
-                existing.Severity -= SavantUtility.WithdrawalSeverityLossPerDay /
-                                     GenDate.TicksPerDay *
-                                     GenTicks.TickLongInterval;
-                if (existing.Severity <= 0.01f) pawn.health.RemoveHediff(existing);
-            }
-        } else {
-            Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef);
-            if (existing == null) {
-                Hediff hediff = HediffMaker.MakeHediff(withdrawalHediffDef, pawn);
-                hediff.Severity = 0.05f;
-                pawn.health.AddHediff(hediff);
-            } else {
-                existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay /
-                                     GenDate.TicksPerDay *
-                                     GenTicks.TickLongInterval;
-            }
+        if (Burning) EaseWithdrawal(withdrawalHediffDef);
+        else DeepenWithdrawal(withdrawalHediffDef);
+    }
+
+    /// <summary>Burning settles it. Drop the hediff once there is nothing left to settle.</summary>
+    private void EaseWithdrawal(HediffDef withdrawalDef) {
+        Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalDef);
+        if (existing == null) return;
+
+        existing.Severity -= SavantUtility.WithdrawalSeverityLossPerDay /
+                             GenDate.TicksPerDay *
+                             GenTicks.TickLongInterval;
+        if (existing.Severity <= 0.01f) pawn.health.RemoveHediff(existing);
+    }
+
+    /// <summary>Going without starts the withdrawal, or worsens the one already running.</summary>
+    private void DeepenWithdrawal(HediffDef withdrawalDef) {
+        Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalDef);
+        if (existing == null) {
+            Hediff hediff = HediffMaker.MakeHediff(withdrawalDef, pawn);
+            hediff.Severity = 0.05f;
+            pawn.health.AddHediff(hediff);
+            return;
         }
+
+        existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay /
+                             GenDate.TicksPerDay *
+                             GenTicks.TickLongInterval;
     }
 
     protected override void PostAddOrRemove() {

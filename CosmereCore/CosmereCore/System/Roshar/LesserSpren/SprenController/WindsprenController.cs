@@ -105,41 +105,43 @@ public class WindsprenController : StaticSprenController {
 
     private static float GetWindTurbineMultiplier(IntVec3 position, Map map) {
         float maxMultiplier = 0f;
-        int turbinesFound = 0;
 
         foreach (IntVec3 checkCell in GenRadial.RadialCellsAround(position, 7, false)) {
             if (!IsInBounds(checkCell, map)) continue;
 
-            foreach (Verse.Thing thing in map.thingGrid.ThingsListAt(checkCell)) {
-                CompPowerPlantWind? windComp = thing.TryGetComp<CompPowerPlantWind>();
-                if (windComp == null) continue;
+            float cellMultiplier = BestTurbineMultiplierAt(position, checkCell, map);
+            if (cellMultiplier > maxMultiplier) {
+                maxMultiplier = cellMultiplier;
+            }
+        }
 
-                IntVec3 turbineToPos = position - checkCell;
-                float distance = turbineToPos.LengthHorizontal;
-                if (distance > 5f) continue;
+        return maxMultiplier;
+    }
 
-                Rot4 turbineRotation = thing.Rotation;
-                IntVec3 turbineFacing = turbineRotation.FacingCell;
+    private static float BestTurbineMultiplierAt(IntVec3 position, IntVec3 checkCell, Map map) {
+        float maxMultiplier = 0f;
 
-                Vector3 turbineToVec = new Vector3(turbineToPos.x, 0, turbineToPos.z).normalized;
-                Vector3 facingVec = new Vector3(turbineFacing.x, 0, turbineFacing.z).normalized;
+        foreach (Verse.Thing thing in map.thingGrid.ThingsListAt(checkCell)) {
+            CompPowerPlantWind? windComp = thing.TryGetComp<CompPowerPlantWind>();
+            if (windComp == null) continue;
 
-                float dotProduct = Vector3.Dot(turbineToVec, facingVec);
-                bool isAligned = Mathf.Abs(dotProduct) > 0.7f;
+            IntVec3 turbineToPos = position - checkCell;
+            float distance = turbineToPos.LengthHorizontal;
+            if (distance > 5f) continue;
 
-                if (!isAligned) continue;
+            IntVec3 turbineFacing = thing.Rotation.FacingCell;
 
-                turbinesFound++;
+            Vector3 turbineToVec = new Vector3(turbineToPos.x, 0, turbineToPos.z).normalized;
+            Vector3 facingVec = new Vector3(turbineFacing.x, 0, turbineFacing.z).normalized;
 
-                float windSpeed = map.windManager.WindSpeed;
-                float normalizedWind = windSpeed / 3.0f;
-                normalizedWind = Mathf.Clamp01(normalizedWind);
-                float distanceFalloff = 1.0f - distance / 5.0f;
-                float multiplier = 1.0f + normalizedWind * 16.0f * distanceFalloff;
+            if (Mathf.Abs(Vector3.Dot(turbineToVec, facingVec)) <= 0.7f) continue;
 
-                if (multiplier > maxMultiplier) {
-                    maxMultiplier = multiplier;
-                }
+            float normalizedWind = Mathf.Clamp01(map.windManager.WindSpeed / 3.0f);
+            float distanceFalloff = 1.0f - distance / 5.0f;
+            float multiplier = 1.0f + normalizedWind * 16.0f * distanceFalloff;
+
+            if (multiplier > maxMultiplier) {
+                maxMultiplier = multiplier;
             }
         }
 

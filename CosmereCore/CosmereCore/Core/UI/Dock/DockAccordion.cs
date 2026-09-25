@@ -49,32 +49,47 @@ public sealed class DockAccordion {
 
             if (!isExpanded) continue;
 
-            float pinnedHeight = section.GetPinnedHeight(pawn, snap, ctx);
-            if (pinnedHeight > 0f) {
-                Rect pinnedRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, pinnedHeight);
-                section.DrawPinned(pinnedRect, pawn, snap, ctx);
-                y += pinnedHeight;
-            }
-
-            float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
-
-            // Two ceilings, the lower one wins - without the settings cap, a large section runs off a short screen.
-            float availableHeight = DockBodyBudget.For(
-                rect.yMax - y,
-                Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight,
-                pinnedHeight
-            );
-            Rect bodyRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, Mathf.Min(bodyHeight, availableHeight));
-            if (bodyHeight > availableHeight) {
-                Rect viewRect = new Rect(0f, 0f, bodyRect.width - 16f, bodyHeight);
-                Widgets.BeginScrollView(bodyRect, ref scrollPos, viewRect);
-                section.DrawBody(new Rect(0f, 0f, viewRect.width, bodyHeight), pawn, snap, ctx);
-                Widgets.EndScrollView();
-            } else {
-                section.DrawBody(bodyRect, pawn, snap, ctx);
-            }
-
-            y += bodyRect.height;
+            y = DrawExpandedSection(rect, y, pawn, snap, section, ctx);
         }
+    }
+
+    /// <summary>
+    ///     The pinned strip and the body of the one open section. Returns the y the next header
+    ///     starts at.
+    /// </summary>
+    private float DrawExpandedSection(
+        Rect rect,
+        float y,
+        Pawn pawn,
+        InvestitureSnapshot snap,
+        IDockSection section,
+        DockRenderContext ctx
+    ) {
+        float pinnedHeight = section.GetPinnedHeight(pawn, snap, ctx);
+        if (pinnedHeight > 0f) {
+            Rect pinnedRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, pinnedHeight);
+            section.DrawPinned(pinnedRect, pawn, snap, ctx);
+            y += pinnedHeight;
+        }
+
+        float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
+
+        // Two ceilings, the lower one wins - without the settings cap, a large section runs off a short screen.
+        float availableHeight = DockBodyBudget.For(
+            rect.yMax - y,
+            Mod.GetModSettings<CoreModSettings>().dockSectionMaxHeight,
+            pinnedHeight
+        );
+        Rect bodyRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, Mathf.Min(bodyHeight, availableHeight));
+        if (bodyHeight > availableHeight) {
+            Rect viewRect = new Rect(0f, 0f, bodyRect.width - 16f, bodyHeight);
+            Widgets.BeginScrollView(bodyRect, ref scrollPos, viewRect);
+            section.DrawBody(new Rect(0f, 0f, viewRect.width, bodyHeight), pawn, snap, ctx);
+            Widgets.EndScrollView();
+        } else {
+            section.DrawBody(bodyRect, pawn, snap, ctx);
+        }
+
+        return y + bodyRect.height;
     }
 }

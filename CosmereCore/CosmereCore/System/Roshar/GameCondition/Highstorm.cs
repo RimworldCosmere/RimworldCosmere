@@ -120,24 +120,27 @@ public class Highstorm : RimWorld.GameCondition {
         }
 
         for (int i = 0; i < exposedThings.Count; i++) {
-            Verse.Thing thing = exposedThings[i];
             if (!Rand.Chance(CurrentIntensity)) continue;
-            if (thing?.Map == null) continue;
+            ScatterAndDamage(exposedThings[i]);
+        }
+    }
 
-            MoveItem(thing);
-            if (thing.Map == null) continue;
+    private void ScatterAndDamage(Verse.Thing? thing) {
+        if (thing?.Map == null) return;
 
-            if (!thing.Position.Roofed(thing.Map)) {
-                DamageItem(thing);
-            }
+        MoveItem(thing);
+        if (thing.Map == null) return;
 
-            if (thing.Map == null) continue;
+        if (!thing.Position.Roofed(thing.Map)) {
+            DamageItem(thing);
+        }
 
-            if (!thing.Position.Roofed(thing.Map) &&
-                thing.TryGetComp(out InvestitureHolder investiture) &&
-                !investiture.isFull) {
-                investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
-            }
+        if (thing.Map == null) return;
+
+        if (!thing.Position.Roofed(thing.Map) &&
+            thing.TryGetComp(out InvestitureHolder investiture) &&
+            !investiture.isFull) {
+            investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
         }
     }
 
@@ -146,24 +149,14 @@ public class Highstorm : RimWorld.GameCondition {
     ///     shelter a cell has from a given direction would need a per-cell component instead.
     /// </summary>
     private bool MoveItem(Verse.Thing thing) {
-        if (!Mod.enableHighstormPushing) return false;
-        if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
-        if (thing is Mineable or Plant) return false;
-        if (!thing.CanBeMoved() && !thing.def.useHitPoints) return false;
-        if (thing is Pawn called && IsUnderStormfathersRegard(called)) return false;
+        if (!CanStormPush(thing)) return false;
 
         IntVec3 oldPos = thing.Position;
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
         Map map = thing.Map;
 
         if (!CanMoveToNewPosition(thing, newPos)) {
-            if (!newPos.InBounds(map)) return false;
-
-            foreach (Verse.Thing collidedThing in newPos.GetThingList(thing.Map).ToList()) {
-                DamageItem(collidedThing);
-            }
-
-            DamageItem(thing);
+            DamageAtBlockedDestination(thing, newPos, map);
             return false;
         }
 
@@ -178,37 +171,65 @@ public class Highstorm : RimWorld.GameCondition {
 
         if (!newPos.InBounds(map)) return true;
 
-        if (thing is not Pawn) {
-            if (thing.Spawned) {
-                thing.DeSpawn();
-            }
-
-            if (!GenPlace.TryPlaceThing(thing, newPos, map, ThingPlaceMode.Near, out Verse.Thing newThing)) {
-                GenSpawn.Spawn(thing, oldPos, map);
-                return false;
-            }
-
-            foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
-                if (t == newThing) continue;
-                if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
-                if (t.def.saveCompressible && newThing.def.saveCompressible) {
-                    if (MoveItem(t)) return true;
-
-                    newThing.DeSpawn();
-                    GenSpawn.Spawn(newThing, oldPos, map);
-                    return false;
-                }
-            }
-        } else {
-            Pawn pushed = (Pawn)thing;
+        if (thing is Pawn pushed) {
             pushed.Position = newPos;
             pushed.Notify_Teleported(false);
             pushed.stances?.stunner?.StunFor(60, highstorm, false);
+        } else {
+            bool? placed = TryPlaceMovedThing(thing, oldPos, newPos, map);
+            if (placed.HasValue) return placed.Value;
         }
 
         FleckMaker.ThrowDustPuff(newPos, map, 1.5f);
 
         return true;
+    }
+
+    private static bool CanStormPush(Verse.Thing thing) {
+        if (!Mod.enableHighstormPushing) return false;
+        if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
+        if (thing is Mineable or Plant) return false;
+        if (!thing.CanBeMoved() && !thing.def.useHitPoints) return false;
+        return thing is not Pawn called || !IsUnderStormfathersRegard(called);
+    }
+
+    private void DamageAtBlockedDestination(Verse.Thing thing, IntVec3 newPos, Map map) {
+        if (!newPos.InBounds(map)) return;
+
+        foreach (Verse.Thing collidedThing in newPos.GetThingList(thing.Map).ToList()) {
+            DamageItem(collidedThing);
+        }
+
+        DamageItem(thing);
+    }
+
+    /// <summary>
+    ///     Null means the move landed and the caller should finish it; a value is the whole
+    ///     result of MoveItem.
+    /// </summary>
+    private bool? TryPlaceMovedThing(Verse.Thing thing, IntVec3 oldPos, IntVec3 newPos, Map map) {
+        if (thing.Spawned) {
+            thing.DeSpawn();
+        }
+
+        if (!GenPlace.TryPlaceThing(thing, newPos, map, ThingPlaceMode.Near, out Verse.Thing newThing)) {
+            GenSpawn.Spawn(thing, oldPos, map);
+            return false;
+        }
+
+        foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
+            if (t == newThing) continue;
+            if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
+            if (t.def.saveCompressible && newThing.def.saveCompressible) {
+                if (MoveItem(t)) return true;
+
+                newThing.DeSpawn();
+                GenSpawn.Spawn(newThing, oldPos, map);
+                return false;
+            }
+        }
+
+        return null;
     }
 
     private static bool CanMoveToNewPosition(Verse.Thing thing, IntVec3 newPos) {
@@ -266,14 +287,22 @@ public class Highstorm : RimWorld.GameCondition {
         ThingDef? stuff = building.Stuff;
         if (stuff == null) return 0.3f;
 
-        string stuffName = stuff.defName;
+        float? byName = MultiplierForStuffName(stuff.defName);
+        if (byName.HasValue) return byName.Value;
+
+        return MultiplierForStuffCategories(stuff.stuffProps?.categories);
+    }
+
+    private static float? MultiplierForStuffName(string stuffName) {
         if (stuffName == "Plasteel") return 0f;
         if (stuffName.StartsWith("Vac")) return 0f;
         if (stuffName == "Silver" || stuffName == "Gold") return 0.40f;
         if (stuffName == "Steel") return 0.08f;
         if (stuffName == "Uranium") return 0.40f;
+        return null;
+    }
 
-        List<StuffCategoryDef>? categories = stuff.stuffProps?.categories;
+    private static float MultiplierForStuffCategories(List<StuffCategoryDef>? categories) {
         if (categories == null) return 0.3f;
 
         for (int i = 0; i < categories.Count; i++) {
@@ -299,44 +328,48 @@ public class Highstorm : RimWorld.GameCondition {
             spawnFilth: false
         );
         switch (thing) {
-            case Building building: {
-                    if (map == null) break;
-                    if (IsHighstormImmuneBuilding(building)) break;
-                    if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
-                    if (building.Position.Roofed(map)) break;
+            case Building building:
+                DamageBuilding(building, map, damage);
+                break;
 
-                    float materialMultiplier = GetBuildingDamageMultiplier(building);
-                    if (materialMultiplier <= 0f) break;
-
-                    float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
-                    damage.SetAmount(damage.Amount * totalMultiplier);
-                    building.TakeDamage(damage);
-                    if (building.Destroyed) {
-                        StormShelterManager.RebuildShelterCache(map);
-                    }
-
-                    break;
-                }
-
-            case Pawn pawn: {
-                    if (pawn.Dead) break;
-                    if (StormlightUtility.IsHighstormImmune(pawn)) break;
-
-                    // A called pawn is not a Surgebinder yet, so this replaces that reduction rather than stacking.
-                    if (IsUnderStormfathersRegard(pawn)) {
-                        damage.SetAmount(damage.Amount * 0.15f);
-                        ApplyRegard(pawn);
-                    } else {
-                        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-                        if (surgebinder != null) {
-                            damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
-                        }
-                    }
-
-                    pawn.TakeDamage(damage);
-
-                    break;
-                }
+            case Pawn pawn:
+                DamagePawn(pawn, damage);
+                break;
         }
+    }
+
+    private static void DamageBuilding(Building building, Map? map, DamageInfo damage) {
+        if (map == null) return;
+        if (IsHighstormImmuneBuilding(building)) return;
+        if (StormShelterManager.IsProtectedByShelter(building.Position, map)) return;
+        if (building.Position.Roofed(map)) return;
+
+        float materialMultiplier = GetBuildingDamageMultiplier(building);
+        if (materialMultiplier <= 0f) return;
+
+        float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
+        damage.SetAmount(damage.Amount * totalMultiplier);
+        building.TakeDamage(damage);
+        if (building.Destroyed) {
+            StormShelterManager.RebuildShelterCache(map);
+        }
+    }
+
+    private static void DamagePawn(Pawn pawn, DamageInfo damage) {
+        if (pawn.Dead) return;
+        if (StormlightUtility.IsHighstormImmune(pawn)) return;
+
+        // A called pawn is not a Surgebinder yet, so this replaces that reduction rather than stacking.
+        if (IsUnderStormfathersRegard(pawn)) {
+            damage.SetAmount(damage.Amount * 0.15f);
+            ApplyRegard(pawn);
+        } else {
+            Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+            if (surgebinder != null) {
+                damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
+            }
+        }
+
+        pawn.TakeDamage(damage);
     }
 }

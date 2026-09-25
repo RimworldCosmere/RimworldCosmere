@@ -56,38 +56,15 @@ public class TravelToSiteObjective : QuestObjective {
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         if (!TryFindTile(out PlanetTile tile)) {
             Log.Error($"TravelToSiteObjective on {ctx.def?.defName} found no tile. Quest aborted.");
-            throw new QuestBuildFailure("no site tile available");
+            throw new QuestBuildFailureException("no site tile available");
         }
 
         Faction? faction = ctx.def.targetFaction == null
             ? null
             : Find.FactionManager.FirstFactionOfDef(ctx.def.targetFaction);
 
-        List<SitePartDef> siteParts = [];
-        if (sitePart != null) siteParts.Add(sitePart);
-
-        // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the quest layers on.
-        if (persistent) siteParts.Add(SitePartDefOf.Cosmere_SitePart_Persistent);
-        if (extraSiteParts != null) {
-            for (int i = 0; i < extraSiteParts.Count; i++) {
-                SitePartDef? extra = extraSiteParts[i];
-                if (extra == null) continue;
-
-                // Outpost and friends build from map.ParentFaction; skip rather than let a null faction throw.
-                if (extra.requiresFaction && faction == null) {
-                    Log.Warn(
-                        $"{ctx.def?.defName}: skipping site part '{extra.defName}' - it requires a " +
-                        "faction and the quest's targetFaction is not present in this world."
-                    );
-                    continue;
-                }
-
-                siteParts.Add(extra);
-            }
-        }
-
         Site site = SiteMaker.MakeSite(
-            siteParts,
+            BuildSiteParts(faction, ctx),
             tile,
             faction,
             true,
@@ -96,7 +73,7 @@ public class TravelToSiteObjective : QuestObjective {
         );
 
         if (site == null) {
-            throw new QuestBuildFailure("SiteMaker returned null");
+            throw new QuestBuildFailureException("SiteMaker returned null");
         }
 
         // Site.MainSitePart is private, so the parms go through the public parts list.
@@ -135,6 +112,33 @@ public class TravelToSiteObjective : QuestObjective {
         };
         quest.AddPart(keeper);
         arrived.keeper = keeper;
+    }
+
+    private List<SitePartDef> BuildSiteParts(Faction? faction, QuestBuildContext ctx) {
+        List<SitePartDef> siteParts = [];
+        if (sitePart != null) siteParts.Add(sitePart);
+
+        // Added before the extras so PersistentSiteMapPatch sees it regardless of what else the quest layers on.
+        if (persistent) siteParts.Add(SitePartDefOf.Cosmere_SitePart_Persistent);
+        if (extraSiteParts == null) return siteParts;
+
+        for (int i = 0; i < extraSiteParts.Count; i++) {
+            SitePartDef? extra = extraSiteParts[i];
+            if (extra == null) continue;
+
+            // Outpost and friends build from map.ParentFaction; skip rather than let a null faction throw.
+            if (extra.requiresFaction && faction == null) {
+                Log.Warn(
+                    $"{ctx.def?.defName}: skipping site part '{extra.defName}' - it requires a " +
+                    "faction and the quest's targetFaction is not present in this world."
+                );
+                continue;
+            }
+
+            siteParts.Add(extra);
+        }
+
+        return siteParts;
     }
 
     private bool TryFindTile(out PlanetTile tile) {

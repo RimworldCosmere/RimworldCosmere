@@ -17,25 +17,7 @@ public static class HemalurgySurgeryJob {
     public static Building_Bed? FindBedForDonor(Pawn donor, Pawn surgeon) {
         if (donor.InBed()) return donor.CurrentBed();
 
-        Map map = donor.Map;
-        Building_Bed? bestMedBed = null;
-        float bestDist = float.MaxValue;
-
-        List<Building> buildings = map.listerBuildings.allBuildingsColonist;
-        for (int i = 0; i < buildings.Count; i++) {
-            if (buildings[i] is not Building_Bed bed) continue;
-            if (!bed.Medical) continue;
-            if (!bed.AnyUnoccupiedSleepingSlot) continue;
-            if (!donor.CanReserve(bed)) continue;
-            if (!surgeon.CanReach(bed, PathEndMode.InteractionCell, Danger.Deadly)) continue;
-
-            float dist = bed.Position.DistanceToSquared(donor.Position);
-            if (dist < bestDist) {
-                bestDist = dist;
-                bestMedBed = bed;
-            }
-        }
-
+        Building_Bed? bestMedBed = FindMedicalBed(donor, surgeon);
         if (bestMedBed != null) return bestMedBed;
 
         GuestStatus? guestStatus = null;
@@ -46,6 +28,29 @@ public static class HemalurgySurgeryJob {
         }
 
         return RestUtility.FindBedFor(donor, surgeon, false, false, guestStatus);
+    }
+
+    /// <summary>The closest free medical bed the donor can hold and the surgeon can walk to.</summary>
+    private static Building_Bed? FindMedicalBed(Pawn donor, Pawn surgeon) {
+        Building_Bed? best = null;
+        float bestDist = float.MaxValue;
+
+        List<Building> buildings = donor.Map.listerBuildings.allBuildingsColonist;
+        for (int i = 0; i < buildings.Count; i++) {
+            if (buildings[i] is not Building_Bed bed) continue;
+            if (!bed.Medical) continue;
+            if (!bed.AnyUnoccupiedSleepingSlot) continue;
+            if (!donor.CanReserve(bed)) continue;
+            if (!surgeon.CanReach(bed, PathEndMode.InteractionCell, Danger.Deadly)) continue;
+
+            float dist = bed.Position.DistanceToSquared(donor.Position);
+            if (dist >= bestDist) continue;
+
+            bestDist = dist;
+            best = bed;
+        }
+
+        return best;
     }
 
     public static bool TryStart(Pawn surgeon, Pawn target, Verse.Thing spike, JobDef jobDef) {

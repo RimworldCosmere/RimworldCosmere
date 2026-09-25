@@ -53,24 +53,8 @@ public class RaidAction : ProgressionAction {
             return;
         }
 
-        // Some starts never declare this faction in relations; a beat promising a raid must not send nobody.
-        Faction? attacker = Find.FactionManager.FirstFactionOfDef(def);
-        if (attacker == null) {
-            try {
-                FactionGeneratorPatch.CreateScripted(def);
-            } catch (Exception ex) {
-                Log.Warn($"ScenarioProgression: could not create faction '{faction}': {ex}");
-                return;
-            }
-
-            attacker = Find.FactionManager.FirstFactionOfDef(def);
-            if (attacker == null) {
-                Log.Warn($"ScenarioProgression: still no faction for '{faction}', no raid sent.");
-                return;
-            }
-
-            Log.Info($"ScenarioProgression: created faction '{faction}' so its raid could land.");
-        }
+        Faction? attacker = ResolveAttacker(def);
+        if (attacker == null) return;
 
         Map? map = Find.CurrentMap;
         if (map == null) return;
@@ -115,6 +99,34 @@ public class RaidAction : ProgressionAction {
         }
 
         Log.Info($"ScenarioProgression: sent {parms.points:F0} points of {attacker.Name} at the colony.");
+    }
+
+    /// <summary>
+    ///     Some starts never declare this faction in relations; a beat promising a raid must not
+    ///     send nobody, so create it rather than skip the beat.
+    /// </summary>
+    private Faction? ResolveAttacker(FactionDef def) {
+        Faction? attacker = Find.FactionManager.FirstFactionOfDef(def);
+        if (attacker != null) return attacker;
+
+        try {
+            FactionGeneratorPatch.CreateScripted(def);
+        } catch (Exception ex) {
+            Log.Warn($"ScenarioProgression: could not create faction '{faction}': {ex}");
+
+            return null;
+        }
+
+        attacker = Find.FactionManager.FirstFactionOfDef(def);
+        if (attacker == null) {
+            Log.Warn($"ScenarioProgression: still no faction for '{faction}', no raid sent.");
+
+            return null;
+        }
+
+        Log.Info($"ScenarioProgression: created faction '{faction}' so its raid could land.");
+
+        return attacker;
     }
 
     public override string? Describe() {

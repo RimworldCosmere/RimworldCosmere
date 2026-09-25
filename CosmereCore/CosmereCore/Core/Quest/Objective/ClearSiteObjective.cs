@@ -12,7 +12,7 @@ public class ClearSiteObjective : QuestObjective {
     public override void AddParts(RimWorld.Quest quest, string inSignal, string outSignal, QuestBuildContext ctx) {
         QuestPart_ArrivedAtSite? arrival = quest.GetFirstPartOfType<QuestPart_ArrivedAtSite>();
         if (arrival?.site == null) {
-            throw new QuestBuildFailure("ClearSiteObjective found no preceding TravelToSiteObjective");
+            throw new QuestBuildFailureException("ClearSiteObjective found no preceding TravelToSiteObjective");
         }
 
         QuestPart_SiteCleared cleared = new QuestPart_SiteCleared {

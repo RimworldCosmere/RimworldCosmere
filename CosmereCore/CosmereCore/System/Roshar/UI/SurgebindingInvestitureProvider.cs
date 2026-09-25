@@ -47,35 +47,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
             if (all[i] is not Surgebinder s || s.Overridden) continue;
             RadiantOrderDef order = s.radiantOrderDef;
 
-            List<RadialLeaf> leaves = [];
-            HashSet<AbilityDef> seen = [];
-            foreach (AbilityDef def in order.GetAbilities(s.CurrentIdeal)) {
-                if (IsExcludedFromRadial(def)) continue;
-                if (!seen.Add(def)) continue;
-
-                int minIdeal = def is SurgebindingAbilityDef sd ? sd.GetMinIdealForOrder(order.defName) : 0;
-                bool locked = s.CurrentIdeal < minIdeal;
-
-                Ability? ability = null;
-                for (int j = 0; j < abilities.Count; j++) {
-                    if (abilities[j].def == def) {
-                        ability = abilities[j];
-                        break;
-                    }
-                }
-
-                leaves.Add(BuildRadialLeaf(def, ability, locked, minIdeal, s));
-            }
-
-            for (int j = 0; j < abilities.Count; j++) {
-                if (abilities[j] is not SurgebindingAbility sa) continue;
-                AbilityDef def = sa.def;
-                if (IsExcludedFromRadial(def)) continue;
-                if (!seen.Add(def)) continue;
-
-                leaves.Add(BuildRadialLeaf(def, sa, false, 0, s));
-            }
-
+            List<RadialLeaf> leaves = BuildOrderLeaves(s, abilities);
             if (leaves.Count == 0) continue;
 
             subs.Add(
@@ -92,6 +64,41 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
         if (subs.Count == 0) return null;
 
         return RadialSystem.ForSystem("Surgebinding", subs);
+    }
+
+    private static List<RadialLeaf> BuildOrderLeaves(Surgebinder s, List<Ability> abilities) {
+        RadiantOrderDef order = s.radiantOrderDef;
+        List<RadialLeaf> leaves = [];
+        HashSet<AbilityDef> seen = [];
+
+        foreach (AbilityDef def in order.GetAbilities(s.CurrentIdeal)) {
+            if (IsExcludedFromRadial(def)) continue;
+            if (!seen.Add(def)) continue;
+
+            int minIdeal = def is SurgebindingAbilityDef sd ? sd.GetMinIdealForOrder(order.defName) : 0;
+            bool locked = s.CurrentIdeal < minIdeal;
+
+            leaves.Add(BuildRadialLeaf(def, FindAbility(abilities, def), locked, minIdeal, s));
+        }
+
+        for (int j = 0; j < abilities.Count; j++) {
+            if (abilities[j] is not SurgebindingAbility sa) continue;
+            AbilityDef def = sa.def;
+            if (IsExcludedFromRadial(def)) continue;
+            if (!seen.Add(def)) continue;
+
+            leaves.Add(BuildRadialLeaf(def, sa, false, 0, s));
+        }
+
+        return leaves;
+    }
+
+    private static Ability? FindAbility(List<Ability> abilities, AbilityDef def) {
+        for (int j = 0; j < abilities.Count; j++) {
+            if (abilities[j].def == def) return abilities[j];
+        }
+
+        return null;
     }
 
     private static bool IsExcludedFromRadial(AbilityDef def) {

@@ -607,23 +607,13 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         row = row.ContractedBy(CellPad, 0f);
 
         Rect icon = new Rect(row.x, row.y + (row.height - AbilityIconSize) / 2f, AbilityIconSize, AbilityIconSize);
-        if (def.uiIcon != null) {
-            Color previous = GUI.color;
-            GUI.color = locked ? new Color(1f, 1f, 1f, 0.35f) : Color.white;
-            GUI.DrawTexture(icon, def.uiIcon);
-            GUI.color = previous;
-        }
+        DrawAbilityIcon(icon, def, locked);
 
         string note = locked
             ? "CC_Dock_Ability_Locked".Translate(IdealLabel(minIdeal + 1).Named(IdealArg)).Resolve()
             : CooldownNote(pawn, def);
 
-        float noteWidth = 0f;
-        if (!note.NullOrEmpty()) {
-            using (new TextBlock(GameFont.Tiny)) {
-                noteWidth = Text.CalcSize(note).x + 6f;
-            }
-        }
+        float noteWidth = NoteWidth(note);
 
         Color labelColor = running ? DockPalette.HotLabel : DockPalette.MutedText;
         if (locked) labelColor = LockedText;
@@ -652,6 +642,27 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         // locked abilities show for info only; unlocked ones share the ability wheel's dispatcher.
         if (locked) return;
 
+        HandleAbilityClick(hit, pawn, def);
+    }
+
+    private static void DrawAbilityIcon(Rect icon, AbilityDef def, bool locked) {
+        if (def.uiIcon == null) return;
+
+        Color previous = GUI.color;
+        GUI.color = locked ? new Color(1f, 1f, 1f, 0.35f) : Color.white;
+        GUI.DrawTexture(icon, def.uiIcon);
+        GUI.color = previous;
+    }
+
+    private static float NoteWidth(string note) {
+        if (note.NullOrEmpty()) return 0f;
+
+        using (new TextBlock(GameFont.Tiny)) {
+            return Text.CalcSize(note).x + 6f;
+        }
+    }
+
+    private static void HandleAbilityClick(Rect hit, Pawn pawn, AbilityDef def) {
         MouseoverSounds.DoRegion(hit);
         if (!Widgets.ButtonInvisible(hit)) return;
 
@@ -691,13 +702,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         List<SurgeDef> surges = order.surges;
         for (int i = 0; i < surges.Count; i++) {
             List<AbilityDef> abilities = surges[i].abilities;
-            int unlocked = 0;
-            for (int j = 0; j < abilities.Count; j++) {
-                int minIdeal = abilities[j] is SurgebindingAbilityDef def
-                    ? def.GetMinIdealForOrder(order.defName)
-                    : 0;
-                if (gene.CurrentIdeal >= minIdeal) unlocked++;
-            }
+            int unlocked = CountUnlocked(abilities, order.defName, gene.CurrentIdeal);
 
             cachedSurges.Add(new SurgeCount(surges[i], unlocked, abilities.Count));
         }
@@ -711,6 +716,18 @@ public sealed class SurgebindingDockSection : DockSectionBase {
                 if (!cachedGeneral.Contains(granted[j])) cachedGeneral.Add(granted[j]);
             }
         }
+    }
+
+    private static int CountUnlocked(List<AbilityDef> abilities, string orderDefName, int currentIdeal) {
+        int unlocked = 0;
+        for (int j = 0; j < abilities.Count; j++) {
+            int minIdeal = abilities[j] is SurgebindingAbilityDef def
+                ? def.GetMinIdealForOrder(orderDefName)
+                : 0;
+            if (currentIdeal >= minIdeal) unlocked++;
+        }
+
+        return unlocked;
     }
 
     private static bool AnyOnCooldown(Pawn pawn, SurgeDef surge) {

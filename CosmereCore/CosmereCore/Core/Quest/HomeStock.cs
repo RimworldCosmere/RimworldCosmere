@@ -43,16 +43,20 @@ public static class HomeStock {
                 Pawn pawn = pawns[j];
                 if (pawn.Faction != player) continue;
 
-                ThingOwner<Verse.Thing>? inventory = pawn.inventory?.innerContainer;
-                if (inventory != null) {
-                    for (int k = 0; k < inventory.Count; k++) {
-                        if (inventory[k].def == def) outThings.Add(inventory[k]);
-                    }
-                }
-
-                Verse.Thing? carried = pawn.carryTracker?.CarriedThing;
-                if (carried != null && carried.def == def) outThings.Add(carried);
+                CollectFromPawn(def, pawn, outThings);
             }
         }
+    }
+
+    private static void CollectFromPawn(ThingDef def, Pawn pawn, List<Verse.Thing> outThings) {
+        ThingOwner<Verse.Thing>? inventory = pawn.inventory?.innerContainer;
+        if (inventory != null) {
+            for (int k = 0; k < inventory.Count; k++) {
+                if (inventory[k].def == def) outThings.Add(inventory[k]);
+            }
+        }
+
+        Verse.Thing? carried = pawn.carryTracker?.CarriedThing;
+        if (carried != null && carried.def == def) outThings.Add(carried);
     }
 }

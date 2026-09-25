@@ -87,31 +87,36 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         Verse.Thing? best = null;
         float bestDist = float.MaxValue;
 
-        List<Verse.Thing> spikes = map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicSpike);
-        for (int i = 0; i < spikes.Count; i++) {
-            HemalurgicSpike? comp = spikes[i].TryGetComp<HemalurgicSpike>();
-            if (comp == null || comp.isCharged) continue;
-            if (spikes[i].IsForbidden(pawn)) continue;
-            float dist = spikes[i].Position.DistanceToSquared(pawn.Position);
-            if (dist < bestDist) {
-                bestDist = dist;
-                best = spikes[i];
-            }
-        }
-
-        List<Verse.Thing> needles =
-            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
-        for (int i = 0; i < needles.Count; i++) {
-            HemalurgicSpike? comp = needles[i].TryGetComp<HemalurgicSpike>();
-            if (comp == null || comp.isCharged) continue;
-            if (needles[i].IsForbidden(pawn)) continue;
-            float dist = needles[i].Position.DistanceToSquared(pawn.Position);
-            if (dist < bestDist) {
-                bestDist = dist;
-                best = needles[i];
-            }
-        }
+        KeepNearestUncharged(
+            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicSpike),
+            pawn,
+            ref best,
+            ref bestDist
+        );
+        KeepNearestUncharged(
+            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle),
+            pawn,
+            ref best,
+            ref bestDist
+        );
 
         return best;
+    }
+
+    /// <summary>Walks one def's spikes and keeps the closest reachable empty one seen so far.</summary>
+    private static void KeepNearestUncharged(
+        List<Verse.Thing> candidates, Pawn pawn, ref Verse.Thing? best, ref float bestDist
+    ) {
+        for (int i = 0; i < candidates.Count; i++) {
+            HemalurgicSpike? comp = candidates[i].TryGetComp<HemalurgicSpike>();
+            if (comp == null || comp.isCharged) continue;
+            if (candidates[i].IsForbidden(pawn)) continue;
+
+            float dist = candidates[i].Position.DistanceToSquared(pawn.Position);
+            if (dist >= bestDist) continue;
+
+            bestDist = dist;
+            best = candidates[i];
+        }
     }
 }

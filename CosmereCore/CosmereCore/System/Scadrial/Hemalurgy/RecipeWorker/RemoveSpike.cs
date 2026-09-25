@@ -47,7 +47,7 @@ public class RemoveSpike : Recipe_Surgery {
         DamageInfo damage = new DamageInfo(DamageDefOf.SurgicalCut, 10f, 0f, -1f, billDoer, part);
         pawn.TakeDamage(damage);
 
-        UpdateRuinsInfluence(pawn);
+        HemalurgicImplantUtility.UpdateRuinsInfluence(pawn);
 
         // a kandra is two spikes - reconcile now, not on the next slow tick, while the surgeon is watching
         KandraUtility.ReconcileSpikes(pawn);
@@ -99,22 +99,6 @@ public class RemoveSpike : Recipe_Surgery {
         }
 
         GenPlace.TryPlaceThing(spikeItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);
-    }
-
-    private static void UpdateRuinsInfluence(Pawn pawn) {
-        HemalurgicSpikes? spikesHediff = GetSpikesHediff(pawn);
-        int spikeCount = spikesHediff?.spikeCount ?? 0;
-
-        RuinsInfluence? ruinsInfluence = (RuinsInfluence?)pawn.health.hediffSet.GetFirstHediffOfDef(
-            HemalurgicDefOf.Cosmere_Scadrial_Hediff_RuinsInfluence
-        );
-        if (ruinsInfluence != null) {
-            if (spikeCount == 0) {
-                pawn.health.RemoveHediff(ruinsInfluence);
-            } else {
-                ruinsInfluence.UpdateSpikeCount(spikeCount);
-            }
-        }
     }
 
     private static HemalurgicSpikes? GetSpikesHediff(Pawn pawn) {

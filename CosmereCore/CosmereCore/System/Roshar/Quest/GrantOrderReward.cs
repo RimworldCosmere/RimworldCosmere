@@ -20,12 +20,12 @@ public class GrantOrderReward : QuestReward {
     public override void Give(QuestBuildContext ctx) {
         Pawn? pawn = ctx.subject;
         if (pawn?.genes == null) {
-            throw new QuestBuildFailure("GrantOrderReward requires a pawn-scoped quest.");
+            throw new QuestBuildFailureException("GrantOrderReward requires a pawn-scoped quest.");
         }
 
         RadiantOrderDef? orderDef = DefDatabase<RadiantOrderDef>.GetNamedSilentFail(order);
         if (orderDef == null) {
-            throw new QuestBuildFailure($"GrantOrderReward names an unknown order '{order}'.");
+            throw new QuestBuildFailureException($"GrantOrderReward names an unknown order '{order}'.");
         }
 
         bool isGodspren = !string.IsNullOrEmpty(godspren);

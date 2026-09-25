@@ -49,26 +49,35 @@ public class BondsmithCallingChecker : GameComponent {
         for (int m = 0; m < maps.Count; m++) {
             Verse.Map map = maps[m];
             if (!map.IsPlayerHome) continue;
-
-            List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
-            for (int i = 0; i < colonists.Count; i++) {
-                Pawn pawn = colonists[i];
-                if (HasAnyCallingHediff(pawn)) continue;
-                if (IsOnRefusalCooldown(pawn)) continue;
-                if (IsBondsmith(pawn)) continue;
-
-                for (int s = 0; s < GodsprenNames.Length; s++) {
-                    string sprenName = GodsprenNames[s];
-                    if (bondedGodspren.Contains(sprenName)) continue;
-                    if (activeCallings.Contains(sprenName)) continue;
-
-                    if (!MeetsCallingCriteria(pawn, sprenName, map)) continue;
-
-                    ApplyCalling(pawn, sprenName);
-                    return;
-                }
-            }
+            if (TryCallOnMap(map)) return;
         }
+    }
+
+    private bool TryCallOnMap(Verse.Map map) {
+        List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
+        for (int i = 0; i < colonists.Count; i++) {
+            Pawn pawn = colonists[i];
+            if (HasAnyCallingHediff(pawn)) continue;
+            if (IsOnRefusalCooldown(pawn)) continue;
+            if (IsBondsmith(pawn)) continue;
+            if (TryCallPawn(pawn, map)) return true;
+        }
+
+        return false;
+    }
+
+    private bool TryCallPawn(Pawn pawn, Verse.Map map) {
+        for (int s = 0; s < GodsprenNames.Length; s++) {
+            string sprenName = GodsprenNames[s];
+            if (bondedGodspren.Contains(sprenName)) continue;
+            if (activeCallings.Contains(sprenName)) continue;
+            if (!MeetsCallingCriteria(pawn, sprenName, map)) continue;
+
+            ApplyCalling(pawn, sprenName);
+            return true;
+        }
+
+        return false;
     }
 
     private static bool MeetsCallingCriteria(Pawn pawn, string sprenName, Verse.Map map) {

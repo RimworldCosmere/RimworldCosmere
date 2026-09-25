@@ -97,7 +97,11 @@ public class GenStep_ScatterCrystalVeins : GenStep_ScatterLumpsMineable {
 
         if (placed.Count == 0) return;
 
-        // Publish bounds like GenStep_PreciousLump does, so the garrison anchor lands on the crystal.
+        PublishBounds(placed);
+    }
+
+    /// <summary>Publishes bounds like GenStep_PreciousLump does, so the garrison anchor lands on the crystal.</summary>
+    private static void PublishBounds(HashSet<IntVec3> placed) {
         int minX = int.MaxValue, minZ = int.MaxValue, maxX = int.MinValue, maxZ = int.MinValue;
         foreach (IntVec3 cell in placed) {
             if (cell.x < minX) minX = cell.x;

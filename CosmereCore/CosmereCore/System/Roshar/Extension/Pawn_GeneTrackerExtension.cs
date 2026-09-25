@@ -50,29 +50,8 @@ public static class Pawn_GeneTrackerExtension {
         string name = customName ?? orderDef.sprenNamePool.RandomElement();
         spren.Name = new NameSingle(name);
 
-        if (spren.story != null) {
-            spren.story.bodyType = BodyTypeDefOf.Thin;
-
-            // same face by defName, not index 0 - index 0 turned into skulls when a mod's head loaded first
-            HeadTypeDef? face = Cosmere.Core.Util.HeadTypeUtility.Available(spren.gender, spren)
-                .MinBy(head => head.defName);
-            if (face != null) spren.story.headType = face;
-
-            spren.story.Title = orderDef.sprenLabel;
-        }
-
-        if (spren.skills != null) {
-            List<SkillRecord> allSkills = spren.skills.skills;
-            for (int i = 0; i < allSkills.Count; i++) {
-                allSkills[i].Level = 0;
-                allSkills[i].passion = Passion.None;
-            }
-
-            SkillRecord? social = spren.skills.GetSkill(RimWorld.SkillDefOf.Social);
-            if (social != null) {
-                social.Level = 10;
-            }
-        }
+        ApplySprenAppearance(spren, orderDef);
+        FlattenSprenSkills(spren);
 
         if (radiant.Map != null) {
             IntVec3 cell = CellFinder.RandomSpawnCellForPawnNear(radiant.Position, radiant.Map, 2);
@@ -96,6 +75,34 @@ public static class Pawn_GeneTrackerExtension {
         }
 
         return spren;
+    }
+
+    private static void ApplySprenAppearance(Pawn spren, RadiantOrderDef orderDef) {
+        if (spren.story == null) return;
+
+        spren.story.bodyType = BodyTypeDefOf.Thin;
+
+        // same face by defName, not index 0 - index 0 turned into skulls when a mod's head loaded first
+        HeadTypeDef? face = Cosmere.Core.Util.HeadTypeUtility.Available(spren.gender, spren)
+            .MinBy(head => head.defName);
+        if (face != null) spren.story.headType = face;
+
+        spren.story.Title = orderDef.sprenLabel;
+    }
+
+    private static void FlattenSprenSkills(Pawn spren) {
+        if (spren.skills == null) return;
+
+        List<SkillRecord> allSkills = spren.skills.skills;
+        for (int i = 0; i < allSkills.Count; i++) {
+            allSkills[i].Level = 0;
+            allSkills[i].passion = Passion.None;
+        }
+
+        SkillRecord? social = spren.skills.GetSkill(RimWorld.SkillDefOf.Social);
+        if (social != null) {
+            social.Level = 10;
+        }
     }
 
     private static void SanitizeSpren(Pawn spren) {

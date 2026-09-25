@@ -78,20 +78,24 @@ public class StormlightNetworkGrid {
             float excess = receiverHolder.currentInvestitureSelf;
             if (excess <= 0f) continue;
 
-            for (int j = 0; j < batteries.Count; j++) {
-                InvestitureHolder? batteryHolder = batteries[j].Investiture;
-                if (batteryHolder == null || batteryHolder.isFull) continue;
+            DrainIntoBatteries(receiverHolder, excess);
+        }
+    }
 
-                float space = batteryHolder.maxInvestitureSelf - batteryHolder.currentInvestitureSelf;
-                float toTransfer = Mathf.Min(excess, space);
-                if (toTransfer <= 0f) continue;
+    private void DrainIntoBatteries(InvestitureHolder receiverHolder, float excess) {
+        for (int j = 0; j < batteries.Count; j++) {
+            InvestitureHolder? batteryHolder = batteries[j].Investiture;
+            if (batteryHolder == null || batteryHolder.isFull) continue;
 
-                batteryHolder.currentInvestitureSelf += toTransfer;
-                receiverHolder.currentInvestitureSelf -= toTransfer;
-                excess -= toTransfer;
+            float space = batteryHolder.maxInvestitureSelf - batteryHolder.currentInvestitureSelf;
+            float toTransfer = Mathf.Min(excess, space);
+            if (toTransfer <= 0f) continue;
 
-                if (excess <= 0f) break;
-            }
+            batteryHolder.currentInvestitureSelf += toTransfer;
+            receiverHolder.currentInvestitureSelf -= toTransfer;
+            excess -= toTransfer;
+
+            if (excess <= 0f) break;
         }
     }
 }

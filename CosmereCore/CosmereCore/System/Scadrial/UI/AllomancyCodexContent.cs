@@ -21,6 +21,14 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     private static readonly Color SecondaryTextColor = new Color(0.75f, 0.75f, 0.75f);
     private static readonly Color DimmedVialColor = new Color(1f, 1f, 1f, 0.22f);
 
+    // Inside a row, not around the table: the rows themselves run to the frame.
+    private const float RowPad = 4f;
+
+    // markSize anchors the row, rowHeight grows to hold it
+    private const float MarkSize = 44f;
+    private const float RowHeight = 52f;
+    private const float RowGap = 2f;
+
     public bool HasProgression(Pawn pawn) {
         return CollectAllomancers(pawn).Count > 0;
     }
@@ -49,8 +57,6 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         List<Allomancer> genes = CollectAllomancers(pawn);
         if (genes.Count == 0) return;
 
-        // Inside a row, not around the table: the rows themselves run to the frame.
-        const float rowPad = 4f;
         float y = rect.y;
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
@@ -74,12 +80,9 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             y += 28f;
         }
 
-        // scroll view: seventeen metals overflow the panel; markSize anchors the row, rowHeight grows to hold it
-        const float markSize = 44f;
-        const float rowHeight = 52f;
-        const float rowGap = 2f;
+        // scroll view: seventeen metals overflow the panel
         Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
-        Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (rowHeight + rowGap));
+        Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (RowHeight + RowGap));
         Widgets.BeginScrollView(listRect, ref state.ProgressionScroll, viewRect);
 
         List<(Allomancer gene, int stage, int ticks)> rows = SortedRows(pawn, genes);
@@ -87,89 +90,92 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         y = 0f;
         for (int i = 0; i < rows.Count; i++) {
             (Allomancer gene, int stage, int burningTicks) = rows[i];
-            MetallicArtsMetalDef metal = gene.metal;
-            bool hasVialControls = !metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil);
-
-            Rect row = new Rect(0f, y, viewRect.width, rowHeight);
-            if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
-            Widgets.DrawHighlightIfMouseover(row);
-            MouseoverSounds.DoRegion(row);
-
-            // metals own mark in its own colour, not an anonymous chip that only the colour distinguished
-            Rect swatch = new Rect(row.x + rowPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
-            Texture2D? mark = metal.allomancy?.invertedIcon;
-            if (mark != null) {
-                Color prevMark = GUI.color;
-                GUI.color = metal.color;
-                GUI.DrawTexture(swatch, mark);
-                GUI.color = prevMark;
-            } else {
-                Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
-            }
-
-            // the name column is a fixed width, so a long metal gets cut here and the row tooltip carries it whole
-            UIText.EllipsisLabel(
-                new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight),
-                metal.LabelCap,
-                GameFont.Small,
-                TextAnchor.MiddleLeft,
-                Color.white
-            );
-
-            Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, rowHeight);
-            SavantUI.DrawSavantStage(stageRect, stage, metal.color);
-
-            // same reading as Feruchemy and the savant stage; never-burned is its own sentence, not substituted in
-            string burnedLabel = burningTicks > 0
-                ? "CC_Codex_Allomancy_MetalBurned".Translate(
-                    burningTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
-                ).Resolve()
-                : (string)"CC_Codex_Allomancy_NeverBurned".Translate();
-
-            const float buttonSize = 28f;
-            Rect vialButtonRect = new Rect(
-                row.xMax - buttonSize - rowPad,
-                row.y + (rowHeight - buttonSize) / 2f,
-                buttonSize,
-                buttonSize
-            );
-
-            // runs to the vial button, not a fixed width, so four-figure burn totals dont push into it
-            Rect burnedRect = new Rect(
-                stageRect.xMax + 8f,
-                row.y,
-                vialButtonRect.x - stageRect.xMax - 16f,
-                rowHeight
-            );
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor)) {
-                Widgets.Label(burnedRect, burnedLabel);
-            }
-
-            TooltipHandler.TipRegion(
-                row,
-                "CC_Codex_Allomancy_RowTooltip".Translate(
-                    metal.LabelCap.Named("METAL"),
-                    SavantUI.StageLabel(stage).Named("STAGE"),
-                    burnedLabel.Named("BURNED")
-                )
-            );
-
-            bool clicked = false;
-            if (hasVialControls) {
-                clicked = DrawVialSettingsButton(vialButtonRect, gene);
-            } else {
-                DrawVialSettingsUnavailable(vialButtonRect, metal);
-            }
-
-            // the whole row opens the dialog; the vial icon stays as the thing that says so
-            if (hasVialControls && (clicked || Widgets.ButtonInvisible(row))) {
-                Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
-            }
-
-            y += rowHeight + rowGap;
+            DrawMetalRow(new Rect(0f, y, viewRect.width, RowHeight), gene, stage, burningTicks, i % 2 == 0);
+            y += RowHeight + RowGap;
         }
 
         Widgets.EndScrollView();
+    }
+
+    /// <summary>One metal: its mark, its savant standing, how long it has been burned, its vial button.</summary>
+    private static void DrawMetalRow(Rect row, Allomancer gene, int stage, int burningTicks, bool striped) {
+        MetallicArtsMetalDef metal = gene.metal;
+        bool hasVialControls = !metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil);
+
+        if (striped) Widgets.DrawBoxSolid(row, RowStripeColor);
+        Widgets.DrawHighlightIfMouseover(row);
+        MouseoverSounds.DoRegion(row);
+
+        // metals own mark in its own colour, not an anonymous chip that only the colour distinguished
+        Rect swatch = new Rect(row.x + RowPad, row.y + (RowHeight - MarkSize) / 2f, MarkSize, MarkSize);
+        Texture2D? mark = metal.allomancy?.invertedIcon;
+        if (mark != null) {
+            Color prevMark = GUI.color;
+            GUI.color = metal.color;
+            GUI.DrawTexture(swatch, mark);
+            GUI.color = prevMark;
+        } else {
+            Widgets.DrawBoxSolid(swatch.ContractedBy(MarkSize / 4f), metal.color);
+        }
+
+        // the name column is a fixed width, so a long metal gets cut here and the row tooltip carries it whole
+        UIText.EllipsisLabel(
+            new Rect(swatch.xMax + 8f, row.y, 130f, RowHeight),
+            metal.LabelCap,
+            GameFont.Small,
+            TextAnchor.MiddleLeft,
+            Color.white
+        );
+
+        Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, RowHeight);
+        SavantUI.DrawSavantStage(stageRect, stage, metal.color);
+
+        // same reading as Feruchemy and the savant stage; never-burned is its own sentence, not substituted in
+        string burnedLabel = burningTicks > 0
+            ? "CC_Codex_Allomancy_MetalBurned".Translate(
+                burningTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
+            ).Resolve()
+            : (string)"CC_Codex_Allomancy_NeverBurned".Translate();
+
+        const float buttonSize = 28f;
+        Rect vialButtonRect = new Rect(
+            row.xMax - buttonSize - RowPad,
+            row.y + (RowHeight - buttonSize) / 2f,
+            buttonSize,
+            buttonSize
+        );
+
+        // runs to the vial button, not a fixed width, so four-figure burn totals dont push into it
+        Rect burnedRect = new Rect(
+            stageRect.xMax + 8f,
+            row.y,
+            vialButtonRect.x - stageRect.xMax - 16f,
+            RowHeight
+        );
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor)) {
+            Widgets.Label(burnedRect, burnedLabel);
+        }
+
+        TooltipHandler.TipRegion(
+            row,
+            "CC_Codex_Allomancy_RowTooltip".Translate(
+                metal.LabelCap.Named("METAL"),
+                SavantUI.StageLabel(stage).Named("STAGE"),
+                burnedLabel.Named("BURNED")
+            )
+        );
+
+        bool clicked = false;
+        if (hasVialControls) {
+            clicked = DrawVialSettingsButton(vialButtonRect, gene);
+        } else {
+            DrawVialSettingsUnavailable(vialButtonRect, metal);
+        }
+
+        // the whole row opens the dialog; the vial icon stays as the thing that says so
+        if (hasVialControls && (clicked || Widgets.ButtonInvisible(row))) {
+            Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
+        }
     }
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }

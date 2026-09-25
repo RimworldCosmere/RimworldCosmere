@@ -84,14 +84,26 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         }
 
         ApplyBackstories(pawn, template);
+        ApplyTraits(pawn, template);
+        ApplySkills(pawn, template);
+        ApplyGenes(pawn, template);
 
+        NamedPawnApplierRegistry.ApplyAll(pawn, template);
+
+        ApplyApparel(pawn, template);
+        ApplyInventory(pawn, template);
+    }
+
+    private static void ApplyTraits(Pawn pawn, NamedPawnDef template) {
         for (int i = 0; i < template.traits.Count; i++) {
             NamedPawnTraitEntry entry = template.traits[i];
             if (entry.def == null) continue;
             TraitDef? traitDef = DefDatabase<TraitDef>.GetNamedSilentFail(entry.def);
             if (traitDef != null) pawn.story?.traits?.GainTrait(new Trait(traitDef, entry.degree));
         }
+    }
 
+    private static void ApplySkills(Pawn pawn, NamedPawnDef template) {
         for (int i = 0; i < template.skills.Count; i++) {
             NamedPawnSkillEntry entry = template.skills[i];
             if (entry.def == null) continue;
@@ -102,7 +114,9 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
             record.Level = entry.level;
             record.passion = entry.passion;
         }
+    }
 
+    private static void ApplyGenes(Pawn pawn, NamedPawnDef template) {
         for (int i = 0; i < template.genes.Count; i++) {
             string geneName = template.genes[i];
             GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(geneName);
@@ -110,9 +124,9 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
                 pawn.genes.AddGene(geneDef, true);
             }
         }
+    }
 
-        NamedPawnApplierRegistry.ApplyAll(pawn, template);
-
+    private static void ApplyApparel(Pawn pawn, NamedPawnDef template) {
         for (int i = 0; i < template.apparel.Count; i++) {
             NamedPawnInventoryEntry entry = template.apparel[i];
             if (entry.thing == null) continue;
@@ -126,7 +140,9 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
                 pawn.apparel?.Wear(worn, false);
             }
         }
+    }
 
+    private static void ApplyInventory(Pawn pawn, NamedPawnDef template) {
         for (int i = 0; i < template.inventory.Count; i++) {
             NamedPawnInventoryEntry entry = template.inventory[i];
             if (entry.thing == null) continue;

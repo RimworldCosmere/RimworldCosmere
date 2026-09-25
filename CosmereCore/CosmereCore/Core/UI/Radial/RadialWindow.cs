@@ -64,43 +64,7 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     public override void DoWindowContents(Rect inRect) {
-        if (!snapshot.Pawn.Spawned || snapshot.Pawn.Dead) {
-            Close(false);
-            return;
-        }
-
-        // the wheel acts on the selected pawn; nothing left to act on once selection moves elsewhere.
-        if (Find.Selector.SingleSelectedThing != snapshot.Pawn) {
-            Close(false);
-            return;
-        }
-
-        RadialSnapshot? rebuilt = RadialSnapshotBuilder.Build(snapshot.Pawn);
-        if (rebuilt == null) {
-            Close(false);
-            return;
-        }
-
-        snapshot = rebuilt;
-
-        if (state.Kind != RadialStateKind.SystemTier) {
-            if (state.SelectedSystemIndex < 0 || state.SelectedSystemIndex >= snapshot.Systems.Count) {
-                Close(false);
-                return;
-            }
-
-            if (state.Kind != RadialStateKind.SubsectionTier) {
-                if (state.SelectedSubsectionIndex < 0 ||
-                    state.SelectedSubsectionIndex >= snapshot.Systems[state.SelectedSystemIndex].Subsections.Count) {
-                    Close(false);
-                    return;
-                }
-
-                int leafCount = snapshot.Systems[state.SelectedSystemIndex]
-                    .Subsections[state.SelectedSubsectionIndex].Leaves.Count;
-                if (state.HoveredIndex >= leafCount) state.HoveredIndex = -1;
-            }
-        }
+        if (!RefreshSnapshotOrClose()) return;
 
         // drawing is window-local, so the wheel sits at the window's own centre, not the screen anchor.
         Vector2 center = new Vector2(WindowExtent, WindowExtent);
@@ -138,6 +102,52 @@ public sealed class RadialWindow : Verse.Window {
     public override void OnCancelKeyPressed() {
         Close(false);
         Event.current?.Use();
+    }
+
+    /// <summary>
+    ///     Rebuilds the snapshot for this frame and checks the tier indices still point at something.
+    ///     Returns false once it has closed the wheel, so the caller draws nothing.
+    /// </summary>
+    private bool RefreshSnapshotOrClose() {
+        if (!snapshot.Pawn.Spawned || snapshot.Pawn.Dead) {
+            Close(false);
+            return false;
+        }
+
+        // the wheel acts on the selected pawn; nothing left to act on once selection moves elsewhere.
+        if (Find.Selector.SingleSelectedThing != snapshot.Pawn) {
+            Close(false);
+            return false;
+        }
+
+        RadialSnapshot? rebuilt = RadialSnapshotBuilder.Build(snapshot.Pawn);
+        if (rebuilt == null) {
+            Close(false);
+            return false;
+        }
+
+        snapshot = rebuilt;
+
+        if (state.Kind == RadialStateKind.SystemTier) return true;
+
+        if (state.SelectedSystemIndex < 0 || state.SelectedSystemIndex >= snapshot.Systems.Count) {
+            Close(false);
+            return false;
+        }
+
+        if (state.Kind == RadialStateKind.SubsectionTier) return true;
+
+        if (state.SelectedSubsectionIndex < 0 ||
+            state.SelectedSubsectionIndex >= snapshot.Systems[state.SelectedSystemIndex].Subsections.Count) {
+            Close(false);
+            return false;
+        }
+
+        int leafCount = snapshot.Systems[state.SelectedSystemIndex]
+            .Subsections[state.SelectedSubsectionIndex].Leaves.Count;
+        if (state.HoveredIndex >= leafCount) state.HoveredIndex = -1;
+
+        return true;
     }
 
     private RadialLeaf? HoveredCollapsedLeaf() {

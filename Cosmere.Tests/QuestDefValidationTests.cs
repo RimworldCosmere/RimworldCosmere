@@ -951,7 +951,7 @@ public class QuestDefValidationTests {
     /// <summary>
     ///     ClearSiteObjective, TimedWorkObjective and SpawnThingObjective all read the site off
     ///     the QuestPart_ArrivedAtSite that TravelToSiteObjective creates. Getting the stage
-    ///     order wrong only surfaces as QuestBuildFailure the first time the incident fires.
+    ///     order wrong only surfaces as QuestBuildFailureException the first time the incident fires.
     /// </summary>
     [TestMethod]
     public void SiteDependentObjectivesFollowATravelToSiteObjective() {
@@ -979,7 +979,7 @@ public class QuestDefValidationTests {
                         sawTravel,
                         $"{name}: {dependent} appears with no preceding TravelToSiteObjective stage. " +
                         "It builds by reading QuestPart_ArrivedAtSite off the quest, which only " +
-                        "TravelToSiteObjective adds, so the quest would throw QuestBuildFailure when offered."
+                        "TravelToSiteObjective adds, so the quest would throw QuestBuildFailureException when offered."
                     );
                 }
             }

@@ -84,52 +84,59 @@ public class Dialog_QuestChoice : Verse.Window {
         }
 
         for (int i = 0; i < options.Count; i++) {
-            QuestChoiceOption option = options[i];
-            float rowHeight = RowHeight(option, body.width);
-            Rect row = new Rect(body.x, y, body.width, rowHeight);
-            bool blocked = option.silverCost > totalSilver;
-
-            Widgets.DrawBoxSolid(row, blocked ? BlockedRowColor : RowColor);
-            Widgets.DrawHighlightIfMouseover(row);
-            TooltipHandler.TipRegion(row, BuildTip(option, blocked, totalSilver));
-            MouseoverSounds.DoRegion(row);
-
-            Rect inner = row.ContractedBy(Spacing.Get(0.5f));
-            Rect labelRect = inner;
-            if (option.silverCost > 0) labelRect.width -= Spacing.Get(CostColumnUnits);
-
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, blocked ? BlurbColor : Color.white)) {
-                Widgets.Label(labelRect, ResolvedLabelKey(option).Translate());
-            }
-
-            if (option.silverCost > 0) {
-                Rect costRect = new Rect(
-                    inner.xMax - Spacing.Get(CostColumnUnits),
-                    inner.y,
-                    Spacing.Get(CostColumnUnits),
-                    inner.height
-                );
-                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, CostColor)) {
-                    Widgets.Label(
-                        costRect,
-                        "CC_Quest_Choice_SilverCost".Translate(option.silverCost.Named("COUNT")).Resolve()
-                    );
-                }
-            }
-
-            // ButtonInvisible skips its own sound - MouseoverSounds already covers the row each hovered frame.
-            if (Widgets.ButtonInvisible(row, false) && part.Choose(option)) {
+            if (DrawOptionRow(body, ref y, options[i], totalSilver)) {
                 Close();
                 return;
             }
-
-            y = row.yMax + Spacing.Get(0.5f);
 
             if (i < options.Count - 1) {
                 Widgets.DrawBoxSolid(new Rect(body.x, y, body.width, DividerHeight), DividerColor);
                 y += DividerHeight + Spacing.Get(0.5f);
             }
         }
+    }
+
+    /// <summary>
+    ///     One option row: wash, label, cost column, hit region. Returns true when the player picked
+    ///     it and the quest part accepted, which closes the dialog.
+    /// </summary>
+    private bool DrawOptionRow(Rect body, ref float y, QuestChoiceOption option, int totalSilver) {
+        Rect row = new Rect(body.x, y, body.width, RowHeight(option, body.width));
+        bool blocked = option.silverCost > totalSilver;
+
+        Widgets.DrawBoxSolid(row, blocked ? BlockedRowColor : RowColor);
+        Widgets.DrawHighlightIfMouseover(row);
+        TooltipHandler.TipRegion(row, BuildTip(option, blocked, totalSilver));
+        MouseoverSounds.DoRegion(row);
+
+        Rect inner = row.ContractedBy(Spacing.Get(0.5f));
+        Rect labelRect = inner;
+        if (option.silverCost > 0) labelRect.width -= Spacing.Get(CostColumnUnits);
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, blocked ? BlurbColor : Color.white)) {
+            Widgets.Label(labelRect, ResolvedLabelKey(option).Translate());
+        }
+
+        if (option.silverCost > 0) {
+            Rect costRect = new Rect(
+                inner.xMax - Spacing.Get(CostColumnUnits),
+                inner.y,
+                Spacing.Get(CostColumnUnits),
+                inner.height
+            );
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, CostColor)) {
+                Widgets.Label(
+                    costRect,
+                    "CC_Quest_Choice_SilverCost".Translate(option.silverCost.Named("COUNT")).Resolve()
+                );
+            }
+        }
+
+        // ButtonInvisible skips its own sound - MouseoverSounds already covers the row each hovered frame.
+        bool chose = Widgets.ButtonInvisible(row, false) && part.Choose(option);
+
+        y = row.yMax + Spacing.Get(0.5f);
+        return chose;
     }
 
     private float CalcHeight() {

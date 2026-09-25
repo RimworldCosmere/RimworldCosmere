@@ -40,18 +40,7 @@ public class GravitationalPull : SurgebindingAbility {
 
         float currentRadius = radius;
 
-        for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
-            Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn == null ||
-                targetPawn.Dead ||
-                !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
-                if (targetPawn != null && !targetPawn.Dead) {
-                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
-                }
-
-                pawnsInArea.RemoveAt(i);
-            }
-        }
+        PruneDepartedPawns(currentRadius);
 
         if (!pawn.IsHashIntervalTick(30)) return;
 
@@ -67,6 +56,21 @@ public class GravitationalPull : SurgebindingAbility {
 
             SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
             pawnsInArea.AddDistinct(targetPawn);
+        }
+    }
+
+    private void PruneDepartedPawns(float currentRadius) {
+        for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
+            Pawn targetPawn = pawnsInArea[i];
+            if (targetPawn == null ||
+                targetPawn.Dead ||
+                !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
+                if (targetPawn != null && !targetPawn.Dead) {
+                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+                }
+
+                pawnsInArea.RemoveAt(i);
+            }
         }
     }
 }

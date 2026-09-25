@@ -24,55 +24,64 @@ public static class SystemSwitcherStrip {
         y = DrawConnectionOrb(railRect, state, y);
 
         for (int i = 0; i < providers.Count; i++) {
-            IInvestitureProvider provider = providers[i];
-            ISystemSkin skin = SystemSkinRegistry.ForOrFallback(provider.SystemId);
-            Rect orb = new Rect(railRect.x + (railRect.width - OrbSize) / 2f, y, OrbSize, OrbSize);
-
-            // No box and no ring: the mark alone carries it, lit when chosen and muted otherwise.
-            bool selected = !state.ShowingConnection && i == state.SelectedSystemIndex;
-
-            // Per-pawn marks skip the accent tint - glyphs already carry their own colour, tinting doubles it.
-            Texture2D? sigil = skin.Sigil;
-            Color accent = skin.AccentColor;
-            bool selfColoured = false;
-            if (provider.Codex is ICodexSystemMark perPawn) {
-                Texture2D? pawnSigil = perPawn.SigilFor(pawn, selected);
-                if (pawnSigil != null) {
-                    sigil = pawnSigil;
-                    selfColoured = true;
-                }
-
-                accent = perPawn.AccentFor(pawn) ?? accent;
-            }
-
-            Color mark = selected ? accent : DockPalette.MutedText;
-
-            if (sigil != null) {
-                Color prev = GUI.color;
-
-                // A self-coloured mark draws as-is - only the flat system sigils get filled with the accent.
-                GUI.color = selfColoured ? Color.white : mark;
-                GUI.DrawTexture(orb.ContractedBy(3f), sigil);
-                GUI.color = prev;
-            } else {
-                Rect dot = new Rect(orb.center.x - 4f, orb.center.y - 4f, 8f, 8f);
-                Widgets.DrawBoxSolid(dot, mark);
-            }
-
-            string label = skin.HeaderLabel;
-            string? custom = provider.Codex.HeaderLabelFor(pawn);
-            if (!custom.NullOrEmpty()) label = custom!;
-            TooltipHandler.TipRegion(orb, label);
-            Widgets.DrawHighlightIfMouseover(orb);
-            MouseoverSounds.DoRegion(orb);
-
-            if (Widgets.ButtonInvisible(orb)) {
-                state.SelectedSystemIndex = i;
-                state.ShowingConnection = false;
-                RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            }
-
+            DrawSystemOrb(railRect, pawn, state, providers[i], i, y);
             y += OrbSize + OrbGap;
+        }
+    }
+
+    private static void DrawSystemOrb(
+        Rect railRect,
+        Pawn pawn,
+        CodexState state,
+        IInvestitureProvider provider,
+        int index,
+        float y
+    ) {
+        ISystemSkin skin = SystemSkinRegistry.ForOrFallback(provider.SystemId);
+        Rect orb = new Rect(railRect.x + (railRect.width - OrbSize) / 2f, y, OrbSize, OrbSize);
+
+        // No box and no ring: the mark alone carries it, lit when chosen and muted otherwise.
+        bool selected = !state.ShowingConnection && index == state.SelectedSystemIndex;
+
+        // Per-pawn marks skip the accent tint - glyphs already carry their own colour, tinting doubles it.
+        Texture2D? sigil = skin.Sigil;
+        Color accent = skin.AccentColor;
+        bool selfColoured = false;
+        if (provider.Codex is ICodexSystemMark perPawn) {
+            Texture2D? pawnSigil = perPawn.SigilFor(pawn, selected);
+            if (pawnSigil != null) {
+                sigil = pawnSigil;
+                selfColoured = true;
+            }
+
+            accent = perPawn.AccentFor(pawn) ?? accent;
+        }
+
+        Color mark = selected ? accent : DockPalette.MutedText;
+
+        if (sigil != null) {
+            Color prev = GUI.color;
+
+            // A self-coloured mark draws as-is - only the flat system sigils get filled with the accent.
+            GUI.color = selfColoured ? Color.white : mark;
+            GUI.DrawTexture(orb.ContractedBy(3f), sigil);
+            GUI.color = prev;
+        } else {
+            Rect dot = new Rect(orb.center.x - 4f, orb.center.y - 4f, 8f, 8f);
+            Widgets.DrawBoxSolid(dot, mark);
+        }
+
+        string label = skin.HeaderLabel;
+        string? custom = provider.Codex.HeaderLabelFor(pawn);
+        if (!custom.NullOrEmpty()) label = custom!;
+        TooltipHandler.TipRegion(orb, label);
+        Widgets.DrawHighlightIfMouseover(orb);
+        MouseoverSounds.DoRegion(orb);
+
+        if (Widgets.ButtonInvisible(orb)) {
+            state.SelectedSystemIndex = index;
+            state.ShowingConnection = false;
+            RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
         }
     }
 

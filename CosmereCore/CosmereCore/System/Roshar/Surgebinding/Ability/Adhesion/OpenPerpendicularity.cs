@@ -92,26 +92,29 @@ public class OpenPerpendicularity : SurgebindingAbility {
                      currentRadius,
                      true
                  )) {
-            if (thing is Pawn ally) {
-                if (ally.Dead) continue;
-                if (ally.Faction != pawn.Faction) continue;
-
-                RefillRadiantStormlight(ally);
-                HealAlly(ally);
-
-                if (def.hediff != null && ally != pawn) {
-                    SurgebindingHediffUtility.GetOrAddHediff(ally, this, def.hediff);
-                    alliesInArea.AddDistinct(ally);
-                }
-            }
-
-            if (thing is not Pawn) {
-                InvestitureHolder? holder = thing.TryGetComp<InvestitureHolder>();
-                holder?.FillInvestiture();
-            }
+            ApplyAuraTo(thing);
         }
 
         CleanupAllies(currentRadius);
+    }
+
+    private void ApplyAuraTo(Verse.Thing thing) {
+        if (thing is not Pawn ally) {
+            InvestitureHolder? holder = thing.TryGetComp<InvestitureHolder>();
+            holder?.FillInvestiture();
+            return;
+        }
+
+        if (ally.Dead) return;
+        if (ally.Faction != pawn.Faction) return;
+
+        RefillRadiantStormlight(ally);
+        HealAlly(ally);
+
+        if (def.hediff != null && ally != pawn) {
+            SurgebindingHediffUtility.GetOrAddHediff(ally, this, def.hediff);
+            alliesInArea.AddDistinct(ally);
+        }
     }
 
     protected virtual void RefillRadiantStormlight(Pawn ally) {

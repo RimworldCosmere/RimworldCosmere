@@ -40,18 +40,28 @@ public class Soulcast : SurgebindingAbility {
 
         SoulcastOverlay.Remove(target.Cell, pawn.Map);
 
+        if (!TryResolveTarget(ref target)) return;
+
+        ExecuteMode(storedMode.Value, target);
+    }
+
+    private bool TryResolveTarget(ref LocalTargetInfo target) {
         if (!target.HasThing &&
-            storedMode.Value is not (SoulcastMode.Wall or SoulcastMode.Terraform or SoulcastMode.Geyser)) {
+            storedMode!.Value is not (SoulcastMode.Wall or SoulcastMode.Terraform or SoulcastMode.Geyser)) {
             Verse.Thing? found = FindTargetThingAt(target.Cell, storedMode.Value);
             if (found != null) target = new LocalTargetInfo(found);
         }
 
         if (target.HasThing && IsBondedSpren(target.Thing)) {
             Messages.Message("CRO_Soulcast_BondedSpren".Translate(), MessageTypeDefOf.RejectInput, false);
-            return;
+            return false;
         }
 
-        switch (storedMode.Value) {
+        return true;
+    }
+
+    private void ExecuteMode(SoulcastMode mode, LocalTargetInfo target) {
+        switch (mode) {
             case SoulcastMode.ConvertDrop:
                 if (storedMaterial != null && target.HasThing) DoConvertDrop(target.Thing, storedMaterial);
                 break;

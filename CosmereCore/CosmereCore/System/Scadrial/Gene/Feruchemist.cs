@@ -219,44 +219,68 @@ public class Feruchemist : Metalborn {
         get => actualMax <= 0f ? 0f : (actualValue + actualCompounded) / actualMax * Max;
         set {
             if (actualMax <= 0f) return;
-            float targetTotal = value / Max * actualMax;
-            float delta = targetTotal - (actualValue + actualCompounded);
-            List<IMetalmindSource> mms = metalminds;
-            if (delta > 0f) {
-                for (int i = 0; i < mms.Count && delta > 0f; i++) {
-                    if (!mms[i].CanStore) continue;
-                    float add = Mathf.Min(mms[i].FreeSpace, delta);
-                    if (add > 0f) {
-                        mms[i].AddStored(add);
-                        delta -= add;
-                    }
-                }
-            } else if (delta < 0f) {
-                delta = -delta;
-                for (int i = 0; i < mms.Count && delta > 0f; i++) {
-                    if (!mms[i].CanTap) continue;
-                    float remove = Mathf.Min(mms[i].StoredAmount, delta);
-                    if (remove > 0f) {
-                        mms[i].ConsumeStored(remove);
-                        delta -= remove;
-                    }
-                }
+            ApplyPooledValue(value);
+        }
+    }
 
-                // setting Value directly must reach zero, so it falls through to compounded; the tap path does not.
-                bool drewCompounded = false;
-                for (int i = 0; i < mms.Count && delta > 0f; i++) {
-                    if (!mms[i].CanTapCompounded) continue;
-                    float remove = Mathf.Min(mms[i].CompoundedAmount, delta);
-                    if (remove > 0f) {
-                        mms[i].ConsumeCompounded(remove);
-                        delta -= remove;
-                        drewCompounded = true;
-                    }
-                }
+    /// <summary>Moves the pool to what was asked for, spread over every metalmind that will take it.</summary>
+    private void ApplyPooledValue(float value) {
+        float targetTotal = value / Max * actualMax;
+        float delta = targetTotal - (actualValue + actualCompounded);
+        List<IMetalmindSource> mms = metalminds;
 
-                if (drewCompounded) SweepBurnedOut();
+        if (delta > 0f) {
+            FillMetalminds(mms, delta);
+            return;
+        }
+
+        if (delta < 0f) DrainMetalminds(mms, -delta);
+    }
+
+    private static void FillMetalminds(List<IMetalmindSource> mms, float delta) {
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanStore) continue;
+            float add = Mathf.Min(mms[i].FreeSpace, delta);
+            if (add > 0f) {
+                mms[i].AddStored(add);
+                delta -= add;
             }
         }
+    }
+
+    private void DrainMetalminds(List<IMetalmindSource> mms, float delta) {
+        delta = DrainStored(mms, delta);
+
+        // setting Value directly must reach zero, so it falls through to compounded; the tap path does not.
+        if (DrainCompounded(mms, delta)) SweepBurnedOut();
+    }
+
+    private static float DrainStored(List<IMetalmindSource> mms, float delta) {
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanTap) continue;
+            float remove = Mathf.Min(mms[i].StoredAmount, delta);
+            if (remove > 0f) {
+                mms[i].ConsumeStored(remove);
+                delta -= remove;
+            }
+        }
+
+        return delta;
+    }
+
+    private static bool DrainCompounded(List<IMetalmindSource> mms, float delta) {
+        bool drew = false;
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanTapCompounded) continue;
+            float remove = Mathf.Min(mms[i].CompoundedAmount, delta);
+            if (remove > 0f) {
+                mms[i].ConsumeCompounded(remove);
+                delta -= remove;
+                drew = true;
+            }
+        }
+
+        return drew;
     }
 
     private HediffDef? tapHediffDef =>

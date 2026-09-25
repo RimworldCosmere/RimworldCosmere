@@ -40,7 +40,7 @@ public static class CosmereQuestBuilder {
 
         try {
             BuildStages(built, def, map, subject);
-        } catch (QuestBuildFailure failure) {
+        } catch (QuestBuildFailureException failure) {
             Log.Warn($"{def.defName}: quest build aborted - {failure.Message}");
             quest = null;
             return false;
@@ -54,7 +54,7 @@ public static class CosmereQuestBuilder {
     private static void BuildStages(RimWorld.Quest quest, CosmereQuestDef def, Verse.Map map, Pawn? subject) {
         List<CosmereQuestStage>? stages = def.stages;
         if (stages == null || stages.Count == 0) {
-            throw new QuestBuildFailure("no stages to build");
+            throw new QuestBuildFailureException("no stages to build");
         }
 
         QuestBuildContext ctx = new QuestBuildContext {
@@ -70,7 +70,7 @@ public static class CosmereQuestBuilder {
             CosmereQuestStage stage = stages[i];
             QuestObjective? objective = stage.objective;
             if (objective == null) {
-                throw new QuestBuildFailure($"stage '{stage.key}' has no objective");
+                throw new QuestBuildFailureException($"stage '{stage.key}' has no objective");
             }
 
             string outSignal = SignalFor(quest, i);

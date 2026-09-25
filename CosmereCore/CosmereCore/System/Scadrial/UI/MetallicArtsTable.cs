@@ -71,33 +71,10 @@ public static class MetallicArtsTable {
             MetalGroup group = groups[g];
             if (group.Rows.Count == 0) continue;
 
-            Rect headerRect = new Rect(rect.x, y, rect.width, QuadHeaderHeight);
             bool folded = collapsed != null && collapsed(group);
-            UIText.EllipsisLabel(
-                headerRect,
-                group.LabelKey.Translate(),
-                GameFont.Tiny,
-                TextAnchor.MiddleLeft,
-                headerColor
+            DrawQuadHeader(
+                new Rect(rect.x, y, rect.width, QuadHeaderHeight), group, folded, headerColor, onHeaderClick
             );
-
-            if (onHeaderClick != null) {
-                // a folded group has no tiles left to hint at itself, so the count says what is hidden
-                UIText.EllipsisLabel(
-                    headerRect,
-                    folded
-                        ? "CC_Dock_Group_Folded".Translate(group.Rows.Count.Named("COUNT"))
-                        : "CC_Dock_Fold_Hide".Translate(),
-                    GameFont.Tiny,
-                    TextAnchor.MiddleRight,
-                    DockPalette.GroupLabel
-                );
-                Widgets.DrawHighlightIfMouseover(headerRect);
-                if (Widgets.ButtonInvisible(headerRect)) {
-                    onHeaderClick(group);
-                    Event.current?.Use();
-                }
-            }
 
             y += QuadHeaderHeight;
             if (folded) {
@@ -122,12 +99,9 @@ public static class MetallicArtsTable {
                 if (!endOfRow) continue;
 
                 // strip sits under the open metal's row, a join gap below it - only that tile reaches across to merge.
-                int openIndex = -1;
-                if (expandedSubsystemId != null && drawStrip != null) {
-                    for (int i = r - column; i <= r; i++) {
-                        if (group.Rows[i].Cell.SubsystemId == expandedSubsystemId) openIndex = i;
-                    }
-                }
+                int openIndex = drawStrip == null
+                    ? -1
+                    : OpenIndexInRow(group, r - column, r, expandedSubsystemId);
 
                 float rowY = y;
                 y += MetalTile.Height;
@@ -136,34 +110,95 @@ public static class MetallicArtsTable {
                     continue;
                 }
 
-                // strip gets the open tile's own rect - its top edge must stay open for the two to merge.
-                int openColumn = openIndex % Columns;
-                Rect openTileRect = new Rect(
-                    rect.x + openColumn * (tileWidth + TileGap),
-                    rowY,
-                    openColumn == 0 && openIndex == group.Rows.Count - 1 ? rect.width : tileWidth,
-                    MetalTile.Height
+                DrawOpenStrip(
+                    rect, y, rowY, tileWidth, group, openIndex, expandedStripHeight, stripFullHeight, drawStrip!
                 );
-
-                Rect stripRect = new Rect(rect.x, y + JoinGap, rect.width, expandedStripHeight);
-                if (expandedStripHeight < stripFullHeight - 0.5f) {
-                    // mid-reveal: panel draws full size in a clip only as tall as opened - slides out, not squashes.
-                    Widgets.BeginGroup(stripRect);
-                    drawStrip!(
-                        new Rect(0f, 0f, rect.width, stripFullHeight),
-                        group.Rows[openIndex],
-                        new Rect(openTileRect.x - stripRect.x, 0f, openTileRect.width, openTileRect.height)
-                    );
-                    Widgets.EndGroup();
-                } else {
-                    drawStrip!(stripRect, group.Rows[openIndex], openTileRect);
-                }
 
                 y += JoinGap + expandedStripHeight + TileGap;
             }
 
             y += QuadGap;
         }
+    }
+
+    /// <summary>The group's name, and the fold affordance when the caller owns one.</summary>
+    private static void DrawQuadHeader(
+        Rect headerRect, MetalGroup group, bool folded, Color headerColor, Action<MetalGroup>? onHeaderClick
+    ) {
+        UIText.EllipsisLabel(
+            headerRect,
+            group.LabelKey.Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleLeft,
+            headerColor
+        );
+
+        if (onHeaderClick == null) return;
+
+        // a folded group has no tiles left to hint at itself, so the count says what is hidden
+        UIText.EllipsisLabel(
+            headerRect,
+            folded
+                ? "CC_Dock_Group_Folded".Translate(group.Rows.Count.Named("COUNT"))
+                : "CC_Dock_Fold_Hide".Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleRight,
+            DockPalette.GroupLabel
+        );
+        Widgets.DrawHighlightIfMouseover(headerRect);
+        if (Widgets.ButtonInvisible(headerRect)) {
+            onHeaderClick(group);
+            Event.current?.Use();
+        }
+    }
+
+    /// <summary>Which tile of this row is the open one, or -1 when none of them is.</summary>
+    private static int OpenIndexInRow(MetalGroup group, int first, int last, string? expandedSubsystemId) {
+        if (expandedSubsystemId == null) return -1;
+
+        int openIndex = -1;
+        for (int i = first; i <= last; i++) {
+            if (group.Rows[i].Cell.SubsystemId == expandedSubsystemId) openIndex = i;
+        }
+
+        return openIndex;
+    }
+
+    /// <summary>The detail panel under an open tile, clipped while it is still sliding out.</summary>
+    private static void DrawOpenStrip(
+        Rect rect,
+        float y,
+        float rowY,
+        float tileWidth,
+        MetalGroup group,
+        int openIndex,
+        float expandedStripHeight,
+        float stripFullHeight,
+        Action<Rect, MetalRow, Rect> drawStrip
+    ) {
+        // strip gets the open tile's own rect - its top edge must stay open for the two to merge.
+        int openColumn = openIndex % Columns;
+        Rect openTileRect = new Rect(
+            rect.x + openColumn * (tileWidth + TileGap),
+            rowY,
+            openColumn == 0 && openIndex == group.Rows.Count - 1 ? rect.width : tileWidth,
+            MetalTile.Height
+        );
+
+        Rect stripRect = new Rect(rect.x, y + JoinGap, rect.width, expandedStripHeight);
+        if (expandedStripHeight >= stripFullHeight - 0.5f) {
+            drawStrip(stripRect, group.Rows[openIndex], openTileRect);
+            return;
+        }
+
+        // mid-reveal: panel draws full size in a clip only as tall as opened - slides out, not squashes.
+        Widgets.BeginGroup(stripRect);
+        drawStrip(
+            new Rect(0f, 0f, rect.width, stripFullHeight),
+            group.Rows[openIndex],
+            new Rect(openTileRect.x - stripRect.x, 0f, openTileRect.width, openTileRect.height)
+        );
+        Widgets.EndGroup();
     }
 
     private static int RowCount(int tiles) {

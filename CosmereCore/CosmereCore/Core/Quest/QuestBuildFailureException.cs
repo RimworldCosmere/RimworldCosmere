@@ -7,6 +7,6 @@ namespace Cosmere.Core.Quest;
 ///     catches it, discards the half-built quest and returns false, so a partially built
 ///     quest never reaches Find.QuestManager.
 /// </summary>
-public class QuestBuildFailure : Exception {
-    public QuestBuildFailure(string reason) : base(reason) { }
+public class QuestBuildFailureException : Exception {
+    public QuestBuildFailureException(string reason) : base(reason) { }
 }

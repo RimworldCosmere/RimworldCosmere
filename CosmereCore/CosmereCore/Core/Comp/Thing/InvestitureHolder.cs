@@ -116,62 +116,46 @@ public class InvestitureHolder : ThingComp {
             List<Verse.Thing> things = [];
 
             if (parent.TryGetComp(out InnerStorage innerStorage)) {
-                ThingOwner container = innerStorage.innerContainer;
-                for (int i = 0; i < container.Count; i++) {
-                    if (container[i] != parent && container[i].HasComp<InvestitureHolder>()) {
-                        things.Add(container[i]);
-                    }
-                }
+                AddHolders(things, innerStorage.innerContainer);
             }
 
             switch (parent) {
-                case ISlotGroupParent storageGroupParent: {
-                        SlotGroup? slotGroup = storageGroupParent.GetSlotGroup();
-                        if (slotGroup != null) {
-                            foreach (Verse.Thing thing in slotGroup.HeldThings) {
-                                if (thing != parent && thing.HasComp<InvestitureHolder>()) {
-                                    things.Add(thing);
-                                }
-                            }
-                        }
-
-                        break;
-                    }
+                case ISlotGroupParent storageGroupParent:
+                    AddSlotGroupHolders(things, storageGroupParent);
+                    break;
 
                 case Pawn pawn:
-                    if (pawn.inventory?.innerContainer != null) {
-                        ThingOwner invContainer = pawn.inventory.innerContainer;
-                        for (int i = 0; i < invContainer.Count; i++) {
-                            if (invContainer[i] != parent && invContainer[i].HasComp<InvestitureHolder>()) {
-                                things.Add(invContainer[i]);
-                            }
-                        }
-                    }
-
-                    if (pawn.equipment?.AllEquipmentListForReading != null) {
-                        List<ThingWithComps> equipment = pawn.equipment.AllEquipmentListForReading;
-                        for (int i = 0; i < equipment.Count; i++) {
-                            if (equipment[i] != parent && equipment[i].HasComp<InvestitureHolder>()) {
-                                things.Add(equipment[i]);
-                            }
-                        }
-                    }
-
-                    if (pawn.apparel?.WornApparel != null) {
-                        List<Apparel> apparel = pawn.apparel.WornApparel;
-                        for (int i = 0; i < apparel.Count; i++) {
-                            if (apparel[i] != parent && apparel[i].HasComp<InvestitureHolder>()) {
-                                things.Add(apparel[i]);
-                            }
-                        }
-                    }
-
+                    AddHolders(things, pawn.inventory?.innerContainer);
+                    AddHolders(things, pawn.equipment?.AllEquipmentListForReading);
+                    AddHolders(things, pawn.apparel?.WornApparel);
                     break;
             }
 
             cachedChildren = things;
             cachedChildrenTick = currentTick;
             return things;
+        }
+    }
+
+    private void AddHolders<T>(List<Verse.Thing> things, IList<T>? source)
+        where T : Verse.Thing {
+        if (source == null) return;
+
+        for (int i = 0; i < source.Count; i++) {
+            if (source[i] != parent && source[i].HasComp<InvestitureHolder>()) {
+                things.Add(source[i]);
+            }
+        }
+    }
+
+    private void AddSlotGroupHolders(List<Verse.Thing> things, ISlotGroupParent slotGroupParent) {
+        SlotGroup? slotGroup = slotGroupParent.GetSlotGroup();
+        if (slotGroup == null) return;
+
+        foreach (Verse.Thing thing in slotGroup.HeldThings) {
+            if (thing != parent && thing.HasComp<InvestitureHolder>()) {
+                things.Add(thing);
+            }
         }
     }
 

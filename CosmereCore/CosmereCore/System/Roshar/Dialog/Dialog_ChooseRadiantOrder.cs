@@ -265,48 +265,56 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
                 "CRO_RadiantOrder_BondsmithCapReached".Translate(RadiantTracker.MaxBondsmiths.Named("MAX"))
             );
         } else if (CTAButtonText(secondButtonRect, joinString)) {
-            pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
+            JoinOrder(currentOrder, isBondsmithLocked);
+        }
+    }
 
-            TrueSprenSpawner? spawner = pawn.Map?.GetComponent<TrueSprenSpawner>();
-            spawner?.DestroySprenForPawn(pawn);
+    private void JoinOrder(RadiantOrderDef currentOrder, bool isBondsmithLocked) {
+        pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
 
-            string? sprenName = isBondsmithLocked ? forcedBondsmithSpren : null;
-            Surgebinder? surgebinder = pawn.genes.TryAddRadiantOrder(
-                currentOrder.GetSurgebindingGene(),
-                sprenName: sprenName,
-                showNamingDialog: !isBondsmithLocked
-            );
+        TrueSprenSpawner? spawner = pawn.Map?.GetComponent<TrueSprenSpawner>();
+        spawner?.DestroySprenForPawn(pawn);
 
-            if (isBondsmithLocked && surgebinder != null) {
-                surgebinder.godsprenName = forcedBondsmithSpren!;
+        string? sprenName = isBondsmithLocked ? forcedBondsmithSpren : null;
+        Surgebinder? surgebinder = pawn.genes.TryAddRadiantOrder(
+            currentOrder.GetSurgebindingGene(),
+            sprenName: sprenName,
+            showNamingDialog: !isBondsmithLocked
+        );
 
-                BondsmithCalling? calling = null;
-                List<Verse.Hediff> hediffs = pawn.health?.hediffSet?.hediffs ?? [];
-                for (int i = 0; i < hediffs.Count; i++) {
-                    if (hediffs[i] is BondsmithCalling c) {
-                        calling = c;
-                        break;
-                    }
-                }
+        if (isBondsmithLocked && surgebinder != null) {
+            BindGodspren(surgebinder);
+        }
 
-                if (calling != null) {
-                    pawn.health!.RemoveHediff(calling);
-                }
+        Close();
 
-                RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
-                tracker?.RegisterBondsmith();
+        if (surgebinder?.bondedSpren != null) {
+            Find.Selector.Select(surgebinder.bondedSpren);
+        } else {
+            Find.Selector.Select(pawn);
+        }
+    }
 
-                BondsmithCallingChecker? checker = Current.Game.GetComponent<BondsmithCallingChecker>();
-                checker?.RecordBondedGodspren(forcedBondsmithSpren!);
-            }
+    private void BindGodspren(Surgebinder surgebinder) {
+        surgebinder.godsprenName = forcedBondsmithSpren!;
 
-            Close();
-
-            if (surgebinder?.bondedSpren != null) {
-                Find.Selector.Select(surgebinder.bondedSpren);
-            } else {
-                Find.Selector.Select(pawn);
+        BondsmithCalling? calling = null;
+        List<Verse.Hediff> hediffs = pawn!.health?.hediffSet?.hediffs ?? [];
+        for (int i = 0; i < hediffs.Count; i++) {
+            if (hediffs[i] is BondsmithCalling c) {
+                calling = c;
+                break;
             }
         }
+
+        if (calling != null) {
+            pawn.health!.RemoveHediff(calling);
+        }
+
+        RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
+        tracker?.RegisterBondsmith();
+
+        BondsmithCallingChecker? checker = Current.Game.GetComponent<BondsmithCallingChecker>();
+        checker?.RecordBondedGodspren(forcedBondsmithSpren!);
     }
 }

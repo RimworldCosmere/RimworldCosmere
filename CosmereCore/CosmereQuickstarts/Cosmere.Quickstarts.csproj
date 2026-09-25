@@ -46,28 +46,12 @@
         <ProjectReference Include="..\CosmereCore\Cosmere.csproj"/>
     </ItemGroup>
 
-    <!-- Same game-assembly probe as Cosmere.csproj. Krafs is the fallback when none match. -->
     <ItemGroup>
-        <Reference Include="..\..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\..\RimWorldWin64_Data\Managed')">
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="D:\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\RimWorld\RimWorldWin64_Data\Managed')">
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed')">
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="/mnt/games/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/RimWorld/RimWorldLinux_Data/Managed')">
+        <Reference Include="$(GamecrateRefs)/*.dll" Condition="'$(HasGameRefs)' == 'true'"
+                   Exclude="$(GamecrateRefs)/System.*.dll;$(GamecrateRefs)/System.dll;$(GamecrateRefs)/Microsoft.*.dll;$(GamecrateRefs)/mscorlib.dll;$(GamecrateRefs)/netstandard.dll;$(GamecrateRefs)/WindowsBase.dll">
             <Private>False</Private>
         </Reference>
     </ItemGroup>
-    <ItemGroup Condition="'@(Reference-&gt;WithMetadataValue('Identity', 'Assembly-CSharp')-&gt;Metadata('HintPath')-&gt;Exists())' == ''">
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*"/>
-    </ItemGroup>
+
+
 </Project>

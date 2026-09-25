@@ -237,6 +237,8 @@ public class AshDepthTracker : MapComponent {
             return;
         }
 
+        if (!Render.AshParticles.Supported) return;
+
         if (veil is not { Alive: true }) veil = new Render.AshParticles(map.uniqueID);
         veil.Update(map, shown);
     }

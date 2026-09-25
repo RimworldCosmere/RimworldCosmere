@@ -36,10 +36,14 @@ public class AshParticles {
     private static readonly Material FlakeMat =
         MaterialPool.MatFrom("Weather/AshFlake", Verse.ShaderDatabase.Transparent);
 
-    private readonly UnityEngine.ParticleSystem system;
+    private readonly UnityEngine.ParticleSystem? system;
     private readonly GameObject host;
 
     private float pendingEmit;
+
+    /// <summary>False once the engine has turned out to have no particle system. Latched, so the
+    /// owner stops rebuilding a veil that cannot draw.</summary>
+    public static bool Supported { get; private set; } = true;
 
     public AshParticles(int mapId) {
         host = new GameObject($"cosmere_ash_particles_{Mathf.Abs(mapId)}");
@@ -47,9 +51,14 @@ public class AshParticles {
         // Unity tears this down on scene load, leaving a dangling ref that NREs on host.transform each frame
         Object.DontDestroyOnLoad(host);
         system = host.AddComponent<UnityEngine.ParticleSystem>();
-        ParticleSystemRenderer renderer = host.GetComponent<ParticleSystemRenderer>();
+        ParticleSystemRenderer? renderer = host.GetComponent<ParticleSystemRenderer>();
 
-        Configure();
+        if (system == null || renderer == null) {
+            Supported = false;
+            return;
+        }
+
+        Configure(system);
         ConfigureRenderer(renderer);
         system.Play();
     }
@@ -63,7 +72,7 @@ public class AshParticles {
     public bool Alive => host != null && system != null;
 
     public void Update(Verse.Map map, float severity) {
-        if (!Alive) return;
+        if (host == null || system == null) return;
 
         CameraDriver camera = Find.CameraDriver;
         CellRect view = camera.CurrentViewRect;
@@ -127,7 +136,7 @@ public class AshParticles {
         if (host != null) Object.Destroy(host);
     }
 
-    private void Configure() {
+    private void Configure(UnityEngine.ParticleSystem system) {
         UnityEngine.ParticleSystem.MainModule main = system.main;
 
         // world space is the point: particles anchor in the world, so panning moves you through the field, not with it

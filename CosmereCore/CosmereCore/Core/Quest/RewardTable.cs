@@ -36,7 +36,9 @@ public static class RewardTable {
         int total = TotalWeight(entries);
         if (total <= 0) return null;
 
+#pragma warning disable S2245 // a reward roll wants a seed it can reproduce, not cryptographic entropy
         int pick = new Random(seed).Next(total);
+#pragma warning restore S2245
         int running = 0;
         for (int i = 0; i < entries.Count; i++) {
             running += entries[i].weight;

@@ -169,10 +169,4 @@ public partial class ScadrialDeadConditionTests {
             previous = along;
         }
     }
-
-    /// <summary>A band of one still gets a middling koloss rather than a divide by zero.</summary>
-    [TestMethod]
-    public void KolossBandGrowthSurvivesABandOfOne() {
-        Assert.AreEqual(0.5f, (0 + 0.5f) / 1, 0.0001f);
-    }
 }

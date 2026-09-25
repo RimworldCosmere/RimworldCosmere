@@ -125,7 +125,6 @@ dotnet_diagnostic.S101.severity = none   # class name pascal case
 dotnet_diagnostic.S927.severity = none   # parameter name must match the base
 dotnet_diagnostic.S3011.severity = none  # reflection bypasses accessibility
 dotnet_diagnostic.S3267.severity = none  # rewrite the loop as LINQ
-dotnet_diagnostic.S2245.severity = none  # weak random number generator
 
 # Sonar: the backlog, demoted so it does not fail the build. Rider and a
 # compiled scan still report every one of these. Counts are from a compiled

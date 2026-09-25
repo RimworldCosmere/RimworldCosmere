@@ -23,25 +23,27 @@ public class NightwatcherBoonTipTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     [TestMethod]
     public void DialogNoLongerOwnsTheEffectText() {
         string dialog = Core("System", "Roshar", "Dialog", "Dialog_NightwatcherEncounter.cs");
 
-        StringAssert.Contains(
-            dialog,
+        Assert.Contains(
             "NightwatcherEffectText.Boon(",
+            dialog,
             "The dialog must read its effect text from the shared class."
         );
-        Assert.IsFalse(
-            dialog.Contains("static string GetBoonEffects("),
+        Assert.DoesNotContain(
+            "static string GetBoonEffects(",
+            dialog,
             "GetBoonEffects moved to NightwatcherEffectText; a private copy would drift from the tooltip."
         );
-        Assert.IsFalse(
-            dialog.Contains("static string GetCurseEffects("),
+        Assert.DoesNotContain(
+            "static string GetCurseEffects(",
+            dialog,
             "GetCurseEffects moved to NightwatcherEffectText; a private copy would drift from the tooltip."
         );
     }
@@ -50,8 +52,8 @@ public class NightwatcherBoonTipTests {
     public void BoonHediffTooltipShowsTheEffects() {
         string hediff = Core("System", "Roshar", "Hediff", "NightwatcherBoonHediff.cs");
 
-        StringAssert.Contains(hediff, "override string TipStringExtra", "The boon hediff needs its own tooltip.");
-        StringAssert.Contains(hediff, "NightwatcherEffectText", "The tooltip must use the shared effect text.");
+        Assert.Contains("override string TipStringExtra", hediff, "The boon hediff needs its own tooltip.");
+        Assert.Contains("NightwatcherEffectText", hediff, "The tooltip must use the shared effect text.");
     }
 
     [TestMethod]
@@ -59,19 +61,19 @@ public class NightwatcherBoonTipTests {
         string hediff = Core("System", "Roshar", "Hediff", "NightwatcherBoonHediff.cs");
         string applicator = Core("System", "Roshar", "Nightwatcher", "StandardBoonApplicator.cs");
 
-        StringAssert.Contains(
-            hediff,
+        Assert.Contains(
             "NightwatcherEffectText.Boon(boonDef, choiceKey",
+            hediff,
             "Without the choice key, Misting and Ferring show 'choose metal' forever."
         );
-        StringAssert.Contains(
-            hediff,
+        Assert.Contains(
             "Scribe_Values.Look(ref choiceKey",
+            hediff,
             "The choice has to survive a save/load or the tooltip reverts after a reload."
         );
-        StringAssert.Contains(
-            applicator,
+        Assert.Contains(
             "Initialize(boon, context?.SelectedDefName)",
+            applicator,
             "The applicator is the only place that knows what the pawn picked."
         );
     }
@@ -80,7 +82,7 @@ public class NightwatcherBoonTipTests {
     public void CurseHediffTooltipShowsTheEffects() {
         string hediff = Core("System", "Roshar", "Hediff", "NightwatcherCurseHediff.cs");
 
-        StringAssert.Contains(hediff, "override string TipStringExtra", "The curse hediff needs its own tooltip.");
-        StringAssert.Contains(hediff, "NightwatcherEffectText.Curse(", "The tooltip must use the shared effect text.");
+        Assert.Contains("override string TipStringExtra", hediff, "The curse hediff needs its own tooltip.");
+        Assert.Contains("NightwatcherEffectText.Curse(", hediff, "The tooltip must use the shared effect text.");
     }
 }

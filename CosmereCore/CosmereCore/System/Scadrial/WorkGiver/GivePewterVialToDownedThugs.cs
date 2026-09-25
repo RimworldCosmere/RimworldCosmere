@@ -54,7 +54,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         return job;
     }
 
-    private bool TryFindBestVialSourceFor(
+    private static bool TryFindBestVialSourceFor(
         Pawn pawn,
         out Verse.Thing vialSource
     ) {

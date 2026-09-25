@@ -28,7 +28,7 @@ public class SettingsColumnLayoutTests {
     public void EmptyInputProducesNoPlacementsOrContentHeight() {
         SettingsColumnLayoutResult layout = SettingsColumnLayout.Place([], 400f, 12f);
 
-        Assert.AreEqual(0, layout.Placements.Count);
+        Assert.IsEmpty(layout.Placements);
         Assert.AreEqual(0f, layout.ContentHeight);
     }
 

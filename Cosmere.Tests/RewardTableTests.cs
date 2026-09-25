@@ -12,13 +12,13 @@ namespace Cosmere.Tests;
 [TestClass]
 public class RewardTableTests {
     private static List<RewardTableEntry> HarmonyTable() {
-        return new List<RewardTableEntry> {
+        return [
             new RewardTableEntry { weight = 15, key = "lerasium" },
             new RewardTableEntry { weight = 15, key = "leratium" },
             new RewardTableEntry { weight = 15, key = "harmonium" },
             new RewardTableEntry { weight = 30, key = "payment" },
             new RewardTableEntry { weight = 25, key = "cache" },
-        };
+        ];
     }
 
     [TestMethod]
@@ -29,10 +29,10 @@ public class RewardTableTests {
 
     [TestMethod]
     public void TableThatDoesNotSumToOneHundredIsInvalid() {
-        List<RewardTableEntry> bad = new List<RewardTableEntry> {
+        List<RewardTableEntry> bad = [
             new RewardTableEntry { weight = 50, key = "a" },
             new RewardTableEntry { weight = 40, key = "b" },
-        };
+        ];
         Assert.IsFalse(RewardTable.IsValid(bad));
     }
 
@@ -45,17 +45,17 @@ public class RewardTableTests {
 
     [TestMethod]
     public void EveryEntryIsReachable() {
-        HashSet<string> seen = new HashSet<string>();
+        HashSet<string> seen = [];
         for (int seed = 0; seed < 5000; seed++) {
             seen.Add(RewardTable.Roll(HarmonyTable(), seed)!);
         }
 
-        Assert.AreEqual(5, seen.Count, "Every entry in a valid table must be reachable.");
+        Assert.HasCount(5, seen, "Every entry in a valid table must be reachable.");
     }
 
     [TestMethod]
     public void DistributionTracksWeightsWithinTolerance() {
-        Dictionary<string, int> counts = new Dictionary<string, int>();
+        Dictionary<string, int> counts = [];
         const int rolls = 100000;
         for (int seed = 0; seed < rolls; seed++) {
             string key = RewardTable.Roll(HarmonyTable(), seed)!;
@@ -78,7 +78,7 @@ public class RewardTableTests {
 
     [TestMethod]
     public void EmptyTableIsInvalidAndRollsToNull() {
-        List<RewardTableEntry> empty = new List<RewardTableEntry>();
+        List<RewardTableEntry> empty = [];
         Assert.IsFalse(RewardTable.IsValid(empty));
         Assert.IsNull(RewardTable.Roll(empty, 1));
     }

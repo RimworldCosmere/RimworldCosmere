@@ -16,7 +16,7 @@ namespace Cosmere.Tests;
 ///     irises onto one colour, and none of those three log anything.
 /// </summary>
 [TestClass]
-public class KandraEyeRenderTests {
+public partial class KandraEyeRenderTests {
     private const string EyeNodeClass = "PawnRenderNode_KandraEyes";
     private const string GlowNodeClass = "PawnRenderNode_KandraEyeGlow";
     private const string FormlessSubWorker = "PawnRenderSubWorker_ShowOnlyWhileFormless";
@@ -48,11 +48,10 @@ public class KandraEyeRenderTests {
 
     /// <summary>Every C# file the kandra render nodes live in, concatenated.</summary>
     private static string EyeNodeSource() {
-        string[] files = Directory.EnumerateFiles(KandraSourceRoot, "PawnRenderNode_KandraEye*.cs").ToArray();
+        string[] files = [.. Directory.EnumerateFiles(KandraSourceRoot, "PawnRenderNode_KandraEye*.cs")];
 
-        Assert.AreNotEqual(
-            0,
-            files.Length,
+        Assert.IsNotEmpty(
+            files,
             "Nothing under System/Scadrial/Kandra declares a kandra eye render node, so the def below "
             + "names a class nothing declares."
         );
@@ -94,14 +93,14 @@ public class KandraEyeRenderTests {
     private static string[] IrisSizeNames() {
         string source = File.ReadAllText(AppearanceSourcePath);
 
-        Match table = Regex.Match(source, @"IrisSizes\s*=\s*\[(?<rows>.*?)\];", RegexOptions.Singleline);
+        Match table = IrisSizesTablePattern.Match(source);
         Assert.IsTrue(table.Success, "KandraAppearance no longer declares an IrisSizes table, so nothing says what sizes exist.");
 
-        string[] names = Regex.Matches(table.Groups["rows"].Value, @"\(\s*""(?<name>[^""]+)""")
-            .Select(m => m.Groups["name"].Value)
-            .ToArray();
+        string[] names = [
+            .. IrisSizeNamePattern.Matches(table.Groups["rows"].Value).Select(m => m.Groups["name"].Value),
+        ];
 
-        Assert.AreNotEqual(0, names.Length, "The IrisSizes table parsed to no names at all.");
+        Assert.IsNotEmpty(names, "The IrisSizes table parsed to no names at all.");
         return names;
     }
 
@@ -139,17 +138,19 @@ public class KandraEyeRenderTests {
             + "shape has a blank face."
         );
 
-        return block.Elements("li")
-            .Where(li => li.ToString().Contains("PawnRenderNode_Kandra", StringComparison.Ordinal))
-            .ToArray();
+        return [
+            .. block.Elements("li")
+                .Where(li => li.ToString().Contains("PawnRenderNode_Kandra", StringComparison.Ordinal)),
+        ];
     }
 
     private static XElement[] NodesFor(string nodeClass) {
-        XElement[] nodes = EyeRenderNodes()
-            .Where(li => li.Element("nodeClass")?.Value.EndsWith(nodeClass, StringComparison.Ordinal) == true)
-            .ToArray();
+        XElement[] nodes = [
+            .. EyeRenderNodes()
+                .Where(li => li.Element("nodeClass")?.Value.EndsWith(nodeClass, StringComparison.Ordinal) == true),
+        ];
 
-        Assert.AreNotEqual(0, nodes.Length, $"No render node on the true-body gene names {nodeClass}.");
+        Assert.IsNotEmpty(nodes, $"No render node on the true-body gene names {nodeClass}.");
         return nodes;
     }
 
@@ -168,9 +169,9 @@ public class KandraEyeRenderTests {
     public void AnEyeWithNoNodeOfItsOwnLeavesTheKandraHalfBlind() {
         XElement[] nodes = EyeRenderNodes();
 
-        Assert.AreEqual(
+        Assert.HasCount(
             4,
-            nodes.Length,
+            nodes,
             "The true-body gene does not declare a cutout and a bloom for each eye. A missing entry "
             + "means a kandra with one eye and no error anywhere."
         );
@@ -178,9 +179,8 @@ public class KandraEyeRenderTests {
         foreach (string nodeClass in new[] { EyeNodeClass, GlowNodeClass }) {
             XElement[] pair = NodesFor(nodeClass);
 
-            Assert.AreEqual(
-                1,
-                pair.Count(IsRightEye),
+            Assert.ContainsSingle(
+                pair.Where(IsRightEye),
                 $"{nodeClass} is not declared once per side. One entry has to say it is the right eye "
                 + "and the other has to leave it alone, or both nodes draw the same eye."
             );
@@ -190,9 +190,9 @@ public class KandraEyeRenderTests {
     [TestMethod]
     public void EyesDrawnWithoutTheFormlessVetoShowThroughAStolenFace() {
         foreach (XElement node in EyeRenderNodes()) {
-            StringAssert.Contains(
-                node.ToString(),
+            Assert.Contains(
                 FormlessSubWorker,
+                node.ToString(),
                 $"An eye entry has no {FormlessSubWorker}. Without it a kandra wearing a stolen face "
                 + "shows its own eyes through that face, which is the one rule Ka set for this feature."
             );
@@ -218,14 +218,14 @@ public class KandraEyeRenderTests {
 
     [TestMethod]
     public void AMaskLeftBehindSplitsOneEyeIntoTwoAgain() {
-        string[] masks = Directory.EnumerateFiles(EyeTextureRoot, "*.png")
-            .Where(file => Path.GetFileName(file).EndsWith("m.png", StringComparison.Ordinal))
-            .Select(file => Path.GetFileName(file)!)
-            .ToArray();
+        string[] masks = [
+            .. Directory.EnumerateFiles(EyeTextureRoot, "*.png")
+                .Where(file => Path.GetFileName(file).EndsWith("m.png", StringComparison.Ordinal))
+                .Select(file => Path.GetFileName(file)!),
+        ];
 
-        Assert.AreEqual(
-            0,
-            masks.Length,
+        Assert.IsEmpty(
+            masks,
             "Mask files are still on disk: " + string.Join(", ", masks) + ". A mask split one texture "
             + "into two eyes, and one texture now holds one eye."
         );
@@ -247,12 +247,11 @@ public class KandraEyeRenderTests {
 
     [TestMethod]
     public void ATexPathWithNoFileBehindItDrawsNothingAndLogsNothing() {
-        string[] paths = EyeRenderNodes()
-            .SelectMany(li => li.Descendants("texPath"))
-            .Select(e => e.Value)
-            .ToArray();
+        string[] paths = [
+            .. EyeRenderNodes().SelectMany(li => li.Descendants("texPath")).Select(e => e.Value),
+        ];
 
-        Assert.AreNotEqual(0, paths.Length, "No render node on the true-body gene names a texture.");
+        Assert.IsNotEmpty(paths, "No render node on the true-body gene names a texture.");
 
         foreach (string texPath in paths) {
             string stem = Path.Combine(
@@ -309,9 +308,9 @@ public class KandraEyeRenderTests {
     public void ASecondCopyOfTheMaleFemaleRuleDriftsFromTheOneKandraAppearanceKeeps() {
         string source = EyeNodeSource();
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "EyeGraphicPathFor",
+            source,
             "The eye node does not ask KandraAppearance for its texture path, so the body, the head "
             + "and the eyes each decide male or female on their own."
         );
@@ -338,9 +337,8 @@ public class KandraEyeRenderTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            missing.Count,
+        Assert.IsEmpty(
+            missing,
             "Missing eye art: " + string.Join(", ", missing) + ". Graphic_Multi reuses _south rotated "
             + "180 degrees when _north is missing, which draws eyes on the back of the head, and a size "
             + "the palette offers with no art behind it renders that kandra with no eyes at all."
@@ -435,18 +433,18 @@ public class KandraEyeRenderTests {
     public void AWestIrisLeftOnTheFlippedWestQuadDrawsOnTheBackOfTheHead() {
         string source = EyeNodeSource();
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "GetMesh",
+            source,
             "The eye node takes the head set's west quad as it comes. That quad is UV-flipped, because "
             + "vanilla heads ship no _west and rely on the flip to mirror their _east art. These eyes "
             + "do ship _west, already drawn mirrored, so the flip mirrors the iris a second time and "
             + "lands it on the far side of the face."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "Rot4.East",
+            source,
             "Nothing in the eye node redirects the west facing onto the unflipped east quad, which is "
             + "the one mesh that leaves the pre-mirrored west art where it was drawn."
         );
@@ -495,4 +493,10 @@ public class KandraEyeRenderTests {
             + "is, so a second copy of that choice is one more place for the two to disagree."
         );
     }
+
+    [GeneratedRegex(@"IrisSizes\s*=\s*\[(?<rows>.*?)\];", RegexOptions.Singleline)]
+    private static partial Regex IrisSizesTablePattern { get; }
+
+    [GeneratedRegex(@"\(\s*""(?<name>[^""]+)""")]
+    private static partial Regex IrisSizeNamePattern { get; }
 }

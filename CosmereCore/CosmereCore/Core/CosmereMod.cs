@@ -13,26 +13,25 @@ internal static class CosmerePatchGuard {
 
     // Held for the process lifetime; disposing the handle would unpatch everything.
     internal static IPatchHandle? ConcordPatches;
+
+    // One mod loads the patches for all of them, whichever one the game builds first.
+    internal static void EnsurePatched(Assembly assembly, string packageId) {
+        if (Patched) return;
+
+        Log.Debug($"{packageId} Build Rev: {BuildInfo.Revision} @ {BuildInfo.BuildTime}");
+        DateTime lastWrite = File.GetLastWriteTime(assembly.Location);
+        Log.Info($"Cosmere DLL compiled: {lastWrite:yyyy-MM-dd HH:mm:ss}");
+
+        ConcordPatches = Patcher.Apply(assembly);
+        Patched = true;
+    }
 }
 
 public abstract class CosmereMod<TSettings> : Verse.Mod
     where TSettings : CosmereModSettings, new() {
     protected CosmereMod(ModContentPack content) : base(content) {
         LongEventHandler.QueueLongEvent(
-            () => {
-                if (!CosmerePatchGuard.Patched) {
-                    Log.Debug(
-                        $"{content.PackageId} Build Rev: {BuildInfo.Revision} @ {BuildInfo.BuildTime}"
-                    );
-                    Assembly assembly = GetType().Assembly;
-                    string dllPath = assembly.Location;
-                    DateTime lastWrite = File.GetLastWriteTime(dllPath);
-                    Log.Info($"Cosmere DLL compiled: {lastWrite:yyyy-MM-dd HH:mm:ss}");
-
-                    CosmerePatchGuard.ConcordPatches = Patcher.Apply(assembly);
-                    CosmerePatchGuard.Patched = true;
-                }
-            },
+            () => CosmerePatchGuard.EnsurePatched(GetType().Assembly, content.PackageId),
             "LoadCosmereMod",
             true,
             null

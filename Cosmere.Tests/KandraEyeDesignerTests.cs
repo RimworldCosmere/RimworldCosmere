@@ -12,7 +12,7 @@ namespace Cosmere.Tests;
 ///     turn a choice off, and the summary line the preview plate prints beside the portrait.
 /// </summary>
 [TestClass]
-public class KandraEyeDesignerTests {
+public partial class KandraEyeDesignerTests {
     private static readonly string[] EyesLabelKeys = [
         "CS_Kandra_IrisHeader",
         "CS_Kandra_OddEyesHeader",
@@ -39,6 +39,15 @@ public class KandraEyeDesignerTests {
         "CS_Kandra_SummaryEyesLit",
         "CS_Kandra_SummaryEyesOddLit",
     ];
+
+    [GeneratedRegex(@"forms\.BeginReshape\(([^)]*)\)")]
+    private static partial Regex BeginReshapeCall { get; }
+
+    [GeneratedRegex(@"DrawPortrait\(([^)]*)\)")]
+    private static partial Regex DrawPortraitCall { get; }
+
+    [GeneratedRegex(@"new Color\s*\(|#[0-9a-fA-F]{6}")]
+    private static partial Regex HandWrittenColour { get; }
 
     private static string RepoRoot {
         get {
@@ -72,14 +81,14 @@ public class KandraEyeDesignerTests {
     /// <summary>A value the dialog holds but never sends is a control that silently does nothing.</summary>
     [TestMethod]
     public void AnEyeValueTheDesignerHoldsButNeverSendsIsAControlThatDoesNothing() {
-        Match commit = Regex.Match(DialogSource, @"forms\.BeginReshape\(([^)]*)\)");
+        Match commit = BeginReshapeCall.Match(DialogSource);
         Assert.IsTrue(commit.Success, "The designer no longer commits through BeginReshape.");
 
         string args = commit.Groups[1].Value;
 
-        Assert.AreEqual(
+        Assert.HasCount(
             8,
-            args.Split(',').Length,
+            args.Split(','),
             "BeginReshape takes eight values and the designer sends " + args.Split(',').Length
             + ". Every eye value the player picked has to travel with the reshape."
         );
@@ -98,9 +107,9 @@ public class KandraEyeDesignerTests {
         string source = DialogSource + EyesSource;
 
         foreach (string sentinel in new[] { "KandraAppearance.EyeColourNone", "KandraAppearance.EyeLightOff" }) {
-            StringAssert.Contains(
-                source,
+            Assert.Contains(
                 sentinel,
+                source,
                 "The designer never sends " + sentinel
                 + ". Null reads downstream as \"the player changed nothing\", so the player can turn this on and never off."
             );
@@ -113,9 +122,9 @@ public class KandraEyeDesignerTests {
         string begin = Body("private void BeginDesign");
 
         foreach (string field in new[] { "eyeColourName", "eyeColourTwoName", "irisSizeName", "eyeLightName" }) {
-            StringAssert.Contains(
-                begin,
+            Assert.Contains(
                 field,
+                begin,
                 "BeginDesign never reads " + field + " off the true body, so accepting the designer untouched wipes it."
             );
         }
@@ -124,7 +133,7 @@ public class KandraEyeDesignerTests {
     /// <summary>The portrait pawn has no CompKandraForms, so anything not passed in cannot be drawn.</summary>
     [TestMethod]
     public void ThePreviewIsHandedEveryEyeValueBecauseItCanReadNoneOfThemItself() {
-        Match call = Regex.Match(Body("private void DrawPreviewPlate"), @"DrawPortrait\(([^)]*)\)");
+        Match call = DrawPortraitCall.Match(Body("private void DrawPreviewPlate"));
         Assert.IsTrue(call.Success, "The preview plate no longer draws a portrait.");
 
         string args = call.Groups[1].Value;
@@ -145,7 +154,7 @@ public class KandraEyeDesignerTests {
         XElement root = XDocument.Load(GeneralKeyedPath).Root!;
 
         foreach (string key in EyesLabelKeys) {
-            StringAssert.Contains(source, key, "The eyes pane no longer labels itself from " + key + ".");
+            Assert.Contains(key, source, "The eyes pane no longer labels itself from " + key + ".");
 
             Assert.IsNotNull(
                 root.Element(key),
@@ -180,9 +189,9 @@ public class KandraEyeDesignerTests {
         string source = EyesSource;
 
         foreach (string table in new[] { "KandraAppearance.AllIrisSizes", "KandraAppearance.AllEyeLights" }) {
-            StringAssert.Contains(
-                source,
+            Assert.Contains(
                 table,
+                source,
                 "The eyes pane writes its own rows instead of reading " + table + "."
             );
         }
@@ -193,7 +202,7 @@ public class KandraEyeDesignerTests {
     public void TheEyesPaneInventsNoColourOfItsOwnAndLoadsNoTextureWhileDrawing() {
         string source = EyesSource;
 
-        foreach (Match match in Regex.Matches(source, @"new Color\s*\(|#[0-9a-fA-F]{6}")) {
+        foreach (Match match in HandWrittenColour.Matches(source)) {
             Assert.Fail(
                 "Dialog_KandraForms.Eyes writes its own colour at offset " + match.Index
                 + ". Every colour here comes from BaseWindow or KandraAppearance."
@@ -211,9 +220,9 @@ public class KandraEyeDesignerTests {
     public void TheIrisChipCropsHardEnoughForTheSizesToTellThemselvesApart() {
         string source = EyesSource;
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "DrawTextureWithTexCoords",
+            source,
             "The iris chip draws the whole canvas again, so every size renders as the same speck."
         );
 
@@ -230,8 +239,9 @@ public class KandraEyeDesignerTests {
         // The painted marks measure six canvas pixels across at Small and eight at Standard.
         float difference = (8f - 6f) / window * chip;
 
-        Assert.IsTrue(
-            difference >= 1f,
+        Assert.IsGreaterThanOrEqualTo(
+            1f,
+            difference,
             "Small and Standard differ by " + difference + " chip pixels, so the player picks blind."
         );
     }
@@ -275,23 +285,17 @@ public class KandraEyeDesignerTests {
         "General.xml"
     );
 
-    private static string KandraSource(string file) => Path.Combine(
-        RepoRoot,
-        "CosmereCore",
-        "CosmereCore",
-        "System",
-        "Scadrial",
-        "Kandra",
-        file
-    );
+    private static string KandraSource(string file) {
+        return Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", file);
+    }
 
     private static string Body(string signature) {
         string source = DialogSource;
         int start = source.IndexOf(signature, StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "Dialog_KandraForms no longer declares " + signature + ".");
+        Assert.IsGreaterThanOrEqualTo(0, start, "Dialog_KandraForms no longer declares " + signature + ".");
 
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, "Could not read the body of " + signature + ".");
+        Assert.IsGreaterThan(start, end, "Could not read the body of " + signature + ".");
 
         return source[start..end];
     }

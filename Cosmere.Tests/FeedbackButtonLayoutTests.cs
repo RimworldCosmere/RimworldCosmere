@@ -28,7 +28,7 @@ public class FeedbackButtonLayoutTests {
     public void TheShiftedButtonsNeverOverlapTheLearningReadout() {
         float screenWidth = 1920f;
         float right = FeedbackButtonLayout.ButtonX(screenWidth, true) + FeedbackButtonLayout.ButtonWidth;
-        Assert.IsTrue(right <= screenWidth - LearningReadoutLeftEdge, $"right edge {right} ran into the readout");
+        Assert.IsLessThanOrEqualTo(screenWidth - LearningReadoutLeftEdge, right, $"right edge {right} ran into the readout");
     }
 
     [TestMethod]
@@ -54,6 +54,6 @@ public class FeedbackButtonLayoutTests {
     /// </summary>
     [TestMethod]
     public void ANarrowScreenStillPlacesTheButtonsOnScreen() {
-        Assert.IsTrue(FeedbackButtonLayout.ButtonX(1280f, true) >= 0f);
+        Assert.IsGreaterThanOrEqualTo(0f, FeedbackButtonLayout.ButtonX(1280f, true));
     }
 }

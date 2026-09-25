@@ -39,9 +39,8 @@ public class CoreDoesNotImportShardsTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Core imports a shard, which reverses the layering:\n" + string.Join("\n", offenders) +
             "\nMove the file under System/<Shard>/ or route it through a Core registry."
         );
@@ -69,9 +68,8 @@ public class CoreDoesNotImportShardsTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "A shard imports another shard. Cross-shard work goes through a Core registry:\n" +
             string.Join("\n", offenders)
         );

@@ -27,24 +27,28 @@ public class ThreatContributorTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
-    private static string Roshar(string file) => Core("System", "Roshar", "Threat", file);
+    private static string Roshar(string file) {
+        return Core("System", "Roshar", "Threat", file);
+    }
 
-    private static string Scadrial(string file) => Core("System", "Scadrial", "Threat", file);
+    private static string Scadrial(string file) {
+        return Core("System", "Scadrial", "Threat", file);
+    }
 
     [TestMethod]
     public void BothShardsRegisterAContributor() {
-        StringAssert.Contains(
-            Roshar("RosharThreatRegistration.cs"),
+        Assert.Contains(
             "ThreatContributorRegistry.Register",
+            Roshar("RosharThreatRegistration.cs"),
             "Roshar never reaches the registry, so its threat is silently zero"
         );
-        StringAssert.Contains(
-            Scadrial("ScadrialThreatRegistration.cs"),
+        Assert.Contains(
             "ThreatContributorRegistry.Register",
+            Scadrial("ScadrialThreatRegistration.cs"),
             "Scadrial never reaches the registry, so its threat is silently zero"
         );
     }
@@ -55,8 +59,8 @@ public class ThreatContributorTests {
     /// </summary>
     [TestMethod]
     public void ContributorsReturnAGainNotAMultiple() {
-        StringAssert.Contains(Roshar("RosharThreatContributor.cs"), "- 1f");
-        StringAssert.Contains(Scadrial("ScadrialThreatContributor.cs"), "- 1f");
+        Assert.Contains("- 1f", Roshar("RosharThreatContributor.cs"));
+        Assert.Contains("- 1f", Scadrial("ScadrialThreatContributor.cs"));
     }
 
     /// <summary>
@@ -67,10 +71,11 @@ public class ThreatContributorTests {
     public void ShardsArePricedOnTheAbilityNotOnEquipment() {
         string source = Roshar("RosharThreatContributor.cs");
 
-        StringAssert.Contains(source, "PawnHasShardblade", "the Blade check must defer to the ability's own rule");
-        StringAssert.Contains(source, "Ability_ToggleShardplate");
-        Assert.IsFalse(
-            source.Contains("equipment.Primary"),
+        Assert.Contains("PawnHasShardblade", source, "the Blade check must defer to the ability's own rule");
+        Assert.Contains("Ability_ToggleShardplate", source);
+        Assert.DoesNotContain(
+            "equipment.Primary",
+            source,
             "reading the equipped weapon reintroduces the flicker the ability check avoids"
         );
     }
@@ -83,7 +88,7 @@ public class ThreatContributorTests {
     public void ScadrialPricesASpikeOnceAsASpike() {
         string source = Scadrial("ScadrialThreatContributor.cs");
 
-        StringAssert.Contains(source, "ScadrialThreat.ForSpikes");
+        Assert.Contains("ScadrialThreat.ForSpikes", source);
         Assert.AreEqual(
             1,
             source.Split("ForSpikes").Length - 1,
@@ -99,8 +104,9 @@ public class ThreatContributorTests {
     public void ScadrialDoesNotGateEverythingOnTheTraitTracker() {
         string source = Scadrial("ScadrialThreatContributor.cs");
 
-        Assert.IsFalse(
-            source.Contains("story?.traits == null"),
+        Assert.DoesNotContain(
+            "story?.traits == null",
+            source,
             "gating the whole pawn on the trait tracker is the bug this replaced"
         );
     }
@@ -113,9 +119,9 @@ public class ThreatContributorTests {
     public void CoreRegistryNamesNoShard() {
         string source = Core("Core", "Threat", "ThreatContributorRegistry.cs");
 
-        Assert.IsFalse(source.Contains("Cosmere.System."), "Core must not import a shard");
-        Assert.IsFalse(source.Contains("Roshar"));
-        Assert.IsFalse(source.Contains("Scadrial"));
+        Assert.DoesNotContain("Cosmere.System.", source, "Core must not import a shard");
+        Assert.DoesNotContain("Roshar", source);
+        Assert.DoesNotContain("Scadrial", source);
     }
 
     /// <summary>
@@ -126,8 +132,8 @@ public class ThreatContributorTests {
     public void TheHookScalesRatherThanAdds() {
         string source = Core("Core", "Threat", "CosmereThreatPoints.cs");
 
-        StringAssert.Contains(source, "points * ThreatContributorRegistry.MultipleForPawn");
-        Assert.IsFalse(source.Contains("points +"), "adding here would reintroduce the clamp escape");
+        Assert.Contains("points * ThreatContributorRegistry.MultipleForPawn", source);
+        Assert.DoesNotContain("points +", source, "adding here would reintroduce the clamp escape");
     }
 
     /// <summary>
@@ -138,10 +144,10 @@ public class ThreatContributorTests {
     public void TheHookInjectsAtTheColonistPointsLocal() {
         string source = Core("Core", "Threat", "CosmereStorytellerUtilityPatch.cs");
 
-        StringAssert.Contains(source, "LocalAccess.Store");
-        StringAssert.Contains(source, "At.Local");
-        StringAssert.Contains(source, "[Local] Pawn pawn");
-        Assert.IsFalse(source.Contains("At.Return"), "At.Return lands outside vanilla's clamp");
+        Assert.Contains("LocalAccess.Store", source);
+        Assert.Contains("At.Local", source);
+        Assert.Contains("[Local] Pawn pawn", source);
+        Assert.DoesNotContain("At.Return", source, "At.Return lands outside vanilla's clamp");
     }
 
     /// <summary>
@@ -163,7 +169,7 @@ public class ThreatContributorTests {
             "RosharStorytellerUtilityPatches.cs"
         );
         Assert.IsFalse(File.Exists(retired), "the Roshar storyteller patch was replaced by the Core hook");
-        StringAssert.Contains(scadrial, "Coppercloud");
-        Assert.IsFalse(scadrial.Contains("FreeColonists"), "Scadrial must not price pawns here any more");
+        Assert.Contains("Coppercloud", scadrial);
+        Assert.DoesNotContain("FreeColonists", scadrial, "Scadrial must not price pawns here any more");
     }
 }

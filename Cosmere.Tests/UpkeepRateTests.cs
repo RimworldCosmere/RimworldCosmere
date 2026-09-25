@@ -53,7 +53,7 @@ public class UpkeepRateTests {
             3.4594f
         );
 
-        Assert.IsTrue(percent >= 0.005f, $"expected a printable percentage, got {percent}");
+        Assert.IsGreaterThanOrEqualTo(0.005f, percent, $"expected a printable percentage, got {percent}");
     }
 
     [TestMethod]
@@ -66,7 +66,7 @@ public class UpkeepRateTests {
                 3.4594f
             );
 
-            Assert.IsTrue(percent >= 0.005f, $"{cadence} printed {percent}");
+            Assert.IsGreaterThanOrEqualTo(0.005f, percent, $"{cadence} printed {percent}");
         }
     }
 

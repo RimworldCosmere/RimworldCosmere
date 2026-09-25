@@ -213,6 +213,7 @@ public static class Profiler {
     }
 
 #pragma warning disable CS9113
+    // Nothing constructs this: Game.FillComponents reflects over every GameComponent subclass.
     private sealed class ProfilerFlushComponent(Game _) : GameComponent {
         public override void GameComponentUpdate() {
             if ((int)Time.time % FlushSeconds == 0) Flush();

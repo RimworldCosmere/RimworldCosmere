@@ -39,6 +39,7 @@ public class DelayedActionScheduler {
         public int ticksLeft;
     }
 
+    // Nothing constructs this: Game.FillComponents reflects over every GameComponent subclass.
     private class GameComponentDelayedActionScheduler : GameComponent {
         public GameComponentDelayedActionScheduler() { }
 

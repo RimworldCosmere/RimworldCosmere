@@ -143,8 +143,9 @@ public class AshVentSoilLadderTests {
         for (float distance = ClearRadius; distance <= 16f; distance += 0.25f) {
             float front = AshVentSoilSpread.Advance(0f, ClearRadius, 16f, AshVentSoilLadder.WarmedAtDays(distance, ClearRadius));
 
-            Assert.IsTrue(
-                front >= distance - 0.0001f,
+            Assert.IsGreaterThanOrEqualTo(
+                distance - 0.0001f,
+                front,
                 $"a cell {distance} out starts its dwell at day "
                 + $"{AshVentSoilLadder.WarmedAtDays(distance, ClearRadius)}, when the front is only at {front}."
             );
@@ -170,11 +171,11 @@ public class AshVentSoilLadderTests {
             if (AshVentSoilLadder.RungIsDue(x, z, 0f, ClearRadius, was, days)) climbed.Add(days);
         }
 
-        Assert.IsTrue(jitter < AshVentSoilLadder.DaysPerRung, $"the jitter {jitter} is over a whole rung.");
-        Assert.IsTrue(climbed.Count >= RungsFrom("Sand"), $"seventy-two days bought only {climbed.Count} rungs.");
+        Assert.IsLessThan(AshVentSoilLadder.DaysPerRung, jitter, $"the jitter {jitter} is over a whole rung.");
+        Assert.IsGreaterThanOrEqualTo(RungsFrom("Sand"), climbed.Count, $"seventy-two days bought only {climbed.Count} rungs.");
 
         for (int rung = 1; rung <= RungsFrom("Sand"); rung++) {
-            float expected = jitter + (rung * AshVentSoilLadder.DaysPerRung);
+            float expected = jitter + rung * AshVentSoilLadder.DaysPerRung;
             Assert.AreEqual(expected, climbed[rung - 1], 0.01f, $"rung {rung} did not land at day {expected}.");
         }
 
@@ -204,8 +205,9 @@ public class AshVentSoilLadderTests {
             if (due > worst) worst = due;
         }
 
-        Assert.IsTrue(
-            worst <= AshDepthMath.TerrainChangesPerSweep,
+        Assert.IsLessThanOrEqualTo(
+            AshDepthMath.TerrainChangesPerSweep,
+            worst,
             $"one sweep owed {worst} rungs against a ration of {AshDepthMath.TerrainChangesPerSweep}."
         );
     }
@@ -255,9 +257,9 @@ public class AshVentSoilLadderTests {
         );
 
         Assert.IsTrue(File.Exists(comp), $"CompAshVent.cs is missing at {comp}.");
-        StringAssert.Contains(
-            File.ReadAllText(comp),
+        Assert.Contains(
             "Scribe_Values.Look(ref soilDays",
+            File.ReadAllText(comp),
             "the rung clock is not saved, so every reload would push the whole patch a rung further out."
         );
     }
@@ -309,7 +311,7 @@ public class AshVentSoilLadderTests {
             for (int z = -reach; z <= 1 + reach; z++) {
                 int dx = x < 0 ? -x : x > 1 ? x - 1 : 0;
                 int dz = z < 0 ? -z : z > 1 ? z - 1 : 0;
-                int distanceSquared = (dx * dx) + (dz * dz);
+                int distanceSquared = dx * dx + dz * dz;
                 if (!AshVentSoilSpread.Reaches(distanceSquared, radius)) continue;
 
                 cells.Add((x, z, (float)Math.Sqrt(distanceSquared)));

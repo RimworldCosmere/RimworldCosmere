@@ -18,7 +18,7 @@ namespace Cosmere.Tests;
 ///     vanilla insists on before it will send the letter at all.
 /// </summary>
 [TestClass]
-public class AshEruptionTests {
+public partial class AshEruptionTests {
     private const string IncidentDefName = "Cosmere_Scadrial_Incident_AshmountEruption";
     private const string ConditionDefName = "Cosmere_Scadrial_Condition_AshmountEruption";
     private const string WorkerClass = "Cosmere.System.Scadrial.Incident.Worker.IncidentWorker_AshmountEruption";
@@ -171,17 +171,18 @@ public class AshEruptionTests {
             if (AshEruption.DueOn(tick, duration, AshEruption.TremorCount)) fired.Add(tick);
         }
 
-        Assert.AreEqual(AshEruption.TremorCount, fired.Count);
+        Assert.HasCount(AshEruption.TremorCount, fired);
 
         int gap = fired[1] - fired[0];
         for (int i = 2; i < fired.Count; i++) {
             Assert.AreEqual(gap, fired[i] - fired[i - 1], $"beat {i} sat {fired[i] - fired[i - 1]} ticks out, not {gap}.");
         }
 
-        Assert.IsTrue(fired[^1] < duration, "the last beat landed on or past the closing tick.");
+        Assert.IsLessThan(duration, fired[^1], "the last beat landed on or past the closing tick.");
 
-        Assert.IsTrue(
-            fired[^1] >= duration - gap,
+        Assert.IsGreaterThanOrEqualTo(
+            duration - gap,
+            fired[^1],
             $"the last beat landed on tick {fired[^1]} of {duration}, leaving the closing "
             + $"{duration - fired[^1]} ticks silent against a {gap} tick gap. The eruption compresses into the front "
             + "of its run and goes quiet for the tail."
@@ -249,8 +250,9 @@ public class AshEruptionTests {
             0.71f, BeatsPerHour(max), 0.01f, $"the longest eruption now beats {BeatsPerHour(max):0.00} times an hour."
         );
 
-        Assert.IsTrue(
-            BeatsPerHour(max) > 0.5f,
+        Assert.IsGreaterThan(
+            0.5f,
+            BeatsPerHour(max),
             "the longest eruption now goes over two game hours between beats, which is the cadence the player read as "
             + "nothing happening."
         );
@@ -363,8 +365,9 @@ public class AshEruptionTests {
     /// </summary>
     [TestMethod]
     public void OneTremorTakesABiteOutOfAWoodenWallTheHealthBarWillShow() {
-        Assert.IsTrue(
-            TremorAt(4) * 20 >= WoodenWallHitPoints,
+        Assert.IsGreaterThanOrEqualTo(
+            WoodenWallHitPoints,
+            TremorAt(4) * 20,
             $"one tremor four cells out takes {TremorAt(4)} off a {WoodenWallHitPoints} point wooden wall, under the "
             + "twentieth that shows as damage."
         );
@@ -378,14 +381,16 @@ public class AshEruptionTests {
     public void AnEruptionLeavesAWoodenWallStandingOutsideTheVentsClearing() {
         Assert.AreEqual(180, EruptionTremorsAt(4), "the tremor budget four cells out moved without this moving.");
 
-        Assert.IsTrue(
-            EruptionTremorsAt(4) < WoodenWallHitPoints,
+        Assert.IsLessThan(
+            WoodenWallHitPoints,
+            EruptionTremorsAt(4),
             $"an eruption now takes {EruptionTremorsAt(4)} off a {WoodenWallHitPoints} point wooden wall four cells "
             + "out, which fells it. A tremor is meant to be a warning worth heeding, not a demolition."
         );
 
-        Assert.IsTrue(
-            EruptionTremorsAt(3) > WoodenWallHitPoints,
+        Assert.IsGreaterThan(
+            WoodenWallHitPoints,
+            EruptionTremorsAt(3),
             "a wooden wall inside the vent's own clearing now survives an eruption, so the ground near a mouth costs "
             + "the player nothing."
         );
@@ -397,20 +402,23 @@ public class AshEruptionTests {
     /// </summary>
     [TestMethod]
     public void TheSameTremorsFlattenAShelfAndABatteryBuiltAgainstTheClearing() {
-        Assert.IsTrue(
-            EruptionTremorsAt(4) > BatteryHitPoints,
+        Assert.IsGreaterThan(
+            BatteryHitPoints,
+            EruptionTremorsAt(4),
             $"a battery four cells from a mouth now survives an eruption on {BatteryHitPoints - EruptionTremorsAt(4)} "
             + "hit points."
         );
 
-        Assert.IsTrue(
-            EruptionTremorsAt(6) > WoodenShelfHitPoints,
+        Assert.IsGreaterThan(
+            WoodenShelfHitPoints,
+            EruptionTremorsAt(6),
             "a wooden shelf six cells from a mouth now survives an eruption, so nothing outside the clearing is ever "
             + "at risk."
         );
 
-        Assert.IsTrue(
-            EruptionTremorsAt(6) < BatteryHitPoints,
+        Assert.IsLessThan(
+            BatteryHitPoints,
+            EruptionTremorsAt(6),
             $"an eruption now takes {EruptionTremorsAt(6)} off a battery six cells out, which fells it. The reach is "
             + "meant to thin to a nuisance well before it runs out."
         );
@@ -424,14 +432,14 @@ public class AshEruptionTests {
     public void TheTremorWalksACopyOfTheCellAndNotTheGridsOwnList() {
         string source = ConditionSource;
 
-        Assert.AreEqual(
+        Assert.HasCount(
             1,
-            Regex.Matches(source, @"ThingsListAtFast\s*\(").Count,
+            ThingsListAtFastPattern.Matches(source),
             "the condition reads the thing grid's live list somewhere new, which this check does not cover."
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"AddRange\(\s*map\.thingGrid\.ThingsListAtFast\s*\("),
+            ThingsListCopiedPattern.IsMatch(source),
             "the tremor indexes the thing grid's own list. Destroying a shelf relocates its overflow inside the "
             + "same TakeDamage, which takes more than one entry off that list and throws on the next index."
         );
@@ -443,14 +451,13 @@ public class AshEruptionTests {
     /// </summary>
     [TestMethod]
     public void TheEruptionStopsItsPerTickEffectsAtTheCatacendre() {
-        Match tick = Regex.Match(
-            ConditionSource, @"public override void GameConditionTick\(\)\s*\{(.*?)\n    \}", RegexOptions.Singleline
-        );
+        Match tick = GameConditionTickPattern.Match(ConditionSource);
 
         Assert.IsTrue(tick.Success, "could not find GameConditionTick on the eruption condition.");
 
-        Assert.IsTrue(
-            tick.Groups[1].Value.Contains("AshEra.CanAccumulate"),
+        Assert.Contains(
+            "AshEra.CanAccumulate",
+            tick.Groups[1].Value,
             "GameConditionTick does not check the era. An eruption in flight when the Catacendre lands keeps "
             + "throwing metal and shaking buildings, and ThrowOnce carries no gate of its own."
         );
@@ -495,7 +502,7 @@ public class AshEruptionTests {
     /// <summary>The rolled range the incident def hands vanilla as the condition's duration.</summary>
     private static (float min, float max) DurationDays() {
         string[] parts = Field(DefNamed("IncidentDef", IncidentDefName), "durationDays").Split('~');
-        Assert.AreEqual(2, parts.Length, "durationDays is not a range.");
+        Assert.HasCount(2, parts, "durationDays is not a range.");
 
         return (
             float.Parse(parts[0], CultureInfo.InvariantCulture), float.Parse(parts[1], CultureInfo.InvariantCulture)
@@ -526,13 +533,15 @@ public class AshEruptionTests {
     public void EvenTheShortestEruptionBuriesTheWorstTile() {
         (float min, float max) = DurationDays();
 
-        Assert.IsTrue(
-            ExtraMillimetres(min, AshmountExposure.MaxMultiplier) > AshDepthMath.BuriedMm,
+        Assert.IsGreaterThan(
+            AshDepthMath.BuriedMm,
+            ExtraMillimetres(min, AshmountExposure.MaxMultiplier),
             $"the shortest eruption no longer clears the {AshDepthMath.BuriedMm} mm that hides and unhauls items."
         );
 
-        Assert.IsTrue(
-            ExtraMillimetres(max, AshmountExposure.MaxMultiplier) > AshDepthMath.TerrainSwapMm,
+        Assert.IsGreaterThan(
+            AshDepthMath.TerrainSwapMm,
+            ExtraMillimetres(max, AshmountExposure.MaxMultiplier),
             $"the longest eruption no longer clears the {AshDepthMath.TerrainSwapMm} mm that turns ground to ash."
         );
     }
@@ -551,7 +560,7 @@ public class AshEruptionTests {
 
         Assert.AreEqual(371f, open, 5f, $"an ordinary tile now takes {open:0} mm rather than 371.");
         Assert.AreEqual(AshmountExposure.MaxMultiplier, heartland / open, 0.01f);
-        Assert.IsTrue(open < AshDepthMath.BuriedMm, "an eruption now buries an ordinary tile as well.");
+        Assert.IsLessThan(AshDepthMath.BuriedMm, open, "an eruption now buries an ordinary tile as well.");
     }
 
     /// <summary>The vent's own comp block, which is where the everyday throw cadence is tuned.</summary>
@@ -576,13 +585,15 @@ public class AshEruptionTests {
     public void ATremorReachesPastTheApronAndStopsInsideThePlume() {
         float clearRadius = float.Parse(Field(VentComp(), "clearRadius"), CultureInfo.InvariantCulture);
 
-        Assert.IsTrue(
-            clearRadius + 1f < AshEruption.TremorRadiusCells,
+        Assert.IsLessThan(
+            AshEruption.TremorRadiusCells,
+            clearRadius + 1f,
             $"a tremor reaches {AshEruption.TremorRadiusCells} cells and the vent sweeps {clearRadius} clear."
         );
 
-        Assert.IsTrue(
-            AshEruption.TremorRadiusCells <= AshPlume.RadiusCells,
+        Assert.IsLessThanOrEqualTo(
+            AshPlume.RadiusCells,
+            AshEruption.TremorRadiusCells,
             $"a tremor reaches {AshEruption.TremorRadiusCells} cells, past the {AshPlume.RadiusCells} the plume covers."
         );
     }
@@ -600,8 +611,9 @@ public class AshEruptionTests {
 
         Assert.AreEqual(50f, days, 0.001f, "the eruption no longer pays the fifty days of throws the incident def claims.");
 
-        Assert.IsTrue(
-            days > seasonDays,
+        Assert.IsGreaterThan(
+            seasonDays,
+            days,
             $"an eruption showers {days:0} days of vent metal, and the condition's letter promises more than the "
             + $"{seasonDays:0} days a season gives."
         );
@@ -619,15 +631,17 @@ public class AshEruptionTests {
         Assert.AreEqual(0.07f, AshEruption.ThrowShake, 0.0001f, "the throw shake moved off vanilla's one-cell collapse.");
         Assert.AreEqual(0.15f, AshEruption.TremorShake, 0.0001f, "the tremor shake moved off vanilla's collapse curve.");
 
-        Assert.IsTrue(AshEruption.ThrowShake > 0f, "a throw asks the camera for nothing at all.");
+        Assert.IsGreaterThan(0f, AshEruption.ThrowShake, "a throw asks the camera for nothing at all.");
 
-        Assert.IsTrue(
-            AshEruption.ThrowShake < AshEruption.TremorShake,
+        Assert.IsLessThan(
+            AshEruption.TremorShake,
+            AshEruption.ThrowShake,
             "a throw now shakes the screen at least as hard as the ground moving, so the two stop being tellable apart."
         );
 
-        Assert.IsTrue(
-            AshEruption.TremorShake < VanillaMaxShake,
+        Assert.IsLessThan(
+            VanillaMaxShake,
+            AshEruption.TremorShake,
             $"a tremor asks for {AshEruption.TremorShake}, which saturates vanilla's own {VanillaMaxShake} ceiling."
         );
     }
@@ -641,12 +655,12 @@ public class AshEruptionTests {
         string source = ConditionSource;
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Find\.CameraDriver\.shaker\.DoShake\("),
+            CameraShakePattern.IsMatch(source),
             "the eruption asks for no camera shake at all, so a throw and a tremor both land in silence."
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Find\.CurrentMap"),
+            CurrentMapPattern.IsMatch(source),
             "the shake is not gated on the map the player is looking at."
         );
     }
@@ -657,9 +671,9 @@ public class AshEruptionTests {
     /// </summary>
     [TestMethod]
     public void TheShakeIsAskedForOncePerBeatAndNotOncePerVent() {
-        Assert.AreEqual(
+        Assert.HasCount(
             1,
-            Regex.Matches(ConditionSource, @"shaker\.DoShake\s*\(").Count,
+            ShakeCallPattern.Matches(ConditionSource),
             "the eruption asks the camera to shake from more than one place, so the count per beat is no longer one."
         );
     }
@@ -673,12 +687,12 @@ public class AshEruptionTests {
         string source = ConditionSource;
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"private static bool ThrowFromEveryVent"),
+            ThrowReportsLandingPattern.IsMatch(source),
             "ThrowFromEveryVent no longer reports whether a lump landed, so the throw shake cannot wait on one."
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"ThrowsPerVent\)\s*&&\s*ThrowFromEveryVent"),
+            ShakeWaitsForThrowPattern.IsMatch(source),
             "the throw beat shakes the screen whether or not a lump landed."
         );
     }
@@ -692,15 +706,16 @@ public class AshEruptionTests {
     public void TheIncidentIsSomethingTheStorytellerCanPick() {
         XElement incident = DefNamed("IncidentDef", IncidentDefName);
 
-        Assert.IsTrue(
-            float.Parse(Field(incident, "baseChance"), CultureInfo.InvariantCulture) > 0f,
+        Assert.IsGreaterThan(
+            0f,
+            float.Parse(Field(incident, "baseChance"), CultureInfo.InvariantCulture),
             "the eruption has a baseChance of zero, so no storyteller will ever fire it."
         );
 
         Assert.AreEqual(WorkerClass, Field(incident, "workerClass"));
         Assert.AreEqual(ConditionDefName, Field(incident, "gameCondition"));
         Assert.IsTrue(Field(incident, "durationDays").Contains('~'), "durationDays belongs on the def as a range.");
-        Assert.IsTrue(float.Parse(Field(incident, "minRefireDays"), CultureInfo.InvariantCulture) > 0f);
+        Assert.IsGreaterThan(0f, float.Parse(Field(incident, "minRefireDays"), CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -754,4 +769,28 @@ public class AshEruptionTests {
         Assert.IsTrue(ClassIsDeclared(WorkerClass), $"{WorkerClass} is named by a def but declared nowhere.");
         Assert.IsTrue(ClassIsDeclared(ConditionClass), $"{ConditionClass} is named by a def but declared nowhere.");
     }
+
+    [GeneratedRegex(@"ThingsListAtFast\s*\(")]
+    private static partial Regex ThingsListAtFastPattern { get; }
+
+    [GeneratedRegex(@"AddRange\(\s*map\.thingGrid\.ThingsListAtFast\s*\(")]
+    private static partial Regex ThingsListCopiedPattern { get; }
+
+    [GeneratedRegex(@"public override void GameConditionTick\(\)\s*\{(.*?)\n    \}", RegexOptions.Singleline)]
+    private static partial Regex GameConditionTickPattern { get; }
+
+    [GeneratedRegex(@"Find\.CameraDriver\.shaker\.DoShake\(")]
+    private static partial Regex CameraShakePattern { get; }
+
+    [GeneratedRegex(@"Find\.CurrentMap")]
+    private static partial Regex CurrentMapPattern { get; }
+
+    [GeneratedRegex(@"shaker\.DoShake\s*\(")]
+    private static partial Regex ShakeCallPattern { get; }
+
+    [GeneratedRegex(@"private static bool ThrowFromEveryVent")]
+    private static partial Regex ThrowReportsLandingPattern { get; }
+
+    [GeneratedRegex(@"ThrowsPerVent\)\s*&&\s*ThrowFromEveryVent")]
+    private static partial Regex ShakeWaitsForThrowPattern { get; }
 }

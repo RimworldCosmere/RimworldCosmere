@@ -42,7 +42,7 @@ public class OathLadderWiringTests {
 
         for (int i = 0; i < lines.Length; i++) {
             string trimmed = lines[i].TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith('*')) continue;
 
             kept.Add(lines[i]);
         }
@@ -52,8 +52,9 @@ public class OathLadderWiringTests {
 
     [TestMethod]
     public void LadderIsDrawn() {
-        Assert.IsTrue(
-            CodeOnly(Section).Contains("OathLadder.Draw"),
+        Assert.Contains(
+            "OathLadder.Draw",
+            CodeOnly(Section),
             "The dock body has to draw the ladder, not just reserve height for it."
         );
     }
@@ -62,13 +63,14 @@ public class OathLadderWiringTests {
     public void CeilingSentenceIsRightAligned() {
         string code = CodeOnly(Section);
         int start = code.IndexOf("CeilingCaption(", StringComparison.Ordinal);
-        Assert.IsTrue(start > 0, "The ceiling sentence is still drawn somewhere.");
+        Assert.IsGreaterThan(0, start, "The ceiling sentence is still drawn somewhere.");
 
         int end = code.IndexOf(");", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, "The ceiling sentence's draw call has to close.");
+        Assert.IsGreaterThan(start, end, "The ceiling sentence's draw call has to close.");
 
-        Assert.IsTrue(
-            code.Substring(start, end - start).Contains("TextAnchor.MiddleRight"),
+        Assert.Contains(
+            "TextAnchor.MiddleRight",
+            code.Substring(start, end - start),
             "The ceiling sentence is the right-hand aside under the ladder, not the left caption."
         );
     }

@@ -37,31 +37,31 @@ public class MetalGroupFoldTests {
     [TestMethod]
     public void FoldStateLivesOnTheSharedBase() {
         string source = DockSource("DockSectionBase.cs");
-        StringAssert.Contains(source, "collapsedGroups", "Both dock sections must share one fold store.");
-        StringAssert.Contains(source, "IsGroupCollapsed");
-        StringAssert.Contains(source, "ToggleGroupFold");
+        Assert.Contains("collapsedGroups", source, "Both dock sections must share one fold store.");
+        Assert.Contains("IsGroupCollapsed", source);
+        Assert.Contains("ToggleGroupFold", source);
     }
 
     [TestMethod]
     public void AllomancyKeepsPerGroupFoldState() {
         string source = UISource("AllomancyDockSection.cs");
-        StringAssert.Contains(source, "IsCollapsed", "Fold state must reach both the height pass and the draw pass.");
-        StringAssert.Contains(source, "ToggleGroup");
+        Assert.Contains("IsCollapsed", source, "Fold state must reach both the height pass and the draw pass.");
+        Assert.Contains("ToggleGroup", source);
     }
 
     [TestMethod]
     public void FoldingAGroupClosesAMetalOpenInsideIt() {
         string source = UISource("AllomancyDockSection.cs");
-        StringAssert.Contains(source, "if (expandedMetal == id) expandedMetal = null;");
-        StringAssert.Contains(source, "if (pendingMetal == id) pendingMetal = null;");
+        Assert.Contains("if (expandedMetal == id) expandedMetal = null;", source);
+        Assert.Contains("if (pendingMetal == id) pendingMetal = null;", source);
     }
 
     [TestMethod]
     public void FoldedGroupSkipsItsTilesAndSaysWhatIsHidden() {
         string source = UISource("MetallicArtsTable.cs");
-        StringAssert.Contains(source, "CC_Dock_Group_Folded", "A folded group must summarise its metal count.");
-        StringAssert.Contains(source, "Widgets.ButtonInvisible(headerRect)", "The heading must be the fold control.");
-        StringAssert.Contains(source, "if (folded) {", "Height and draw must both skip a folded group's tiles.");
+        Assert.Contains("CC_Dock_Group_Folded", source, "A folded group must summarise its metal count.");
+        Assert.Contains("Widgets.ButtonInvisible(headerRect)", source, "The heading must be the fold control.");
+        Assert.Contains("if (folded) {", source, "Height and draw must both skip a folded group's tiles.");
     }
 
     [TestMethod]
@@ -73,6 +73,6 @@ public class MetalGroupFoldTests {
 
         Assert.IsNotNull(dir);
         string xml = File.ReadAllText(Path.Combine(dir.FullName, "CosmereCore", "Languages", "English", "Keyed", "Dock.xml"));
-        StringAssert.Contains(xml, "<CC_Dock_Group_Folded>");
+        Assert.Contains("<CC_Dock_Group_Folded>", xml);
     }
 }

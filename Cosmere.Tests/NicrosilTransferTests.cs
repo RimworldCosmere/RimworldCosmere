@@ -51,25 +51,28 @@ public class NicrosilTransferTests {
 
     [TestMethod]
     public void AFullBandCarriesAPawnPastTheFirstHeightening() {
-        Assert.IsTrue(
-            BeuFor("Cosmere_Scadrial_Thing_MetalmindBand") > FirstHeightening,
+        Assert.IsGreaterThan(
+            FirstHeightening,
+            BeuFor("Cosmere_Scadrial_Thing_MetalmindBand"),
             "a full nicrosil band should clear the 1st Heightening"
         );
     }
 
     [TestMethod]
     public void ABraceletDoesNot() {
-        Assert.IsTrue(
-            BeuFor("Cosmere_Scadrial_Thing_MetalmindBracelet") < FirstHeightening,
+        Assert.IsLessThan(
+            FirstHeightening,
+            BeuFor("Cosmere_Scadrial_Thing_MetalmindBracelet"),
             "a bracelet should fall short of the 1st Heightening"
         );
     }
 
     [TestMethod]
     public void OnlyALegendaryBandReachesTheSecond() {
-        Assert.IsTrue(BeuFor("Cosmere_Scadrial_Thing_MetalmindBand") < SecondHeightening);
-        Assert.IsTrue(
-            BeuFor("Cosmere_Scadrial_Thing_MetalmindBand") * 2f > SecondHeightening,
+        Assert.IsLessThan(SecondHeightening, BeuFor("Cosmere_Scadrial_Thing_MetalmindBand"));
+        Assert.IsGreaterThan(
+            SecondHeightening,
+            BeuFor("Cosmere_Scadrial_Thing_MetalmindBand") * 2f,
             "quality 2.0 doubles capacity, which should clear the 2nd"
         );
     }
@@ -77,9 +80,9 @@ public class NicrosilTransferTests {
     // Nicrosilminds read brighter because they hold Investiture, not an attribute.
     [TestMethod]
     public void NicrosilConvertsHigherThanAnOrdinaryMetalmind() {
-        Assert.IsTrue(
-            ScadrialMetallurgyConstants.NicrosilBeuPerCharge >
-            ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit
+        Assert.IsGreaterThan(
+            ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit,
+            ScadrialMetallurgyConstants.NicrosilBeuPerCharge
         );
     }
 

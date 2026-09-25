@@ -8,7 +8,13 @@ namespace Cosmere.Tests;
 
 /// <summary>Guards the kandra designer's tab strip: its labels, its click handling and its colours.</summary>
 [TestClass]
-public class KandraDesignerTabsTests {
+public partial class KandraDesignerTabsTests {
+    [GeneratedRegex(@"Widgets\.DrawMenuSection\((?:left|right)Plate\)")]
+    private static partial Regex PlateSection { get; }
+
+    [GeneratedRegex(@"new Color\s*\(|#[0-9a-fA-F]{6}")]
+    private static partial Regex HardCodedColour { get; }
+
     private static readonly string[] TabKeys = ["CS_Kandra_Tab_Body", "CS_Kandra_Tab_Hair", "CS_Kandra_Tab_Eyes"];
 
     private static string RepoRoot {
@@ -49,7 +55,7 @@ public class KandraDesignerTabsTests {
         XElement root = XDocument.Load(GeneralKeyedPath).Root!;
 
         foreach (string key in TabKeys) {
-            StringAssert.Contains(source, key, "The tab strip no longer labels itself from " + key + ".");
+            Assert.Contains(key, source, "The tab strip no longer labels itself from " + key + ".");
 
             Assert.IsNotNull(
                 root.Element(key),
@@ -69,11 +75,12 @@ public class KandraDesignerTabsTests {
         foreach (string call in new[] {
                      "Widgets.ButtonInvisible", "Widgets.DrawHighlightIfMouseover", "MouseoverSounds.DoRegion",
                  }) {
-            StringAssert.Contains(source, call, "The tab strip dropped " + call + ", so a tab stops answering the mouse.");
+            Assert.Contains(call, source, "The tab strip dropped " + call + ", so a tab stops answering the mouse.");
         }
 
-        Assert.IsFalse(
-            source.Contains("Widgets.ButtonText"),
+        Assert.DoesNotContain(
+            "Widgets.ButtonText",
+            source,
             "A ButtonText in the tab strip draws a vanilla button over the tab's own styling."
         );
     }
@@ -83,15 +90,15 @@ public class KandraDesignerTabsTests {
     public void TheTwoColumnShapeDrawsAPlatePerColumnAndLeavesRoomForTheScrollbar() {
         string source = File.ReadAllText(TabsSourcePath);
 
-        Assert.AreEqual(
+        Assert.HasCount(
             2,
-            Regex.Matches(source, @"Widgets\.DrawMenuSection\((?:left|right)Plate\)").Count,
+            PlateSection.Matches(source),
             "Each column needs its own menu section, or one tab's content floats on the window background."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "ScrollbarWidth",
+            source,
             "The columns no longer deduct the scrollbar, so the bar sits on top of the last chip in every row."
         );
     }
@@ -101,7 +108,7 @@ public class KandraDesignerTabsTests {
     public void TheTabStripInventsNoColourOfItsOwn() {
         string source = File.ReadAllText(TabsSourcePath);
 
-        foreach (Match match in Regex.Matches(source, @"new Color\s*\(|#[0-9a-fA-F]{6}")) {
+        foreach (Match match in HardCodedColour.Matches(source)) {
             Assert.Fail(
                 "Dialog_KandraForms.Tabs writes its own colour at offset " + match.Index
                 + ". Every colour here comes from BaseWindow or KandraAppearance."

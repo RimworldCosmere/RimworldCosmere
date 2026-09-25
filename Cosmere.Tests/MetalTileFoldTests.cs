@@ -37,38 +37,39 @@ public class MetalTileFoldTests {
     [TestMethod]
     public void AllomancyTilePassesAFoldLabel() {
         string source = UISource("AllomancyDockSection.cs");
-        StringAssert.Contains(source, "foldLabel:", "The allomancy tile must pass a fold label.");
-        StringAssert.Contains(source, "CC_Dock_Fold_Hide");
-        StringAssert.Contains(source, "CC_Dock_Fold_Show");
+        Assert.Contains("foldLabel:", source, "The allomancy tile must pass a fold label.");
+        Assert.Contains("CC_Dock_Fold_Hide", source);
+        Assert.Contains("CC_Dock_Fold_Show", source);
     }
 
     [TestMethod]
     public void FeruchemyTilePassesAFoldLabel() {
         string source = UISource("FeruchemyDockSection.cs");
-        StringAssert.Contains(source, "CC_Dock_Fold_Hide");
-        StringAssert.Contains(source, "CC_Dock_Fold_Show");
+        Assert.Contains("CC_Dock_Fold_Hide", source);
+        Assert.Contains("CC_Dock_Fold_Show", source);
     }
 
     [TestMethod]
     public void FoldLabelDoesNotRideTheBandStack() {
-        Assert.IsFalse(
-            TileSource.Contains("foldY"),
+        Assert.DoesNotContain(
+            "foldY",
+            TileSource,
             "The fold word must not get its own row under the note - the band stack owns that space."
         );
-        StringAssert.Contains(
-            TileSource,
+        Assert.Contains(
             "Rect foldRect = new Rect(rect.xMax - 5f - foldWidth, textY, foldWidth, tinyH);",
+            TileSource,
             "The fold word shares the note row and takes the right edge."
         );
-        StringAssert.Contains(
-            TileSource,
+        Assert.Contains(
             "Rect noteRect = new Rect(rect.xMax - 5f - foldWidth - noteWidth, textY, noteWidth, tinyH);",
+            TileSource,
             "The note must step left of the fold word, or a compounded readout draws under it."
         );
     }
 
     [TestMethod]
     public void FoldLabelIsDrawnTinyAndRightAligned() {
-        StringAssert.Contains(TileSource, "TextAnchor.MiddleRight, DockPalette.GroupLabel");
+        Assert.Contains("TextAnchor.MiddleRight, DockPalette.GroupLabel", TileSource);
     }
 }

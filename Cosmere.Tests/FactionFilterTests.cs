@@ -39,8 +39,9 @@ public class FactionFilterTests {
 
     [TestMethod]
     public void HiddenFactionsBypassTheScenarioFilter() {
-        Assert.IsTrue(
-            PatchSource.Contains("faction.hidden"),
+        Assert.Contains(
+            "faction.hidden",
+            PatchSource,
             "Without a hidden-faction bypass, Ancients is never created and Faction.OfAncients is null. " +
             "That NREs PawnGenerator during relation generation, which strands starting pawns without gear."
         );
@@ -94,7 +95,7 @@ public class FactionFilterTests {
                 bool hasSet = faction.Descendants("xenotypeChances").Elements().Any();
                 if (!hasSet || !nobleOnly) continue;
 
-                List<XElement> groups = faction.Descendants("pawnGroupMakers").Elements().ToList();
+                List<XElement> groups = [.. faction.Descendants("pawnGroupMakers").Elements()];
                 if (groups.Count == 0) continue;
 
                 bool fieldsSkaa = groups
@@ -105,7 +106,7 @@ public class FactionFilterTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -145,7 +146,7 @@ public class FactionFilterTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -264,8 +265,8 @@ public class FactionFilterTests {
             }
         }
 
-        Assert.IsTrue(worlds.Count > 0, "Found no world defs - the walk is wrong, not the data.");
-        Assert.IsTrue(factions.Count > 0, "Found no faction defs - the walk is wrong, not the data.");
+        Assert.IsNotEmpty(worlds, "Found no world defs - the walk is wrong, not the data.");
+        Assert.IsNotEmpty(factions, "Found no faction defs - the walk is wrong, not the data.");
 
         List<string> offenders = [];
         foreach (string faction in factions) {
@@ -277,9 +278,8 @@ public class FactionFilterTests {
             if (matches != 1) offenders.Add($"{faction} matches {matches} worlds");
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Each faction has to name exactly one world: " + string.Join("; ", offenders)
         );
     }
@@ -337,9 +337,8 @@ public class FactionFilterTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "These call FactionGenerator directly and will be filtered out: " + string.Join(", ", offenders)
         );
     }

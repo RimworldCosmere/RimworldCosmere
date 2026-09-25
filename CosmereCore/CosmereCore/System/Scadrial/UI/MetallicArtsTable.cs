@@ -83,42 +83,68 @@ public static class MetallicArtsTable {
             }
 
             y += HeaderGap;
-
-            for (int r = 0; r < group.Rows.Count; r++) {
-                int column = r % Columns;
-                bool aloneInRow = column == 0 && r == group.Rows.Count - 1;
-                Rect tileRect = new Rect(
-                    rect.x + column * (tileWidth + TileGap),
-                    y,
-                    aloneInRow ? rect.width : tileWidth,
-                    MetalTile.Height
-                );
-                drawTile(tileRect, group.Rows[r]);
-
-                bool endOfRow = column == Columns - 1 || r == group.Rows.Count - 1;
-                if (!endOfRow) continue;
-
-                // strip sits under the open metal's row, a join gap below it - only that tile reaches across to merge.
-                int openIndex = drawStrip == null
-                    ? -1
-                    : OpenIndexInRow(group, r - column, r, expandedSubsystemId);
-
-                float rowY = y;
-                y += MetalTile.Height;
-                if (openIndex < 0) {
-                    y += TileGap;
-                    continue;
-                }
-
-                DrawOpenStrip(
-                    rect, y, rowY, tileWidth, group, openIndex, expandedStripHeight, stripFullHeight, drawStrip!
-                );
-
-                y += JoinGap + expandedStripHeight + TileGap;
-            }
+            y = DrawGroupRows(
+                rect,
+                y,
+                tileWidth,
+                group,
+                expandedSubsystemId,
+                expandedStripHeight,
+                stripFullHeight,
+                drawTile,
+                drawStrip
+            );
 
             y += QuadGap;
         }
+    }
+
+    /// <summary>One group's tiles, plus the open metal's strip. Returns the y below them.</summary>
+    private static float DrawGroupRows(
+        Rect rect,
+        float y,
+        float tileWidth,
+        MetalGroup group,
+        string? expandedSubsystemId,
+        float expandedStripHeight,
+        float stripFullHeight,
+        Action<Rect, MetalRow> drawTile,
+        Action<Rect, MetalRow, Rect>? drawStrip
+    ) {
+        for (int r = 0; r < group.Rows.Count; r++) {
+            int column = r % Columns;
+            bool aloneInRow = column == 0 && r == group.Rows.Count - 1;
+            Rect tileRect = new Rect(
+                rect.x + column * (tileWidth + TileGap),
+                y,
+                aloneInRow ? rect.width : tileWidth,
+                MetalTile.Height
+            );
+            drawTile(tileRect, group.Rows[r]);
+
+            bool endOfRow = column == Columns - 1 || r == group.Rows.Count - 1;
+            if (!endOfRow) continue;
+
+            // strip sits under the open metal's row, a join gap below it - only that tile reaches across to merge.
+            int openIndex = drawStrip == null
+                ? -1
+                : OpenIndexInRow(group, r - column, r, expandedSubsystemId);
+
+            float rowY = y;
+            y += MetalTile.Height;
+            if (openIndex < 0) {
+                y += TileGap;
+                continue;
+            }
+
+            DrawOpenStrip(
+                rect, y, rowY, tileWidth, group, openIndex, expandedStripHeight, stripFullHeight, drawStrip!
+            );
+
+            y += JoinGap + expandedStripHeight + TileGap;
+        }
+
+        return y;
     }
 
     /// <summary>The group's name, and the fold affordance when the caller owns one.</summary>

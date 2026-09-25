@@ -14,7 +14,7 @@ namespace Cosmere.Tests;
 ///     game rather than at load.
 /// </summary>
 [TestClass]
-public class KandraEyePaletteTests {
+public partial class KandraEyePaletteTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -43,18 +43,18 @@ public class KandraEyePaletteTests {
     public void AnEyeColourWithNoKeyPrintsItsOwnKeyNameAtThePlayer() {
         List<(string name, string key)> rows = Table("EyeColour");
 
-        Assert.AreEqual(12, rows.Count, $"Expected the twelve agreed eye colours, found {rows.Count}.");
+        Assert.HasCount(12, rows, $"Expected the twelve agreed eye colours, found {rows.Count}.");
         AssertKeysResolve(rows, "eye colour");
     }
 
     [TestMethod]
     public void AnIrisSizeOrLightStrengthWithNoKeyPrintsItsOwnKeyNameAtThePlayer() {
         List<(string name, string key)> iris = Table("Iris");
-        Assert.AreEqual(2, iris.Count, $"Expected two iris sizes, found {iris.Count}.");
+        Assert.HasCount(2, iris, $"Expected two iris sizes, found {iris.Count}.");
         AssertKeysResolve(iris, "iris size");
 
         List<(string name, string key)> light = Table("EyeLight");
-        Assert.AreEqual(3, light.Count, $"Expected three eye light strengths, found {light.Count}.");
+        Assert.HasCount(3, light, $"Expected three eye light strengths, found {light.Count}.");
         AssertKeysResolve(light, "eye light strength");
     }
 
@@ -93,8 +93,9 @@ public class KandraEyePaletteTests {
 
         HashSet<string> defined = DefinedKeys();
         foreach (string key in keys) {
-            Assert.IsTrue(
-                defined.Contains(key),
+            Assert.Contains(
+                key,
+                defined,
                 $"{key} is referenced but not defined under Languages/English/Keyed, so the game prints the key name."
             );
         }
@@ -104,10 +105,10 @@ public class KandraEyePaletteTests {
     public void AnEyeLightStrengthOutsideTheBrightnessRangeDrawsTheSameEyeAsTheOneBesideIt() {
         List<float> strengths = Strengths();
 
-        Assert.AreEqual(3, strengths.Count, $"Expected three eye light strengths, found {strengths.Count}.");
-        Assert.AreEqual(
+        Assert.HasCount(3, strengths, $"Expected three eye light strengths, found {strengths.Count}.");
+        Assert.HasCount(
             3,
-            strengths.Distinct().Count(),
+            strengths.Distinct().ToList(),
             "Two eye light strengths are equal, so two picker rows draw an identical eye."
         );
 
@@ -143,8 +144,9 @@ public class KandraEyePaletteTests {
                 float[] drawn = Draw(stone, dim, (strength - 1f) * lift);
 
                 for (int i = 0; i < off.Length; i++) {
-                    Assert.IsTrue(
-                        drawn[i] >= off[i],
+                    Assert.IsGreaterThanOrEqualTo(
+                        off[i],
+                        drawn[i],
                         $"Lighting {name} eyes at {strength} makes channel {i} darker than unlit. "
                         + "Every strength has to be at least as bright as no light at all."
                     );
@@ -154,7 +156,7 @@ public class KandraEyePaletteTests {
     }
 
     private static float[] Draw(float[] stone, float dim, float lift) {
-        return stone.Select(channel => Math.Clamp((channel * dim) + lift, 0f, 1f)).ToArray();
+        return [.. stone.Select(channel => Math.Clamp(channel * dim + lift, 0f, 1f))];
     }
 
     private static float MinDelta(float[] a, float[] b) {
@@ -162,24 +164,26 @@ public class KandraEyePaletteTests {
     }
 
     private static List<float> Strengths() {
-        return Regex.Matches(Source("EyeLights"), @"""[^""]+""\s*,\s*([0-9.]+)f")
-            .Select(match => float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture))
-            .ToList();
+        return [
+            .. EyeLightStrengthPattern.Matches(Source("EyeLights"))
+                .Select(match => float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture)),
+        ];
     }
 
     private static List<(string name, float[] stone)> EyeColours() {
-        return Regex.Matches(Source("EyeColourTable"), @"""([^""]+)""\s*,\s*""([0-9a-fA-F]{6})""")
-            .Select(match => (
-                match.Groups[1].Value,
-                Enumerable.Range(0, 3)
-                    .Select(i => int.Parse(
-                        match.Groups[2].Value.Substring(i * 2, 2),
-                        NumberStyles.HexNumber,
-                        CultureInfo.InvariantCulture
-                    ) / 255f)
-                    .ToArray()
-            ))
-            .ToList();
+        return [
+            .. EyeColourRowPattern.Matches(Source("EyeColourTable"))
+                .Select(match => (
+                    match.Groups[1].Value,
+                    Enumerable.Range(0, 3)
+                        .Select(i => int.Parse(
+                            match.Groups[2].Value.AsSpan(i * 2, 2),
+                            NumberStyles.HexNumber,
+                            CultureInfo.InvariantCulture
+                        ) / 255f)
+                        .ToArray()
+                )),
+        ];
     }
 
     private static float Constant(string name) {
@@ -207,8 +211,8 @@ public class KandraEyePaletteTests {
         string table = source[declaration.Index..source.IndexOf("];", declaration.Index, StringComparison.Ordinal)];
 
         List<(string name, string key)> rows = [];
-        foreach (Match row in Regex.Matches(table, @"\(\s*(?:""([^""]+)""|(\w+))\s*,[^)]*\)")) {
-            Match key = Regex.Match(row.Value, @"""(CS_Kandra_\w+)""");
+        foreach (Match row in TableRowPattern.Matches(table)) {
+            Match key = RowLabelKeyPattern.Match(row.Value);
             string name = row.Groups[1].Success ? row.Groups[1].Value : Const(source, row.Groups[2].Value);
             rows.Add((name, key.Success ? key.Groups[1].Value : string.Empty));
         }
@@ -231,8 +235,9 @@ public class KandraEyePaletteTests {
                 key,
                 $"The {what} '{name}' carries no labelKey, so the picker shows nothing to read."
             );
-            Assert.IsTrue(
-                defined.Contains(key),
+            Assert.Contains(
+                key,
+                defined,
                 $"{key} is referenced but not defined under Languages/English/Keyed, so the game prints the key name."
             );
         }
@@ -244,4 +249,16 @@ public class KandraEyePaletteTests {
             .Select(element => element.Name.LocalName)
             .ToHashSet(StringComparer.Ordinal);
     }
+
+    [GeneratedRegex(@"""[^""]+""\s*,\s*([0-9.]+)f")]
+    private static partial Regex EyeLightStrengthPattern { get; }
+
+    [GeneratedRegex(@"""([^""]+)""\s*,\s*""([0-9a-fA-F]{6})""")]
+    private static partial Regex EyeColourRowPattern { get; }
+
+    [GeneratedRegex(@"\(\s*(?:""([^""]+)""|(\w+))\s*,[^)]*\)")]
+    private static partial Regex TableRowPattern { get; }
+
+    [GeneratedRegex(@"""(CS_Kandra_\w+)""")]
+    private static partial Regex RowLabelKeyPattern { get; }
 }

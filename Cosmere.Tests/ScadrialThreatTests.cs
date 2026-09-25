@@ -23,8 +23,8 @@ public class ScadrialThreatTests {
     public void OneMetal_CostsMoreThanAColonist() {
         float misting = ScadrialThreat.ForMetalborn(false, false, 1, 0);
 
-        Assert.IsTrue(misting > 1f, $"a Misting should beat a plain colonist, got {misting}");
-        Assert.IsTrue(misting < 2f, $"one metal should not double a pawn, got {misting}");
+        Assert.IsGreaterThan(1f, misting, $"a Misting should beat a plain colonist, got {misting}");
+        Assert.IsLessThan(2f, misting, $"one metal should not double a pawn, got {misting}");
     }
 
     /// <summary>
@@ -37,7 +37,9 @@ public class ScadrialThreatTests {
 
         for (int metals = 1; metals <= 20; metals++) {
             float stack = ScadrialThreat.ForMetalborn(false, false, metals, 0);
-            Assert.IsTrue(stack <= mistborn, $"{metals} metals billed {stack} against a Mistborn's {mistborn}");
+            Assert.IsLessThanOrEqualTo(
+                mistborn, stack, $"{metals} metals billed {stack} against a Mistborn's {mistborn}"
+            );
         }
     }
 
@@ -47,14 +49,17 @@ public class ScadrialThreatTests {
 
         for (int metals = 1; metals <= 20; metals++) {
             float stack = ScadrialThreat.ForMetalborn(false, false, 0, metals);
-            Assert.IsTrue(stack <= full, $"{metals} metals billed {stack} against a full Feruchemist's {full}");
+            Assert.IsLessThanOrEqualTo(
+                full, stack, $"{metals} metals billed {stack} against a full Feruchemist's {full}"
+            );
         }
     }
 
     [TestMethod]
     public void MistbornOutweighsFullFeruchemist() {
-        Assert.IsTrue(
-            ScadrialThreat.ForMetalborn(true, false, 0, 0) > ScadrialThreat.ForMetalborn(false, true, 0, 0),
+        Assert.IsGreaterThan(
+            ScadrialThreat.ForMetalborn(false, true, 0, 0),
+            ScadrialThreat.ForMetalborn(true, false, 0, 0),
             "burning every metal beats storing every attribute"
         );
     }
@@ -70,7 +75,9 @@ public class ScadrialThreatTests {
         float twinborn = ScadrialThreat.ForMetalborn(false, false, 1, 1);
 
         float halvesAdded = allomancyOnly + feruchemyOnly - 1f;
-        Assert.IsTrue(twinborn > halvesAdded, $"twinborn billed {twinborn} against {halvesAdded} for the halves");
+        Assert.IsGreaterThan(
+            halvesAdded, twinborn, $"twinborn billed {twinborn} against {halvesAdded} for the halves"
+        );
     }
 
     [TestMethod]
@@ -84,8 +91,10 @@ public class ScadrialThreatTests {
     public void FullBothIsTheMostExpensivePawn() {
         float both = ScadrialThreat.ForMetalborn(true, true, 0, 0);
 
-        Assert.IsTrue(both > ScadrialThreat.MistbornWorth, $"a Mistborn full Feruchemist billed only {both}");
-        Assert.IsTrue(both < 10f, $"no single pawn should be worth ten colonists, got {both}");
+        Assert.IsGreaterThan(
+            ScadrialThreat.MistbornWorth, both, $"a Mistborn full Feruchemist billed only {both}"
+        );
+        Assert.IsLessThan(10f, both, $"no single pawn should be worth ten colonists, got {both}");
     }
 
     [TestMethod]
@@ -98,7 +107,7 @@ public class ScadrialThreatTests {
         Assert.AreEqual(0f, ScadrialThreat.ForSpikes(0), 0.0001f);
         Assert.AreEqual(0f, ScadrialThreat.ForSpikes(-3), 0.0001f);
         Assert.AreEqual(ScadrialThreat.SpikeWorth, ScadrialThreat.ForSpikes(1), 0.0001f);
-        Assert.IsTrue(ScadrialThreat.ForSpikes(4) > ScadrialThreat.ForSpikes(3));
+        Assert.IsGreaterThan(ScadrialThreat.ForSpikes(3), ScadrialThreat.ForSpikes(4));
     }
 
     /// <summary>
@@ -107,8 +116,9 @@ public class ScadrialThreatTests {
     /// </summary>
     [TestMethod]
     public void ASpikeCostsLessThanTheGiftItGrants() {
-        Assert.IsTrue(
-            ScadrialThreat.SpikeWorth < ScadrialThreat.MistbornWorth - 1f,
+        Assert.IsLessThan(
+            ScadrialThreat.MistbornWorth - 1f,
+            ScadrialThreat.SpikeWorth,
             "a single spike must not approach the full Allomantic gift"
         );
     }
@@ -155,16 +165,16 @@ public class ScadrialThreatTests {
         for (int i = 0; i < 19; i++) colony.Add(0f);
 
         float coverage = ScadrialThreat.Coverage(colony);
-        Assert.IsTrue(coverage < 0.02f, $"one pawn in twenty hid {coverage} of the colony");
-        Assert.IsTrue(ScadrialThreat.Coppercloud(1000f, coverage) > 985f);
+        Assert.IsLessThan(0.02f, coverage, $"one pawn in twenty hid {coverage} of the colony");
+        Assert.IsGreaterThan(985f, ScadrialThreat.Coppercloud(1000f, coverage));
     }
 
     [TestMethod]
     public void GearIsNotFree() {
         Assert.AreEqual(0f, ScadrialThreat.ForGear(0, 0), 0.0001f);
-        Assert.IsTrue(ScadrialThreat.ForGear(1, 0) > 0f);
-        Assert.IsTrue(ScadrialThreat.ForGear(0, 1) > 0f);
-        Assert.IsTrue(ScadrialThreat.ForGear(3, 3) > ScadrialThreat.ForGear(1, 1));
+        Assert.IsGreaterThan(0f, ScadrialThreat.ForGear(1, 0));
+        Assert.IsGreaterThan(0f, ScadrialThreat.ForGear(0, 1));
+        Assert.IsGreaterThan(ScadrialThreat.ForGear(1, 1), ScadrialThreat.ForGear(3, 3));
     }
 
     /// <summary>
@@ -195,6 +205,8 @@ public class ScadrialThreatTests {
         float loadedMisting = ScadrialThreat.ForMetalborn(false, false, 1, 0) + ScadrialThreat.ForGear(99, 99);
         float bareMistborn = ScadrialThreat.ForMetalborn(true, false, 0, 0);
 
-        Assert.IsTrue(loadedMisting < bareMistborn, $"loaded Misting {loadedMisting} vs Mistborn {bareMistborn}");
+        Assert.IsLessThan(
+            bareMistborn, loadedMisting, $"loaded Misting {loadedMisting} vs Mistborn {bareMistborn}"
+        );
     }
 }

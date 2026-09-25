@@ -24,9 +24,9 @@ public class DockButtonTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     /// <summary>The file with comments stripped, so prose explaining a banned pattern is not read as one.</summary>
     private static string CodeOnly(params string[] parts) {
@@ -35,7 +35,7 @@ public class DockButtonTests {
 
         for (int i = 0; i < lines.Length; i++) {
             string trimmed = lines[i].TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith('*')) continue;
 
             kept.Add(lines[i]);
         }
@@ -47,23 +47,23 @@ public class DockButtonTests {
     public void ButtonHasNoKindsAndNoAccentFill() {
         string source = CodeOnly("Core", "UI", "Dock", "DockButton.cs");
 
-        Assert.IsFalse(source.Contains("DockButtonKind"), "Buttons have one surface; there are no kinds.");
-        Assert.IsFalse(source.Contains("Lighten("), "Nothing lightens an accent into a fill any more.");
-        Assert.IsFalse(source.Contains("new Color(accent.r"), "No accent-derived fill or border.");
+        Assert.DoesNotContain("DockButtonKind", source, "Buttons have one surface; there are no kinds.");
+        Assert.DoesNotContain("Lighten(", source, "Nothing lightens an accent into a fill any more.");
+        Assert.DoesNotContain("new Color(accent.r", source, "No accent-derived fill or border.");
     }
 
     [TestMethod]
     public void AbilityIconsDrawAtTwentyPixels() {
         string source = CodeOnly("Core", "UI", "Dock", "DockButton.cs");
 
-        Assert.IsTrue(source.Contains("IconSize = 20f"), "Aura icons and bendalloy stop reading below 20px.");
+        Assert.Contains("IconSize = 20f", source, "Aura icons and bendalloy stop reading below 20px.");
     }
 
     [TestMethod]
     public void AbilityRowsDrawTheAbilityIcon() {
         string source = CodeOnly("System", "Scadrial", "UI", "AllomancyDockSection.cs");
 
-        Assert.IsTrue(source.Contains("uiIcon"), "An ability row is named by its own icon.");
+        Assert.Contains("uiIcon", source, "An ability row is named by its own icon.");
     }
 
     /// <summary>
@@ -71,24 +71,28 @@ public class DockButtonTests {
     /// </summary>
     [TestMethod]
     public void BoldIsAppliedAfterTruncationNotBefore() {
-        Assert.IsFalse(
-            CodeOnly("Core", "UI", "Dock", "DockButton.cs").Contains("<b>"),
+        Assert.DoesNotContain(
+            "<b>",
+            CodeOnly("Core", "UI", "Dock", "DockButton.cs"),
             "The button asks for bold; it never builds the tag itself."
         );
-        Assert.IsFalse(
-            CodeOnly("System", "Roshar", "UI", "SurgebindingDockSection.cs").Contains("<b>"),
+        Assert.DoesNotContain(
+            "<b>",
+            CodeOnly("System", "Roshar", "UI", "SurgebindingDockSection.cs"),
             "A running ability row asks for bold; it never builds the tag itself."
         );
-        Assert.IsTrue(
-            CodeOnly("Core", "UI", "UIText.cs").Contains("bool bold"),
+        Assert.Contains(
+            "bool bold",
+            CodeOnly("Core", "UI", "UIText.cs"),
             "EllipsisLabel owns the tag, so it can wrap the string after it fits."
         );
     }
 
     [TestMethod]
     public void EllipsisLabelDoesNotWrap() {
-        Assert.IsTrue(
-            CodeOnly("Core", "UI", "UIText.cs").Contains("Text.WordWrap = false"),
+        Assert.Contains(
+            "Text.WordWrap = false",
+            CodeOnly("Core", "UI", "UIText.cs"),
             "An ellipsised label that wraps gets its second line clipped by the row."
         );
     }

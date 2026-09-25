@@ -36,7 +36,7 @@ public class SteelJumpRangeTests {
     public void AnIdleAbilityNeverSizesToZeroRange() {
         float range = SteelJumpRange.For(Base, SteelJumpRange.PowerFor(null, 0), 0.474f, HumanMass);
 
-        Assert.IsTrue(range > 5f, $"An idle ability sized the jump to {range} tiles, so it lands in place.");
+        Assert.IsGreaterThan(5f, range, $"An idle ability sized the jump to {range} tiles, so it lands in place.");
     }
 
     [TestMethod]
@@ -44,8 +44,8 @@ public class SteelJumpRangeTests {
         float burning = SteelJumpRange.For(Base, 1, 0.1f, HumanMass);
         float flaring = SteelJumpRange.For(Base, 2, 0.1f, HumanMass);
 
-        Assert.IsTrue(burning > 5f, $"A fresh Misting jumped only {burning} tiles while burning.");
-        Assert.IsTrue(flaring > 10f, $"A fresh Misting jumped only {flaring} tiles while flaring.");
+        Assert.IsGreaterThan(5f, burning, $"A fresh Misting jumped only {burning} tiles while burning.");
+        Assert.IsGreaterThan(10f, flaring, $"A fresh Misting jumped only {flaring} tiles while flaring.");
     }
 
     [TestMethod]
@@ -63,8 +63,8 @@ public class SteelJumpRangeTests {
         float middling = SteelJumpRange.For(Base, 2, 0.75f, HumanMass);
         float strong = SteelJumpRange.For(Base, 2, 3.35f, HumanMass);
 
-        Assert.IsTrue(middling > weak);
-        Assert.IsTrue(strong > middling);
+        Assert.IsGreaterThan(weak, middling);
+        Assert.IsGreaterThan(middling, strong);
     }
 
     [TestMethod]
@@ -72,7 +72,7 @@ public class SteelJumpRangeTests {
         float light = SteelJumpRange.For(Base, 2, 0.75f, HumanMass);
         float laden = SteelJumpRange.For(Base, 2, 0.75f, HumanMass * 2f);
 
-        Assert.IsTrue(laden < light);
+        Assert.IsLessThan(light, laden);
     }
 
     [TestMethod]

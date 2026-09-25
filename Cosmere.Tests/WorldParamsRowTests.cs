@@ -20,7 +20,9 @@ public class WorldParamsRowTests {
     private const float BottomButtons = 38f;
     private const float BottomPad = 17f;
 
-    private static float ColumnHeight(float windowHeight) => windowHeight - BottomButtons - TitleHeight - BottomPad;
+    private static float ColumnHeight(float windowHeight) {
+        return windowHeight - BottomButtons - TitleHeight - BottomPad;
+    }
 
     /// <summary>
     ///     Vanilla's cursor: seed at 0, randomize +40, coverage +40, rainfall +40, temperature
@@ -54,8 +56,9 @@ public class WorldParamsRowTests {
             float ourTop = column - RowPitch * 2;
             float vanillaBottom = VanillaBottom(odyssey, biotech, tutorial);
 
-            Assert.IsTrue(
-                ourTop >= vanillaBottom,
+            Assert.IsGreaterThanOrEqualTo(
+                vanillaBottom,
+                ourTop,
                 $"At {windowHeight}px (odyssey={odyssey} biotech={biotech} tutorial={tutorial}) our rows " +
                 $"start at y={ourTop} but vanilla's last row ends at y={vanillaBottom}."
             );
@@ -69,8 +72,12 @@ public class WorldParamsRowTests {
             float column = ColumnHeight(windowHeight);
             float ourTop = column - RowPitch * 2;
 
-            Assert.IsTrue(ourTop >= 0, $"At {windowHeight}px the column is only {column}px, too short for two rows.");
-            Assert.IsTrue(ourTop + RowPitch * 2 <= column, $"At {windowHeight}px the rows overflow the column.");
+            Assert.IsGreaterThanOrEqualTo(
+                0, ourTop, $"At {windowHeight}px the column is only {column}px, too short for two rows."
+            );
+            Assert.IsLessThanOrEqualTo(
+                column, ourTop + RowPitch * 2, $"At {windowHeight}px the rows overflow the column."
+            );
         }
     }
 
@@ -83,6 +90,8 @@ public class WorldParamsRowTests {
         float column = ColumnHeight(1080f);
         float free = column - VanillaBottom(true, true, false);
 
-        Assert.IsTrue(free >= RowPitch * 2, $"Only {free}px free below vanilla's rows, need {RowPitch * 2}.");
+        Assert.IsGreaterThanOrEqualTo(
+            RowPitch * 2, free, $"Only {free}px free below vanilla's rows, need {RowPitch * 2}."
+        );
     }
 }

@@ -12,7 +12,7 @@ namespace Cosmere.Tests;
 ///     MetallicArtsMetalDef inheriting it. They share a defName and nothing else.
 /// </summary>
 [TestClass]
-public class MetalDefIdentityTests {
+public partial class MetalDefIdentityTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -45,12 +45,14 @@ public class MetalDefIdentityTests {
             RepoRoot, "CosmereCore", "CosmereCore", "Core", "Extension", "DefExtension.cs"
         ));
 
-        Assert.IsTrue(
-            ext.Contains("def.defName == other.defName"),
+        Assert.Contains(
+            "def.defName == other.defName",
+            ext,
             "IsOneOf has to match on defName. Reference equality cannot see across two DefDatabases."
         );
-        Assert.IsFalse(
-            ext.Contains("defs.Any(def.Equals)"),
+        Assert.DoesNotContain(
+            "defs.Any(def.Equals)",
+            ext,
             "defs.Any(def.Equals) is what made the duralumin exemption dead code."
         );
     }
@@ -61,16 +63,10 @@ public class MetalDefIdentityTests {
     /// </summary>
     [TestMethod]
     public void NothingComparesAMetalbornMetalAgainstThePlainMetalDefOf() {
-        // comparing defName to defName is the correct form, so it is not an offender
-        Regex suspect = new Regex(
-            @"(==|!=|\.Equals\(|IsOneOf\()\s*MetalDefOf\.[A-Za-z]+(?![A-Za-z]|\.defName)",
-            RegexOptions.Compiled
-        );
-
         List<string> offenders = [];
         foreach ((string path, string text) in SourceFiles()) {
             string[] lines = text.Split('\n');
-            foreach (Match match in suspect.Matches(text)) {
+            foreach (Match match in PlainMetalDefOfComparison.Matches(text)) {
                 int lineNumber = text.Take(match.Index).Count(c => c == '\n') + 1;
                 string line = lines[lineNumber - 1].Trim();
 
@@ -81,9 +77,8 @@ public class MetalDefIdentityTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Compare against MetallicArtsMetalDefOf, or on defName:\n" + string.Join("\n", offenders)
         );
     }
@@ -97,17 +92,23 @@ public class MetalDefIdentityTests {
         string gene = File.ReadAllText(Path.Combine(
             RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "Allomancer.cs"
         ));
-        Assert.IsTrue(
-            gene.Contains("IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)"),
+        Assert.Contains(
+            "IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)",
+            gene,
             "Metalborn.metal is a MetallicArtsMetalDef, so the exemption has to name those defs."
         );
 
         string pawnExt = File.ReadAllText(Path.Combine(
             RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Extension", "PawnExtension.cs"
         ));
-        Assert.IsTrue(
-            pawnExt.Contains("metal.defName == MetalDefOf.Lerasium.defName"),
+        Assert.Contains(
+            "metal.defName == MetalDefOf.Lerasium.defName",
+            pawnExt,
             "CanUseMetal takes a MetalDef but every caller hands it a MetallicArtsMetalDef."
         );
     }
+
+    // comparing defName to defName is the correct form, so it is not an offender
+    [GeneratedRegex(@"(==|!=|\.Equals\(|IsOneOf\()\s*MetalDefOf\.[A-Za-z]+(?![A-Za-z]|\.defName)")]
+    private static partial Regex PlainMetalDefOfComparison { get; }
 }

@@ -40,7 +40,7 @@ public class GoldShadowTests {
             Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "Util", "IllusoryPawnUtility.cs"),
         ];
 
-        List<string> offenders = new List<string>();
+        List<string> offenders = [];
 
         foreach (string path in guarded) {
             Assert.IsTrue(File.Exists(path), $"Expected a guarded file at {path}");
@@ -54,9 +54,8 @@ public class GoldShadowTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "The illusory pawn path must stay faction-agnostic rather than depending on a specific " +
             $"faction existing. Offending files: {string.Join(", ", offenders)}"
         );
@@ -67,8 +66,9 @@ public class GoldShadowTests {
         string path = GoldAbilitySourcePath;
 
         Assert.IsTrue(File.Exists(path), $"Expected GoldAbility at {path}");
-        Assert.IsFalse(
-            File.ReadAllText(path).Contains("PawnGenerator"),
+        Assert.DoesNotContain(
+            "PawnGenerator",
+            File.ReadAllText(path),
             "The gold shadow must be built by IllusoryPawnUtility, not PawnGenerator."
         );
     }
@@ -90,14 +90,14 @@ public class GoldShadowTests {
         Assert.AreEqual("Cosmere_Scadrial_ThinkTree_GoldShadow", race.Element("thinkTreeMain")?.Value);
         Assert.AreEqual("Cosmere_Scadrial_ThinkTree_GoldShadowConstant", race.Element("thinkTreeConstant")?.Value);
 
-        List<string> declared = new List<string>();
+        List<string> declared = [];
         foreach (XElement tree in doc.Root.Elements("ThinkTreeDef")) {
             string? defName = tree.Element("defName")?.Value;
             if (defName != null) declared.Add(defName);
         }
 
-        CollectionAssert.Contains(declared, "Cosmere_Scadrial_ThinkTree_GoldShadow");
-        CollectionAssert.Contains(declared, "Cosmere_Scadrial_ThinkTree_GoldShadowConstant");
+        Assert.Contains("Cosmere_Scadrial_ThinkTree_GoldShadow", declared);
+        Assert.Contains("Cosmere_Scadrial_ThinkTree_GoldShadowConstant", declared);
     }
 
     [TestMethod]

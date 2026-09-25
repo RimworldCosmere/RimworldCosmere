@@ -27,9 +27,9 @@ public class StoreMemoryTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     /// <summary>
     ///     Every key under CosmereCore's Keyed folder. Which file holds one is the game's business,
@@ -71,10 +71,10 @@ public class StoreMemoryTests {
         List<float> offsets = [1.2f, -8.5f, 0.3f, 4f, -0.1f];
         offsets.Sort(MemoryMagnitude.CompareByWeight);
 
-        CollectionAssert.AreEqual(new[] { -8.5f, 4f, 1.2f, 0.3f, -0.1f }, offsets);
+        Assert.AreSequenceEqual(new[] { -8.5f, 4f, 1.2f, 0.3f, -0.1f }, offsets);
 
-        Assert.IsTrue(MemoryMagnitude.CompareByWeight(-9f, 2f) < 0, "A heavy grief outranks a light joy.");
-        Assert.IsTrue(MemoryMagnitude.CompareByWeight(2f, -9f) > 0);
+        Assert.IsLessThan(0, MemoryMagnitude.CompareByWeight(-9f, 2f), "A heavy grief outranks a light joy.");
+        Assert.IsGreaterThan(0, MemoryMagnitude.CompareByWeight(2f, -9f));
         Assert.AreEqual(0, MemoryMagnitude.CompareByWeight(3f, -3f), "Equal weight, either order.");
     }
 
@@ -91,12 +91,12 @@ public class StoreMemoryTests {
             "CC_Codex_Feruchemy_StoreMemory_Empty_Copperminds",
             "CC_Codex_Feruchemy_StoreMemory_NoRoomTip",
         }) {
-            Assert.IsTrue(dialog.Contains(key), $"{key} is never shown.");
-            Assert.IsTrue(keys.Contains(key), $"{key} is referenced but defined nowhere in Keyed.");
+            Assert.Contains(key, dialog, $"{key} is never shown.");
+            Assert.Contains(key, keys, $"{key} is referenced but defined nowhere in Keyed.");
         }
 
-        Assert.IsTrue(dialog.Contains("memories.Count == 0"), "An empty memory list needs its own line.");
-        Assert.IsTrue(dialog.Contains("copperminds.Count == 0"), "So does an empty coppermind list.");
+        Assert.Contains("memories.Count == 0", dialog, "An empty memory list needs its own line.");
+        Assert.Contains("copperminds.Count == 0", dialog, "So does an empty coppermind list.");
     }
 
     /// <summary>
@@ -107,8 +107,8 @@ public class StoreMemoryTests {
     public void AFullCoppermindNamesTheRoomItLacks() {
         string dialog = Core("System", "Scadrial", "Feruchemy", "UI", "Dialog_StoreMemory.cs");
 
-        Assert.IsTrue(dialog.Contains("TooltipHandler.TipRegion"), "The refusal has to be readable.");
-        Assert.IsTrue(dialog.Contains("mind.FreeSpace"), "Free space is a property; do not recompute it.");
+        Assert.Contains("TooltipHandler.TipRegion", dialog, "The refusal has to be readable.");
+        Assert.Contains("mind.FreeSpace", dialog, "Free space is a property; do not recompute it.");
 
         // the key can live in any file under Keyed; the game merges the folder.
         string tip = Directory
@@ -133,14 +133,14 @@ public class StoreMemoryTests {
         foreach (string owed in new[] {
             "DrawHighlightIfMouseover", "MouseoverSounds.DoRegion", "TooltipHandler.TipRegion",
         }) {
-            Assert.IsTrue(codex.Contains(owed), $"An interactive rect needs {owed}.");
+            Assert.Contains(owed, codex, $"An interactive rect needs {owed}.");
         }
 
         foreach (string key in new[] {
             "CC_Codex_Surgebinding_SprenEntry_Tip", "CC_Codex_Surgebinding_SprenEntry_TipUnsworn",
         }) {
-            Assert.IsTrue(codex.Contains(key), $"{key} is never shown.");
-            Assert.IsTrue(keys.Contains(key), $"{key} is referenced but defined nowhere in Keyed.");
+            Assert.Contains(key, codex, $"{key} is never shown.");
+            Assert.Contains(key, keys, $"{key} is referenced but defined nowhere in Keyed.");
         }
     }
 
@@ -152,8 +152,8 @@ public class StoreMemoryTests {
     public void TheWindowKeepsToRimWorldsDrawingRules() {
         string dialog = Core("System", "Scadrial", "Feruchemy", "UI", "Dialog_StoreMemory.cs");
 
-        Assert.IsFalse(dialog.Contains("GameFont.Large"), "There are only Tiny, Small and Medium.");
-        Assert.IsTrue(dialog.Contains("ScrollbarWidth"), "A scroll view has to deduct the scrollbar.");
-        Assert.IsTrue(dialog.Contains("MagnitudeColumnWidth"), "The signed figure needs a fixed column.");
+        Assert.DoesNotContain("GameFont.Large", dialog, "There are only Tiny, Small and Medium.");
+        Assert.Contains("ScrollbarWidth", dialog, "A scroll view has to deduct the scrollbar.");
+        Assert.Contains("MagnitudeColumnWidth", dialog, "The signed figure needs a fixed column.");
     }
 }

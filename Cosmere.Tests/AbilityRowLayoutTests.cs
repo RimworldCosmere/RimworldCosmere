@@ -15,6 +15,10 @@ namespace Cosmere.Tests;
 /// </remarks>
 [TestClass]
 public class AbilityRowLayoutTests {
+    private static readonly string[] SustainedThenTargeted = [
+        "SteelAura", "SteelBubble", "SteelJump", "SteelPush", "SteelCoinshot",
+    ];
+
     private static AbilityRow Sustained(string name) {
         return new AbilityRow(name, name, false, true);
     }
@@ -33,10 +37,7 @@ public class AbilityRowLayoutTests {
             Targeted("SteelCoinshot"),
         ]);
 
-        CollectionAssert.AreEqual(
-            new[] { "SteelAura", "SteelBubble", "SteelJump", "SteelPush", "SteelCoinshot" },
-            ordered.Select(r => r.DefName).ToList()
-        );
+        Assert.AreSequenceEqual(SustainedThenTargeted, ordered.Select(r => r.DefName).ToList());
     }
 
     [TestMethod]

@@ -28,7 +28,7 @@ public class DiminishingStackTests {
     public void EachFurtherSourceAddsHalfAgain() {
         // 4 + 2 + 1, so four Smokers never reach twice what one manages.
         Assert.AreEqual(7f, DiminishingStack.Combine([4f, 4f, 4f]), 0.0001f);
-        Assert.IsTrue(DiminishingStack.Combine([4f, 4f, 4f, 4f, 4f]) < 8f, "the stack converges");
+        Assert.IsLessThan(8f, DiminishingStack.Combine([4f, 4f, 4f, 4f, 4f]), "the stack converges");
     }
 
     [TestMethod]
@@ -44,6 +44,6 @@ public class DiminishingStackTests {
     [TestMethod]
     public void StackingAlwaysBeatsStandingAlone() {
         // guards against two Smokers reading as one, which is what a source set holding only one entry looked like.
-        Assert.IsTrue(DiminishingStack.Combine([3f, 3f]) > DiminishingStack.Combine([3f]));
+        Assert.IsGreaterThan(DiminishingStack.Combine([3f]), DiminishingStack.Combine([3f, 3f]));
     }
 }

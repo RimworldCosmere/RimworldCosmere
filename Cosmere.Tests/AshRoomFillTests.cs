@@ -119,7 +119,7 @@ public class AshRoomFillTests {
         float previous = float.MaxValue;
         for (int cells = 1; cells <= AshRoomFill.MaxCells; cells++) {
             float share = AshRoomFill.PerCellMm(140f, cells);
-            Assert.IsTrue(share < previous, $"{cells} cells took {share}mm, not less than {previous}mm.");
+            Assert.IsLessThan(previous, share, $"{cells} cells took {share}mm, not less than {previous}mm.");
             previous = share;
         }
     }
@@ -146,7 +146,9 @@ public class AshRoomFillTests {
         float perDay = AshRoomFill.PerCellMm(ShippedMillimetresPerDay, AshRoomFill.MaxCells);
         float days = AshDepthMath.BuriedMm / perDay;
 
-        Assert.IsTrue(days > 60f, $"a room at the cap buries in {days:0.0} days, fast enough to feel like a cliff.");
+        Assert.IsGreaterThan(
+            60f, days, $"a room at the cap buries in {days:0.0} days, fast enough to feel like a cliff."
+        );
     }
 
     /// <summary>
@@ -160,7 +162,9 @@ public class AshRoomFillTests {
         const int days = 30;
 
         float share = AshRoomFill.PerCellMm(ShippedMillimetresPerDay * cycleDays, AshRoomFill.MaxCells);
-        Assert.IsTrue(share < AshGrid.UnitMm, $"a cycle's share is {share}mm, so the bank is not what carries it.");
+        Assert.IsLessThan(
+            AshGrid.UnitMm, share, $"a cycle's share is {share}mm, so the bank is not what carries it."
+        );
 
         float remainder = 0f;
         int deposited = 0;
@@ -184,8 +188,8 @@ public class AshRoomFillTests {
     public void TheRoomFillPaysWhatItOwesTheBuriedSet() {
         string body = MethodContaining(VentSource, "AshRoomFill.PerCellMm");
 
-        StringAssert.Contains(body, "AddDepthMm", "the room fill no longer writes depth.");
-        StringAssert.Contains(body, "buried.Set(", "the room fill writes depth and leaves the buried set stale.");
+        Assert.Contains("AddDepthMm", body, "the room fill no longer writes depth.");
+        Assert.Contains("buried.Set(", body, "the room fill writes depth and leaves the buried set stale.");
     }
 
     /// <summary>
@@ -239,7 +243,7 @@ public class AshRoomFillTests {
     private static string MethodContaining(string source, string fingerprint) {
         string[] lines = source.Split('\n');
         int at = Array.FindIndex(lines, line => line.Contains(fingerprint));
-        Assert.IsTrue(at >= 0, $"no line in CompAshVent.cs mentions {fingerprint}.");
+        Assert.IsGreaterThanOrEqualTo(0, at, $"no line in CompAshVent.cs mentions {fingerprint}.");
 
         int start = at;
         while (start > 0 && !lines[start].StartsWith("    private ") && !lines[start].StartsWith("    public ")) {

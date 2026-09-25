@@ -13,7 +13,7 @@ namespace Cosmere.Pickle.Steps;
 /// <summary>Game conditions on the current map: the highstorm, and every other Cosmere
 /// effect that blankets a map for a while.</summary>
 [PickleSteps]
-public class GameConditionSteps {
+public static class GameConditionSteps {
     private const int TicksPerYield = 60;
 
     private const float WaitTimeoutSeconds = 120f;

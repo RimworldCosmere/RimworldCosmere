@@ -64,16 +64,19 @@ public class FactionLeaderTests {
             }
         }
 
-        Assert.IsTrue(defs.Count > 0, "Found no FactionDefs at all - the walk is wrong, not the defs.");
+        Assert.IsNotEmpty(defs, "Found no FactionDefs at all - the walk is wrong, not the defs.");
 
         List<string> offenders = [];
         foreach (XElement def in defs) {
             if ((string?)def.Attribute("Abstract") == "True") continue;
 
             // ShouldHaveLeader: humanlike, not hidden, not the player, not temporary.
-            if ((InheritedText(def, "humanlikeFaction") ?? "true").ToLowerInvariant() != "true") continue;
-            if ((InheritedText(def, "hidden") ?? "false").ToLowerInvariant() == "true") continue;
-            if ((InheritedText(def, "isPlayer") ?? "false").ToLowerInvariant() == "true") continue;
+            if (!string.Equals(InheritedText(def, "humanlikeFaction") ?? "true", "true", StringComparison.OrdinalIgnoreCase)) {
+                continue;
+            }
+
+            if (string.Equals(InheritedText(def, "hidden") ?? "false", "true", StringComparison.OrdinalIgnoreCase)) continue;
+            if (string.Equals(InheritedText(def, "isPlayer") ?? "false", "true", StringComparison.OrdinalIgnoreCase)) continue;
             if (Inherited(def, "fixedLeaderKinds") != null) continue;
 
             bool canLead = false;
@@ -97,6 +100,6 @@ public class FactionLeaderTests {
             "pawn group, so FactionTick logs 'Faction leader for X is null' every time it runs: " +
             string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 }

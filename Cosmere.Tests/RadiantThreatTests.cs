@@ -17,8 +17,8 @@ public class RadiantThreatTests {
     public void FirstIdeal_CostsMoreThanAColonist_ButNotMuchMore() {
         float worth = RadiantThreat.ForBond(0);
 
-        Assert.IsTrue(worth > 1f, $"a First Ideal Radiant should beat a plain colonist, got {worth}");
-        Assert.IsTrue(worth < 1.5f, $"a First Ideal Radiant should not be half a colonist again, got {worth}");
+        Assert.IsGreaterThan(1f, worth, $"a First Ideal Radiant should beat a plain colonist, got {worth}");
+        Assert.IsLessThan(1.5f, worth, $"a First Ideal Radiant should not be half a colonist again, got {worth}");
     }
 
     [TestMethod]
@@ -31,8 +31,9 @@ public class RadiantThreatTests {
         for (int i = 2; i <= RadiantThreat.MaxIdeal; i++) {
             float previousGap = steps[i - 1] - steps[i - 2];
             float thisGap = steps[i] - steps[i - 1];
-            Assert.IsTrue(
-                thisGap > previousGap,
+            Assert.IsGreaterThan(
+                previousGap,
+                thisGap,
                 $"ideal {i} gained {thisGap} where ideal {i - 1} gained {previousGap}"
             );
         }
@@ -47,7 +48,7 @@ public class RadiantThreatTests {
         float five = 5f * RadiantThreat.ForBond(0);
         float one = RadiantThreat.ForBond(RadiantThreat.MaxIdeal);
 
-        Assert.IsTrue(five > one, $"five firsts were {five}, one fifth was {one}");
+        Assert.IsGreaterThan(one, five, $"five firsts were {five}, one fifth was {one}");
     }
 
     [TestMethod]
@@ -81,7 +82,7 @@ public class RadiantThreatTests {
         float armed = RadiantThreat.ForPawn(null, RadiantThreat.ForShards(true, true));
 
         Assert.AreEqual(1f, plain, 0.0001f);
-        Assert.IsTrue(armed > plain + 3f, $"a bondless Shardbearer should be a squad, got {armed}");
+        Assert.IsGreaterThan(plain + 3f, armed, $"a bondless Shardbearer should be a squad, got {armed}");
     }
 
     /// <summary>
@@ -96,13 +97,14 @@ public class RadiantThreatTests {
         );
         float bareFifth = RadiantThreat.ForPawn([RadiantThreat.ForBond(RadiantThreat.MaxIdeal)], 0f);
 
-        Assert.IsTrue(armedFirst > bareFifth, $"armed first was {armedFirst}, bare fifth was {bareFifth}");
+        Assert.IsGreaterThan(bareFifth, armedFirst, $"armed first was {armedFirst}, bare fifth was {bareFifth}");
     }
 
     [TestMethod]
     public void PlateOutweighsBlade() {
-        Assert.IsTrue(
-            RadiantThreat.PlateWorth > RadiantThreat.BladeWorth,
+        Assert.IsGreaterThan(
+            RadiantThreat.BladeWorth,
+            RadiantThreat.PlateWorth,
             "Shardplate is the bigger combat swing of the two"
         );
     }
@@ -129,8 +131,8 @@ public class RadiantThreatTests {
         float bond = RadiantThreat.ForBond(4);
         float pair = RadiantThreat.ForPawn([bond, bond], 0f);
 
-        Assert.IsTrue(pair > bond, $"a second bond should count for something, got {pair} against {bond}");
-        Assert.IsTrue(pair < bond * 2f, $"a second bond doubled the pawn: {pair} against {bond}");
+        Assert.IsGreaterThan(bond, pair, $"a second bond should count for something, got {pair} against {bond}");
+        Assert.IsLessThan(bond * 2f, pair, $"a second bond doubled the pawn: {pair} against {bond}");
     }
 
     [TestMethod]
@@ -139,8 +141,9 @@ public class RadiantThreatTests {
         float strong = RadiantThreat.ForBond(4);
 
         Assert.AreEqual(RadiantThreat.ForPawn([weak, strong], 0f), RadiantThreat.ForPawn([strong, weak], 0f), 0.0001f);
-        Assert.IsTrue(
-            RadiantThreat.ForPawn([weak, strong], 0f) >= strong,
+        Assert.IsGreaterThanOrEqualTo(
+            strong,
+            RadiantThreat.ForPawn([weak, strong], 0f),
             "the strongest bond must never be discounted by a weaker one"
         );
     }
@@ -156,7 +159,11 @@ public class RadiantThreatTests {
             RadiantThreat.ForShards(true, true)
         );
 
-        Assert.IsTrue(worth > 6f, $"a Fifth Ideal Shardbearer should be worth more than six colonists, got {worth}");
-        Assert.IsTrue(worth < 10f, $"no single pawn should be worth ten colonists, got {worth}");
+        Assert.IsGreaterThan(
+            6f,
+            worth,
+            $"a Fifth Ideal Shardbearer should be worth more than six colonists, got {worth}"
+        );
+        Assert.IsLessThan(10f, worth, $"no single pawn should be worth ten colonists, got {worth}");
     }
 }

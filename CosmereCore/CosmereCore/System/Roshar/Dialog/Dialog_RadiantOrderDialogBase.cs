@@ -539,7 +539,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         }
     }
 
-    private string TraitPillLabel(TraitRequirement trait) {
+    private static string TraitPillLabel(TraitRequirement trait) {
         int degree = trait.degree ?? 0;
         TraitDegreeData? degreeData = null;
         try {

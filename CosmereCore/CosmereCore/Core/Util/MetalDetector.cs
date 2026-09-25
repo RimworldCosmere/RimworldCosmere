@@ -45,9 +45,7 @@ public static class MetalDetector {
 
         if (StuffMetalMass(thing, allowAluminum) is float stuffMass) return stuffMass;
 
-        if (thing.def.defName.Contains("Ancient")) {
-            if (thing.def.defName != "AncientFence") return 1;
-        }
+        if (thing.def.defName.Contains("Ancient") && thing.def.defName != "AncientFence") return 1;
 
         if (RecipesThatMake(thing.def).Any(recipe => RecipeUsesMetalIngredient(recipe, depth + 1, allowAluminum))) {
             return thing.GetStatValue(RimWorld.StatDefOf.Mass);
@@ -58,12 +56,17 @@ public static class MetalDetector {
             if (combinedMass > 0f) return combinedMass;
         }
 
-        if (!thing.def.killedLeavings.NullOrEmpty()) {
-            return thing.def.killedLeavings.Sum(def => GetMetalForThingDefCountClass(def, depth + 1, allowAluminum));
+        return PartsMetalMass(thing.def, depth, allowAluminum);
+    }
+
+    /// <summary>What the thing breaks down into: what it drops when killed, else what it was built from.</summary>
+    private static float PartsMetalMass(ThingDef def, int depth, bool allowAluminum) {
+        if (!def.killedLeavings.NullOrEmpty()) {
+            return def.killedLeavings.Sum(leaving => GetMetalForThingDefCountClass(leaving, depth + 1, allowAluminum));
         }
 
-        if (!thing.def.costList.NullOrEmpty()) {
-            return thing.def.costList.Sum(def => GetMetalForThingDefCountClass(def, depth + 1, allowAluminum));
+        if (!def.costList.NullOrEmpty()) {
+            return def.costList.Sum(cost => GetMetalForThingDefCountClass(cost, depth + 1, allowAluminum));
         }
 
         return 0f;

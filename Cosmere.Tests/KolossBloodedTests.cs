@@ -58,9 +58,9 @@ public class KolossBloodedTests {
             "KolossBirthPatch.cs"
         ));
 
-        Assert.IsTrue(patch.Contains("child.genes.SetXenotype(blooded)"), "SetXenotype adds the genes.");
-        Assert.IsFalse(patch.Contains("SetXenotypeDirect("), "SetXenotypeDirect adds none of them.");
-        Assert.IsTrue(patch.Contains("KolossFertility.CanBreedNow()"), "And only after the Catacendre.");
+        Assert.Contains("child.genes.SetXenotype(blooded)", patch, "SetXenotype adds the genes.");
+        Assert.DoesNotContain("SetXenotypeDirect(", patch, "SetXenotypeDirect adds none of them.");
+        Assert.Contains("KolossFertility.CanBreedNow()", patch, "And only after the Catacendre.");
     }
 
     /// <summary>
@@ -100,8 +100,8 @@ public class KolossBloodedTests {
             "ScadrialXenotypePatch.cs"
         ));
 
-        Assert.IsTrue(patch.Contains("Cosmere_Scadrial_Xenotype_KolossBlooded"), "They have to exist at all.");
-        Assert.IsTrue(patch.Contains("RandomElementByWeight"), "An even pick would make them a third of Scadrial.");
-        Assert.IsTrue(patch.Contains("KolossBlooded, 5f"), "Rare, not absent.");
+        Assert.Contains("Cosmere_Scadrial_Xenotype_KolossBlooded", patch, "They have to exist at all.");
+        Assert.Contains("RandomElementByWeight", patch, "An even pick would make them a third of Scadrial.");
+        Assert.Contains("KolossBlooded, 5f", patch, "Rare, not absent.");
     }
 }

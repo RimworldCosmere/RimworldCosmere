@@ -53,7 +53,7 @@ public class HediffDescriptionTests {
             }
         }
 
-        Assert.IsTrue(defs.Count > 0, "Found no HediffDefs at all - the walk is wrong, not the defs.");
+        Assert.IsNotEmpty(defs, "Found no HediffDefs at all - the walk is wrong, not the defs.");
 
         string? ClassOf(XElement def, int depth) {
             if (depth > 8) return null;
@@ -81,7 +81,7 @@ public class HediffDescriptionTests {
             "hediffClass does not resolve it, so the player reads the raw braces: " +
             string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public class HediffDescriptionTests {
             }
         }
 
-        Assert.IsTrue(byLabel.Count > 0, "Found no labelled HediffDefs - the walk is wrong, not the defs.");
+        Assert.IsNotEmpty(byLabel, "Found no labelled HediffDefs - the walk is wrong, not the defs.");
 
         List<string> collisions = [];
         foreach (KeyValuePair<string, List<string>> pair in byLabel) {
@@ -126,6 +126,6 @@ public class HediffDescriptionTests {
         string detail = "These hediffs share a label, so the health tab shows identical rows the " +
             "player cannot tell apart: " + string.Join("; ", collisions);
 
-        Assert.AreEqual(0, collisions.Count, detail);
+        Assert.IsEmpty(collisions, detail);
     }
 }

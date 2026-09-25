@@ -20,7 +20,7 @@ public class AwakenedMindBoonTests {
         XElement boon = Boon();
 
         Assert.AreEqual(HediffName, boon.Element("hediff")?.Value);
-        Assert.IsFalse(Read("BoonDefs.xml").Contains("NW_Boon_Psylink"), "the legacy psylink name came back");
+        Assert.DoesNotContain("NW_Boon_Psylink", Read("BoonDefs.xml"), "the legacy psylink name came back");
 
         // the name says awakened mind, so nothing here may quietly become a Royalty psylink grant
         Assert.IsNull(boon.Element("psylinkBoost"));
@@ -33,12 +33,12 @@ public class AwakenedMindBoonTests {
         string text = hediff.Element("description")!.Value;
 
         // the boon grants Connection, so its own text has to carry Cultivation and the opened mind
-        StringAssert.Contains(boon, "Cultivation");
-        StringAssert.Contains(boon, "Patterns surface");
+        Assert.Contains("Cultivation", boon);
+        Assert.Contains("Patterns surface", boon);
 
         // the hediff doubles absorption and speeds research; the description used to admit only one
-        StringAssert.Contains(text, "Investiture");
-        StringAssert.Contains(text, "Research");
+        Assert.Contains("Investiture", text);
+        Assert.Contains("Research", text);
 
         XElement stage = hediff.Element("stages")!.Elements("li").First();
         Assert.IsNotNull(stage.Element("statFactors")?.Element("Cosmere_InvestitureAbsorption"));

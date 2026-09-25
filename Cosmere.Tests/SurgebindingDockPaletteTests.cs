@@ -10,7 +10,7 @@ namespace Cosmere.Tests;
 ///     Stormlight gauge and the current oath stay blue; state is weight, colour and spacing.
 /// </summary>
 [TestClass]
-public class SurgebindingDockPaletteTests {
+public partial class SurgebindingDockPaletteTests {
     private static string Source {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -32,31 +32,37 @@ public class SurgebindingDockPaletteTests {
         }
     }
 
+    [GeneratedRegex(@"AbilityIconSize\s*=\s*20f")]
+    private static partial Regex AbilityIconSize { get; }
+
     [TestMethod]
     public void NoOutlinedBoxes() {
-        Assert.IsFalse(
-            Source.Contains("DrawBoxSolidWithOutline"),
+        Assert.DoesNotContain(
+            "DrawBoxSolidWithOutline",
+            Source,
             "Surge state is text weight and hover fill, not a bordered box."
         );
     }
 
     [TestMethod]
     public void NoNotchedTop() {
-        Assert.IsFalse(
-            Source.Contains("DrawNotchedTop"),
+        Assert.DoesNotContain(
+            "DrawNotchedTop",
+            Source,
             "The open surge cell draws no panel, so the strip has nothing to join through a notch."
         );
     }
 
     [TestMethod]
     public void NoAccentWash() {
-        Assert.IsFalse(Source.Contains("ActiveWash"), "Accent washes are gone from the dock.");
+        Assert.DoesNotContain("ActiveWash", Source, "Accent washes are gone from the dock.");
     }
 
     [TestMethod]
     public void NoSecondaryBlue() {
-        Assert.IsFalse(
-            Source.Contains("0.302f, 0.396f, 0.478f"),
+        Assert.DoesNotContain(
+            "0.302f, 0.396f, 0.478f",
+            Source,
             "The secondary blue accent was replaced by the dock's own accent."
         );
     }
@@ -64,35 +70,40 @@ public class SurgebindingDockPaletteTests {
     [TestMethod]
     public void AbilityIconsAreTwenty() {
         Assert.IsTrue(
-            Regex.IsMatch(Source, @"AbilityIconSize\s*=\s*20f"),
+            AbilityIconSize.IsMatch(Source),
             "Ability marks sit at 20px beside tiny text."
         );
     }
 
     [TestMethod]
     public void OathLadderIsDrawnAndMeasured() {
-        Assert.IsTrue(
-            Source.Contains("OathLadder.Draw("),
+        Assert.Contains(
+            "OathLadder.Draw(",
+            Source,
             "The oath ladder has to be drawn, not just written."
         );
-        Assert.IsTrue(
-            Source.Contains("+ OathLadderLayout.Height"),
+        Assert.Contains(
+            "+ OathLadderLayout.Height",
+            Source,
             "The expanded body has to reserve room for the ladder or it draws over the caption."
         );
     }
 
     [TestMethod]
     public void BlueOnlySurvivesOnTheGaugeAndTheOath() {
-        Assert.IsFalse(
-            Source.Contains("Skin.AccentColor"),
+        Assert.DoesNotContain(
+            "Skin.AccentColor",
+            Source,
             "The shard accent is blue here; labels and buttons take the dock's parchment accent."
         );
-        Assert.IsFalse(
-            Source.Contains("Skin.HeaderTextColor"),
+        Assert.DoesNotContain(
+            "Skin.HeaderTextColor",
+            Source,
             "The order tab reads parchment like every other dock header."
         );
-        Assert.IsTrue(
-            Source.Contains("Skin.BarFillColor"),
+        Assert.Contains(
+            "Skin.BarFillColor",
+            Source,
             "Blue still fills the Stormlight gauge and the oath ladder's current dot."
         );
     }
@@ -100,10 +111,10 @@ public class SurgebindingDockPaletteTests {
     [TestMethod]
     public void CeilingCaptionIsARightAlignedAside() {
         int ceiling = Source.IndexOf("CeilingCaption(gene, order)", StringComparison.Ordinal);
-        Assert.IsTrue(ceiling > 0, "The ceiling sentence is still shown.");
-        Assert.IsTrue(
-            Source.IndexOf("TextAnchor.MiddleRight", ceiling, StringComparison.Ordinal)
-            < Source.IndexOf("TextAnchor.MiddleLeft", ceiling, StringComparison.Ordinal),
+        Assert.IsGreaterThan(0, ceiling, "The ceiling sentence is still shown.");
+        Assert.IsLessThan(
+            Source.IndexOf("TextAnchor.MiddleLeft", ceiling, StringComparison.Ordinal),
+            Source.IndexOf("TextAnchor.MiddleRight", ceiling, StringComparison.Ordinal),
             "The ceiling sentence sits right of the refill note, not as the primary caption."
         );
     }

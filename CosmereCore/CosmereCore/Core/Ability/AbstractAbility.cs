@@ -151,7 +151,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         return base.GizmosVisible();
     }
 
-    public new virtual void Initialize() {
+    // not virtual: the ctor calls this, so an override would run against a half-built subclass.
+    public new void Initialize() {
         if (def.comps.Any<AbilityCompProperties>()) {
             comps = [];
             for (int index = 0; index < def.comps.Count; ++index) {

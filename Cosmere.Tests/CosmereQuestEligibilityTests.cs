@@ -21,7 +21,7 @@ public class CosmereQuestEligibilityTests {
             daysElapsed = 100,
             era = "Cosmere_Scadrial_Era_PreCatacendre",
             freeColonistCount = 8,
-            enabledShards = new HashSet<string> { "Preservation", "Ruin" },
+            enabledShards = ["Preservation", "Ruin"],
         };
     }
 
@@ -29,7 +29,7 @@ public class CosmereQuestEligibilityTests {
         return new QuestCandidate {
             defName = "Cosmere_Scadrial_Quest_AtiumCaravan",
             kind = QuestKind.Repeatable,
-            eras = new List<string> { "Cosmere_Scadrial_Era_PreCatacendre" },
+            eras = ["Cosmere_Scadrial_Era_PreCatacendre"],
             cooldownDays = 25,
             selectionWeight = 1.2f,
         };
@@ -96,10 +96,10 @@ public class CosmereQuestEligibilityTests {
     [TestMethod]
     public void CandidateWithMultipleErasMatchesEitherButNotAThird() {
         QuestCandidate multiEra = Convoy();
-        multiEra.eras = new List<string> {
+        multiEra.eras = [
             "Cosmere_Scadrial_Era_PreCatacendre",
             "Cosmere_Scadrial_Era_PostCatacendre",
-        };
+        ];
 
         QuestWorldState pre = BaseState();
         QuestWorldState post = BaseState();
@@ -115,14 +115,14 @@ public class CosmereQuestEligibilityTests {
     [TestMethod]
     public void MissingRequiredShardIsRejected() {
         QuestCandidate needsHarmony = Convoy();
-        needsHarmony.requiredShards = new List<string> { "Harmony" };
+        needsHarmony.requiredShards = ["Harmony"];
         Assert.IsFalse(CosmereQuestEligibility.IsEligible(needsHarmony, BaseState()));
     }
 
     [TestMethod]
     public void MissingRequiredFlagIsRejected() {
         QuestCandidate needsLead = Convoy();
-        needsLead.requiredFlags = new List<string> { "HathsinLead" };
+        needsLead.requiredFlags = ["HathsinLead"];
         Assert.IsFalse(CosmereQuestEligibility.IsEligible(needsLead, BaseState()));
 
         QuestWorldState withFlag = BaseState();
@@ -239,12 +239,11 @@ public class CosmereQuestEligibilityTests {
         QuestCandidate ok = Convoy();
         QuestCandidate wrongEra = Convoy();
         wrongEra.defName = "wrong";
-        wrongEra.eras = new List<string> { "Cosmere_Scadrial_Era_PostCatacendre" };
+        wrongEra.eras = ["Cosmere_Scadrial_Era_PostCatacendre"];
 
-        List<QuestCandidate> result =
-            CosmereQuestEligibility.Filter(new List<QuestCandidate> { ok, wrongEra }, BaseState());
+        List<QuestCandidate> result = CosmereQuestEligibility.Filter([ok, wrongEra], BaseState());
 
-        Assert.AreEqual(1, result.Count);
+        Assert.HasCount(1, result);
         Assert.AreEqual(ok.defName, result[0].defName);
     }
 
@@ -284,10 +283,9 @@ public class CosmereQuestEligibilityTests {
         QuestWorldState state = BaseState();
         state.capstoneStates[pits.defName] = CapstoneState.NotFired;
 
-        List<QuestCandidate> result =
-            CosmereQuestEligibility.Filter(new List<QuestCandidate> { convoy, pits }, state);
+        List<QuestCandidate> result = CosmereQuestEligibility.Filter([convoy, pits], state);
 
-        Assert.AreEqual(1, result.Count);
+        Assert.HasCount(1, result);
         Assert.AreEqual(convoy.defName, result[0].defName);
     }
 
@@ -326,7 +324,7 @@ public class CosmereQuestEligibilityTests {
     [TestMethod]
     public void ShardPrereqRequiresEveryListedShard() {
         ShardPrereq prereq = new ShardPrereq {
-            shards = new List<string> { "Preservation", "Ruin" },
+            shards = ["Preservation", "Ruin"],
         };
         Assert.IsTrue(prereq.IsMet(BaseState()));
 

@@ -47,8 +47,9 @@ public class AshGasTests {
         return comp;
     }
 
-    private static float Float(XElement? element, float fallback) =>
-        element == null ? fallback : float.Parse(element.Value, CultureInfo.InvariantCulture);
+    private static float Float(XElement? element, float fallback) {
+        return element == null ? fallback : float.Parse(element.Value, CultureInfo.InvariantCulture);
+    }
 
     [TestMethod]
     public void DistanceIsMeasuredFromTheFootprintNotItsCentre() {
@@ -69,7 +70,9 @@ public class AshGasTests {
         for (int step = 0; step <= 20; step++) {
             float here = AshGasFalloff.Exposure(step * 0.25f, 5f, 1f);
             Assert.IsTrue(here >= 0f && here <= 1f, $"Exposure {here} at {step * 0.25f} cells is outside 0-1.");
-            Assert.IsTrue(here < previous, $"Exposure did not drop between {(step - 1) * 0.25f} and {step * 0.25f}.");
+            Assert.IsLessThan(
+                previous, here, $"Exposure did not drop between {(step - 1) * 0.25f} and {step * 0.25f}."
+            );
             previous = here;
         }
     }
@@ -80,8 +83,8 @@ public class AshGasTests {
     [TestMethod]
     public void AMouthStrengthAboveOneCannotPushExposurePastFullyExposed() {
         Assert.AreEqual(1f, AshGasFalloff.Exposure(0f, 5f, 9f), 0.0001f);
-        Assert.IsTrue(AshGasFalloff.Exposure(1f, 5f, 9f) <= 1f);
-        Assert.IsTrue(AshGasFalloff.Exposure(2f, 5f, -3f) >= 0f);
+        Assert.IsLessThanOrEqualTo(1f, AshGasFalloff.Exposure(1f, 5f, 9f));
+        Assert.IsGreaterThanOrEqualTo(0f, AshGasFalloff.Exposure(2f, 5f, -3f));
     }
 
     /// <summary>
@@ -91,17 +94,19 @@ public class AshGasTests {
     [TestMethod]
     public void TheMouthHarmsAndTheOuterRingIsAlreadyRelief() {
         float radius = Float(Comp("CompProperties_AshGas").Element("radius"), 0f);
-        Assert.IsTrue(radius >= 2f, $"A radius of {radius} leaves no room for a falloff at all.");
+        Assert.IsGreaterThanOrEqualTo(2f, radius, $"A radius of {radius} leaves no room for a falloff at all.");
 
         float atMouth = AshGasFalloff.Exposure(0f, radius, 1f);
-        Assert.IsTrue(
-            AshLungMath.SeverityDeltaPerHour(atMouth, 0f) > 0f,
+        Assert.IsGreaterThan(
+            0f,
+            AshLungMath.SeverityDeltaPerHour(atMouth, 0f),
             "Standing unmasked on the vent mouth has to cost something."
         );
 
         float atEdge = AshGasFalloff.Exposure(radius - 1f, radius, 1f);
-        Assert.IsTrue(
-            AshLungMath.SeverityDeltaPerHour(atEdge, 0f) < 0f,
+        Assert.IsLessThan(
+            0f,
+            AshLungMath.SeverityDeltaPerHour(atEdge, 0f),
             $"A cell one in from the radius sits at exposure {atEdge:0.###}, which still harms. The outer ring " +
             "should read as thin air a pawn can work in."
         );
@@ -123,8 +128,10 @@ public class AshGasTests {
         );
 
         foreach (XElement field in gas.Elements()) {
-            Assert.IsFalse(
-                field.Name.LocalName.IndexOf("severity", StringComparison.OrdinalIgnoreCase) >= 0,
+            Assert.DoesNotContain(
+                "severity",
+                field.Name.LocalName,
+                StringComparison.OrdinalIgnoreCase,
                 $"The gas comp declares '{field.Name.LocalName}'. Severity per hour belongs to AshLungMath alone; " +
                 "two rate knobs fight and the stage spacing stops meaning anything."
             );
@@ -136,11 +143,12 @@ public class AshGasTests {
     public void TheVentPushesHeatHardEnoughToCookARoom() {
         XElement heat = Comp("CompProperties_HeatPusher");
 
-        Assert.IsTrue(
-            Float(heat.Element("heatPerSecond"), 0f) > 0f, "A heat pusher pushing nothing is an empty comp entry."
+        Assert.IsGreaterThan(
+            0f, Float(heat.Element("heatPerSecond"), 0f), "A heat pusher pushing nothing is an empty comp entry."
         );
-        Assert.IsTrue(
-            Float(heat.Element("heatPushMaxTemperature"), 0f) >= 60f,
+        Assert.IsGreaterThanOrEqualTo(
+            60f,
+            Float(heat.Element("heatPushMaxTemperature"), 0f),
             "Capped this low a sealed room only gets uncomfortable. The vent is meant to cook one."
         );
     }

@@ -61,8 +61,9 @@ public class AshMaskDefTests {
     public void TheClothMaskSlowsAshLungWithoutStoppingIt() {
         float delta = AshLungMath.SeverityDeltaPerHour(1f, ClothMaskFiltration);
 
-        Assert.IsTrue(
-            delta > 0f,
+        Assert.IsGreaterThan(
+            0f,
+            delta,
             $"filtration {ClothMaskFiltration} gives {delta}/hour at the mouth - a masked pawn heals there, "
             + "which makes the cloth mask immunity rather than a delay."
         );
@@ -73,15 +74,16 @@ public class AshMaskDefTests {
         float bare = AshLungMath.SeverityDeltaPerHour(1f, 0f);
         float masked = AshLungMath.SeverityDeltaPerHour(1f, ClothMaskFiltration);
 
-        Assert.IsTrue(masked < bare, $"masked {masked}/hour is no better than bare {bare}/hour.");
+        Assert.IsLessThan(bare, masked, $"masked {masked}/hour is no better than bare {bare}/hour.");
     }
 
     [TestMethod]
     public void TheGasMaskStopsAshLungOutright() {
         float delta = AshLungMath.SeverityDeltaPerHour(1f, GasMaskFiltration);
 
-        Assert.IsTrue(
-            delta <= 0f,
+        Assert.IsLessThanOrEqualTo(
+            0f,
+            delta,
             $"filtration {GasMaskFiltration} gives {delta}/hour at the mouth - the gas mask is meant to be "
             + "the one that stops it."
         );
@@ -89,8 +91,9 @@ public class AshMaskDefTests {
 
     [TestMethod]
     public void TheGasMaskBeatsTheClothMask() {
-        Assert.IsTrue(
-            GasMaskFiltration > ClothMaskFiltration,
+        Assert.IsGreaterThan(
+            ClothMaskFiltration,
+            GasMaskFiltration,
             $"gas mask {GasMaskFiltration} should filter more than the cloth mask {ClothMaskFiltration}."
         );
     }

@@ -25,9 +25,9 @@ public class DockChromeTests {
         }
     }
 
-    private static string Dock(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Dock", file
-    ));
+    private static string Dock(string file) {
+        return File.ReadAllText(Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Dock", file));
+    }
 
     /// <summary>
     ///     The same file with every comment gone, so a comment explaining the fill we removed does
@@ -38,7 +38,7 @@ public class DockChromeTests {
 
         foreach (string line in Dock(file).Split('\n')) {
             string trimmed = line.TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith('*')) continue;
 
             kept.Add(line);
         }
@@ -56,9 +56,11 @@ public class DockChromeTests {
             RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "UI", "AllomancyDockSection.cs"
         ));
 
-        StringAssert.Contains(section, "override float GetPinnedHeight", "Allomancy has to size its pinned strip.");
-        StringAssert.Contains(section, "override void DrawPinned", "Allomancy has to draw its pinned strip.");
-        StringAssert.Contains(section, "BurnReservePercentPerSecond(pawn, cell, ability)", "The strip reports the burn rate.");
+        Assert.Contains("override float GetPinnedHeight", section, "Allomancy has to size its pinned strip.");
+        Assert.Contains("override void DrawPinned", section, "Allomancy has to draw its pinned strip.");
+        Assert.Contains(
+            "BurnReservePercentPerSecond(pawn, cell, ability)", section, "The strip reports the burn rate."
+        );
     }
 
     /// <summary>
@@ -74,14 +76,14 @@ public class DockChromeTests {
         int pinned = accordion.IndexOf("section.DrawPinned(", StringComparison.Ordinal);
         int scroll = accordion.IndexOf("BeginScrollView", StringComparison.Ordinal);
 
-        Assert.IsTrue(height >= 0, "The accordion has to ask the section how tall its pinned strip is.");
-        Assert.IsTrue(pinned >= 0, "The accordion has to give a section its pinned slot.");
-        Assert.IsTrue(scroll >= 0, "A long body still scrolls.");
-        Assert.IsTrue(height < pinned, "The height query comes before the draw.");
-        Assert.IsTrue(pinned < scroll, "The pinned strip draws before the scroll view opens.");
+        Assert.IsGreaterThanOrEqualTo(0, height, "The accordion has to ask the section how tall its pinned strip is.");
+        Assert.IsGreaterThanOrEqualTo(0, pinned, "The accordion has to give a section its pinned slot.");
+        Assert.IsGreaterThanOrEqualTo(0, scroll, "A long body still scrolls.");
+        Assert.IsLessThan(pinned, height, "The height query comes before the draw.");
+        Assert.IsLessThan(scroll, pinned, "The pinned strip draws before the scroll view opens.");
 
-        StringAssert.Contains(accordion, "pinnedHeight > 0f", "A section with no strip gets no slot.");
-        StringAssert.Contains(accordion, "y += pinnedHeight", "The body starts below the strip, not under it.");
+        Assert.Contains("pinnedHeight > 0f", accordion, "A section with no strip gets no slot.");
+        Assert.Contains("y += pinnedHeight", accordion, "The body starts below the strip, not under it.");
     }
 
     /// <summary>
@@ -92,11 +94,9 @@ public class DockChromeTests {
     public void TheWindowSizesItselfAroundThePinnedStrip() {
         string window = CodeOnly("InvestitureDockWindow.cs");
 
-        StringAssert.Contains(
-            window, "GetPinnedHeight(", "The height total has to include the pinned strip."
-        );
-        StringAssert.Contains(
-            window, "DockBodyBudget.For", "The body cap drops by the strip, the same way the accordion caps it."
+        Assert.Contains("GetPinnedHeight(", window, "The height total has to include the pinned strip.");
+        Assert.Contains(
+            "DockBodyBudget.For", window, "The body cap drops by the strip, the same way the accordion caps it."
         );
     }
 
@@ -115,9 +115,9 @@ public class DockChromeTests {
             "A row cap hides a draining metal, which is the one thing the strip exists to prevent."
         );
 
-        StringAssert.Contains(
-            section,
+        Assert.Contains(
             "BurningStripLayout.HeightFor(BurningRowCount(",
+            section,
             "The pinned height has to follow the real burning count."
         );
     }

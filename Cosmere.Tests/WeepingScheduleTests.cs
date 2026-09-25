@@ -41,9 +41,10 @@ public class WeepingScheduleTests {
         for (int day = WeepingSchedule.StartDay; day < WeepingSchedule.DaysPerYear; day++) {
             int wait = WeepingSchedule.DaysToClearWeeping(day);
 
-            Assert.IsTrue(wait > 0, $"a storm on day {day} has to move at least a day");
-            Assert.IsTrue(
-                wait <= WeepingSchedule.DaysPerYear - WeepingSchedule.StartDay,
+            Assert.IsGreaterThan(0, wait, $"a storm on day {day} has to move at least a day");
+            Assert.IsLessThanOrEqualTo(
+                WeepingSchedule.DaysPerYear - WeepingSchedule.StartDay,
+                wait,
                 $"a storm on day {day} waits {wait} days, longer than the Weeping itself"
             );
         }

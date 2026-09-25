@@ -33,15 +33,15 @@ public class KandraEyeBloomPreviewTests {
     public void ThePreviewDrawsTheBloomAndNotJustTheCutout() {
         string source = Source("Dialog_KandraForms.Eyes.cs");
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "ShaderDatabase.MoteGlow",
+            source,
             "The preview no longer draws the bloom the pawn draws, so a lit eye reads as an unlit one."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "KandraAppearance.EyeLightStrengthFor(light) - 1f",
+            source,
             "The bloom pass takes its strength from somewhere other than the light, so it cannot match the pawn."
         );
     }
@@ -49,15 +49,15 @@ public class KandraEyeBloomPreviewTests {
     /// <summary>One drawer for both, so the preview can never drift from the picker chip again.</summary>
     [TestMethod]
     public void BothThePreviewAndThePickerGoThroughTheSameIrisDrawer() {
-        StringAssert.Contains(
-            Source("Dialog_KandraForms.cs"),
+        Assert.Contains(
             "DrawIris(",
+            Source("Dialog_KandraForms.cs"),
             "The body preview draws an iris by hand again instead of through the shared drawer."
         );
 
-        StringAssert.Contains(
-            Source("Dialog_KandraForms.Eyes.cs"),
+        Assert.Contains(
             "DrawIris(",
+            Source("Dialog_KandraForms.Eyes.cs"),
             "The picker rows draw an iris by hand again instead of through the shared drawer."
         );
     }
@@ -75,9 +75,9 @@ public class KandraEyeBloomPreviewTests {
             "A light row is back to a computed hex chip, which reads identically for every strength."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "DrawEyeRow(row, labelKey.Translate(), name == designEyeLight",
+            source,
             "The light rows no longer preview the eye they would make."
         );
     }

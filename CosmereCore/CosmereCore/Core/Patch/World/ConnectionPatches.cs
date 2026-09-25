@@ -22,7 +22,7 @@ public static class ConnectionPatch {
             }
         }
 
-        // TODO: layers will tie to shards eventually; grant only the pawn's layer's shards, not all.
+        // TODO(layers do not map to shards yet): grant the pawn's layer's shards once they do, not all of them.
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards == null) return;
 

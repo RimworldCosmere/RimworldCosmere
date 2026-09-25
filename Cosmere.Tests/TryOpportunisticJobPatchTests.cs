@@ -10,7 +10,7 @@ namespace Cosmere.Tests;
 ///     invalid IL on CoreCLR, so the transpiler has to reuse vanilla's `stloc; leave` return spill.
 /// </summary>
 [TestClass]
-public class TryOpportunisticJobPatchTests {
+public partial class TryOpportunisticJobPatchTests {
     private static string PatchSource {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -28,11 +28,14 @@ public class TryOpportunisticJobPatchTests {
     [TestMethod]
     public void NeverEmitsRetInsideTheForeach() {
         string source = PatchSource;
-        StringAssert.DoesNotMatch(
+        Assert.DoesNotMatchRegex(
+            RetOpCodePattern(),
             source,
-            new Regex(@"OpCodes\.Ret\b"),
             "A ret inside the foreach's try/finally is invalid IL. Copy vanilla's stloc + leave spill instead."
         );
-        StringAssert.Contains(source, "HaulToCellStorageJob", "The spill is located off vanilla's HaulToCellStorageJob call.");
+        Assert.Contains("HaulToCellStorageJob", source, "The spill is located off vanilla's HaulToCellStorageJob call.");
     }
+
+    [GeneratedRegex(@"OpCodes\.Ret\b")]
+    private static partial Regex RetOpCodePattern();
 }

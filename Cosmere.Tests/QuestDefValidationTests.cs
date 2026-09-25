@@ -34,7 +34,7 @@ public class QuestDefValidationTests {
     private static string QuestsDirectory => Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Quests");
 
     private static List<(string file, XElement def)> QuestDefs() {
-        List<(string file, XElement def)> defs = new List<(string file, XElement def)>();
+        List<(string file, XElement def)> defs = [];
         if (!Directory.Exists(QuestsDirectory)) return defs;
 
         foreach (string path in Directory.GetFiles(QuestsDirectory, "*.xml")) {
@@ -61,7 +61,7 @@ public class QuestDefValidationTests {
     }
 
     private static HashSet<string> DefNamesUnder(params string[] relativePathParts) {
-        HashSet<string> names = new HashSet<string>();
+        HashSet<string> names = [];
         string dir = Path.Combine(RepoRoot, Path.Combine(relativePathParts));
         if (!Directory.Exists(dir)) return names;
 
@@ -78,7 +78,7 @@ public class QuestDefValidationTests {
 
     /// <summary>Every def of one XML element name across all three mods' Defs trees.</summary>
     private static List<(string file, XElement def)> DefsOfType(string elementName) {
-        List<(string file, XElement def)> defs = new List<(string file, XElement def)>();
+        List<(string file, XElement def)> defs = [];
         foreach (string mod in new[] { "CosmereCore", "CosmereScadrial", "CosmereRoshar" }) {
             string dir = Path.Combine(RepoRoot, mod, "Defs");
             if (!Directory.Exists(dir)) continue;
@@ -96,7 +96,7 @@ public class QuestDefValidationTests {
     }
 
     private static HashSet<string> OurSitePartDefNames() {
-        HashSet<string> names = new HashSet<string>();
+        HashSet<string> names = [];
         foreach ((string _, XElement def) in DefsOfType("SitePartDef")) {
             XElement? name = def.Element("defName");
             if (name != null) names.Add(name.Value);
@@ -106,7 +106,7 @@ public class QuestDefValidationTests {
     }
 
     private static List<(string file, XElement def)> ScenariosForEra(string era) {
-        List<(string file, XElement def)> matches = new List<(string file, XElement def)>();
+        List<(string file, XElement def)> matches = [];
         foreach ((string file, XElement def) in DefsOfType("ScenarioDef")) {
             foreach (XElement extension in def.Descendants("li")) {
                 if (!HasClass(extension, "ScenarioEra")) continue;
@@ -125,7 +125,7 @@ public class QuestDefValidationTests {
     ///     that part creates any faction world generation did not already roll.
     /// </summary>
     private static HashSet<string> FactionsCreatedBy(XElement scenario) {
-        HashSet<string> factions = new HashSet<string>();
+        HashSet<string> factions = [];
 
         XElement? playerFaction = scenario.Descendants("factionDef").FirstOrDefault();
         if (playerFaction != null) factions.Add(playerFaction.Value);
@@ -144,7 +144,7 @@ public class QuestDefValidationTests {
     }
 
     private static HashSet<string> CapstonesReferencedByStartQuestAction() {
-        HashSet<string> referenced = new HashSet<string>();
+        HashSet<string> referenced = [];
         if (!Directory.Exists(ScenarioProgressionDirectory)) return referenced;
 
         foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
@@ -160,7 +160,7 @@ public class QuestDefValidationTests {
     }
 
     private static HashSet<string> KnownTranslationKeys() {
-        HashSet<string> keys = new HashSet<string>();
+        HashSet<string> keys = [];
         foreach (string mod in new[] { "CosmereCore", "CosmereScadrial" }) {
             string dir = Path.Combine(RepoRoot, mod, "Languages", "English", "Keyed");
             if (!Directory.Exists(dir)) continue;
@@ -185,7 +185,7 @@ public class QuestDefValidationTests {
     [TestMethod]
     public void AtLeastOneQuestDefExists() {
         List<(string file, XElement def)> defs = QuestDefs();
-        Assert.IsTrue(defs.Count > 0, $"No quest defs found under '{QuestsDirectory}'.");
+        Assert.IsNotEmpty(defs, $"No quest defs found under '{QuestsDirectory}'.");
     }
 
     [TestMethod]
@@ -198,16 +198,18 @@ public class QuestDefValidationTests {
                 foreach (XElement option in optionsElement.Elements("li")) {
                     XElement? labelKey = option.Element("labelKey");
                     Assert.IsNotNull(labelKey, $"{name}: a choice option has no labelKey.");
-                    Assert.IsTrue(
-                        keys.Contains(labelKey.Value),
+                    Assert.Contains(
+                        labelKey.Value,
+                        keys,
                         $"{name}: labelKey '{labelKey.Value}' has no matching entry in any " +
                         "Languages/English/Keyed folder. The player would see the raw key."
                     );
 
                     XElement? tipKey = option.Element("tipKey");
                     Assert.IsNotNull(tipKey, $"{name}: a choice option has no tipKey.");
-                    Assert.IsTrue(
-                        keys.Contains(tipKey.Value),
+                    Assert.Contains(
+                        tipKey.Value,
+                        keys,
                         $"{name}: tipKey '{tipKey.Value}' has no matching entry in any " +
                         "Languages/English/Keyed folder. The player would see the raw key."
                     );
@@ -226,8 +228,9 @@ public class QuestDefValidationTests {
             if (erasElement == null) continue;
 
             foreach (XElement era in erasElement.Elements("li")) {
-                Assert.IsTrue(
-                    eras.Contains(era.Value),
+                Assert.Contains(
+                    era.Value,
+                    eras,
                     $"{name}: era '{era.Value}' does not resolve to a known EraDef."
                 );
             }
@@ -247,7 +250,7 @@ public class QuestDefValidationTests {
         Assert.IsTrue(Directory.Exists(dir), $"Core scenario directory '{dir}' does not exist.");
 
         string[] files = Directory.GetFiles(dir, "*.xml");
-        Assert.IsTrue(files.Length > 0, $"No scenario defs found under '{dir}'.");
+        Assert.IsNotEmpty(files, $"No scenario defs found under '{dir}'.");
 
         foreach (string path in files) {
             XElement? root = XDocument.Load(path).Root;
@@ -295,8 +298,9 @@ public class QuestDefValidationTests {
                     "show the raw SitePartDef label."
                 );
 
-                Assert.IsTrue(
-                    keys.Contains(labelKey.Value),
+                Assert.Contains(
+                    labelKey.Value,
+                    keys,
                     $"{name}: siteLabelKey '{labelKey.Value}' has no matching entry in any " +
                     "Languages/English/Keyed folder."
                 );
@@ -318,9 +322,9 @@ public class QuestDefValidationTests {
     public void EveryRaidFactionIsGuaranteedByTheScenarios() {
         if (!Directory.Exists(ScenarioProgressionDirectory)) return;
 
-        Dictionary<string, HashSet<string>> raidsIn = new Dictionary<string, HashSet<string>>();
-        Dictionary<string, HashSet<string>> createsIn = new Dictionary<string, HashSet<string>>();
-        Dictionary<string, HashSet<string>> handsOffTo = new Dictionary<string, HashSet<string>>();
+        Dictionary<string, HashSet<string>> raidsIn = [];
+        Dictionary<string, HashSet<string>> createsIn = [];
+        Dictionary<string, HashSet<string>> handsOffTo = [];
 
         foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
             XElement? root = XDocument.Load(path).Root;
@@ -330,9 +334,9 @@ public class QuestDefValidationTests {
                 string name = def.Element("defName")?.Value ?? string.Empty;
                 if (name.Length == 0) continue;
 
-                raidsIn[name] = new HashSet<string>();
-                createsIn[name] = new HashSet<string>();
-                handsOffTo[name] = new HashSet<string>();
+                raidsIn[name] = [];
+                createsIn[name] = [];
+                handsOffTo[name] = [];
 
                 foreach (XElement action in def.Descendants("li")) {
                     string? cls = (string?)action.Attribute("Class");
@@ -381,13 +385,13 @@ public class QuestDefValidationTests {
                 }
             }
 
-            HashSet<string> guaranteed = new HashSet<string>();
+            HashSet<string> guaranteed = [];
             if (relations != null) {
                 foreach (XElement entry in relations.Elements()) guaranteed.Add(entry.Name.LocalName);
             }
 
             // Walk the handoff graph from where this scenario starts.
-            HashSet<string> reachable = new HashSet<string>();
+            HashSet<string> reachable = [];
             Queue<string> queue = new Queue<string>();
             queue.Enqueue(startArc);
             while (queue.Count > 0) {
@@ -427,9 +431,8 @@ public class QuestDefValidationTests {
     public void HandedOffArcsCountDaysFromTheirOwnStart() {
         if (!Directory.Exists(ScenarioProgressionDirectory)) return;
 
-        HashSet<string> handoffTargets = new HashSet<string>();
-        Dictionary<string, (string file, XElement def)> byName =
-            new Dictionary<string, (string, XElement)>();
+        HashSet<string> handoffTargets = [];
+        Dictionary<string, (string file, XElement def)> byName = [];
 
         foreach (string path in Directory.GetFiles(ScenarioProgressionDirectory, "*.xml")) {
             XElement? root = XDocument.Load(path).Root;
@@ -500,8 +503,9 @@ public class QuestDefValidationTests {
                     XElement? key = action.Element(field);
                     if (key == null || key.Value.Length == 0) continue;
 
-                    Assert.IsTrue(
-                        keys.Contains(key.Value),
+                    Assert.Contains(
+                        key.Value,
+                        keys,
                         $"{file}: {cls} names {field} '{key.Value}', which has no entry in any " +
                         "Languages/English/Keyed folder."
                     );
@@ -516,7 +520,7 @@ public class QuestDefValidationTests {
     /// </summary>
     [TestMethod]
     public void EveryTriggeredIncidentIsOneWeShip() {
-        HashSet<string> incidents = new HashSet<string>();
+        HashSet<string> incidents = [];
         foreach ((string _, XElement def) in DefsOfType("IncidentDef")) {
             XElement? name = def.Element("defName");
             if (name != null) incidents.Add(name.Value);
@@ -536,8 +540,9 @@ public class QuestDefValidationTests {
                 XElement? incident = action.Element("incident");
                 if (incident == null) continue;
 
-                Assert.IsTrue(
-                    incidents.Contains(incident.Value),
+                Assert.Contains(
+                    incident.Value,
+                    incidents,
                     $"{file}: TriggerIncidentAction names incident '{incident.Value}', which is " +
                     "not an IncidentDef we ship."
                 );
@@ -551,7 +556,7 @@ public class QuestDefValidationTests {
     /// </summary>
     [TestMethod]
     public void EveryRetiredFactionIsOneWeShip() {
-        HashSet<string> factions = new HashSet<string>();
+        HashSet<string> factions = [];
         foreach ((string _, XElement def) in DefsOfType("FactionDef")) {
             XElement? name = def.Element("defName");
             if (name != null) factions.Add(name.Value);
@@ -572,8 +577,9 @@ public class QuestDefValidationTests {
                 Assert.IsNotNull(list, $"{file}: RemoveFactionAction has no <factions> list, so it removes nothing.");
 
                 foreach (XElement entry in list.Elements("li")) {
-                    Assert.IsTrue(
-                        factions.Contains(entry.Value),
+                    Assert.Contains(
+                        entry.Value,
+                        factions,
                         $"{file}: RemoveFactionAction names faction '{entry.Value}', which is not " +
                         "a FactionDef we ship."
                     );
@@ -633,13 +639,13 @@ public class QuestDefValidationTests {
     /// </summary>
     [TestMethod]
     public void EveryWorldObjectOverrideResolves() {
-        Dictionary<string, XElement> worldObjects = new Dictionary<string, XElement>();
+        Dictionary<string, XElement> worldObjects = [];
         foreach ((string _, XElement def) in DefsOfType("WorldObjectDef")) {
             XElement? name = def.Element("defName");
             if (name != null) worldObjects[name.Value] = def;
         }
 
-        HashSet<string> generators = new HashSet<string>();
+        HashSet<string> generators = [];
         foreach ((string _, XElement def) in DefsOfType("MapGeneratorDef")) {
             XElement? name = def.Element("defName");
             if (name != null) generators.Add(name.Value);
@@ -664,8 +670,9 @@ public class QuestDefValidationTests {
                     "would fall back to Encounter and there was no point overriding it."
                 );
 
-                Assert.IsTrue(
-                    generators.Contains(generator.Value),
+                Assert.Contains(
+                    generator.Value,
+                    generators,
                     $"{name}: worldObject '{worldObject.Value}' names mapGenerator " +
                     $"'{generator.Value}', which is not a MapGeneratorDef we ship."
                 );
@@ -739,7 +746,7 @@ public class QuestDefValidationTests {
             Assert.IsNotNull(link, $"{name}: a GenStep_SiteGarrison def has no linkWithSite, so it never runs.");
         }
 
-        Assert.IsTrue(found > 0, "No GenStepDef wires up Cosmere.Core.Quest.GenStep_SiteGarrison.");
+        Assert.IsGreaterThan(0, found, "No GenStepDef wires up Cosmere.Core.Quest.GenStep_SiteGarrison.");
     }
 
     /// <summary>
@@ -788,7 +795,7 @@ public class QuestDefValidationTests {
         foreach ((string file, XElement def) in QuestDefs()) {
             string name = RequireDefName(file, def);
 
-            HashSet<string> optionKeys = new HashSet<string>();
+            HashSet<string> optionKeys = [];
             foreach (XElement objective in def.Descendants("objective")) {
                 if ((string?)objective.Attribute("Class") != "Cosmere.Core.Quest.Objective.ChoiceObjective") {
                     continue;
@@ -803,8 +810,9 @@ public class QuestDefValidationTests {
             }
 
             foreach (XElement tag in def.Descendants("afterChoice")) {
-                Assert.IsTrue(
-                    optionKeys.Contains(tag.Value),
+                Assert.Contains(
+                    tag.Value,
+                    optionKeys,
                     $"{name}: afterChoice '{tag.Value}' matches no ChoiceObjective option key. " +
                     "That stage or reward would never run."
                 );
@@ -818,13 +826,13 @@ public class QuestDefValidationTests {
     /// </summary>
     [TestMethod]
     public void EveryProgressionHandOffNamesARealArc() {
-        HashSet<string> arcs = new HashSet<string>();
+        HashSet<string> arcs = [];
         foreach ((string _, XElement def) in DefsOfType("Cosmere.Core.ScenarioPart.ScenarioProgressionDef")) {
             XElement? name = def.Element("defName");
             if (name != null) arcs.Add(name.Value);
         }
 
-        Assert.IsTrue(arcs.Count > 0, "No ScenarioProgressionDefs were found at all.");
+        Assert.IsNotEmpty(arcs, "No ScenarioProgressionDefs were found at all.");
 
         foreach ((string file, XElement def) in DefsOfType("Cosmere.Core.ScenarioPart.ScenarioProgressionDef")) {
             string name = RequireDefName(file, def);
@@ -834,8 +842,9 @@ public class QuestDefValidationTests {
 
                 XElement? target = action.Element("progression");
                 Assert.IsNotNull(target, $"{name}: a HandOffProgressionAction names no progression.");
-                Assert.IsTrue(
-                    arcs.Contains(target.Value),
+                Assert.Contains(
+                    target.Value,
+                    arcs,
                     $"{name}: hands off to '{target.Value}', which is not a ScenarioProgressionDef. " +
                     "The timeline would stop here."
                 );
@@ -862,8 +871,9 @@ public class QuestDefValidationTests {
                     "would show the player nothing about what to do."
                 );
 
-                Assert.IsTrue(
-                    keys.Contains(descriptionKey.Value),
+                Assert.Contains(
+                    descriptionKey.Value,
+                    keys,
                     $"{name}: stage '{stageKey}' descriptionKey '{descriptionKey.Value}' has no " +
                     "matching entry in any Languages/English/Keyed folder. The player would see " +
                     "the raw key."
@@ -907,8 +917,9 @@ public class QuestDefValidationTests {
                 XElement? element = def.Element(field);
                 if (element == null) continue;
 
-                Assert.IsTrue(
-                    factions.Contains(element.Value),
+                Assert.Contains(
+                    element.Value,
+                    factions,
                     $"{name}: {field} '{element.Value}' does not resolve to a known FactionDef."
                 );
             }
@@ -934,12 +945,14 @@ public class QuestDefValidationTests {
                 XElement? metal = reward.Element("metal");
                 Assert.IsNotNull(metal, $"{name}: a GodMetalReward has no metal.");
 
-                Assert.IsTrue(
-                    metalDefs.Contains(metal.Value),
+                Assert.Contains(
+                    metal.Value,
+                    metalDefs,
                     $"{name}: GodMetalReward metal '{metal.Value}' has no matching MetalDef under CosmereCore/Defs/Metals."
                 );
-                Assert.IsTrue(
-                    itemThingDefs.Contains(metal.Value),
+                Assert.Contains(
+                    metal.Value,
+                    itemThingDefs,
                     $"{name}: GodMetalReward metal '{metal.Value}' has a MetalDef but no matching ThingDef " +
                     "under CosmereCore/Defs/Things/Metals/Items. MetalDef.Item looks up a ThingDef by the " +
                     "same defName, so the reward would silently give nothing."
@@ -999,7 +1012,7 @@ public class QuestDefValidationTests {
                 XElement? branches = reward.Element("branches");
                 Assert.IsNotNull(branches, $"{name}: a RolledReward has no branches.");
 
-                List<RewardTableEntry> entries = new List<RewardTableEntry>();
+                List<RewardTableEntry> entries = [];
                 foreach (XElement branch in branches.Elements("li")) {
                     XElement? key = branch.Element("key");
                     XElement? weight = branch.Element("weight");
@@ -1043,8 +1056,9 @@ public class QuestDefValidationTests {
             string name = RequireDefName(file, def);
             if (def.Element("kind")?.Value != "Capstone") continue;
 
-            Assert.IsTrue(
-                referenced.Contains(name),
+            Assert.Contains(
+                name,
+                referenced,
                 $"{name}: is a Capstone but no StartQuestAction under " +
                 "CosmereScadrial/Defs/ScenarioProgression references it. Capstones are excluded " +
                 "from the storyteller's random offer pool, so this quest can never be offered."
@@ -1067,8 +1081,9 @@ public class QuestDefValidationTests {
                 int min = minElement != null ? int.Parse(minElement.Value) : 7;
                 int max = maxElement != null ? int.Parse(maxElement.Value) : 27;
 
-                Assert.IsTrue(
-                    max >= min,
+                Assert.IsGreaterThanOrEqualTo(
+                    min,
+                    max,
                     $"{name}: TravelToSiteObjective maxTiles ({max}) is below minTiles ({min}). " +
                     "TileFinder can never satisfy an inverted band, so the quest can never build."
                 );

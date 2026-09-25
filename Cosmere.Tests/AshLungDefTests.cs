@@ -44,25 +44,27 @@ public class AshLungDefTests {
         get {
             XElement? stages = AshLung.Element("stages");
             Assert.IsNotNull(stages, "AshLung declares no stages, so it has no progression at all.");
-            return stages.Elements("li").ToList();
+            return [.. stages.Elements("li")];
         }
     }
 
-    private static float Float(XElement? element, float fallback) =>
-        element == null ? fallback : float.Parse(element.Value, CultureInfo.InvariantCulture);
+    private static float Float(XElement? element, float fallback) {
+        return element == null ? fallback : float.Parse(element.Value, CultureInfo.InvariantCulture);
+    }
 
     [TestMethod]
     public void StageThresholdsSitWhereTheGainRatePutsThem() {
         List<XElement> stages = Stages;
-        Assert.IsTrue(stages.Count >= 3, "The progression needs at least three stages to read as one.");
+        Assert.IsGreaterThanOrEqualTo(3, stages.Count, "The progression needs at least three stages to read as one.");
 
         float perHour = AshLungMath.SeverityDeltaPerHour(1f, 0f);
-        Assert.IsTrue(perHour > 0f, "Full unmasked exposure must gain severity, or none of this applies.");
+        Assert.IsGreaterThan(0f, perHour, "Full unmasked exposure must gain severity, or none of this applies.");
 
-        float[] thresholds = stages.Select(s => Float(s.Element("minSeverity"), 0f)).ToArray();
+        float[] thresholds = [.. stages.Select(s => Float(s.Element("minSeverity"), 0f))];
         for (int i = 1; i < thresholds.Length; i++) {
-            Assert.IsTrue(
-                thresholds[i] > thresholds[i - 1],
+            Assert.IsGreaterThan(
+                thresholds[i - 1],
+                thresholds[i],
                 $"Stage {i} opens at {thresholds[i]}, no later than stage {i - 1} at {thresholds[i - 1]}.");
         }
 
@@ -73,13 +75,15 @@ public class AshLungDefTests {
             "a shift worked beside a vent - not one step through the gas, and not a whole day of it.");
 
         float worstHours = thresholds[^1] / perHour;
-        Assert.IsTrue(
-            worstHours >= 48f,
+        Assert.IsGreaterThanOrEqualTo(
+            48f,
+            worstHours,
             $"The worst stage lands after {worstHours:0.#}h. Reaching it should take deliberate neglect.");
 
         float lethalHours = Float(AshLung.Element("lethalSeverity"), float.MaxValue) / perHour;
-        Assert.IsTrue(
-            lethalHours >= 72f,
+        Assert.IsGreaterThanOrEqualTo(
+            72f,
+            lethalHours,
             $"Ash lung kills after {lethalHours:0.#}h of unbroken exposure, faster than a player can be expected " +
             "to read the escalation and act on it.");
     }
@@ -108,7 +112,7 @@ public class AshLungDefTests {
             previous = offset;
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -137,6 +141,6 @@ public class AshLungDefTests {
 
         string detail = "These hediff stages set regeneration, which Anomaly gates off. Use InjuryHealingFactor " +
             "instead: " + string.Join(", ", offenders);
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 }

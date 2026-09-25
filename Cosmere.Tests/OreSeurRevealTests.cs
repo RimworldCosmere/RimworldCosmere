@@ -33,8 +33,8 @@ public class OreSeurRevealTests {
 
     [TestMethod]
     public void OreSeurIsOnTheRoster() {
-        List<string> names = Scenario.Descendants("firstName").Select(n => n.Value).ToList();
-        Assert.IsTrue(names.Contains("OreSeur"), "OreSeur should start with Vin.");
+        List<string> names = [.. Scenario.Descendants("firstName").Select(n => n.Value)];
+        Assert.Contains("OreSeur", names, "OreSeur should start with Vin.");
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class OreSeurRevealTests {
 
         int age = int.Parse(pawn.Element("age")!.Value);
         int chronological = int.Parse(pawn.Element("chronologicalAge")!.Value);
-        Assert.IsTrue(chronological > age, "A kandra should be far older than the body it wears.");
+        Assert.IsGreaterThan(age, chronological, "A kandra should be far older than the body it wears.");
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class OreSeurRevealTests {
                 .Element("days")!.Value
         );
 
-        Assert.IsTrue(day > 60, $"The reveal fires on day {day}, before the koloss assault.");
-        Assert.IsTrue(day < 80, $"The reveal fires on day {day}, at or after the Well.");
+        Assert.IsGreaterThan(60, day, $"The reveal fires on day {day}, before the koloss assault.");
+        Assert.IsLessThan(80, day, $"The reveal fires on day {day}, at or after the Well.");
     }
 }

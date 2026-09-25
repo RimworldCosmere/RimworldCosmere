@@ -12,7 +12,7 @@ namespace Cosmere.Tests;
 ///     both Unity-bound and the test host has no UnityEngine.
 /// </summary>
 [TestClass]
-public class CodexScrollIsPerPawnTests {
+public partial class CodexScrollIsPerPawnTests {
     private static readonly string[] Renderers = [
         Path.Combine("Core", "UI", "Codex", "AutocastSubtabRenderer.cs"),
         Path.Combine("System", "Scadrial", "UI", "AllomancyCodexContent.cs"),
@@ -41,10 +41,7 @@ public class CodexScrollIsPerPawnTests {
     [TestMethod]
     public void NoCodexRendererHoldsAScrollPositionOfItsOwn() {
         foreach (string relative in Renderers) {
-            Match field = Regex.Match(
-                SourceOf(relative),
-                @"(?:private|protected|internal|public)\s+(?:static\s+)?(?:readonly\s+)?Vector2\s+(\w+)"
-            );
+            Match field = Vector2FieldPattern().Match(SourceOf(relative));
 
             Assert.IsFalse(
                 field.Success,
@@ -58,7 +55,7 @@ public class CodexScrollIsPerPawnTests {
     [TestMethod]
     public void EveryCodexScrollViewReadsItsPositionFromCodexState() {
         foreach (string relative in Renderers) {
-            foreach (Match call in Regex.Matches(SourceOf(relative), @"BeginScrollView\([^;]*?,\s*ref\s+([\w.]+)\s*,")) {
+            foreach (Match call in ScrollViewRefPattern().Matches(SourceOf(relative))) {
                 string target = call.Groups[1].Value;
                 Assert.IsTrue(
                     target.StartsWith("state.", StringComparison.Ordinal),
@@ -79,4 +76,10 @@ public class CodexScrollIsPerPawnTests {
             );
         }
     }
+
+    [GeneratedRegex(@"(?:private|protected|internal|public)\s+(?:static\s+)?(?:readonly\s+)?Vector2\s+(\w+)")]
+    private static partial Regex Vector2FieldPattern();
+
+    [GeneratedRegex(@"BeginScrollView\([^;]*?,\s*ref\s+([\w.]+)\s*,")]
+    private static partial Regex ScrollViewRefPattern();
 }

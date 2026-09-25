@@ -38,15 +38,16 @@ public class AshBuriedCellsTests {
             if (!source.Contains("AddDepthMm(") && !source.Contains("RemoveDepthMm(")) continue;
 
             checked_++;
-            Assert.IsTrue(
-                source.Contains("Buried"),
+            Assert.Contains(
+                "Buried",
+                source,
                 $"{name} moves ash depth and never mentions the buried set. The wash and the haul " +
                 "block both read that set, so every cell it touches goes stale until the sweep " +
                 "reaches its stripe - and if it dirties the mesh itself, the player sees the stale frame."
             );
         }
 
-        Assert.IsTrue(checked_ > 0, "found no depth writers at all, so this guard is not actually looking at anything");
+        Assert.IsGreaterThan(0, checked_, "found no depth writers at all, so this guard is not actually looking at anything");
     }
 
     [TestMethod]

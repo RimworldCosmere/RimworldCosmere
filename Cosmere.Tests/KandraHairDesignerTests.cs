@@ -11,13 +11,37 @@ namespace Cosmere.Tests;
 
 /// <summary>Guards the hair side of the kandra true-body designer: the pending pair, the palette and the room to draw it.</summary>
 [TestClass]
-public class KandraHairDesignerTests {
+public partial class KandraHairDesignerTests {
     private static readonly (string field, string what)[] PendingFields = [
         ("pendingMaterial", "the true body is made of"),
         ("pendingGender", "the true body's gender"),
         ("pendingHair", "the true body's hair"),
         ("pendingHairColour", "the true body's hair colour"),
     ];
+
+    [GeneratedRegex(@"private\s+string\?\s+pendingHairColour\s*;")]
+    private static partial Regex PendingHairColourField { get; }
+
+    [GeneratedRegex(@"Scribe_Values\.Look\(\s*ref\s+pendingHairColour\b")]
+    private static partial Regex PendingHairColourScribe { get; }
+
+    [GeneratedRegex(@"Scribe_Defs\.Look\(\s*ref\s+pendingHair\b")]
+    private static partial Regex PendingHairScribe { get; }
+
+    [GeneratedRegex(@"HairColour\w*\s*=\s*\[")]
+    private static partial Regex HairColourTable { get; }
+
+    [GeneratedRegex(@"\(\s*""([^""]+)""\s*,\s*""([0-9a-f]{6})""[^)]*\)")]
+    private static partial Regex HairColourRow { get; }
+
+    [GeneratedRegex(@"""(CS_Kandra_HairColour_\w+)""")]
+    private static partial Regex HairColourLabelKey { get; }
+
+    [GeneratedRegex(@"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(([0-9.]+)\)")]
+    private static partial Regex InitialWindowWidth { get; }
+
+    [GeneratedRegex(@"Mathf\.Abs\([^)]*\.[rgba]\b")]
+    private static partial Regex ColourChannelEpsilon { get; }
 
     private static string RepoRoot {
         get {
@@ -90,18 +114,18 @@ public class KandraHairDesignerTests {
         string source = File.ReadAllText(CompSourcePath);
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"private\s+string\?\s+pendingHairColour\s*;"),
+            PendingHairColourField.IsMatch(source),
             "pendingHairColour is not a string? on CompKandraForms. Storing a Color freezes a hex "
             + "the palette may retune, and a nullable struct through Scribe_Values is its own trap."
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Scribe_Values\.Look\(\s*ref\s+pendingHairColour\b"),
+            PendingHairColourScribe.IsMatch(source),
             "pendingHairColour is not scribed with Scribe_Values.Look, so a pending colour dies on save."
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Scribe_Defs\.Look\(\s*ref\s+pendingHair\b"),
+            PendingHairScribe.IsMatch(source),
             "pendingHair is not scribed with Scribe_Defs.Look. A HairDef through Scribe_Values "
             + "silently loses the def on reload and the reshape commits bald."
         );
@@ -111,18 +135,18 @@ public class KandraHairDesignerTests {
     public void AHairColourWithNoKeyPrintsItsOwnKeyNameAtThePlayer() {
         string source = File.ReadAllText(AppearanceSourcePath);
 
-        Match declaration = Regex.Match(source, @"HairColour\w*\s*=\s*\[");
+        Match declaration = HairColourTable.Match(source);
         Assert.IsTrue(declaration.Success, "KandraAppearance declares no hair colour table.");
 
         int start = declaration.Index;
         string table = source[start..source.IndexOf("];", start, StringComparison.Ordinal)];
-        MatchCollection rows = Regex.Matches(table, @"\(\s*""([^""]+)""\s*,\s*""([0-9a-f]{6})""[^)]*\)");
+        MatchCollection rows = HairColourRow.Matches(table);
 
-        Assert.AreEqual(12, rows.Count, $"Expected the twelve agreed hair colours, found {rows.Count}.");
+        Assert.HasCount(12, rows, $"Expected the twelve agreed hair colours, found {rows.Count}.");
 
         List<string> keys = [];
         foreach (Match row in rows) {
-            Match key = Regex.Match(row.Value, @"""(CS_Kandra_HairColour_\w+)""");
+            Match key = HairColourLabelKey.Match(row.Value);
             Assert.IsTrue(
                 key.Success,
                 $"Hair colour '{row.Groups[1].Value}' carries no labelKey, so the picker shows nothing to read."
@@ -139,8 +163,9 @@ public class KandraHairDesignerTests {
             .ToHashSet(StringComparer.Ordinal);
 
         foreach (string key in keys) {
-            Assert.IsTrue(
-                defined.Contains(key),
+            Assert.Contains(
+                key,
+                defined,
                 $"{key} is referenced but not defined under Languages/English/Keyed, so the game prints the key name."
             );
         }
@@ -150,14 +175,12 @@ public class KandraHairDesignerTests {
     public void AnEightHundredWideWindowCannotFitTheMaterialAndHairColumnsSideBySide() {
         string source = File.ReadAllText(DialogSourcePath);
 
-        Match width = Regex.Match(
-            source,
-            @"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(([0-9.]+)\)"
-        );
+        Match width = InitialWindowWidth.Match(source);
         Assert.IsTrue(width.Success, "Dialog_KandraForms no longer sizes its window off Spacing.Get.");
 
-        Assert.IsTrue(
-            double.Parse(width.Groups[1].Value, CultureInfo.InvariantCulture) >= 65,
+        Assert.IsGreaterThanOrEqualTo(
+            65d,
+            double.Parse(width.Groups[1].Value, CultureInfo.InvariantCulture),
             $"The form window is Spacing.Get({width.Groups[1].Value}) wide. At 800 the material column "
             + "and the hair column do not both fit, which is the two-column layout Ka picked."
         );
@@ -179,17 +202,17 @@ public class KandraHairDesignerTests {
         }
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"Mathf\.Abs\([^)]*\.[rgba]\b"),
+            ColourChannelEpsilon.IsMatch(source),
             $"Dialog_KandraForms still compares colour channels with a float epsilon. {why}"
         );
     }
 
     private static string MethodBody(string source, string method) {
         int start = source.IndexOf($" {method}(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, $"CompKandraForms no longer declares {method}.");
+        Assert.IsGreaterThanOrEqualTo(0, start, $"CompKandraForms no longer declares {method}.");
 
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, $"Could not read the body of {method}.");
+        Assert.IsGreaterThan(start, end, $"Could not read the body of {method}.");
         return source[start..end];
     }
 }

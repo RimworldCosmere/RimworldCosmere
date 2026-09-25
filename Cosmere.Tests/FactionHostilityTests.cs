@@ -58,7 +58,7 @@ public class FactionHostilityTests {
                 string? goodwill = pair.Element("goodwill")?.Value;
                 if (a == null || b == null || goodwill == null) continue;
 
-                bool names = (a == Skaa && b == Empire) || (a == Empire && b == Skaa);
+                bool names = a == Skaa && b == Empire || a == Empire && b == Skaa;
                 if (names && int.TryParse(goodwill, out int value) && value <= -75) hostile = true;
             }
 
@@ -69,7 +69,7 @@ public class FactionHostilityTests {
             "Final Empire, so the two sit out the Collapse neutral to each other: " +
             string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     /// <summary>A pair naming a faction twice, or a def we do not ship, quietly does nothing.</summary>
@@ -113,6 +113,6 @@ public class FactionHostilityTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 }

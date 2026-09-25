@@ -20,7 +20,7 @@ namespace Cosmere.Tests;
 ///     </para>
 /// </remarks>
 [TestClass]
-public class HeadTypeSelectionTests {
+public partial class HeadTypeSelectionTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -34,9 +34,18 @@ public class HeadTypeSelectionTests {
         }
     }
 
-    private static string Source(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    [GeneratedRegex(@"selectionWeight\s*<=\s*0f")]
+    private static partial Regex ZeroWeightGuard { get; }
+
+    [GeneratedRegex(@"!\s*head\.randomChosen")]
+    private static partial Regex RandomChosenGuard { get; }
+
+    [GeneratedRegex(@"DefDatabase<HeadTypeDef>\s*\.\s*AllDefs")]
+    private static partial Regex DatabaseReach { get; }
+
+    private static string Source(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     /// <summary>
     ///     The three things vanilla checks before it will consider a head, all in one place.
@@ -45,9 +54,9 @@ public class HeadTypeSelectionTests {
     public void TheHeadPickerRefusesHeadsTheGeneratorWouldNever() {
         string util = Source("Core", "Util", "HeadTypeUtility.cs");
 
-        Assert.IsTrue(util.Contains("randomChosen"), "Stump and Skull are excluded by randomChosen.");
-        Assert.IsTrue(util.Contains("selectionWeight"), "A zero weight means never offer it.");
-        Assert.IsTrue(util.Contains("requiredGenes"), "Gene-gated heads belong to the pawns with the gene.");
+        Assert.Contains("randomChosen", util, "Stump and Skull are excluded by randomChosen.");
+        Assert.Contains("selectionWeight", util, "A zero weight means never offer it.");
+        Assert.Contains("requiredGenes", util, "Gene-gated heads belong to the pawns with the gene.");
     }
 
     /// <summary>
@@ -59,11 +68,11 @@ public class HeadTypeSelectionTests {
         string util = Source("Core", "Util", "HeadTypeUtility.cs");
 
         Assert.IsTrue(
-            Regex.IsMatch(util, @"selectionWeight\s*<=\s*0f"),
+            ZeroWeightGuard.IsMatch(util),
             "Available must drop a zero-weight head, not merely read the field."
         );
         Assert.IsTrue(
-            Regex.IsMatch(util, @"!\s*head\.randomChosen"),
+            RandomChosenGuard.IsMatch(util),
             "Available must drop a head the generator would not choose."
         );
     }
@@ -82,11 +91,12 @@ public class HeadTypeSelectionTests {
             string source = Source(where);
 
             Assert.IsFalse(
-                Regex.IsMatch(source, @"DefDatabase<HeadTypeDef>\s*\.\s*AllDefs"),
+                DatabaseReach.IsMatch(source),
                 $"{where[^1]} must go through HeadTypeUtility, which knows what a valid head is."
             );
-            Assert.IsTrue(
-                source.Contains("HeadTypeUtility"),
+            Assert.Contains(
+                "HeadTypeUtility",
+                source,
                 $"{where[^1]} still needs to pick a head somehow."
             );
         }

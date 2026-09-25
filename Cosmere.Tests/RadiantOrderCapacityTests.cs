@@ -40,7 +40,7 @@ public class RadiantOrderCapacityTests {
 
     [TestMethod]
     public void EveryOrderFileIsFound() {
-        Assert.AreEqual(10, Directory.GetFiles(OrdersDirectory, "*.json").Length, "Expected ten Radiant orders.");
+        Assert.HasCount(10, Directory.GetFiles(OrdersDirectory, "*.json"), "Expected ten Radiant orders.");
     }
 
     [TestMethod]
@@ -56,8 +56,9 @@ public class RadiantOrderCapacityTests {
                 $"{Path.GetFileName(path)} ideal {i + 1} has no stormlightMax. " +
                 "MaxInvestitureLevel falls back to 1f, capping the Radiant at 1 Stormlight."
             );
-            Assert.IsTrue(
-                max.Value<int>() > 0,
+            Assert.IsGreaterThan(
+                0,
+                max.Value<int>(),
                 $"{Path.GetFileName(path)} ideal {i + 1} has stormlightMax {max.Value<int>()}, which must be positive."
             );
         }
@@ -72,8 +73,9 @@ public class RadiantOrderCapacityTests {
             int previous = ideals[i - 1]["stormlightMax"]!.Value<int>();
             int current = ideals[i]["stormlightMax"]!.Value<int>();
 
-            Assert.IsTrue(
-                current > previous,
+            Assert.IsGreaterThan(
+                previous,
+                current,
                 $"{Path.GetFileName(path)} ideal {i + 1} grants {current}, no more than ideal {i}'s {previous}. " +
                 "Swearing an Oath must always raise the ceiling."
             );

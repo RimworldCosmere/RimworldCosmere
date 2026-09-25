@@ -107,8 +107,8 @@ public class ConnectionOffsetTests {
 
         int raw = source.IndexOf("private static int Raw(", StringComparison.Ordinal);
         int composed = source.IndexOf("private static int Composed(", StringComparison.Ordinal);
-        Assert.IsTrue(raw >= 0, "ConnectionUtility.Raw is gone; the tie is composed somewhere else now.");
-        Assert.IsTrue(composed > raw, "Composed no longer follows Raw, so this scan reads the wrong body.");
+        Assert.IsGreaterThanOrEqualTo(0, raw, "ConnectionUtility.Raw is gone; the tie is composed somewhere else now.");
+        Assert.IsGreaterThan(raw, composed, "Composed no longer follows Raw, so this scan reads the wrong body.");
 
         string body = source.Substring(raw, composed - raw);
         Assert.IsTrue(
@@ -127,9 +127,12 @@ public class ConnectionOffsetTests {
         string source = Source("ConnectionOffsets.cs");
 
         int look = source.IndexOf("Scribe_Collections.Look(ref scribed", StringComparison.Ordinal);
-        Assert.IsTrue(look >= 0, "The offsets are no longer scribed, so nothing anyone stores survives a save.");
-        Assert.IsTrue(
-            source.IndexOf("scribed ??= []", StringComparison.Ordinal) > look,
+        Assert.IsGreaterThanOrEqualTo(
+            0, look, "The offsets are no longer scribed, so nothing anyone stores survives a save."
+        );
+        Assert.IsGreaterThan(
+            look,
+            source.IndexOf("scribed ??= []", StringComparison.Ordinal),
             "The null guard must follow the Look, or loading a save with no offsets throws."
         );
     }
@@ -217,10 +220,12 @@ public class ConnectionOffsetTests {
         string source = Source("ConnectionUtility.cs");
 
         int grantFromMetal = source.IndexOf("public static void GrantFromMetal(", StringComparison.Ordinal);
-        Assert.IsTrue(grantFromMetal >= 0, "GrantFromMetal is gone; the top-up rule lives somewhere else now.");
+        Assert.IsGreaterThanOrEqualTo(
+            0, grantFromMetal, "GrantFromMetal is gone; the top-up rule lives somewhere else now."
+        );
 
         int shortfall = source.IndexOf("int shortfall =", grantFromMetal, StringComparison.Ordinal);
-        Assert.IsTrue(shortfall > grantFromMetal, "GrantFromMetal no longer computes a shortfall.");
+        Assert.IsGreaterThan(grantFromMetal, shortfall, "GrantFromMetal no longer computes a shortfall.");
 
         string line = source.Substring(shortfall, source.IndexOf('\n', shortfall) - shortfall);
         Assert.IsTrue(

@@ -27,7 +27,7 @@ public class ChargeAttributionTests {
 
     [TestMethod]
     public void TotalOfAnEmptyOrNullMapIsZero() {
-        Assert.AreEqual(0f, ChargeAttribution.Total(new Dictionary<string, float>()));
+        Assert.AreEqual(0f, ChargeAttribution.Total([]));
         Assert.AreEqual(0f, ChargeAttribution.Total(null));
     }
 
@@ -49,7 +49,7 @@ public class ChargeAttributionTests {
 
         ChargeAttribution.Rescale(map, 0f);
 
-        Assert.AreEqual(0, map.Count);
+        Assert.IsEmpty(map);
     }
 
     [TestMethod]
@@ -64,11 +64,11 @@ public class ChargeAttributionTests {
 
     [TestMethod]
     public void RescaleFromAnEmptyMapDoesNotDivideByZero() {
-        Dictionary<string, float> map = new Dictionary<string, float>();
+        Dictionary<string, float> map = [];
 
         ChargeAttribution.Rescale(map, 50f);
 
-        Assert.AreEqual(0, map.Count);
+        Assert.IsEmpty(map);
         Assert.AreEqual(0f, ChargeAttribution.Total(map), Tolerance);
     }
 
@@ -92,7 +92,7 @@ public class ChargeAttributionTests {
         float drained = ChargeAttribution.Drain(map, 1000f);
 
         Assert.AreEqual(20f, drained, Tolerance, "Only the 20 the map held moved, not the 1000 asked.");
-        Assert.AreEqual(0, map.Count);
+        Assert.IsEmpty(map);
     }
 
     [TestMethod]
@@ -100,7 +100,7 @@ public class ChargeAttributionTests {
         Dictionary<string, float> map = Map(10f, 0f, 0f);
 
         ChargeAttribution.Rescale(map, -50f);
-        Assert.AreEqual(0, map.Count, "A negative target clamps to zero and empties the map.");
+        Assert.IsEmpty(map, "A negative target clamps to zero and empties the map.");
 
         map = Map(10f, 0f, 0f);
         float drained = ChargeAttribution.Drain(map, -50f);
@@ -181,7 +181,7 @@ public class ChargeAttributionTests {
         float drained = ChargeAttribution.DrainNamed(map, "Residence", 1000f);
 
         Assert.AreEqual(20f, drained, Tolerance, "Only the 20 the map held moved, not the 1000 asked.");
-        Assert.AreEqual(0, map.Count);
+        Assert.IsEmpty(map);
     }
 
     [TestMethod]

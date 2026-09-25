@@ -13,7 +13,7 @@ namespace Cosmere.Tests;
 ///     one the player meets on every pawn.
 /// </summary>
 [TestClass]
-public class CodexChromeTests {
+public partial class CodexChromeTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -27,9 +27,35 @@ public class CodexChromeTests {
         }
     }
 
-    private static string Codex(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Codex", file
-    ));
+    private static string Codex(string file) {
+        return File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Codex", file
+        ));
+    }
+
+    [GeneratedRegex(@"\b(?:1[0-9]|2[0-3])f,\s*(?:1[0-9]|2[0-3])f\)")]
+    private static partial Regex UnderTwentyFourRect { get; }
+
+    [GeneratedRegex(@"\(\) => store\.RemoveRule\(pawn, rule\)")]
+    private static partial Regex ConfirmedRemoveRule { get; }
+
+    [GeneratedRegex(@"RemoveRule\(")]
+    private static partial Regex RemoveRuleCall { get; }
+
+    [GeneratedRegex(@"TooltipHandler\.TipRegion\(enabled, ""CC_Codex_Autocast_EnabledTip""")]
+    private static partial Regex EnabledCheckboxTip { get; }
+
+    [GeneratedRegex(@"UnselectedText = new Color\((?<r>[0-9.]+)f, (?<g>[0-9.]+)f, (?<b>[0-9.]+)f\)")]
+    private static partial Regex UnselectedTextColor { get; }
+
+    [GeneratedRegex(@"new Color\(\d")]
+    private static partial Regex InlineColorLiteral { get; }
+
+    [GeneratedRegex(@"""(CC_(?:Codex_Subtab|Connection_Tab)_[A-Za-z]+)""")]
+    private static partial Regex SubtabLabelKey { get; }
+
+    [GeneratedRegex(@"""(CC_[A-Za-z0-9_]+)""")]
+    private static partial Regex CoreKeyLiteral { get; }
 
     /// <summary>
     ///     Every key defined anywhere under the Keyed folder. The files there are merged by the
@@ -56,22 +82,24 @@ public class CodexChromeTests {
     public void EveryTargetOnAnAutocastRowIsTheSameSizeAndNoSmallerThanTwentyFour() {
         string source = Codex("AutocastSubtabRenderer.cs");
 
-        Assert.IsTrue(
-            source.Contains("private const float TargetSize = 24f;"),
+        Assert.Contains(
+            "private const float TargetSize = 24f;",
+            source,
             "One constant decides how big a target is."
         );
 
         foreach (string target in new[] { "Rect add", "Rect enabled", "Rect remove", "Rect edit" }) {
             Match rect = Regex.Match(source, target + @" = new Rect\([^;]+;");
             Assert.IsTrue(rect.Success, $"{target} is not where this test expects it.");
-            Assert.IsTrue(
-                rect.Value.Contains("TargetSize)"),
+            Assert.Contains(
+                "TargetSize)",
+                rect.Value,
                 $"{target} must take its height from TargetSize."
             );
         }
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"\b(?:1[0-9]|2[0-3])f,\s*(?:1[0-9]|2[0-3])f\)"),
+            UnderTwentyFourRect.IsMatch(source),
             "No rect in this file may be sized under 24px."
         );
     }
@@ -84,9 +112,9 @@ public class CodexChromeTests {
     public void AutocastRowsAreNotStriped() {
         string source = Codex("AutocastSubtabRenderer.cs");
 
-        Assert.IsFalse(source.Contains("striped"), "The stripe is gone; the header fill separates groups.");
-        Assert.IsFalse(source.Contains("0.03f"), "And its colour with it.");
-        Assert.IsTrue(source.Contains("Widgets.DrawHighlightIfMouseover(row)"), "Hover still has to read.");
+        Assert.DoesNotContain("striped", source, "The stripe is gone; the header fill separates groups.");
+        Assert.DoesNotContain("0.03f", source, "And its colour with it.");
+        Assert.Contains("Widgets.DrawHighlightIfMouseover(row)", source, "Hover still has to read.");
     }
 
     /// <summary>
@@ -97,17 +125,18 @@ public class CodexChromeTests {
         string source = Codex("AutocastSubtabRenderer.cs");
 
         // CreateConfirmation(TaggedString, Action, bool destructive, ...) - Verse.Dialog_MessageBox, 1.6.4633.
-        Assert.IsTrue(
-            source.Contains("Dialog_MessageBox.CreateConfirmation("),
+        Assert.Contains(
+            "Dialog_MessageBox.CreateConfirmation(",
+            source,
             "Removal goes through RimWorld's own confirmation."
         );
         Assert.IsTrue(
-            Regex.IsMatch(source, @"\(\) => store\.RemoveRule\(pawn, rule\)"),
+            ConfirmedRemoveRule.IsMatch(source),
             "And only happens once the player has said yes."
         );
-        Assert.AreEqual(
+        Assert.HasCount(
             1,
-            Regex.Matches(source, @"RemoveRule\(").Count,
+            RemoveRuleCall.Matches(source),
             "A second removal path would route around the confirm."
         );
     }
@@ -119,10 +148,7 @@ public class CodexChromeTests {
     public void TheEnableCheckboxSaysWhatItToggles() {
         string source = Codex("AutocastSubtabRenderer.cs");
 
-        Assert.IsTrue(Regex.IsMatch(
-            source,
-            @"TooltipHandler\.TipRegion\(enabled, ""CC_Codex_Autocast_EnabledTip"""
-        ));
+        Assert.IsTrue(EnabledCheckboxTip.IsMatch(source));
     }
 
     /// <summary>
@@ -133,28 +159,26 @@ public class CodexChromeTests {
     public void AnUnselectedSubtabIsStillReadable() {
         string source = Codex("SubtabBar.cs");
 
-        Match unselected = Regex.Match(
-            source,
-            @"UnselectedText = new Color\((?<r>[0-9.]+)f, (?<g>[0-9.]+)f, (?<b>[0-9.]+)f\)"
-        );
+        Match unselected = UnselectedTextColor.Match(source);
         Assert.IsTrue(unselected.Success, "The unselected tone is a named constant.");
 
         float r = float.Parse(unselected.Groups["r"].Value, CultureInfo.InvariantCulture);
         float g = float.Parse(unselected.Groups["g"].Value, CultureInfo.InvariantCulture);
         float b = float.Parse(unselected.Groups["b"].Value, CultureInfo.InvariantCulture);
 
-        Assert.IsTrue(r > 0.65f, "0.55 red read as disabled against the panel.");
+        Assert.IsGreaterThan(0.65f, r, "0.55 red read as disabled against the panel.");
         Assert.IsTrue(r > g && g > b, "Warm: it stays in the same family as selected.");
 
-        Assert.IsTrue(
-            source.Contains("isSelected ? SelectedText : UnselectedText"),
+        Assert.Contains(
+            "isSelected ? SelectedText : UnselectedText",
+            source,
             "Both tones are named constants, not inlined in the draw."
         );
 
         // an accent tinted by alpha is fine; a literal tone inside the draw is not.
         string draw = source[source.IndexOf("public static bool Draw<T>", StringComparison.Ordinal)..];
         Assert.IsFalse(
-            Regex.IsMatch(draw, @"new Color\(\d"),
+            InlineColorLiteral.IsMatch(draw),
             "No literal colour is built inside a draw method."
         );
     }
@@ -167,16 +191,17 @@ public class CodexChromeTests {
     public void EverySubtabExplainsItself() {
         string bar = Codex("SubtabBar.cs");
 
-        Assert.IsTrue(
-            bar.Contains("TooltipHandler.TipRegion(tab, (tabs[i].labelKey + \"_Tip\").Translate())"),
+        Assert.Contains(
+            "TooltipHandler.TipRegion(tab, (tabs[i].labelKey + \"_Tip\").Translate())",
+            bar,
             "The tip key is derived from the label key."
         );
 
         HashSet<string> defined = DefinedKeys();
         foreach (string file in new[] { "SubtabBar.cs", "ConnectionSubtab.cs" }) {
-            foreach (Match label in Regex.Matches(Codex(file), @"""(CC_(?:Codex_Subtab|Connection_Tab)_[A-Za-z]+)""")) {
+            foreach (Match label in SubtabLabelKey.Matches(Codex(file))) {
                 string tip = label.Groups[1].Value + "_Tip";
-                Assert.IsTrue(defined.Contains(tip), $"{tip} is referenced by the bar but never defined.");
+                Assert.Contains(tip, defined, $"{tip} is referenced by the bar but never defined.");
             }
         }
     }
@@ -190,8 +215,8 @@ public class CodexChromeTests {
         HashSet<string> defined = DefinedKeys();
 
         foreach (string file in new[] { "AutocastSubtabRenderer.cs", "SubtabBar.cs", "CodexChrome.cs" }) {
-            foreach (Match key in Regex.Matches(Codex(file), @"""(CC_[A-Za-z0-9_]+)""")) {
-                Assert.IsTrue(defined.Contains(key.Groups[1].Value), $"{key.Groups[1].Value} is not defined.");
+            foreach (Match key in CoreKeyLiteral.Matches(Codex(file))) {
+                Assert.Contains(key.Groups[1].Value, defined, $"{key.Groups[1].Value} is not defined.");
             }
         }
     }
@@ -204,12 +229,13 @@ public class CodexChromeTests {
     public void TheCodexTitleIsNotFlatWhite() {
         string source = Codex("CodexChrome.cs");
 
-        Assert.IsFalse(source.Contains("Color.white"), "The title is not flat white.");
-        Assert.IsTrue(
-            source.Contains("DrawHeader(Rect rect, string label, Color accent, Color? textColor = null)"),
+        Assert.DoesNotContain("Color.white", source, "The title is not flat white.");
+        Assert.Contains(
+            "DrawHeader(Rect rect, string label, Color accent, Color? textColor = null)",
+            source,
             "A skin can pass HeaderTextColor in."
         );
-        Assert.IsTrue(source.Contains("textColor ?? TitleText"), "And parchment is what it falls back to.");
-        Assert.IsFalse(source.Contains("DrawBoxSolid(rect, new Color(0.08f"), "The header fill is a constant.");
+        Assert.Contains("textColor ?? TitleText", source, "And parchment is what it falls back to.");
+        Assert.DoesNotContain("DrawBoxSolid(rect, new Color(0.08f", source, "The header fill is a constant.");
     }
 }

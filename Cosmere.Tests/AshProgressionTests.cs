@@ -42,7 +42,9 @@ public class AshProgressionTests {
     [TestMethod]
     public void SeverityNeverWalksBackAcrossTheCampaign() {
         List<Beat> beats = Campaign();
-        Assert.IsTrue(beats.Count >= 9, $"only {beats.Count} ash beats authored; the four arcs should carry nine");
+        Assert.IsGreaterThanOrEqualTo(
+            9, beats.Count, $"only {beats.Count} ash beats authored; the four arcs should carry nine"
+        );
 
         float previous = -1f;
         for (int i = 0; i < beats.Count; i++) {
@@ -55,8 +57,9 @@ public class AshProgressionTests {
                 continue;
             }
 
-            Assert.IsTrue(
-                beat.Severity >= previous,
+            Assert.IsGreaterThanOrEqualTo(
+                previous,
+                beat.Severity,
                 $"{beat.Arc}/{beat.Key} drops severity from {previous} to {beat.Severity}"
             );
             previous = beat.Severity;
@@ -107,7 +110,7 @@ public class AshProgressionTests {
 
         // each arc gets the same span, past its last authored beat, so the curve arrives before the next arc.
         const int ArcSpanDays = 95;
-        List<(int day, Beat beat)> timeline = new List<(int, Beat)>();
+        List<(int day, Beat beat)> timeline = [];
         for (int i = 0; i < beats.Count; i++) {
             timeline.Add((Array.IndexOf(ArcOrder, beats[i].Arc) * ArcSpanDays + beats[i].Day, beats[i]));
         }
@@ -129,8 +132,8 @@ public class AshProgressionTests {
             severity = AshDepthMath.EaseSeverity(severity, target, AshDepthMath.SeverityEasePerDay, 1f);
 
             if (!ended) {
-                Assert.IsTrue(
-                    severity >= highest - 0.0001f, $"day {day}: severity dipped from {highest} to {severity}"
+                Assert.IsGreaterThanOrEqualTo(
+                    highest - 0.0001f, severity, $"day {day}: severity dipped from {highest} to {severity}"
                 );
             }
 
@@ -152,7 +155,7 @@ public class AshProgressionTests {
 
     /// <summary>Every ash beat in the four arcs, arc order first and day order within an arc.</summary>
     private static List<Beat> Campaign() {
-        List<Beat> beats = new List<Beat>();
+        List<Beat> beats = [];
 
         for (int a = 0; a < ArcOrder.Length; a++) {
             List<Beat> arc = BeatsIn(ArcOrder[a]);
@@ -167,7 +170,7 @@ public class AshProgressionTests {
         string path = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "ScenarioProgression", arc + ".xml");
         Assert.IsTrue(File.Exists(path), $"{arc}.xml is missing");
 
-        List<Beat> beats = new List<Beat>();
+        List<Beat> beats = [];
         XElement? root = XDocument.Load(path).Root;
         Assert.IsNotNull(root, $"{arc}.xml has no root element");
 

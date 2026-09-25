@@ -64,7 +64,7 @@ public class FeedbackReportTests {
         Assert.AreEqual("2.0.0-beta.23", Find(form, "issue[release_label]"));
         Assert.AreEqual("cryptik", Find(form, "issue[custom][discord]"));
         Assert.AreEqual("rimworld_ingame", Find(form, "issue[source]"));
-        StringAssert.Contains(Find(form, "issue[unformatted_steps_to_reproduce]"), "Burn pewter");
+        Assert.Contains("Burn pewter", Find(form, "issue[unformatted_steps_to_reproduce]"));
     }
 
     /// <summary>
@@ -87,8 +87,8 @@ public class FeedbackReportTests {
         List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(report, SampleFacts());
         string description = Find(form, "feature_request[description]");
 
-        StringAssert.StartsWith(description, report.Description);
-        StringAssert.Contains(description, "2.0.0-beta.23");
+        Assert.StartsWith(report.Description, description);
+        Assert.Contains("2.0.0-beta.23", description);
     }
 
     [TestMethod]
@@ -177,7 +177,7 @@ public class FeedbackReportTests {
     public void ABugSendsDeviceInfoForBetaHubToParse() {
         List<KeyValuePair<string, string>> form = BetaHubFormEncoder.Encode(SampleBug(), SampleFacts());
 
-        StringAssert.Contains(Find(form, "issue[extras][device_info][value]"), "Linux 6.9");
+        Assert.Contains("Linux 6.9", Find(form, "issue[extras][device_info][value]"));
         Assert.AreEqual("optional", Find(form, "issue[extras][device_info][validation_mode]"));
     }
 
@@ -214,8 +214,8 @@ public class FeedbackReportTests {
 
         string description = Find(BetaHubFormEncoder.Encode(report, SampleFacts()), "issue[description]");
 
-        StringAssert.StartsWith(description, report.Description);
-        StringAssert.Contains(description, "https://youtu.be/abc123");
+        Assert.StartsWith(report.Description, description);
+        Assert.Contains("https://youtu.be/abc123", description);
     }
 
     private static string Find(List<KeyValuePair<string, string>> form, string key) {

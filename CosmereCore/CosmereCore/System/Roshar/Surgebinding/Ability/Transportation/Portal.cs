@@ -241,14 +241,14 @@ public abstract class PortalCaravanGizmoPatch : Caravan {
         List<Verse.Gizmo> extra = [];
         List<Pawn> pawns = self.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
-            Verse.Gizmo? gizmo = MakePortalGizmo(pawns[i], self);
+            Command_Action? gizmo = MakePortalGizmo(pawns[i], self);
             if (gizmo != null) extra.Add(gizmo);
         }
 
         ch.ReturnValue = ch.ReturnValue.Concat(extra);
     }
 
-    private static Verse.Gizmo? MakePortalGizmo(Pawn p, Caravan caravan) {
+    private static Command_Action? MakePortalGizmo(Pawn p, Caravan caravan) {
         if (p.abilities == null) return null;
 
         List<RimWorld.Ability> abilities = p.abilities.AllAbilitiesForReading;

@@ -69,8 +69,9 @@ public class MetallicArtsBalanceTests {
 
                 foreach (XElement offset in offsets.Elements()) {
                     float value = float.Parse(offset.Value);
-                    Assert.IsTrue(
-                        Math.Abs(value) <= 100f,
+                    Assert.IsLessThanOrEqualTo(
+                        100f,
+                        Math.Abs(value),
                         $"{file}/{Name(def)}: {offset.Name} offset is {value}"
                     );
                 }
@@ -84,7 +85,7 @@ public class MetallicArtsBalanceTests {
             foreach (XElement stage in Stages(def)) {
                 foreach (XElement factor in stage.Element("statFactors")?.Elements() ?? []) {
                     float value = float.Parse(factor.Value);
-                    Assert.IsTrue(value > 0f, $"{file}/{Name(def)}: {factor.Name} factor is {value}");
+                    Assert.IsGreaterThan(0f, value, $"{file}/{Name(def)}: {factor.Name} factor is {value}");
                 }
             }
         }
@@ -102,8 +103,9 @@ public class MetallicArtsBalanceTests {
                     string? postFactor = (string?)mod.Element("postFactor");
                     if (postFactor == null) continue;
 
-                    Assert.IsTrue(
-                        float.Parse(postFactor) >= 0.15f,
+                    Assert.IsGreaterThanOrEqualTo(
+                        0.15f,
+                        float.Parse(postFactor),
                         $"{file}/{Name(def)}: {(string?)mod.Element("capacity")} postFactor is {postFactor}"
                     );
                 }
@@ -168,7 +170,7 @@ public class MetallicArtsBalanceTests {
             string name = Name(def);
             if (!name.StartsWith("Cosmere_Scadrial_Hediff_Tap") || name.Contains("Compounded")) continue;
 
-            List<XElement> stages = Stages(def).ToList();
+            List<XElement> stages = [.. Stages(def)];
             if (stages.Count < 2) continue;
 
             Dictionary<string, List<float>> byStat = [];
@@ -183,7 +185,7 @@ public class MetallicArtsBalanceTests {
             }
 
             foreach ((string stat, List<float> rungs) in byStat) {
-                Assert.AreEqual(stages.Count, rungs.Count, $"{file}/{name}: {stat} skips a rung");
+                Assert.HasCount(stages.Count, rungs, $"{file}/{name}: {stat} skips a rung");
 
                 bool climbing = rungs[^1] > rungs[0];
                 for (int i = 1; i < rungs.Count; i++) {
@@ -205,7 +207,7 @@ public class MetallicArtsBalanceTests {
             }
         }
 
-        Assert.IsTrue(laddersChecked > 0, "found no feruchemical ladders at all");
+        Assert.IsGreaterThan(0, laddersChecked, "found no feruchemical ladders at all");
     }
 
     /// <summary>
@@ -245,15 +247,24 @@ public class MetallicArtsBalanceTests {
                     string stat = (string?)entry.Element("stat") ?? "?";
                     List<(float severity, float value)> points = ReadCurve(entry);
 
-                    Assert.IsTrue(points.Count >= 2, $"{file}/{Name(def)}: {stat} curve has too few points");
+                    Assert.IsGreaterThanOrEqualTo(
+                        2,
+                        points.Count,
+                        $"{file}/{Name(def)}: {stat} curve has too few points"
+                    );
                     Assert.AreEqual(1f, points[0].value, 1e-4f, $"{file}/{Name(def)}: {stat} does nothing at severity 0");
-                    Assert.IsTrue(
-                        points[^1].severity >= ExtremeSeverity,
+                    Assert.IsGreaterThanOrEqualTo(
+                        ExtremeSeverity,
+                        points[^1].severity,
                         $"{file}/{Name(def)}: {stat} curve stops at severity {points[^1].severity}, below a duralumin burn"
                     );
 
                     foreach ((float severity, float value) in points) {
-                        Assert.IsTrue(value > 0f, $"{file}/{Name(def)}: {stat} reaches {value} at severity {severity}");
+                        Assert.IsGreaterThan(
+                            0f,
+                            value,
+                            $"{file}/{Name(def)}: {stat} reaches {value} at severity {severity}"
+                        );
                     }
 
                     checkedCurves++;
@@ -261,7 +272,7 @@ public class MetallicArtsBalanceTests {
             }
         }
 
-        Assert.IsTrue(checkedCurves > 0, "found no severity curves at all - the conversion did not run");
+        Assert.IsGreaterThan(0, checkedCurves, "found no severity curves at all - the conversion did not run");
     }
 
     /// <summary>
@@ -287,7 +298,7 @@ public class MetallicArtsBalanceTests {
             Assert.IsNull((string?)stage.Element("statFactors"), $"{defName} still carries flat factors");
 
             List<XElement> curves = stage.Element("statFactorsBySeverity")?.Elements("li").ToList() ?? [];
-            Assert.IsTrue(curves.Count > 0, $"{defName} has no severity curves");
+            Assert.IsNotEmpty(curves, $"{defName} has no severity curves");
 
             foreach (XElement entry in curves) {
                 List<(float severity, float value)> points = ReadCurve(entry);
@@ -309,12 +320,14 @@ public class MetallicArtsBalanceTests {
         Dictionary<string, float> upkeep = ReadUpkeep();
 
         Assert.IsTrue(upkeep.ContainsKey("Cosmere_Scadrial_Ability_Pewter"), "pewter ability not found");
-        Assert.IsTrue(
-            upkeep["Cosmere_Scadrial_Ability_Pewter"] > upkeep["Cosmere_Scadrial_Ability_SteelAura"],
+        Assert.IsGreaterThan(
+            upkeep["Cosmere_Scadrial_Ability_SteelAura"],
+            upkeep["Cosmere_Scadrial_Ability_Pewter"],
             "burning pewter costs no more than burning steel for the lines"
         );
-        Assert.IsTrue(
-            upkeep["Cosmere_Scadrial_Ability_Atium"] > upkeep["Cosmere_Scadrial_Ability_Pewter"],
+        Assert.IsGreaterThan(
+            upkeep["Cosmere_Scadrial_Ability_Pewter"],
+            upkeep["Cosmere_Scadrial_Ability_Atium"],
             "atium costs no more than pewter"
         );
     }
@@ -322,7 +335,7 @@ public class MetallicArtsBalanceTests {
     [TestMethod]
     public void EveryBurnableAbilityDeclaresItsUpkeep() {
         foreach ((string name, float value) in ReadUpkeep()) {
-            Assert.IsTrue(value > 0f, $"{name} declares a non-positive beuPerTick of {value}");
+            Assert.IsGreaterThan(0f, value, $"{name} declares a non-positive beuPerTick of {value}");
         }
     }
 

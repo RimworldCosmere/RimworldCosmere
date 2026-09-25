@@ -12,7 +12,7 @@ namespace Cosmere.Tests;
 ///     is every save written without Cosmere. DormantConnection then NREd on every pawn tick.
 /// </summary>
 [TestClass]
-public class ScribeCollectionNullGuardTests {
+public partial class ScribeCollectionNullGuardTests {
     /// <summary>
     ///     Reads as unguarded but is not a defect: two locals AshPlume handles, and one field
     ///     that is nullable by design. The list may shrink, never grow.
@@ -22,8 +22,6 @@ public class ScribeCollectionNullGuardTests {
         "System/Scadrial/Comp/Thing/CompAshVent.cs|banked",
         "Core/Quest/Objective/QuestPart_CosmereChoice.cs|options",
     ];
-
-    private static readonly Regex LookCall = new(@"Scribe_Collections\.Look\(\s*ref\s+(\w+)");
 
     private static string SourceRoot {
         get {
@@ -37,13 +35,15 @@ public class ScribeCollectionNullGuardTests {
         }
     }
 
+    [GeneratedRegex(@"Scribe_Collections\.Look\(\s*ref\s+(\w+)")]
+    private static partial Regex LookCall { get; }
+
     [TestMethod]
     public void EveryScribedCollectionIsNullGuarded() {
-        List<string> offenders = FindUnguarded().Except(KnownUnguarded).ToList();
+        List<string> offenders = [.. FindUnguarded().Except(KnownUnguarded)];
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Scribe_Collections.Look without a null guard. Loading a save that lacks the node " +
             "leaves the field null and the next dereference throws:\n" + string.Join("\n", offenders) +
             "\nAdd `field ??= [];` after the Look call."
@@ -52,11 +52,10 @@ public class ScribeCollectionNullGuardTests {
 
     [TestMethod]
     public void TheKnownUnguardedListHasNotGoneStale() {
-        List<string> fixedSites = KnownUnguarded.Except(FindUnguarded()).ToList();
+        List<string> fixedSites = [.. KnownUnguarded.Except(FindUnguarded())];
 
-        Assert.AreEqual(
-            0,
-            fixedSites.Count,
+        Assert.IsEmpty(
+            fixedSites,
             "These sites now have a guard, so drop them from KnownUnguarded:\n" +
             string.Join("\n", fixedSites)
         );

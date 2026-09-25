@@ -74,15 +74,16 @@ public class AshVentGenStepTests {
         foreach (string list in new[] { "validators", "fallbackValidators" }) {
             foreach (XElement li in genStep.Element(list)?.Elements("li") ?? []) {
                 string name = li.Attribute("Class")?.Value.Trim() ?? string.Empty;
-                Assert.IsTrue(
-                    KnownValidators.Contains(name),
+                Assert.Contains(
+                    name,
+                    KnownValidators,
                     $"{list} carries '{name}', which Verse does not define - the game drops it silently"
                 );
                 seen++;
             }
         }
 
-        Assert.IsTrue(seen > 0, "the vent gen step should still carry validators");
+        Assert.IsGreaterThan(0, seen, "the vent gen step should still carry validators");
     }
 
     [TestMethod]

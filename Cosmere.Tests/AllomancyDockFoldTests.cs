@@ -26,8 +26,8 @@ public class AllomancyDockFoldTests {
     [TestMethod]
     public void BurningMetalsArePinnedAboveTheScrollView() {
         string source = UISource("AllomancyDockSection.cs");
-        StringAssert.Contains(source, "override void DrawPinned", "A folded or scrolled table must not hide a draining metal.");
-        StringAssert.Contains(source, "CC_Dock_Burning_Header", "The pinned strip needs its own heading.");
+        Assert.Contains("override void DrawPinned", source, "A folded or scrolled table must not hide a draining metal.");
+        Assert.Contains("CC_Dock_Burning_Header", source, "The pinned strip needs its own heading.");
     }
 
     [TestMethod]
@@ -42,9 +42,9 @@ public class AllomancyDockFoldTests {
     [TestMethod]
     public void BurningRowLabelMatchesThePinnedStrip() {
         string source = UISource("AllomancyDockSection.cs");
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "ability.IsFlaring ? FlaringTint : DockPalette.HotLabel",
+            source,
             "A burning row is the one the player must read first, so it uses the same hot label as the pinned strip."
         );
     }

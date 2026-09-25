@@ -37,7 +37,7 @@ public class ConnectionMathTests {
         );
 
         Assert.AreEqual(75, strength);
-        Assert.IsTrue(strength <= ConnectionMath.Max);
+        Assert.IsLessThanOrEqualTo(ConnectionMath.Max, strength);
     }
 
     [TestMethod]
@@ -172,7 +172,7 @@ public class ConnectionMathTests {
             "if (metal.godMetal || pawn.IsMistborn()", StringComparison.Ordinal
         );
 
-        Assert.IsTrue(gate >= 0, "Expected god metal use to go through the Connection gate.");
+        Assert.IsGreaterThanOrEqualTo(0, gate, "Expected god metal use to go through the Connection gate.");
         Assert.IsTrue(
             shortCircuit < 0 || gate < shortCircuit,
             "The Connection gate has to run before the godMetal short-circuit, or it never fires."
@@ -199,8 +199,8 @@ public class ConnectionMathTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, "Found no god metals - the walk is wrong, not the data.");
-        Assert.AreEqual(0, offenders.Count, "These god metals name no Shards: " + string.Join(", ", offenders));
+        Assert.IsGreaterThan(0, seen, "Found no god metals - the walk is wrong, not the data.");
+        Assert.IsEmpty(offenders, "These god metals name no Shards: " + string.Join(", ", offenders));
     }
 
     /// <summary>
@@ -268,11 +268,9 @@ public class ConnectionMathTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, "Found no god metal decisions - the walk is wrong, not the code.");
-        Assert.AreEqual(
-            0,
-            offenders.Count,
-            "These branch on godMetal without checking Connection: " + string.Join(", ", offenders)
+        Assert.IsGreaterThan(0, seen, "Found no god metal decisions - the walk is wrong, not the code.");
+        Assert.IsEmpty(
+            offenders, "These branch on godMetal without checking Connection: " + string.Join(", ", offenders)
         );
     }
 
@@ -294,7 +292,7 @@ public class ConnectionMathTests {
         );
 
         int floor = source.IndexOf("private static int AncestryFloor", StringComparison.Ordinal);
-        Assert.IsTrue(floor >= 0, "Expected an AncestryFloor to guard.");
+        Assert.IsGreaterThanOrEqualTo(0, floor, "Expected an AncestryFloor to guard.");
 
         string body = source[floor..];
         int end = body.IndexOf("\n    }", StringComparison.Ordinal);
@@ -330,8 +328,12 @@ public class ConnectionMathTests {
     // The point of the whole change: a lifetime somewhere beats being born there.
     [TestMethod]
     public void ResidenceOvertakesAncestryBeforeSevenYears() {
-        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 6) < ConnectionMath.AncestryFloor);
-        Assert.IsTrue(ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 7) > ConnectionMath.AncestryFloor);
+        Assert.IsLessThan(
+            ConnectionMath.AncestryFloor, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 6)
+        );
+        Assert.IsGreaterThan(
+            ConnectionMath.AncestryFloor, ConnectionMath.ResidenceFrom(ConnectionMath.TicksPerYear * 7)
+        );
     }
 
     /// <summary>
@@ -395,12 +397,16 @@ public class ConnectionMathTests {
         const int askTicks = 8_000_000; // TicksForResidence(10), what a 10-point move asks for
 
         int tapMoved = ConnectionMath.ClampResidenceTicks(had, askTicks) - had;
-        Assert.IsTrue(tapMoved >= 0, $"A positive delta must not decrease had; moved {tapMoved}.");
-        Assert.IsTrue(tapMoved <= askTicks, $"A tap must not move more than it asked for; moved {tapMoved}.");
+        Assert.IsGreaterThanOrEqualTo(0, tapMoved, $"A positive delta must not decrease had; moved {tapMoved}.");
+        Assert.IsLessThanOrEqualTo(
+            askTicks, tapMoved, $"A tap must not move more than it asked for; moved {tapMoved}."
+        );
 
         int storeMoved = ConnectionMath.ClampResidenceTicks(had, -askTicks) - had;
-        Assert.IsTrue(storeMoved <= 0, $"A negative delta must not increase had; moved {storeMoved}.");
-        Assert.IsTrue(-storeMoved <= askTicks, $"A store must not move more than it asked for; moved {storeMoved}.");
+        Assert.IsLessThanOrEqualTo(0, storeMoved, $"A negative delta must not increase had; moved {storeMoved}.");
+        Assert.IsLessThanOrEqualTo(
+            askTicks, -storeMoved, $"A store must not move more than it asked for; moved {storeMoved}."
+        );
     }
 
     /// <summary>A had exactly at the ceiling has no headroom left to gain, and everything left to give.</summary>
@@ -432,7 +438,7 @@ public class ConnectionMathTests {
         );
 
         int method = source.IndexOf("public override void GameComponentTick", StringComparison.Ordinal);
-        Assert.IsTrue(method >= 0, "Expected GameComponentTick to exist.");
+        Assert.IsGreaterThanOrEqualTo(0, method, "Expected GameComponentTick to exist.");
 
         string body = source[method..];
         int end = body.IndexOf("\n    }", StringComparison.Ordinal);
@@ -543,10 +549,10 @@ public class ConnectionMathTests {
 
         foreach (string method in new[] { "AddRandomAllomanticGene", "AddRandomFeruchemicalGene" }) {
             int start = source.IndexOf(method, StringComparison.Ordinal);
-            Assert.IsTrue(start >= 0, $"Expected {method} to exist.");
+            Assert.IsGreaterThanOrEqualTo(0, start, $"Expected {method} to exist.");
 
             int end = source.IndexOf("RandomElement", start, StringComparison.Ordinal);
-            Assert.IsTrue(end > start, $"Expected {method} to pick from candidates.");
+            Assert.IsGreaterThan(start, end, $"Expected {method} to pick from candidates.");
 
             Assert.IsTrue(
                 source[start..end].Contains("godMetal", StringComparison.Ordinal),
@@ -584,7 +590,7 @@ public class ConnectionMathTests {
 
         // a kandra wearing all four Blessings carries eight, and still must not read as a Shardholder.
         int eight = ConnectionMath.Compose(Floor, 0, ConnectionMath.StrengthFromSpikes(8), 0);
-        Assert.IsTrue(eight <= ConnectionMath.OrdinaryMax);
+        Assert.IsLessThanOrEqualTo(ConnectionMath.OrdinaryMax, eight);
         Assert.AreNotEqual(ConnectionTier.Ascendant, ConnectionMath.TierOf(eight));
     }
 }

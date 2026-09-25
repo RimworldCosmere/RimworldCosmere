@@ -23,9 +23,9 @@ public class StorageTabStateTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     /// <summary>
     ///     The row label needs a left anchor and the gear tab's label color, but it has to hand
@@ -35,9 +35,10 @@ public class StorageTabStateTests {
     public void TheStorageTabHandsBackTheTextStateItBorrows() {
         string tab = Core("Core", "Tab", "ITab_StorageWithInventory.cs");
 
-        Assert.IsFalse(tab.Contains("Text.Anchor ="), "A bare anchor assignment bleeds into vanilla.");
-        Assert.IsTrue(
-            tab.Contains("using (new TextBlock(TextAnchor.MiddleLeft, ITab_Pawn_Gear.ThingLabelColor))"),
+        Assert.DoesNotContain("Text.Anchor =", tab, "A bare anchor assignment bleeds into vanilla.");
+        Assert.Contains(
+            "using (new TextBlock(TextAnchor.MiddleLeft, ITab_Pawn_Gear.ThingLabelColor))",
+            tab,
             "The label row borrows anchor and color through a TextBlock."
         );
     }

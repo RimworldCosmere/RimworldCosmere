@@ -1,5 +1,4 @@
 using Cosmere.Core.Settings.Model;
-using global::System.Collections;
 using global::System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,8 +16,8 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section, section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core: duplicate section key 'general'");
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general: duplicate setting key 'enabled'");
+        Assert.Contains("Core: duplicate section key 'general'", errors);
+        Assert.Contains("Core/general: duplicate setting key 'enabled'", errors);
     }
 
     [TestMethod]
@@ -30,7 +29,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/value: slider default 101 is outside [0, 100]");
+        Assert.Contains("Core/general/value: slider default 101 is outside [0, 100]", errors);
     }
 
     [TestMethod]
@@ -42,7 +41,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/value: slider default must be finite");
+        Assert.Contains("Core/general/value: slider default must be finite", errors);
     }
 
     [TestMethod]
@@ -54,7 +53,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/interval: ticks default 499 is outside [500, 1000]");
+        Assert.Contains("Core/general/interval: ticks default 499 is outside [500, 1000]", errors);
     }
 
     [TestMethod]
@@ -76,7 +75,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/range: range default minimum 20 exceeds maximum 10");
+        Assert.Contains("Core/general/range: range default minimum 20 exceeds maximum 10", errors);
     }
 
     [TestMethod]
@@ -94,7 +93,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/choice: choice default 'missing' is not an option");
+        Assert.Contains("Core/general/choice: choice default 'missing' is not an option", errors);
     }
 
     [TestMethod]
@@ -112,7 +111,7 @@ public class SettingsDescriptorValidatorTests {
 
         IReadOnlyList<string> errors = SettingsDescriptorValidator.Validate("Core", [section]);
 
-        CollectionAssert.Contains((global::System.Collections.ICollection)errors, "Core/general/choice: duplicate choice value 'first'");
+        Assert.Contains("Core/general/choice: duplicate choice value 'first'", errors);
     }
 
     [TestMethod]

@@ -9,7 +9,7 @@ namespace Cosmere.Tests;
 internal sealed class FakeMetalmindSource : IMetalmindSource {
     private float stored;
 
-    private readonly Dictionary<string, float> byLedger = new Dictionary<string, float>();
+    private readonly Dictionary<string, float> byLedger = [];
 
     private readonly bool refuses;
 

@@ -29,9 +29,10 @@ public class AshDepthTests {
     public void MovementPenaltyOnlyBitesPastADusting() {
         Assert.AreEqual(0, AshDepthMath.MovementTicksAddOn(AshBucket.None));
         Assert.AreEqual(0, AshDepthMath.MovementTicksAddOn(AshBucket.Dusting));
-        Assert.IsTrue(AshDepthMath.MovementTicksAddOn(AshBucket.Ankle) > 0);
-        Assert.IsTrue(
-            AshDepthMath.MovementTicksAddOn(AshBucket.Waist) > AshDepthMath.MovementTicksAddOn(AshBucket.Knee)
+        Assert.IsGreaterThan(0, AshDepthMath.MovementTicksAddOn(AshBucket.Ankle));
+        Assert.IsGreaterThan(
+            AshDepthMath.MovementTicksAddOn(AshBucket.Knee),
+            AshDepthMath.MovementTicksAddOn(AshBucket.Waist)
         );
     }
 
@@ -78,7 +79,7 @@ public class AshDepthTests {
         }
 
         Assert.AreEqual(AshTerrainAction.Restore, AshDepthMath.NextTerrainAction(0, true));
-        Assert.IsTrue(AshDepthMath.TerrainChangesPerSweep > 0, "a zero budget stalls the sweep forever");
+        Assert.IsGreaterThan(0, AshDepthMath.TerrainChangesPerSweep, "a zero budget stalls the sweep forever");
     }
 
     /// <summary>
@@ -121,7 +122,7 @@ public class AshDepthTests {
         }
 
         // One in 24 by chance across 24 possible delays; anything near that is a healthy hash.
-        Assert.IsTrue(matches < 62500 / 8, $"{matches} of 62,499 neighbouring pairs settle on the same day");
+        Assert.IsLessThan(62500 / 8, matches, $"{matches} of 62,499 neighbouring pairs settle on the same day");
     }
 
     /// <summary>
@@ -135,7 +136,11 @@ public class AshDepthTests {
             if (AshDepthMath.SettleDelayDays(i, true) == AshDepthMath.SettleDelayDays(i, false)) matches++;
         }
 
-        Assert.IsTrue(matches < 62500 / 8, $"{matches} of 62,500 cells revert on the same schedule they settled on");
+        Assert.IsLessThan(
+            62500 / 8,
+            matches,
+            $"{matches} of 62,500 cells revert on the same schedule they settled on"
+        );
     }
 
     /// <summary>The delay is derived, not rolled, so a reload cannot shake out a different map.</summary>
@@ -157,7 +162,7 @@ public class AshDepthTests {
         const float SweepsPerDay = 60000f / 64f;
 
         float perSweep = AshDepthMath.DrainMmPerSweep(AshGrid.MaxDepthMm, SweepsPerDay);
-        Assert.IsTrue(perSweep > 0f, "a zero drain never clears the map");
+        Assert.IsGreaterThan(0f, perSweep, "a zero drain never clears the map");
 
         float depth = AshGrid.MaxDepthMm;
         int sweeps = 0;
@@ -184,7 +189,7 @@ public class AshDepthTests {
 
         float low = AshDepthMath.FallRateMmPerHour(0.3f, 300f);
         float high = AshDepthMath.FallRateMmPerHour(0.9f, 300f);
-        Assert.IsTrue(high > low);
+        Assert.IsGreaterThan(low, high);
         Assert.AreEqual(300f / 24f, AshDepthMath.FallRateMmPerHour(1f, 300f), 0.0001f);
     }
 
@@ -193,8 +198,8 @@ public class AshDepthTests {
         float oneTick = 1f / 60000f;
         float stepped = AshDepthMath.EaseSeverity(0f, 1f, AshDepthMath.SeverityEasePerDay, oneTick);
 
-        Assert.IsTrue(stepped > 0f);
-        Assert.IsTrue(stepped < 0.001f, $"one tick moved severity by {stepped}, which reads as a jump cut");
+        Assert.IsGreaterThan(0f, stepped);
+        Assert.IsLessThan(0.001f, stepped, $"one tick moved severity by {stepped}, which reads as a jump cut");
     }
 
     [TestMethod]
@@ -245,8 +250,8 @@ public class AshDepthTests {
 
     [TestMethod]
     public void AStripeBankSavedAtADifferentWidthIsDiscardedRatherThanIndexedPast() {
-        Assert.IsNull(AshPlume.RestoreBank(new List<float>(new float[Stripes - 1]), Stripes));
-        Assert.IsNull(AshPlume.RestoreBank(new List<float>(new float[Stripes + 1]), Stripes));
+        Assert.IsNull(AshPlume.RestoreBank([.. new float[Stripes - 1]], Stripes));
+        Assert.IsNull(AshPlume.RestoreBank([.. new float[Stripes + 1]], Stripes));
         Assert.IsNull(AshPlume.RestoreBank(null, Stripes), "a save from before the accrual was scribed");
     }
 }

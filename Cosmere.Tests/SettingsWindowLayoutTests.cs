@@ -19,7 +19,7 @@ public class SettingsWindowLayoutTests {
     public void ContentDoesNotOverlapTheFooter() {
         SettingsWindowLayoutData layout = SettingsWindowLayoutMath.Create(0f, 0f, 900f, 700f);
 
-        Assert.IsTrue(layout.ContentY + layout.ContentHeight <= layout.FooterY);
+        Assert.IsLessThanOrEqualTo(layout.FooterY, layout.ContentY + layout.ContentHeight);
     }
 
     [TestMethod]
@@ -38,7 +38,7 @@ public class SettingsWindowLayoutTests {
     [TestMethod]
     public void GutterLeavesRoomOnBothSidesOfTheDivider() {
         // a one-pixel divider centred in the gutter needs width so neither side reads crowded (pins audited spacing).
-        Assert.IsTrue(SettingsWindowLayoutMath.SidebarGutter >= 12f);
+        Assert.IsGreaterThanOrEqualTo(12f, SettingsWindowLayoutMath.SidebarGutter);
     }
 
     [TestMethod]
@@ -57,7 +57,7 @@ public class SettingsWindowLayoutTests {
     [TestMethod]
     public void FooterLeavesAirOnBothSidesOfTheButtonRow() {
         // the 30f row is centred, so the footer needs slack that neither the divider nor the window edge crowds it.
-        Assert.IsTrue((SettingsWindowLayoutMath.FooterHeight - 30f) / 2f >= 12f);
+        Assert.IsGreaterThanOrEqualTo(12f, (SettingsWindowLayoutMath.FooterHeight - 30f) / 2f);
     }
 
     [TestMethod]

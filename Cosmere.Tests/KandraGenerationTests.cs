@@ -14,7 +14,16 @@ namespace Cosmere.Tests;
 ///     put forty-year-old firsts and eight-hundred-year-old tenths in the same colony.
 /// </remarks>
 [TestClass]
-public class KandraGenerationTests {
+public partial class KandraGenerationTests {
+    [GeneratedRegex(@"OldestYears\s*=\s*1000f")]
+    private static partial Regex OldestYearsConstant { get; }
+
+    [GeneratedRegex(@"YoungestYears\s*=\s*40f")]
+    private static partial Regex YoungestYearsConstant { get; }
+
+    [GeneratedRegex(@"IsHashIntervalTick\([^)]*\)\)\s*ApplyAge\(\)")]
+    private static partial Regex ApplyAgeFromTick { get; }
+
     private static string Source {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -44,10 +53,11 @@ public class KandraGenerationTests {
     public void AFirstGenerationKandraIsAboutAThousandYearsOld() {
         string source = Source;
 
-        Assert.IsTrue(Regex.IsMatch(source, @"OldestYears\s*=\s*1000f"));
-        Assert.IsTrue(Regex.IsMatch(source, @"YoungestYears\s*=\s*40f"));
-        Assert.IsTrue(
-            source.Contains("Mathf.Lerp(YoungestYears, OldestYears, Seniority)"),
+        Assert.IsTrue(OldestYearsConstant.IsMatch(source));
+        Assert.IsTrue(YoungestYearsConstant.IsMatch(source));
+        Assert.Contains(
+            "Mathf.Lerp(YoungestYears, OldestYears, Seniority)",
+            source,
             "Age has to come off Seniority, or it is a second roll again."
         );
     }
@@ -62,11 +72,12 @@ public class KandraGenerationTests {
         string source = Source;
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"IsHashIntervalTick\([^)]*\)\)\s*ApplyAge\(\)"),
+            ApplyAgeFromTick.IsMatch(source),
             "ApplyAge must run from the tick, not only from PostAdd."
         );
-        Assert.IsTrue(
-            source.Contains("AgeChronologicalTicks >= target) return"),
+        Assert.Contains(
+            "AgeChronologicalTicks >= target) return",
+            source,
             "Raising only, so a kandra never gets younger and an old save corrects itself."
         );
     }
@@ -79,14 +90,15 @@ public class KandraGenerationTests {
     public void TwoKandraOfOneGenerationDifferWithoutRerollingEveryTick() {
         string source = Source;
 
-        Assert.IsTrue(source.Contains("pawn.thingIDNumber"), "Jitter must be stable per pawn.");
+        Assert.Contains("pawn.thingIDNumber", source, "Jitter must be stable per pawn.");
 
         int start = source.IndexOf("public float ChronologicalYears", StringComparison.Ordinal);
         int end = source.IndexOf("public override void PostAdd", StringComparison.Ordinal);
         Assert.IsTrue(start >= 0 && end > start);
 
-        Assert.IsFalse(
-            source[start..end].Contains("Rand."),
+        Assert.DoesNotContain(
+            "Rand.",
+            source[start..end],
             "A roll here changes the answer every tick and the enforcement never settles."
         );
     }

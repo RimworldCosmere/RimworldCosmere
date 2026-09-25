@@ -36,7 +36,7 @@ public class NamedPawnAppearanceTests {
         string source = Source;
 
         int start = source.IndexOf("private static void ApplyAppearance(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "ApplyAppearance is missing.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "ApplyAppearance is missing.");
 
         string body = source[start..];
         Assert.IsTrue(body.Contains("pawn.story.bodyType = body", StringComparison.Ordinal));
@@ -93,7 +93,7 @@ public class NamedPawnAppearanceTests {
     public void HairAndBeardsAlsoFollowTheDeclaredGender() {
         string source = Source;
         int start = source.IndexOf("private static void ApplyAppearance(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, start);
 
         string body = source[start..];
         Assert.IsTrue(

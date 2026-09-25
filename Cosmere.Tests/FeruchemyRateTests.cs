@@ -81,7 +81,7 @@ public class FeruchemyRateTests {
         float previous = 0f;
         for (int level = 0; level <= FeruchemyRate.MaxSkillLevel; level++) {
             float efficiency = FeruchemyRate.Efficiency(1f, level);
-            Assert.IsTrue(efficiency >= previous, $"level {level} went backwards");
+            Assert.IsGreaterThanOrEqualTo(previous, efficiency, $"level {level} went backwards");
             previous = efficiency;
         }
     }

@@ -67,7 +67,7 @@ public static class LesserSprenCaptureSystem {
         float captureChance = CalculateCaptureChance(gem, targetSprenType);
 
         if (Rand.Chance(captureChance)) {
-            return PerformCapture(gem, targetSprenType, info, map);
+            return PerformCapture(gem, targetSprenType, info);
         }
 
         investiture.currentInvestitureSelf = investiture.maxInvestitureSelf * .1f;
@@ -113,7 +113,7 @@ public static class LesserSprenCaptureSystem {
         return Mathf.Clamp01(baseChance * rarityMultiplier * qualityMultiplier);
     }
 
-    private static bool PerformCapture(ThingWithComps gem, SprenType sprenType, SprenSpawnInformation info, Map map) {
+    private static bool PerformCapture(ThingWithComps gem, SprenType sprenType, SprenSpawnInformation info) {
         SprenContainer? sprenContainer = gem.TryGetComp<SprenContainer>();
         if (sprenContainer == null) {
             return false;

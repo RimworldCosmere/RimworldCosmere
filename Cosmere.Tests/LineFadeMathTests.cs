@@ -40,8 +40,8 @@ public class LineFadeMathTests {
         for (float distance = 0f; distance <= 40f; distance += 0.5f) {
             float fade = LineFade.For(20f, distance);
             Assert.IsFalse(float.IsNaN(fade), $"NaN alpha at distance {distance}.");
-            Assert.IsTrue(fade >= 0.3f, $"Alpha {fade} fell below the 0.3 floor at distance {distance}.");
-            Assert.IsTrue(fade <= 1f, $"Alpha {fade} exceeded 1 at distance {distance}.");
+            Assert.IsGreaterThanOrEqualTo(0.3f, fade, $"Alpha {fade} fell below the 0.3 floor at distance {distance}.");
+            Assert.IsLessThanOrEqualTo(1f, fade, $"Alpha {fade} exceeded 1 at distance {distance}.");
         }
     }
 }

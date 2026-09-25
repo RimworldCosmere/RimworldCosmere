@@ -60,8 +60,8 @@ public class ProgressionChoiceDeferralTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, "Found no ChoiceActions at all - the walk is wrong, not the defs.");
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsGreaterThan(0, seen, "Found no ChoiceActions at all - the walk is wrong, not the defs.");
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class ProgressionChoiceDeferralTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -128,6 +128,6 @@ public class ProgressionChoiceDeferralTests {
         string detail = "These action lists put two forks side by side, so both dialogs open and " +
             "the player only sees the top one: " + string.Join("; ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 }

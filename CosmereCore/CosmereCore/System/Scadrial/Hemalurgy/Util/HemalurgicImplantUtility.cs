@@ -15,10 +15,8 @@ public static class HemalurgicImplantUtility {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
                 GrantGene(target, spike.stolenDefNames[i]);
             }
-        } else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
-            if (!target.IsSnapped()) {
-                SnapUtility.Snap(target, "CS_Hemalurgy_SnappedByConnection");
-            }
+        } else if (spike.stealType == HemalurgicStealType.ConnectionIdentity && !target.IsSnapped()) {
+            SnapUtility.Snap(target, "CS_Hemalurgy_SnappedByConnection");
         }
     }
 

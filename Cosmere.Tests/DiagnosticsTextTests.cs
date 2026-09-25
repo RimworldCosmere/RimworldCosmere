@@ -28,13 +28,13 @@ public class DiagnosticsTextTests {
         string tail = LogTail.Take(log, 25);
 
         Assert.IsTrue(tail.StartsWith("bbbbbbbbbb") || tail.StartsWith("cccccccccc"), tail);
-        Assert.IsFalse(tail.Contains("aaaaaaaaaa"), tail);
+        Assert.DoesNotContain("aaaaaaaaaa", tail, tail);
     }
 
     [TestMethod]
     public void TheTailNeverExceedsTheCap() {
         string log = new string('x', 5000);
-        Assert.IsTrue(LogTail.Take(log, 100).Length <= 100);
+        Assert.IsLessThanOrEqualTo(100, LogTail.Take(log, 100).Length);
     }
 
     /// <summary>
@@ -53,22 +53,22 @@ public class DiagnosticsTextTests {
         DiagnosticsFacts facts = SampleFacts();
         string body = DiagnosticsText.Build(facts, "log line one\nlog line two");
 
-        StringAssert.Contains(body, "2.0.0-beta.23");
-        StringAssert.Contains(body, "76561198000000000");
-        StringAssert.Contains(body, "Cryptik");
-        StringAssert.Contains(body, "1.6.4518");
-        StringAssert.Contains(body, "Linux");
-        StringAssert.Contains(body, "CosmereCore");
-        StringAssert.Contains(body, "log line two");
+        Assert.Contains("2.0.0-beta.23", body);
+        Assert.Contains("76561198000000000", body);
+        Assert.Contains("Cryptik", body);
+        Assert.Contains("1.6.4518", body);
+        Assert.Contains("Linux", body);
+        Assert.Contains("CosmereCore", body);
+        Assert.Contains("log line two", body);
     }
 
     [TestMethod]
     public void TheInlineFooterOmitsTheLogAndTheSteamId() {
         string footer = DiagnosticsText.BuildInlineFooter(SampleFacts());
 
-        StringAssert.Contains(footer, "2.0.0-beta.23");
-        StringAssert.Contains(footer, "CosmereCore");
-        Assert.IsFalse(footer.Contains("76561198000000000"), footer);
+        Assert.Contains("2.0.0-beta.23", footer);
+        Assert.Contains("CosmereCore", footer);
+        Assert.DoesNotContain("76561198000000000", footer, footer);
     }
 
     private static DiagnosticsFacts SampleFacts() {

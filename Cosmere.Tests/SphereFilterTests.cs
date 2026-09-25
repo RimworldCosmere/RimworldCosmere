@@ -22,7 +22,7 @@ public class SphereFilterTests {
     public void ScrollViewStaysInsideTheWindow() {
         float bottom = SphereFilterLayout.ScrollY(WindowY) + SphereFilterLayout.ScrollHeight(WindowHeight);
 
-        Assert.IsTrue(bottom <= WindowY + WindowHeight);
+        Assert.IsLessThanOrEqualTo(WindowY + WindowHeight, bottom);
     }
 
     [TestMethod]
@@ -34,7 +34,7 @@ public class SphereFilterTests {
     public void ScrollViewClearsTheCloseButton() {
         float bottom = SphereFilterLayout.ScrollY(WindowY) + SphereFilterLayout.ScrollHeight(WindowHeight);
 
-        Assert.IsTrue(bottom <= SphereFilterLayout.CloseY(WindowY, WindowHeight));
+        Assert.IsLessThanOrEqualTo(SphereFilterLayout.CloseY(WindowY, WindowHeight), bottom);
     }
 
     [TestMethod]
@@ -52,9 +52,9 @@ public class SphereFilterTests {
     [TestMethod]
     public void EveryRowFitsInsideTheViewRect() {
         const int count = 40;
-        float lastRowBottom = ((count - 1) * SphereFilterLayout.RowHeight) + SphereFilterLayout.RowHeight;
+        float lastRowBottom = (count - 1) * SphereFilterLayout.RowHeight + SphereFilterLayout.RowHeight;
 
-        Assert.IsTrue(lastRowBottom <= SphereFilterLayout.ViewHeight(count));
+        Assert.IsLessThanOrEqualTo(SphereFilterLayout.ViewHeight(count), lastRowBottom);
     }
 
     [TestMethod]
@@ -70,10 +70,10 @@ public class SphereFilterTests {
         float x = SphereFilterLayout.CloseX(WindowX, WindowWidth);
         float y = SphereFilterLayout.CloseY(WindowY, WindowHeight);
 
-        Assert.IsTrue(x >= WindowX);
-        Assert.IsTrue(x + SphereFilterLayout.CloseWidth <= WindowX + WindowWidth);
-        Assert.IsTrue(y >= WindowY);
-        Assert.IsTrue(y + SphereFilterLayout.CloseHeight <= WindowY + WindowHeight);
+        Assert.IsGreaterThanOrEqualTo(WindowX, x);
+        Assert.IsLessThanOrEqualTo(WindowX + WindowWidth, x + SphereFilterLayout.CloseWidth);
+        Assert.IsGreaterThanOrEqualTo(WindowY, y);
+        Assert.IsLessThanOrEqualTo(WindowY + WindowHeight, y + SphereFilterLayout.CloseHeight);
     }
 
     [TestMethod]

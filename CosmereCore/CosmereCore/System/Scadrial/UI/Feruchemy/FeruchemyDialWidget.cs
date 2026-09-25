@@ -142,7 +142,7 @@ public sealed class FeruchemyDialWidget {
             return;
         }
 
-        float snapped = gene.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
+        float snapped = Feruchemist.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
         if (compounded) gene.compoundedTargetValue = snapped;
         else gene.targetValue = snapped;
     }

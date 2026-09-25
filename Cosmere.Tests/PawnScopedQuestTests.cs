@@ -19,9 +19,9 @@ public class PawnScopedQuestTests {
             currentTick = 100 * CosmereQuestEligibility.TicksPerDay,
             daysElapsed = 100,
             freeColonistCount = 8,
-            enabledShards = new HashSet<string> { "Honor", "Cultivation" },
+            enabledShards = ["Honor", "Cultivation"],
             subjectPawnId = Kaladin,
-            subjectHediffs = new HashSet<string> { "Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather" },
+            subjectHediffs = ["Cosmere_Roshar_Hediff_BondsmithCalling_Stormfather"],
         };
     }
 
@@ -69,7 +69,7 @@ public class PawnScopedQuestTests {
     [TestMethod]
     public void ABurnedQuestBurnsForOnePawnOnly() {
         QuestWorldState state = CalledState();
-        state.pawnBurns["Cosmere_Roshar_Quest_BondNightwatcher"] = new HashSet<int> { Shallan };
+        state.pawnBurns["Cosmere_Roshar_Quest_BondNightwatcher"] = [Shallan];
 
         Assert.IsTrue(state.IsBurnedForPawn("Cosmere_Roshar_Quest_BondNightwatcher", Shallan));
         Assert.IsFalse(state.IsBurnedForPawn("Cosmere_Roshar_Quest_BondNightwatcher", Kaladin));

@@ -65,12 +65,10 @@ public class NamedPawnDef {
                     lastName = node.InnerText;
                     break;
                 case "age":
-                    if (!int.TryParse(node.InnerText, out age))
-                        Log.Warn($"NamedPawnDef: invalid age value '{node.InnerText}'");
+                    ParseInt(node, "age", out age);
                     break;
                 case "chronologicalAge":
-                    if (!int.TryParse(node.InnerText, out chronologicalAge))
-                        Log.Warn($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
+                    ParseInt(node, "chronologicalAge", out chronologicalAge);
                     break;
                 case "gender":
                     gender = ParseHelper.FromString<Gender>(node.InnerText);
@@ -85,8 +83,7 @@ public class NamedPawnDef {
                     adulthood = node.InnerText;
                     break;
                 case "noRandomTraits":
-                    if (!bool.TryParse(node.InnerText, out noRandomTraits))
-                        Log.Warn($"NamedPawnDef: invalid noRandomTraits value '{node.InnerText}'");
+                    ParseBool(node, "noRandomTraits", out noRandomTraits);
                     break;
                 case "traits":
                     traits = DirectXmlToObject.ObjectFromXml<List<NamedPawnTraitEntry>>(node, false);
@@ -101,13 +98,10 @@ public class NamedPawnDef {
                     radiantOrder = node.InnerText;
                     break;
                 case "idealLevel":
-                    if (!int.TryParse(node.InnerText, out idealLevel))
-                        Log.Warn($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
-
+                    ParseInt(node, "idealLevel", out idealLevel);
                     break;
                 case "kandraGeneration":
-                    if (!int.TryParse(node.InnerText, out kandraGeneration))
-                        Log.Warn($"NamedPawnDef: invalid kandraGeneration value '{node.InnerText}'");
+                    ParseInt(node, "kandraGeneration", out kandraGeneration);
                     break;
                 case "kandraTrueAnimal":
                     kandraTrueAnimal = node.InnerText;
@@ -125,12 +119,10 @@ public class NamedPawnDef {
                     skinColor = node.InnerText;
                     break;
                 case "mistborn":
-                    if (!bool.TryParse(node.InnerText, out mistborn))
-                        Log.Warn($"NamedPawnDef: invalid mistborn value '{node.InnerText}'");
+                    ParseBool(node, "mistborn", out mistborn);
                     break;
                 case "fullFeruchemist":
-                    if (!bool.TryParse(node.InnerText, out fullFeruchemist))
-                        Log.Warn($"NamedPawnDef: invalid fullFeruchemist value '{node.InnerText}'");
+                    ParseBool(node, "fullFeruchemist", out fullFeruchemist);
                     break;
                 case "inventory":
                     inventory = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
@@ -143,6 +135,14 @@ public class NamedPawnDef {
                     break;
             }
         }
+    }
+
+    private static void ParseInt(XmlNode node, string field, out int value) {
+        if (!int.TryParse(node.InnerText, out value)) Log.Warn($"NamedPawnDef: invalid {field} value '{node.InnerText}'");
+    }
+
+    private static void ParseBool(XmlNode node, string field, out bool value) {
+        if (!bool.TryParse(node.InnerText, out value)) Log.Warn($"NamedPawnDef: invalid {field} value '{node.InnerText}'");
     }
 
     /// <summary>

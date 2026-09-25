@@ -24,13 +24,17 @@ public class ExpeditionAndFooterTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
-    private static string Footer() => Core("System", "Roshar", "Dialog", "Dialog_RadiantOrderInfoDialog.cs");
+    private static string Footer() {
+        return Core("System", "Roshar", "Dialog", "Dialog_RadiantOrderInfoDialog.cs");
+    }
 
-    private static string ExpeditionDialog() => Core("System", "Roshar", "Dialog", "Dialog_GemheartExpedition.cs");
+    private static string ExpeditionDialog() {
+        return Core("System", "Roshar", "Dialog", "Dialog_GemheartExpedition.cs");
+    }
 
     [TestMethod]
     public void PawnPowerWeightsMeleeOverShootingAndIdealsOverBoth() {
@@ -81,7 +85,7 @@ public class ExpeditionAndFooterTests {
         int sever = source.IndexOf("Widgets.ButtonText(rightButtonRect, \"CRO_BreakBond_Sever\"", StringComparison.Ordinal);
 
         Assert.IsTrue(leftAssign > 0 && rightAssign > leftAssign, "footer rects are gone or reordered");
-        Assert.IsTrue(sever > 0, "sever bond no longer sits in the right footer slot");
+        Assert.IsGreaterThan(0, sever, "sever bond no longer sits in the right footer slot");
         Assert.IsFalse(
             source.Contains("Widgets.ButtonText(leftButtonRect, \"CRO_BreakBond_Sever\"", StringComparison.Ordinal),
             "sever bond is back in the leftmost slot"

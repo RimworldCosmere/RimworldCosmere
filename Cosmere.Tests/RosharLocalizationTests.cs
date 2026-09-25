@@ -14,7 +14,7 @@ namespace Cosmere.Tests;
 ///     CRO_ key that no Keyed file defines, which the game renders as the key name itself.
 /// </summary>
 [TestClass]
-public class RosharLocalizationTests {
+public partial class RosharLocalizationTests {
     private static readonly string[] GuardedFiles = [
         "System/Roshar/Dialog/Dialog_GemheartExpedition.cs",
         "System/Roshar/Dialog/Dialog_RadiantOrderDialogBase.cs",
@@ -31,15 +31,16 @@ public class RosharLocalizationTests {
     /// <summary>
     ///     First argument after the rect, so a literal in that slot is the visible label.
     /// </summary>
-    private static readonly Regex PlayerFacingLiteral = new Regex(
+    [GeneratedRegex(
         @"(?:Widgets\.(?:Label|ButtonText|CheckboxLabeled)|TooltipHandler\.TipRegion)\s*\([^,)]+,\s*""[A-Z]"
         + @"|Messages\.Message\s*\(\s*""[A-Z]"
         + @"|new FloatMenuOption\s*\(\s*""[A-Z]"
-        + @"|default(?:Label|Desc)\s*=\s*""[A-Z]",
-        RegexOptions.Compiled
-    );
+        + @"|default(?:Label|Desc)\s*=\s*""[A-Z]"
+    )]
+    private static partial Regex PlayerFacingLiteral { get; }
 
-    private static readonly Regex CroKeyReference = new Regex(@"""(CRO_[A-Za-z0-9_]+)""", RegexOptions.Compiled);
+    [GeneratedRegex(@"""(CRO_[A-Za-z0-9_]+)""")]
+    private static partial Regex CroKeyReference { get; }
 
     private static string RepoRoot {
         get {
@@ -78,9 +79,8 @@ public class RosharLocalizationTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Player-facing text must come from a CRO_ key:\n" + string.Join("\n", offenders)
         );
     }
@@ -106,9 +106,8 @@ public class RosharLocalizationTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            missing.Count,
+        Assert.IsEmpty(
+            missing,
             "Referenced keys with no definition render as the key text in game:\n" + string.Join("\n", missing)
         );
     }

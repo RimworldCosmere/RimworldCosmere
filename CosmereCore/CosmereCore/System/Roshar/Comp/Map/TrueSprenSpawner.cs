@@ -68,14 +68,6 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    private bool HasSpawnedSpren(Pawn pawn) {
-        for (int i = 0; i < pawnSprens.Count; i++) {
-            if (pawnSprens[i].pawn.Equals(pawn) && pawnSprens[i].spren.Spawned) return true;
-        }
-
-        return false;
-    }
-
     private void SpawnSpren(Pawn pawn, SpawnInfo spawnInfoForPawn) {
         PawnKindDef? kind = PawnKindDefOf.Cosmere_Roshar_Race_UnknownTrueSpren;
 
@@ -124,6 +116,14 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         spawnInfoForPawn.lastSpawn = spren.spawnedTick;
         CameraJumper.TryJumpAndSelect(spren);
         Find.TickManager.Pause();
+    }
+
+    private bool HasSpawnedSpren(Pawn pawn) {
+        for (int i = 0; i < pawnSprens.Count; i++) {
+            if (pawnSprens[i].pawn.Equals(pawn) && pawnSprens[i].spren.Spawned) return true;
+        }
+
+        return false;
     }
 
     public void DespawnSpren(Pawn pawn, TrueSpren spren) {

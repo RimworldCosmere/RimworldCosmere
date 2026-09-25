@@ -7,24 +7,24 @@ namespace Cosmere.Tests;
 public class AshLungMathTests {
     [TestMethod]
     public void AFullyMaskedPawnNeverGainsSeverity() {
-        Assert.IsTrue(AshLungMath.SeverityDeltaPerHour(1f, 1f) <= 0f);
+        Assert.IsLessThanOrEqualTo(0f, AshLungMath.SeverityDeltaPerHour(1f, 1f));
     }
 
     [TestMethod]
     public void AnUnmaskedPawnAtTheMouthGains() {
-        Assert.IsTrue(AshLungMath.SeverityDeltaPerHour(1f, 0f) > 0f);
+        Assert.IsGreaterThan(0f, AshLungMath.SeverityDeltaPerHour(1f, 0f));
     }
 
     [TestMethod]
     public void ClearAirRecedes() {
-        Assert.IsTrue(AshLungMath.SeverityDeltaPerHour(0f, 0f) < 0f);
+        Assert.IsLessThan(0f, AshLungMath.SeverityDeltaPerHour(0f, 0f));
     }
 
     [TestMethod]
     public void RecedingIsSlowerThanGaining() {
         float gain = AshLungMath.SeverityDeltaPerHour(1f, 0f);
         float recede = -AshLungMath.SeverityDeltaPerHour(0f, 0f);
-        Assert.IsTrue(recede < gain, $"gain {gain}, recede {recede}");
+        Assert.IsLessThan(gain, recede, $"gain {gain}, recede {recede}");
     }
 
     [TestMethod]
@@ -47,6 +47,6 @@ public class AshLungMathTests {
 
     [TestMethod]
     public void OverFiltrationDoesNotInvertIntoHealing() {
-        Assert.IsTrue(AshLungMath.EffectiveExposure(1f, 5f) >= 0f);
+        Assert.IsGreaterThanOrEqualTo(0f, AshLungMath.EffectiveExposure(1f, 5f));
     }
 }

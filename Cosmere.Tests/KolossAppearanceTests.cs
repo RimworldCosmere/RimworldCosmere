@@ -14,8 +14,13 @@ namespace Cosmere.Tests;
 ///     substitutes another rotation rather than complaining, so a face draws sideways and nothing logs.
 /// </summary>
 [TestClass]
-public class KolossAppearanceTests {
+public partial class KolossAppearanceTests {
     private static readonly string[] Directions = ["north", "south", "east"];
+
+    private static readonly string[] GeneFiles = ["Koloss.xml", "KolossAppearance.xml"];
+
+    [GeneratedRegex("\"(Things/Pawn/Humanlike/Bodies/[^\"]+)\"")]
+    private static partial Regex BodyTexPath { get; }
 
     private static string RepoRoot {
         get {
@@ -31,8 +36,9 @@ public class KolossAppearanceTests {
 
     private static string Textures => Path.Combine(RepoRoot, "CosmereScadrial", "Assets", "Textures");
 
-    private static XDocument Def(params string[] parts) =>
-        XDocument.Load(Path.Combine(new[] { RepoRoot, "CosmereScadrial", "Defs" }.Concat(parts).ToArray()));
+    private static XDocument Def(params string[] parts) {
+        return XDocument.Load(Path.Combine([RepoRoot, "CosmereScadrial", "Defs", .. parts]));
+    }
 
     private static string AppearanceSource =>
         File.ReadAllText(Path.Combine(
@@ -48,12 +54,11 @@ public class KolossAppearanceTests {
 
     [TestMethod]
     public void ScarRenderNodesHaveEveryRotation() {
-        List<string> paths = Def("Races", "Genes", "KolossAppearance.xml")
-            .Descendants("texPath")
-            .Select(e => e.Value.Trim())
-            .ToList();
+        List<string> paths = [
+            .. Def("Races", "Genes", "KolossAppearance.xml").Descendants("texPath").Select(e => e.Value.Trim()),
+        ];
 
-        Assert.AreEqual(7, paths.Count, "expected three body scars, two head scars and two eye layers");
+        Assert.HasCount(7, paths, "expected three body scars, two head scars and two eye layers");
         foreach (string path in paths) AssertRotations(path);
     }
 
@@ -63,12 +68,13 @@ public class KolossAppearanceTests {
     /// </summary>
     [TestMethod]
     public void EyesAreNeverTintedBySkin() {
-        List<XElement> eyeNodes = Def("Races", "Genes", "KolossAppearance.xml")
-            .Descendants("li")
-            .Where(li => li.Element("texPath")?.Value.Contains("KolossEyes") == true)
-            .ToList();
+        List<XElement> eyeNodes = [
+            .. Def("Races", "Genes", "KolossAppearance.xml")
+                .Descendants("li")
+                .Where(li => li.Element("texPath")?.Value.Contains("KolossEyes") == true),
+        ];
 
-        Assert.AreEqual(2, eyeNodes.Count, "one eye layer per build");
+        Assert.HasCount(2, eyeNodes, "one eye layer per build");
         foreach (XElement node in eyeNodes) {
             Assert.IsNull(node.Element("colorType"), "Skin colorType turns the gold olive");
             Assert.IsNull(node.Element("useSkinShader"), "the skin shader turns the gold olive");
@@ -81,12 +87,13 @@ public class KolossAppearanceTests {
     /// </summary>
     [TestMethod]
     public void BodyScarsScaleWithTheBody() {
-        List<XElement> bodyNodes = Def("Races", "Genes", "KolossAppearance.xml")
-            .Descendants("li")
-            .Where(li => li.Element("parentTagDef")?.Value == "Body")
-            .ToList();
+        List<XElement> bodyNodes = [
+            .. Def("Races", "Genes", "KolossAppearance.xml")
+                .Descendants("li")
+                .Where(li => li.Element("parentTagDef")?.Value == "Body"),
+        ];
 
-        Assert.AreEqual(3, bodyNodes.Count, "one body scar layer per tier");
+        Assert.HasCount(3, bodyNodes, "one body scar layer per tier");
         foreach (XElement node in bodyNodes) {
             Assert.AreEqual(
                 "PawnRenderNodeWorker_Body",
@@ -98,33 +105,31 @@ public class KolossAppearanceTests {
 
     [TestMethod]
     public void EveryKolossHeadTypeHasEveryRotation() {
-        List<string> paths = Def("Races", "KolossHeadTypes.xml")
-            .Descendants("graphicPath")
-            .Select(e => e.Value.Trim())
-            .ToList();
+        List<string> paths = [
+            .. Def("Races", "KolossHeadTypes.xml").Descendants("graphicPath").Select(e => e.Value.Trim()),
+        ];
 
-        Assert.AreEqual(4, paths.Count, "expected two faces per build");
+        Assert.HasCount(4, paths, "expected two faces per build");
         foreach (string path in paths) AssertRotations(path);
     }
 
     [TestMethod]
     public void EveryKolossBodyPathHasEveryRotation() {
-        List<string> paths = Regex.Matches(AppearanceSource, "\"(Things/Pawn/Humanlike/Bodies/[^\"]+)\"")
-            .Select(m => m.Groups[1].Value)
-            .ToList();
+        List<string> paths = [.. BodyTexPath.Matches(AppearanceSource).Select(m => m.Groups[1].Value)];
 
-        Assert.AreEqual(2, paths.Count, "expected one body texture per build gene");
+        Assert.HasCount(2, paths, "expected one body texture per build gene");
         foreach (string path in paths) AssertRotations(path);
     }
 
     [TestMethod]
     public void EveryKolossGeneIconExists() {
-        List<string> icons = new[] { "Koloss.xml", "KolossAppearance.xml" }
-            .SelectMany(f => Def("Races", "Genes", f).Descendants("iconPath"))
-            .Select(e => e.Value.Trim())
-            .ToList();
+        List<string> icons = [
+            .. GeneFiles
+                .SelectMany(f => Def("Races", "Genes", f).Descendants("iconPath"))
+                .Select(e => e.Value.Trim()),
+        ];
 
-        Assert.IsTrue(icons.Count >= 12, "expected an icon on every koloss gene");
+        Assert.IsGreaterThanOrEqualTo(12, icons.Count, "expected an icon on every koloss gene");
         foreach (string icon in icons) {
             string file = Path.Combine(Textures, icon.Replace('/', Path.DirectorySeparatorChar) + ".png");
             Assert.IsTrue(File.Exists(file), icon + " has no texture");
@@ -137,9 +142,10 @@ public class KolossAppearanceTests {
     /// </summary>
     [TestMethod]
     public void BuildGenesOwnTheBodyTypeNotHeritage() {
-        List<XElement> genes = Def("Races", "Genes", "Koloss.xml").Root!.Elements("GeneDef")
-            .Concat(Def("Races", "Genes", "KolossAppearance.xml").Root!.Elements("GeneDef"))
-            .ToList();
+        List<XElement> genes = [
+            .. Def("Races", "Genes", "Koloss.xml").Root!.Elements("GeneDef"),
+            .. Def("Races", "Genes", "KolossAppearance.xml").Root!.Elements("GeneDef"),
+        ];
 
         XElement heritage = genes.Single(g => g.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage");
         Assert.IsNull(heritage.Element("bodyType"), "heritage must leave the body type to the build genes");
@@ -156,12 +162,12 @@ public class KolossAppearanceTests {
     /// </summary>
     [TestMethod]
     public void HeritageIsBaldAndKolossBloodedIsNot() {
-        List<XElement> genes = Def("Races", "Genes", "Koloss.xml").Root!.Elements("GeneDef").ToList();
+        List<XElement> genes = [.. Def("Races", "Genes", "Koloss.xml").Root!.Elements("GeneDef")];
 
         XElement heritage = genes.Single(g => g.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage");
         Assert.AreEqual("Bald", heritage.Element("forcedHair")?.Value, "a koloss grows no hair");
         Assert.IsTrue(
-            heritage.Element("beardTagFilter")?.Descendants("li").Any(li => li.Value == "NoBeard") == true,
+            heritage.Element("beardTagFilter")?.Descendants("li").Any(li => li.Value == "NoBeard") ?? false,
             "a koloss grows no beard either"
         );
 
@@ -172,8 +178,9 @@ public class KolossAppearanceTests {
         foreach (string call in new[] {
                      "HairDefOf.Bald", "BeardDefOf.NoBeard", "TattooDefOf.NoTattoo_Body", "TattooDefOf.NoTattoo_Face",
                  }) {
-            Assert.IsTrue(
-                AppearanceSource.Contains(call),
+            Assert.Contains(
+                call,
+                AppearanceSource,
                 call + " must also be forced at runtime - PawnGenerator styles a pawn after the gene lands"
             );
         }
@@ -193,6 +200,6 @@ public class KolossAppearanceTests {
 
         Assert.AreEqual(Read("MatureAt"), low, "the skin fails at the same point the build changes");
         Assert.IsTrue(low < medium && medium < heavy, "scar thresholds must climb");
-        Assert.IsTrue(heavy < 1f, "a koloss must reach failing skin before the growth hediff maxes out");
+        Assert.IsLessThan(1f, heavy, "a koloss must reach failing skin before the growth hediff maxes out");
     }
 }

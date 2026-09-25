@@ -10,7 +10,25 @@ namespace Cosmere.Tests;
 ///     reshape, with sentinels for the two things null cannot say.
 /// </summary>
 [TestClass]
-public class KandraEyeStorageTests {
+public partial class KandraEyeStorageTests {
+    [GeneratedRegex(@"(?m)^\s*public\s+Color\s+eyeColour(Two)?\s*;")]
+    private static partial Regex CachedEyeColourField { get; }
+
+    [GeneratedRegex(@"story[\w.?]*\.\w*[Ee]ye\w*\s*=")]
+    private static partial Regex EyeWriteOntoStory { get; }
+
+    [GeneratedRegex(@"FindEyeLight\(name\)\?\.strength\s*\?\?\s*1f")]
+    private static partial Regex UnknownLightFallsToOne { get; }
+
+    [GeneratedRegex(@"eyeColourName == null")]
+    private static partial Regex FirstStoneGuard { get; }
+
+    [GeneratedRegex(@"eyeColourTwoName == trueBody\.eyeColourName")]
+    private static partial Regex RightEyeCutFromLeftStone { get; }
+
+    [GeneratedRegex(@"(?<![.\w])(\w+)\(\s*\)\s*;")]
+    private static partial Regex LocalCall { get; }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -145,7 +163,7 @@ public class KandraEyeStorageTests {
         }
 
         Assert.IsFalse(
-            Regex.IsMatch(form, @"(?m)^\s*public\s+Color\s+eyeColour(Two)?\s*;"),
+            CachedEyeColourField.IsMatch(form),
             "KandraForm caches an eye Color again. The name is the only storage: a cached colour is "
             + "transparent black whenever odd eyes are off, and stale once the palette retunes."
         );
@@ -157,7 +175,7 @@ public class KandraEyeStorageTests {
                      ("KandraForm.cs", FormSource),
                      ("CompKandraForms.cs", CompSource),
                  }) {
-            Match write = Regex.Match(source, @"story[\w.?]*\.\w*[Ee]ye\w*\s*=");
+            Match write = EyeWriteOntoStory.Match(source);
             Assert.IsFalse(
                 write.Success,
                 $"{file} writes an eye value onto pawn.story ({write.Value}). Eyes are read off the "
@@ -195,7 +213,7 @@ public class KandraEyeStorageTests {
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(body, @"FindEyeLight\(name\)\?\.strength\s*\?\?\s*1f"),
+            UnknownLightFallsToOne.IsMatch(body),
             "EyeLightStrengthFor does not send an unknown name to 1f. Null, the off sentinel and a "
             + "dropped row all have to mean no lift, or an undesigned kandra reads back lit."
         );
@@ -215,7 +233,7 @@ public class KandraEyeStorageTests {
         string body = MethodBody(File.ReadAllText(path), "CommitReshape");
 
         Assert.IsTrue(
-            Regex.IsMatch(body, @"eyeColourName == null"),
+            FirstStoneGuard.IsMatch(body),
             "CommitReshape stores the second stone and the light without checking the first stone. "
             + "The designer can commit odd eyes and a light on a kandra that never cut an eye, and "
             + "the form then carries a right eye colour the render path will never draw."
@@ -230,7 +248,7 @@ public class KandraEyeStorageTests {
         }
 
         Assert.IsTrue(
-            Regex.IsMatch(body, @"eyeColourTwoName == trueBody\.eyeColourName"),
+            RightEyeCutFromLeftStone.IsMatch(body),
             "CommitReshape stores a right eye cut from the left eye's own stone. The pawn draws a "
             + "matched pair while the summary line calls them odd, so the words and the picture "
             + "disagree."
@@ -241,7 +259,7 @@ public class KandraEyeStorageTests {
     private static string WithLocalCalls(string source, string method) {
         string body = MethodBody(source, method);
         string all = body;
-        foreach (Match call in Regex.Matches(body, @"(?<![.\w])(\w+)\(\s*\)\s*;")) {
+        foreach (Match call in LocalCall.Matches(body)) {
             string name = call.Groups[1].Value;
             if (name == method) continue;
             int declared = source.IndexOf($" {name}() {{", StringComparison.Ordinal);
@@ -256,10 +274,10 @@ public class KandraEyeStorageTests {
 
     private static string MethodBody(string source, string method) {
         int start = source.IndexOf($" {method}(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, $"No {method} is declared where this test expects it.");
+        Assert.IsGreaterThanOrEqualTo(0, start, $"No {method} is declared where this test expects it.");
 
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, $"Could not read the body of {method}.");
+        Assert.IsGreaterThan(start, end, $"Could not read the body of {method}.");
 
         return source[start..end];
     }

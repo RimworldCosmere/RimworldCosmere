@@ -8,7 +8,37 @@ namespace Cosmere.Tests;
 /// <summary>Four sites where a guard asked a question it already knew the answer to.</summary>
 /// <remarks>All four are Pawn-, WorldGrid- or PawnGenerator-bound, so the source is the only surface here.</remarks>
 [TestClass]
-public class ScadrialDeadConditionTests {
+public partial class ScadrialDeadConditionTests {
+    [GeneratedRegex(@"nearbyPawns\s*\.\s*Contains")]
+    private static partial Regex NearbyPawnsContains { get; }
+
+    [GeneratedRegex(@"StillInReach\(\s*pawn\s*,\s*radius\s*\)")]
+    private static partial Regex StillInReachCall { get; }
+
+    [GeneratedRegex(@"self\.DistanceTo\(\s*other\.Position\s*\)\s*<=\s*radius")]
+    private static partial Regex StillInReachRadius { get; }
+
+    [GeneratedRegex(@"Find\.WorldGrid\.GetTileNeighbors\(")]
+    private static partial Regex GetTileNeighborsCall { get; }
+
+    [GeneratedRegex(@"neighbors\s*\.\s*Clear\s*\(\s*\)")]
+    private static partial Regex NeighborsClear { get; }
+
+    [GeneratedRegex(@"Find\.WorldObjects\.AnyMapParentAt\(\s*tile\s*\)")]
+    private static partial Regex AnyMapParentAtCall { get; }
+
+    [GeneratedRegex(@"Find\.WorldObjects\.MapParents")]
+    private static partial Regex MapParentsSet { get; }
+
+    [GeneratedRegex(@"const\s+int\s+Band\s*=\s*\d+\s*;")]
+    private static partial Regex BandConstant { get; }
+
+    [GeneratedRegex(@"Grow\(\s*one\s*,\s*\(\s*i\s*\+\s*0\.5f\s*\)\s*/\s*Band\s*\)")]
+    private static partial Regex BandSpreadCall { get; }
+
+    [GeneratedRegex(@"Band\s*[=!]=\s*1\b")]
+    private static partial Regex BandComparedToOne { get; }
+
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -46,15 +76,15 @@ public class ScadrialDeadConditionTests {
         );
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"nearbyPawns\s*\.\s*Contains"),
+            NearbyPawnsContains.IsMatch(source),
             "The leave-check is back on the cell sweep, which sees one pawn per cell."
         );
         Assert.IsTrue(
-            Regex.IsMatch(source, @"StillInReach\(\s*pawn\s*,\s*radius\s*\)"),
+            StillInReachCall.IsMatch(source),
             "The aura leave-check must measure the distance itself."
         );
         Assert.IsTrue(
-            Regex.IsMatch(source, @"self\.DistanceTo\(\s*other\.Position\s*\)\s*<=\s*radius"),
+            StillInReachRadius.IsMatch(source),
             "StillInReach must compare against the same radius the sweep used."
         );
     }
@@ -70,11 +100,11 @@ public class ScadrialDeadConditionTests {
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Find\.WorldGrid\.GetTileNeighbors\("),
+            GetTileNeighborsCall.IsMatch(source),
             "The ring walk no longer reads neighbours, so this guard is pointed at nothing."
         );
         Assert.IsFalse(
-            Regex.IsMatch(source, @"neighbors\s*\.\s*Clear\s*\(\s*\)"),
+            NeighborsClear.IsMatch(source),
             "GetTileNeighbors clears the buffer for us; clearing it first is a dead call."
         );
     }
@@ -90,11 +120,11 @@ public class ScadrialDeadConditionTests {
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Find\.WorldObjects\.AnyMapParentAt\(\s*tile\s*\)"),
+            AnyMapParentAtCall.IsMatch(source),
             "Siting must still refuse a tile something else already settled."
         );
         Assert.IsFalse(
-            Regex.IsMatch(source, @"Find\.WorldObjects\.MapParents"),
+            MapParentsSet.IsMatch(source),
             "The pre-built taken set is back, and at order 350 it is always empty."
         );
     }
@@ -108,15 +138,15 @@ public class ScadrialDeadConditionTests {
         string source = Read("CosmereCore", "CosmereQuickstarts", "Scadrial", "PreCatacendreQuickstart.cs");
 
         Assert.IsTrue(
-            Regex.IsMatch(source, @"const\s+int\s+Band\s*=\s*\d+\s*;"),
+            BandConstant.IsMatch(source),
             "Band is expected to stay a compile-time constant."
         );
         Assert.IsTrue(
-            Regex.IsMatch(source, @"Grow\(\s*one\s*,\s*\(\s*i\s*\+\s*0\.5f\s*\)\s*/\s*Band\s*\)"),
+            BandSpreadCall.IsMatch(source),
             "The spread must hold at any Band without a branch for a size Band cannot be."
         );
         Assert.IsFalse(
-            Regex.IsMatch(source, @"Band\s*[=!]=\s*1\b"),
+            BandComparedToOne.IsMatch(source),
             "Band is a constant, so comparing it to 1 is a branch nothing can reach."
         );
     }
@@ -133,9 +163,9 @@ public class ScadrialDeadConditionTests {
         for (int i = 0; i < band; i++) {
             float along = (i + 0.5f) / band;
 
-            Assert.IsTrue(along > 0f, $"koloss {i} would be removed on the next tick at severity {along}.");
-            Assert.IsTrue(along <= 1f, $"koloss {i} is past full growth at severity {along}.");
-            Assert.IsTrue(along > previous, $"koloss {i} is not larger than the one before it.");
+            Assert.IsGreaterThan(0f, along, $"koloss {i} would be removed on the next tick at severity {along}.");
+            Assert.IsLessThanOrEqualTo(1f, along, $"koloss {i} is past full growth at severity {along}.");
+            Assert.IsGreaterThan(previous, along, $"koloss {i} is not larger than the one before it.");
             previous = along;
         }
     }

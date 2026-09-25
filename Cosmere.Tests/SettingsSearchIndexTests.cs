@@ -19,10 +19,10 @@ public class SettingsSearchIndexTests {
             ),
         ]);
 
-        Assert.AreEqual(1, index.Search("roshar").Count);
-        Assert.AreEqual(1, index.Search("NAHEL").Count);
-        Assert.AreEqual(1, index.Search("average time").Count);
-        Assert.AreEqual(1, index.Search("someone to bond").Count);
+        Assert.HasCount(1, index.Search("roshar"));
+        Assert.HasCount(1, index.Search("NAHEL"));
+        Assert.HasCount(1, index.Search("average time"));
+        Assert.HasCount(1, index.Search("someone to bond"));
     }
 
     [TestMethod]
@@ -31,8 +31,8 @@ public class SettingsSearchIndexTests {
             new SettingsSearchDocument("Roshar", "Roshar", "nahel", "Nahel bonds", "average", "Average time", "Spren seek someone to bond"),
         ]);
 
-        Assert.AreEqual(0, index.Search(string.Empty).Count);
-        Assert.AreEqual(0, index.Search("   ").Count);
+        Assert.IsEmpty(index.Search(string.Empty));
+        Assert.IsEmpty(index.Search("   "));
     }
 
     [TestMethod]
@@ -58,8 +58,8 @@ public class SettingsSearchIndexTests {
             ),
         ]);
 
-        Assert.AreEqual(1, index.Search("stormlight reserve").Count);
-        Assert.AreEqual(1, index.Search("available light").Count);
+        Assert.HasCount(1, index.Search("stormlight reserve"));
+        Assert.HasCount(1, index.Search("available light"));
     }
 
     [TestMethod]
@@ -68,7 +68,7 @@ public class SettingsSearchIndexTests {
             new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Value must be <5", string.Empty),
         ]);
 
-        Assert.AreEqual(1, index.Search("5").Count);
+        Assert.HasCount(1, index.Search("5"));
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ public class SettingsSearchIndexTests {
             new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Value > 5", string.Empty),
         ]);
 
-        Assert.AreEqual(1, index.Search(">").Count);
+        Assert.HasCount(1, index.Search(">"));
     }
 
     [TestMethod]
@@ -86,7 +86,7 @@ public class SettingsSearchIndexTests {
             new SettingsSearchDocument("Roshar", "Roshar", "general", "General", "value", "Storm<>light reserve", string.Empty),
         ]);
 
-        Assert.AreEqual(1, index.Search("stormlight reserve").Count);
+        Assert.HasCount(1, index.Search("stormlight reserve"));
     }
 
     [TestMethod]
@@ -115,13 +115,13 @@ public class SettingsSearchIndexTests {
         );
         SettingsSearchIndex index = new SettingsSearchIndex([document]);
 
-        Assert.AreEqual(0, index.Search("hidden").Count);
-        Assert.AreEqual(0, index.CountBySystem("hidden").Count);
+        Assert.IsEmpty(index.Search("hidden"));
+        Assert.IsEmpty(index.CountBySystem("hidden"));
 
         isVisible = true;
 
-        Assert.AreEqual(0, index.Search("hidden").Count);
-        Assert.AreEqual(0, index.CountBySystem("hidden").Count);
+        Assert.IsEmpty(index.Search("hidden"));
+        Assert.IsEmpty(index.CountBySystem("hidden"));
     }
 
     [TestMethod]

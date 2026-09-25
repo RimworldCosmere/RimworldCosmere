@@ -29,15 +29,19 @@ public class CodexTableTests {
 
     private static string Feruchemy => ContentSource("FeruchemyCodexContent.cs");
 
-    private static string ContentSource(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot,
-        "CosmereCore",
-        "CosmereCore",
-        "System",
-        "Scadrial",
-        "UI",
-        file
-    ));
+    private static readonly int[] DescendingStages = [3, 1, 1, 0, 0];
+
+    private static string ContentSource(string file) {
+        return File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "CosmereCore",
+            "CosmereCore",
+            "System",
+            "Scadrial",
+            "UI",
+            file
+        ));
+    }
 
     private static string KeyedXml() {
         string[] files = Directory.GetFiles(
@@ -55,14 +59,14 @@ public class CodexTableTests {
 
     [TestMethod]
     public void SavantStageOutranksTimeWorked() {
-        Assert.IsTrue(CodexRowOrder.Compare(2, 0, 0, 999999) < 0, "A savant metal sorts above an unworked one.");
-        Assert.IsTrue(CodexRowOrder.Compare(0, 999999, 2, 0) > 0, "Hours never overtake a higher stage.");
+        Assert.IsLessThan(0, CodexRowOrder.Compare(2, 0, 0, 999999), "A savant metal sorts above an unworked one.");
+        Assert.IsGreaterThan(0, CodexRowOrder.Compare(0, 999999, 2, 0), "Hours never overtake a higher stage.");
     }
 
     [TestMethod]
     public void TimeBreaksTiesWithinAStage() {
-        Assert.IsTrue(CodexRowOrder.Compare(1, 500, 1, 100) < 0);
-        Assert.IsTrue(CodexRowOrder.Compare(1, 100, 1, 500) > 0);
+        Assert.IsLessThan(0, CodexRowOrder.Compare(1, 500, 1, 100));
+        Assert.IsGreaterThan(0, CodexRowOrder.Compare(1, 100, 1, 500));
         Assert.AreEqual(0, CodexRowOrder.Compare(1, 100, 1, 100));
     }
 
@@ -77,8 +81,8 @@ public class CodexTableTests {
         ];
         rows.Sort((a, b) => CodexRowOrder.Compare(a.stage, a.ticks, b.stage, b.ticks));
 
-        CollectionAssert.AreEqual(
-            new[] { 3, 1, 1, 0, 0 },
+        Assert.AreSequenceEqual(
+            DescendingStages,
             rows.ConvertAll(r => r.stage)
         );
         Assert.AreEqual(400, rows[1].ticks);
@@ -88,18 +92,19 @@ public class CodexTableTests {
     [TestMethod]
     public void ColumnOffsetsStayHardcoded() {
         foreach (string source in new[] { Allomancy, Feruchemy }) {
-            StringAssert.Contains(source, "swatch.xMax + 146f", "The savant column offset is fixed at 146f.");
-            StringAssert.Contains(source, "130f", "The name column is fixed at 130px wide.");
-            StringAssert.Contains(source, "stageRect.xMax + 8f", "The usage text starts 8px past the stage.");
+            Assert.Contains("swatch.xMax + 146f", source, "The savant column offset is fixed at 146f.");
+            Assert.Contains("130f", source, "The name column is fixed at 130px wide.");
+            Assert.Contains("stageRect.xMax + 8f", source, "The usage text starts 8px past the stage.");
         }
     }
 
     [TestMethod]
     public void NameColumnTruncatesRatherThanResizing() {
         foreach (string source in new[] { Allomancy, Feruchemy }) {
-            StringAssert.Contains(source, "UIText.EllipsisLabel");
-            Assert.IsFalse(
-                source.Contains("Text.CalcSize(metal"),
+            Assert.Contains("UIText.EllipsisLabel", source);
+            Assert.DoesNotContain(
+                "Text.CalcSize(metal",
+                source,
                 "Measuring the metal label would make the column dynamic, which was rejected."
             );
         }
@@ -108,33 +113,34 @@ public class CodexTableTests {
     [TestMethod]
     public void EveryRowAnswersTheMouse() {
         foreach (string source in new[] { Allomancy, Feruchemy }) {
-            StringAssert.Contains(source, "Widgets.DrawHighlightIfMouseover(row)");
-            StringAssert.Contains(source, "MouseoverSounds.DoRegion(row)");
-            StringAssert.Contains(source, "_RowTooltip\".Translate(");
+            Assert.Contains("Widgets.DrawHighlightIfMouseover(row)", source);
+            Assert.Contains("MouseoverSounds.DoRegion(row)", source);
+            Assert.Contains("_RowTooltip\".Translate(", source);
         }
     }
 
     [TestMethod]
     public void TheWholeAllomancyRowOpensTheVialDialog() {
-        StringAssert.Contains(Allomancy, "Widgets.ButtonInvisible(row)");
-        StringAssert.Contains(Allomancy, "Dialog_AllomancyRestockSlider(gene)");
+        Assert.Contains("Widgets.ButtonInvisible(row)", Allomancy);
+        Assert.Contains("Dialog_AllomancyRestockSlider(gene)", Allomancy);
     }
 
     [TestMethod]
     public void CopperIsADefNotAString() {
-        Assert.IsFalse(
-            Feruchemy.Contains("\"Copper\""),
+        Assert.DoesNotContain(
+            "\"Copper\"",
+            Feruchemy,
             "Copper is matched against a DefOf entry, never by defName string."
         );
-        StringAssert.Contains(Feruchemy, "fs[i].metal == MetallicArtsMetalDefOf.Copper");
-        StringAssert.Contains(Feruchemy, "mind.Metal == MetalDefOf.Copper");
+        Assert.Contains("fs[i].metal == MetallicArtsMetalDefOf.Copper", Feruchemy);
+        Assert.Contains("mind.Metal == MetalDefOf.Copper", Feruchemy);
     }
 
     [TestMethod]
     public void RowTooltipKeysAreDefined() {
         string keyed = KeyedXml();
-        StringAssert.Contains(keyed, "<CC_Codex_Allomancy_RowTooltip>");
-        StringAssert.Contains(keyed, "<CC_Codex_Feruchemy_RowTooltip>");
-        StringAssert.Contains(keyed, "<CC_Codex_Savant_Stage0>");
+        Assert.Contains("<CC_Codex_Allomancy_RowTooltip>", keyed);
+        Assert.Contains("<CC_Codex_Feruchemy_RowTooltip>", keyed);
+        Assert.Contains("<CC_Codex_Savant_Stage0>", keyed);
     }
 }

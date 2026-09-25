@@ -62,16 +62,19 @@ public class RadiantOrderFilmstripTests {
                     float half = Half(i, selected);
                     float center = RadiantFilmstripLayout.DotCenterX(RailCenterX, count, i);
 
-                    Assert.IsTrue(
-                        center - half >= RailLeftEdge,
+                    Assert.IsGreaterThanOrEqualTo(
+                        RailLeftEdge,
+                        center - half,
                         $"dot {i} of {count} (selected {selected}) runs off the left of the rail"
                     );
-                    Assert.IsTrue(
-                        center + half <= RailRightEdge,
+                    Assert.IsLessThanOrEqualTo(
+                        RailRightEdge,
+                        center + half,
                         $"dot {i} of {count} (selected {selected}) runs off the right of the rail"
                     );
-                    Assert.IsTrue(
-                        half * 2f <= RadiantFilmstripLayout.RailHeight() + 0.001f,
+                    Assert.IsLessThanOrEqualTo(
+                        RadiantFilmstripLayout.RailHeight() + 0.001f,
+                        half * 2f,
                         $"dot {i} of {count} is taller than the rail"
                     );
                 }
@@ -89,7 +92,7 @@ public class RadiantOrderFilmstripTests {
                     float rightEdge = RadiantFilmstripLayout.DotCenterX(RailCenterX, count, i + 1)
                                       - Half(i + 1, selected);
 
-                    Assert.IsTrue(rightEdge > leftEdge, $"dots {i} and {i + 1} of {count} overlap");
+                    Assert.IsGreaterThan(leftEdge, rightEdge, $"dots {i} and {i + 1} of {count} overlap");
                 }
             }
         }
@@ -101,12 +104,14 @@ public class RadiantOrderFilmstripTests {
             float railLeft = RadiantFilmstripLayout.RailLeft(RailCenterX, count);
             float rightArrow = RadiantFilmstripLayout.RightArrowLeft(0f, WindowWidth);
 
-            Assert.IsTrue(
-                railLeft >= RadiantFilmstripLayout.ArrowColumnWidth,
+            Assert.IsGreaterThanOrEqualTo(
+                RadiantFilmstripLayout.ArrowColumnWidth,
+                railLeft,
                 $"the left arrow column covers the first dot at count {count}"
             );
-            Assert.IsTrue(
-                rightArrow >= railLeft + RadiantFilmstripLayout.RailWidth(count),
+            Assert.IsGreaterThanOrEqualTo(
+                railLeft + RadiantFilmstripLayout.RailWidth(count),
+                rightArrow,
                 $"the right arrow column covers the last dot at count {count}"
             );
         }
@@ -162,8 +167,9 @@ public class RadiantOrderFilmstripTests {
         Assert.IsTrue(keys.ContainsKey(key), $"{key} is not defined under CosmereRoshar/Languages/English/Keyed.");
 
         for (int i = 0; i < placeholders.Length; i++) {
-            Assert.IsTrue(
-                keys[key].Contains(placeholders[i]),
+            Assert.Contains(
+                placeholders[i],
+                keys[key],
                 $"{key} is missing the {placeholders[i]} placeholder."
             );
         }
@@ -214,9 +220,8 @@ public class RadiantOrderFilmstripTests {
             }
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Generate the glyph already turned, or call GUIUtility.RotateAroundPivot:\n"
             + string.Join("\n", offenders)
         );

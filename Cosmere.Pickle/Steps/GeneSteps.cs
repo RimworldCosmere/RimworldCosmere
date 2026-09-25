@@ -15,7 +15,7 @@ namespace Cosmere.Pickle.Steps;
 /// <summary>Genes, which is how every Cosmere magic system reaches a pawn: granting one,
 /// taking it back, and reading the Investiture reserve an <c>Invested</c> gene carries.</summary>
 [PickleSteps]
-public class GeneSteps {
+public static class GeneSteps {
     /// <summary>Reserves are floats, so an equality assert would fail at random.</summary>
     private const float ReserveTolerance = 0.01f;
 

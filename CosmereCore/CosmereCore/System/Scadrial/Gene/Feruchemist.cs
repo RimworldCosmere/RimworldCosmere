@@ -673,7 +673,7 @@ public class Feruchemist : Metalborn {
     }
 
     // Nudges a raw dial position onto the nearest rate step.
-    public float SnapTarget(float rawTarget) {
+    public static float SnapTarget(float rawTarget) {
         if (Mathf.Abs(rawTarget - IdleTarget) < DeadBand) return IdleTarget;
 
         bool storing = rawTarget > IdleTarget;

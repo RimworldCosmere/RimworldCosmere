@@ -15,7 +15,7 @@ namespace Cosmere.Tests;
 ///     clearing the ash can never take that patch back; past it, AshTerrainMemory hands it back.
 /// </summary>
 [TestClass]
-public class AshVentSoilTests {
+public partial class AshVentSoilTests {
     /// <summary>Vanilla SoilRich. Vent soil has to beat it or there is no reason to farm a vent.</summary>
     private const float VanillaRichSoilFertility = 1.4f;
 
@@ -70,8 +70,9 @@ public class AshVentSoilTests {
         string? fertility = VentSoil.Element("fertility")?.Value;
 
         Assert.IsNotNull(fertility, "Vent soil declares no fertility, so it inherits 1.0 and beats nothing.");
-        Assert.IsTrue(
-            float.Parse(fertility, CultureInfo.InvariantCulture) > VanillaRichSoilFertility,
+        Assert.IsGreaterThan(
+            VanillaRichSoilFertility,
+            float.Parse(fertility, CultureInfo.InvariantCulture),
             $"vent soil sits at {fertility}, at or under vanilla rich soil's {VanillaRichSoilFertility}."
         );
     }
@@ -82,7 +83,7 @@ public class AshVentSoilTests {
         List<string> affordances = VentSoil.Element("affordances")?.Elements("li").Select(li => li.Value).ToList()
                                    ?? [];
 
-        CollectionAssert.Contains(affordances, "GrowSoil", "vent soil grants no GrowSoil affordance.");
+        Assert.Contains("GrowSoil", affordances, "vent soil grants no GrowSoil affordance.");
     }
 
     /// <summary>
@@ -120,21 +121,21 @@ public class AshVentSoilTests {
         }
 
         string scadrial = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial");
-        Regex pattern = new Regex("\"(Cosmere_Scadrial_Terrain_[A-Za-z0-9_]+)\"");
         int found = 0;
 
         foreach (string source in Directory.GetFiles(scadrial, "*.cs", SearchOption.AllDirectories)) {
-            foreach (Match match in pattern.Matches(File.ReadAllText(source))) {
+            foreach (Match match in TerrainDefNameLiteral.Matches(File.ReadAllText(source))) {
                 found++;
                 string defName = match.Groups[1].Value;
-                Assert.IsTrue(
-                    declared.Contains(defName),
+                Assert.Contains(
+                    defName,
+                    declared,
                     $"{Path.GetFileName(source)} looks up {defName}, which no TerrainDef in Defs/Terrain declares."
                 );
             }
         }
 
-        Assert.IsTrue(found >= 2, $"expected the ash and vent soil lookups, found {found}.");
+        Assert.IsGreaterThanOrEqualTo(2, found, $"expected the ash and vent soil lookups, found {found}.");
     }
 
     [TestMethod]
@@ -173,10 +174,10 @@ public class AshVentSoilTests {
     [TestMethod]
     public void TheFrontTakesFortyDaysToReachTheDefault() {
         float front = AshVentSoilSpread.Advance(0f, ClearRadius, 8f, 0f);
-        float short_ = (5f * AshVentSoilSpread.DaysPerCell) - 1f;
+        float short_ = 5f * AshVentSoilSpread.DaysPerCell - 1f;
 
         front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, short_);
-        Assert.IsTrue(front < 8f, $"the front reached the default in {short_} days, at {front}.");
+        Assert.IsLessThan(8f, front, $"the front reached the default in {short_} days, at {front}.");
 
         front = AshVentSoilSpread.Advance(front, ClearRadius, 8f, 1.1f);
         Assert.AreEqual(8f, front, 0.0001f, "five cells of dwell did not carry the front to the default 8.");
@@ -194,8 +195,12 @@ public class AshVentSoilTests {
         int inADay = total - CellsInside(front - 1f / AshVentSoilSpread.DaysPerCell);
         int inAQuadrum = total - CellsInside(front - QuadrumDays / AshVentSoilSpread.DaysPerCell);
 
-        Assert.IsTrue(inADay <= 10, $"a day adds {inADay} cells of {total}, which a player reads as a jump.");
-        Assert.IsTrue(inAQuadrum >= 50, $"a quadrum adds only {inAQuadrum} cells of {total}, which reads as nothing.");
+        Assert.IsLessThanOrEqualTo(
+            10, inADay, $"a day adds {inADay} cells of {total}, which a player reads as a jump."
+        );
+        Assert.IsGreaterThanOrEqualTo(
+            50, inAQuadrum, $"a quadrum adds only {inAQuadrum} cells of {total}, which reads as nothing."
+        );
     }
 
     /// <summary>
@@ -224,8 +229,9 @@ public class AshVentSoilTests {
     public void OneCyclesStepSurvivesFloatPrecision() {
         const float front = 7.5f;
 
-        Assert.IsTrue(
-            AshVentSoilSpread.Advance(front, ClearRadius, 16f, CycleDays) > front,
+        Assert.IsGreaterThan(
+            front,
+            AshVentSoilSpread.Advance(front, ClearRadius, 16f, CycleDays),
             $"a cycle's step vanished into the float at {front}."
         );
     }
@@ -240,8 +246,9 @@ public class AshVentSoilTests {
         int openedPerDay = CellsInside(front) - CellsInside(front - 1f / AshVentSoilSpread.DaysPerCell);
         float writesPerDay = AshDepthMath.TerrainChangesPerSweep * (TicksPerDay / CycleTicks);
 
-        Assert.IsTrue(
-            openedPerDay < writesPerDay,
+        Assert.IsLessThan(
+            writesPerDay,
+            openedPerDay,
             $"the front opens {openedPerDay} cells a day against {writesPerDay} rationed writes."
         );
     }
@@ -265,9 +272,9 @@ public class AshVentSoilTests {
         );
 
         Assert.IsTrue(File.Exists(comp), $"CompAshVent.cs is missing at {comp}.");
-        StringAssert.Contains(
-            File.ReadAllText(comp),
+        Assert.Contains(
             "Scribe_Values.Look(ref soilRadius",
+            File.ReadAllText(comp),
             "the spread front is not saved, so every reload would walk it back out from the clearing."
         );
     }
@@ -290,4 +297,7 @@ public class AshVentSoilTests {
 
         return cells;
     }
+
+    [GeneratedRegex("\"(Cosmere_Scadrial_Terrain_[A-Za-z0-9_]+)\"")]
+    private static partial Regex TerrainDefNameLiteral { get; }
 }

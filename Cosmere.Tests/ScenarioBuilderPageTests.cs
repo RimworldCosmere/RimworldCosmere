@@ -60,8 +60,9 @@ public class ScenarioBuilderPageTests {
     [TestMethod]
     public void EveryScenarioShowsTheCharacterBuilder() {
         foreach ((string name, List<XElement> parts) in Scenarios()) {
-            Assert.IsTrue(
-                parts.Any(p => ClassOf(p).Contains("ConfigPage", StringComparison.Ordinal)),
+            Assert.Contains(
+                p => ClassOf(p).Contains("ConfigPage", StringComparison.Ordinal),
+                parts,
                 $"{name} has no ConfigPage part, so it skips the character builder."
             );
         }
@@ -79,7 +80,7 @@ public class ScenarioBuilderPageTests {
             int named = parts.FindIndex(p => ClassOf(p) == NamedPawns);
             if (named < 0) continue;
 
-            Assert.IsTrue(config > named, $"{name} runs the config page before NamedPawns.");
+            Assert.IsGreaterThan(named, config, $"{name} runs the config page before NamedPawns.");
         }
     }
 
@@ -105,8 +106,9 @@ public class ScenarioBuilderPageTests {
                 int total = counts.Elements("li")
                     .Sum(li => int.TryParse(li.Element("count")?.Value, out int c) ? c : 0);
 
-                Assert.IsTrue(
-                    total > 0,
+                Assert.IsGreaterThan(
+                    0,
+                    total,
                     $"{name} has xenotypeCounts summing to {total}. That starts the colony with no pawns."
                 );
             }
@@ -170,7 +172,7 @@ public class ScenarioBuilderPageTests {
         string source = File.ReadAllText(path);
 
         int start = source.IndexOf("private int ResolveTemplateIndex()", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "ResolveTemplateIndex is missing.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "ResolveTemplateIndex is missing.");
 
         string body = source[start..];
         Assert.IsFalse(

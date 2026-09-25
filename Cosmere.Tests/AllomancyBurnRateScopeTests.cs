@@ -38,7 +38,7 @@ public class AllomancyBurnRateScopeTests {
 
         for (int i = 0; i < lines.Length; i++) {
             string trimmed = lines[i].TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("///") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith("///") || trimmed.StartsWith('*')) continue;
 
             kept.Add(lines[i]);
         }
@@ -48,8 +48,9 @@ public class AllomancyBurnRateScopeTests {
 
     [TestMethod]
     public void RateIsNotTheMetalsTotal() {
-        Assert.IsFalse(
-            CodeOnly(Section).Contains("gene.BurnRate"),
+        Assert.DoesNotContain(
+            "gene.BurnRate",
+            CodeOnly(Section),
             "gene.BurnRate sums every burning ability of the metal - a per-ability row must not use it."
         );
     }
@@ -58,12 +59,14 @@ public class AllomancyBurnRateScopeTests {
     public void RateIsScopedToOneAbility() {
         string code = CodeOnly(Section);
 
-        Assert.IsTrue(
-            code.Contains("BurnReservePercentPerSecond(Pawn pawn, InvestitureCell cell, InvestitureAbility ability)"),
+        Assert.Contains(
+            "BurnReservePercentPerSecond(Pawn pawn, InvestitureCell cell, InvestitureAbility ability)",
+            code,
             "The rate readout has to take the ability whose drain it is reporting."
         );
-        Assert.IsFalse(
-            code.Contains("BurnReservePercentPerSecond(pawn, cell)"),
+        Assert.DoesNotContain(
+            "BurnReservePercentPerSecond(pawn, cell)",
+            code,
             "Every call site has to pass its own ability, not just the metal cell."
         );
     }
@@ -76,24 +79,28 @@ public class AllomancyBurnRateScopeTests {
     public void DrainNoActiveAbilityClaimsStillShows() {
         string code = CodeOnly(Section);
 
-        Assert.IsTrue(
-            code.Contains("UnclaimedDrainCount(pawn, rows[r].Cell)"),
+        Assert.Contains(
+            "UnclaimedDrainCount(pawn, rows[r].Cell)",
+            code,
             "The pinned strip has to reserve a row for every drain no burning ability accounts for."
         );
-        Assert.IsTrue(
-            code.Contains("DrawUnclaimedRows(rect, y, pawn, cell)"),
+        Assert.Contains(
+            "DrawUnclaimedRows(rect, y, pawn, cell)",
+            code,
             "Reserving the height is not enough - the unclaimed rows have to be drawn."
         );
-        Assert.IsTrue(
-            code.Contains("cell.IsActive || UnclaimedDrainCount(pawn, cell) > 0"),
+        Assert.Contains(
+            "cell.IsActive || UnclaimedDrainCount(pawn, cell) > 0",
+            code,
             "A metal being drained must not read Idle just because no ability reports active."
         );
     }
 
     [TestMethod]
     public void AbilityRowShowsARateItHasNoActiveFlagFor() {
-        Assert.IsFalse(
-            CodeOnly(Section).Contains("aside: ability.IsActive"),
+        Assert.DoesNotContain(
+            "aside: ability.IsActive",
+            CodeOnly(Section),
             "The rate aside is gated on there being a rate, not on the ability's active flag."
         );
     }

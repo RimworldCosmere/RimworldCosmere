@@ -9,7 +9,7 @@ namespace Cosmere.Tests;
 /// <summary>Floats compared with == against an exact constant (S1244).</summary>
 /// <remarks>No Verse here, so the game-bound ones name the defective construct in the source.</remarks>
 [TestClass]
-public class FloatEqualityDefectTests {
+public partial class FloatEqualityDefectTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -21,6 +21,45 @@ public class FloatEqualityDefectTests {
             return dir.FullName;
         }
     }
+
+    [GeneratedRegex(@"Value\s*(==|!=)\s*Default")]
+    private static partial Regex ValueOperatorDefault { get; }
+
+    [GeneratedRegex(@"Value\s*\.\s*Equals\s*\(\s*Default\s*\)")]
+    private static partial Regex ValueEqualsDefault { get; }
+
+    [GeneratedRegex(@"NearlyEqual\(\s*Value\s*,\s*Default\s*\)")]
+    private static partial Regex NearlyEqualValueDefault { get; }
+
+    [GeneratedRegex(@"power\s*\.\s*Equals\s*\(\s*max\s*\)")]
+    private static partial Regex PowerEqualsMax { get; }
+
+    [GeneratedRegex(@"power\s*==\s*max")]
+    private static partial Regex PowerOperatorMax { get; }
+
+    [GeneratedRegex(@"power\s*>=\s*max")]
+    private static partial Regex PowerAtLeastMax { get; }
+
+    [GeneratedRegex(@"compoundedTargetValue\s*(!=|==)\s*IdleTarget")]
+    private static partial Regex CompoundedOperatorIdle { get; }
+
+    [GeneratedRegex(@"compoundedTargetValue\s*\.\s*Equals\s*\(\s*IdleTarget\s*\)")]
+    private static partial Regex CompoundedEqualsIdle { get; }
+
+    [GeneratedRegex(@"Mathf\.Abs\(\s*compoundedTargetValue\s*-\s*IdleTarget\s*\)\s*>=\s*DeadBand")]
+    private static partial Regex CompoundedLeftDeadBand { get; }
+
+    [GeneratedRegex(@"grown\s*(!=|==)\s*1f")]
+    private static partial Regex GrownOperatorOne { get; }
+
+    [GeneratedRegex(@"grown\s*\.\s*Equals\s*\(\s*1f\s*\)")]
+    private static partial Regex GrownEqualsOne { get; }
+
+    [GeneratedRegex(@"grown\s*>\s*1f")]
+    private static partial Regex GrownAboveOne { get; }
+
+    [GeneratedRegex(@"grown\s*<=\s*1f")]
+    private static partial Regex GrownAtMostOne { get; }
 
     private static string Core(params string[] parts) {
         string path = Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]);
@@ -64,12 +103,11 @@ public class FloatEqualityDefectTests {
             string source = Core("Core", "Settings", "Model", file);
 
             Assert.IsFalse(
-                Regex.IsMatch(source, @"Value\s*(==|!=)\s*Default") ||
-                Regex.IsMatch(source, @"Value\s*\.\s*Equals\s*\(\s*Default\s*\)"),
+                ValueOperatorDefault.IsMatch(source) || ValueEqualsDefault.IsMatch(source),
                 $"{file}: a dragged slider lands an ulp off its default and the reset button stays lit."
             );
             Assert.IsTrue(
-                Regex.IsMatch(source, @"NearlyEqual\(\s*Value\s*,\s*Default\s*\)"),
+                NearlyEqualValueDefault.IsMatch(source),
                 $"{file}: the default comparison no longer routes through SettingValueMath.NearlyEqual."
             );
         }
@@ -80,13 +118,12 @@ public class FloatEqualityDefectTests {
         string source = Core("System", "Scadrial", "FloatMenuOptionProvider", "AllomanticVialMenuProvider.cs");
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"power\s*\.\s*Equals\s*\(\s*max\s*\)") ||
-            Regex.IsMatch(source, @"power\s*==\s*max"),
+            PowerEqualsMax.IsMatch(source) || PowerOperatorMax.IsMatch(source),
             "Stat values carry factors and offsets, so a capped pawn rarely equals maxValue exactly " +
             "and was offered a lerasium vial that did nothing."
         );
         Assert.IsTrue(
-            Regex.IsMatch(source, @"power\s*>=\s*max"),
+            PowerAtLeastMax.IsMatch(source),
             "The full-power check no longer compares power against max with a threshold at all."
         );
     }
@@ -96,16 +133,12 @@ public class FloatEqualityDefectTests {
         string source = Core("System", "Scadrial", "Gene", "Feruchemist.cs");
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"compoundedTargetValue\s*(!=|==)\s*IdleTarget") ||
-            Regex.IsMatch(source, @"compoundedTargetValue\s*\.\s*Equals\s*\(\s*IdleTarget\s*\)"),
+            CompoundedOperatorIdle.IsMatch(source) || CompoundedEqualsIdle.IsMatch(source),
             "A dial nudged half a point off rest produced severity 0 but still reported compounding, " +
             "which blocked the Reset that frees a feruchemist who can no longer store."
         );
         Assert.IsTrue(
-            Regex.IsMatch(
-                source,
-                @"Mathf\.Abs\(\s*compoundedTargetValue\s*-\s*IdleTarget\s*\)\s*>=\s*DeadBand"
-            ),
+            CompoundedLeftDeadBand.IsMatch(source),
             "isCompounding must ask whether the dial left the dead band, not whether it moved at all."
         );
     }
@@ -115,11 +148,10 @@ public class FloatEqualityDefectTests {
         string source = Core("System", "Scadrial", "Patch", "Rendering", "KolossScalePatches.cs");
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"grown\s*(!=|==)\s*1f") ||
-            Regex.IsMatch(source, @"grown\s*\.\s*Equals\s*\(\s*1f\s*\)"),
+            GrownOperatorOne.IsMatch(source) || GrownEqualsOne.IsMatch(source),
             "A koloss whose bulk lands a hair off 1f skipped the scale patch entirely."
         );
-        Assert.IsTrue(Regex.IsMatch(source, @"grown\s*>\s*1f"), "The draw patch no longer thresholds on grown.");
-        Assert.IsTrue(Regex.IsMatch(source, @"grown\s*<=\s*1f"), "The hauling patch no longer thresholds on grown.");
+        Assert.IsTrue(GrownAboveOne.IsMatch(source), "The draw patch no longer thresholds on grown.");
+        Assert.IsTrue(GrownAtMostOne.IsMatch(source), "The hauling patch no longer thresholds on grown.");
     }
 }

@@ -11,7 +11,7 @@ namespace Cosmere.Tests;
 ///     window without the player touching it.
 /// </summary>
 [TestClass]
-public class KandraDesignerPanesTests {
+public partial class KandraDesignerPanesTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -36,6 +36,24 @@ public class KandraDesignerPanesTests {
         )
     );
 
+    [GeneratedRegex(@"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(65\)\s*,\s*Spacing\.Get\(39\)\s*\)")]
+    private static partial Regex DesignerWindowSize { get; }
+
+    [GeneratedRegex(@"DrawColumnPlates\(")]
+    private static partial Regex ColumnPlatesCall { get; }
+
+    [GeneratedRegex(@"Widgets\.DrawMenuSection|ContractedBy")]
+    private static partial Regex SecondPlate { get; }
+
+    [GeneratedRegex(@"DrawGenderOption\(")]
+    private static partial Regex GenderOptionCall { get; }
+
+    [GeneratedRegex(@"forms\.BeginReshape\(([^)]*)\)")]
+    private static partial Regex BeginReshapeCall { get; }
+
+    [GeneratedRegex(@"stones\.Count")]
+    private static partial Regex StonesCountRead { get; }
+
     /// <summary>The preview is the thing being judged, so flipping a tab may not shift it a pixel.</summary>
     [TestMethod]
     public void ThePreviewPlateIsLaidOutBeforeTheTabStripDecidesAnything() {
@@ -44,16 +62,18 @@ public class KandraDesignerPanesTests {
         int plate = designer.IndexOf("DrawPreviewPlate(", StringComparison.Ordinal);
         int strip = designer.IndexOf("DrawTabStrip(", StringComparison.Ordinal);
 
-        Assert.IsTrue(plate >= 0, "The designer no longer draws the preview plate.");
-        Assert.IsTrue(strip > plate, "The tab strip is laid out before the plate, so the plate moves per tab.");
-
-        // The window was sized for this layout. Growing it is how the designer stops fitting on screen.
-        Match size = Regex.Match(
-            DialogSource,
-            @"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(65\)\s*,\s*Spacing\.Get\(39\)\s*\)"
+        Assert.IsGreaterThanOrEqualTo(0, plate, "The designer no longer draws the preview plate.");
+        Assert.IsGreaterThan(
+            plate,
+            strip,
+            "The tab strip is laid out before the plate, so the plate moves per tab."
         );
 
-        Assert.IsTrue(size.Success, "The designer window is no longer Spacing.Get(65) by Spacing.Get(39).");
+        // The window was sized for this layout. Growing it is how the designer stops fitting on screen.
+        Assert.IsTrue(
+            DesignerWindowSize.IsMatch(DialogSource),
+            "The designer window is no longer Spacing.Get(65) by Spacing.Get(39)."
+        );
     }
 
     /// <summary>Three panes, one shared two-column shape. A pane that lays out its own plate drifts.</summary>
@@ -61,17 +81,17 @@ public class KandraDesignerPanesTests {
     public void EveryPaneGoesThroughTheSharedTwoColumnHelperRatherThanItsOwnPlates() {
         string designer = Body("private void DrawDesigner");
 
-        Assert.AreEqual(
+        Assert.HasCount(
             3,
-            Regex.Matches(designer, @"DrawColumnPlates\(").Count,
+            ColumnPlatesCall.Matches(designer),
             "The designer no longer lays all three panes out with the shared helper."
         );
 
         foreach (string pane in new[] { "DrawBuildColumn", "DrawPalette", "DrawHairGrid", "DrawHairDyes", "DrawEyeColours" }) {
-            StringAssert.Contains(designer, pane, "The designer never reaches " + pane + ", so that pane never draws.");
+            Assert.Contains(pane, designer, "The designer never reaches " + pane + ", so that pane never draws.");
 
             Assert.IsFalse(
-                Regex.IsMatch(Body("private void " + pane), @"Widgets\.DrawMenuSection|ContractedBy"),
+                SecondPlate.IsMatch(Body("private void " + pane)),
                 pane + " draws a second plate inside the one DrawColumnPlates already drew."
             );
         }
@@ -80,21 +100,23 @@ public class KandraDesignerPanesTests {
     /// <summary>The gender toggle moved into the Body tab. Left on the plate it is a control per tab.</summary>
     [TestMethod]
     public void TheGenderToggleLivesInTheBodyTabAndNotOnThePlate() {
-        Assert.IsFalse(
-            Body("private void DrawPreviewPlate").Contains("DrawGenderOption(", StringComparison.Ordinal),
+        Assert.DoesNotContain(
+            "DrawGenderOption(",
+            Body("private void DrawPreviewPlate"),
+            StringComparison.Ordinal,
             "The gender toggle is still on the preview plate, so it sits above the tab that owns it."
         );
 
         string build = Body("private void DrawBuildColumn");
 
-        Assert.AreEqual(
+        Assert.HasCount(
             2,
-            Regex.Matches(build, @"DrawGenderOption\(").Count,
+            GenderOptionCall.Matches(build),
             "The Body tab does not offer both genders."
         );
 
         foreach (string key in new[] { "CS_Kandra_BuildHeader", "CS_Kandra_BuildNote" }) {
-            StringAssert.Contains(build, key, "The Body tab is missing " + key + ".");
+            Assert.Contains(key, build, "The Body tab is missing " + key + ".");
         }
     }
 
@@ -104,18 +126,18 @@ public class KandraDesignerPanesTests {
     /// </summary>
     [TestMethod]
     public void TheEyeColourIsSeededFromTheTrueBodyAndHandedBackToTheReshape() {
-        StringAssert.Contains(
-            Body("private void BeginDesign"),
+        Assert.Contains(
             "designEyeColour = body?.eyeColourName",
+            Body("private void BeginDesign"),
             "The designer opens with no eye colour, so accepting it blanks the eyes the kandra had."
         );
 
-        Match commit = Regex.Match(DialogSource, @"forms\.BeginReshape\(([^)]*)\)");
+        Match commit = BeginReshapeCall.Match(DialogSource);
         Assert.IsTrue(commit.Success, "The designer no longer commits through BeginReshape.");
 
-        StringAssert.Contains(
-            commit.Groups[1].Value,
+        Assert.Contains(
             "designEyeColour",
+            commit.Groups[1].Value,
             "The picked eye colour never reaches BeginReshape, so the eyes come out unchanged."
         );
     }
@@ -128,28 +150,28 @@ public class KandraDesignerPanesTests {
     public void ThePreviewTakesTheEyeColourAsAnOverrideRatherThanReadingItOffAPawn() {
         string portrait = Body("private void DrawPortrait");
 
-        StringAssert.Contains(portrait, "string? eyeColour", "DrawPortrait takes no eye colour override.");
-        StringAssert.Contains(portrait, "hairColour, eyeColour", "The override never reaches DrawTrueBody.");
+        Assert.Contains("string? eyeColour", portrait, "DrawPortrait takes no eye colour override.");
+        Assert.Contains("hairColour, eyeColour", portrait, "The override never reaches DrawTrueBody.");
 
         string trueBody = Body("private void DrawTrueBody");
 
-        StringAssert.Contains(
-            trueBody,
+        Assert.Contains(
             "eyeColour ?? form.eyeColourName",
+            trueBody,
             "The preview ignores the picked colour, or ignores the stored one when nothing is picked."
         );
 
         // The tint moved into DrawIris, which draws the cutout and the bloom the way a pawn does.
-        StringAssert.Contains(
-            trueBody,
+        Assert.Contains(
             "DrawIris(",
+            trueBody,
             "The preview tints the iris itself again rather than drawing it the way the pawn does."
         );
 
         // A kandra's hair hangs over its sockets, so eyes drawn last cover the fringe.
-        Assert.IsTrue(
-            trueBody.IndexOf("IrisRight", StringComparison.Ordinal)
-            < trueBody.IndexOf("HairTexture", StringComparison.Ordinal),
+        Assert.IsLessThan(
+            trueBody.IndexOf("HairTexture", StringComparison.Ordinal),
+            trueBody.IndexOf("IrisRight", StringComparison.Ordinal),
             "The irises draw over the hair."
         );
     }
@@ -159,28 +181,29 @@ public class KandraDesignerPanesTests {
     public void TheEyeColourListReadsTheTableRatherThanCountingItself() {
         string colours = Body("private void DrawEyeColours");
 
-        StringAssert.Contains(
-            colours,
+        Assert.Contains(
             "KandraAppearance.AllEyeColours",
+            colours,
             "The eye list does not come from the palette table."
         );
 
-        Assert.IsTrue(
-            Regex.Matches(colours, @"stones\.Count").Count >= 2,
+        Assert.IsGreaterThanOrEqualTo(
+            2,
+            StonesCountRead.Matches(colours).Count,
             "The eye list does not take both its scroll height and its loop bound from the table, so "
             + "retuning the table leaves rows unreachable or scrolls past nothing."
         );
 
-        StringAssert.Contains(
-            colours,
+        Assert.Contains(
             "CS_Kandra_RightEyeHeader",
+            colours,
             "The second eye's list is not in this pane. Ka put both lists on the left on 2026-09-20, "
             + "so a player picks the two stones side by side instead of across the window."
         );
 
-        StringAssert.Contains(
-            colours,
+        Assert.Contains(
             "odd ?",
+            colours,
             "The pane's scroll height ignores the second list, which appears and disappears with the "
             + "odd eyes toggle, so the bar is wrong whenever it is on."
         );
@@ -189,10 +212,10 @@ public class KandraDesignerPanesTests {
     private static string Body(string signature) {
         string source = DialogSource;
         int start = source.IndexOf(signature, StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "Dialog_KandraForms no longer declares " + signature + ".");
+        Assert.IsGreaterThanOrEqualTo(0, start, "Dialog_KandraForms no longer declares " + signature + ".");
 
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, "Could not read the body of " + signature + ".");
+        Assert.IsGreaterThan(start, end, "Could not read the body of " + signature + ".");
 
         return source[start..end];
     }

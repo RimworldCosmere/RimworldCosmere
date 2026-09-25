@@ -22,7 +22,7 @@ namespace Cosmere.Pickle.Steps;
 /// <summary>Scadrial's metallic arts: burning a metal, shoving off one, and driving a spike
 /// through somebody. The shard overlap step lives here too, because Harmony is its only caller.</summary>
 [PickleSteps]
-public class AllomancySteps {
+public static class AllomancySteps {
     /// <summary>A whole charge off a live donor. The recipes scale this down; nothing here does.</summary>
     private const float FullChargeStrength = 1f;
 

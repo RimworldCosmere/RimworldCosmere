@@ -13,12 +13,22 @@ namespace Cosmere.Tests;
 ///     being able to see what they are spending it on. Source assertions, since Unity is absent here.
 /// </summary>
 [TestClass]
-public class NightwatcherEncounterTests {
+public partial class NightwatcherEncounterTests {
     private const string DialogPath = "System/Roshar/Dialog/Dialog_NightwatcherEncounter.cs";
 
     private const string BoonElement = "Cosmere.System.Roshar.Def.NightwatcherBoonDef";
 
-    private static readonly Regex CroKeyReference = new Regex(@"""(CRO_[A-Za-z0-9_]+)""", RegexOptions.Compiled);
+    [GeneratedRegex(@"""(CRO_[A-Za-z0-9_]+)""")]
+    private static partial Regex CroKeyReference { get; }
+
+    [GeneratedRegex(@"if\s*\(\s*canConfirm\s*\)")]
+    private static partial Regex ConfirmDrawGate { get; }
+
+    [GeneratedRegex(
+        @"^\s*\(?[A-Za-z_][A-Za-z0-9_.]*(\s*\*\s*[0-9.]+f)?\)?\.Named\(""(VALUE|AMOUNT|YEARS)""\)",
+        RegexOptions.Multiline
+    )]
+    private static partial Regex RawNumericNamedArg { get; }
 
     private static string RepoRoot {
         get {
@@ -48,7 +58,7 @@ public class NightwatcherEncounterTests {
         List<string> kept = [];
         for (int i = 0; i < lines.Length; i++) {
             string trimmed = lines[i].TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith('*')) continue;
 
             kept.Add(lines[i]);
         }
@@ -60,16 +70,18 @@ public class NightwatcherEncounterTests {
     public void ConfirmButtonIsDrawnUnconditionally() {
         string code = DialogCodeOnly();
 
-        Assert.IsTrue(
-            code.Contains("active: canConfirm"),
+        Assert.Contains(
+            "active: canConfirm",
+            code,
             "Confirm must always draw and grey out, not appear only once a boon is picked."
         );
         Assert.IsFalse(
-            Regex.IsMatch(code, @"if\s*\(\s*canConfirm\s*\)"),
+            ConfirmDrawGate.IsMatch(code),
             "canConfirm must gate the button's active flag, never whether it is drawn."
         );
-        Assert.IsTrue(
-            code.Contains("CRO_NW_Boon_ConfirmNeedsBoon"),
+        Assert.Contains(
+            "CRO_NW_Boon_ConfirmNeedsBoon",
+            code,
             "A disabled confirm has to say why it is disabled."
         );
     }
@@ -79,24 +91,26 @@ public class NightwatcherEncounterTests {
         string code = DialogCodeOnly();
 
         foreach (string banned in new[] { "Text.Font =", "Text.Anchor =", "GUI.color =", "Text.WordWrap =" }) {
-            Assert.IsFalse(
-                code.Contains(banned),
+            Assert.DoesNotContain(
+                banned,
+                code,
                 $"'{banned}' leaks into vanilla UI. Wrap the draw in a Verse.TextBlock instead."
             );
         }
 
-        Assert.IsTrue(code.Contains("new TextBlock("), "The dialog should scope its font and colour with TextBlock.");
+        Assert.Contains("new TextBlock(", code, "The dialog should scope its font and colour with TextBlock.");
     }
 
     [TestMethod]
     public void OldNightwatcherKeyPrefixIsGone() {
-        Assert.IsFalse(
-            DialogSource.Contains("Cosmere_Roshar_NW_"),
+        Assert.DoesNotContain(
+            "Cosmere_Roshar_NW_",
+            DialogSource,
             "Dialog keys were renamed to the CRO_ convention."
         );
 
         string keyed = File.ReadAllText(Path.Combine(KeyedDir, "Nightwatcher.xml"));
-        Assert.IsFalse(keyed.Contains("Cosmere_Roshar_NW_"), "Keyed entries were renamed to the CRO_ convention.");
+        Assert.DoesNotContain("Cosmere_Roshar_NW_", keyed, "Keyed entries were renamed to the CRO_ convention.");
     }
 
     [TestMethod]
@@ -108,15 +122,15 @@ public class NightwatcherEncounterTests {
             }
         }
 
-        List<string> missing = CroKeyReference.Matches(DialogSource)
-                                              .Select(m => m.Groups[1].Value)
-                                              .Distinct()
-                                              .Where(key => !defined.Contains(key))
-                                              .ToList();
+        List<string> missing = [
+            .. CroKeyReference.Matches(DialogSource)
+                              .Select(m => m.Groups[1].Value)
+                              .Distinct()
+                              .Where(key => !defined.Contains(key)),
+        ];
 
-        Assert.AreEqual(
-            0,
-            missing.Count,
+        Assert.IsEmpty(
+            missing,
             "Undefined keys render as the key name in game: " + string.Join(", ", missing)
         );
     }
@@ -124,13 +138,14 @@ public class NightwatcherEncounterTests {
     [TestMethod]
     public void TierTabsPartitionEveryBoon() {
         string path = Path.Combine(RepoRoot, "CosmereRoshar", "Defs", "Nightwatcher", "BoonDefs.xml");
-        List<int> tiers = XDocument.Load(path)
-                                   .Root!
-                                   .Elements(BoonElement)
-                                   .Select(d => int.Parse(d.Element("powerTier")?.Value ?? "0"))
-                                   .ToList();
+        List<int> tiers = [
+            .. XDocument.Load(path)
+                        .Root!
+                        .Elements(BoonElement)
+                        .Select(d => int.Parse(d.Element("powerTier")?.Value ?? "0")),
+        ];
 
-        Assert.AreEqual(20, tiers.Count, "Twenty boons ship today; the tab counts below track that total.");
+        Assert.HasCount(20, tiers, "Twenty boons ship today; the tab counts below track that total.");
         Assert.AreEqual(8, tiers.Count(t => t == 1), "Tab 1 shows the minor boons.");
         Assert.AreEqual(7, tiers.Count(t => t == 2), "Tab 2 shows the moderate boons.");
         Assert.AreEqual(5, tiers.Count(t => t == 3), "Tab 3 shows the major boons.");
@@ -139,8 +154,9 @@ public class NightwatcherEncounterTests {
 
     [TestMethod]
     public void TierIsClampedSoNoBoonCanVanish() {
-        Assert.IsTrue(
-            DialogCodeOnly().Contains("Mathf.Clamp(boon.powerTier, 1, 3)"),
+        Assert.Contains(
+            "Mathf.Clamp(boon.powerTier, 1, 3)",
+            DialogCodeOnly(),
             "A def with a tier outside 1-3 must still show up under some tab."
         );
     }
@@ -149,11 +165,11 @@ public class NightwatcherEncounterTests {
     public void SelectionPanelAndTabsSitInsideTheWindow() {
         string code = DialogCodeOnly();
 
-        Assert.IsTrue(code.Contains("DrawSelectionPanel"), "The picked boon needs a pinned panel above the button.");
-        Assert.IsTrue(code.Contains("DrawTierTabs"), "The tiers are tabs now, not inline headers in the scroll.");
-        Assert.IsFalse(code.Contains("isNewTier"), "Inline tier headers were replaced by the tab strip.");
-        Assert.IsTrue(code.Contains("inRect.yMax - FooterHeight"), "The footer must be derived from inRect, not fixed.");
-        Assert.IsTrue(code.Contains("listRect.width - ScrollbarWidth"), "Scroll content has to leave room for the bar.");
+        Assert.Contains("DrawSelectionPanel", code, "The picked boon needs a pinned panel above the button.");
+        Assert.Contains("DrawTierTabs", code, "The tiers are tabs now, not inline headers in the scroll.");
+        Assert.DoesNotContain("isNewTier", code, "Inline tier headers were replaced by the tab strip.");
+        Assert.Contains("inRect.yMax - FooterHeight", code, "The footer must be derived from inRect, not fixed.");
+        Assert.Contains("listRect.width - ScrollbarWidth", code, "Scroll content has to leave room for the bar.");
     }
 
     /// <summary>
@@ -163,13 +179,9 @@ public class NightwatcherEncounterTests {
     [TestMethod]
     public void EveryNumericEffectArgIsFormattedBeforeItIsNamed() {
         string dialog = DialogSource;
-        Regex raw = new Regex(
-            @"^\s*\(?[A-Za-z_][A-Za-z0-9_.]*(\s*\*\s*[0-9.]+f)?\)?\.Named\(""(VALUE|AMOUNT|YEARS)""\)",
-            RegexOptions.Multiline
-        );
 
         List<string> offenders = [];
-        foreach (Match match in raw.Matches(dialog)) {
+        foreach (Match match in RawNumericNamedArg.Matches(dialog)) {
             string line = match.Value.Trim();
 
             // an int has no fractional part to lose
@@ -178,9 +190,8 @@ public class NightwatcherEncounterTests {
             offenders.Add(line);
         }
 
-        Assert.AreEqual(
-            0,
-            offenders.Count,
+        Assert.IsEmpty(
+            offenders,
             "Call ToString(\"0.##\") first, the way the rest of the mod does:\n" + string.Join("\n", offenders)
         );
     }

@@ -23,9 +23,11 @@ public class RuinCompulsionTests {
         }
     }
 
-    private static string Source(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Hemalurgy", file
-    ));
+    private static string Source(string file) {
+        return File.ReadAllText(
+            Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Hemalurgy", file)
+        );
+    }
 
     /// <summary>
     ///     The warning is the whole design. Firing the mental state the moment Ruin decides would
@@ -51,7 +53,7 @@ public class RuinCompulsionTests {
     public void StoppingThePawnStopsTheCompulsion() {
         string hediff = Source(Path.Combine("Hediff", "RuinsInfluence.cs"));
         int act = hediff.IndexOf("private void Act()", StringComparison.Ordinal);
-        Assert.IsTrue(act >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, act);
 
         Assert.IsTrue(
             hediff[act..].Contains("RuinCompulsions.CanBeMoved(pawn)", StringComparison.Ordinal),
@@ -69,7 +71,7 @@ public class RuinCompulsionTests {
     public void FallingBelowTheThresholdCancelsIt() {
         string hediff = Source(Path.Combine("Hediff", "RuinsInfluence.cs"));
         int update = hediff.IndexOf("public void UpdateSpikeCount(", StringComparison.Ordinal);
-        Assert.IsTrue(update >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, update);
 
         Assert.IsTrue(
             hediff[update..(update + 400)].Contains("Clear()", StringComparison.Ordinal),

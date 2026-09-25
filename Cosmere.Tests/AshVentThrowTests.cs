@@ -77,8 +77,8 @@ public class AshVentThrowTests {
         float perDay = float.Parse(comp.Element("throwsPerDay")!.Value.Trim(), CultureInfo.InvariantCulture);
         int lumps = int.Parse(comp.Element("lumpsPerThrow")!.Value.Trim());
 
-        Assert.IsTrue(perDay > 0f, $"throwsPerDay is {perDay}, so the vent banks a throw that never comes due");
-        Assert.IsTrue(lumps > 0, $"lumpsPerThrow is {lumps}, so a throw lands a stack of nothing");
+        Assert.IsGreaterThan(0f, perDay, $"throwsPerDay is {perDay}, so the vent banks a throw that never comes due");
+        Assert.IsGreaterThan(0, lumps, $"lumpsPerThrow is {lumps}, so a throw lands a stack of nothing");
     }
 
     /// <summary>
@@ -89,9 +89,10 @@ public class AshVentThrowTests {
     public void LumpsLandInsideTheVentsOwnPlume() {
         int radius = int.Parse(VentComp().Element("throwRadius")!.Value.Trim());
 
-        Assert.IsTrue(radius > 0, $"throwRadius is {radius}, so every lump lands on the vent itself");
-        Assert.IsTrue(
-            radius <= AshPlume.RadiusCells,
+        Assert.IsGreaterThan(0, radius, $"throwRadius is {radius}, so every lump lands on the vent itself");
+        Assert.IsLessThanOrEqualTo(
+            AshPlume.RadiusCells,
+            radius,
             $"throwRadius {radius} reaches past the plume's {AshPlume.RadiusCells} cells, where no vent ash falls"
         );
     }
@@ -113,11 +114,11 @@ public class AshVentThrowTests {
         int counted = 0;
         foreach (XElement li in VentComp().Element("metals")!.Elements("li")) {
             string metal = li.Value.Trim();
-            Assert.IsTrue(things.Contains(metal), $"the vent throws '{metal}', which is no ThingDef in Core or Scadrial");
+            Assert.Contains(metal, things, $"the vent throws '{metal}', which is no ThingDef in Core or Scadrial");
             counted++;
         }
 
-        Assert.IsTrue(counted > 0, "the vent lists no metals, so ThrowOnce returns before it places anything");
+        Assert.IsGreaterThan(0, counted, "the vent lists no metals, so ThrowOnce returns before it places anything");
     }
 
     /// <summary>
@@ -131,7 +132,7 @@ public class AshVentThrowTests {
 
         XElement? key = XDocument.Load(path).Root?.Element(FirstMetalKey);
         Assert.IsNotNull(key, $"{FirstMetalKey} is not defined, so the message shows the player its own key name");
-        Assert.IsTrue(key.Value.Trim().Length > 0, $"{FirstMetalKey} is empty");
+        Assert.IsGreaterThan(0, key.Value.Trim().Length, $"{FirstMetalKey} is empty");
         Assert.IsFalse(key.Value.Contains('{'), $"{FirstMetalKey} carries a placeholder, but nothing passes it an argument");
     }
 }

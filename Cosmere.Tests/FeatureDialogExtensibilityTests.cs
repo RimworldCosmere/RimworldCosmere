@@ -13,7 +13,7 @@ namespace Cosmere.Tests;
 ///     without anyone editing Core.
 /// </summary>
 [TestClass]
-public class FeatureDialogExtensibilityTests {
+public partial class FeatureDialogExtensibilityTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -32,6 +32,10 @@ public class FeatureDialogExtensibilityTests {
     ///     Core must not name a shardworld to build the UI. The moment it does, adding Nalthis
     ///     means editing Core, which is the coupling the world defs exist to avoid.
     /// </summary>
+    /// <summary>Comments may name a world as an example; code may not.</summary>
+    [GeneratedRegex(@"^\s*(//|///|\*|/\*)")]
+    private static partial Regex CommentLine { get; }
+
     [TestMethod]
     public void TheFeatureUiNamesNoWorld() {
         string[] uiFiles = [
@@ -40,8 +44,6 @@ public class FeatureDialogExtensibilityTests {
             Path.Combine(CoreDir, "Core", "Util", "FeatureUtility.cs"),
         ];
 
-        // Comments may name a world as an example; code may not.
-        Regex comment = new Regex(@"^\s*(//|///|\*|/\*)");
         List<string> offenders = [];
 
         foreach (string path in uiFiles) {
@@ -49,7 +51,7 @@ public class FeatureDialogExtensibilityTests {
 
             string[] lines = File.ReadAllLines(path);
             for (int i = 0; i < lines.Length; i++) {
-                if (comment.IsMatch(lines[i])) continue;
+                if (CommentLine.IsMatch(lines[i])) continue;
 
                 foreach (string world in new[] { "Scadrial", "Roshar", "Nalthis", "Taldain" }) {
                     if (lines[i].Contains(world, StringComparison.Ordinal)) {
@@ -62,7 +64,7 @@ public class FeatureDialogExtensibilityTests {
         string detail = "The feature UI must stay world-agnostic so a new shard mod gets a tab " +
             "for free: " + string.Join("; ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     /// <summary>Every world that ships features needs a tab, so it must resolve a skin.</summary>
@@ -88,7 +90,7 @@ public class FeatureDialogExtensibilityTests {
             }
         }
 
-        Assert.IsTrue(features.Count > 0, "No features found - the walk is wrong, or none ship.");
+        Assert.IsNotEmpty(features, "No features found - the walk is wrong, or none ship.");
 
         List<string> offenders = [];
         foreach (XElement feature in features) {
@@ -105,6 +107,6 @@ public class FeatureDialogExtensibilityTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 }

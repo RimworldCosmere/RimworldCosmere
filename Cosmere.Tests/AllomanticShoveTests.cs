@@ -62,6 +62,6 @@ public class AllomanticShoveTests {
         float mass = AllomanticShove.EffectiveTargetMass(BuildingReportedMass, HumanMass, true);
         float tiles = (mass - HumanMass) / 3f;
 
-        Assert.IsTrue(tiles > 1f, $"A shove off a wall carried the pawn {tiles} tiles.");
+        Assert.IsGreaterThan(1f, tiles, $"A shove off a wall carried the pawn {tiles} tiles.");
     }
 }

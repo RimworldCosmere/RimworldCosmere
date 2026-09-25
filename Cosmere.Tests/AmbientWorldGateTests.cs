@@ -95,8 +95,8 @@ public class AmbientWorldGateTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, "Checked no files - the paths are wrong, not the code.");
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsGreaterThan(0, seen, "Checked no files - the paths are wrong, not the code.");
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     [TestMethod]
@@ -122,7 +122,7 @@ public class AmbientWorldGateTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -155,7 +155,7 @@ public class AmbientWorldGateTests {
     [TestMethod]
     public void EveryFeatureNamesItsWorld() {
         List<XElement> features = Features();
-        Assert.IsTrue(features.Count > 0, "No CosmereFeatureDefs found - the walk is wrong, or none ship.");
+        Assert.IsNotEmpty(features, "No CosmereFeatureDefs found - the walk is wrong, or none ship.");
 
         List<string> offenders = [];
         foreach (XElement feature in features) {
@@ -163,7 +163,7 @@ public class AmbientWorldGateTests {
             if (feature.Element("world") == null) offenders.Add(name);
         }
 
-        Assert.AreEqual(0, offenders.Count, "These features name no world: " + string.Join(", ", offenders));
+        Assert.IsEmpty(offenders, "These features name no world: " + string.Join(", ", offenders));
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ public class AmbientWorldGateTests {
         string detail = "These features name no Shard, so they would still happen on a save where " +
             "the Shard that causes them was switched off: " + string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     /// <summary>
@@ -224,7 +224,7 @@ public class AmbientWorldGateTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -241,7 +241,7 @@ public class AmbientWorldGateTests {
         int guard = source.IndexOf("if (primary == null) return false;", StringComparison.Ordinal);
         int isActive = source.IndexOf("WorldUtility.IsActive", StringComparison.Ordinal);
 
-        Assert.IsTrue(guard >= 0, "Expected MayAnswer to refuse before a world is set.");
+        Assert.IsGreaterThanOrEqualTo(0, guard, "Expected MayAnswer to refuse before a world is set.");
         Assert.IsTrue(
             isActive < 0 || guard < isActive,
             "The null check has to come before IsActive, which answers true for every world."
@@ -263,6 +263,6 @@ public class AmbientWorldGateTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, "CachedAreAnyEnabled is back: " + string.Join(", ", offenders));
+        Assert.IsEmpty(offenders, "CachedAreAnyEnabled is back: " + string.Join(", ", offenders));
     }
 }

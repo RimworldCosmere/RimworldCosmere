@@ -17,7 +17,7 @@ public class AshmountRingTests {
     }
 
     private static List<AshmountRing.Candidate> Line(int count, bool hilly = true) {
-        List<AshmountRing.Candidate> candidates = new List<AshmountRing.Candidate>();
+        List<AshmountRing.Candidate> candidates = [];
         for (int i = 0; i < count; i++) {
             candidates.Add(new AshmountRing.Candidate(i, i, hilly));
         }
@@ -29,7 +29,7 @@ public class AshmountRingTests {
     public void EveryChosenTileLandsInsideTheAnnulus() {
         List<int> chosen = AshmountRing.Choose(Line(100), 20f, 40f, 8, 1f, LineDistance, 1);
 
-        Assert.IsTrue(chosen.Count > 0, "the ring came out empty");
+        Assert.IsNotEmpty(chosen, "the ring came out empty");
         for (int i = 0; i < chosen.Count; i++) {
             Assert.IsTrue(chosen[i] >= 20 && chosen[i] <= 40, $"tile {chosen[i]} is outside the band");
         }
@@ -41,8 +41,9 @@ public class AshmountRingTests {
 
         for (int i = 0; i < chosen.Count; i++) {
             for (int j = i + 1; j < chosen.Count; j++) {
-                Assert.IsTrue(
-                    LineDistance(chosen[i], chosen[j]) >= 10f,
+                Assert.IsGreaterThanOrEqualTo(
+                    10f,
+                    LineDistance(chosen[i], chosen[j]),
                     $"{chosen[i]} and {chosen[j]} are closer than the minimum spacing"
                 );
             }
@@ -51,7 +52,7 @@ public class AshmountRingTests {
 
     [TestMethod]
     public void HillsWinWhenBothAreAvailable() {
-        List<AshmountRing.Candidate> mixed = new List<AshmountRing.Candidate>();
+        List<AshmountRing.Candidate> mixed = [];
         for (int i = 0; i < 40; i++) {
             mixed.Add(new AshmountRing.Candidate(i, i, i % 2 == 0));
         }
@@ -68,7 +69,7 @@ public class AshmountRingTests {
         List<int> first = AshmountRing.Choose(Line(120), 10f, 60f, 12, 3f, LineDistance, 42);
         List<int> second = AshmountRing.Choose(Line(120), 10f, 60f, 12, 3f, LineDistance, 42);
 
-        CollectionAssert.AreEqual(first, second);
+        Assert.AreSequenceEqual(first, second);
     }
 
     [TestMethod]
@@ -76,21 +77,21 @@ public class AshmountRingTests {
         List<int> first = AshmountRing.Choose(Line(120), 10f, 60f, 12, 3f, LineDistance, 1);
         List<int> second = AshmountRing.Choose(Line(120), 10f, 60f, 12, 3f, LineDistance, 2);
 
-        CollectionAssert.AreNotEqual(first, second);
+        Assert.AreNotSequenceEqual(first, second);
     }
 
     [TestMethod]
     public void ABandTooTightToHoldThemAllReturnsFewerRatherThanHanging() {
         List<int> chosen = AshmountRing.Choose(Line(100), 20f, 30f, 50, 5f, LineDistance, 5);
 
-        Assert.IsTrue(chosen.Count > 0);
-        Assert.IsTrue(chosen.Count < 50, "the band cannot hold fifty mounts five apart");
+        Assert.IsNotEmpty(chosen);
+        Assert.IsLessThan(50, chosen.Count, "the band cannot hold fifty mounts five apart");
     }
 
     [TestMethod]
     public void NoCandidatesGivesAnEmptyRingRatherThanThrowing() {
         List<int> chosen = AshmountRing.Choose([], 10f, 20f, 5, 2f, LineDistance, 1);
 
-        Assert.AreEqual(0, chosen.Count);
+        Assert.IsEmpty(chosen);
     }
 }

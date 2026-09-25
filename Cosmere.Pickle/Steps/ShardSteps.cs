@@ -12,7 +12,7 @@ namespace Cosmere.Pickle.Steps;
 /// <summary>Which Shards hold this cosmere, and how strongly a pawn is tied to one. Almost
 /// every Cosmere feature reads both before it does anything, so these run first.</summary>
 [PickleSteps]
-public class ShardSteps {
+public static class ShardSteps {
     /// <summary>How far a reading may sit from the asserted strength and still count.</summary>
     // The earned portion round-trips through a 0..1 edge, so a point of rounding is normal.
     private const int DefaultTolerance = 1;

@@ -8,7 +8,7 @@ namespace Cosmere.Pickle.Steps;
 
 /// <summary>Proves the harness: step discovery, the step table and the assertion path.</summary>
 [PickleSteps]
-public class SmokeSteps {
+public static class SmokeSteps {
     /// <summary>Asserts a Cosmere metal def loaded.</summary>
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="defName">The metal def expected.</param>

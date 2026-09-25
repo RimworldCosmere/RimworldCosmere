@@ -77,19 +77,22 @@ public class RosharNahelIntervalTests {
     }
 
     private static void AssertAtOrAboveFloor(float value) {
-        Assert.IsTrue(
-            value >= RosharModSettings.MinNahelIntervalTicks,
+        Assert.IsGreaterThanOrEqualTo(
+            RosharModSettings.MinNahelIntervalTicks,
+            value,
             $"Expected at least {RosharModSettings.MinNahelIntervalTicks}, but was {value}."
         );
     }
 
     private static void AssertOrdered(NahelIntervalControls intervals) {
-        Assert.IsTrue(
-            intervals.Minimum.Value <= intervals.Average.Value,
+        Assert.IsLessThanOrEqualTo(
+            intervals.Average.Value,
+            intervals.Minimum.Value,
             $"Minimum {intervals.Minimum.Value} exceeds average {intervals.Average.Value}."
         );
-        Assert.IsTrue(
-            intervals.Average.Value <= intervals.Maximum.Value,
+        Assert.IsLessThanOrEqualTo(
+            intervals.Maximum.Value,
+            intervals.Average.Value,
             $"Average {intervals.Average.Value} exceeds maximum {intervals.Maximum.Value}."
         );
     }

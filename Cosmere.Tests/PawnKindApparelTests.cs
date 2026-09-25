@@ -29,18 +29,18 @@ public class PawnKindApparelTests {
         string path = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Races", "PawnKinds.xml");
         Assert.IsTrue(File.Exists(path), $"Expected pawn kinds at {path}");
 
-        List<XElement> kinds = new List<XElement>();
+        List<XElement> kinds = [];
         foreach (XElement kind in XDocument.Load(path).Root!.Elements("PawnKindDef")) {
             kinds.Add(kind);
         }
 
-        Assert.IsTrue(kinds.Count > 0, "Expected at least one pawn kind.");
+        Assert.IsNotEmpty(kinds, "Expected at least one pawn kind.");
         return kinds;
     }
 
     [TestMethod]
     public void EveryPlayerPawnKindCanBeClothed() {
-        List<string> naked = new List<string>();
+        List<string> naked = [];
 
         List<XElement> kinds = PlayerPawnKinds();
 
@@ -52,9 +52,8 @@ public class PawnKindApparelTests {
             naked.Add(defName);
         }
 
-        Assert.AreEqual(
-            0,
-            naked.Count,
+        Assert.IsEmpty(
+            naked,
             $"These kinds have no apparel budget or tags, so they generate naked: {string.Join(", ", naked)}"
         );
     }
@@ -84,7 +83,7 @@ public class PawnKindApparelTests {
 
     [TestMethod]
     public void ApparelBudgetsRankByStation() {
-        Dictionary<string, int> lowerBound = new Dictionary<string, int>();
+        Dictionary<string, int> lowerBound = [];
 
         foreach (XElement kind in PlayerPawnKinds()) {
             string? defName = kind.Element("defName")?.Value;
@@ -99,9 +98,9 @@ public class PawnKindApparelTests {
         int terris = lowerBound["Cosmere_Scadrial_PawnKind_Terris"];
         int skaa = lowerBound["Cosmere_Scadrial_PawnKind_Skaa"];
 
-        Assert.IsTrue(noble > scadrian, "Nobles should be dressed better than ordinary scadrians.");
-        Assert.IsTrue(scadrian > terris, "Terris stewards are kept, not wealthy.");
-        Assert.IsTrue(terris > skaa, "Skaa are the poorest of the Final Empire.");
+        Assert.IsGreaterThan(scadrian, noble, "Nobles should be dressed better than ordinary scadrians.");
+        Assert.IsGreaterThan(terris, scadrian, "Terris stewards are kept, not wealthy.");
+        Assert.IsGreaterThan(skaa, terris, "Skaa are the poorest of the Final Empire.");
     }
 
     private static bool HasAny(IEnumerable<XElement> elements) {

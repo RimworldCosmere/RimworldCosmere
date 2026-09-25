@@ -43,7 +43,9 @@ public class CosmereWorldDefTests {
         return defs;
     }
 
-    private static List<XElement> Worlds() => DefsNamed("Cosmere.Core.Def.CosmereWorldDef");
+    private static List<XElement> Worlds() {
+        return DefsNamed("Cosmere.Core.Def.CosmereWorldDef");
+    }
 
     private static List<string> Items(XElement? list) {
         List<string> values = [];
@@ -53,7 +55,7 @@ public class CosmereWorldDefTests {
     }
 
     private static bool IsCrossWorld(XElement world) {
-        return (world.Element("crossWorld")?.Value.Trim() ?? "false").ToLowerInvariant() == "true";
+        return string.Equals(world.Element("crossWorld")?.Value.Trim(), "true", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>Mutual exclusions, both directions, keyed by shard defName.</summary>
@@ -85,7 +87,7 @@ public class CosmereWorldDefTests {
 
     [TestMethod]
     public void AtLeastOneWorldExists() {
-        Assert.IsTrue(Worlds().Count > 0, "No CosmereWorldDef found - the walk is wrong, or none ship.");
+        Assert.IsNotEmpty(Worlds(), "No CosmereWorldDef found - the walk is wrong, or none ship.");
     }
 
     /// <summary>
@@ -96,7 +98,7 @@ public class CosmereWorldDefTests {
     [TestMethod]
     public void NoDefaultShardSetIsSelfDestroying() {
         Dictionary<string, HashSet<string>> exclusions = Exclusions();
-        Assert.IsTrue(exclusions.Count > 0, "No ShardDefs found - the walk is wrong, not the defs.");
+        Assert.IsNotEmpty(exclusions, "No ShardDefs found - the walk is wrong, not the defs.");
 
         List<string> offenders = [];
 
@@ -123,7 +125,7 @@ public class CosmereWorldDefTests {
         string detail = "These worlds enable mutually exclusive Shards in one default set, which " +
             "silently collapses to a single Shard at runtime: " + string.Join("; ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     [TestMethod]
@@ -146,7 +148,7 @@ public class CosmereWorldDefTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -169,7 +171,7 @@ public class CosmereWorldDefTests {
         string detail = "A cross-world def that names a Shard from another mod dangles when that " +
             "mod is absent: " + string.Join("; ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 
     /// <summary>Ancestry resolution needs one answer per xenotype, not two.</summary>
@@ -196,7 +198,7 @@ public class CosmereWorldDefTests {
             if (pair.Value.Count > 1) offenders.Add($"{pair.Key} claimed by {string.Join(" and ", pair.Value)}");
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>Every xenotype a world claims has to actually exist.</summary>
@@ -208,7 +210,7 @@ public class CosmereWorldDefTests {
             if (name != null) shipped.Add(name);
         }
 
-        Assert.IsTrue(shipped.Count > 0, "No XenotypeDefs found - the walk is wrong, not the defs.");
+        Assert.IsNotEmpty(shipped, "No XenotypeDefs found - the walk is wrong, not the defs.");
 
         List<string> offenders = [];
         foreach (XElement world in Worlds()) {
@@ -218,7 +220,7 @@ public class CosmereWorldDefTests {
             }
         }
 
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 
     /// <summary>
@@ -272,7 +274,7 @@ public class CosmereWorldDefTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, "Found no scenario shard declarations - the walk is wrong, not the defs.");
-        Assert.AreEqual(0, offenders.Count, string.Join("; ", offenders));
+        Assert.IsGreaterThan(0, seen, "Found no scenario shard declarations - the walk is wrong, not the defs.");
+        Assert.IsEmpty(offenders, string.Join("; ", offenders));
     }
 }

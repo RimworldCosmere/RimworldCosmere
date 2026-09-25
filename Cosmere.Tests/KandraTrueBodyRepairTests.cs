@@ -13,7 +13,7 @@ namespace Cosmere.Tests;
 ///     body with the disguise's gender while a kandra was wearing one.
 /// </summary>
 [TestClass]
-public class KandraTrueBodyRepairTests {
+public partial class KandraTrueBodyRepairTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -68,7 +68,7 @@ public class KandraTrueBodyRepairTests {
 
         int disguise = body.IndexOf("pawn.gender", StringComparison.Ordinal);
         int own = body.IndexOf("form.gender", StringComparison.Ordinal);
-        bool fallbackPrefersTheForm = disguise < 0 || (own >= 0 && own < disguise);
+        bool fallbackPrefersTheForm = disguise < 0 || own >= 0 && own < disguise;
 
         Assert.IsTrue(
             fallbackPrefersTheForm || EveryTrueBodyCallPassesAGender(source),
@@ -89,9 +89,10 @@ public class KandraTrueBodyRepairTests {
             .Select(element => element.Name.LocalName)
             .ToHashSet(StringComparer.Ordinal);
 
-        foreach (Match used in Regex.Matches(DialogSource, @"""(CS_Kandra_[A-Za-z0-9_]+)""\s*\.Translate")) {
-            Assert.IsTrue(
-                defined.Contains(used.Groups[1].Value),
+        foreach (Match used in KandraKeyTranslation.Matches(DialogSource)) {
+            Assert.Contains(
+                used.Groups[1].Value,
+                defined,
                 $"Dialog_KandraForms translates {used.Groups[1].Value}, which no Keyed file defines, "
                 + "so the key name itself prints on screen."
             );
@@ -100,7 +101,7 @@ public class KandraTrueBodyRepairTests {
 
     private static void AssertNoRawMaterialNameLabel(string body, string method) {
         Assert.IsFalse(
-            Regex.IsMatch(body, @"(Widgets\.Label\([^;]*,\s*name\s*\)|return\s+[^;]*\.name\s*;)"),
+            RawMaterialNameLabel.IsMatch(body),
             $"{method} puts the value destructured out of TrueBodyMaterialFor on screen. That is "
             + "the internal save key, not a label."
         );
@@ -108,14 +109,14 @@ public class KandraTrueBodyRepairTests {
 
     /// <summary>The body plus any same-file helper it calls, so delegating still counts as reaching a key.</summary>
     private static string WithHelpers(string source, string body) {
-        IEnumerable<Match> helpers = Regex.Matches(source, @"private (?:static )?\w+\??\s+(\w+)\(")
+        IEnumerable<Match> helpers = SameFileHelperDeclaration.Matches(source)
             .Where(match => Regex.IsMatch(body, $@"\b{match.Groups[1].Value}\("));
 
         return body + string.Join(string.Empty, helpers.Select(match => BodyAt(source, match.Index)));
     }
 
     private static bool EveryTrueBodyCallPassesAGender(string source) {
-        IEnumerable<Match> calls = Regex.Matches(source, @"(DrawTrueBody|DrawPortrait)\(")
+        IEnumerable<Match> calls = TrueBodyDrawCall.Matches(source)
             .Where(match => !IsDeclaration(source, match.Index));
 
         return calls.All(match => Arguments(source, match.Index + match.Length).Contains("gender", StringComparison.Ordinal));
@@ -142,7 +143,7 @@ public class KandraTrueBodyRepairTests {
 
     private static string MethodBody(string source, string signature) {
         int start = source.IndexOf(signature, StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, $"Dialog_KandraForms no longer declares {signature}.");
+        Assert.IsGreaterThanOrEqualTo(0, start, $"Dialog_KandraForms no longer declares {signature}.");
 
         return BodyAt(source, start);
     }
@@ -156,13 +157,15 @@ public class KandraTrueBodyRepairTests {
         );
 
         int cancel = comp.IndexOf("public void CancelReshape", StringComparison.Ordinal);
-        Assert.IsTrue(cancel >= 0, "CompKandraForms has no CancelReshape, so a dropped reshape cannot be cleaned up.");
+        Assert.IsGreaterThanOrEqualTo(
+            0, cancel, "CompKandraForms has no CancelReshape, so a dropped reshape cannot be cleaned up."
+        );
 
         string body = BodyAt(comp, cancel);
         foreach (string field in new[] { "pendingMaterial", "pendingGender" }) {
-            StringAssert.Contains(
-                body,
+            Assert.Contains(
                 field + " = null",
+                body,
                 $"CancelReshape leaves {field} set, so a reshape the pawn never finished rides in the save forever."
             );
         }
@@ -187,7 +190,7 @@ public class KandraTrueBodyRepairTests {
         );
 
         int start = gizmo.IndexOf("private void StartChange", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "BodyAbsorption no longer starts the change job.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "BodyAbsorption no longer starts the change job.");
 
         string starter = BodyAt(gizmo, start);
         Assert.IsTrue(
@@ -198,6 +201,19 @@ public class KandraTrueBodyRepairTests {
         );
     }
 
-    private static string BodyAt(string source, int start) =>
-        source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
+    private static string BodyAt(string source, int start) {
+        return source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
+    }
+
+    [GeneratedRegex(@"""(CS_Kandra_[A-Za-z0-9_]+)""\s*\.Translate")]
+    private static partial Regex KandraKeyTranslation { get; }
+
+    [GeneratedRegex(@"(Widgets\.Label\([^;]*,\s*name\s*\)|return\s+[^;]*\.name\s*;)")]
+    private static partial Regex RawMaterialNameLabel { get; }
+
+    [GeneratedRegex(@"private (?:static )?\w+\??\s+(\w+)\(")]
+    private static partial Regex SameFileHelperDeclaration { get; }
+
+    [GeneratedRegex(@"(DrawTrueBody|DrawPortrait)\(")]
+    private static partial Regex TrueBodyDrawCall { get; }
 }

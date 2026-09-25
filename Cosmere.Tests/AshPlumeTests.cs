@@ -13,8 +13,8 @@ public class AshPlumeTests {
     [TestMethod]
     public void TheVentCellGetsTheMost() {
         float centre = AshPlume.Weight(0, 0, 1f, 0f, 0f);
-        Assert.IsTrue(centre > AshPlume.Weight(1, 0, 1f, 0f, 0f));
-        Assert.IsTrue(centre > AshPlume.Weight(0, 1, 1f, 0f, 0f));
+        Assert.IsGreaterThan(AshPlume.Weight(1, 0, 1f, 0f, 0f), centre);
+        Assert.IsGreaterThan(AshPlume.Weight(0, 1, 1f, 0f, 0f), centre);
     }
 
     [TestMethod]
@@ -23,8 +23,8 @@ public class AshPlumeTests {
         float mid = AshPlume.Weight(5, 0, 1f, 0f, 0f);
         float far = AshPlume.Weight(10, 0, 1f, 0f, 0f);
 
-        Assert.IsTrue(near > mid, $"near {near} should beat mid {mid}");
-        Assert.IsTrue(mid > far, $"mid {mid} should beat far {far}");
+        Assert.IsGreaterThan(mid, near, $"near {near} should beat mid {mid}");
+        Assert.IsGreaterThan(far, mid, $"mid {mid} should beat far {far}");
     }
 
     [TestMethod]
@@ -45,7 +45,7 @@ public class AshPlumeTests {
         float downwind = AshPlume.Weight(5, 0, 1f, 0f, 0.6f);
         float upwind = AshPlume.Weight(-5, 0, 1f, 0f, 0.6f);
 
-        Assert.IsTrue(downwind > upwind, $"downwind {downwind} should beat upwind {upwind}");
+        Assert.IsGreaterThan(upwind, downwind, $"downwind {downwind} should beat upwind {upwind}");
     }
 
     [TestMethod]
@@ -53,8 +53,8 @@ public class AshPlumeTests {
         for (int x = -AshPlume.RadiusCells; x <= AshPlume.RadiusCells; x++) {
             for (int z = -AshPlume.RadiusCells; z <= AshPlume.RadiusCells; z++) {
                 float w = AshPlume.Weight(x, z, 1f, 0f, 1f);
-                Assert.IsTrue(w >= 0f, $"({x},{z}) gave a negative weight {w}");
-                Assert.IsTrue(w <= 1f, $"({x},{z}) gave {w}, above the centre weight");
+                Assert.IsGreaterThanOrEqualTo(0f, w, $"({x},{z}) gave a negative weight {w}");
+                Assert.IsLessThanOrEqualTo(1f, w, $"({x},{z}) gave {w}, above the centre weight");
             }
         }
     }
@@ -151,8 +151,12 @@ public class AshPlumeTests {
         for (int depth = 0; depth <= AshGrid.MaxDepthMm; depth += 50) {
             for (float distance = 0f; distance <= 4f; distance += 0.25f) {
                 int allowed = AshPlume.AllowedDepthMm(depth, distance, 3f);
-                Assert.IsTrue(allowed <= depth, $"{distance} cells out, {depth}mm was raised to {allowed}mm");
-                Assert.IsTrue(allowed >= 0, $"{distance} cells out, {depth}mm gave a negative {allowed}mm");
+                Assert.IsLessThanOrEqualTo(
+                    depth, allowed, $"{distance} cells out, {depth}mm was raised to {allowed}mm"
+                );
+                Assert.IsGreaterThanOrEqualTo(
+                    0, allowed, $"{distance} cells out, {depth}mm gave a negative {allowed}mm"
+                );
             }
         }
     }
@@ -171,7 +175,9 @@ public class AshPlumeTests {
         int previous = -1;
         for (float distance = 0f; distance < 3f; distance += 0.1f) {
             int allowed = AshPlume.AllowedDepthMm(AshGrid.MaxDepthMm, distance, 3f);
-            Assert.IsTrue(allowed >= previous, $"the feather dipped at {distance} cells: {allowed} after {previous}");
+            Assert.IsGreaterThanOrEqualTo(
+                previous, allowed, $"the feather dipped at {distance} cells: {allowed} after {previous}"
+            );
             previous = allowed;
         }
     }

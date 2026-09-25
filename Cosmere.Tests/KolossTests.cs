@@ -12,7 +12,7 @@ namespace Cosmere.Tests;
 ///     Guards what makes a koloss a koloss, on every path one can come from.
 /// </summary>
 [TestClass]
-public class KolossTests {
+public partial class KolossTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -25,13 +25,15 @@ public class KolossTests {
         }
     }
 
-    private static string Source(params string[] parts) => File.ReadAllText(Path.Combine(
-        new[] { RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial" }.Concat(parts).ToArray()
-    ));
+    private static string Source(params string[] parts) {
+        return File.ReadAllText(Path.Combine(
+            [RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", .. parts]
+        ));
+    }
 
-    private static XDocument Defs(params string[] parts) => XDocument.Load(Path.Combine(
-        new[] { RepoRoot, "CosmereScadrial", "Defs" }.Concat(parts).ToArray()
-    ));
+    private static XDocument Defs(params string[] parts) {
+        return XDocument.Load(Path.Combine([RepoRoot, "CosmereScadrial", "Defs", .. parts]));
+    }
 
     /// <summary>
     ///     HediffDef.initialSeverity defaults to 0.5 and Hediff.PostMake maxes the severity
@@ -45,8 +47,8 @@ public class KolossTests {
 
         // a hair above zero, not zero - ShouldRemove is `Severity <= 0f`, so literal zero deletes the growth clock.
         double initial = double.Parse(growth.Element("initialSeverity")!.Value);
-        Assert.IsTrue(initial > 0, "Zero makes the hediff remove itself.");
-        Assert.IsTrue(initial < 0.01, "And anything much above zero starts the koloss part-grown.");
+        Assert.IsGreaterThan(0d, initial, "Zero makes the hediff remove itself.");
+        Assert.IsLessThan(0.01, initial, "And anything much above zero starts the koloss part-grown.");
     }
 
     /// <summary>
@@ -175,8 +177,9 @@ public class KolossTests {
 
         int destroy = util.IndexOf("subject.Destroy(", StringComparison.Ordinal);
         int spawn = util.IndexOf("GenSpawn.Spawn(made", StringComparison.Ordinal);
-        Assert.IsTrue(
-            destroy < spawn,
+        Assert.IsLessThan(
+            spawn,
+            destroy,
             "The subject leaves before the koloss arrives, or two things stand on one tile."
         );
     }
@@ -298,8 +301,8 @@ public class KolossTests {
         double total = outcome.Descendants("chance").Sum(c => double.Parse(c.Value));
         Assert.AreEqual(1.0, total, 0.0001);
 
-        Assert.IsFalse(
-            outcome.Descendants("effecter").Any(),
+        Assert.IsEmpty(
+            outcome.Descendants("effecter"),
             "ExecutionFlames is not a real EffecterDef; an invented one fails cross-reference at load."
         );
     }
@@ -364,17 +367,17 @@ public class KolossTests {
         XElement gene = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_EasilyInfluenced");
 
-        List<string> off = gene.Element("disabledWorkTags")!.Elements("li").Select(li => li.Value).ToList();
+        List<string> off = [.. gene.Element("disabledWorkTags")!.Elements("li").Select(li => li.Value)];
 
         foreach (string allowed in new[] {
             "Firefighting", "Cooking", "Crafting", "Caring", "Social", "Animals", "Mining", "Construction",
         }) {
-            CollectionAssert.DoesNotContain(off, allowed, $"A koloss should still be able to do {allowed}.");
+            Assert.DoesNotContain(allowed, off, $"A koloss should still be able to do {allowed}.");
         }
 
         // Shooting is the one it can never be taught. Judgement and art it never had.
         foreach (string denied in new[] { "Intellectual", "Artistic", "PlantWork", "Shooting" }) {
-            CollectionAssert.Contains(off, denied);
+            Assert.Contains(denied, off);
         }
 
         Assert.AreEqual("0.02", gene.Element("statFactors")?.Element("GlobalLearningFactor")?.Value);
@@ -425,11 +428,12 @@ public class KolossTests {
                 t.Elements("li").Any(x => x.Value == "Cosmere_Scadrial_Thing_HemalurgicSpike")));
 
         // field is specialFiltersToDisallow - disallowedSpecialFilters isn't real and silently excluded everything.
-        List<string> disallowed = spikes.Descendants("specialFiltersToDisallow")
-            .Elements("li").Select(li => li.Value).ToList();
+        List<string> disallowed = [
+            .. spikes.Descendants("specialFiltersToDisallow").Elements("li").Select(li => li.Value),
+        ];
 
-        CollectionAssert.Contains(disallowed, "Cosmere_Scadrial_SpecialFilter_NotSpikeIron");
-        CollectionAssert.Contains(disallowed, "Cosmere_Scadrial_SpecialFilter_SpikeUncharged");
+        Assert.Contains("Cosmere_Scadrial_SpecialFilter_NotSpikeIron", disallowed);
+        Assert.Contains("Cosmere_Scadrial_SpecialFilter_SpikeUncharged", disallowed);
         Assert.AreEqual("4", spikes.Element("count")?.Value);
     }
 
@@ -529,8 +533,8 @@ public class KolossTests {
             XElement story = stories.Descendants().First(e => e.Element("defName")?.Value == def);
             List<string> off = story.Element("workDisables")?.Elements("li").Select(li => li.Value).ToList() ?? [];
 
-            CollectionAssert.DoesNotContain(off, "Social");
-            CollectionAssert.DoesNotContain(off, "Firefighting");
+            Assert.DoesNotContain("Social", off);
+            Assert.DoesNotContain("Firefighting", off);
         }
     }
 
@@ -573,9 +577,9 @@ public class KolossTests {
             );
         }
 
-        Assert.IsTrue(
-            patch.Descendants("nullifyingGenes").Elements("li")
-                .Any(li => li.Value == "Cosmere_Scadrial_Gene_KolossHeritage"),
+        Assert.Contains(
+            li => li.Value == "Cosmere_Scadrial_Gene_KolossHeritage",
+            patch.Descendants("nullifyingGenes").Elements("li"),
             "Keyed to the gene every koloss has."
         );
     }
@@ -605,17 +609,17 @@ public class KolossTests {
         XElement growth = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth");
 
-        List<XElement> stages = growth.Element("stages")!.Elements("li").ToList();
-        Assert.AreEqual(4, stages.Count);
+        List<XElement> stages = [.. growth.Element("stages")!.Elements("li")];
+        Assert.HasCount(4, stages);
 
         foreach (XElement stage in stages) {
             List<string> gone = stage.Element("disablesNeeds")?.Elements("li")
                 .Select(li => li.Value).ToList() ?? [];
 
             foreach (string need in new[] { "Beauty", "Comfort", "RoomSize", "Outdoors" }) {
-                CollectionAssert.Contains(
-                    gone,
+                Assert.Contains(
                     need,
+                    gone,
                     $"Stage '{stage.Element("label")?.Value}' still leaves it caring about {need}."
                 );
             }
@@ -659,8 +663,9 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
             .Element("statFactors")!;
 
-        Assert.IsTrue(
-            double.Parse(factors.Element("CarryingCapacity")!.Value) >= 8d,
+        Assert.IsGreaterThanOrEqualTo(
+            8d,
+            double.Parse(factors.Element("CarryingCapacity")!.Value),
             "Hauling is one of the two things a koloss is for."
         );
     }
@@ -709,10 +714,10 @@ public class KolossTests {
         XElement taste = Defs("Races", "KolossHediffs.xml").Descendants("ThoughtDef")
             .First(d => d.Element("defName")?.Value == food.Element("tasteThought")!.Value);
 
-        Assert.IsTrue(double.Parse(taste.Descendants("baseMoodEffect").First().Value) < 0d);
-        CollectionAssert.Contains(
-            taste.Element("nullifyingGenes")!.Elements("li").Select(li => li.Value).ToList(),
-            "Cosmere_Scadrial_Gene_KolossHeritage"
+        Assert.IsLessThan(0d, double.Parse(taste.Descendants("baseMoodEffect").First().Value));
+        Assert.Contains(
+            "Cosmere_Scadrial_Gene_KolossHeritage",
+            taste.Element("nullifyingGenes")!.Elements("li").Select(li => li.Value)
         );
     }
 
@@ -734,9 +739,9 @@ public class KolossTests {
             "KolossScalePatches.cs"
         ));
 
-        Assert.IsTrue(patch.Contains("typeof(MassUtility)"), "The cap lives in MassUtility.");
-        Assert.IsTrue(patch.Contains("nameof(MassUtility.Capacity)"), "Capacity is the method that caps it.");
-        Assert.IsTrue(patch.Contains("KolossBulk.HaulingBuild"), "Growth alone does not reach twice a person.");
+        Assert.Contains("typeof(MassUtility)", patch, "The cap lives in MassUtility.");
+        Assert.Contains("nameof(MassUtility.Capacity)", patch, "Capacity is the method that caps it.");
+        Assert.Contains("KolossBulk.HaulingBuild", patch, "Growth alone does not reach twice a person.");
     }
 
     /// <summary>
@@ -757,11 +762,12 @@ public class KolossTests {
             "KolossScalePatches.cs"
         ));
 
-        Assert.IsTrue(
-            patch.Contains(": PawnRenderNodeWorker {"),
+        Assert.Contains(
+            ": PawnRenderNodeWorker {",
+            patch,
             "The patch must sit on the base worker, not on one node's worker."
         );
-        Assert.IsTrue(patch.Contains("nameof(ScaleFor)"));
+        Assert.Contains("nameof(ScaleFor)", patch);
     }
 
     /// <summary>
@@ -797,8 +803,8 @@ public class KolossTests {
             "KolossBulk.cs"
         ));
 
-        Assert.IsTrue(bulk.Contains("Cached.TryGetValue"), "Repeat lookups must hit the cache.");
-        Assert.IsTrue(bulk.Contains("Cached.Clear()"), "Dead pawns must not pile up in it.");
+        Assert.Contains("Cached.TryGetValue", bulk, "Repeat lookups must hit the cache.");
+        Assert.Contains("Cached.Clear()", bulk, "Dead pawns must not pile up in it.");
     }
 
     /// <summary>
@@ -819,8 +825,9 @@ public class KolossTests {
             "KolossScalePatches.cs"
         ));
 
-        Assert.IsTrue(
-            patch.Contains("node.tree.rootNode != node"),
+        Assert.Contains(
+            "node.tree.rootNode != node",
+            patch,
             "Every node but the root must return before the factor is applied."
         );
     }
@@ -841,9 +848,9 @@ public class KolossTests {
             "KolossBulk.cs"
         ));
 
-        Assert.IsTrue(bulk.Contains("ConcurrentDictionary"), "The render path is not single-threaded.");
+        Assert.Contains("ConcurrentDictionary", bulk, "The render path is not single-threaded.");
         Assert.IsFalse(
-            Regex.IsMatch(bulk, @"\bnew Dictionary<"),
+            PlainDictionary.IsMatch(bulk),
             "A plain Dictionary in here corrupts under concurrent access."
         );
     }
@@ -854,14 +861,16 @@ public class KolossTests {
     /// </summary>
     [TestMethod]
     public void AnOlderKolossCostsMoreToKeep() {
-        List<XElement> stages = Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth")
-            .Element("stages")!.Elements("li").ToList();
+        List<XElement> stages = [
+            .. Defs("Races", "KolossHediffs.xml").Descendants("HediffDef")
+                .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth")
+                .Element("stages")!.Elements("li"),
+        ];
 
         double last = 0d;
         for (int i = 1; i < stages.Count; i++) {
             double hunger = double.Parse(stages[i].Element("hungerRateFactor")!.Value);
-            Assert.IsTrue(hunger > last, $"Stage {i} must cost more to feed than the one before.");
+            Assert.IsGreaterThan(last, hunger, $"Stage {i} must cost more to feed than the one before.");
             last = hunger;
         }
     }
@@ -876,7 +885,7 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_KolossGrowth")
             .Element("stages")!.Elements("li").Last();
 
-        Assert.IsTrue(double.Parse(splitting.Element("deathMtbDays")!.Value) > 0d);
+        Assert.IsGreaterThan(0d, double.Parse(splitting.Element("deathMtbDays")!.Value));
         Assert.AreEqual(0d, double.Parse(splitting.Element("naturalHealingFactor")!.Value), 0.001);
     }
 
@@ -888,22 +897,24 @@ public class KolossTests {
     public void TheSkinGivesWayFasterAsItGrows() {
         XDocument doc = Defs("Races", "KolossHediffs.xml");
 
-        Assert.IsTrue(
-            doc.Descendants("HediffDef").Any(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_SplitSkin"),
+        Assert.Contains(
+            d => d.Element("defName")?.Value == "Cosmere_Scadrial_Hediff_SplitSkin",
+            doc.Descendants("HediffDef"),
             "The wound has to exist before a stage can hand it out."
         );
 
-        List<double> rates = doc.Descendants("HediffGiver_Random")
-            .Concat(doc.Descendants("li").Where(li => li.Attribute("Class")?.Value == "HediffGiver_Random"))
-            .Select(li => double.Parse(li.Element("mtbDays")!.Value))
-            .Distinct()
-            .ToList();
+        List<double> rates = [
+            .. doc.Descendants("HediffGiver_Random")
+                .Concat(doc.Descendants("li").Where(li => li.Attribute("Class")?.Value == "HediffGiver_Random"))
+                .Select(li => double.Parse(li.Element("mtbDays")!.Value))
+                .Distinct(),
+        ];
 
-        Assert.IsTrue(rates.Count >= 3, "Three late stages should each hand it out.");
+        Assert.IsGreaterThanOrEqualTo(3, rates.Count, "Three late stages should each hand it out.");
 
         // Lower mtbDays is more often, so a tightening interval means a falling number.
         for (int i = 1; i < rates.Count; i++) {
-            Assert.IsTrue(rates[i] < rates[i - 1], "Splits have to come faster as it grows.");
+            Assert.IsLessThan(rates[i - 1], rates[i], "Splits have to come faster as it grows.");
         }
     }
 
@@ -923,19 +934,20 @@ public class KolossTests {
             "SpikeBound.cs"
         ));
 
-        Assert.IsTrue(bound.Contains("Notify_PawnDied"), "Dying is the other way a koloss ends.");
-        Assert.IsTrue(bound.Contains("GenPlace.TryPlaceThing"), "They have to land somewhere reachable.");
-        Assert.IsTrue(bound.Contains("comp.Charge("), "A spike keeps what it took. Dying does not undo it.");
+        Assert.Contains("Notify_PawnDied", bound, "Dying is the other way a koloss ends.");
+        Assert.Contains("GenPlace.TryPlaceThing", bound, "They have to land somewhere reachable.");
+        Assert.Contains("comp.Charge(", bound, "A spike keeps what it took. Dying does not undo it.");
 
         // isValid needs one of six flags; only IsHumanAttribute(stealType) fits a koloss spike, so it must be explicit.
-        Assert.IsTrue(
-            bound.Contains("stealType = HemalurgicStealType.HumanStrength"),
+        Assert.Contains(
+            "stealType = HemalurgicStealType.HumanStrength",
+            bound,
             "The steal type has to be stated, not inherited from enum ordering."
         );
 
         // Gaussian has no bounds - an unlucky roll under 0.05 is a spike that doesn't count as charged at all.
-        Assert.IsTrue(bound.Contains("Rand.Gaussian"), "Most spikings are ordinary; the tails are rare.");
-        Assert.IsTrue(bound.Contains("Mathf.Clamp("), "An unbounded roll can fall under the charge floor.");
+        Assert.Contains("Rand.Gaussian", bound, "Most spikings are ordinary; the tails are rare.");
+        Assert.Contains("Mathf.Clamp(", bound, "An unbounded roll can fall under the charge floor.");
     }
 
     /// <summary>
@@ -954,8 +966,8 @@ public class KolossTests {
             "KolossGrowthTuning.cs"
         ));
 
-        Assert.IsTrue(tuning.Contains("AllMapsWorldAndTemporary_Alive"), "Live pawns have to be walked.");
-        Assert.IsTrue(tuning.Contains("comp.severityPerDay ="), "And the comp's own field written.");
+        Assert.Contains("AllMapsWorldAndTemporary_Alive", tuning, "Live pawns have to be walked.");
+        Assert.Contains("comp.severityPerDay =", tuning, "And the comp's own field written.");
     }
 
     /// <summary>
@@ -969,20 +981,21 @@ public class KolossTests {
     /// </remarks>
     [TestMethod]
     public void AKolossCannotBuildAHospitalButCanStillMine() {
-        List<string> off = Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
-            .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_EasilyInfluenced")
-            .Element("disabledWorkTags")!.Elements("li")
-            .Select(li => li.Value)
-            .ToList();
+        List<string> off = [
+            .. Defs("Races", "Genes", "Koloss.xml").Descendants("GeneDef")
+                .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_EasilyInfluenced")
+                .Element("disabledWorkTags")!.Elements("li")
+                .Select(li => li.Value),
+        ];
 
         foreach (string gone in new[] { "Constructing", "Hunting", "Shooting", "Intellectual" }) {
-            CollectionAssert.Contains(off, gone);
+            Assert.Contains(gone, off);
         }
 
-        CollectionAssert.DoesNotContain(off, "ManualSkilled", "Mining carries that tag.");
-        CollectionAssert.DoesNotContain(off, "Violent", "Without it a koloss cannot be drafted.");
-        CollectionAssert.DoesNotContain(off, "Hauling", "Carrying is most of what they are for.");
-        CollectionAssert.DoesNotContain(off, "Mining", "So is clearing ground.");
+        Assert.DoesNotContain("ManualSkilled", off, "Mining carries that tag.");
+        Assert.DoesNotContain("Violent", off, "Without it a koloss cannot be drafted.");
+        Assert.DoesNotContain("Hauling", off, "Carrying is most of what they are for.");
+        Assert.DoesNotContain("Mining", off, "So is clearing ground.");
     }
 
     /// <summary>
@@ -1007,7 +1020,7 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Gene_KolossHeritage")
             .Element("statFactors")!.Element("MoveSpeed")!.Value);
 
-        Assert.IsTrue(speed <= 1.2d, $"At {speed} a colonist cannot break away from one.");
+        Assert.IsLessThanOrEqualTo(1.2d, speed, $"At {speed} a colonist cannot break away from one.");
     }
 
     /// <summary>
@@ -1020,6 +1033,9 @@ public class KolossTests {
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_PawnKind_Koloss");
 
         string[] range = kind.Element("fleeHealthThresholdRange")!.Value.Split('~');
-        Assert.IsTrue(double.Parse(range[1]) < 0d, "A reachable threshold means it runs.");
+        Assert.IsLessThan(0d, double.Parse(range[1]), "A reachable threshold means it runs.");
     }
+
+    [GeneratedRegex(@"\bnew Dictionary<")]
+    private static partial Regex PlainDictionary { get; }
 }

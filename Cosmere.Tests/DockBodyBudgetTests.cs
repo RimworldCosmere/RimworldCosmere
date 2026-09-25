@@ -24,9 +24,9 @@ public class DockBodyBudgetTests {
         }
     }
 
-    private static string Dock(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Dock", file
-    ));
+    private static string Dock(string file) {
+        return File.ReadAllText(Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "Core", "UI", "Dock", file));
+    }
 
     [TestMethod]
     public void PinnedBiggerThanTheSettingLeavesNothing() {
@@ -57,7 +57,7 @@ public class DockBodyBudgetTests {
 
     [TestMethod]
     public void BothHeightSitesUseTheBudget() {
-        StringAssert.Contains(Dock("DockAccordion.cs"), "DockBodyBudget.For");
-        StringAssert.Contains(Dock("InvestitureDockWindow.cs"), "DockBodyBudget.For");
+        Assert.Contains("DockBodyBudget.For", Dock("DockAccordion.cs"));
+        Assert.Contains("DockBodyBudget.For", Dock("InvestitureDockWindow.cs"));
     }
 }

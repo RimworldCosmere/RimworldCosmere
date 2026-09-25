@@ -49,12 +49,16 @@ public class BookTopicRulesTests {
         int seen = 0;
 
         foreach (string path in DefFiles()) {
-            XElement? root;
+            XElement? root = null;
+            string? loadError = null;
             try {
                 root = XDocument.Load(path).Root;
             } catch (global::System.Xml.XmlException e) {
-                Assert.Fail($"{Path.GetRelativePath(RepoRoot, path)} is not valid XML: {e.Message}");
-                return;
+                loadError = e.Message;
+            }
+
+            if (loadError != null) {
+                Assert.Fail($"{Path.GetRelativePath(RepoRoot, path)} is not valid XML: {loadError}");
             }
 
             if (root == null) continue;
@@ -79,12 +83,12 @@ public class BookTopicRulesTests {
             }
         }
 
-        Assert.IsTrue(seen > 0, $"Found no {defType}s at all - the walk is wrong, not the defs.");
+        Assert.IsGreaterThan(0, seen, $"Found no {defType}s at all - the walk is wrong, not the defs.");
 
         string detail = $"These {defType}s have no generalRules/rulesStrings 'subject->' entry, " +
             "so any book that rolls them throws a NullReferenceException during generation: " +
             string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 }

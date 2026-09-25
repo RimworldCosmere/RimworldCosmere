@@ -18,7 +18,7 @@ namespace Cosmere.Tests;
 ///     hauling to stop the thing snapping on its first job.
 /// </remarks>
 [TestClass]
-public class KolossControlTests {
+public partial class KolossControlTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -32,9 +32,9 @@ public class KolossControlTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     /// <summary>
     ///     The same file with every comment gone, for assertions about what the code does rather
@@ -48,7 +48,7 @@ public class KolossControlTests {
 
         for (int i = 0; i < lines.Length; i++) {
             string trimmed = lines[i].TrimStart();
-            if (trimmed.StartsWith("//") || trimmed.StartsWith("///") || trimmed.StartsWith("*")) continue;
+            if (trimmed.StartsWith("//") || trimmed.StartsWith("///") || trimmed.StartsWith('*')) continue;
 
             kept.Add(lines[i]);
         }
@@ -65,8 +65,8 @@ public class KolossControlTests {
     public void ResistanceRisesWithAge() {
         string source = Core("System", "Scadrial", "Util", "EmotionalResistance.cs");
 
-        Assert.IsTrue(source.Contains("growth.Severity"), "A koloss resists by how far it has grown.");
-        Assert.IsTrue(source.Contains("ChronologicalYears"), "A kandra resists by how long it has existed.");
+        Assert.Contains("growth.Severity", source, "A koloss resists by how far it has grown.");
+        Assert.Contains("ChronologicalYears", source, "A kandra resists by how long it has existed.");
         Assert.IsTrue(source.Contains("KolossCeiling") && source.Contains("KandraCeiling"));
     }
 
@@ -82,21 +82,22 @@ public class KolossControlTests {
         string push = CodeOnly("System", "Scadrial", "Allomancy", "Comp", "Ability", "EmotionalPush.cs");
 
         Assert.IsFalse(
-            Regex.IsMatch(push, @"GetStrength\(\)"),
+            BareGetStrength.IsMatch(push),
             "A bare GetStrength here is the reach 0.0 bug."
         );
 
         // status.power holds flaring; nextStatus.power holds the cast default and is null before a target is picked.
         Assert.IsTrue(
-            Regex.IsMatch(push, @"Math\.Max\(parent\.status\.power, parent\.nextStatus\?\.power"),
+            PowerFromStatusOrNext.IsMatch(push),
             "Flaring lives on the live status and the cast default lives on nextStatus."
         );
-        Assert.IsTrue(
-            push.Contains("Math.Max(power, 1)"),
+        Assert.Contains(
+            "Math.Max(power, 1)",
+            push,
             "And neither is set at all during targeting, which reported reach 0.0."
         );
         Assert.IsFalse(
-            Regex.IsMatch(seize, @"Duralumin|SurgeCharge"),
+            DuraluminMention.IsMatch(seize),
             "Duralumin already lands through GetStrength; special-casing it here would double it."
         );
     }
@@ -115,9 +116,10 @@ public class KolossControlTests {
         Assert.IsTrue(weak.Contains("{REACH}") && weak.Contains("{NEEDED}"));
 
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
-        Assert.IsTrue(control.Contains("CS_KolossBind_TooWeak"));
-        Assert.IsFalse(
-            control.Contains("CapacityOf"),
+        Assert.Contains("CS_KolossBind_TooWeak", control);
+        Assert.DoesNotContain(
+            "CapacityOf",
+            control,
             "Nothing caps how many are held any more; the metal running out is the only limit."
         );
     }
@@ -137,7 +139,7 @@ public class KolossControlTests {
             string source = CodeOnly(where);
 
             Assert.IsFalse(
-                Regex.IsMatch(source, @"DistanceTo|GetCellsAround|\bradius\b", RegexOptions.IgnoreCase),
+                HoldRadiusMention.IsMatch(source),
                 $"{where[^1]} must not reintroduce a hold radius."
             );
         }
@@ -152,22 +154,24 @@ public class KolossControlTests {
         // CodeOnly - the file's comments mention the old wrong defName, which a plain grep reads as still using it.
         string roster = CodeOnly("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
-        Assert.IsTrue(roster.Contains("DrainSource"), "Holding costs metal, the same way any burn does.");
-        Assert.IsTrue(
-            roster.Contains("SortByDescending(b => b.boundAtTick)"),
+        Assert.Contains("DrainSource", roster, "Holding costs metal, the same way any burn does.");
+        Assert.Contains(
+            "SortByDescending(b => b.boundAtTick)",
+            roster,
             "Newest first, so a force built over a campaign outlives a greedy seizure."
         );
 
         // guessing "Cosmere_Scadrial_Gene_Allomancy_Zinc" matched nothing, billing found no gene, dropped bonds in ~4s.
-        Assert.IsTrue(
-            roster.Contains("GetAllomanticGeneForMetal"),
+        Assert.Contains(
+            "GetAllomanticGeneForMetal",
+            roster,
             "Never guess a gene defName; ask the metal for it."
         );
         Assert.IsFalse(
-            Regex.IsMatch(roster, @"""Cosmere_Scadrial_Gene_"),
+            HandWrittenGeneDefName.IsMatch(roster),
             "A hand-written gene defName that matches nothing fails silently and reads as balance."
         );
-        Assert.IsTrue(roster.Contains("Scribe_References"), "A hold that drops on reload is worse than none.");
+        Assert.Contains("Scribe_References", roster, "A hold that drops on reload is worse than none.");
     }
 
     /// <summary>
@@ -179,14 +183,14 @@ public class KolossControlTests {
     public void AHeldKolossBelongsToWhoeverHoldsIt() {
         string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
-        Assert.IsTrue(roster.Contains("koloss.SetFaction(holder.Faction)"), "Holding one makes it yours.");
+        Assert.Contains("koloss.SetFaction(holder.Faction)", roster, "Holding one makes it yours.");
 
         // not on release - losing the hold starts a grace window where the koloss is still nominally the colony's.
-        Assert.IsFalse(roster.Contains("SetFaction(null)"), "Release must not strip the faction.");
+        Assert.DoesNotContain("SetFaction(null)", roster, "Release must not strip the faction.");
 
         // slave, not colonist - it takes orders because someone holds its mind; Ideology gates status, not the hold.
-        Assert.IsTrue(roster.Contains("GuestStatus.Slave"), "A held koloss works for the colony.");
-        Assert.IsTrue(roster.Contains("ModsConfig.IdeologyActive"), "Slavery is gated on the DLC.");
+        Assert.Contains("GuestStatus.Slave", roster, "A held koloss works for the colony.");
+        Assert.Contains("ModsConfig.IdeologyActive", roster, "Slavery is gated on the DLC.");
     }
 
     /// <summary>
@@ -197,16 +201,17 @@ public class KolossControlTests {
     public void RunningOutOfOneMetalOnlyDropsWhatThatMetalHeld() {
         string roster = Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs");
 
-        Assert.IsTrue(roster.Contains("Scribe_Values.Look(ref metal"), "The metal has to survive a reload.");
-        Assert.IsTrue(roster.Contains("GeneFor(holder, bond)"), "Each bond bills its own metal.");
+        Assert.Contains("Scribe_Values.Look(ref metal", roster, "The metal has to survive a reload.");
+        Assert.Contains("GeneFor(holder, bond)", roster, "Each bond bills its own metal.");
 
         // BurnTickInterval already drains its sources; billing by hand double-charged and showed Idle at 0.00%/s.
-        Assert.IsTrue(roster.Contains("UpdateDrainSource"), "The hold has to be a visible burn.");
-        Assert.IsFalse(
-            roster.Contains("RemoveFromReserve"),
+        Assert.Contains("UpdateDrainSource", roster, "The hold has to be a visible burn.");
+        Assert.DoesNotContain(
+            "RemoveFromReserve",
+            roster,
             "The gene charges its own sources; taking it by hand charges twice and shows nothing."
         );
-        Assert.IsTrue(roster.Contains("HoldFraction"), "Holding costs a fraction of the seizure.");
+        Assert.Contains("HoldFraction", roster, "Holding costs a fraction of the seizure.");
     }
 
     /// <summary>
@@ -217,21 +222,21 @@ public class KolossControlTests {
     public void TheHolderCanSeeWhatTheyAreCarrying() {
         string gene = Core("System", "Scadrial", "Gene", "Allomancer.cs");
 
-        Assert.IsTrue(gene.Contains("HeldOnMetal"), "Each metal answers for its own holds.");
-        Assert.IsTrue(gene.Contains("CS_KolossRoster_Label"), "The count belongs on a gizmo.");
-        Assert.IsTrue(gene.Contains("Dialog_KolossRoster"), "The gizmo opens the roster.");
+        Assert.Contains("HeldOnMetal", gene, "Each metal answers for its own holds.");
+        Assert.Contains("CS_KolossRoster_Label", gene, "The count belongs on a gizmo.");
+        Assert.Contains("Dialog_KolossRoster", gene, "The gizmo opens the roster.");
 
         string window = Core("System", "Scadrial", "UI", "Dialog_KolossRoster.cs");
 
         // every interactive rect owes hover feedback, a description, and a sound within one frame, or it reads as dead.
         foreach (string owed in new[] { "DrawHighlightIfMouseover", "MouseoverSounds.DoRegion", "TipRegion" }) {
-            Assert.IsTrue(window.Contains(owed), $"Interactive rects need {owed}.");
+            Assert.Contains(owed, window, $"Interactive rects need {owed}.");
         }
 
         // GameFont.Large does not exist, and a scroll view that ignores the scrollbar clips.
-        Assert.IsFalse(window.Contains("GameFont.Large"), "There are only Tiny, Small and Medium.");
-        Assert.IsTrue(window.Contains("ScrollbarWidth"), "A scroll view has to deduct the scrollbar.");
-        Assert.IsTrue(window.Contains("Event.current.shift"), "Shift extends the selection.");
+        Assert.DoesNotContain("GameFont.Large", window, "There are only Tiny, Small and Medium.");
+        Assert.Contains("ScrollbarWidth", window, "A scroll view has to deduct the scrollbar.");
+        Assert.Contains("Event.current.shift", window, "Shift extends the selection.");
     }
 
     /// <summary>
@@ -243,13 +248,13 @@ public class KolossControlTests {
     public void ALooseKolossGetsAGraceWindowBeforeItTurns() {
         string gene = Core("System", "Scadrial", "Gene", "EasilyInfluenced.cs");
 
-        Assert.IsTrue(gene.Contains("KolossControl.GraceTicks"));
-        Assert.IsTrue(gene.Contains("KolossControl.KolossFaction"), "Already theirs means nothing left to count.");
+        Assert.Contains("KolossControl.GraceTicks", gene);
+        Assert.Contains("KolossControl.KolossFaction", gene, "Already theirs means nothing left to count.");
 
         // the window is a setting now, not a constant - how forgiving a lost hold should be varies by colony.
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
-        Assert.IsTrue(control.Contains("Mod.kolossGraceSeconds"), "Grace comes from settings.");
-        Assert.IsTrue(control.Contains("Mathf.Max(0,"), "A negative window would turn it instantly.");
+        Assert.Contains("Mod.kolossGraceSeconds", control, "Grace comes from settings.");
+        Assert.Contains("Mathf.Max(0,", control, "A negative window would turn it instantly.");
     }
 
     /// <summary>
@@ -260,8 +265,8 @@ public class KolossControlTests {
     public void ReleasingOneKolossLeavesTheRestHeld() {
         string gene = Core("System", "Scadrial", "Gene", "EasilyInfluenced.cs");
 
-        Assert.IsTrue(gene.Contains("CS_KolossRelease_Label"), "The player needs a per-pawn release.");
-        Assert.IsTrue(gene.Contains("KolossControl.Release(pawn)"), "Release takes one pawn, not a holder.");
+        Assert.Contains("CS_KolossRelease_Label", gene, "The player needs a per-pawn release.");
+        Assert.Contains("KolossControl.Release(pawn)", gene, "Release takes one pawn, not a holder.");
     }
 
     /// <summary>
@@ -287,10 +292,11 @@ public class KolossControlTests {
                 $"{metal} target must not inherit the maintain-proximity job."
             );
 
-            List<string> comps = ability.Element("comps")!.Elements("li")
-                .Select(li => li.Attribute("Class")!.Value).ToList();
+            List<string> comps = [
+                .. ability.Element("comps")!.Elements("li").Select(li => li.Attribute("Class")!.Value),
+            ];
 
-            Assert.IsTrue(comps.Any(c => c.EndsWith("SeizeKolossProperties")), "Either metal holds one.");
+            Assert.Contains(c => c.EndsWith("SeizeKolossProperties"), comps, "Either metal holds one.");
 
             // CastAllomanticAbilityAtTarget throws via MoveThing and runs no ability comp - the iron/steel driver.
             Assert.AreEqual(
@@ -298,8 +304,9 @@ public class KolossControlTests {
                 ability.Element("jobDef")?.Value,
                 $"{metal} target must not run the physical push driver."
             );
-            Assert.IsTrue(
-                comps.Any(c => c.EndsWith("MetalCostProperties")),
+            Assert.Contains(
+                c => c.EndsWith("MetalCostProperties"),
+                comps,
                 "Vanilla's job does not spend the metal, so the cost has to be a comp."
             );
         }
@@ -314,9 +321,9 @@ public class KolossControlTests {
     public void SoothingCannotReachALooseKoloss() {
         string push = Core("System", "Scadrial", "Allomancy", "Comp", "Ability", "EmotionalPush.cs");
 
-        Assert.IsTrue(push.Contains("UnbreakableStateRegistry.Guards"), "The deliberate soothe needs the guard too.");
-        Assert.IsTrue(push.Contains("state.RecoverFromState()"), "Soothing ends the state it can reach.");
-        Assert.IsTrue(push.Contains("MentalBreakDefOf.Berserk"), "Rioting starts one.");
+        Assert.Contains("UnbreakableStateRegistry.Guards", push, "The deliberate soothe needs the guard too.");
+        Assert.Contains("state.RecoverFromState()", push, "Soothing ends the state it can reach.");
+        Assert.Contains("MentalBreakDefOf.Berserk", push, "Rioting starts one.");
     }
 
     /// <summary>
@@ -327,10 +334,10 @@ public class KolossControlTests {
     public void AHolderCanPointItsKolossAtSomething() {
         string orders = Core("System", "Scadrial", "UI", "Command_SendKoloss.cs");
 
-        Assert.IsTrue(orders.Contains("Command_Target"), "Targeting, not a plain button.");
-        Assert.IsTrue(orders.Contains("CS_KolossSend_Label"), "The label carries the count.");
-        Assert.IsTrue(orders.Contains("one.InMentalState"), "A loose koloss takes no orders.");
-        Assert.IsTrue(orders.Contains("CanReach"), "A click nothing can reach is refused, not ignored.");
+        Assert.Contains("Command_Target", orders, "Targeting, not a plain button.");
+        Assert.Contains("CS_KolossSend_Label", orders, "The label carries the count.");
+        Assert.Contains("one.InMentalState", orders, "A loose koloss takes no orders.");
+        Assert.Contains("CanReach", orders, "A click nothing can reach is refused, not ignored.");
     }
 
     /// <summary>
@@ -346,13 +353,13 @@ public class KolossControlTests {
         foreach (string knob in new[] {
             "kolossGraceSeconds", "kolossHoldFraction", "kolossResistance",
         }) {
-            Assert.IsTrue(mod.Contains(knob), $"{knob} is not exposed.");
+            Assert.Contains(knob, mod, $"{knob} is not exposed.");
         }
 
         // Read live rather than captured at startup, or changing one does nothing until restart.
-        Assert.IsTrue(
-            Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs")
-                .Contains("Mod.kolossHoldFraction"),
+        Assert.Contains(
+            "Mod.kolossHoldFraction",
+            Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs"),
             "A const would ignore the setting."
         );
     }
@@ -370,17 +377,35 @@ public class KolossControlTests {
     public void ALostKolossJoinsTheOthersRatherThanTurningOnThem() {
         string control = CodeOnly("System", "Scadrial", "Util", "KolossControl.cs");
 
-        Assert.IsTrue(control.Contains("koloss.SetFaction(theirs)"), "It changes sides.");
-        Assert.IsFalse(control.Contains("TryStartMentalState"), "And does not go berserk doing it.");
+        Assert.Contains("koloss.SetFaction(theirs)", control, "It changes sides.");
+        Assert.DoesNotContain("TryStartMentalState", control, "And does not go berserk doing it.");
 
         // Neither happens on a faction change the way it does inside TryStartMentalState.
-        Assert.IsTrue(control.Contains("TryDropCarriedThing"), "Or it walks off carrying a colonist.");
-        Assert.IsTrue(control.Contains("Drafted = false"), "Or stays drafted to a faction it left.");
+        Assert.Contains("TryDropCarriedThing", control, "Or it walks off carrying a colonist.");
+        Assert.Contains("Drafted = false", control, "Or stays drafted to a faction it left.");
 
         // a deliberate release lands immediately; the grace window is only for running out of metal.
         Assert.IsTrue(
-            Regex.IsMatch(control, @"Release\(Pawn koloss\) \{[^}]*Lapse\(koloss\)", RegexOptions.Singleline),
+            ReleaseLapsesImmediately.IsMatch(control),
             "A deliberate release has to be immediate."
         );
     }
+
+    [GeneratedRegex(@"GetStrength\(\)")]
+    private static partial Regex BareGetStrength { get; }
+
+    [GeneratedRegex(@"Math\.Max\(parent\.status\.power, parent\.nextStatus\?\.power")]
+    private static partial Regex PowerFromStatusOrNext { get; }
+
+    [GeneratedRegex("Duralumin|SurgeCharge")]
+    private static partial Regex DuraluminMention { get; }
+
+    [GeneratedRegex(@"DistanceTo|GetCellsAround|\bradius\b", RegexOptions.IgnoreCase)]
+    private static partial Regex HoldRadiusMention { get; }
+
+    [GeneratedRegex(@"""Cosmere_Scadrial_Gene_")]
+    private static partial Regex HandWrittenGeneDefName { get; }
+
+    [GeneratedRegex(@"Release\(Pawn koloss\) \{[^}]*Lapse\(koloss\)", RegexOptions.Singleline)]
+    private static partial Regex ReleaseLapsesImmediately { get; }
 }

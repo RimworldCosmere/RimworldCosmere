@@ -16,7 +16,7 @@ namespace Cosmere.Tests;
 ///     rewrite, so no scenario's Shards were enabled at all, and the build stayed green.
 /// </remarks>
 [TestClass]
-public class ConcordPatchAttributeTests {
+public partial class ConcordPatchAttributeTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -29,30 +29,33 @@ public class ConcordPatchAttributeTests {
         }
     }
 
+    [GeneratedRegex(@"\[\s*Inject(Method|Field|Property|Instance|New)?\s*[\(\]]")]
+    private static partial Regex InjectionAttribute { get; }
+
+    [GeneratedRegex(@"\[\s*Patch\s*[\(\]]")]
+    private static partial Regex PatchAttribute { get; }
+
     [TestMethod]
     public void EveryInjectionLivesInAPatchedClass() {
         string coreDir = Path.Combine(RepoRoot, "CosmereCore", "CosmereCore");
         Assert.IsTrue(Directory.Exists(coreDir), $"Expected source at {coreDir}");
-
-        Regex injection = new Regex(@"\[\s*Inject(Method|Field|Property|Instance|New)?\s*[\(\]]");
-        Regex patched = new Regex(@"\[\s*Patch\s*[\(\]]");
 
         List<string> offenders = [];
         int seen = 0;
 
         foreach (string path in Directory.GetFiles(coreDir, "*.cs", SearchOption.AllDirectories)) {
             string source = File.ReadAllText(path);
-            if (!injection.IsMatch(source)) continue;
+            if (!InjectionAttribute.IsMatch(source)) continue;
 
             seen++;
-            if (!patched.IsMatch(source)) offenders.Add(Path.GetRelativePath(coreDir, path));
+            if (!PatchAttribute.IsMatch(source)) offenders.Add(Path.GetRelativePath(coreDir, path));
         }
 
-        Assert.IsTrue(seen > 0, "Found no Concord injections at all - the walk is wrong, not the code.");
+        Assert.IsGreaterThan(0, seen, "Found no Concord injections at all - the walk is wrong, not the code.");
 
         string detail = "These files declare a Concord injection but no [Patch], so the injection " +
             "is never applied and the behaviour silently does not happen: " + string.Join(", ", offenders);
 
-        Assert.AreEqual(0, offenders.Count, detail);
+        Assert.IsEmpty(offenders, detail);
     }
 }

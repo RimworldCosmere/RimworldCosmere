@@ -106,7 +106,7 @@ public class AshVentSitingTests {
         for (float e = 1f; e <= 3f; e += 0.05f) {
             int count = AshVentSiting.CountForExposure(e);
             Assert.IsTrue(count >= 1 && count <= 6, $"exposure {e} gave {count} vents");
-            Assert.IsTrue(count >= previous, $"exposure {e} dropped the count from {previous} to {count}");
+            Assert.IsGreaterThanOrEqualTo(previous, count, $"exposure {e} dropped the count from {previous} to {count}");
             previous = count;
         }
     }

@@ -11,7 +11,7 @@ namespace Cosmere.Tests;
 ///     the iris rows are read from, and the height the scroll view is given.
 /// </summary>
 [TestClass]
-public class KandraEyeOptionsTests {
+public partial class KandraEyeOptionsTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -53,15 +53,15 @@ public class KandraEyeOptionsTests {
     public void UntickingAControlSendsItsSentinelRatherThanNull() {
         string source = EyesSource;
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "KandraAppearance.EyeColourNone",
+            source,
             "Odd eyes turn off with something other than the none sentinel, so they cannot be turned off."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "KandraAppearance.EyeLightOff",
+            source,
             "The light turns off with something other than the off sentinel, so it cannot be put out."
         );
 
@@ -82,11 +82,11 @@ public class KandraEyeOptionsTests {
                      "KandraAppearance.AllIrisSizes", "KandraAppearance.AllEyeLights",
                      "KandraAppearance.AllEyeColours",
                  }) {
-            StringAssert.Contains(source, table, "The right column does not read " + table + ".");
+            Assert.Contains(table, source, "The right column does not read " + table + ".");
         }
 
         Assert.IsFalse(
-            Regex.IsMatch(source, @"(irises|lights|stones)\.Count\s*[=!]=\s*\d"),
+            PaletteCountComparison.IsMatch(source),
             "The right column compares a palette against a fixed count, so retuning a table breaks it."
         );
     }
@@ -102,13 +102,13 @@ public class KandraEyeOptionsTests {
         int measured = source.IndexOf("float content =", StringComparison.Ordinal);
         int opened = source.IndexOf("Widgets.BeginScrollView(", StringComparison.Ordinal);
 
-        Assert.IsTrue(measured >= 0, "The column no longer measures its own content.");
-        Assert.IsTrue(opened > measured, "The scroll view is opened before the content is measured.");
+        Assert.IsGreaterThanOrEqualTo(0, measured, "The column no longer measures its own content.");
+        Assert.IsGreaterThan(measured, opened, "The scroll view is opened before the content is measured.");
 
         foreach (string section in new[] { "lit ?" }) {
-            StringAssert.Contains(
-                source,
+            Assert.Contains(
                 section,
+                source,
                 "The measured height ignores a section that appears and disappears."
             );
         }
@@ -117,7 +117,7 @@ public class KandraEyeOptionsTests {
     /// <summary>Every colour here comes from BaseWindow or the palette. One written in drifts alone.</summary>
     [TestMethod]
     public void TheRightColumnInventsNoColourOfItsOwn() {
-        foreach (Match match in Regex.Matches(EyesSource, @"new Color\s*\(|#[0-9a-fA-F]{6}")) {
+        foreach (Match match in InlineColourLiteral.Matches(EyesSource)) {
             Assert.Fail(
                 "Dialog_KandraForms.Eyes writes its own colour at offset " + match.Index
                 + ". Every colour here comes from BaseWindow or KandraAppearance."
@@ -133,16 +133,25 @@ public class KandraEyeOptionsTests {
         foreach (string call in new[] {
                      "Widgets.ButtonInvisible", "Widgets.DrawHighlightIfMouseover", "MouseoverSounds.DoRegion",
                  }) {
-            StringAssert.Contains(source, call, "The right column dropped " + call + ".");
+            Assert.Contains(call, source, "The right column dropped " + call + ".");
         }
 
         XElement root = XDocument.Load(GeneralKeyedPath).Root!;
 
-        foreach (Match used in Regex.Matches(source, "\"(CS_[A-Za-z0-9_]+)\"")) {
+        foreach (Match used in ScadrialKeyLiteral.Matches(source)) {
             Assert.IsNotNull(
                 root.Element(used.Groups[1].Value),
                 used.Groups[1].Value + " is translated by the right column but missing, so it prints raw."
             );
         }
     }
+
+    [GeneratedRegex(@"(irises|lights|stones)\.Count\s*[=!]=\s*\d")]
+    private static partial Regex PaletteCountComparison { get; }
+
+    [GeneratedRegex(@"new Color\s*\(|#[0-9a-fA-F]{6}")]
+    private static partial Regex InlineColourLiteral { get; }
+
+    [GeneratedRegex("\"(CS_[A-Za-z0-9_]+)\"")]
+    private static partial Regex ScadrialKeyLiteral { get; }
 }

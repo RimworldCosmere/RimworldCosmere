@@ -10,7 +10,7 @@ namespace Cosmere.Tests;
 ///     to a name the palette no longer carries.
 /// </summary>
 [TestClass]
-public class KandraReshapeHairTests {
+public partial class KandraReshapeHairTests {
     private static string RepoRoot {
         get {
             DirectoryInfo? dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -46,7 +46,7 @@ public class KandraReshapeHairTests {
         );
 
         Assert.IsTrue(
-            Regex.IsMatch(form, @"public\s+Color\s+hairColour\s*;"),
+            ColorHairColourField.IsMatch(form),
             "KandraForm no longer carries a Color hairColour. KandraShapeshift.ApplyTo writes it to "
             + "pawn.story.HairColor and the portraits read it, so the name replaces nothing."
         );
@@ -60,10 +60,7 @@ public class KandraReshapeHairTests {
     [TestMethod]
     public void AHairColourNameThePaletteDroppedLeavesTheOldColourAlone() {
         Assert.IsTrue(
-            Regex.IsMatch(
-                MethodBody(CompSource, "CommitReshape"),
-                @"FindHairColour\(\s*pendingHairColour\s*\)\s*!=\s*null"
-            ),
+            DroppedNameGuard.IsMatch(MethodBody(CompSource, "CommitReshape")),
             "CommitReshape writes the hair colour unguarded. A name the palette dropped resolves to "
             + "nothing, and the fallback colour would land on the true body instead of the old one."
         );
@@ -98,11 +95,10 @@ public class KandraReshapeHairTests {
         string comp = CompSource;
 
         // the form fixes itself on load; story.HairColor is only written by a shape change.
-        int start = comp.IndexOf("PostSpawnSetup", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "CompKandraForms no longer has PostSpawnSetup.");
+        Assert.Contains("PostSpawnSetup", comp, "CompKandraForms no longer has PostSpawnSetup.");
 
         Assert.IsTrue(
-            Regex.IsMatch(comp, @"story\.HairColor\s*=\s*trueBody\.hairColour"),
+            DyePushedOntoPawn.IsMatch(comp),
             "Nothing pushes the true body's dye onto the pawn on load. After a palette retune the "
             + "designer and the portrait show the new colour while the kandra standing on the map "
             + "keeps the old one until it next changes shape."
@@ -123,9 +119,21 @@ public class KandraReshapeHairTests {
         );
     }
 
+    [GeneratedRegex(@"public\s+Color\s+hairColour\s*;")]
+    private static partial Regex ColorHairColourField { get; }
+
+    [GeneratedRegex(@"FindHairColour\(\s*pendingHairColour\s*\)\s*!=\s*null")]
+    private static partial Regex DroppedNameGuard { get; }
+
+    [GeneratedRegex(@"story\.HairColor\s*=\s*trueBody\.hairColour")]
+    private static partial Regex DyePushedOntoPawn { get; }
+
+    [GeneratedRegex(@"public\s+string\?\s+(\w*[Hh]air\w*[Cc]olour\w+)\s*;")]
+    private static partial Regex HairColourNameDeclaration { get; }
+
     /// <summary>The field KandraForm remembers the dye by. Named freely, so it is matched by shape.</summary>
     private static string HairColourNameField() {
-        Match field = Regex.Match(FormSource, @"public\s+string\?\s+(\w*[Hh]air\w*[Cc]olour\w+)\s*;");
+        Match field = HairColourNameDeclaration.Match(FormSource);
         Assert.IsTrue(
             field.Success,
             $"KandraForm declares no string? hair colour name beside its Color hairColour. {Why}"
@@ -136,10 +144,10 @@ public class KandraReshapeHairTests {
 
     private static string MethodBody(string source, string method) {
         int start = source.IndexOf($" {method}(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, $"CompKandraForms no longer declares {method}.");
+        Assert.IsGreaterThanOrEqualTo(0, start, $"CompKandraForms no longer declares {method}.");
 
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
-        Assert.IsTrue(end > start, $"Could not read the body of {method}.");
+        Assert.IsGreaterThan(start, end, $"Could not read the body of {method}.");
 
         return source[start..end];
     }

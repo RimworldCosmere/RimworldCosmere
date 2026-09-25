@@ -13,22 +13,22 @@ namespace Cosmere.Tests;
 /// </summary>
 [TestClass]
 public class RolledRewardTests {
-    private static QuestReward Reward() {
+    private static FlagReward Reward() {
         return new FlagReward();
     }
 
     [TestMethod]
     public void NoBranchesIsInvalid() {
-        RolledReward reward = new RolledReward { branches = new List<RolledRewardBranch>() };
+        RolledReward reward = new RolledReward { branches = [] };
         Assert.AreEqual("RolledReward has no branches.", reward.ConfigError());
     }
 
     [TestMethod]
     public void BranchWithNoRewardReportsMissingReward() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = 100, reward = null },
-            },
+            ],
         };
 
         Assert.AreEqual("RolledReward branch 'a' has no reward.", reward.ConfigError());
@@ -37,10 +37,10 @@ public class RolledRewardTests {
     [TestMethod]
     public void BlankKeyWithWeightsSummingToOneHundredReportsKeyProblemNotSum() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = 50, reward = Reward() },
                 new RolledRewardBranch { key = string.Empty, weight = 50, reward = Reward() },
-            },
+            ],
         };
 
         string? error = reward.ConfigError();
@@ -50,9 +50,9 @@ public class RolledRewardTests {
     [TestMethod]
     public void NullKeyReportsKeyProblem() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = null, weight = 100, reward = Reward() },
-            },
+            ],
         };
 
         Assert.AreEqual("RolledReward branch 0 has no key.", reward.ConfigError());
@@ -61,10 +61,10 @@ public class RolledRewardTests {
     [TestMethod]
     public void ZeroWeightReportsWeightProblem() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = 0, reward = Reward() },
                 new RolledRewardBranch { key = "b", weight = 100, reward = Reward() },
-            },
+            ],
         };
 
         Assert.AreEqual("RolledReward branch 'a' weight must be positive.", reward.ConfigError());
@@ -73,10 +73,10 @@ public class RolledRewardTests {
     [TestMethod]
     public void NegativeWeightReportsWeightProblem() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = -10, reward = Reward() },
                 new RolledRewardBranch { key = "b", weight = 110, reward = Reward() },
-            },
+            ],
         };
 
         Assert.AreEqual("RolledReward branch 'a' weight must be positive.", reward.ConfigError());
@@ -85,11 +85,11 @@ public class RolledRewardTests {
     [TestMethod]
     public void DuplicateBranchKeysAreRejectedAndNameTheKey() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "lerasium", weight = 50, reward = Reward() },
                 new RolledRewardBranch { key = "cache", weight = 25, reward = Reward() },
                 new RolledRewardBranch { key = "lerasium", weight = 25, reward = Reward() },
-            },
+            ],
         };
 
         string? error = reward.ConfigError();
@@ -99,10 +99,10 @@ public class RolledRewardTests {
     [TestMethod]
     public void ValidTableReturnsNull() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = 40, reward = Reward() },
                 new RolledRewardBranch { key = "b", weight = 60, reward = Reward() },
-            },
+            ],
         };
 
         Assert.IsNull(reward.ConfigError());
@@ -111,10 +111,10 @@ public class RolledRewardTests {
     [TestMethod]
     public void WeightsNotSummingToOneHundredReportsSumWithActualTotal() {
         RolledReward reward = new RolledReward {
-            branches = new List<RolledRewardBranch> {
+            branches = [
                 new RolledRewardBranch { key = "a", weight = 30, reward = Reward() },
                 new RolledRewardBranch { key = "b", weight = 30, reward = Reward() },
-            },
+            ],
         };
 
         Assert.AreEqual("RolledReward weights must sum to exactly 100, got 60.", reward.ConfigError());

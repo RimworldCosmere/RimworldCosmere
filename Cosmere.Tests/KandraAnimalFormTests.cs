@@ -24,9 +24,11 @@ public class KandraAnimalFormTests {
         }
     }
 
-    private static string Kandra(string file) => File.ReadAllText(Path.Combine(
-        RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", file
-    ));
+    private static string Kandra(string file) {
+        return File.ReadAllText(Path.Combine(
+            RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Kandra", file
+        ));
+    }
 
     private static XDocument ShapeDefs => XDocument.Load(Path.Combine(
         RepoRoot, "CosmereScadrial", "Defs", "Races", "KandraShape.xml"
@@ -99,9 +101,9 @@ public class KandraAnimalFormTests {
     /// </summary>
     [TestMethod]
     public void NoHandWrittenShapeCompetesWithTheGeneratedOnes() {
-        Assert.AreEqual(0, ShapeDefs.Descendants("ThingDef").Count());
-        Assert.AreEqual(0, ShapeDefs.Descendants("PawnKindDef").Count());
-        Assert.AreEqual(0, ShapeDefs.Descendants("LifeStageDef").Count());
+        Assert.IsEmpty(ShapeDefs.Descendants("ThingDef"));
+        Assert.IsEmpty(ShapeDefs.Descendants("PawnKindDef"));
+        Assert.IsEmpty(ShapeDefs.Descendants("LifeStageDef"));
     }
 
     /// <summary>
@@ -118,8 +120,8 @@ public class KandraAnimalFormTests {
         int guard = body.IndexOf("seeker.genes == null", StringComparison.Ordinal);
         int burning = body.IndexOf("seeker.IsBurning(bronze)", StringComparison.Ordinal);
 
-        Assert.IsTrue(guard >= 0, "Animals have no gene tracker.");
-        Assert.IsTrue(guard < burning, "The guard has to come first or it does nothing.");
+        Assert.IsGreaterThanOrEqualTo(0, guard, "Animals have no gene tracker.");
+        Assert.IsLessThan(burning, guard, "The guard has to come first or it does nothing.");
     }
 
     /// <summary>
@@ -130,10 +132,7 @@ public class KandraAnimalFormTests {
     [TestMethod]
     public void EveryScadrianXenotypeBelongsToScadrial() {
         XDocument worlds = XDocument.Load(Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Worlds.xml"));
-        List<string> listed = worlds.Descendants("xenotypes")
-            .Elements("li")
-            .Select(e => e.Value)
-            .ToList();
+        List<string> listed = [.. worlds.Descendants("xenotypes").Elements("li").Select(e => e.Value)];
 
         // every xenotype made on Scadrial must be here, or WorldForXenotype returns null and AncestryFloor gives zero.
         foreach (string made in new[] {
@@ -141,7 +140,7 @@ public class KandraAnimalFormTests {
             "Cosmere_Scadrial_Xenotype_Koloss",
             "Cosmere_Scadrial_Xenotype_KolossBlooded",
         }) {
-            Assert.IsTrue(listed.Contains(made), $"{made} has no world, so it has no ancestry.");
+            Assert.Contains(made, listed, $"{made} has no world, so it has no ancestry.");
         }
     }
 
@@ -208,7 +207,7 @@ public class KandraAnimalFormTests {
         XElement manipulation = defs.Descendants("li")
             .First(li => li.Element("capacity")?.Value == "Manipulation");
 
-        Assert.IsTrue(float.Parse(manipulation.Element("setMax")!.Value) >= 0.9f);
+        Assert.IsGreaterThanOrEqualTo(0.9f, float.Parse(manipulation.Element("setMax")!.Value));
     }
 
     /// <summary>
@@ -315,14 +314,15 @@ public class KandraAnimalFormTests {
             RepoRoot, "CosmereScadrial", "Patches", "KandraHumanlikeRenderTree.xml"
         ));
 
-        Assert.IsTrue(
-            patch.Descendants("Operation")
-                .Any(o => (string?)o.Attribute("Class") == "PatchOperationRemove"
-                          && o.Element("xpath")!.Value.Contains("Status overlay")),
+        Assert.Contains(
+            o => (string?)o.Attribute("Class") == "PatchOperationRemove"
+                 && o.Element("xpath")!.Value.Contains("Status overlay"),
+            patch.Descendants("Operation"),
             "It has to come out from under Head."
         );
-        Assert.IsTrue(
-            patch.Descendants("li").Any(li => li.Element("debugLabel")?.Value == "Status overlay"),
+        Assert.Contains(
+            li => li.Element("debugLabel")?.Value == "Status overlay",
+            patch.Descendants("li"),
             "And go back on at the root, or the warning is simply gone."
         );
     }
@@ -384,8 +384,8 @@ public class KandraAnimalFormTests {
         int unshape = shift.IndexOf("Unshape(pawn, forms);", StringComparison.Ordinal);
         int branch = shift.IndexOf("if (form.IsAnimal)", StringComparison.Ordinal);
 
-        Assert.IsTrue(unshape >= 0, "The old shape has to come off unconditionally.");
-        Assert.IsTrue(unshape < branch, "And before anything decides what goes on next.");
+        Assert.IsGreaterThanOrEqualTo(0, unshape, "The old shape has to come off unconditionally.");
+        Assert.IsLessThan(branch, unshape, "And before anything decides what goes on next.");
         Assert.IsTrue(
             shift.Contains("forms?.SetCurrent(form);", StringComparison.Ordinal),
             "The render node reads the worn form in its constructor, so it is set before the hediff."
@@ -516,7 +516,7 @@ public class KandraAnimalFormTests {
         int roll = disguise.IndexOf("Rand.Chance(BaseSuspicion", StringComparison.Ordinal);
 
         Assert.IsTrue(slipped >= 0 && guard > slipped, "The watcher check belongs inside Slipped.");
-        Assert.IsTrue(guard < roll, "And before the roll, not after it.");
+        Assert.IsLessThan(roll, guard, "And before the roll, not after it.");
     }
 
     /// <summary>

@@ -73,13 +73,13 @@ public class KandraTests {
     public void EveryBlessingHediffExists() {
         HashSet<string> hediffs = DefNamesOfType("HediffDef");
         foreach (string blessing in BlessingDefNames) {
-            Assert.IsTrue(hediffs.Contains(blessing), $"{blessing} is referenced but never defined.");
+            Assert.Contains(blessing, hediffs, $"{blessing} is referenced but never defined.");
         }
     }
 
     [TestMethod]
     public void MistwraithHediffExists() {
-        Assert.IsTrue(DefNamesOfType("HediffDef").Contains("Cosmere_Scadrial_Hediff_Mistwraith"));
+        Assert.Contains("Cosmere_Scadrial_Hediff_Mistwraith", DefNamesOfType("HediffDef"));
     }
 
     [TestMethod]
@@ -91,9 +91,9 @@ public class KandraTests {
         HashSet<string> genes = DefNamesOfType("GeneDef");
         List<string> named = kandra.Element("genes")?.Elements("li").Select(li => li.Value).ToList() ?? [];
 
-        Assert.AreEqual(5, named.Count, "The kandra xenotype should carry exactly its five genes.");
+        Assert.HasCount(5, named, "The kandra xenotype should carry exactly its five genes.");
         foreach (string gene in named) {
-            Assert.IsTrue(genes.Contains(gene), $"The kandra xenotype names {gene}, which no GeneDef defines.");
+            Assert.Contains(gene, genes, $"The kandra xenotype names {gene}, which no GeneDef defines.");
         }
     }
 
@@ -123,7 +123,7 @@ public class KandraTests {
             found++;
             string? blessing = extension.Element("blessing")?.Value;
             Assert.IsFalse(string.IsNullOrWhiteSpace(blessing), "A Blessing surgery has an empty blessing field.");
-            Assert.IsTrue(hediffs.Contains(blessing), $"A Blessing surgery names {blessing}, which no HediffDef defines.");
+            Assert.Contains(blessing, hediffs, $"A Blessing surgery names {blessing}, which no HediffDef defines.");
         }
 
         Assert.AreEqual(BlessingDefNames.Length, found, "There should be one surgery per Blessing.");
@@ -165,7 +165,7 @@ public class KandraTests {
 
         string util = Source("Util", "KandraUtility.cs");
         int start = util.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "ReconcileSpikes is missing.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "ReconcileSpikes is missing.");
 
         string body = util[start..];
         Assert.IsTrue(body.Contains("CompleteBlessingsOn(pawn)", StringComparison.Ordinal));
@@ -186,7 +186,7 @@ public class KandraTests {
 
     [TestMethod]
     public void HalfBlessedHediffExists() {
-        Assert.IsTrue(DefNamesOfType("HediffDef").Contains("Cosmere_Scadrial_Hediff_HalfBlessed"));
+        Assert.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", DefNamesOfType("HediffDef"));
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class KandraTests {
     public void ShapeshiftingCopiesLooksAndNotPowers() {
         string source = Source("Kandra", "KandraShapeshift.cs");
         int apply = source.IndexOf("private static void ApplyTo(", StringComparison.Ordinal);
-        Assert.IsTrue(apply >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, apply);
 
         string body = source[apply..];
         Assert.IsFalse(
@@ -247,7 +247,7 @@ public class KandraTests {
     public void DeathDropsTheDisguise() {
         string source = Source("Kandra", "CompKandraForms.cs");
         int killed = source.IndexOf("public override void Notify_Killed(", StringComparison.Ordinal);
-        Assert.IsTrue(killed >= 0, "CompKandraForms should revert the disguise on death.");
+        Assert.IsGreaterThanOrEqualTo(0, killed, "CompKandraForms should revert the disguise on death.");
         Assert.IsTrue(source[killed..].Contains("KandraShapeshift.Revert", StringComparison.Ordinal));
     }
 
@@ -272,9 +272,9 @@ public class KandraTests {
             .Select(li => li.Value)
             .ToList() ?? [];
 
-        Assert.IsTrue(tags.Count > 0, "The mistwraith stage should disable work.");
+        Assert.IsNotEmpty(tags, "The mistwraith stage should disable work.");
         foreach (string tag in tags) {
-            Assert.IsTrue(valid.Contains(tag), $"'{tag}' is not a WorkTags member.");
+            Assert.Contains(tag, valid, $"'{tag}' is not a WorkTags member.");
         }
     }
 
@@ -324,10 +324,10 @@ public class KandraTests {
         Assert.IsNotNull(curve, "The kandra heritage gene should stop biological ageing.");
 
         List<string> points = curve.Element("points")?.Elements("li").Select(li => li.Value).ToList() ?? [];
-        Assert.IsTrue(points.Count > 0, "The ageing curve has no points.");
+        Assert.IsNotEmpty(points, "The ageing curve has no points.");
         foreach (string point in points) {
             Assert.IsTrue(
-                point.TrimEnd(')', ' ').EndsWith("0", StringComparison.Ordinal),
+                point.TrimEnd(')', ' ').EndsWith('0'),
                 $"Every point on the ageing curve must be zero, but found {point}."
             );
         }
@@ -363,7 +363,7 @@ public class KandraTests {
             .ToHashSet() ?? [];
 
         foreach (string disease in perfectImmunity) {
-            Assert.IsTrue(immune.Contains(disease), $"A kandra should be immune to {disease}.");
+            Assert.Contains(disease, immune, $"A kandra should be immune to {disease}.");
         }
     }
 
@@ -373,8 +373,9 @@ public class KandraTests {
     /// </summary>
     [TestMethod]
     public void GenerationIsNotItsOwnGene() {
-        Assert.IsFalse(
-            DefNamesOfType("GeneDef").Contains("Cosmere_Scadrial_Gene_Generational"),
+        Assert.DoesNotContain(
+            "Cosmere_Scadrial_Gene_Generational",
+            DefNamesOfType("GeneDef"),
             "Generation should not be a gene. It is not biology."
         );
 
@@ -432,9 +433,9 @@ public class KandraTests {
             }
 
             foreach ((string tag, List<string> owners) in byTag) {
-                Assert.AreEqual(
+                Assert.HasCount(
                     1,
-                    owners.Count,
+                    owners,
                     $"In {Path.GetFileName(file)}, exclusion tag '{tag}' is on {owners.Count} genes "
                     + $"({string.Join(", ", owners)}). All but one would be switched off in game."
                 );
@@ -479,7 +480,7 @@ public class KandraTests {
     public void SpikesAreAttachedToTheTorso() {
         string source = Source("Util", "KandraUtility.cs");
         int start = source.IndexOf("private static void DriveSpikes(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, start);
 
         string body = source[start..];
         Assert.IsTrue(
@@ -520,7 +521,7 @@ public class KandraTests {
         string source = Source("Util", "KandraUtility.cs");
 
         int start = source.IndexOf("public static int MatchingSpikeCount(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "MatchingSpikeCount is missing.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "MatchingSpikeCount is missing.");
 
         string body = source[start..];
         Assert.IsTrue(body.Contains("metalDefName != recipe.Value.metal", StringComparison.Ordinal));
@@ -542,7 +543,7 @@ public class KandraTests {
     public void DegradedKandraCannotTakeAForm() {
         string util = Source("Util", "KandraUtility.cs");
         int start = util.IndexOf("public static bool CanHoldAShape(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "CanHoldAShape is missing.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "CanHoldAShape is missing.");
 
         string body = util[start..];
         Assert.IsTrue(body.Contains("Cosmere_Scadrial_Hediff_HalfBlessed", StringComparison.Ordinal));
@@ -667,7 +668,7 @@ public class KandraTests {
     public void GivingASecondBlessingAddsItsOwnHediff() {
         string source = Source("Util", "KandraUtility.cs");
         int start = source.IndexOf("public static void GiveBlessing(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, start);
 
         string body = source[start..(start + 600)];
         Assert.IsFalse(
@@ -731,9 +732,8 @@ public class KandraTests {
                 continue;
             }
 
-            Assert.AreEqual(
-                0,
-                recipe.Descendants("stuffCategoriesToAllow").Count(),
+            Assert.IsEmpty(
+                recipe.Descendants("stuffCategoriesToAllow"),
                 $"{name} filters by stuff category, which lets bare metal count as a spike."
             );
         }
@@ -758,9 +758,9 @@ public class KandraTests {
             }
 
             seen++;
-            List<XElement> lines = recipe.Element("ingredients")!.Elements("li").ToList();
+            List<XElement> lines = [.. recipe.Element("ingredients")!.Elements("li")];
 
-            Assert.AreEqual(2, lines.Count, $"{name} lists {lines.Count} ingredient lines, expected spikes and medicine.");
+            Assert.HasCount(2, lines, $"{name} lists {lines.Count} ingredient lines, expected spikes and medicine.");
             foreach (XElement line in lines) {
                 Assert.AreEqual("2", line.Element("count")?.Value, $"{name} asks for the wrong count.");
             }
@@ -801,11 +801,12 @@ public class KandraTests {
             if (name == null || !expected.TryGetValue(name, out string? wanted)) continue;
 
             seen++;
-            List<string> disallowed = recipe.Descendants("specialFiltersToDisallow")
-                .Elements("li").Select(li => li.Value).ToList();
+            List<string> disallowed = [
+                .. recipe.Descendants("specialFiltersToDisallow").Elements("li").Select(li => li.Value),
+            ];
 
-            CollectionAssert.Contains(disallowed, wanted, $"{name} accepts spikes of any metal.");
-            Assert.IsTrue(filters.Contains(wanted), $"{wanted} is referenced but never defined.");
+            Assert.Contains(wanted, disallowed, $"{name} accepts spikes of any metal.");
+            Assert.Contains(wanted, filters, $"{wanted} is referenced but never defined.");
         }
 
         Assert.AreEqual(expected.Count, seen, "A Blessing surgery is missing.");
@@ -844,14 +845,14 @@ public class KandraTests {
         string source = Source("Util", "KandraUtility.cs");
 
         int drive = source.IndexOf("private static void DriveSpikes(", StringComparison.Ordinal);
-        Assert.IsTrue(drive >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, drive);
         Assert.IsTrue(
             source[drive..].Contains("UpdateRuinsInfluence(pawn)", StringComparison.Ordinal),
             "Driving spikes in must raise the influence."
         );
 
         int revert = source.IndexOf("public static void RevertToMistwraith(", StringComparison.Ordinal);
-        Assert.IsTrue(revert >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, revert);
         Assert.IsTrue(
             source[revert..(revert + 500)].Contains("UpdateRuinsInfluence(pawn)", StringComparison.Ordinal),
             "Losing the spikes must lower it again."
@@ -867,14 +868,14 @@ public class KandraTests {
     public void AHealthyKandraIsNotRepairedOverAndOver() {
         string source = Source("Util", "KandraUtility.cs");
         int start = source.IndexOf("public static void ReconcileSpikes(", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0);
+        Assert.IsGreaterThanOrEqualTo(0, start);
 
         string body = source[start..];
         int guard = body.IndexOf("if (!wasBroken) return;", StringComparison.Ordinal);
         int restore = body.IndexOf("Mind.Restore(pawn)", StringComparison.Ordinal);
 
-        Assert.IsTrue(guard >= 0, "The repair path has to know whether anything was broken.");
-        Assert.IsTrue(guard < restore, "And bail before restoring, not after.");
+        Assert.IsGreaterThanOrEqualTo(0, guard, "The repair path has to know whether anything was broken.");
+        Assert.IsLessThan(restore, guard, "And bail before restoring, not after.");
         Assert.IsFalse(
             body[..restore].Contains("KandraShapeshift.Revert(pawn)", StringComparison.Ordinal),
             "Nothing on a timer may take a colonist's chosen face off."

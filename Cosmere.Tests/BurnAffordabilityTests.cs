@@ -32,10 +32,10 @@ public class BurnAffordabilityTests {
     [TestMethod]
     public void TheDockPricesABurnBeforeStartingIt() {
         string source = Section();
-        StringAssert.Contains(source, "BurnAffordability.Allowed");
+        Assert.Contains("BurnAffordability.Allowed", source);
 
         // the old bypass: a new status applied with nothing asking what it cost
-        Assert.IsFalse(source.Contains("a.UpdateStatus(BurnToggle.Next(a.status, flare));"));
+        Assert.DoesNotContain("a.UpdateStatus(BurnToggle.Next(a.status, flare));", source);
     }
 
     [TestMethod]
@@ -43,8 +43,8 @@ public class BurnAffordabilityTests {
         string source = Ability();
 
         // one rule for both: CanBurn, charged at the status the cast would move to
-        StringAssert.Contains(source, "Gene.CanBurn(GetDesiredBurnRateForStatus(");
-        Assert.IsFalse(source.Contains("return base.CanCast;"));
+        Assert.Contains("Gene.CanBurn(GetDesiredBurnRateForStatus(", source);
+        Assert.DoesNotContain("return base.CanCast;", source);
     }
 
     private static string Ability() {

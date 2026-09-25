@@ -25,9 +25,9 @@ public class DockAndRadialAffordanceTests {
         }
     }
 
-    private static string Core(params string[] parts) => File.ReadAllText(Path.Combine(
-        [RepoRoot, "CosmereCore", "CosmereCore", .. parts]
-    ));
+    private static string Core(params string[] parts) {
+        return File.ReadAllText(Path.Combine([RepoRoot, "CosmereCore", "CosmereCore", .. parts]));
+    }
 
     private static string DockWindow => Core("Core", "UI", "Dock", "InvestitureDockWindow.cs");
 
@@ -37,12 +37,14 @@ public class DockAndRadialAffordanceTests {
     /// </summary>
     [TestMethod]
     public void TheCollapseButtonUsesItsWholeRect() {
-        Assert.IsFalse(
-            DockWindow.Contains("ButtonImage(pinRect.ContractedBy"),
+        Assert.DoesNotContain(
+            "ButtonImage(pinRect.ContractedBy",
+            DockWindow,
             "Contracting the rect leaves a ring that looks clickable and is not."
         );
-        Assert.IsTrue(
-            DockWindow.Contains("Widgets.ButtonImage(pinRect, DockTex.Chevron"),
+        Assert.Contains(
+            "Widgets.ButtonImage(pinRect, DockTex.Chevron",
+            DockWindow,
             "The collapse button takes the full pinRect."
         );
     }
@@ -52,15 +54,17 @@ public class DockAndRadialAffordanceTests {
     /// </summary>
     [TestMethod]
     public void TheDockFoldsWithItsOwnIconRatherThanVanillasCloseX() {
-        Assert.IsFalse(
-            DockWindow.Contains("TexButton.CloseXSmall"),
+        Assert.DoesNotContain(
+            "TexButton.CloseXSmall",
+            DockWindow,
             "CloseXSmall promises the panel goes away. It folds."
         );
 
         string tex = Core("Core", "UI", "Dock", "DockTex.cs");
-        Assert.IsTrue(tex.Contains("public static readonly Texture2D Chevron"), "The mod owns the glyph.");
-        Assert.IsTrue(
-            tex.Contains("row 0 is the bottom"),
+        Assert.Contains("public static readonly Texture2D Chevron", tex, "The mod owns the glyph.");
+        Assert.Contains(
+            "row 0 is the bottom",
+            tex,
             "Texture2D row 0 is the bottom; without that the chevron renders upside down."
         );
     }
@@ -70,8 +74,8 @@ public class DockAndRadialAffordanceTests {
     /// </summary>
     [TestMethod]
     public void TheCollapsedRibbonsAnswerOnHover() {
-        Assert.IsTrue(DockWindow.Contains("Widgets.DrawHighlightIfMouseover(ribbon)"), "Ribbons highlight.");
-        Assert.IsTrue(DockWindow.Contains("MouseoverSounds.DoRegion(ribbon)"), "Ribbons click audibly.");
+        Assert.Contains("Widgets.DrawHighlightIfMouseover(ribbon)", DockWindow, "Ribbons highlight.");
+        Assert.Contains("MouseoverSounds.DoRegion(ribbon)", DockWindow, "Ribbons click audibly.");
     }
 
     /// <summary>
@@ -82,9 +86,10 @@ public class DockAndRadialAffordanceTests {
     public void TheWheelTicksWhenTheHoveredWedgeChanges() {
         string radial = Core("Core", "UI", "Radial", "RadialWindow.cs");
 
-        Assert.IsTrue(radial.Contains("int hoveredBefore = state.HoveredIndex;"), "The previous wedge is kept.");
-        Assert.IsTrue(
-            radial.Contains("state.HoveredIndex >= 0 && state.HoveredIndex != hoveredBefore"),
+        Assert.Contains("int hoveredBefore = state.HoveredIndex;", radial, "The previous wedge is kept.");
+        Assert.Contains(
+            "state.HoveredIndex >= 0 && state.HoveredIndex != hoveredBefore",
+            radial,
             "Only a change onto a real wedge ticks, or leaving the wheel would rattle."
         );
     }
@@ -99,9 +104,11 @@ public class DockAndRadialAffordanceTests {
             RepoRoot, "CosmereCore", "Languages", "English", "Keyed", "Dock.xml"
         ));
 
-        string Value(string key) => dock.Descendants(key).Single().Value;
+        string Value(string key) {
+            return dock.Descendants(key).Single().Value;
+        }
 
-        Assert.IsTrue(Value("CC_Dock_Rail_Tip").Contains("Shift-drag"), "Collapsed already said so.");
-        Assert.IsTrue(Value("CC_Dock_Collapse").Contains("Shift-drag"), "Expanded has to say so too.");
+        Assert.Contains("Shift-drag", Value("CC_Dock_Rail_Tip"), "Collapsed already said so.");
+        Assert.Contains("Shift-drag", Value("CC_Dock_Collapse"), "Expanded has to say so too.");
     }
 }

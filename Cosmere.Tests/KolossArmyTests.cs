@@ -26,20 +26,21 @@ public class KolossArmyTests {
         }
     }
 
-    private static XDocument Defs(params string[] parts) => XDocument.Load(Path.Combine(
-        [RepoRoot, "CosmereScadrial", "Defs", .. parts]
-    ));
+    private static XDocument Defs(params string[] parts) {
+        return XDocument.Load(Path.Combine([RepoRoot, "CosmereScadrial", "Defs", .. parts]));
+    }
 
     private static readonly string[] KolossFactions = [
         "Cosmere_Scadrial_Faction_Ruin",
         "Cosmere_Scadrial_Faction_Koloss",
     ];
 
-    private static List<XElement> KolossMakers => Defs("Factions", "GreatHouses.xml")
-        .Descendants("li")
-        .Where(li => li.Element("options")?.Elements()
-            .Any(o => o.Name.LocalName.StartsWith("Cosmere_Scadrial_PawnKind_Koloss")) == true)
-        .ToList();
+    private static List<XElement> KolossMakers => [
+        .. Defs("Factions", "GreatHouses.xml")
+            .Descendants("li")
+            .Where(li => li.Element("options")?.Elements()
+                .Any(o => o.Name.LocalName.StartsWith("Cosmere_Scadrial_PawnKind_Koloss")) == true),
+    ];
 
     /// <summary>
     ///     The beat is called koloss_march and the opening text promises koloss from the east, and
@@ -50,11 +51,12 @@ public class KolossArmyTests {
         XElement beat = Defs("ScenarioProgression", "WellOfAscension.xml").Descendants("li")
             .First(li => li.Element("key")?.Value == "koloss_march");
 
-        List<XElement> raids = beat.Element("actions")!.Elements("li")
-            .Where(li => li.Attribute("Class")?.Value.EndsWith("RaidAction") == true)
-            .ToList();
+        List<XElement> raids = [
+            .. beat.Element("actions")!.Elements("li")
+                .Where(li => li.Attribute("Class")?.Value.EndsWith("RaidAction") == true),
+        ];
 
-        Assert.AreEqual(3, raids.Count, "Straff from the north, Cett from the south, koloss from the east.");
+        Assert.HasCount(3, raids, "Straff from the north, Cett from the south, koloss from the east.");
 
         XElement east = raids.First(r => r.Element("edge")?.Value == "East");
         Assert.AreEqual("Cosmere_Scadrial_Faction_Koloss", east.Element("faction")?.Value);
@@ -68,10 +70,10 @@ public class KolossArmyTests {
     /// </summary>
     [TestMethod]
     public void KolossNeverShareAGroupMakerWithCheaperKinds() {
-        Assert.AreEqual(2, KolossMakers.Count, "One for Ruin, one for the koloss themselves.");
+        Assert.HasCount(2, KolossMakers, "One for Ruin, one for the koloss themselves.");
 
         foreach (XElement maker in KolossMakers) {
-            List<string> kinds = maker.Element("options")!.Elements().Select(o => o.Name.LocalName).ToList();
+            List<string> kinds = [.. maker.Element("options")!.Elements().Select(o => o.Name.LocalName)];
 
             Assert.IsTrue(
                 kinds.All(k => k.StartsWith("Cosmere_Scadrial_PawnKind_Koloss")),
@@ -99,9 +101,9 @@ public class KolossArmyTests {
     [TestMethod]
     public void KolossDoNotLaySiege() {
         foreach (XElement maker in KolossMakers) {
-            CollectionAssert.Contains(
-                maker.Element("disallowedStrategies")!.Elements("li").Select(li => li.Value).ToList(),
-                "Siege"
+            Assert.Contains(
+                "Siege",
+                maker.Element("disallowedStrategies")!.Elements("li").Select(li => li.Value)
             );
         }
     }
@@ -127,7 +129,7 @@ public class KolossArmyTests {
                 .First(v => v.Contains("1300"));
 
             int cap = int.Parse(ceiling.Trim('(', ')').Split(',')[1].Trim());
-            Assert.IsTrue(cap > dearest, $"{faction} caps a pawn at {cap}, under the {dearest} koloss.");
+            Assert.IsGreaterThan(dearest, cap, $"{faction} caps a pawn at {cap}, under the {dearest} koloss.");
         }
     }
 
@@ -141,9 +143,9 @@ public class KolossArmyTests {
             XElement def = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
                 .First(d => d.Element("defName")?.Value == faction);
 
-            CollectionAssert.Contains(
-                def.Element("disallowedRaidAgeRestrictions")!.Elements("li").Select(li => li.Value).ToList(),
+            Assert.Contains(
                 "Children",
+                def.Element("disallowedRaidAgeRestrictions")!.Elements("li").Select(li => li.Value),
                 $"{faction} can field child koloss."
             );
         }
@@ -158,8 +160,10 @@ public class KolossArmyTests {
         XElement ruin = Defs("Factions", "GreatHouses.xml").Descendants("FactionDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Faction_Ruin");
 
-        List<string> points = ruin.Element("raidCommonalityFromPointsCurve")!
-            .Element("points")!.Elements("li").Select(li => li.Value).ToList();
+        List<string> points = [
+            .. ruin.Element("raidCommonalityFromPointsCurve")!.Element("points")!.Elements("li")
+                .Select(li => li.Value),
+        ];
 
         Assert.IsTrue(points[0].Contains("(0, 0)") || points[0].Contains("(0,0)"), "Nothing at zero points.");
     }
@@ -174,17 +178,17 @@ public class KolossArmyTests {
         XElement kind = Defs("Races", "PawnKinds.xml").Descendants("PawnKindDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_PawnKind_Koloss");
 
-        CollectionAssert.Contains(
-            kind.Element("weaponTags")!.Elements("li").Select(li => li.Value).ToList(),
-            "Cosmere_Scadrial_KolossWeapon"
+        Assert.Contains(
+            "Cosmere_Scadrial_KolossWeapon",
+            kind.Element("weaponTags")!.Elements("li").Select(li => li.Value)
         );
 
         XElement sword = Defs("Things", "Weapons", "KolossSword.xml").Descendants("ThingDef")
             .First(d => d.Element("defName")?.Value == "Cosmere_Scadrial_Thing_KolossSword");
 
-        CollectionAssert.Contains(
-            sword.Element("weaponTags")!.Elements("li").Select(li => li.Value).ToList(),
+        Assert.Contains(
             "Cosmere_Scadrial_KolossWeapon",
+            sword.Element("weaponTags")!.Elements("li").Select(li => li.Value),
             "The tag has to match, or the kind generates unarmed."
         );
     }
@@ -196,17 +200,18 @@ public class KolossArmyTests {
     /// </summary>
     [TestMethod]
     public void RaidKolossHaveBeenSomebodysForYears() {
-        List<XElement> tiers = Defs("Races", "PawnKinds.xml").Descendants("PawnKindDef")
-            .Where(d => d.Element("modExtensions") != null
-                        && d.Element("defName")!.Value.StartsWith("Cosmere_Scadrial_PawnKind_Koloss"))
-            .ToList();
+        List<XElement> tiers = [
+            .. Defs("Races", "PawnKinds.xml").Descendants("PawnKindDef")
+                .Where(d => d.Element("modExtensions") != null
+                            && d.Element("defName")!.Value.StartsWith("Cosmere_Scadrial_PawnKind_Koloss")),
+        ];
 
-        Assert.AreEqual(3, tiers.Count, "Young, grown, overgrown.");
+        Assert.HasCount(3, tiers, "Young, grown, overgrown.");
 
         int power = 0;
         foreach (XElement tier in tiers) {
             int next = int.Parse(tier.Element("combatPower")!.Value);
-            Assert.IsTrue(next > power, "An older koloss has to cost a raid more.");
+            Assert.IsGreaterThan(power, next, "An older koloss has to cost a raid more.");
             power = next;
         }
     }

@@ -13,7 +13,7 @@ namespace Cosmere.Tests;
 ///     instead of their apparel children makes a formless kandra invisible rather than naked.
 /// </summary>
 [TestClass]
-public class KandraTrueBodyArtTests {
+public partial class KandraTrueBodyArtTests {
     private static readonly string[] Directions = ["south", "east", "north"];
     private static readonly string[] Sexes = ["Kandra_Male", "Kandra_Female"];
 
@@ -69,9 +69,9 @@ public class KandraTrueBodyArtTests {
         string source = File.ReadAllText(AppearanceSourcePath);
 
         foreach (string sex in Sexes) {
-            StringAssert.Contains(
-                source,
+            Assert.Contains(
                 $"\"{sex}\"",
+                source,
                 $"KandraAppearance no longer builds {sex}, so the textures named for it are dead."
             );
         }
@@ -81,22 +81,23 @@ public class KandraTrueBodyArtTests {
     public void EveryTrueBodyMaterialHasAParseableHexAndAPositiveWeight() {
         string source = File.ReadAllText(AppearanceSourcePath);
         int start = source.IndexOf("Materials = [", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "KandraAppearance no longer declares a Materials table.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "KandraAppearance no longer declares a Materials table.");
 
         string table = source[start..source.IndexOf("];", start, StringComparison.Ordinal)];
 
         // the group column is a named constant, not a literal, so it matches as an identifier
-        MatchCollection rows = Regex.Matches(table, @"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f, ""([^""]+)"", (\w+)\)");
+        MatchCollection rows = MaterialRowPattern.Matches(table);
 
-        Assert.IsTrue(rows.Count >= 10, $"Only {rows.Count} true-body materials; the table looks cut.");
+        Assert.IsGreaterThanOrEqualTo(10, rows.Count, $"Only {rows.Count} true-body materials; the table looks cut.");
 
         foreach (Match row in rows) {
             Assert.IsTrue(
-                Regex.IsMatch(row.Groups[2].Value, "^[0-9a-f]{6}$"),
+                SixDigitHex.IsMatch(row.Groups[2].Value),
                 $"{row.Groups[1].Value} has hex '{row.Groups[2].Value}', which ColorUtility will reject."
             );
-            Assert.IsTrue(
-                double.Parse(row.Groups[3].Value, CultureInfo.InvariantCulture) > 0,
+            Assert.IsGreaterThan(
+                0d,
+                double.Parse(row.Groups[3].Value, CultureInfo.InvariantCulture),
                 $"{row.Groups[1].Value} has a weight of zero, so it can never be rolled."
             );
         }
@@ -106,7 +107,7 @@ public class KandraTrueBodyArtTests {
     public void APickedTrueBodyMaterialIsReadBeforeTheIdRoll() {
         string source = File.ReadAllText(AppearanceSourcePath);
         int start = source.IndexOf("TrueBodyMaterialFor(Pawn pawn) {", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "KandraAppearance no longer declares TrueBodyMaterialFor.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "KandraAppearance no longer declares TrueBodyMaterialFor.");
 
         int picked = source.IndexOf("TrueBodyMaterial", start, StringComparison.Ordinal);
         int roll = source.IndexOf("Rand.PushState", start, StringComparison.Ordinal);
@@ -124,7 +125,7 @@ public class KandraTrueBodyArtTests {
         int start = source.IndexOf("Materials = [", StringComparison.Ordinal);
         string table = source[start..source.IndexOf("];", start, StringComparison.Ordinal)];
 
-        foreach (Match row in Regex.Matches(table, @"\(""([^""]+)"", ""([0-9a-f]{6})"", ")) {
+        foreach (Match row in HexMaterialRowPattern.Matches(table)) {
             (float hue, float saturation) = HueSaturation(row.Groups[2].Value);
 
             // RimWorld's whole skin gradient sits at hue 18-24 with saturation up to 0.55.
@@ -149,11 +150,11 @@ public class KandraTrueBodyArtTests {
 
         float hue;
         if (max == r) {
-            hue = 60f * (((g - b) / span) % 6f);
+            hue = 60f * ((g - b) / span % 6f);
         } else if (max == g) {
-            hue = 60f * (((b - r) / span) + 2f);
+            hue = 60f * ((b - r) / span + 2f);
         } else {
-            hue = 60f * (((r - g) / span) + 4f);
+            hue = 60f * ((r - g) / span + 4f);
         }
 
         return (hue < 0f ? hue + 360f : hue, max == 0f ? 0f : span / max);
@@ -163,7 +164,7 @@ public class KandraTrueBodyArtTests {
     public void RenderingDoesNotWaitOnTheFormlessHediff() {
         string source = File.ReadAllText(AppearanceSourcePath);
         int start = source.IndexOf("public static bool IsFormless", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "KandraAppearance no longer has IsFormless.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "KandraAppearance no longer has IsFormless.");
 
         string body = source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
 
@@ -198,9 +199,9 @@ public class KandraTrueBodyArtTests {
                 $"The wolfhound is not OreSeur's true body in {file}, so he arrives as a person there."
             );
 
-            Assert.IsTrue(
-                oreSeur.Element("kandraKnownFaces")?.Elements("li").Any(li => li.Value == "Lord Renoux")
-                == true,
+            Assert.AreEqual(
+                true,
+                oreSeur.Element("kandraKnownFaces")?.Elements("li").Any(li => li.Value == "Lord Renoux"),
                 $"OreSeur has no Lord Renoux face in {file}."
             );
         }
@@ -221,14 +222,14 @@ public class KandraTrueBodyArtTests {
         );
 
         int start = comp.IndexOf("public void RememberTrueBody", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "CompKandraForms no longer remembers a true body.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "CompKandraForms no longer remembers a true body.");
 
         string body = comp[start..comp.IndexOf("\n    }", start, StringComparison.Ordinal)];
 
         // Unmarked, the snapshot is just a rolled human face and the grey art never draws.
-        StringAssert.Contains(
-            body,
+        Assert.Contains(
             "crafted = true",
+            body,
             "The remembered true body is not marked crafted, so returning to it shows a person."
         );
     }
@@ -247,8 +248,8 @@ public class KandraTrueBodyArtTests {
             )
         );
 
-        XElement[] stages = doc.Descendants("lifeStages").Elements("li").ToArray();
-        Assert.AreNotEqual(0, stages.Length, "The wolfhound has no life stages.");
+        XElement[] stages = [.. doc.Descendants("lifeStages").Elements("li")];
+        Assert.IsNotEmpty(stages, "The wolfhound has no life stages.");
 
         // The borrowed wolf art is greyscale at 0.84 luminance. Untinted it renders near-white.
         foreach (XElement stage in stages) {
@@ -278,8 +279,9 @@ public class KandraTrueBodyArtTests {
         Assert.IsNotNull(size, "The wolfhound's adult life stage has no drawSize.");
 
         // KandraShapeEligibility.MaxDrawSize. Over it and Wear() silently refuses the form.
-        Assert.IsTrue(
-            float.Parse(size, CultureInfo.InvariantCulture) <= 2f,
+        Assert.IsLessThanOrEqualTo(
+            2f,
+            float.Parse(size, CultureInfo.InvariantCulture),
             $"The wolfhound draws at {size}, over the 2.0 a kandra is allowed to wear."
         );
     }
@@ -299,7 +301,7 @@ public class KandraTrueBodyArtTests {
         );
 
         int start = source.IndexOf("private static void StowApparel", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "KandraShapeshift no longer has StowApparel.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "KandraShapeshift no longer has StowApparel.");
 
         string body = source[start..source.IndexOf("\n    }", start, StringComparison.Ordinal)];
 
@@ -316,19 +318,19 @@ public class KandraTrueBodyArtTests {
             Path.Combine(RepoRoot, "CosmereScadrial", "Patches", "KandraHumanlikeRenderTree.xml")
         );
 
-        string[] targets = doc.Descendants("Operation")
+        string[] targets = [.. doc.Descendants("Operation")
             .Where(
                 op => op.Descendants("li")
                     .Any(li => li.Value.EndsWith("HideWhileFormless", StringComparison.Ordinal))
             )
-            .Select(op => op.Element("xpath")?.Value ?? string.Empty)
-            .ToArray();
+            .Select(op => op.Element("xpath")?.Value ?? string.Empty)];
 
-        Assert.AreEqual(4, targets.Length, "Expected the formless veto on exactly four nodes.");
+        Assert.HasCount(4, targets, "Expected the formless veto on exactly four nodes.");
 
         foreach (string want in new[] { "ApparelBody", "ApparelHead", "Body tattoo", "Head tattoo" }) {
-            Assert.IsTrue(
-                targets.Any(t => t.Contains(want, StringComparison.Ordinal)),
+            Assert.Contains(
+                t => t.Contains(want, StringComparison.Ordinal),
+                targets,
                 $"The formless veto is not on {want}."
             );
         }
@@ -359,19 +361,19 @@ public class KandraTrueBodyArtTests {
     public void TheDesignerPicksFromTheMaterialTableAndInventsNoColourOfItsOwn() {
         string source = File.ReadAllText(DialogSourcePath);
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "KandraAppearance.AllMaterials",
+            source,
             "The palette no longer reads the material table, so it can offer a colour nothing checked."
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "forms.BeginReshape(",
+            source,
             "The designer never records the choice, so confirming it does nothing."
         );
 
-        foreach (Match match in Regex.Matches(source, @"new Color\s*\(|#[0-9a-fA-F]{6}")) {
+        foreach (Match match in LiteralColourPattern.Matches(source)) {
             Assert.Fail(
                 "Dialog_KandraForms writes its own colour at offset " + match.Index
                 + ". Every colour here has to come from KandraAppearance's table."
@@ -396,27 +398,27 @@ public class KandraTrueBodyArtTests {
     public void TheReshapeJobCommitsTheDesignAndKeepsAnyDisguiseOn() {
         string source = File.ReadAllText(ChangeShapeSourcePath);
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "ReshapeIndex",
+            source,
             "Nothing in the change-shape job knows what a reshape is, so the design never lands."
         );
 
         int start = source.IndexOf("job.count == ReshapeIndex", StringComparison.Ordinal);
-        Assert.IsTrue(start >= 0, "The reshape branch is gone; CommitReshape has no caller again.");
+        Assert.IsGreaterThanOrEqualTo(0, start, "The reshape branch is gone; CommitReshape has no caller again.");
 
         string branch = source[start..source.IndexOf("job.count == RevertIndex", start, StringComparison.Ordinal)];
 
-        StringAssert.Contains(branch, "CommitReshape", "The reshape branch never commits the pending design.");
-        StringAssert.Contains(
-            branch,
+        Assert.Contains("CommitReshape", branch, "The reshape branch never commits the pending design.");
+        Assert.Contains(
             "IsWearingSomeoneElse",
+            branch,
             "Reshaping while disguised reverts the pawn, which rips the face off as a side effect."
         );
 
-        StringAssert.Contains(
-            branch,
+        Assert.Contains(
             "Revert(",
+            branch,
             "Nothing puts the reshaped body back on, so the new gender never reaches the pawn."
         );
     }
@@ -431,11 +433,23 @@ public class KandraTrueBodyArtTests {
             Path.Combine(RepoRoot, "CosmereCore", "CosmereCore", "System", "Scadrial", "Gene", "BodyAbsorption.cs")
         );
 
-        StringAssert.Contains(
-            source,
+        Assert.Contains(
             "forms.Known.Count == 0 && !forms.TrueBodyCrafted",
+            source,
             "The take-form gizmo is disabled on an empty repertoire alone, so a newly turned kandra "
             + "cannot reach the designer until it has eaten somebody."
         );
     }
+
+    [GeneratedRegex(@"\(""([^""]+)"", ""([^""]+)"", ([0-9.]+)f, ""([^""]+)"", (\w+)\)")]
+    private static partial Regex MaterialRowPattern { get; }
+
+    [GeneratedRegex("^[0-9a-f]{6}$")]
+    private static partial Regex SixDigitHex { get; }
+
+    [GeneratedRegex(@"\(""([^""]+)"", ""([0-9a-f]{6})"", ")]
+    private static partial Regex HexMaterialRowPattern { get; }
+
+    [GeneratedRegex(@"new Color\s*\(|#[0-9a-fA-F]{6}")]
+    private static partial Regex LiteralColourPattern { get; }
 }

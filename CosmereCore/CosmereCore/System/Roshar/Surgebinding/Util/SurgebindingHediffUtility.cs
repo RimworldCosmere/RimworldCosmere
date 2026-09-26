@@ -19,7 +19,7 @@ public static class SurgebindingHediffUtility {
         }
 
         SurgebindingHediff newHediff =
-            (SurgebindingHediff)Activator.CreateInstance(hediffDef.hediffClass, hediffDef, target, ability);
+            (SurgebindingHediff)Activator.CreateInstance(hediffDef.hediffClass, hediffDef, target, ability)!;
         newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
         newHediff.PostMake();
         newHediff.AddSource(ability);

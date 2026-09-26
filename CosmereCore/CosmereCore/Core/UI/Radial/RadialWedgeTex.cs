@@ -117,7 +117,7 @@ public static class RadialWedgeTex {
 
     public static Texture2D InnerEdge(int count, int index) {
         int key = count * 1000 + index;
-        if (edgeCache.TryGetValue(key, out Texture2D cached)) return cached;
+        if (edgeCache.TryGetValue(key, out Texture2D? cached)) return cached;
 
         float arcRad = 2f * Mathf.PI / count;
         float halfArcRad = arcRad * 0.5f;
@@ -178,7 +178,7 @@ public static class RadialWedgeTex {
     /// </summary>
     public static Texture2D Get(int count, int index) {
         int key = count * 1000 + index;
-        if (cache.TryGetValue(key, out Texture2D cached)) return cached;
+        if (cache.TryGetValue(key, out Texture2D? cached)) return cached;
 
         float arcRad = 2f * Mathf.PI / count;
         float halfArcRad = arcRad * 0.5f;
@@ -219,7 +219,7 @@ public static class RadialWedgeTex {
 
     // Every divider baked into one texture, so the ring needs no rotated draws at all.
     public static Texture2D Separators(int count) {
-        if (separatorCache.TryGetValue(count, out Texture2D cached)) return cached;
+        if (separatorCache.TryGetValue(count, out Texture2D? cached)) return cached;
 
         float arcRad = 2f * Mathf.PI / count;
         const float outer = 0.5f;

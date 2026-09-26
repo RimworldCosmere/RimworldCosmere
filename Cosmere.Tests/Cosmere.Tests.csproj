@@ -5,7 +5,7 @@
              Linux, so `dotnet test` cannot run one there. These tests deliberately
              touch nothing that needs Unity or Verse, which lets them target a modern
              runtime and run on every machine the mod is developed on. -->
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>

@@ -53,7 +53,7 @@ public abstract class MouseoverSprenInfoPatch : MouseoverReadout {
 
         string sprenInfo = string.Join(", ", sprenNames);
 
-        Vector2 botLeft = (Vector2)BotLeftField!.GetValue(null);
+        Vector2 botLeft = (Vector2)BotLeftField!.GetValue(null)!;
 
         // Add spren info to the mouseover readout using the same Y offset pattern as vanilla
         Widgets.Label(new Rect(botLeft.x, Verse.UI.screenHeight - botLeft.y - yOffset, 999f, 999f), sprenInfo);

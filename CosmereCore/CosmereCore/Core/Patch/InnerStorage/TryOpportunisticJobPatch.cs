@@ -17,10 +17,10 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
     );
 
     private static readonly MethodInfo ParentThingGetter =
-        typeof(Comp.Thing.InnerStorage).GetProperty("ParentThing")!.GetGetMethod();
+        typeof(Comp.Thing.InnerStorage).GetProperty("ParentThing")!.GetGetMethod()!;
 
     private static readonly MethodInfo PositionGetter =
-        typeof(Verse.Thing).GetProperty("Position")!.GetGetMethod();
+        typeof(Verse.Thing).GetProperty("Position")!.GetGetMethod()!;
 
     private static readonly FieldInfo? JobTrackerPawn = typeof(Pawn_JobTracker).GetField(
         "pawn",

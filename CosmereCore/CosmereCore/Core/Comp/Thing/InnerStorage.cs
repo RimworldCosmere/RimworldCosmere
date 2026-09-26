@@ -125,7 +125,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     /// <param name="filter">The filter vanilla is drawing.</param>
     /// <returns>The owning storage, or null when the filter is not one of ours.</returns>
     public static InnerStorage? BandOwnerOf(ThingFilter filter) {
-        return BandByFilter.TryGetValue(filter, out InnerStorage owner) ? owner : null;
+        return BandByFilter.TryGetValue(filter, out InnerStorage? owner) ? owner : null;
     }
 
     /// <summary>

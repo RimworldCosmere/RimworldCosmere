@@ -24,7 +24,7 @@ public class NightwatcherBoonDef : Verse.Def {
     public IBoonApplicator? Applicator {
         get {
             if (applicatorClass == null) return null;
-            return applicatorCache ??= (IBoonApplicator)Activator.CreateInstance(applicatorClass);
+            return applicatorCache ??= (IBoonApplicator)Activator.CreateInstance(applicatorClass)!;
         }
     }
 

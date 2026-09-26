@@ -24,7 +24,7 @@ public struct DrainSource : IExposable, IEquatable<DrainSource> {
         return Def.Equals(other.Def);
     }
 
-    public override bool Equals(object obj) {
+    public override bool Equals(object? obj) {
         return obj is DrainSource other && Equals(other);
     }
 

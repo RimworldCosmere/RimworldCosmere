@@ -56,7 +56,7 @@ public class Mod : CosmereMod<CoreModSettings> {
         IEnumerable<Type> types = typeof(CosmereModSettings).AllSubclassesNonAbstract();
         foreach (Type t in types) {
             try {
-                CosmereModSettings instance = (CosmereModSettings)Activator.CreateInstance(t);
+                CosmereModSettings instance = (CosmereModSettings)Activator.CreateInstance(t)!;
                 if (!instance.Enabled) continue;
                 settingsByType[t] = instance;
                 result.Add(instance);

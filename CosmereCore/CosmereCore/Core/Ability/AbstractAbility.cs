@@ -158,7 +158,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             for (int index = 0; index < def.comps.Count; ++index) {
                 AbilityComp? abilityComp = null;
                 try {
-                    abilityComp = (AbilityComp)Activator.CreateInstance(def.comps[index].compClass);
+                    abilityComp = (AbilityComp)Activator.CreateInstance(def.comps[index].compClass)!;
                     abilityComp.parent = this;
                     comps.Add(abilityComp);
                     abilityComp.Initialize(def.comps[index]);

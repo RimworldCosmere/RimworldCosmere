@@ -21,7 +21,7 @@ public static class HediffUtility {
     }
 
     public static AllomanticHediff CreateHediff(HediffDef def, Pawn target, AllomancyAbility ability) {
-        AllomanticHediff newHediff = (AllomanticHediff)Activator.CreateInstance(def.hediffClass, def, target, ability);
+        AllomanticHediff newHediff = (AllomanticHediff)Activator.CreateInstance(def.hediffClass, def, target, ability)!;
         newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
         newHediff.PostMake();
         newHediff.AddSource(ability);

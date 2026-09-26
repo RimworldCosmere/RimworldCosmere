@@ -131,7 +131,6 @@ public class GenesAndTraitsGenerator : BaseGenerator {
 
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
-        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
         var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Allomancy", "Mistborn");
 
         var template = await CompileTemplateAsync(templatesDir, "Mistborn.xml.template");
@@ -150,7 +149,6 @@ public class GenesAndTraitsGenerator : BaseGenerator {
 
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
-        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
         var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Feruchemy", "FullFeruchemist");
 
         var template = await CompileTemplateAsync(templatesDir, "FullFeruchemist.xml.template");

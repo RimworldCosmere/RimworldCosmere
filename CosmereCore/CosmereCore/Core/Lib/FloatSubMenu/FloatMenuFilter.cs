@@ -51,7 +51,7 @@ internal class FloatMenuFilter {
     }
 
     protected void Init(FloatMenu floatMenu, Action? action) {
-        options = (List<FloatMenuOption>)OptionsField.GetValue(floatMenu);
+        options = (List<FloatMenuOption>)OptionsField.GetValue(floatMenu)!;
         filtered = [.. options];
         OptionsField.SetValue(floatMenu, filtered);
         initialized = floatMenu;

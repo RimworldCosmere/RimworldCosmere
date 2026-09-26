@@ -4,7 +4,7 @@
         <Authors>CryptikLemur</Authors>
         <AssemblyName>Cosmere.Quickstarts</AssemblyName>
         <RootNamespace>Cosmere.Core.Quickstart</RootNamespace>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <!-- Loaded only when the Quickstarts mod is active. See ../loadFolders.xml. -->
         <OutDir>..\Quickstarts\Assemblies\</OutDir>

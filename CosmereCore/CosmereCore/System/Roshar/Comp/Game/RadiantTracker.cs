@@ -126,7 +126,7 @@ public class RadiantTracker : GameComponent {
     }
 
     public bool CanRebond(Pawn pawn, string orderDefName) {
-        if (!brokenBonds.TryGetValue(pawn.thingIDNumber, out BrokenBondRecord record)) return true;
+        if (!brokenBonds.TryGetValue(pawn.thingIDNumber, out BrokenBondRecord? record)) return true;
 
         if (record.orderDefName == orderDefName) return false;
 
@@ -135,7 +135,7 @@ public class RadiantTracker : GameComponent {
     }
 
     public bool HasAnyAvailableOrder(Pawn pawn) {
-        if (!brokenBonds.TryGetValue(pawn.thingIDNumber, out BrokenBondRecord record)) return true;
+        if (!brokenBonds.TryGetValue(pawn.thingIDNumber, out BrokenBondRecord? record)) return true;
 
         int ticksSinceBreak = Find.TickManager.TicksGame - record.breakTick;
         return ticksSinceBreak >= 60 * GenDate.TicksPerDay;

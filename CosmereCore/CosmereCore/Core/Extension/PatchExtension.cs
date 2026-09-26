@@ -8,7 +8,7 @@ namespace Cosmere.Core.Extension;
 public static class PatchExtension {
     public static PatchOperation ReplaceTokens(this PatchOperation operation, string token, string value) {
         FieldInfo? valueProp = FindField(operation.GetType(), "value");
-        XmlContainer xmlContainer = (XmlContainer)valueProp!.GetValue(operation);
+        XmlContainer xmlContainer = (XmlContainer)valueProp!.GetValue(operation)!;
 
         xmlContainer.node.ReplaceInNode(token, value);
         valueProp.SetValue(operation, xmlContainer);

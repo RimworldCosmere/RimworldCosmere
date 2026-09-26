@@ -36,7 +36,11 @@ public abstract class BaseGenerator : IGenerator {
         Options = options;
         FileSystem = fileSystem;
         Handlebars = HandlebarsDotNet.Handlebars.Create();
-        RegisterHelpers();
+        BaseGenerator.RegisterSharedHelpers(this);
+    }
+
+    private static void RegisterSharedHelpers(BaseGenerator g) {
+        g.RegisterHelpers();
     }
 
     protected virtual void RegisterHelpers() {
@@ -267,11 +271,9 @@ public abstract class BaseGenerator : IGenerator {
 
         // MayRequire and WithoutRequire helpers
         Handlebars.RegisterHelper("mayRequire", (writer, context, parameters) => {
-            if (parameters.Length > 0 && parameters[0] is string value) {
-                if (value.Contains(':')) {
-                    var parts = value.Split(':');
-                    writer.WriteSafeString($" MayRequire=\"{parts[1]}\"");
-                }
+            if (parameters.Length > 0 && parameters[0] is string value && value.Contains(':')) {
+                var parts = value.Split(':');
+                writer.WriteSafeString($" MayRequire=\"{parts[1]}\"");
             }
         });
 

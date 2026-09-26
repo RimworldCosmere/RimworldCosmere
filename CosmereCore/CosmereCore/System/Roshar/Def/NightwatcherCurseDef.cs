@@ -24,7 +24,7 @@ public class NightwatcherCurseDef : Verse.Def {
     public ICurseApplicator? Applicator {
         get {
             if (applicatorClass == null) return null;
-            return applicatorCache ??= (ICurseApplicator)Activator.CreateInstance(applicatorClass);
+            return applicatorCache ??= (ICurseApplicator)Activator.CreateInstance(applicatorClass)!;
         }
     }
 

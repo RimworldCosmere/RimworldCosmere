@@ -108,7 +108,7 @@ public class AshTerrainMemory : IExposable {
             }
         }
 
-        if (byHash.TryGetValue(hash, out TerrainDef found)) return found;
+        if (byHash.TryGetValue(hash, out TerrainDef? found)) return found;
 
         // Cache the substitute so a mod removed mid-save reports once rather than per cell.
         Log.Error($"No terrain with short hash {hash} to restore under ash. Using soil.");

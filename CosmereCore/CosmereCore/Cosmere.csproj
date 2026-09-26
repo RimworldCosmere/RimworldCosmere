@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>CryptikLemur</Authors>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <OutDir>..\Assemblies\</OutDir>
         <Nullable>enable</Nullable>

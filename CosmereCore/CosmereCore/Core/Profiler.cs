@@ -37,7 +37,7 @@ public static class Profiler {
         try {
             int attributed = 0;
             foreach (MethodInfo method in profiledMethods) {
-                ProfileAttribute attr = method.GetCustomAttribute<ProfileAttribute>();
+                ProfileAttribute attr = method.GetCustomAttribute<ProfileAttribute>()!;
                 Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Attrs[method] = attr;
                 attributed++;
@@ -59,7 +59,7 @@ public static class Profiler {
 
     private static IEnumerable<MethodInfo> profiledMethods =>
         AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => !a.IsDynamic && a.FullName.StartsWith("Cosmere"))
+            .Where(a => !a.IsDynamic && a.FullName?.StartsWith("Cosmere") == true)
             .SelectMany(a => SafeGetTypes(a))
             .SelectMany(t => SafeGetMethods(t))
             .Where(m =>
@@ -109,7 +109,7 @@ public static class Profiler {
                 sw = Stopwatch.StartNew();
             }
 
-            SampleStack.Value.Push(new SampleToken(sampled, sw));
+            SampleStack.Value!.Push(new SampleToken(sampled, sw));
         }
     }
 
@@ -133,7 +133,7 @@ public static class Profiler {
         (int threadId, MethodBase method) key = (Environment.CurrentManagedThreadId, __originalMethod);
         if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.IsEmpty) return;
 
-        if (!stack.TryPop(out Stopwatch sw)) return;
+        if (!stack.TryPop(out Stopwatch? sw)) return;
         sw.Stop();
 
         if (attr.Aggregate) {
@@ -145,7 +145,7 @@ public static class Profiler {
     }
 
     private static void EndSampling(MethodBase __originalMethod, ProfileAttribute attr, string label) {
-        Stack<SampleToken>? stack = SampleStack.Value;
+        Stack<SampleToken> stack = SampleStack.Value!;
         if (stack.Count == 0) return;
         SampleToken token = stack.Pop();
 
@@ -177,7 +177,7 @@ public static class Profiler {
         }
 
         // For sampling, unwind if needed (in case EndProfiling wasn’t hit)
-        Stack<SampleToken>? sstack = SampleStack.Value;
+        Stack<SampleToken> sstack = SampleStack.Value!;
         if (sstack.Count > 0) {
             // discard on exception path
             sstack.Pop();

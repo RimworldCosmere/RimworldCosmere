@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- the RimWorks packages still ship net48 assemblies. they load through the runtime's
+         compatibility shim; drop this once those three retarget. -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <GamecrateCache Condition="'$(GamecrateCache)' == '' And '$(XDG_CACHE_HOME)' != ''">$(XDG_CACHE_HOME)</GamecrateCache>
     <GamecrateCache Condition="'$(GamecrateCache)' == ''">$([System.IO.Path]::Combine($([System.Environment]::GetFolderPath(SpecialFolder.UserProfile)), '.cache'))</GamecrateCache>
     <GamecrateRefs Condition="'$(GamecrateRefs)' == ''">$([System.IO.Path]::Combine($(GamecrateCache), 'gamecrate', 'refs', 'current', 'rimworld'))</GamecrateRefs>

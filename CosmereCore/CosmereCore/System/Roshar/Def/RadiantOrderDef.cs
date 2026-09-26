@@ -36,8 +36,9 @@ public class RadiantOrderDef : Verse.Def {
     public string sprenTexturePath = string.Empty;
     public List<SurgeDef> surges = null!;
 
-    private Type idealCheckerClass =>
-        typeof(RadiantOrderDef).Assembly.GetType("Cosmere.System.Roshar.Surgebinding.IdealChecker." + defName);
+    /// <summary>The checker for this order's ideals. The def loader resolves it, so a name that
+    /// does not resolve fails at load rather than at PostLoad.</summary>
+    public Type idealCheckerClass = null!;
 
     public GeneDef GetSurgebindingGene() {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Roshar_Gene_Radiant" + defName);
@@ -68,7 +69,7 @@ public class RadiantOrderDef : Verse.Def {
     public override void PostLoad() {
         base.PostLoad();
 
-        idealChecker = (IIdealChecker)Activator.CreateInstance(idealCheckerClass, this);
+        idealChecker = (IIdealChecker)Activator.CreateInstance(idealCheckerClass, this)!;
         LongEventHandler.ExecuteWhenFinished(() => {
             icon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/{defName}");
             bannerIcon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/Banner{defName}");

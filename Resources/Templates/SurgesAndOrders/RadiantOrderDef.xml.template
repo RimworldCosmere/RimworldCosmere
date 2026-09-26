@@ -4,6 +4,7 @@
         <defName>{{defName order.name}}</defName>
         <label>{{title order.name}}</label>
         <description>{{order.description}}</description>
+        <idealCheckerClass>Cosmere.System.Roshar.Surgebinding.IdealChecker.{{defName order.name}}</idealCheckerClass>
         <gemstone>{{defName order.gemstone}}</gemstone>
         <color>{{rgb order.color}}</color>
         <surges>

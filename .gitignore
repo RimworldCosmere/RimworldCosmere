@@ -18,3 +18,6 @@ old
 
 # SonarScanner working directory
 .sonarqube/
+
+# a machine-local build override, never committed
+Directory.Build.local.props

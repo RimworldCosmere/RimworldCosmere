@@ -39,13 +39,11 @@ public static class CutoutAdvancedShaderProperties {
     public static readonly int WearMaskTex = UnityEngine.Shader.PropertyToID("_WearMaskTex");
     public static readonly int GlowMaskTex = UnityEngine.Shader.PropertyToID("_GlowMaskTex");
     public static readonly int SpecialMaskTex = UnityEngine.Shader.PropertyToID("_SpecialMaskTex");
+    public static readonly int PaletteTex = UnityEngine.Shader.PropertyToID("_PaletteTex");
 
     public static readonly int BlendStrength = UnityEngine.Shader.PropertyToID("_BlendStrength");
     public static readonly int ColorCount = UnityEngine.Shader.PropertyToID("_ColorCount");
-    public static readonly int Colors = UnityEngine.Shader.PropertyToID("_Colors");
     public static readonly int MaterialIntensity = UnityEngine.Shader.PropertyToID("_MaterialIntensity");
-    public static readonly int MetallicValues = UnityEngine.Shader.PropertyToID("_MetallicValues");
-    public static readonly int SmoothnessValues = UnityEngine.Shader.PropertyToID("_SmoothnessValues");
 
     public static readonly int UseWearMask = UnityEngine.Shader.PropertyToID("_UseWearMask");
     public static readonly int UseGlowMask = UnityEngine.Shader.PropertyToID("_UseGlowMask");

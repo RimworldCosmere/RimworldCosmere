@@ -27,6 +27,7 @@ Shader "Unlit/CutoutAdvanced" {
         _WearMaskTex ("Wear Mask", 2D) = "black" {}
         _GlowMaskTex ("Glow Mask", 2D) = "black" {}
         _SpecialMaskTex ("Special Zones Mask", 2D) = "black" {}
+        _PaletteTex ("Palette LUT (row0 rgba, row1 metallic/smoothness)", 2D) = "black" {}
         
         // ========================================
         // COLOR PALETTE SYSTEM
@@ -114,9 +115,20 @@ Shader "Unlit/CutoutAdvanced" {
             float4 _HighlightParams; // x: highlightSize, y: power, z: intensity, w: unused
             float2 _RimLightCenter;  // Pre-computed rim light center
             
-            uniform float4 _Colors[32];
-            uniform float _MetallicValues[32];
-            uniform float _SmoothnessValues[32];
+            // the palette lives in a texture, not the constant buffer. three 32-entry arrays cost
+            // 1536 bytes because a cbuffer pads every array element to 16, and the block holds 512.
+            sampler2D _PaletteTex;
+            float4 _PaletteTex_TexelSize;
+
+            // row 0 is rgba colour, row 1 is (metallic, smoothness). point sampled, so the half
+            // texel offset lands on the centre of entry i rather than the seam beside it.
+            float4 PaletteColor(int i) {
+                return tex2D(_PaletteTex, float2((i + 0.5) * _PaletteTex_TexelSize.x, 0.25));
+            }
+
+            float2 PaletteMaterial(int i) {
+                return tex2D(_PaletteTex, float2((i + 0.5) * _PaletteTex_TexelSize.x, 0.75)).rg;
+            }
 
             struct appdata {
                 float4 vertex : POSITION;
@@ -191,16 +203,18 @@ Shader "Unlit/CutoutAdvanced" {
                 float smoothness;
 
                 // Cache array values to reduce lookups
-                float4 colorA = _Colors[idxA];
-                float metallicA = _MetallicValues[idxA];
-                float smoothnessA = _SmoothnessValues[idxA];
+                float4 colorA = PaletteColor(idxA);
+                float2 matA = PaletteMaterial(idxA);
+                float metallicA = matA.r;
+                float smoothnessA = matA.g;
                 
                 // Compile-time blend mode optimization
                 #if defined(BLEND_LINEAR) || defined(BLEND_SMOOTH) || defined(BLEND_SHARP) || defined(BLEND_STEP)
                     int idxB = (int)clamp(idxA + 1, 0, _ColorCount - 1);
-                    float4 colorB = _Colors[idxB];
-                    float metallicB = _MetallicValues[idxB];
-                    float smoothnessB = _SmoothnessValues[idxB];
+                    float4 colorB = PaletteColor(idxB);
+                    float2 matB = PaletteMaterial(idxB);
+                    float metallicB = matB.r;
+                    float smoothnessB = matB.g;
                     
                     float blend = saturate(frac(lutIndex) * _BlendStrength);
                     

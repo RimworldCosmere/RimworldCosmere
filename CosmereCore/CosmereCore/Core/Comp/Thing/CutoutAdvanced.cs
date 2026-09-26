@@ -182,7 +182,7 @@ public class CutoutAdvanced : ThingComp {
 
         material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
         block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask.mask);
-        block.SetLUTColorMask(palettes);
+        block.SetLUTColorMask(palettes, material);
         block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, props.materialIntesity);
 
         ApplyWear(block, wearMask);

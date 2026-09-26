@@ -9,7 +9,7 @@
         <graphicData>
             <texPath>Empty</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <shaderType>CirclePulse</shaderType>
+            <shaderType>Cosmere_CirclePulse</shaderType>
             <shaderParameters>
                 <_Radius>1</_Radius> <!-- The radius of the shader circle, in % of image size, so 1 means the total area of the drawSize is used-->
                 <_BorderWidth>0.0005</_BorderWidth> <!-- The width of the border that shows the area-->

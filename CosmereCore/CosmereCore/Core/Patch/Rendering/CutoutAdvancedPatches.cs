@@ -33,16 +33,8 @@ public static class CutoutAdvancedMaterial {
             mpb.GetFloat(CutoutAdvancedShaderProperties.MaterialIntensity)
         );
 
-        Vector4[] colors = mpb.GetVectorArray(CutoutAdvancedShaderProperties.Colors);
-        if (colors is { Length: > 0 }) mat.SetVectorArray(CutoutAdvancedShaderProperties.Colors, colors);
-
-        float[] metallicValues = mpb.GetFloatArray(CutoutAdvancedShaderProperties.MetallicValues);
-        if (metallicValues is { Length: > 0 })
-            mat.SetFloatArray(CutoutAdvancedShaderProperties.MetallicValues, metallicValues);
-
-        float[] smoothnessValues = mpb.GetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues);
-        if (smoothnessValues is { Length: > 0 })
-            mat.SetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues, smoothnessValues);
+        Texture palette = mpb.GetTexture(CutoutAdvancedShaderProperties.PaletteTex);
+        if (palette != null) mat.SetTexture(CutoutAdvancedShaderProperties.PaletteTex, palette);
 
         mat.SetFloat(
             CutoutAdvancedShaderProperties.UseWearMask,

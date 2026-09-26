@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Blend, ZWrite, Cull and the queue tag used to sit in the .shader; 1.7 reads them here. -->
+    <ShaderDef>
+        <defName>CutoutAdvanced</defName>
+        <shaderProgram>
+            <fragmentShaderFileName>CutoutAdvanced.frag.glsl</fragmentShaderFileName>
+            <transparent>true</transparent>
+            <depthWrite>false</depthWrite>
+            <renderQueue>2900</renderQueue>
+        </shaderProgram>
+        <shaderKeywords>
+            <li>USE_WEAR_MASK</li>
+            <li>USE_GLOW_MASK</li>
+            <li>USE_SPECIAL_MASK</li>
+            <li>BLEND_LINEAR</li>
+            <li>BLEND_SMOOTH</li>
+            <li>BLEND_SHARP</li>
+            <li>BLEND_STEP</li>
+        </shaderKeywords>
+    </ShaderDef>
+
+    <!-- Mote queue, matching vanilla MotePulse. Draws procedurally, so it binds no texture.
+         No slash anywhere, so defName, shaderPath and the filename stem are all one string. -->
+    <ShaderDef>
+        <defName>Cosmere_CirclePulse</defName>
+        <shaderProgram>
+            <fragmentShaderFileName>Cosmere_CirclePulse.frag.glsl</fragmentShaderFileName>
+            <useTexture>false</useTexture>
+            <transparent>true</transparent>
+            <depthWrite>false</depthWrite>
+            <renderQueue>3151</renderQueue>
+        </shaderProgram>
+    </ShaderDef>
+
+</Defs>

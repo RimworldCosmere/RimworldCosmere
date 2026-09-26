@@ -56,22 +56,9 @@ jobs:
 
 
   # Build all asset bundles for all platforms in a single job
-  build-assetbundles:
-    needs: get-mods
-    uses: RimWorks/mod-ci/.github/workflows/assetbundles.yml@v1
-    permissions:
-      contents: read
-    with:
-      mods: |
-        CosmereCore
-        CosmereRoshar
-        CosmereScadrial
-    secrets:
-      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
   prepare:
-    needs: [ get-mods, build-assetbundles ]
+    needs: get-mods
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -140,26 +127,6 @@ jobs:
             echo "BUILD=Debug" >> $GITHUB_ENV
           fi
 
-      # Download and extract asset bundles built in the previous job.  The
-      # artifact contains zips of all AssetBundles directories.  After
-      # extraction the bundles live under RimworldCosmere/$MOD/AssetBundles
-      # so that the packaging step will include them automatically.
-      - name: Download asset bundles
-        uses: actions/download-artifact@v5
-        with:
-          name: all-assetbundles
-          path: RimworldCosmere
-
-      - name: Extract asset bundles
-        working-directory: RimworldCosmere
-        run: |
-          if [ -f "$MOD-assetbundles.zip" ]; then
-            echo "Extracting $MOD-assetbundles.zip to $MOD/"
-            unzip -o "$MOD-assetbundles.zip" -d "$MOD/"
-            rm "$MOD-assetbundles.zip"
-          else
-            echo "No asset bundles found for $MOD (this is fine if mod has no Assets)"
-          fi
 
       - name: Build solution (tagged release)
         working-directory: RimworldCosmere

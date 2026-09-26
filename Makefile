@@ -6,7 +6,7 @@
 #   make all      - Full build (clean, generate, build both solutions, build assets)
 #   make quick    - Quick development cycle (generate + build main solution)
 
-.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status game-kill game-run game-restart game-log pickle
+.PHONY: help all quick clean generate build-main build-tools test restore format lint watch dev setup install-deps check-deps status game-kill game-run game-restart game-log pickle
 
 # Where the Linux install lives, and the save folder that carries the Cosmere
 # modlist and mod settings. Launching without -savedatafolder picks up whatever
@@ -61,16 +61,13 @@ help: ## Display this help message
 	@echo ""
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make $(YELLOW)<target>$(NC)\n\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  $(GREEN)%-15s$(NC) %s\n", $$1, $$2 } /^##@/ { printf "\n$(BLUE)%s$(NC)\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-all: clean generate build-main build-tools build-assets ## Full build pipeline (clean, generate, build everything)
+all: clean generate build-main build-tools ## Full build pipeline (clean, generate, build everything)
 	@echo "$(GREEN)✓ Full build complete!$(NC)"
 
-generatables: generate build-assets ## Generate code and build assets only (no solution build)
-	@echo "$(GREEN)✓ Generatables complete!$(NC)"
-
-build: generate build-main build-assets ## Build everything (no clean) for IDE run configurations
+build: generate build-main ## Build everything (no clean) for IDE run configurations
 	@echo "$(GREEN)✓ Build complete - ready for launch!$(NC)"
 
-build-all: clean generate build-main build-tools build-assets ## Full build pipeline (alias for all, use with IDE run configurations)
+build-all: clean generate build-main build-tools ## Full build pipeline (alias for all, use with IDE run configurations)
 	@echo "$(GREEN)✓ Full build complete - ready for launch!$(NC)"
 
 run: all ## Full build and launch RimWorld
@@ -80,7 +77,7 @@ run: all ## Full build and launch RimWorld
 quick: generate build-main ## Quick development cycle (generate + build main solution)
 	@echo "$(GREEN)✓ Quick build complete!$(NC)"
 
-dev: quick build-assets ## Development build (generate + build main + build assets)
+dev: quick ## Development build (generate + build main)
 	@echo "$(GREEN)✓ Development build complete!$(NC)"
 
 setup: install-deps restore ## Initial project setup
@@ -209,40 +206,6 @@ build-tools: ## Build Tools CLI solution
 build-tools-debug: ## Build Tools CLI in debug mode
 	@echo "$(BLUE)Building Tools solution (Debug)...$(NC)"
 	@dotnet build Cosmere.Tools.slnx --configuration Debug --verbosity minimal
-
-build-assets: ## Build Unity AssetBundles for current platform
-	@echo "$(BLUE)Building Unity AssetBundles...$(NC)"
-	@dotnet script ./scripts/build-assets.csx
-
-build-assets-verbose: ## Build Unity AssetBundles with verbose output
-	@echo "$(BLUE)Building Unity AssetBundles (verbose)...$(NC)"
-	@dotnet script ./scripts/build-assets.csx -- --verbose
-
-build-assets-all: ## Build Unity AssetBundles for all platforms (Windows, Mac, Linux)
-	@echo "$(BLUE)Building Unity AssetBundles for all platforms...$(NC)"
-	@echo "  Building for Windows..."
-	UNITY_BUILD_TARGET=windows dotnet script ./scripts/build-assets.csx
-	@echo "  Building for macOS..."
-	UNITY_BUILD_TARGET=mac dotnet script ./scripts/build-assets.csx
-	@echo "  Building for Linux..."
-	UNITY_BUILD_TARGET=linux dotnet script ./scripts/build-assets.csx
-	@echo "$(GREEN)✓ All platform bundles built!$(NC)"
-
-build-assets-all-verbose: ## Build Unity AssetBundles for all platforms with verbose output (for CI)
-	@echo "$(BLUE)Building Unity AssetBundles for all platforms (verbose)...$(NC)"
-	@echo "  Building for Windows..."
-	UNITY_BUILD_TARGET=windows dotnet script ./scripts/build-assets.csx -- --verbose
-	@echo "  Building for macOS..."
-	UNITY_BUILD_TARGET=mac dotnet script ./scripts/build-assets.csx -- --verbose
-	@echo "  Building for Linux..."
-	UNITY_BUILD_TARGET=linux dotnet script ./scripts/build-assets.csx -- --verbose
-	@echo "$(GREEN)✓ All platform bundles built!$(NC)"
-
-build-assets-force: ## Force rebuild all AssetBundles for current platform
-	@echo "$(BLUE)Force building Unity AssetBundles...$(NC)"
-	@dotnet script ./scripts/build-assets.csx -- --force
-
-##@ Development Tools
 
 clean: ## Clean all build outputs
 	@echo "$(BLUE)Cleaning build outputs...$(NC)"
@@ -374,4 +337,3 @@ versions: ## Show version information
 	@echo ""
 	@echo "$(BLUE)Unity Information:$(NC)"
 	@echo "  Target Version: 2022.3.35f1"
-	@echo "  AssetBundleBuilder: CryptikLemur.AssetBundleBuilder (dotnet tool)"

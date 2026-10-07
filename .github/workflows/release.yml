@@ -266,7 +266,7 @@ jobs:
         # an unpinned semantic-release off the registry and running its lifecycle scripts.
         run: npx --no semantic-release
 
-      - uses: RimWorks/mod-ci/.github/actions/discord-release@v1
+      - uses: RimWorks/mod-ci/.github/actions/discord-release@v4
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           mod-name: Cosmere

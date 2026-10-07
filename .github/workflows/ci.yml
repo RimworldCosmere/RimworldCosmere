@@ -81,7 +81,7 @@ jobs:
           steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
           app-id: '294100'
           # The version the mod compiles against.
-          branch: 'version-1.6.4633'
+          branch: 'phoenix'
           image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           skip-if-unchanged: 'true'

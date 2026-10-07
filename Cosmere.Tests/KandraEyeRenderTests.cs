@@ -111,7 +111,6 @@ public partial class KandraEyeRenderTests {
     private static string EyeTextureRoot => Path.Combine(
         RepoRoot,
         "CosmereScadrial",
-        "Assets",
         "Textures",
         "Things",
         "Pawn",
@@ -257,7 +256,6 @@ public partial class KandraEyeRenderTests {
             string stem = Path.Combine(
                 RepoRoot,
                 "CosmereScadrial",
-                "Assets",
                 "Textures",
                 texPath.Replace('/', Path.DirectorySeparatorChar)
             );

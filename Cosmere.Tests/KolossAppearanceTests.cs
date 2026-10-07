@@ -34,7 +34,7 @@ public partial class KolossAppearanceTests {
         }
     }
 
-    private static string Textures => Path.Combine(RepoRoot, "CosmereScadrial", "Assets", "Textures");
+    private static string Textures => Path.Combine(RepoRoot, "CosmereScadrial", "Textures");
 
     private static XDocument Def(params string[] parts) {
         return XDocument.Load(Path.Combine([RepoRoot, "CosmereScadrial", "Defs", .. parts]));

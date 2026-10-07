@@ -42,7 +42,6 @@ public partial class KandraTrueBodyArtTests {
     private static string TextureRoot => Path.Combine(
         RepoRoot,
         "CosmereScadrial",
-        "Assets",
         "Textures",
         "Things",
         "Pawn",

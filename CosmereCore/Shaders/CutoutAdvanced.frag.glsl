@@ -2,8 +2,7 @@
 
 // Palette swapping with wear, glow and special-zone masks, each greyscale in its red channel.
 // Levels are bands of that channel, so 4 wear levels means 0-63, 64-127, 128-191, 192-255. A band
-// at full brightness is permanent rather than level driven. The palette is a texture because
-// MaterialUniforms permits no arrays, and three 32 entry arrays came to 1712 bytes against 512.
+// at full brightness is permanent rather than level driven.
 
 layout(location = 1) in vec2 vUv;
 
@@ -17,7 +16,6 @@ layout(set = 2, binding = 0) uniform MaterialUniforms
     vec4 _Time;            // global, published by MapRenderFeature
     vec2 _RimLightCenter;  // @default = vec2(0.0, 1.0)
     float _BlendStrength;  // @default = 0.0
-    float _ColorCount;     // @default = 32.0
     float _MaterialIntensity; // @default = 1.0
     float _WearLevelCount;    // @default = 4.0
     float _GlowLevelCount;    // @default = 4.0
@@ -32,21 +30,12 @@ layout(set = 2, binding = 2) uniform sampler2D _ColorMaskTex;   // @default = wh
 layout(set = 2, binding = 3) uniform sampler2D _WearMaskTex;    // @default = black
 layout(set = 2, binding = 4) uniform sampler2D _GlowMaskTex;    // @default = black
 layout(set = 2, binding = 5) uniform sampler2D _SpecialMaskTex; // @default = black
-layout(set = 2, binding = 6) uniform sampler2D _PaletteTex;     // @default = black
-
-/// Texture2D.SetPixel flips y, so the builder's row 0 colour lands here at v 0.75. Sampling the
-/// two the other way round reads the material row, whose alpha is 0, and the discard eats it all.
-vec4 PaletteColor(int i) {
-    float w = float(textureSize(_PaletteTex, 0).x);
-
-    return texture(_PaletteTex, vec2((float(i) + 0.5) / w, 0.75));
-}
-
-vec2 PaletteMaterial(int i) {
-    float w = float(textureSize(_PaletteTex, 0).x);
-
-    return texture(_PaletteTex, vec2((float(i) + 0.5) / w, 0.25)).rg;
-}
+layout(std430, set = 2, binding = 6) readonly buffer _PaletteColors { vec4 paletteColors[]; };
+layout(std430, set = 2, binding = 7) readonly buffer _MetallicValues { float metallicValues[]; };
+layout(std430, set = 2, binding = 8) readonly buffer _SmoothnessValues { float smoothnessValues[]; };
+// length() reports the allocated buffer, which the runtime may pad; the real count rides in
+// its own array because a scalar in MaterialUniforms does not arrive intact.
+layout(std430, set = 2, binding = 9) readonly buffer _PaletteCount { float paletteCount[]; };
 
 float Luminance(vec3 c) { return dot(c, vec3(0.22, 0.707, 0.071)); }
 
@@ -77,21 +66,20 @@ void main()
     specialZone = texture(_SpecialMaskTex, uv).r;
 #endif
 
-    float safeIndex = min(colorIndex, 1.0 - (1.0 / u._ColorCount + 1e-5));
-    float lutIndex = safeIndex * u._ColorCount;
-    int idxA = int(floor(lutIndex));
+    float colorCount = paletteCount[0];
+    float safeIndex = min(colorIndex, 1.0 - (1.0 / colorCount + 1e-5));
+    float lutIndex = safeIndex * colorCount;
+    int idxA = clamp(int(floor(lutIndex)), 0, int(colorCount) - 1);
 
     vec4 lutColor;
     float metallic;
     float smoothness;
 
-    vec4 colorA = PaletteColor(idxA);
-    vec2 matA = PaletteMaterial(idxA);
+    vec4 colorA = paletteColors[idxA];
 
 #if defined(BLEND_LINEAR) || defined(BLEND_SMOOTH) || defined(BLEND_SHARP) || defined(BLEND_STEP)
-    int idxB = int(clamp(float(idxA + 1), 0.0, u._ColorCount - 1.0));
-    vec4 colorB = PaletteColor(idxB);
-    vec2 matB = PaletteMaterial(idxB);
+    int idxB = min(idxA + 1, int(colorCount) - 1);
+    vec4 colorB = paletteColors[idxB];
 
     float blend = clamp(fract(lutIndex) * u._BlendStrength, 0.0, 1.0);
     float blendFinal;
@@ -107,12 +95,12 @@ void main()
     #endif
 
     lutColor = mix(colorA, colorB, blendFinal);
-    metallic = mix(matA.r, matB.r, blendFinal);
-    smoothness = mix(matA.g, matB.g, blendFinal);
+    metallic = mix(metallicValues[idxA], metallicValues[idxB], blendFinal);
+    smoothness = mix(smoothnessValues[idxA], smoothnessValues[idxB], blendFinal);
 #else
     lutColor = colorA;
-    metallic = matA.r;
-    smoothness = matA.g;
+    metallic = metallicValues[idxA];
+    smoothness = smoothnessValues[idxA];
 #endif
 
     vec4 result = baseColor * lutColor;

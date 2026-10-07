@@ -47,7 +47,7 @@
 
 - Requires Biotech
 - Works alongside Ideology, Royalty, and Anomaly
-- Built for RimWorld 1.6
+- Built for RimWorld 1.7
 - Safe to add at game start
 - Mid-save support is partial. Start a new colony if you want the full spread of gems and resources
 

@@ -266,7 +266,6 @@ public partial class KandraEyeDesignerTests {
     private static string IrisArtPath => Path.Combine(
         RepoRoot,
         "CosmereScadrial",
-        "Assets",
         "Textures",
         "Things",
         "Pawn",

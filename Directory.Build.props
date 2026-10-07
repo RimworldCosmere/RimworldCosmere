@@ -5,6 +5,8 @@
     <!-- The tree sits at zero warnings, so a new one is a regression. Failing here is what
          stops style drift arriving through a pull request nobody built. -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,7 +19,7 @@
   <Import Project="Directory.Build.local.props" Condition="Exists('Directory.Build.local.props')" />
 
   <PropertyGroup>
-    <GameRefsVersion Condition="'$(GameRefsVersion)' == ''">1.6</GameRefsVersion>
+    <GameRefsVersion Condition="'$(GameRefsVersion)' == ''">1.7</GameRefsVersion>
     <GamecrateCache Condition="'$(GamecrateCache)' == '' And '$(XDG_CACHE_HOME)' != ''">$(XDG_CACHE_HOME)</GamecrateCache>
     <GamecrateCache Condition="'$(GamecrateCache)' == ''">$([System.IO.Path]::Combine($([System.Environment]::GetFolderPath(SpecialFolder.UserProfile)), '.cache'))</GamecrateCache>
     <GamecrateRefs Condition="'$(GamecrateRefs)' == ''">$([System.IO.Path]::Combine($(GamecrateCache), 'gamecrate', 'refs', 'version', 'rimworld', '$(GameRefsVersion)'))</GamecrateRefs>

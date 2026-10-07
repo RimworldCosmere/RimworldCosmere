@@ -10,9 +10,9 @@ The explicit <li>/</li> is required: adding this file at all replaces the defaul
 the mod root has to be named or nothing else loads.
 -->
 <loadFolders>
-    <v1.6>
+    <v1.7>
         <li>/</li>
         <li IfModActive="Ludeon.RimWorld.Ideology">Ideology</li>
         <li IfModActive="rimworks.quickstarts">Quickstarts</li>
-    </v1.6>
+    </v1.7>
 </loadFolders>

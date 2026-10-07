@@ -36,7 +36,7 @@ Included features:
 - Every other Cosmere expansion requires this mod
 - Safe to add at game start
 - Requires Biotech. The gene and xenotype systems run through everything here, so there is no pulling them apart
-- Built for RimWorld 1.6, and works alongside Biotech, Ideology, Royalty, and Anomaly
+- Built for RimWorld 1.7, and works alongside Biotech, Ideology, Royalty, and Anomaly
 
 ​
 

@@ -100,7 +100,7 @@ public partial class AshVentSoilTests {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(texture), $"{defName} declares no texturePath.");
                 if (texture.StartsWith(VanillaTexturePrefix, StringComparison.Ordinal)) continue;
 
-                string png = Path.Combine(RepoRoot, "CosmereScadrial", "Assets", "Textures", texture + ".png");
+                string png = Path.Combine(RepoRoot, "CosmereScadrial", "Textures", texture + ".png");
                 Assert.IsTrue(File.Exists(png), $"{defName} points at {texture}, and no PNG exists at {png}.");
             }
         }

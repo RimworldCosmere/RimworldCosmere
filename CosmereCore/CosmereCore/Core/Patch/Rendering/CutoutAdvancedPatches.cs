@@ -11,8 +11,6 @@ namespace Cosmere.Core.Patch.Rendering;
 
 [StaticConstructorOnStartup]
 public static class CutoutAdvancedMaterial {
-    private static Material? DrawNowMaterial;
-
     public static void ApplyMPBToMaterial(Material mat, MaterialPropertyBlock mpb) {
         Texture tex = mpb.GetTexture(CutoutAdvancedShaderProperties.MainTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.MainTex, tex);
@@ -25,16 +23,22 @@ public static class CutoutAdvancedMaterial {
             mpb.GetFloat(CutoutAdvancedShaderProperties.BlendStrength)
         );
         mat.SetFloat(
-            CutoutAdvancedShaderProperties.ColorCount,
-            mpb.GetFloat(CutoutAdvancedShaderProperties.ColorCount)
-        );
-        mat.SetFloat(
             CutoutAdvancedShaderProperties.MaterialIntensity,
             mpb.GetFloat(CutoutAdvancedShaderProperties.MaterialIntensity)
         );
 
-        Texture palette = mpb.GetTexture(CutoutAdvancedShaderProperties.PaletteTex);
-        if (palette != null) mat.SetTexture(CutoutAdvancedShaderProperties.PaletteTex, palette);
+        Vector4[] colors = mpb.GetVectorArray(CutoutAdvancedShaderProperties.PaletteColors);
+        if (colors != null) {
+            mat.SetVectorArray(CutoutAdvancedShaderProperties.PaletteColors, colors);
+            mat.SetFloatArray(
+                CutoutAdvancedShaderProperties.MetallicValues,
+                mpb.GetFloatArray(CutoutAdvancedShaderProperties.MetallicValues)
+            );
+            mat.SetFloatArray(
+                CutoutAdvancedShaderProperties.SmoothnessValues,
+                mpb.GetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues)
+            );
+        }
 
         mat.SetFloat(
             CutoutAdvancedShaderProperties.UseWearMask,
@@ -92,20 +96,6 @@ public static class CutoutAdvancedMaterial {
             mpb.GetVector(CutoutAdvancedShaderProperties.RimLightCenter)
         );
     }
-
-    public static Material ForDrawNow(Material source, MaterialPropertyBlock? properties) {
-        if (DrawNowMaterial == null) {
-            DrawNowMaterial = new Material(source);
-        } else {
-            DrawNowMaterial.CopyPropertiesFromMaterial(source);
-        }
-
-        if (properties != null) {
-            ApplyMPBToMaterial(DrawNowMaterial, properties);
-        }
-
-        return DrawNowMaterial;
-    }
 }
 
 [Patch]
@@ -126,40 +116,6 @@ public abstract class DynamicApparelNodesPatch : DynamicPawnRenderNodeSetup_Appa
 
             yield return entry;
         }
-    }
-}
-
-[Patch(typeof(GenDraw))]
-public static class GenDrawMeshNowOrLaterPatch {
-    [Inject(
-        At.Head,
-        nameof(GenDraw.DrawMeshNowOrLater),
-        parameterTypes: [
-            typeof(Mesh),
-            typeof(Matrix4x4),
-            typeof(Material),
-            typeof(bool),
-            typeof(MaterialPropertyBlock),
-        ]
-    )]
-    private static Control BeforeDrawMeshNowOrLater(
-        Mesh mesh,
-        Matrix4x4 matrix,
-        Material mat,
-        bool drawNow,
-        MaterialPropertyBlock? properties
-    ) {
-        if (mat.shader != ShaderDatabase.CutoutAdvanced) return Control.Continue;
-
-        if (drawNow) {
-            Material material = CutoutAdvancedMaterial.ForDrawNow(mat, properties);
-            material.SetPass(0);
-            Graphics.DrawMeshNow(mesh, matrix);
-        } else {
-            Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, properties);
-        }
-
-        return Control.Cancel;
     }
 }
 

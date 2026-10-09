@@ -69,12 +69,11 @@ switch ($Command.ToLower()) {
         Write-Section "General Commands"
         Write-Host "  help          - Show this help message"
         Write-Host "  all           - Full build pipeline (clean, generate, build everything)"
-        Write-Host "  generatables  - Generate code and build assets only (no solution build)"
         Write-Host "  build         - Build everything (no clean) for IDE run configurations"
         Write-Host "  build-all     - Full build pipeline (alias for all, use with IDE run configurations)"
         Write-Host "  run           - Full build and launch RimWorld"
         Write-Host "  quick         - Quick development cycle (generate + build main solution)"
-        Write-Host "  dev           - Development build (generate + build main + build assets)"
+        Write-Host "  dev           - Development build (generate + build main)"
         Write-Host "  setup         - Initial project setup"
         
         Write-Section "Code Generation"
@@ -93,9 +92,6 @@ switch ($Command.ToLower()) {
         Write-Host "  build-main-debug - Build main solution in debug mode"
         Write-Host "  build-tools   - Build Tools CLI"
         Write-Host "  build-tools-debug - Build Tools CLI in debug mode"
-        Write-Host "  build-assets  - Build Unity AssetBundles for current platform"
-        Write-Host "  build-assets-all - Build Unity AssetBundles for all platforms (Windows, Mac, Linux)"
-        Write-Host "  build-assets-force - Force rebuild all AssetBundles for current platform"
         Write-Host "  build-debug   - Build in debug mode"
         
         Write-Section "Development Tools"
@@ -140,22 +136,13 @@ switch ($Command.ToLower()) {
         & $PSCommandPath generate
         & $PSCommandPath build-main
         & $PSCommandPath build-tools
-        & $PSCommandPath build-assets
         Write-Success "Full build complete!"
     }
-    
-    "generatables" {
-        Write-Info "Building generatables (assets and generated code)..."
-        & $PSCommandPath generate
-        & $PSCommandPath build-assets
-        Write-Success "Generatables complete!"
-    }
-    
+
     "build" {
         Write-Info "Building everything (no clean)..."
         & $PSCommandPath generate
         & $PSCommandPath build-main
-        & $PSCommandPath build-assets
         Write-Success "Build complete - ready for launch!"
     }
     
@@ -165,7 +152,6 @@ switch ($Command.ToLower()) {
         & $PSCommandPath generate
         & $PSCommandPath build-main
         & $PSCommandPath build-tools
-        & $PSCommandPath build-assets
         Write-Success "Full build complete - ready for launch!"
     }
     
@@ -195,7 +181,6 @@ switch ($Command.ToLower()) {
         Write-Info "Development build..."
         & $PSCommandPath generate
         & $PSCommandPath build-main
-        & $PSCommandPath build-assets
         Write-Success "Development build complete!"
     }
     
@@ -262,34 +247,6 @@ switch ($Command.ToLower()) {
         Invoke-DotNet "build Cosmere.Tools.slnx --configuration Release --verbosity minimal"
     }
     
-    "build-assets" {
-        Write-Info "Building Unity AssetBundles..."
-        dotnet script ./scripts/build-assets.csx
-    }
-    
-    "build-assets-all" {
-        Write-Info "Building Unity AssetBundles for all platforms..."
-        
-        Write-Info "  Building for Windows..."
-        $env:UNITY_BUILD_TARGET = "windows"
-        dotnet script ./scripts/build-assets.csx
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        
-        Write-Info "  Building for macOS..."
-        $env:UNITY_BUILD_TARGET = "mac"
-        dotnet script ./scripts/build-assets.csx
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        
-        Write-Info "  Building for Linux..."
-        $env:UNITY_BUILD_TARGET = "linux"
-        dotnet script ./scripts/build-assets.csx
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        
-        # Clean up environment variable
-        $env:UNITY_BUILD_TARGET = $null
-        Write-Success "All platform bundles built!"
-    }
-    
     "build-main-debug" {
         Write-Info "Building main solution (Debug)..."
         Invoke-DotNet "build Cosmere.slnx --configuration Debug --verbosity minimal"
@@ -298,11 +255,6 @@ switch ($Command.ToLower()) {
     "build-tools-debug" {
         Write-Info "Building Tools solution (Debug)..."
         Invoke-DotNet "build Cosmere.Tools.slnx --configuration Debug --verbosity minimal"
-    }
-    
-    "build-assets-force" {
-        Write-Info "Force building Unity AssetBundles..."
-        dotnet script ./scripts/build-assets.csx -- --force
     }
     
     "build-debug" {
@@ -369,7 +321,7 @@ switch ($Command.ToLower()) {
         Write-Host "  CosmereRoshar        - XML defs and assets for Surgebinding and Radiant Orders"
         Write-Host ""
         Write-ColoredLine "Tools:" $Green
-        Write-Host "  Tools CLI            - Code generation and asset building"
+        Write-Host "  Tools CLI            - Code generation"
         Write-Host ""
         Write-ColoredLine "Common Workflows:" $Green
         Write-Host "  Development:         .\make.ps1 dev"
@@ -467,10 +419,6 @@ switch ($Command.ToLower()) {
             Write-Host "  Node.js: Not installed"
         }
         Write-Host "  Git: " -NoNewline; git --version
-        Write-Host ""
-        Write-Section "Unity Information"
-        Write-Host "  Target Version: 2022.3.35f1"
-        Write-Host "  AssetBundleBuilder: CryptikLemur.AssetBundleBuilder (dotnet tool)"
     }
     
     default {

@@ -7,34 +7,30 @@ development environment, add new shardworlds, and follow our commit and release 
 
 ### Requirements
 
-- [.Net SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
-- [.Net Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
-- [Unity Hub](https://unity.com/download)
-- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35)
+- [.Net SDK 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - [Make](https://gnuwin32.sourceforge.net/packages/make.htm) (optional - Windows users can use `make.ps1` instead)
 
 To develop locally:
 
-1. Generate code and build assets:
+1. Generate code:
 
     **Option A: Using Make (if installed):**
     ```bash
-    make generatables  # Generate code and build assets
+    make generate
     ```
 
     **Option B: Using PowerShell script (Windows):**
     ```powershell
-    .\make.ps1 generatables  # Generate code and build assets
+    .\make.ps1 generate
     ```
 
     **Available commands:**
     - `make help` or `.\make.ps1 help` - Show all available commands
-    - `make generatables` - Generate code and build assets (recommended for development)
-    - `make generate` - Generate code only
-    - `make build-assets` - Build Unity AssetBundles only (requires Unity 2022.3.35f1)
-    - `make all` - Full build pipeline (clean, generate, build, assets)
+    - `make generate` - Generate code from the definitions under `Resources/`
+    - `make build` - Generate, then build the solution
+    - `make all` - Full build pipeline (clean, generate, build)
 
-    **Note:** AssetBundle building requires Unity 2022.3.35f1 to be installed. The AssetBundleBuilder tool will automatically find and use your Unity installation.
+    **Note:** Textures, shaders and sounds ship loose under each mod root and are checked in, so there is no asset build step.
 
 2. For development, use the provided RimWorld run configurations in your IDE.
     - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is highly recommended for Rider users as it provides RimWorld-specific tooling and run configurations.

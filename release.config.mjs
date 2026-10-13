@@ -1,4 +1,5 @@
 ﻿import { MOD_RELEASE_RULES, splitPublish } from '@rimworks/mod-ci';
+import { deriveWorkshopMetadata } from 'semantic-release-steam/lib/about.mjs';
 import { readFileSync } from 'node:fs';
 import { basename } from 'node:path';
 
@@ -7,6 +8,15 @@ const publishedFileIds = JSON.parse(
 );
 const descriptionHeader = readFileSync(new URL('./.github/README.header.md', import.meta.url), 'utf8');
 const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', import.meta.url), 'utf8');
+
+const mods = await Promise.all(
+    ['CosmereCore', 'CosmereScadrial', 'CosmereRoshar'].map(async name => ({
+        name,
+        path: name,
+        workshopIds: publishedFileIds[name],
+        metadata: {beta: {tags: [...(await deriveWorkshopMetadata(name)).tags, 'Beta']}},
+    })),
+);
 
 /**
  * @type {import('semantic-release').GlobalConfig}
@@ -45,23 +55,7 @@ export default {
                 "descriptionHeader": descriptionHeader,
                 "descriptionFooter": descriptionFooter,
                 "assetBaseUrlTemplate": "https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/{branch}",
-                "mods": [
-                    {
-                        "name": "CosmereCore",
-                        "path": "CosmereCore",
-                        "workshopIds": publishedFileIds.CosmereCore,
-                    },
-                    {
-                        "name": "CosmereScadrial",
-                        "path": "CosmereScadrial",
-                        "workshopIds": publishedFileIds.CosmereScadrial,
-                    },
-                    {
-                        "name": "CosmereRoshar",
-                        "path": "CosmereRoshar",
-                        "workshopIds": publishedFileIds.CosmereRoshar,
-                    }
-                ]
+                "mods": mods,
             }
         ],
         [

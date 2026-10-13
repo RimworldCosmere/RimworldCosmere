@@ -90,7 +90,6 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
-      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -310,8 +309,11 @@ jobs:
     uses: RimWorks/mod-ci/.github/workflows/publish.yml@v4
     permissions:
       contents: read
-      id-token: write
-    secrets: inherit
+    secrets:
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
+      STEAM_CONFIG_VDF_B64: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     with:
       version: ${{ needs.semantic-release.outputs.version }}
       branch: ${{ github.ref_name }}

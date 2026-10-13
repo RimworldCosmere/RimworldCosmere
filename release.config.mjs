@@ -1,6 +1,6 @@
 ﻿import { splitPublish } from '@rimworks/mod-ci';
 import { readFileSync } from 'node:fs';
-import { basename, join } from 'node:path';
+import { basename } from 'node:path';
 
 const publishedFileIds = JSON.parse(
     readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
@@ -44,19 +44,16 @@ export default {
                     {
                         "name": "CosmereCore",
                         "path": "CosmereCore",
-                        "previewfile": join(import.meta.dirname, 'CosmereCore/About/Preview.png'),
                         "workshopIds": publishedFileIds.CosmereCore,
                     },
                     {
                         "name": "CosmereScadrial",
                         "path": "CosmereScadrial",
-                        "previewfile": join(import.meta.dirname, 'CosmereScadrial/About/Preview.png'),
                         "workshopIds": publishedFileIds.CosmereScadrial,
                     },
                     {
                         "name": "CosmereRoshar",
                         "path": "CosmereRoshar",
-                        "previewfile": join(import.meta.dirname, 'CosmereRoshar/About/Preview.png'),
                         "workshopIds": publishedFileIds.CosmereRoshar,
                     }
                 ]

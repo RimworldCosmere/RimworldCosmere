@@ -90,7 +90,6 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
-      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
 
     steps:
@@ -228,11 +227,8 @@ jobs:
       - name: Prepare upload directory
         working-directory: RimworldCosmere
         run: |
-          mkdir -p "$TEMP_DIR"
-
           ZIP_PATH="${{ github.workspace }}/${MOD}-${BRANCH_NAME}.zip"
-          cd "$MOD"
-          zip -r "$ZIP_PATH" .
+          zip -r "$ZIP_PATH" "$MOD"
 
           echo "✅ Generated zip artifact for $MOD at $ZIP_PATH"
           ls -lh "$ZIP_PATH"
@@ -252,7 +248,11 @@ jobs:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
+    outputs:
+      published: ${{ steps.after.outputs.published }}
+      version: ${{ steps.after.outputs.version }}
+      tag: ${{ steps.after.outputs.tag }}
+      previous-tag: ${{ steps.before.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -264,37 +264,12 @@ jobs:
           node-version: "lts/*"
       - name: Install release dependencies
         run: npm ci --ignore-scripts
-      - name: Set up SteamCMD
-        uses: buildalon/setup-steamcmd@v1
-      - name: Restore Steam config
-        env:
-          STEAM_CONFIG_VDF_B64: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
-        run: |
-          mkdir -p "$STEAM_DIR/config"
-          printf '%s' "$STEAM_CONFIG_VDF_B64" | base64 -d > "$STEAM_DIR/config/config.vdf"
-          echo "STEAM_CONFIG_VDF=$STEAM_DIR/config/config.vdf" >> "$GITHUB_ENV"
-
-      - name: Steam login preflight
-        env:
-          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-        run: |
-          "$STEAM_CMD/steamcmd.sh" +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login "$STEAM_USERNAME" +quit
-
       - name: Download all zip artifacts
         uses: actions/download-artifact@v5
         with:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
-      - name: Extract built mod artifacts
-        run: |
-          for artifact in ./zips/*.zip; do
-            [ -f "$artifact" ] || continue
-            filename=$(basename "$artifact")
-            mod_name="${filename%-${GITHUB_REF_NAME}.zip}"
-            mkdir -p "./${mod_name}"
-            unzip -o "$artifact" -d "./${mod_name}"
-          done
       - name: Record the tag before releasing
         id: before
         run: echo "tag=$(git describe --tags --abbrev=0 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
@@ -302,19 +277,37 @@ jobs:
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
-          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-          STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
-          STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
           BETA_HUB_API_KEY: ${{ secrets.BETA_HUB_API_KEY }}
+          SPLIT_PUBLISH: '1'
         # --no runs the copy npm ci installed and fails if it is missing, instead of fetching
         # an unpinned semantic-release off the registry and running its lifecycle scripts.
         run: npx --no semantic-release
 
-      - uses: RimWorks/mod-ci/.github/actions/discord-release@v4
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          mod-name: Cosmere
-          role-ids: ${{ vars.DISCORD_ROLE_IDS }}
-          workshop-id: Core=3474223604, Scadrial=3474236328, Roshar=3706867006
-          embed-color: E67E22
-          previous-tag: ${{ steps.before.outputs.tag }}
+      - name: Read the tag it just cut
+        id: after
+        run: |
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          if [ "$tag" = "${{ steps.before.outputs.tag }}" ] || [ -z "$tag" ]; then
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          fi
+
+  publish:
+    needs: semantic-release
+    if: needs.semantic-release.outputs.published == 'true'
+    uses: RimWorks/mod-ci/.github/workflows/publish.yml@v4
+    permissions:
+      contents: read
+    secrets: inherit
+    with:
+      version: ${{ needs.semantic-release.outputs.version }}
+      branch: ${{ github.ref_name }}
+      zip-artifact-pattern: '*-zip'
+      discord-mod-name: Cosmere
+      discord-workshop-id: Core=3474223604, Scadrial=3474236328, Roshar=3706867006
+      discord-embed-color: E67E22
+      tag: ${{ needs.semantic-release.outputs.tag }}
+      previous-tag: ${{ needs.semantic-release.outputs.previous-tag }}

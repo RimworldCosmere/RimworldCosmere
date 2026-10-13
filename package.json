@@ -1,10 +1,9 @@
 {
   "scripts": {
-    "test:steam-release": "node --test tools/semantic-release-steam/tests/*.test.mjs",
-    "test:betahub-release": "node --test tools/semantic-release-betahub/tests/*.test.mjs",
-    "check:steam-release": "node tools/semantic-release-steam/tests/run-config-check.mjs"
+    "test:betahub-release": "node --test tools/semantic-release-betahub/tests/*.test.mjs"
   },
   "devDependencies": {
+    "@rimworks/mod-ci": "github:RimWorks/mod-ci#v4",
     "semantic-release": "^25.0.9",
     "semantic-release-steam": "^2.1.3"
   }

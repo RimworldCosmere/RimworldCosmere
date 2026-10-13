@@ -301,6 +301,7 @@ jobs:
     uses: RimWorks/mod-ci/.github/workflows/publish.yml@v4
     permissions:
       contents: read
+      id-token: write
     secrets: inherit
     with:
       version: ${{ needs.semantic-release.outputs.version }}

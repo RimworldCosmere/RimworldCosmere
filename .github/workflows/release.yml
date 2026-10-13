@@ -127,6 +127,15 @@ jobs:
         working-directory: RimworldCosmere
         run: npm install -g --ignore-scripts @steamdown/cli@1.0.0 tsx@4.23.15
 
+      - name: Stage game assemblies
+        id: refs
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        with:
+          image: ${{ needs.game-image.outputs.image-ref }}
+
+      - name: Point msbuild at the refs
+        run: echo "GameManagedDir=${{ steps.refs.outputs.managed-dir }}" >> "$GITHUB_ENV"
+
       - name: Run code generation
         working-directory: RimworldCosmere
         env:

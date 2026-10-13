@@ -30,7 +30,11 @@ jobs:
 
   build:
     name: Build and test
+    needs: [ game-image ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -46,6 +50,15 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
+      - name: Stage game assemblies
+        id: refs
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        with:
+          image: ${{ needs.game-image.outputs.image-ref }}
+
+      - name: Point msbuild at the refs
+        run: echo "GameManagedDir=${{ steps.refs.outputs.managed-dir }}" >> "$GITHUB_ENV"
 
       # Generated defs and BetaHubToken.generated.cs are gitignored, so a fresh checkout cannot
       # compile without this. It tolerates the missing token that a fork PR will have.
@@ -110,6 +123,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+
+      - name: Stage game assemblies
+        id: refs
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        with:
+          image: ${{ needs.game-image.outputs.image-ref }}
+
+      - name: Point msbuild at the refs
+        run: echo "GameManagedDir=${{ steps.refs.outputs.managed-dir }}" >> "$GITHUB_ENV"
 
       # Codegen is gitignored, same as the build job. `quick` is what `make pickle` depends on.
       - name: Build the mods

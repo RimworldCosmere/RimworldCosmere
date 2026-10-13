@@ -45,4 +45,8 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <Target Name="RequireGameRefs" BeforeTargets="ResolveAssemblyReferences" Condition="'$(HasGameRefs)' != 'true'">
+    <Error Text="no rimworld $(GameRefsVersion) assemblies at $(GamecrateRefs). run: gamecrate steam build rimworld --beta version-$(GameRefsVersion)" />
+  </Target>
+
 </Project>

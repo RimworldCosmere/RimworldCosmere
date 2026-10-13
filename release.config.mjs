@@ -1,4 +1,4 @@
-﻿import { splitPublish } from '@rimworks/mod-ci';
+﻿import { MOD_RELEASE_RULES, splitPublish } from '@rimworks/mod-ci';
 import { readFileSync } from 'node:fs';
 import { basename } from 'node:path';
 
@@ -14,7 +14,12 @@ const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', imp
 export default {
     branches: ["main", {name: 'beta', prerelease: true}, {name: 'alpha', prerelease: true}],
     "plugins": splitPublish([
-        "@semantic-release/commit-analyzer",
+        [
+            "@semantic-release/commit-analyzer",
+            {
+                "releaseRules": [{type: 'build', release: 'patch'}, ...MOD_RELEASE_RULES],
+            }
+        ],
         "@semantic-release/release-notes-generator",
         [
             "@semantic-release/github",

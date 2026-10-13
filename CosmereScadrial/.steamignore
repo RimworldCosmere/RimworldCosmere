@@ -4,3 +4,5 @@ Assets
 .gitignore
 .assetbundler.toml
 README.template.md
+Textures
+Assets.zip.*

@@ -11,6 +11,8 @@ Cosmere.slnx.DotSettings.user
 **/Assemblies
 **/AssetBundles
 **/.lastassetbuildhash
+Assets.zip
+Assets.zip.*
 .env
 Assembly-CSharp.dll
 *.stackdump

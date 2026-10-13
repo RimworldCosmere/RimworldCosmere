@@ -6,3 +6,6 @@ Pickle
 .gitignore
 .assetbundler.toml
 README.template.md
+Textures
+Sounds
+Assets.zip.*

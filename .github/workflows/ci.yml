@@ -38,7 +38,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       - uses: actions/cache@v5
         with:
@@ -80,8 +80,7 @@ jobs:
           steam-username: ${{ secrets.STEAM_USERNAME }}
           steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
           app-id: '294100'
-          # The version the mod compiles against.
-          branch: 'phoenix'
+          branch: 'unstable'
           image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           skip-if-unchanged: 'true'
@@ -102,7 +101,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       - uses: actions/cache@v5
         with:
@@ -173,7 +172,7 @@ jobs:
       solution: Cosmere.slnx
       project-key: RimworldCosmere_RimworldCosmere
       organization: rimworldcosmere
-      dotnet-version: 9.0.x
+      dotnet-version: 10.0.x
       game-image: ${{ needs.game-image.outputs.image-ref }}
       pre-scan-command: make generate
       exclusions: Styles/**,Cosmere*/Textures/**,Cosmere*/Assemblies/**,**/bin/**,**/obj/**,**/*.generated.cs

@@ -55,13 +55,33 @@ jobs:
           echo "Found mods: $mods"
 
 
-  # Build all asset bundles for all platforms in a single job
-
-  prepare:
-    needs: get-mods
+  game-image:
+    name: RimWorld image
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
+    outputs:
+      image-ref: ${{ steps.image.outputs.image-ref }}
+    steps:
+      - name: Build the RimWorld game image
+        id: image
+        uses: RimWorks/steam-game-image-action@v3
+        with:
+          steam-username: ${{ secrets.STEAM_USERNAME }}
+          steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+          app-id: '294100'
+          branch: 'unstable'
+          image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          skip-if-unchanged: 'true'
+
+  prepare:
+    needs: [ get-mods, game-image ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     strategy:
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
@@ -97,7 +117,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -180,6 +200,30 @@ jobs:
 
           echo "✓ Found Cosmere.dll at $DLL_PATH"
           ls -lh "$DLL_PATH"
+
+      - name: Log in to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Bake the asset pack
+        working-directory: RimworldCosmere
+        env:
+          GAME_IMAGE: ${{ needs.game-image.outputs.image-ref }}
+        run: |
+          docker run --rm \
+            --entrypoint /game/RimWorld \
+            -u "$(id -u):$(id -g)" \
+            --tmpfs /tmp/home:exec,mode=1777 \
+            -e HOME=/tmp/home \
+            -e XDG_CONFIG_HOME=/tmp/home \
+            -e XDG_CACHE_HOME=/tmp/home \
+            -e XDG_DATA_HOME=/tmp/home \
+            -v "$PWD/$MOD:/bake/$MOD" \
+            "$GAME_IMAGE" \
+            -Headless -NoFileLog -BakeModAssetPacks="/bake/$MOD"
+
+          ls -lh "$MOD/Assets.zip" "$MOD/Assets.zip.fingerprint"
 
       - name: Prepare upload directory
         working-directory: RimworldCosmere

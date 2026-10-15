@@ -9,12 +9,24 @@ const publishedFileIds = JSON.parse(
 const descriptionHeader = readFileSync(new URL('./.github/README.header.md', import.meta.url), 'utf8');
 const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', import.meta.url), 'utf8');
 
+const titles = {
+    CosmereCore: 'Cosmere - Core',
+    CosmereScadrial: 'Cosmere - Scadrial',
+    CosmereRoshar: 'Cosmere - Roshar',
+};
+
 const mods = await Promise.all(
-    ['CosmereCore', 'CosmereScadrial', 'CosmereRoshar'].map(async name => ({
+    Object.keys(titles).map(async name => ({
         name,
         path: name,
+        title: titles[name],
         workshopIds: publishedFileIds[name],
-        metadata: {beta: {tags: [...(await deriveWorkshopMetadata(name)).tags, 'Beta']}},
+        metadata: {
+            beta: {
+                title: `[Beta] ${titles[name]}`,
+                tags: [...(await deriveWorkshopMetadata(name)).tags, 'Beta'],
+            },
+        },
     })),
 );
 

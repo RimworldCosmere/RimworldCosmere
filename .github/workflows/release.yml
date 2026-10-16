@@ -74,7 +74,7 @@ jobs:
           variant: linux
           image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          skip-if-unchanged: 'false'
+          skip-if-unchanged: 'true'
 
   prepare:
     needs: [ get-mods, game-image ]

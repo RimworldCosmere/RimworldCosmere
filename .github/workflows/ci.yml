@@ -88,15 +88,15 @@ jobs:
     steps:
       - name: Build the RimWorld game image
         id: image
-        uses: RimWorks/steam-game-image-action@v3
+        uses: RimWorks/steam-game-image-action@v4
         with:
           steam-username: ${{ secrets.STEAM_USERNAME }}
           steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
-          app-id: '294100'
           branch: 'unstable'
+          variant: linux
           image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          skip-if-unchanged: 'true'
+          skip-if-unchanged: 'false'
 
   pickle:
     name: Pickle suite

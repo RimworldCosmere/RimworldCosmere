@@ -40,7 +40,7 @@ public static class EmotionalResistance {
     ///     koloss come easily.
     /// </summary>
     private static float Scaling =>
-        Mathf.Max(0.01f, Mod.kolossResistance);
+        Mathf.Max(0.01f, Mod.KolossResistance);
 
     /// <summary>
     ///     Zero for anything that cannot be bound at all, so callers can test the number rather

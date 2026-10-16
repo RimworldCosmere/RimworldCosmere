@@ -9,7 +9,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
 
     private bool dirty = true;
 
-    private static bool enabled => FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_StormlightNetwork);
+    private static bool Enabled => FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_StormlightNetwork);
 
     public List<StormlightNetworkGrid> Networks { get; } = [];
 
@@ -23,7 +23,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
     }
 
     public override void MapComponentTick() {
-        if (!enabled) return;
+        if (!Enabled) return;
         if (!GenTicks.IsTickInterval(DistributeInterval)) return;
 
         if (dirty) {

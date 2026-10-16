@@ -39,7 +39,7 @@ public class SurgeChargeHediff : AllomanticHediff {
             if (!genes[i].Burning) continue;
             List<DrainSource> sources = genes[i].Sources;
             for (int j = 0; j < sources.Count; j++) {
-                if (((AllomanticAbilityDef)sources[j].Def).metal == metal) continue;
+                if (((AllomanticAbilityDef)sources[j].Def).metal == Metal) continue;
                 pawn.GetAllomanticAbility(sources[j].Def)?.UpdateStatus(BurningStatus.Duralumin);
             }
         }
@@ -63,12 +63,12 @@ public class SurgeChargeHediff : AllomanticHediff {
 
         IAbility<Allomancer, IHediff<Allomancer>>[] snapshot = [.. SourceAbilities];
         for (int i = 0; i < snapshot.Length; i++) {
-            if (snapshot[i] is not AllomancyAbility sourceAbility || !sourceAbility.atLeastBurning) continue;
+            if (snapshot[i] is not AllomancyAbility sourceAbility || !sourceAbility.AtLeastBurning) continue;
             if (sourceAbility.pawn.genes == null) continue;
-            Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
+            Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.Metal);
             if (sourceGene == null || !sourceGene.Burning) continue;
             if (
-                sourceAbility.def.IsOneOf(
+                sourceAbility.Def.IsOneOf(
                     AbilityDefOf.Cosmere_Scadrial_Ability_Duralumin,
                     AbilityDefOf.Cosmere_Scadrial_Ability_Nicrosil
                 )

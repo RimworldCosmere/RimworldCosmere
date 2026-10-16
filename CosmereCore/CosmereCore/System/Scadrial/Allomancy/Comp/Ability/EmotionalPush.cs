@@ -24,13 +24,13 @@ namespace Cosmere.System.Scadrial.Allomancy.Comp.Ability;
 ///     </para>
 /// </remarks>
 public abstract class EmotionalPush : CompAbilityEffect {
-    protected new AllomancyAbility parent => (AllomancyAbility)base.parent;
+    protected AllomancyAbility Parent => (AllomancyAbility)parent;
 
     protected float Reach {
         get {
-            int power = Math.Max(parent.status.power, parent.nextStatus?.power ?? 0);
+            int power = Math.Max(Parent.status.power, Parent.NextStatus?.power ?? 0);
 
-            return parent.GetStrength((Status)Math.Max(power, 1));
+            return Parent.GetStrength((Status)Math.Max(power, 1));
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class EmotionalPush : CompAbilityEffect {
     /// </remarks>
     /// <returns>True when a coppercloud hides the target, in which case the player is also told why.</returns>
     protected bool Blocked(Pawn target) {
-        if (!Coppercloud.Hides(parent.pawn, target, parent.def.metal)) return false;
+        if (!Coppercloud.Hides(Parent.pawn, target, Parent.Def.metal)) return false;
 
         Messages.Message(
             "CS_Coppercloud_Blocked".Translate(target.LabelShortCap.Named("TARGET")),

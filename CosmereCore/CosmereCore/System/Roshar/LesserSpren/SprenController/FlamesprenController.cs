@@ -8,36 +8,36 @@ using Verse;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class FlamesprenController : DynamicSprenController {
-    public override SprenType sprenType => SprenType.Flamespren;
+    public override SprenType SprenType => SprenType.Flamespren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.8f;
+    public override float CellSpawnChance => 0.8f;
 
-    public override int minParticlesPerCell => 3;
+    public override int MinParticlesPerCell => 3;
 
-    public override int maxParticlesPerCell => 8;
+    public override int MaxParticlesPerCell => 8;
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Ruby,
         GemDefOf.Garnet,
         GemDefOf.Heliodor,
     ];
 
-    public override float captureRarityMultiplier => 0.8f;
+    public override float CaptureRarityMultiplier => 0.8f;
 
-    public override Color sprenColor => new Color(1f, 0.4f, 0.1f, 0.9f);
+    public override Color SprenColor => new Color(1f, 0.4f, 0.1f, 0.9f);
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         List<SprenSpawnInformation> spawnInfos = [];
 
         foreach (Verse.Thing fire in map!.listerThings.ThingsOfDef(RimWorld.ThingDefOf.Fire)) {
-            spawnInfos.Add(defaultSpawnInformation.With(map, fire.Position));
+            spawnInfos.Add(DefaultSpawnInformation.With(map, fire.Position));
 
             spawnInfos.AddRange(
                 from adjacentCell in GenAdj.CellsAdjacent8Way(new TargetInfo(fire.Position, map))
                 where IsInBounds(adjacentCell, map)
-                select defaultSpawnInformation.With(
+                select DefaultSpawnInformation.With(
                     map,
                     adjacentCell,
                     minParticles: 1,
@@ -56,14 +56,14 @@ public class FlamesprenController : DynamicSprenController {
                 Mathf.Clamp01((heatPusher.Props.heatPerSecond - thing.AmbientTemperature - 5) / (30 - 5));
 
             // Scale particles from 2-4 (low heat) to 5-10 (high heat)
-            int minParticles = Mathf.RoundToInt(Mathf.Lerp(1f, minParticlesPerCell, lerpFactor));
-            int maxParticles = Mathf.RoundToInt(Mathf.Lerp(1f, maxParticlesPerCell, lerpFactor));
+            int minParticles = Mathf.RoundToInt(Mathf.Lerp(1f, MinParticlesPerCell, lerpFactor));
+            int maxParticles = Mathf.RoundToInt(Mathf.Lerp(1f, MaxParticlesPerCell, lerpFactor));
 
             spawnInfos.Add(
-                defaultSpawnInformation.With(
+                DefaultSpawnInformation.With(
                     map,
                     thing.Position,
-                    cellSpawnChance,
+                    CellSpawnChance,
                     minParticles,
                     maxParticles
                 )
@@ -72,7 +72,7 @@ public class FlamesprenController : DynamicSprenController {
             spawnInfos.AddRange(
                 from adjacentCell in GenAdj.CellsAdjacent8Way(new TargetInfo(thing.Position, map))
                 where IsInBounds(adjacentCell, map)
-                select defaultSpawnInformation.With(
+                select DefaultSpawnInformation.With(
                     position: adjacentCell,
                     spawnChance: 0.0005f,
                     minParticles: 1,

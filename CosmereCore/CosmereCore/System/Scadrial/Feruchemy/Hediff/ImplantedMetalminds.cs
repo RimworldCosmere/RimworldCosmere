@@ -7,7 +7,7 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 public class ImplantedMetalminds : HediffWithComps {
     public List<ImplantedMetalmindData> metalminds = [];
 
-    public int metalmindCount => metalminds.Count;
+    public int MetalmindCount => metalminds.Count;
 
     public override string LabelBase => metalminds.Count <= 1
         ? "implanted metalmind"

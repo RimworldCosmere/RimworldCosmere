@@ -7,31 +7,31 @@ using Verse;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class WavesprenController : StaticSprenController {
-    public override SprenType sprenType => SprenType.Wavespren;
+    public override SprenType SprenType => SprenType.Wavespren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.05f;
+    public override float CellSpawnChance => 0.05f;
 
-    public override int minParticlesPerCell => 1;
+    public override int MinParticlesPerCell => 1;
 
-    public override int maxParticlesPerCell => 2;
+    public override int MaxParticlesPerCell => 2;
 
-    protected override float maxSpreadDistance => 0.3f;
+    protected override float MaxSpreadDistance => 0.3f;
 
-    protected override float movementSpeed => 2f;
+    protected override float MovementSpeed => 2f;
 
-    protected override float randomDirectionAmount => 0.1f;
+    protected override float RandomDirectionAmount => 0.1f;
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Sapphire,
         GemDefOf.Diamond,
         GemDefOf.Topaz,
     ];
 
-    public override float captureRarityMultiplier => 1.0f;
+    public override float CaptureRarityMultiplier => 1.0f;
 
-    public override Color sprenColor => new Color(0.3f, 0.6f, 0.9f, 0.8f);
+    public override Color SprenColor => new Color(0.3f, 0.6f, 0.9f, 0.8f);
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
@@ -49,7 +49,7 @@ public class WavesprenController : StaticSprenController {
 
         bool isShore = IsAdjacentToLand(position, map!);
 
-        return isShore ? defaultSpawnInformation.With(map, position) : null;
+        return isShore ? DefaultSpawnInformation.With(map, position) : null;
     }
 
     private static bool IsAdjacentToLand(IntVec3 position, Map map) {

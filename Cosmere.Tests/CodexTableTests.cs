@@ -132,7 +132,7 @@ public class CodexTableTests {
             Feruchemy,
             "Copper is matched against a DefOf entry, never by defName string."
         );
-        Assert.Contains("fs[i].metal == MetallicArtsMetalDefOf.Copper", Feruchemy);
+        Assert.Contains("fs[i].Metal == MetallicArtsMetalDefOf.Copper", Feruchemy);
         Assert.Contains("mind.Metal == MetalDefOf.Copper", Feruchemy);
     }
 

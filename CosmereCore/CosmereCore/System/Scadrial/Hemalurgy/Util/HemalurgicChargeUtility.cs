@@ -89,7 +89,7 @@ public static class HemalurgicChargeUtility {
         Messages.Message(
             "CS_Hemalurgy_ChargeSuccess".Translate(
                 surgeon.Named("SURGEON"),
-                spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
+                spikeComp.Metal?.Named("METAL") ?? "unknown".Named("METAL"),
                 donor.Named("DONOR")
             ),
             donor,
@@ -103,10 +103,10 @@ public static class HemalurgicChargeUtility {
         InvestitureHolder? holder = donor.TryGetComp<InvestitureHolder>();
         if (holder == null) return;
 
-        float stolen = holder.currentInvestitureSelf * HemalurgicConstants.InvestitureTheftFraction;
+        float stolen = holder.CurrentInvestitureSelf * HemalurgicConstants.InvestitureTheftFraction;
         if (stolen <= 0f) return;
 
-        holder.currentInvestitureSelf -= stolen;
+        holder.CurrentInvestitureSelf -= stolen;
         chargeData.storedInvestiture = stolen;
     }
 
@@ -151,7 +151,7 @@ public static class HemalurgicChargeUtility {
     private static void ClearInvestitureAndTrait(Pawn donor) {
         InvestitureHolder? holder = donor.TryGetComp<InvestitureHolder>();
         if (holder != null) {
-            holder.currentInvestitureSelf = 0f;
+            holder.CurrentInvestitureSelf = 0f;
         }
 
         RemoveInvestedTrait(donor);

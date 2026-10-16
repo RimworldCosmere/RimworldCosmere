@@ -15,13 +15,13 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     public ThingWithComps? insertedGemstone;
     public bool powerOn;
 
-    public bool hasGemstone => insertedGemstone != null;
+    public bool HasGemstone => insertedGemstone != null;
 
     private SprenContainer? Spren => insertedGemstone?.TryGetComp<SprenContainer>();
 
     private InvestitureHolder? Holder => insertedGemstone?.TryGetComp<InvestitureHolder>();
 
-    public SprenType? currentSpren => Spren?.CapturedSprenType;
+    public SprenType? CurrentSpren => Spren?.CapturedSprenType;
 
     protected abstract HediffDef PainHediffDef { get; }
 
@@ -72,7 +72,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     public virtual void UpdatePowerState(bool flickeredOn) {
         InvestitureHolder? investiture = Holder;
         if (investiture != null) {
-            powerOn = investiture.currentInvestiture > 0 && flickeredOn;
+            powerOn = investiture.CurrentInvestiture > 0 && flickeredOn;
             return;
         }
 
@@ -125,7 +125,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         return "CRO_Fabrial_Inspect".Translate(
             (sprenContainer?.CapturedSprenType?.ToString()
              ?? (string)"CRO_Fabrial_Spren_None".Translate()).Named("SPREN"),
-            (investiture?.currentInvestiture ?? 0f).ToString("F0").Named("LIGHT"),
+            (investiture?.CurrentInvestiture ?? 0f).ToString("F0").Named("LIGHT"),
             GetTimeRemaining().Named("TIME")
         ).Resolve();
     }
@@ -138,7 +138,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         float investiturePerHour = investiture.drainRate * tickRaresPerHour;
         if (Mathf.Approximately(investiturePerHour, 0f)) return "CRO_Fabrial_TimeEndless".Translate();
 
-        int hoursLeft = (int)(investiture.currentInvestiture / investiturePerHour);
+        int hoursLeft = (int)(investiture.CurrentInvestiture / investiturePerHour);
         int daysLeft = hoursLeft / 24;
         hoursLeft %= 24;
         return "CRO_Fabrial_TimeRemaining".Translate(daysLeft.Named("DAYS"), hoursLeft.Named("HOURS")).Resolve();
@@ -149,8 +149,8 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 thing.HasComp<SprenContainer>() &&
-                thing.TryGetComp<SprenContainer>().hasCapturedSpren &&
-                thing.TryGetComp<InvestitureHolder>()?.currentInvestiture > 0 &&
+                thing.TryGetComp<SprenContainer>().HasCapturedSpren &&
+                thing.TryGetComp<InvestitureHolder>()?.CurrentInvestiture > 0 &&
                 FilterList.Contains(thing.def)
             ),
             500f

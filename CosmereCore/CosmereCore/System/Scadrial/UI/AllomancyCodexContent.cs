@@ -99,7 +99,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
     /// <summary>One metal: its mark, its savant standing, how long it has been burned, its vial button.</summary>
     private static void DrawMetalRow(Rect row, Allomancer gene, int stage, int burningTicks, bool striped) {
-        MetallicArtsMetalDef metal = gene.metal;
+        MetallicArtsMetalDef metal = gene.Metal;
         bool hasVialControls = !metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil);
 
         if (striped) Widgets.DrawBoxSolid(row, RowStripeColor);
@@ -187,7 +187,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         List<(Allomancer gene, int stage, int ticks)> rows = [];
         for (int i = 0; i < genes.Count; i++) {
             Allomancer gene = genes[i];
-            MetallicArtsMetalDef metal = gene.metal;
+            MetallicArtsMetalDef metal = gene.Metal;
             int stage = SavantUtility.CanBeSavant(metal)
                 ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal)
                 : 0;

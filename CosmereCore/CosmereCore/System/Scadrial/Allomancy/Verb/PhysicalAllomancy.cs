@@ -64,7 +64,7 @@ public class PhysicalAllomancy : Verb_CastAbility {
         Pawn caster = CasterPawn;
         if (caster?.Map == null || !target.IsValid) return;
 
-        bool pulling = ability is Ability.AllomancyAbility { def.metal.allomancy.polarity: AllomancyPolarity.Pulling };
+        bool pulling = ability is Ability.AllomancyAbility { Def.metal.allomancy.polarity: AllomancyPolarity.Pulling };
 
         RefreshMetalNearCursor(caster, target.Cell);
         for (int i = 0; i < metalNearCursor.Count; i++) {

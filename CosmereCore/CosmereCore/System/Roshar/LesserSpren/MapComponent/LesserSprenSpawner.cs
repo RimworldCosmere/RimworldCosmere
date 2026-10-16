@@ -82,30 +82,30 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     private void UpdateAllSprenControllers() {
-        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
-            SprenType sprenType = controller.sprenType;
+        foreach (BaseSprenController controller in SprenControllerRegistry.EnabledControllers) {
+            SprenType sprenType = controller.SprenType;
 
             if (!controller.UpdateInfo(map)) {
                 continue;
             }
 
             SprenParticleSystem? sprenSystem;
-            if (controller.activeSpawnInfo.Count > 0) {
+            if (controller.ActiveSpawnInfo.Count > 0) {
                 if (!SprenSystems.ContainsKey(sprenType)) {
                     CreateSprenSystem(sprenType);
                 }
 
                 sprenSystem = SprenSystems[sprenType];
 
-                if (sprenSystem?.particleSystem == null) continue;
+                if (sprenSystem?.ParticleSystem == null) continue;
 
                 sprenSystem.UpdateParticles();
-                sprenSystem.particleSystem.gameObject.SetActive(true);
-                sprenSystem.particleSystem.Play();
+                sprenSystem.ParticleSystem.gameObject.SetActive(true);
+                sprenSystem.ParticleSystem.Play();
             } else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
-                if (sprenSystem.particleSystem == null) continue;
-                sprenSystem.particleSystem.gameObject.SetActive(false);
-                sprenSystem.particleSystem.Stop();
+                if (sprenSystem.ParticleSystem == null) continue;
+                sprenSystem.ParticleSystem.gameObject.SetActive(false);
+                sprenSystem.ParticleSystem.Stop();
             }
         }
     }
@@ -134,7 +134,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             system.Destroy();
         }
 
-        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.EnabledControllers) {
             controller.ResetForNewMap();
         }
 
@@ -145,11 +145,11 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     private void InitializeMapSystems() {
         if (initialized) return;
 
-        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.EnabledControllers) {
             controller.InitializeInfo(map);
 
-            if (controller.validSpawnInfo.Count > 0) {
-                CreateSprenSystem(controller.sprenType);
+            if (controller.ValidSpawnInfo.Count > 0) {
+                CreateSprenSystem(controller.SprenType);
             }
         }
 
@@ -176,7 +176,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-            if (controller == null || !controller.isEnabled) continue;
+            if (controller == null || !controller.IsEnabled) continue;
             if (AppendSprenDebug(info, controller, sprenType, position)) foundValidSpren = true;
         }
 
@@ -192,8 +192,8 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         // Get actual spawn information for this position
         SprenSpawnInformation? positionSpawnInfo = controller.GetSprenSpawnInformation(position, map);
         bool isValidAtPosition = positionSpawnInfo != null;
-        bool isInActiveCells = controller.activeSpawnInfo.Any(i => i.position == position);
-        bool isInValidCells = controller.validSpawnInfo.Any(i => i.position == position);
+        bool isInActiveCells = controller.ActiveSpawnInfo.Any(i => i.position == position);
+        bool isInValidCells = controller.ValidSpawnInfo.Any(i => i.position == position);
 
         bool shouldShow = isValidAtPosition || isInActiveCells || isInValidCells;
 
@@ -235,11 +235,11 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     private static void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {
-        info.AppendLine($"  Spawn Chance: {controller.cellSpawnChance:P1}");
-        info.AppendLine($"  Particles/Cell: {controller.minParticlesPerCell}-{controller.maxParticlesPerCell}");
-        info.AppendLine($"  Color: {controller.sprenColor.ColoredColor()}");
-        info.AppendLine($"  Size Mult: {controller.sprenSizeMultiplier.ColoredBreakpoints()}x");
-        info.AppendLine($"  Emission Mult: {controller.emissionRateMultiplier.ColoredBreakpoints()}x");
-        info.AppendLine($"  Speed Mult: {controller.sprenSpeedMultiplier.ColoredBreakpoints()}x");
+        info.AppendLine($"  Spawn Chance: {controller.CellSpawnChance:P1}");
+        info.AppendLine($"  Particles/Cell: {controller.MinParticlesPerCell}-{controller.MaxParticlesPerCell}");
+        info.AppendLine($"  Color: {controller.SprenColor.ColoredColor()}");
+        info.AppendLine($"  Size Mult: {controller.SprenSizeMultiplier.ColoredBreakpoints()}x");
+        info.AppendLine($"  Emission Mult: {controller.EmissionRateMultiplier.ColoredBreakpoints()}x");
+        info.AppendLine($"  Speed Mult: {controller.SprenSpeedMultiplier.ColoredBreakpoints()}x");
     }
 }

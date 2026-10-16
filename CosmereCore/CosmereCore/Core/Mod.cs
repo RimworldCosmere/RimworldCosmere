@@ -19,9 +19,9 @@ public class Mod : CosmereMod<CoreModSettings> {
         GetSettings<CosmereSettings>();
     }
 
-    public static bool debugMode => GetModSettings<CoreModSettings>().debugMode;
+    public static bool DebugMode => GetModSettings<CoreModSettings>().debugMode;
 
-    public static List<CosmereModSettings> cosmereSettings => settingsList ??= BuildSettingsList();
+    public static List<CosmereModSettings> CosmereSettings => settingsList ??= BuildSettingsList();
 
     public static T GetModSettings<T>()
         where T : CosmereModSettings, new() {
@@ -31,7 +31,7 @@ public class Mod : CosmereMod<CoreModSettings> {
     }
 
     public override void DoSettingsWindowContents(Rect inRect) {
-        settingsWindow ??= new SettingsWindow(cosmereSettings);
+        settingsWindow ??= new SettingsWindow(CosmereSettings);
         settingsWindow.Draw(inRect);
     }
 

@@ -10,7 +10,7 @@ public class PhysicalExternalAuraProperties : LineDrawingAuraProperties {
         compClass = typeof(PhysicalExternalAura);
     }
 
-    public override Color lineColor => new Color(0.3f, 0.6f, 1f, 1f);
+    public override Color LineColor => new Color(0.3f, 0.6f, 1f, 1f);
 }
 
 public class PhysicalExternalAura : LineDrawingAura {
@@ -44,11 +44,11 @@ public class PhysicalExternalAura : LineDrawingAura {
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {
         return MetalLine(
-            parent.pawn,
+            Parent.pawn,
             thing,
-            metal.allomancy!.polarity == AllomancyPolarity.Pulling,
-            cachedLineMaterial ??= props.lineMaterial,
-            radius
+            Metal.allomancy!.polarity == AllomancyPolarity.Pulling,
+            cachedLineMaterial ??= Props.LineMaterial,
+            Radius
         );
     }
 }

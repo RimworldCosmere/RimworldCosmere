@@ -39,7 +39,7 @@ public class RadiantTracker : GameComponent {
                 List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
                 for (int g = 0; g < genes.Count; g++) {
                     if (genes[g] is not Surgebinder surgebinder) continue;
-                    if (surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith) continue;
+                    if (surgebinder.RadiantOrderDef == RadiantOrderDefOf.Bondsmith) continue;
                     count++;
                 }
             }
@@ -64,7 +64,7 @@ public class RadiantTracker : GameComponent {
         List<Verse.Gene> genes = pawn.genes?.GenesListForReading ?? [];
         for (int g = 0; g < genes.Count; g++) {
             if (genes[g] is not Surgebinder surgebinder) continue;
-            if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+            if (surgebinder.RadiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
             if (surgebinder.CurrentIdeal >= 1) count++;
         }
 
@@ -112,7 +112,7 @@ public class RadiantTracker : GameComponent {
         for (int i = 0; i < colonists.Count; i++) {
             Surgebinder? surgebinder = colonists[i].genes?.GetFirstGeneOfType<Surgebinder>();
             if (surgebinder == null) continue;
-            if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+            if (surgebinder.RadiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
 
             colonists[i].records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ColonyStabilityDays, 1);
         }

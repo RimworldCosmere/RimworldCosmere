@@ -8,9 +8,9 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
-    private static MetalDef pewter => MetalDefOf.Pewter;
+    private static MetalDef Pewter => MetalDefOf.Pewter;
 
-    private static ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
+    private static ThingDef VialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
 
@@ -29,17 +29,17 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         if (target == pawn) return false;
         if (target.DevelopmentalStage.Baby()) return false;
         if (target.genes == null) return false;
-        if (!target.genes.HasAllomanticGeneForMetal(pewter)) return false;
+        if (!target.genes.HasAllomanticGeneForMetal(Pewter)) return false;
         if (!pawn.CanReserve(t, ignoreOtherReservations: forced)) return false;
 
-        Allomancer pewterGene = target.genes.GetAllomanticGeneForMetal(pewter)!;
+        Allomancer pewterGene = target.genes.GetAllomanticGeneForMetal(Pewter)!;
         if (!pewterGene.ShouldConsumeVialNow) return false;
 
         if (TryFindBestVialSourceFor(pawn, out _)) {
             return true;
         }
 
-        JobFailReason.Is((string)"CS_NoVials".Translate(pewter.Named("METAL")));
+        JobFailReason.Is((string)"CS_NoVials".Translate(Pewter.Named("METAL")));
         return false;
     }
 
@@ -61,7 +61,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         vialSource = GenClosest.ClosestThingReachable(
             pawn.Position,
             pawn.Map,
-            ThingRequest.ForDef(vialDef),
+            ThingRequest.ForDef(VialDef),
             PathEndMode.Touch,
             TraverseParms.For(pawn),
             9999f,
@@ -74,7 +74,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private static bool VialValidator(Pawn pawn, Verse.Thing vial) {
         if (!vial.Spawned) return false;
         if (vial.IsForbidden(pawn)) return false;
-        if (!vial.Stuff.Equals(pewter.Item)) return false;
+        if (!vial.Stuff.Equals(Pewter.Item)) return false;
 
         return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10, 1);
     }

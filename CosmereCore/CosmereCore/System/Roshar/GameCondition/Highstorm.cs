@@ -48,7 +48,7 @@ public class Highstorm : RimWorld.GameCondition {
 
     public bool IsDangerousPhase => CurrentIntensity >= ShelterThreshold;
 
-    private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * CurrentIntensity;
+    private float InvestitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * CurrentIntensity;
 
     private static IntVec3 GetRandomStormOffset(bool timesTwo) {
         float choice = Rand.Range(0f, TotalOffsetWeight);
@@ -139,8 +139,8 @@ public class Highstorm : RimWorld.GameCondition {
 
         if (!thing.Position.Roofed(thing.Map) &&
             thing.TryGetComp(out InvestitureHolder investiture) &&
-            !investiture.isFull) {
-            investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
+            !investiture.IsFull) {
+            investiture.AbsorbInvestitureFrom(highstorm, InvestitureToAbsorb);
         }
     }
 
@@ -186,7 +186,7 @@ public class Highstorm : RimWorld.GameCondition {
     }
 
     private static bool CanStormPush(Verse.Thing thing) {
-        if (!Mod.enableHighstormPushing) return false;
+        if (!Mod.EnableHighstormPushing) return false;
         if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
         if (thing is Mineable or Plant) return false;
         if (!thing.CanBeMoved() && !thing.def.useHitPoints) return false;

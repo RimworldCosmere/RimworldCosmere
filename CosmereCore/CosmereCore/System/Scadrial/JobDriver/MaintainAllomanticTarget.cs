@@ -10,7 +10,7 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public class MaintainAllomanticTarget : AllomanticJobDriver {
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(
-            targetPawn,
+            TargetPawn,
             job,
             errorOnFailed: errorOnFailed,
             maxPawns: int.MaxValue,
@@ -31,7 +31,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
             defaultCompleteMode = ToilCompleteMode.Never,
             tickAction = () => {
                 if (ShouldStopJob()) {
-                    ability.UpdateStatus(BurningStatus.Off);
+                    Ability.UpdateStatus(BurningStatus.Off);
                     EndJobWith(JobCondition.Incompletable);
                     return;
                 }
@@ -40,11 +40,11 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
                 pawn.MaintainProximityTo(
                     TargetA,
                     job.followRadius,
-                    targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell
+                    TargetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell
                 );
 
                 // If we aren't close enough to the pawn, update burnrate to 0, and get closer
-                if (pawn.DistanceTo(targetPawn!) > ability.def.verbProperties.range) {
+                if (pawn.DistanceTo(TargetPawn!) > Ability.Def.verbProperties.range) {
                     UpdateBurnRate(0f);
                     return;
                 }
@@ -68,20 +68,20 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
     }
 
     protected override bool ShouldStopJob() {
-        if (targetIsPawn && targetPawn != null && (targetPawn.Dead || targetPawn.Downed)) {
+        if (TargetIsPawn && TargetPawn != null && (TargetPawn.Dead || TargetPawn.Downed)) {
             return true;
         }
 
         return base.ShouldStopJob() ||
-               !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
+               !pawn.CanReach(TargetA, TargetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
     }
 
     protected virtual void MaintainBurnRate() {
-        UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
+        UpdateBurnRate(Ability.GetDesiredBurnRateForStatus());
     }
 
     protected virtual void MaintainEffectOnTarget() {
-        AllomanticHediff? hediff = targetPawn!.GetOrAddHediff(ability, ability.def, pawn);
+        AllomanticHediff? hediff = TargetPawn!.GetOrAddHediff(Ability, Ability.Def, pawn);
 
         hediff?.TryGetComp<DisappearsScaled>()?.CompPostMake();
     }

@@ -23,11 +23,11 @@ public class StoredMemory : IExposable {
         moodOffset = thought.MoodOffset();
     }
 
-    public float moodMagnitude => Mathf.Abs(moodOffset);
+    public float MoodMagnitude => Mathf.Abs(moodOffset);
 
-    public bool isPositive => moodOffset >= 0f;
+    public bool IsPositive => moodOffset >= 0f;
 
-    public string labelCap {
+    public string LabelCap {
         get {
             if (def == null) return string.Empty;
             string label = def.LabelCap;

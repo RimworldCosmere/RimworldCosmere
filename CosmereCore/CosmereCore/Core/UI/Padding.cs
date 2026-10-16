@@ -12,54 +12,54 @@ public record struct Padding {
     public static readonly Padding Spacing = new Padding(UI.Spacing.Get());
 
     public Padding(float value) {
-        top = value;
-        right = value;
-        bottom = value;
-        left = value;
+        Top = value;
+        Right = value;
+        Bottom = value;
+        Left = value;
     }
 
     public Padding(float yValue, float xValue) {
-        top = yValue;
-        right = xValue;
-        bottom = yValue;
-        left = xValue;
+        Top = yValue;
+        Right = xValue;
+        Bottom = yValue;
+        Left = xValue;
     }
 
     public Padding(float topValue, float xValue, float bottomValue) {
-        top = topValue;
-        right = xValue;
-        bottom = bottomValue;
-        left = xValue;
+        Top = topValue;
+        Right = xValue;
+        Bottom = bottomValue;
+        Left = xValue;
     }
 
     public Padding(float topValue, float rightValue, float bottomValue, float leftValue) {
-        top = topValue;
-        right = rightValue;
-        bottom = bottomValue;
-        left = leftValue;
+        Top = topValue;
+        Right = rightValue;
+        Bottom = bottomValue;
+        Left = leftValue;
     }
 
-    public float top { get; set; }
+    public float Top { get; set; }
 
-    public float right { get; set; }
+    public float Right { get; set; }
 
-    public float bottom { get; set; }
+    public float Bottom { get; set; }
 
-    public float left { get; set; }
+    public float Left { get; set; }
 
     public Vector2 ToSymmetricVector2() {
-        if (!Mathf.Approximately(right, left)) {
+        if (!Mathf.Approximately(Right, Left)) {
             throw new InvalidOperationException("Padding must have equal right and left to convert to a Vector2");
         }
 
-        if (!Mathf.Approximately(top, bottom)) {
+        if (!Mathf.Approximately(Top, Bottom)) {
             throw new InvalidOperationException("Padding must have equal top and bottom to convert to a Vector2");
         }
 
-        return new Vector2(right, top);
+        return new Vector2(Right, Top);
     }
 
     public static implicit operator Vector4(Padding padding) {
-        return new Vector4(padding.top, padding.right, padding.bottom, padding.left);
+        return new Vector4(padding.Top, padding.Right, padding.Bottom, padding.Left);
     }
 }

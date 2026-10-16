@@ -20,7 +20,7 @@ public class Heal : SurgebindingHediff {
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
-        if (!Gene.CanLowerReserve(ability.def.beuPerTick)) ability.UpdateStatus(Active.Off);
+        if (!Gene.CanLowerReserve(ability.Def.beuPerTick)) ability.UpdateStatus(Active.Off);
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
         List<Verse.Hediff> hediffs = [.. pawn.health.hediffSet.hediffs.Where(h => h.CanBeHealedByInvestiture())];

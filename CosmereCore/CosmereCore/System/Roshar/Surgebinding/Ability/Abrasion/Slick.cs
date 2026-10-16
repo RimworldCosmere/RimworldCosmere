@@ -16,7 +16,7 @@ public class Slick : SurgebindingAbility {
 
     protected override void OnEnable() {
         base.OnEnable();
-        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, Def.hediff);
 
         RimWorld.Ability gripAbility = pawn.abilities.GetAbility(
             DefDatabase<AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Grip")

@@ -23,7 +23,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
                 new Rect(inRect.x, y, inRect.width, 24f),
-                "CC_Codex_Allomancy_VialSettings_Title".Translate(gene.metal.LabelCap.Named("METAL"))
+                "CC_Codex_Allomancy_VialSettings_Title".Translate(gene.Metal.LabelCap.Named("METAL"))
             );
         }
 

@@ -8,21 +8,21 @@ public class MoldArmor : SurgebindingAbility {
 
     public MoldArmor(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (30f + Gene.CurrentIdeal * 15f));
+    private int DurationTicks => (int)(GenTicks.TicksPerRealSecond * (30f + Gene.CurrentIdeal * 15f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Gene.RemoveFromReserve(cost);
 
-        HediffDef? hediffDef = def.hediff;
+        HediffDef? hediffDef = Def.hediff;
         if (hediffDef == null) return false;
 
         HediffWithComps hediff = (HediffWithComps)HediffMaker.MakeHediff(hediffDef, pawn);
         HediffComp_Disappears? disappears = hediff.TryGetComp<HediffComp_Disappears>();
         if (disappears != null) {
-            disappears.ticksToDisappear = durationTicks;
+            disappears.ticksToDisappear = DurationTicks;
         }
 
         pawn.health.AddHediff(hediff);

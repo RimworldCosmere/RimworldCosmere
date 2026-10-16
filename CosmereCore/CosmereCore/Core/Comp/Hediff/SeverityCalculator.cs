@@ -35,24 +35,24 @@ public class SeverityCalculator<TGene> : HediffComp
     private float desiredSeverity = -1;
     private bool severityDirty = true;
 
-    private new SeverityCalculatorProperties props => (SeverityCalculatorProperties)base.props;
+    private SeverityCalculatorProperties Props => (SeverityCalculatorProperties)props;
 
-    private new IHediff<TGene> parent => (IHediff<TGene>)base.parent;
+    private IHediff<TGene> Parent => (IHediff<TGene>)parent;
 
-    public float severity {
+    public float Severity {
         get {
             if (!severityDirty) return cachedSeverity;
 
-            float total = parent.ExtraSeverity;
-            if (props.diminishingStack) {
+            float total = Parent.ExtraSeverity;
+            if (Props.diminishingStack) {
                 List<float> sources = [];
-                foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
+                foreach (IAbility<TGene, IHediff<TGene>> source in Parent.SourceAbilities) {
                     sources.Add(source.GetStrength());
                 }
 
                 total += DiminishingStack.Combine(sources);
             } else {
-                foreach (IAbility<TGene, IHediff<TGene>> source in parent.SourceAbilities) {
+                foreach (IAbility<TGene, IHediff<TGene>> source in Parent.SourceAbilities) {
                     total += source.GetStrength();
                 }
             }
@@ -64,11 +64,11 @@ public class SeverityCalculator<TGene> : HediffComp
     }
 
     public override string CompLabelInBracketsExtra =>
-        ticksLeft >= 0 ? $"{Mathf.RoundToInt(ticksLeft).ToStringTicksToPeriod()} left" : string.Empty;
+        TicksLeft >= 0 ? $"{Mathf.RoundToInt(TicksLeft).ToStringTicksToPeriod()} left" : string.Empty;
 
-    private float ticksLeft => desiredSeverity < 0
+    private float TicksLeft => desiredSeverity < 0
         ? -1
-        : Mathf.Abs(parent.Severity - desiredSeverity) / props.decayAmount * props.decayInterval;
+        : Mathf.Abs(Parent.Severity - desiredSeverity) / Props.decayAmount * Props.decayInterval;
 
     private void MarkSeverityDirty() {
         severityDirty = true;
@@ -77,23 +77,23 @@ public class SeverityCalculator<TGene> : HediffComp
     public override void CompPostMake() {
         base.CompPostMake();
 
-        if (parent == null) {
+        if (Parent == null) {
             throw new InvalidOperationException(
                 $"SeverityCalculator<{typeof(TGene).Name}> can only be placed on a hediff that implements IHediff<{typeof(TGene).Name}>"
             );
         }
 
-        if (!props.onStatusChange) {
+        if (!Props.onStatusChange) {
             return;
         }
 
-        parent.OnSourceAdded += OnSourceAdded;
-        parent.OnSourceRemoved += OnSourceRemoved;
+        Parent.OnSourceAdded += OnSourceAdded;
+        Parent.OnSourceRemoved += OnSourceRemoved;
     }
 
     public override void CompPostPostAdd(DamageInfo? dinfo) {
         base.CompPostPostAdd(dinfo);
-        if (props.onPostAdd) {
+        if (Props.onPostAdd) {
             RecalculateSeverity();
         }
     }
@@ -104,9 +104,9 @@ public class SeverityCalculator<TGene> : HediffComp
     ) {
         MarkSeverityDirty();
         sourceAbility.OnStatusChangedEvent -= OnStatusChange;
-        if (parent.SourceAbilities.Count == 0) {
-            parent.OnSourceAdded -= OnSourceAdded;
-            parent.OnSourceRemoved -= OnSourceRemoved;
+        if (Parent.SourceAbilities.Count == 0) {
+            Parent.OnSourceAdded -= OnSourceAdded;
+            Parent.OnSourceRemoved -= OnSourceRemoved;
         }
     }
 
@@ -120,7 +120,7 @@ public class SeverityCalculator<TGene> : HediffComp
 
         MarkSeverityDirty();
         sourceAbility.OnStatusChangedEvent += OnStatusChange;
-        if (props.onStatusChange) {
+        if (Props.onStatusChange) {
             RecalculateSeverity();
         }
     }
@@ -131,41 +131,41 @@ public class SeverityCalculator<TGene> : HediffComp
         Status newStatus
     ) {
         if (newStatus.active == Active.Off) {
-            parent.RemoveSource(sourceAbility);
+            Parent.RemoveSource(sourceAbility);
         }
 
         MarkSeverityDirty();
-        if (newStatus.power > oldStatus.power || props is { shouldDecay: false, onStatusChange: true }) {
+        if (newStatus.power > oldStatus.power || Props is { shouldDecay: false, onStatusChange: true }) {
             desiredSeverity = -1;
             RecalculateSeverity();
             return;
         }
 
-        desiredSeverity = severity;
+        desiredSeverity = Severity;
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (props.onTickInterval && Pawn.IsHashIntervalTick(props.tickInterval, delta)) {
+        if (Props.onTickInterval && Pawn.IsHashIntervalTick(Props.tickInterval, delta)) {
             RecalculateSeverity();
         }
 
-        if (!props.shouldDecay || desiredSeverity < 0) {
+        if (!Props.shouldDecay || desiredSeverity < 0) {
             return;
         }
 
-        if (Mathf.Approximately(parent.Severity, desiredSeverity) || parent.Severity <= desiredSeverity) {
+        if (Mathf.Approximately(Parent.Severity, desiredSeverity) || Parent.Severity <= desiredSeverity) {
             desiredSeverity = -1;
             return;
         }
 
-        if (!Pawn.IsHashIntervalTick(props.decayInterval, delta)) {
+        if (!Pawn.IsHashIntervalTick(Props.decayInterval, delta)) {
             return;
         }
 
-        parent.Severity = Mathf.Max(desiredSeverity, parent.Severity - props.decayAmount);
+        Parent.Severity = Mathf.Max(desiredSeverity, Parent.Severity - Props.decayAmount);
     }
 
     public void RecalculateSeverity() {
-        parent.Severity = severity;
+        Parent.Severity = Severity;
     }
 }

@@ -44,10 +44,10 @@ public class TheWeeping : RimWorld.GameCondition {
             Verse.Thing thing = allThings[i];
             if (thing is Pawn) continue;
             if (!thing.TryGetComp(out InvestitureHolder holder)) continue;
-            if (holder.currentInvestitureSelf <= 0f) continue;
+            if (holder.CurrentInvestitureSelf <= 0f) continue;
             if (thing.Position.Roofed(map)) continue;
 
-            holder.currentInvestitureSelf = Mathf.Max(0f, holder.currentInvestitureSelf - SpheresDrainPerInterval);
+            holder.CurrentInvestitureSelf = Mathf.Max(0f, holder.CurrentInvestitureSelf - SpheresDrainPerInterval);
         }
     }
 

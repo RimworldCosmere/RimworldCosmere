@@ -27,7 +27,7 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
     ///     Cultivation or Odium here turned a Mistborn colony into one with highstorms and Rosharan
     ///     genes rolling, so use the All-Stars quickstart for that instead.
     /// </summary>
-    public override IReadOnlyList<string> shards => [];
+    public override IReadOnlyList<string> Shards => [];
 
     public override void PostStart() {
         EnableDebugOverlays();

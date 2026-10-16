@@ -47,7 +47,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     public bool HasMemories(Pawn pawn) {
         List<Feruchemist> fs = CollectFeruchemists(pawn);
         for (int i = 0; i < fs.Count; i++) {
-            if (fs[i].metal == MetallicArtsMetalDefOf.Copper) return true;
+            if (fs[i].Metal == MetallicArtsMetalDefOf.Copper) return true;
         }
 
         return false;
@@ -224,7 +224,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     ) {
         List<(MetallicArtsMetalDef metal, int stage, int storing, int tapping)> rows = [];
         for (int i = 0; i < ferus.Count; i++) {
-            MetallicArtsMetalDef metal = ferus[i].metal;
+            MetallicArtsMetalDef metal = ferus[i].Metal;
             int stage = SavantUtility.CanBeSavant(metal)
                 ? ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, metal)
                 : 0;
@@ -301,8 +301,8 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         float y = rect.y;
 
         Rect header = new Rect(rect.x, y, rect.width, 26f);
-        string ownerName = mind.owner != null
-            ? mind.owner.LabelShortCap
+        string ownerName = mind.Owner != null
+            ? mind.Owner.LabelShortCap
             : (string)"CC_Codex_Feruchemy_UnclaimedOwner".Translate();
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, CoppermindHeaderColor)) {
             Widgets.Label(
@@ -334,11 +334,11 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
 
                 StoredMemory memory = memories[i];
-                Color moodColor = memory.isPositive ? PositiveMoodColor : NegativeMoodColor;
+                Color moodColor = memory.IsPositive ? PositiveMoodColor : NegativeMoodColor;
 
                 Rect labelRect = new Rect(row.x + 12f, row.y, row.width * 0.55f - 12f, row.height);
                 using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, moodColor))
-                    Widgets.Label(labelRect, memory.labelCap);
+                    Widgets.Label(labelRect, memory.LabelCap);
 
                 string storedBy = memory.owner != null
                     ? memory.owner.LabelShortCap
@@ -391,7 +391,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         List<AutocastTarget> targets = [];
         List<Feruchemist> ferus = CollectFeruchemists(pawn);
         for (int i = 0; i < ferus.Count; i++) {
-            MetallicArtsMetalDef metal = ferus[i].metal;
+            MetallicArtsMetalDef metal = ferus[i].Metal;
             targets.Add(
                 new AutocastTarget(
                     AutocastRuleKind.FeruchemyDial,

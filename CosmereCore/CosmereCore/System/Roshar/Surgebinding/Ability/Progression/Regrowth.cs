@@ -10,13 +10,13 @@ public class Regrowth : SurgebindingAbility {
     public Regrowth(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
 
-        HediffDef? hediffDef = def.hediff;
+        HediffDef? hediffDef = Def.hediff;
         if (hediffDef == null) return false;
 
         Gene.RemoveFromReserve(cost);

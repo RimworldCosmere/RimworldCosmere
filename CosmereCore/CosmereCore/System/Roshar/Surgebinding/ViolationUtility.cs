@@ -32,7 +32,7 @@ public static class ViolationUtility {
             >= 0.2f => "major",
             _ => "minor",
         };
-        string orderLabel = surgebinder.radiantOrderDef.LabelCap;
+        string orderLabel = surgebinder.RadiantOrderDef.LabelCap;
 
         Find.PlayLog.Add(new BondViolationLogEntry(pawn, orderLabel, violationReason, severityLabel));
     }
@@ -43,7 +43,7 @@ public static class ViolationUtility {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
 
-        return surgebinder.radiantOrderDef == orderDef;
+        return surgebinder.RadiantOrderDef == orderDef;
     }
 
     public static bool IsSurgebinderOfOrder(Pawn pawn, string orderDefName) {
@@ -52,7 +52,7 @@ public static class ViolationUtility {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
 
-        return surgebinder.radiantOrderDef.defName == orderDefName;
+        return surgebinder.RadiantOrderDef.defName == orderDefName;
     }
 
     public static Surgebinder? GetSurgebinder(Pawn pawn) {

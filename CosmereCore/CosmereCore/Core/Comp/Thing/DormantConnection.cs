@@ -17,18 +17,18 @@ public struct HiddenGeneData : IExposable {
 public class DormantConnection : ThingComp {
     private Dictionary<GeneDef, int> hiddenGenes = [];
 
-    public bool hasDormantConnections => hiddenGenes.Count > 0;
+    public bool HasDormantConnections => hiddenGenes.Count > 0;
 
-    private Pawn pawn => (Pawn)parent;
+    private Pawn Pawn => (Pawn)parent;
 
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
 
         foreach ((GeneDef? gene, int interval) in hiddenGenes.ToList()) {
-            if (!pawn.IsHashIntervalTick(interval, delta)) continue;
-            if (!GetGeneCallback(gene)(pawn, gene)) continue;
+            if (!Pawn.IsHashIntervalTick(interval, delta)) continue;
+            if (!GetGeneCallback(gene)(Pawn, gene)) continue;
 
-            pawn.genes.AddGene(gene, true);
+            Pawn.genes.AddGene(gene, true);
             hiddenGenes.Remove(gene);
         }
     }
@@ -61,6 +61,6 @@ public class DormantConnection : ThingComp {
             return base.CompInspectStringExtra();
         }
 
-        return "CC_PawnHasDormantConnection".Translate(pawn.Named("PAWN"));
+        return "CC_PawnHasDormantConnection".Translate(Pawn.Named("PAWN"));
     }
 }

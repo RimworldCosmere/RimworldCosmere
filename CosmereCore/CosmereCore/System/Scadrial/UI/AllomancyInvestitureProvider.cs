@@ -30,22 +30,22 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
     private static List<AllomancyAbility> AbilitiesFor(List<Ability> abilities, MetallicArtsMetalDef metal) {
         List<AllomancyAbility> matched = [];
         for (int i = 0; i < abilities.Count; i++) {
-            if (abilities[i] is AllomancyAbility a && a.metal == metal) matched.Add(a);
+            if (abilities[i] is AllomancyAbility a && a.Metal == metal) matched.Add(a);
         }
 
         List<AllomanticAbilityDef> order = DefDatabase<AllomanticAbilityDef>.AllDefsListForReading;
-        matched.Sort((x, y) => order.IndexOf(x.def).CompareTo(order.IndexOf(y.def)));
+        matched.Sort((x, y) => order.IndexOf(x.Def).CompareTo(order.IndexOf(y.Def)));
         return matched;
     }
 
     private static InvestitureAbility ToCellAbility(AllomancyAbility a) {
         return new InvestitureAbility(
-            a.def.defName,
-            a.def.LabelCap,
-            a.def,
-            a.def.targetRequired,
-            a.def.maxPower > 1,
-            a.atLeastBurning,
+            a.Def.defName,
+            a.Def.LabelCap,
+            a.Def,
+            a.Def.targetRequired,
+            a.Def.maxPower > 1,
+            a.AtLeastBurning,
             a.status.power > 1
         );
     }
@@ -59,7 +59,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Allomancer a || a.Overridden) continue;
 
-            List<AllomancyAbility> matched = AbilitiesFor(dockAbilities, a.metal);
+            List<AllomancyAbility> matched = AbilitiesFor(dockAbilities, a.Metal);
             List<InvestitureAbility> cellAbilities = [];
             bool anyActive = false;
             bool anyFlaring = false;
@@ -71,7 +71,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
             }
 
             ResourceBar bar = new ResourceBar(
-                a.metal.LabelCap,
+                a.Metal.LabelCap,
                 a.Value,
                 a.Max,
                 a.targetValue
@@ -79,9 +79,9 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
 
             cells.Add(
                 new InvestitureCell(
-                    a.metal.defName,
-                    a.metal.LabelCap,
-                    a.metal.allomancy?.invertedIcon,
+                    a.Metal.defName,
+                    a.Metal.LabelCap,
+                    a.Metal.allomancy?.invertedIcon,
                     bar,
                     matched.Count > 0 ? anyActive : a.Burning,
                     anyFlaring,
@@ -110,16 +110,16 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Allomancer a || a.Overridden) continue;
 
-            List<AllomancyAbility> matched = AbilitiesFor(abilities, a.metal);
+            List<AllomancyAbility> matched = AbilitiesFor(abilities, a.Metal);
             if (matched.Count == 0) continue;
 
             float reserveFraction = a.Max > 0f ? a.Value / a.Max : 0f;
 
             subs.Add(
                 new RadialSubsection(
-                    a.metal.defName,
-                    a.metal.LabelCap,
-                    a.metal.allomancy?.invertedIcon,
+                    a.Metal.defName,
+                    a.Metal.LabelCap,
+                    a.Metal.allomancy?.invertedIcon,
                     new Color(0.75f, 0.65f, 0.45f),
                     BuildLeaves(matched, a, reserveFraction)
                 )
@@ -138,28 +138,28 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
         List<RadialLeaf> leaves = [];
         for (int j = 0; j < matched.Count; j++) {
             AllomancyAbility ability = matched[j];
-            bool targeted = ability.def.targetRequired;
+            bool targeted = ability.Def.targetRequired;
 
             leaves.Add(
                 new RadialLeaf(
-                    LeafId: ability.def.defName,
-                    Label: ability.atLeastBurning
-                        ? "CC_Radial_Action_StopBurning".Translate(ability.def.LabelCap.Named("METAL"))
-                        : ability.def.LabelCap,
-                    Icon: gene.metal.allomancy?.invertedIcon,
+                    LeafId: ability.Def.defName,
+                    Label: ability.AtLeastBurning
+                        ? "CC_Radial_Action_StopBurning".Translate(ability.Def.LabelCap.Named("METAL"))
+                        : ability.Def.LabelCap,
+                    Icon: gene.Metal.allomancy?.invertedIcon,
                     Kind: targeted ? RadialActionKind.CastAbility : RadialActionKind.StartAllomancyBurn,
-                    AbilityDef: ability.def,
-                    IsActive: ability.atLeastBurning,
+                    AbilityDef: ability.Def,
+                    IsActive: ability.AtLeastBurning,
                     IsFlaring: ability.status.power > 1,
-                    CanFlare: ability.def.maxPower > 1,
-                    IsSustained: ability.def.toggleable && ability.status.IsActive,
+                    CanFlare: ability.Def.maxPower > 1,
+                    IsSustained: ability.Def.toggleable && ability.status.IsActive,
                     IsLocked: false,
                     LockReason: null,
                     ReserveFraction: reserveFraction,
                     HasInsufficientResources: reserveFraction <= 0f,
                     CostHint:
                     $"{ability.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
-                    Description: ability.def.description,
+                    Description: ability.Def.description,
                     CooldownTicksRemaining: 0
                 )
             );

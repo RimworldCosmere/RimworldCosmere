@@ -8,11 +8,11 @@ public class GenerationalDecay : RimWorld.StatPart {
     private const float MinimumValue = 0.1f;
     private const float GenerationalMultiplier = 0.5f;
 
-    private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
+    private bool Allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
 
-    private bool feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
+    private bool Feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
 
-    private StatDef stat => allomancy
+    private StatDef Stat => Allomancy
         ? StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower
         : StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower;
 
@@ -45,7 +45,7 @@ public class GenerationalDecay : RimWorld.StatPart {
     }
 
     private bool IsCorrectMetalborn(Pawn pawn) {
-        return allomancy && pawn.IsAllomancer() || feruchemy && pawn.IsFeruchemist();
+        return Allomancy && pawn.IsAllomancer() || Feruchemy && pawn.IsFeruchemist();
     }
 
     private bool TryGetValue(StatRequest req, out (float, float, float, float) value) {
@@ -69,7 +69,7 @@ public class GenerationalDecay : RimWorld.StatPart {
         }
 
         if (IsCorrectMetalborn(pawn)) {
-            return pawn.GetStatValue(stat);
+            return pawn.GetStatValue(Stat);
         }
 
         float fromMother = GetInheritedPower(pawn.GetMother(), depth + 1);

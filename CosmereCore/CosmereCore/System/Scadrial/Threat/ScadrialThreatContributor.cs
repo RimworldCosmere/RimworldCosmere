@@ -38,7 +38,7 @@ public class ScadrialThreatContributor : IThreatContributor {
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
 
-        return spikes?.spikeCount ?? 0;
+        return spikes?.SpikeCount ?? 0;
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class ScadrialThreatContributor : IThreatContributor {
             if (thing is not ThingWithComps withComps) continue;
 
             Metalmind? metalmind = withComps.GetComp<Metalmind>();
-            if (metalmind == null || metalmind.owner != pawn) continue;
+            if (metalmind == null || metalmind.Owner != pawn) continue;
             if (metalmind.TotalStored > 0f) count++;
         }
 

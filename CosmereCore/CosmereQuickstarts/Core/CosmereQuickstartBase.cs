@@ -14,13 +14,13 @@ public abstract class CosmereQuickstartBase : AbstractQuickstart {
     ///     need Honor even from Scadrial code, and the Roshar ShardDefOf lives in a namespace Scadrial
     ///     must not import.
     /// </summary>
-    public virtual IReadOnlyList<string> shards => [];
+    public virtual IReadOnlyList<string> Shards => [];
 
     /// <summary>
     ///     Gets the era that overrides whatever the scenario declares. Null defers to the scenario,
     ///     which is what every quickstart that isn't deliberately cross-shard wants.
     /// </summary>
-    public virtual string? era => null;
+    public virtual string? Era => null;
 
     /// <summary>
     ///     A WorldGenStep that reads the world - Scadrial's Ashmounts, for one - runs inside
@@ -35,14 +35,14 @@ public abstract class CosmereQuickstartBase : AbstractQuickstart {
     ///     shard like Ruin or Preservation straight back off again.
     /// </summary>
     public override void PostConfigured() {
-        CosmereQuicktest.EnableShards(shards);
+        CosmereQuicktest.EnableShards(Shards);
     }
 
     public override TaggedString GetDescription() {
         StringBuilder builder = new StringBuilder(base.GetDescription());
         builder.AppendLine(
             "CC_Quickstart_Shards".Translate().Colorize(ColoredText.TipSectionTitleColor) +
-            (shards.Count > 0 ? string.Join(", ", shards) : "None")
+            (Shards.Count > 0 ? string.Join(", ", Shards) : "None")
         );
 
         return builder.ToString();

@@ -38,11 +38,11 @@ public class InvestitureAbsorptionTests {
         string src = Holder;
 
         Assert.IsTrue(
-            src.Contains("currentInvestitureSelf += drawn * efficiency / parent.stackCount", StringComparison.Ordinal),
+            src.Contains("CurrentInvestitureSelf += drawn * efficiency / parent.stackCount", StringComparison.Ordinal),
             "The pawn receives the multiplied amount."
         );
         Assert.IsTrue(
-            src.Contains("thingInvestiture.currentInvestitureSelf -= drawn / thing.stackCount", StringComparison.Ordinal),
+            src.Contains("thingInvestiture.CurrentInvestitureSelf -= drawn / thing.stackCount", StringComparison.Ordinal),
             "The source loses the raw draw, never the multiplied one."
         );
     }
@@ -55,7 +55,7 @@ public class InvestitureAbsorptionTests {
     public void TheDrawIsCappedBySpaceDividedByEfficiency() {
         Assert.IsTrue(
             Holder.Contains(
-                "(maxInvestitureSelfStack - currentInvestitureSelfStack) / efficiency",
+                "(MaxInvestitureSelfStack - CurrentInvestitureSelfStack) / efficiency",
                 StringComparison.Ordinal
             ),
             "Capping by raw space discards the overflow instead of drawing less."

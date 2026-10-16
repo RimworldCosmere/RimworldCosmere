@@ -20,7 +20,7 @@ public sealed class FeruchemyRadialHandler : IRadialActionHandler {
 
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is not Feruchemist f || f.metal.defName != subsystemId) continue;
+            if (all[i] is not Feruchemist f || f.Metal.defName != subsystemId) continue;
             switch (leaf.Kind) {
                 case RadialActionKind.ToggleFeruchemyTap:
                     f.targetValue = 75f;

@@ -71,14 +71,14 @@ public class Investiture : RimWorld.Need {
                 }
             }
 
-            return investitureHolder.maxInvestitureSelf;
+            return InvestitureHolder.maxInvestitureSelf;
         }
     }
 
-    private InvestitureHolder investitureHolder => pawn.GetComp<InvestitureHolder>();
+    private InvestitureHolder InvestitureHolder => pawn.GetComp<InvestitureHolder>();
 
     public override float CurLevel {
-        get => investitureHolder.currentInvestiture;
+        get => InvestitureHolder.CurrentInvestiture;
         set {
             pawn.records.AddTo(
                 value > base.CurLevel
@@ -86,11 +86,11 @@ public class Investiture : RimWorld.Need {
                     : RecordDefOf.Cosmere_Core_Record_InvestitureSpent,
                 value
             );
-            investitureHolder.currentInvestitureSelf = value;
+            InvestitureHolder.CurrentInvestitureSelf = value;
         }
     }
 
-    public bool IsMaxLevel => Mathf.Approximately(CurLevel, investitureHolder.maxInvestiture);
+    public bool IsMaxLevel => Mathf.Approximately(CurLevel, InvestitureHolder.MaxInvestiture);
 
     // ReSharper disable once InconsistentNaming
     public static int GetBreathEquivalentUnitsFromDegree(int degree) {

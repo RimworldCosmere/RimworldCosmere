@@ -265,7 +265,7 @@ public class ConnectionSuiteSteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            holder.isFull,
+            holder.IsFull,
             $"the {defName} at ({x}, {z}) should be full",
             () => CosmereLookup.DescribeHolder(holder));
     }
@@ -323,7 +323,7 @@ public class ConnectionSuiteSteps {
             holder.drainRate > 0f,
             $"the {defName} at ({x}, {z}) declares no decay, so it can never lose anything. {CosmereLookup.DescribeHolder(holder)}");
 
-        float before = holder.currentInvestitureSelf;
+        float before = holder.CurrentInvestitureSelf;
         int startedAt = Find.TickManager.TicksGame;
         float wanted = holder.drainRate * (ticks / (float)UpkeepRate.TicksPerRareInterval);
         ctx.Require(
@@ -334,7 +334,7 @@ public class ConnectionSuiteSteps {
         await Advance(ctx, ticks);
 
         int elapsed = Find.TickManager.TicksGame - startedAt;
-        float lost = before - holder.currentInvestitureSelf;
+        float lost = before - holder.CurrentInvestitureSelf;
         float expected = holder.drainRate * (elapsed / (float)UpkeepRate.TicksPerRareInterval);
         float slack = holder.drainRate + 0.001f;
 

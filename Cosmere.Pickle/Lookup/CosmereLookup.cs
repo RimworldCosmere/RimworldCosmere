@@ -70,7 +70,7 @@ public static class CosmereLookup {
     /// <param name="ctx">The scenario's context.</param>
     /// <returns>The component.</returns>
     public static Shards RequireShards(PickleContext ctx) {
-        Shards? shards = ShardUtility.shards;
+        Shards? shards = ShardUtility.Shards;
 
         ctx.Require(
             shards != null,
@@ -151,8 +151,8 @@ public static class CosmereLookup {
     /// <returns>Its own reserve, the stack total, and its decay.</returns>
     // self is what a step sets and reads back; total adds the stack and anything held inside.
     public static string DescribeHolder(InvestitureHolder holder) {
-        return $"self={holder.currentInvestitureSelf:0.###} max={holder.maxInvestitureSelf:0.###} " +
-            $"total={holder.currentInvestiture:0.###} of {holder.maxInvestiture:0.###} " +
+        return $"self={holder.CurrentInvestitureSelf:0.###} max={holder.maxInvestitureSelf:0.###} " +
+            $"total={holder.CurrentInvestiture:0.###} of {holder.MaxInvestiture:0.###} " +
             $"stack={holder.parent.stackCount} decay={holder.drainRate:0.####} per rare tick";
     }
 

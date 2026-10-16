@@ -9,7 +9,7 @@ public class EngulfInStone : SurgebindingAbility {
     public EngulfInStone(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         IntVec3 cell = target.Cell;

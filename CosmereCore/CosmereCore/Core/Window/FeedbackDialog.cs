@@ -36,8 +36,8 @@ public sealed class FeedbackDialog : BaseWindow {
             IncludeScreenshot = kind == FeedbackKind.Bug && screenshot != null,
             DiscordUsername = Mod.GetModSettings<CoreModSettings>().feedbackDiscordUsername,
         };
-        hasFooter = true;
-        drawBorder = true;
+        HasFooter = true;
+        HasBorder = true;
     }
 
     public static void Open(FeedbackKind kind) {
@@ -50,13 +50,13 @@ public sealed class FeedbackDialog : BaseWindow {
         ScreenshotCapture.RequestCapture(jpeg => Find.WindowStack.Add(new FeedbackDialog(kind, jpeg)));
     }
 
-    protected override bool drawHeaderSeparator => false;
+    protected override bool DrawHeaderSeparator => false;
 
-    protected override bool drawFooterSeparator => false;
+    protected override bool DrawFooterSeparator => false;
 
-    protected override float bodyInset => Spacing.Get(0.375);
+    protected override float BodyInset => Spacing.Get(0.375);
 
-    protected override float bodyPadding => Spacing.Get(2.5);
+    protected override float BodyPadding => Spacing.Get(2.5);
 
     public override void PreClose() {
         base.PreClose();
@@ -151,7 +151,7 @@ public sealed class FeedbackDialog : BaseWindow {
             if (string.IsNullOrEmpty(finished.IssueUrl)) return;
 
             // printed, not just linked: OpenURL reaches no browser in a container or a locked-down machine.
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DefaultBodyTextColor)) {
                 listing.Label(finished.IssueUrl!);
             }
 
@@ -160,7 +160,7 @@ public sealed class FeedbackDialog : BaseWindow {
 
         if (string.IsNullOrEmpty(finished.ServerMessage)) return;
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DefaultBodyTextColor)) {
             listing.Label(finished.ServerMessage!);
         }
     }
@@ -298,7 +298,7 @@ public sealed class FeedbackDialog : BaseWindow {
         Widgets.DrawBoxSolid(rect, selected ? SegmentOnColor : SegmentOffColor);
         Widgets.DrawBox(rect, 1, selected ? BorderTexture : SegmentEdgeTexture);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, selected ? SegmentOnText : BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, selected ? SegmentOnText : DefaultBodyTextColor)) {
             Widgets.Label(rect, labelKey.Translate());
         }
 

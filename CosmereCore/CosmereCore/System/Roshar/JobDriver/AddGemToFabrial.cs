@@ -8,20 +8,20 @@ public class AddGemToFabrial : Verse.AI.JobDriver {
     private const TargetIndex GemIndex = TargetIndex.B;
     public const int ReGemmingDuration = 240;
 
-    protected Verse.Thing? fabrial => job.GetTarget(FabrialIndex).Thing;
+    protected Verse.Thing? Fabrial => job.GetTarget(FabrialIndex).Thing;
 
-    protected Verse.Thing? gemstone => job.GetTarget(GemIndex).Thing;
+    protected Verse.Thing? Gemstone => job.GetTarget(GemIndex).Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(fabrial, job, 1, -1, null, errorOnFailed) &&
-               pawn.Reserve(gemstone, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(Fabrial, job, 1, -1, null, errorOnFailed) &&
+               pawn.Reserve(Gemstone, job, 1, -1, null, errorOnFailed);
     }
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(FabrialIndex);
 
-        AddFailCondition(() => fabrial == null);
-        AddFailCondition(() => gemstone == null);
+        AddFailCondition(() => Fabrial == null);
+        AddFailCondition(() => Gemstone == null);
 
         yield return Toils_General.DoAtomic(() => { job.count = 1; });
 

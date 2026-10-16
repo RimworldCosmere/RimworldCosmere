@@ -203,7 +203,7 @@ public class SurgebindingSteps {
     /// <param name="ctx">The scenario's context.</param>
     [Given("Honor no longer holds this cosmere")]
     public static void DisableHonor(PickleContext ctx) {
-        Shards? shards = ShardUtility.shards;
+        Shards? shards = ShardUtility.Shards;
         ctx.Require(shards != null, "no game is loaded, so this cosmere has no Shards to switch off");
 
         ShardUtility.Disable(ShardDefOf.Honor);
@@ -295,7 +295,7 @@ public class SurgebindingSteps {
     [Then("{string} surge {string} charges {float} stormlight")]
     public static void AssertSurgeRate(PickleContext ctx, string nickname, string abilityDefName, float rate) {
         SurgebindingAbility surge = RequireSurge(ctx, nickname, abilityDefName);
-        float actual = RateOf(surge.Gene, surge.def);
+        float actual = RateOf(surge.Gene, surge.Def);
 
         CosmereLookup.AssertThat(
             ctx,
@@ -314,7 +314,7 @@ public class SurgebindingSteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            RateOf(surge.Gene, surge.def) <= 0f,
+            RateOf(surge.Gene, surge.Def) <= 0f,
             $"'{nickname}' surge '{abilityDefName}' should charge nothing while it is off",
             () => DescribeSurges(surge.Gene));
     }
@@ -746,7 +746,7 @@ public class SurgebindingSteps {
     private static string DescribeBond(Surgebinder bond) {
         string spren = bond.bondedSpren?.Name?.ToStringShort ?? bond.godsprenName;
 
-        return $"{bond.radiantOrderDef.defName}: stored ideal {bond.CurrentIdeal}, " +
+        return $"{bond.RadiantOrderDef.defName}: stored ideal {bond.CurrentIdeal}, " +
             $"displayed {bond.CurrentIdealDisplay}, stormlight {bond.Value:0.#} of {bond.Max:0.#}, " +
             $"spren {(spren.Length == 0 ? "(none)" : spren)}";
     }

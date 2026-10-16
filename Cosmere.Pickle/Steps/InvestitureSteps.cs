@@ -34,7 +34,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribePawn(nickname),
-            CosmereLookup.IsNear(holder.currentInvestitureSelf, expected),
+            CosmereLookup.IsNear(holder.CurrentInvestitureSelf, expected),
             $"should be {expected:0.###}");
     }
 
@@ -49,7 +49,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribePawn(nickname),
-            holder.currentInvestitureSelf > bound,
+            holder.CurrentInvestitureSelf > bound,
             $"should be above {bound:0.###}");
     }
 
@@ -64,7 +64,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribePawn(nickname),
-            holder.currentInvestitureSelf < bound,
+            holder.CurrentInvestitureSelf < bound,
             $"should be below {bound:0.###}");
     }
 
@@ -123,7 +123,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribeThing(defName, x, z),
-            CosmereLookup.IsNear(holder.currentInvestitureSelf, expected),
+            CosmereLookup.IsNear(holder.CurrentInvestitureSelf, expected),
             $"should be {expected:0.###}");
     }
 
@@ -140,7 +140,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribeThing(defName, x, z),
-            holder.currentInvestitureSelf > bound,
+            holder.CurrentInvestitureSelf > bound,
             $"should be above {bound:0.###}");
     }
 
@@ -157,7 +157,7 @@ public class InvestitureSteps {
             ctx,
             holder,
             DescribeThing(defName, x, z),
-            holder.currentInvestitureSelf < bound,
+            holder.CurrentInvestitureSelf < bound,
             $"should be below {bound:0.###}");
     }
 
@@ -213,7 +213,7 @@ public class InvestitureSteps {
             return;
         }
 
-        float now = reading.Holder.currentInvestitureSelf;
+        float now = reading.Holder.CurrentInvestitureSelf;
         CosmereLookup.AssertThat(
             ctx,
             holds(reading.Value, now),
@@ -223,12 +223,12 @@ public class InvestitureSteps {
     }
 
     private static void SetInvestiture(PickleContext ctx, InvestitureHolder holder, string described, float value) {
-        holder.currentInvestitureSelf = value;
+        holder.CurrentInvestitureSelf = value;
 
         ctx.Require(
-            CosmereLookup.IsNear(holder.currentInvestitureSelf, value),
+            CosmereLookup.IsNear(holder.CurrentInvestitureSelf, value),
             $"{described} would not hold {value:0.###} investiture; it clamped to " +
-            $"{holder.currentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
+            $"{holder.CurrentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     private static void AssertBound(
@@ -242,7 +242,7 @@ public class InvestitureSteps {
             ctx,
             condition,
             $"{described} investiture {wanted}",
-            () => $"it is {holder.currentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
+            () => $"it is {holder.CurrentInvestitureSelf:0.###}. {CosmereLookup.DescribeHolder(holder)}");
     }
 
     private static InvestitureHolder RequirePawnHolder(PickleContext ctx, string nickname) {
@@ -277,7 +277,7 @@ public class InvestitureSteps {
         public Reading(InvestitureHolder holder, string described) {
             Holder = holder;
             Described = described;
-            Value = holder.currentInvestitureSelf;
+            Value = holder.CurrentInvestitureSelf;
             Tick = Find.TickManager?.TicksGame ?? 0;
         }
 

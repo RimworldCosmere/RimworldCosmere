@@ -23,17 +23,17 @@ public readonly record struct ScrollView : IDisposable {
     ) {
         this.scrollViewStatus = scrollViewStatus;
         outRectHeight = outRect.height;
-        rect = new Rect(0, 0, outRect.width, Math.Max(height, outRectHeight));
-        this.scrollViewStatus.scrollVisibile = height - 0.1f >= outRect.height;
+        rect = new Rect(0, 0, outRect.width, Math.Max(Height, outRectHeight));
+        this.scrollViewStatus.scrollVisibile = Height - 0.1f >= outRect.height;
         if (this.scrollViewStatus.scrollVisibile) {
             rect.width -= 20f;
         }
 
-        height = 0f;
+        Height = 0f;
         Widgets.BeginScrollView(outRect, ref this.scrollViewStatus.position, rect, showScrollbars);
     }
 
-    public ref float height => ref scrollViewStatus.height;
+    public ref float Height => ref scrollViewStatus.height;
 
     public void Dispose() {
         Widgets.EndScrollView();

@@ -5,7 +5,7 @@ using Verse.AI;
 namespace Cosmere.System.Roshar.JobDriver;
 
 public class CastSurgebindingAbilityAtTarget : Verse.AI.JobDriver {
-    private SurgebindingAbility ability => (SurgebindingAbility)job.source!;
+    private SurgebindingAbility Ability => (SurgebindingAbility)job.source!;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return true;
@@ -20,7 +20,7 @@ public class CastSurgebindingAbilityAtTarget : Verse.AI.JobDriver {
         }
 
         Verse.AI.Toil castToil = ToilMaker.MakeToil(nameof(CastSurgebindingAbilityAtTarget));
-        castToil.initAction = () => { ability.Activate(TargetA, TargetB); };
+        castToil.initAction = () => { Ability.Activate(TargetA, TargetB); };
         castToil.defaultCompleteMode = ToilCompleteMode.Instant;
         yield return castToil;
     }

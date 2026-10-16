@@ -21,8 +21,8 @@ public static class MaterialPropertyBlockExtension {
 
         for (int i = 0; i < palette.Count; i++) {
             colors[i] = palette[i].color;
-            metallic[i] = palette[i].metallic;
-            smoothness[i] = palette[i].smoothness;
+            metallic[i] = palette[i].Metallic;
+            smoothness[i] = palette[i].Smoothness;
         }
 
         block.SetVectorArray(CutoutAdvancedShaderProperties.PaletteColors, colors);

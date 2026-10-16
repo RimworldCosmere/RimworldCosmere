@@ -18,9 +18,9 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private bool warningShown;
     private bool weepingActive;
 
-    private static bool enabled {
+    private static bool Enabled {
         get {
-            if (!Mod.enableHighstorms) return false;
+            if (!Mod.EnableHighstorms) return false;
             return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Highstorms);
         }
     }
@@ -29,7 +29,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     ///     Gets a value indicating whether storms are running at all on this map. False on a world
     ///     with no Honor, or with highstorms switched off in settings.
     /// </summary>
-    public static bool IsScheduling => enabled;
+    public static bool IsScheduling => Enabled;
 
     /// <summary>
     ///     Gets the ticks until the next storm, never negative. With no storm scheduled, which is
@@ -38,14 +38,14 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     ///     to anything comparing against a warning threshold.
     /// </summary>
     public int TicksUntilNextStorm =>
-        !enabled || nextHighstormTick < 0 ? int.MaxValue : nextHighstormTick - Find.TickManager.TicksGame;
+        !Enabled || nextHighstormTick < 0 ? int.MaxValue : nextHighstormTick - Find.TickManager.TicksGame;
 
     public bool IsStormActive => stormActive;
 
     public float SeasonalIntensity => seasonalIntensity;
 
     public override void FinalizeInit() {
-        if (!enabled) return;
+        if (!Enabled) return;
 
         base.FinalizeInit();
 
@@ -70,7 +70,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     }
 
     public override void MapComponentTick() {
-        if (!enabled) return;
+        if (!Enabled) return;
 
         if (nextHighstormTick < 0) {
             ScheduleNextHighstorm();
@@ -86,7 +86,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
             return;
         }
 
-        if (Mod.enableWeeping && UpdateWeeping()) return;
+        if (Mod.EnableWeeping && UpdateWeeping()) return;
 
         if (!warningShown && currentTick >= nextHighstormTick - GenDate.TicksPerDay) {
             SendWarning();
@@ -131,8 +131,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     }
 
     private void ScheduleNextHighstorm() {
-        int minDays = Mod.highstormMinIntervalDays;
-        int maxDays = Mod.highstormMaxIntervalDays;
+        int minDays = Mod.HighstormMinIntervalDays;
+        int maxDays = Mod.HighstormMaxIntervalDays;
         int intervalTicks = Rand.Range(minDays, maxDays + 1) * GenDate.TicksPerDay;
         int ticksNow = Find.TickManager.TicksGame;
 
@@ -150,7 +150,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         nextHighstormTick = lastHighstormTick + intervalTicks;
 
         // dated from the storm's own tick, not now, since it is being pushed past the Weeping it landed in
-        pushedPastWeeping = Mod.enableWeeping && IsTickDuringWeeping(nextHighstormTick);
+        pushedPastWeeping = Mod.EnableWeeping && IsTickDuringWeeping(nextHighstormTick);
         if (pushedPastWeeping) {
             int daysLeftInYear = WeepingSchedule.DaysToClearWeeping(DayOfYearAt(nextHighstormTick));
             nextHighstormTick += daysLeftInYear * GenDate.TicksPerDay +
@@ -208,7 +208,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
         if (scheduler.stormActive) return "CRO_Highstorm_Readout_Storm".Translate().Colorize(ColorLibrary.RedReadable);
-        if (Mod.enableWeeping && IsWeeping(map)) return "CRO_Highstorm_Readout_Weeping".Translate().Colorize(WeepingBlue);
+        if (Mod.EnableWeeping && IsWeeping(map)) return "CRO_Highstorm_Readout_Weeping".Translate().Colorize(WeepingBlue);
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
         if (ticksLeft <= 0) return "CRO_Highstorm_Readout_Imminent".Translate().Colorize(ColorLibrary.RedReadable);
@@ -226,7 +226,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
         if (scheduler.stormActive) return "CRO_Highstorm_Tip_Storm".Translate();
-        if (Mod.enableWeeping && IsWeeping(map)) return "CRO_Highstorm_Tip_Weeping".Translate();
+        if (Mod.EnableWeeping && IsWeeping(map)) return "CRO_Highstorm_Tip_Weeping".Translate();
 
         int ticksLeft = scheduler.TicksUntilNextStorm;
         if (ticksLeft <= 0) return "CRO_Highstorm_Tip_Imminent".Translate();

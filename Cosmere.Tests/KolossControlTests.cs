@@ -253,7 +253,7 @@ public partial class KolossControlTests {
 
         // the window is a setting now, not a constant - how forgiving a lost hold should be varies by colony.
         string control = Core("System", "Scadrial", "Util", "KolossControl.cs");
-        Assert.Contains("Mod.kolossGraceSeconds", control, "Grace comes from settings.");
+        Assert.Contains("Mod.KolossGraceSeconds", control, "Grace comes from settings.");
         Assert.Contains("Mathf.Max(0,", control, "A negative window would turn it instantly.");
     }
 
@@ -358,7 +358,7 @@ public partial class KolossControlTests {
 
         // Read live rather than captured at startup, or changing one does nothing until restart.
         Assert.Contains(
-            "Mod.kolossHoldFraction",
+            "Mod.KolossHoldFraction",
             Core("System", "Scadrial", "Comp", "Game", "KolossRoster.cs"),
             "A const would ignore the setting."
         );
@@ -394,7 +394,7 @@ public partial class KolossControlTests {
     [GeneratedRegex(@"GetStrength\(\)")]
     private static partial Regex BareGetStrength { get; }
 
-    [GeneratedRegex(@"Math\.Max\(parent\.status\.power, parent\.nextStatus\?\.power")]
+    [GeneratedRegex(@"Math\.Max\(Parent\.status\.power, Parent\.NextStatus\?\.power")]
     private static partial Regex PowerFromStatusOrNext { get; }
 
     [GeneratedRegex("Duralumin|SurgeCharge")]

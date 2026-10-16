@@ -35,7 +35,7 @@ public static class FeatureUtility {
     /// <summary>Whether the player has this switched on, defaulting to the def's own answer.</summary>
     /// <returns>The player's override for this feature, or the def's own default when they have not set one.</returns>
     public static bool IsChosen(CosmereFeatureDef feature) {
-        CosmereWorld? comp = WorldUtility.component;
+        CosmereWorld? comp = WorldUtility.Component;
         if (comp == null) return feature.enabledByDefault;
 
         return comp.featureOverrides.TryGetValue(feature.defName, out bool chosen)
@@ -44,7 +44,7 @@ public static class FeatureUtility {
     }
 
     public static void Set(CosmereFeatureDef feature, bool enabled) {
-        CosmereWorld? comp = WorldUtility.component;
+        CosmereWorld? comp = WorldUtility.Component;
         if (comp == null) return;
 
         comp.featureOverrides[feature.defName] = enabled;

@@ -18,7 +18,7 @@ public class GoldAbility : AllomancyAbility {
     public override void AbilityTick() {
         base.AbilityTick();
 
-        if (!atLeastBurning) {
+        if (!AtLeastBurning) {
             return;
         }
 

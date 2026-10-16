@@ -25,14 +25,14 @@ public class Harden : SurgebindingAbility {
 
     public Harden(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int maxStructures => Gene.CurrentIdeal switch {
+    private int MaxStructures => Gene.CurrentIdeal switch {
         >= 4 => 5,
         3 => 3,
         2 => 2,
         _ => 1,
     };
 
-    private float hpMultiplier => 1f + Gene.CurrentIdeal * 0.5f;
+    private float HpMultiplier => 1f + Gene.CurrentIdeal * 0.5f;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -50,7 +50,7 @@ public class Harden : SurgebindingAbility {
             return base.Activate(target, dest);
         }
 
-        if (hardenedStructures.Count >= maxStructures) return false;
+        if (hardenedStructures.Count >= MaxStructures) return false;
 
         ApplyHardening(building);
 
@@ -86,7 +86,7 @@ public class Harden : SurgebindingAbility {
 
     private void ApplyHardening(Building building) {
         int oldMax = building.MaxHitPoints;
-        hardenedBuildings[building] = hpMultiplier;
+        hardenedBuildings[building] = HpMultiplier;
         hardenedStructures.Add(building);
         int newMax = building.MaxHitPoints;
         int hpBonus = newMax - oldMax;

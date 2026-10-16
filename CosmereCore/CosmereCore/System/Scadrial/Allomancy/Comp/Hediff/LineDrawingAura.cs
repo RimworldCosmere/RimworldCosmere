@@ -14,33 +14,33 @@ using LineRenderer = Cosmere.Core.Comp.Map.LineRenderer;
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
 public abstract class LineDrawingAuraProperties : HediffCompProperties {
-    public virtual float radius { get; set; } = 15;
+    public virtual float Radius { get; set; } = 15;
 
-    public virtual Color lineColor { get; set; }
+    public virtual Color LineColor { get; set; }
 
-    public virtual Material lineMaterial =>
+    public virtual Material LineMaterial =>
         MaterialPool.MatFrom(
             GenDraw.OneSidedLineOpaqueTexPath,
             ShaderDatabase.TransparentPostLight,
-            lineColor
+            LineColor
         );
 }
 
 public abstract class LineDrawingAura : HediffComp {
     protected Material? cachedLineMaterial;
 
-    protected new virtual LineDrawingAuraProperties props => (LineDrawingAuraProperties)base.props;
+    protected virtual LineDrawingAuraProperties Props => (LineDrawingAuraProperties)props;
 
-    protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
+    protected AllomanticHediff Parent => (AllomanticHediff)parent;
 
-    protected MetallicArtsMetalDef metal => parent.metal;
+    protected MetallicArtsMetalDef Metal => Parent.Metal;
 
-    protected float radius => props.radius * parent.Severity;
+    protected float Radius => Props.Radius * Parent.Severity;
 
-    protected bool atLeastBurning {
+    protected bool AtLeastBurning {
         get {
-            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.SourceAbilities) {
-                if (sa is AllomancyAbility a && a.atLeastBurning) return true;
+            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in Parent.SourceAbilities) {
+                if (sa is AllomancyAbility a && a.AtLeastBurning) return true;
             }
 
             return false;
@@ -52,7 +52,7 @@ public abstract class LineDrawingAura : HediffComp {
     protected abstract LineToRender GetLineToRender(Verse.Thing thing);
 
     protected float FadeFor(float distance) {
-        return LineFade.For(radius, distance);
+        return LineFade.For(Radius, distance);
     }
 
     public override void CompPostPostRemoved() {
@@ -62,39 +62,39 @@ public abstract class LineDrawingAura : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (!atLeastBurning) {
+        if (!AtLeastBurning) {
             LineRenderer.Clear(this);
             return;
         }
 
-        if (!Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
+        if (!Mod.AlwaysShowAllomanticAuras && !Find.Selector.IsSelected(Parent.pawn)) {
             LineRenderer.Clear(this);
             return;
         }
 
-        if (debugMode) {
+        if (DebugMode) {
             CircleRenderer.Add(
                 this,
                 new CircleToRender(
-                    parent.pawn,
-                    radius,
-                    cachedLineMaterial ??= props.lineMaterial
+                    Parent.pawn,
+                    Radius,
+                    cachedLineMaterial ??= Props.LineMaterial
                 )
             );
         }
 
-        if (!base.parent.pawn.IsHashIntervalTick(20, delta)) {
+        if (!parent.pawn.IsHashIntervalTick(20, delta)) {
             return;
         }
 
         LineRenderer.Clear(this);
 
         // computed once for the whole sweep, not per cell - it's one burn, same answer every time
-        bool cloudy = Coppercloud.AnyOn(parent.pawn.Map);
-        float senseStrength = cloudy ? Coppercloud.BurnStrengthOf(parent.pawn, metal) : 0f;
+        bool cloudy = Coppercloud.AnyOn(Parent.pawn.Map);
+        float senseStrength = cloudy ? Coppercloud.BurnStrengthOf(Parent.pawn, Metal) : 0f;
 
-        foreach (IntVec3 cell in parent.pawn.GetCellsAround(radius)) {
-            IEnumerable<Verse.Thing> thingsToDrawInCell = GetThingsToDrawInCell(cell, parent.pawn.Map);
+        foreach (IntVec3 cell in Parent.pawn.GetCellsAround(Radius)) {
+            IEnumerable<Verse.Thing> thingsToDrawInCell = GetThingsToDrawInCell(cell, Parent.pawn.Map);
             foreach (Verse.Thing thing in thingsToDrawInCell) {
                 if (cloudy && Coppercloud.Hides(thing, senseStrength)) continue;
 

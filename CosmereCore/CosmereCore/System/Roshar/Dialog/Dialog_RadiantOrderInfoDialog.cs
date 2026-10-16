@@ -23,11 +23,11 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
     private readonly RadiantOrderInfoMode mode;
 
     public Dialog_RadiantOrderInfoDialog(Pawn pawn, Surgebinder surgebinder, RadiantOrderInfoMode mode)
-        : base(surgebinder.radiantOrderDef, pawn, surgebinder) {
+        : base(surgebinder.RadiantOrderDef, pawn, surgebinder) {
         this.mode = mode;
     }
 
-    protected override bool hasFooter => true;
+    protected override bool HasFooter => true;
 
     protected override TaggedString GetTitle() {
         return "CRO_RadiantOrder_Info_Title".Translate(
@@ -85,11 +85,11 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         Rect inner = boxRect.ContractedBy(Spacing.Get());
 
         Rect quoteRect = new Rect(inner.x, inner.y, inner.width, quoteHeight);
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, HeaderTextColor))
             Widgets.Label(quoteRect, $"<i>\"{quote}\"</i>");
 
         Rect labelRect = new Rect(inner.x, quoteRect.yMax + Spacing.Get(0.5f), inner.width, Spacing.Get(1.5f));
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, bodyTextColor))
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor))
             Widgets.Label(labelRect, idealLabel);
     }
 
@@ -119,7 +119,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         float yPos = inner.y;
 
         Rect headerRect = new Rect(inner.x, yPos, inner.width, headerHeight);
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, HeaderTextColor)) {
             Widgets.Label(
                 headerRect,
                 $"<b>{"CRO_RadiantOrder_ProgressRecap".Translate(pawn!.LabelShortCap.Named("PAWN"))}</b>"
@@ -140,7 +140,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
                 ? ((int)value).ToStringTicksToPeriod()
                 : ((int)value).ToString();
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, bodyTextColor)) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, BodyTextColor)) {
                 Widgets.Label(
                     lineRect,
                     "CRO_RadiantOrder_Info_ProgressLine".Translate(
@@ -173,7 +173,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
         float yPos = inner.y;
 
         Rect headerRect = new Rect(inner.x, yPos, inner.width, headerHeight);
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, HeaderTextColor)) {
             Widgets.Label(
                 headerRect,
                 $"<b>{"CRO_RadiantOrder_NextIdeal".Translate(futureIdeal.label.Named("IDEAL"))}</b>"
@@ -184,7 +184,7 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
 
         if (requirements != null) {
             Rect reqRect = new Rect(inner.x + Spacing.Get(0.5f), yPos, inner.width - Spacing.Get(), reqHeight);
-            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, bodyTextColor))
+            using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, BodyTextColor))
                 Widgets.Label(reqRect, requirements);
         }
     }
@@ -192,21 +192,21 @@ public class Dialog_RadiantOrderInfoDialog : Dialog_RadiantOrderDialogBase {
     protected override void DrawFooter(Rect rect) {
         const int divisor = 12;
 
-        Rect innerRect = rect.ContractedBy(padding);
+        Rect innerRect = rect.ContractedBy(Padding);
         float unit = innerRect.width / divisor;
 
-        Rect leftButtonRect = new Rect(innerRect.x, innerRect.y, unit * 2f, footerButtonHeight);
+        Rect leftButtonRect = new Rect(innerRect.x, innerRect.y, unit * 2f, FooterButtonHeight);
         Rect centerButtonRect = new Rect(
             innerRect.x + unit * 4f,
             innerRect.y - 4f,
             unit * 4f,
-            footerButtonHeight + 8f
+            FooterButtonHeight + 8f
         );
         Rect rightButtonRect = new Rect(
             innerRect.xMax - unit * 2f,
             innerRect.y,
             unit * 2f,
-            footerButtonHeight
+            FooterButtonHeight
         );
 
         TaggedString leftLabel = mode == RadiantOrderInfoMode.SpeakOath

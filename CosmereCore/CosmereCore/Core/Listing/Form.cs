@@ -22,7 +22,7 @@ public record SubListingOptions {
 
     public static SubListingOptions WithoutTopPadding() {
         SubListingOptions options = new SubListingOptions();
-        options.padding.top = 0;
+        options.padding.Top = 0;
 
         return options;
     }
@@ -64,10 +64,10 @@ public class Form : FoundationListing {
     public Form? parentListing;
     public ScrollView? scrollView;
 
-    public float currentHeight {
-        get => scrollView?.height ?? CurHeight;
+    public float CurrentHeight {
+        get => scrollView?.Height ?? CurHeight;
         set {
-            if (scrollView != null) scrollView.Value.height = value;
+            if (scrollView != null) scrollView.Value.Height = value;
         }
     }
 
@@ -112,24 +112,24 @@ public class Form : FoundationListing {
                     Label(text);
                     if (options.lineSeparator) {
                         GapLine(4);
-                        currentHeight += 4;
+                        CurrentHeight += 4;
                     }
                 },
                 options.padding
             );
 
-            currentHeight += Text.CalcSize(text).y;
+            CurrentHeight += Text.CalcSize(text).y;
         }
     }
 
     public virtual void Pad(Action content, Padding padding) {
-        curY += padding.top;
-        curX += padding.left;
+        curY += padding.Top;
+        curX += padding.Left;
         content();
-        curY += padding.bottom;
-        curX -= padding.left;
+        curY += padding.Bottom;
+        curX -= padding.Left;
 
-        currentHeight += padding.top + padding.bottom;
+        CurrentHeight += padding.Top + padding.Bottom;
     }
 
     protected virtual void SubListing(
@@ -141,26 +141,26 @@ public class Form : FoundationListing {
         TextBlock textBlock = options.textBlock ?? new TextBlock(GameFont.Medium, TextAnchor.UpperLeft);
         using (textBlock) {
             if (height == null) {
-                curY += options.padding.top;
-                curX += options.padding.left;
+                curY += options.padding.Top;
+                curX += options.padding.Left;
 
                 drawContents(this);
 
-                curY += options.padding.bottom;
-                curX -= options.padding.left;
+                curY += options.padding.Bottom;
+                curX -= options.padding.Left;
 
-                currentHeight += options.padding.top + options.padding.bottom;
+                CurrentHeight += options.padding.Top + options.padding.Bottom;
             } else {
                 Rect rect = GetRect(height.Value).ContractedBy(options.padding);
                 Form sub = new Form { verticalSpacing = options.verticalSpacing, parentListing = this };
 
                 sub.Contain(rect, drawContents);
-                currentHeight += height.Value + options.verticalSpacing;
+                CurrentHeight += height.Value + options.verticalSpacing;
             }
         }
 
         Gap(verticalSpacing);
-        currentHeight += verticalSpacing;
+        CurrentHeight += verticalSpacing;
     }
 
     public void Field(
@@ -190,8 +190,8 @@ public class Form : FoundationListing {
         fieldOptions ??= new FieldOptions();
         subListingOptions ??= new SubListingOptions();
 
-        float height = subListingOptions.padding.top +
-                       subListingOptions.padding.bottom +
+        float height = subListingOptions.padding.Top +
+                       subListingOptions.padding.Bottom +
                        fieldOptions.height +
                        subListingOptions.verticalSpacing;
 
@@ -214,8 +214,8 @@ public class Form : FoundationListing {
                     sub.ColumnWidth -
                     fieldOptions.labelWidth -
                     fieldOptions.columnSpacing -
-                    subListingOptions.padding.left -
-                    subListingOptions.padding.right -
+                    subListingOptions.padding.Left -
+                    subListingOptions.padding.Right -
                     16
                 );
                 using (new TextBlock(TextAnchor.MiddleCenter)) drawContents(sub);

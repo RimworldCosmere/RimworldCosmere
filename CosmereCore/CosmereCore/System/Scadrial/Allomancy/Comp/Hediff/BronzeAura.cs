@@ -13,26 +13,26 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
         compClass = typeof(BronzeAura);
     }
 
-    public override Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
+    public override Color LineColor => MetallicArtsMetalDefOf.Bronze.color;
 }
 
 public class BronzeAura : LineDrawingAura {
     private Mote? mote;
 
-    private float moteScale => MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
+    private float MoteScale => MoteUtility.GetMoteSize(Props.moteDef, Props.Radius, Parent.Severity);
 
-    private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
+    private new BronzeAuraProperties Props => (BronzeAuraProperties)base.Props;
 
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
         List<Verse.Thing> things = cell.GetThingList(map);
         for (int i = 0; i < things.Count; i++) {
-            if (things[i].GetInvestiture()?.currentInvestiture > 0) yield return things[i];
+            if (things[i].GetInvestiture()?.CurrentInvestiture > 0) yield return things[i];
         }
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {
-        float distance = (thing.DrawPos - parent.pawn.DrawPos).ToIntVec3().LengthHorizontal;
-        float investiture = thing.GetInvestiture()?.currentInvestiture ?? 0f;
+        float distance = (thing.DrawPos - Parent.pawn.DrawPos).ToIntVec3().LengthHorizontal;
+        float investiture = thing.GetInvestiture()?.CurrentInvestiture ?? 0f;
 
         float fade = FadeFor(distance);
 
@@ -40,9 +40,9 @@ public class BronzeAura : LineDrawingAura {
         float thickness = Mathf.Lerp(0.15f, 1f, Mathf.Clamp01(investiture / 50000f));
 
         return new LineToRender(
-            parent.pawn,
+            Parent.pawn,
             thing,
-            cachedLineMaterial ??= props.lineMaterial,
+            cachedLineMaterial ??= Props.LineMaterial,
             fade,
             thickness
         );
@@ -51,7 +51,7 @@ public class BronzeAura : LineDrawingAura {
     public override void CompPostTick(ref float severityAdjustment) {
         CreateMote()?.Maintain();
         if (mote != null) {
-            mote.Graphic.drawSize = new Vector2(moteScale, moteScale);
+            mote.Graphic.drawSize = new Vector2(MoteScale, MoteScale);
         }
 
         base.CompPostTick(ref severityAdjustment);
@@ -65,10 +65,10 @@ public class BronzeAura : LineDrawingAura {
         }
 
         return mote ??= MoteMaker.MakeAttachedOverlay(
-            parent.pawn,
-            props.moteDef,
+            Parent.pawn,
+            Props.moteDef,
             Vector3.zero,
-            moteScale
+            MoteScale
         );
     }
 }

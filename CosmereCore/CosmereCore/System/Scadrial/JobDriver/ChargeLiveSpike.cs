@@ -12,7 +12,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
     private const int SurgeryDuration = 100;
     private const int WaitForDonorTimeout = 10000;
 
-    private Pawn donor => (Pawn)job.targetA.Thing;
+    private Pawn Donor => (Pawn)job.targetA.Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         if (!pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed)) return false;
@@ -23,7 +23,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOnDestroyedOrNull(TargetIndex.B);
-        AddFailCondition(() => donor.Dead);
+        AddFailCondition(() => Donor.Dead);
         AddFinishAction(condition => {
             if (pawn.carryTracker.CarriedThing != null) {
                 pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
@@ -31,17 +31,17 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
         }
         );
 
-        bool donorInBed = donor.InBed();
-        bool voluntary = donor.Faction == Faction.OfPlayer && !donor.IsPrisonerOfColony && !donor.IsSlaveOfColony;
+        bool donorInBed = Donor.InBed();
+        bool voluntary = Donor.Faction == Faction.OfPlayer && !Donor.IsPrisonerOfColony && !Donor.IsSlaveOfColony;
 
-        if (!donorInBed && !voluntary && !donor.Downed) {
+        if (!donorInBed && !voluntary && !Donor.Downed) {
             // Involuntary and conscious: anesthetize, carry to bed
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return MakeAnesthetizeToil();
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch);
             yield return Toils_Bed.TuckIntoBed(TargetIndex.C, TargetIndex.A);
-        } else if (!donorInBed && donor.Downed) {
+        } else if (!donorInBed && Donor.Downed) {
             // Already downed: just carry to bed
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
@@ -54,7 +54,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
             .FailOnForbidden(TargetIndex.B);
         yield return Toils_Haul.StartCarryThing(TargetIndex.B);
 
-        if (!donorInBed && voluntary && !donor.Downed) {
+        if (!donorInBed && voluntary && !Donor.Downed) {
             // Voluntary: donor is walking to bed via WaitInBed job, go wait at bed
             yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.InteractionCell);
             yield return MakeWaitForDonorToil();
@@ -64,7 +64,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
         }
 
         // Anesthetize (not needed for involuntary - already done above)
-        if (donorInBed || voluntary && !donor.Downed) {
+        if (donorInBed || voluntary && !Donor.Downed) {
             yield return MakeAnesthetizeToil();
         }
 
@@ -79,9 +79,9 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
     private Toil MakeAnesthetizeToil() {
         Toil toil = ToilMaker.MakeToil("Anesthetize");
         toil.initAction = () => {
-            Verse.Hediff anesthesia = HediffMaker.MakeHediff(RimWorld.HediffDefOf.Anesthetic, donor);
+            Verse.Hediff anesthesia = HediffMaker.MakeHediff(RimWorld.HediffDefOf.Anesthetic, Donor);
             anesthesia.Severity = 1.0f;
-            donor.health.AddHediff(anesthesia);
+            Donor.health.AddHediff(anesthesia);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Instant;
         return toil;
@@ -96,7 +96,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
         };
         toil.tickAction = () => {
             waitedTicks++;
-            if (donor.InBed()) {
+            if (Donor.InBed()) {
                 ReadyForNextToil();
                 return;
             }
@@ -106,7 +106,7 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
             }
         };
         toil.defaultCompleteMode = ToilCompleteMode.Never;
-        toil.AddFailCondition(() => donor.Dead || donor.Downed);
+        toil.AddFailCondition(() => Donor.Dead || Donor.Downed);
         return toil;
     }
 
@@ -120,12 +120,12 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
             }
 
             HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
-            if (spikeComp == null || spikeComp.isCharged) {
-                Log.Warn($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
+            if (spikeComp == null || spikeComp.IsCharged) {
+                Log.Warn($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.IsCharged}");
                 return;
             }
 
-            MetallicArtsMetalDef? metal = spikeComp.metal;
+            MetallicArtsMetalDef? metal = spikeComp.Metal;
             if (metal == null) return;
             HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
@@ -134,13 +134,13 @@ public class ChargeLiveSpike : Verse.AI.JobDriver {
                 strengthMultiplier *= HemalurgicConstants.ThinNeedleStrengthMultiplier;
             }
 
-            strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
+            strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(Donor, stealType);
 
             GeneDef? selectedGene = spikeComp.pendingStealTarget;
             spikeComp.pendingStealTarget = null;
 
             HemalurgicChargeUtility.DriveHemalurgicCharge(
-                donor,
+                Donor,
                 pawn,
                 spikeComp,
                 stealType,

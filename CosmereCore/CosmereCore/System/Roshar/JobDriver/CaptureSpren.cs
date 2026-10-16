@@ -11,26 +11,26 @@ public class CaptureSpren : Verse.AI.JobDriver {
     private const TargetIndex GemIndex = TargetIndex.B;
     private const int CaptureDuration = 180; // 3 seconds
 
-    protected IntVec3 targetCell => job.GetTarget(CellIndex).Cell;
+    protected IntVec3 TargetCell => job.GetTarget(CellIndex).Cell;
 
-    protected Verse.Thing? gemstone => job.GetTarget(GemIndex).Thing;
+    protected Verse.Thing? Gemstone => job.GetTarget(GemIndex).Thing;
 
-    protected SprenType? targetSprenType => job.targetC.Cell.x >= 0 ? (SprenType?)job.targetC.Cell.x : null;
+    protected SprenType? TargetSprenType => job.targetC.Cell.x >= 0 ? (SprenType?)job.targetC.Cell.x : null;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        if (gemstone != null && !gemstone.Spawned) {
+        if (Gemstone != null && !Gemstone.Spawned) {
             return true; // Gem is in inventory
         }
 
-        return gemstone != null && pawn.Reserve(gemstone, job, 1, -1, null, errorOnFailed);
+        return Gemstone != null && pawn.Reserve(Gemstone, job, 1, -1, null, errorOnFailed);
     }
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
-        AddFailCondition(() => gemstone == null);
-        AddFailCondition(() => !LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(targetCell, Map).Any());
+        AddFailCondition(() => Gemstone == null);
+        AddFailCondition(() => !LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(TargetCell, Map).Any());
 
         // If gem is not in inventory, go get it
-        if (gemstone != null && gemstone.Spawned) {
+        if (Gemstone != null && Gemstone.Spawned) {
             yield return Toils_Goto.GotoThing(GemIndex, PathEndMode.ClosestTouch)
                 .FailOnDespawnedNullOrForbidden(GemIndex)
                 .FailOnSomeonePhysicallyInteracting(GemIndex);
@@ -55,7 +55,7 @@ public class CaptureSpren : Verse.AI.JobDriver {
         captureToil.tickAction = () => {
             // Check if spren is still available
             if (Find.TickManager.TicksGame % 60 == 0 &&
-                !LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(targetCell, Map).Any()) {
+                !LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(TargetCell, Map).Any()) {
                 EndJobWith(JobCondition.Incompletable);
             }
         };
@@ -65,24 +65,24 @@ public class CaptureSpren : Verse.AI.JobDriver {
         // Attempt capture
         yield return new Verse.AI.Toil {
             initAction = () => {
-                if (gemstone is not ThingWithComps gem) {
+                if (Gemstone is not ThingWithComps gem) {
                     EndJobWith(JobCondition.Errored);
                     return;
                 }
 
                 bool success;
-                if (targetSprenType.HasValue) {
+                if (TargetSprenType.HasValue) {
                     // Try to capture specific spren type
                     success = LesserSprenCaptureSystem.TryCaptureSprenWithinRadius(
-                        targetCell,
+                        TargetCell,
                         Map,
                         gem,
-                        targetSprenType.Value
+                        TargetSprenType.Value
                     );
                 } else {
                     // Try to capture any available spren
                     success = LesserSprenCaptureSystem.TryCaptureAnySprenWithinRadius(
-                        targetCell,
+                        TargetCell,
                         Map,
                         gem
                     );

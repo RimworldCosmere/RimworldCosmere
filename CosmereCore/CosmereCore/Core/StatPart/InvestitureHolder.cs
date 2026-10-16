@@ -26,7 +26,7 @@ public class InvestitureHolder : RimWorld.StatPart {
             return false;
         }
 
-        value = investitureHolder.currentInvestiture;
+        value = investitureHolder.CurrentInvestiture;
         return true;
     }
 }

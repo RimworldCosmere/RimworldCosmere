@@ -34,12 +34,12 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     private Pawn? ownerInt;
 
-    public Pawn? owner {
+    public Pawn? Owner {
         get => ownerInt;
         private set => ownerInt = value;
     }
 
-    private new MetalmindProperties props => (MetalmindProperties)base.props;
+    private MetalmindProperties Props => (MetalmindProperties)props;
 
     public bool IsCoppermind => Metal?.defName == "Copper";
 
@@ -49,14 +49,14 @@ public class Metalmind : ThingComp, IMetalmindSource {
         get {
             float total = 0f;
             for (int i = 0; i < storedMemoriesInt.Count; i++) {
-                total += storedMemoriesInt[i].moodMagnitude;
+                total += storedMemoriesInt[i].MoodMagnitude;
             }
 
             return total;
         }
     }
 
-    private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
+    private InvestitureHolder InvestitureHolder => parent.GetComp<InvestitureHolder>();
 
     public bool Equipped {
         get => equippedInt;
@@ -84,7 +84,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
     ///     Gets this metalmind's capacity. props.maxAmount is shared by the def, quality scales that shared
     ///     base, then per-instance capacityLost is subtracted, so burning any quality costs the same amount.
     /// </summary>
-    public float MaxAmount => Mathf.Max(0f, props.maxAmount * CapacityFactor - capacityLostInt);
+    public float MaxAmount => Mathf.Max(0f, Props.maxAmount * CapacityFactor - capacityLostInt);
 
     public bool IsBurnedOut => MaxAmount <= 0f;
 
@@ -110,7 +110,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         get {
             Pawn? currentHolder = GetHoldingPawn();
 
-            return owner == null || currentHolder == null || owner.Equals(currentHolder);
+            return Owner == null || currentHolder == null || Owner.Equals(currentHolder);
         }
     }
 
@@ -151,10 +151,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
         : ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
 
     private void SyncInvestitureMirror() {
-        investitureHolder.currentInvestitureSelf = TotalOccupied * BeuPerUnit;
+        InvestitureHolder.CurrentInvestitureSelf = TotalOccupied * BeuPerUnit;
 
         // max mirrored here too, not just PostPostMake: quality stamps on late and compounding shrinks capacity later.
-        investitureHolder.maxInvestitureSelf = MaxAmount * BeuPerUnit;
+        InvestitureHolder.maxInvestitureSelf = MaxAmount * BeuPerUnit;
     }
 
     public MetalDef? Metal {
@@ -285,8 +285,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
     public void SyncInjectedThoughts(Pawn holder) {
         if (!IsCoppermind) return;
         if (holder == null) return;
-        if (owner == null) owner = holder;
-        if (holder != owner) return;
+        if (Owner == null) Owner = holder;
+        if (holder != Owner) return;
 
         MemoryThoughtHandler? handler = holder.needs?.mood?.thoughts?.memories;
         if (handler == null) return;
@@ -343,9 +343,9 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     // Claims an unowned metalmind for whoever is acting; otherwise reads the same check the gates do.
     private bool ValidateOwner() {
-        if (owner != null) return OwnerAllows;
+        if (Owner != null) return OwnerAllows;
 
-        owner = GetHoldingPawn();
+        Owner = GetHoldingPawn();
 
         return true;
     }
@@ -372,7 +372,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
             }
 
             // Only saves written before owner was scribed land here, and they claim the holder as they always did.
-            owner ??= GetHoldingPawn();
+            Owner ??= GetHoldingPawn();
 
             // loads over-full when compounding burnt capacity, or when a save predates quality scaling.
             float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);
@@ -402,9 +402,9 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public override string CompInspectStringExtra() {
         StringBuilder sb = new StringBuilder();
-        TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
+        TaggedString coloredOwner = Owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
-        NamedArgument coloredMetal = Metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
+        NamedArgument coloredMetal = Metal?.ColoredLabel.Named("METAL") ?? "unknown".Named("METAL");
         sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalOccupied:F1} / {MaxAmount:F1}");
         if (compoundedAmountInt > 0f) {
             sb.Append(" " + "CS_MetalmindCompounded".Translate(compoundedAmountInt.ToString("F1").Named("COMPOUNDED")));

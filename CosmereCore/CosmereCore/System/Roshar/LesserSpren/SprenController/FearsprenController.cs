@@ -8,32 +8,32 @@ using Verse;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class FearsprenController : DynamicSprenController {
-    public override SprenType sprenType => SprenType.Fearspren;
+    public override SprenType SprenType => SprenType.Fearspren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.7f;
+    public override float CellSpawnChance => 0.7f;
 
-    public override int minParticlesPerCell => 1;
+    public override int MinParticlesPerCell => 1;
 
-    public override int maxParticlesPerCell => 4;
+    public override int MaxParticlesPerCell => 4;
 
-    public override FloatRange lifetime => new FloatRange(10f, 20f);
+    public override FloatRange Lifetime => new FloatRange(10f, 20f);
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Smokestone,
         GemDefOf.Amethyst,
         GemDefOf.Garnet,
         GemDefOf.Diamond,
     ];
 
-    public override float captureRarityMultiplier => 0.6f;
+    public override float CaptureRarityMultiplier => 0.6f;
 
-    public override Color sprenColor => new Color(0.2f, 0.1f, 0.3f, 0.9f);
+    public override Color SprenColor => new Color(0.2f, 0.1f, 0.3f, 0.9f);
 
-    public override float sprenSizeMultiplier => 0.8f;
+    public override float SprenSizeMultiplier => 0.8f;
 
-    public override float emissionRateMultiplier => 1.5f;
+    public override float EmissionRateMultiplier => 1.5f;
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         if (map == null) return [];
@@ -44,7 +44,7 @@ public class FearsprenController : DynamicSprenController {
             if (!pawn.Spawned || pawn.needs?.mood == null) continue;
 
             bool isFearful = false;
-            float fearIntensity = cellSpawnChance; // Base spawn chance
+            float fearIntensity = CellSpawnChance; // Base spawn chance
 
             if (pawn.CurJobDef == RimWorld.JobDefOf.Flee ||
                 pawn.CurJobDef == RimWorld.JobDefOf.FleeAndCower ||
@@ -73,11 +73,11 @@ public class FearsprenController : DynamicSprenController {
 
             if (isFearful) {
                 // Scale particle count based on fear intensity
-                int minParticles = Mathf.RoundToInt(Mathf.Lerp(1f, minParticlesPerCell, fearIntensity));
-                int maxParticles = Mathf.RoundToInt(Mathf.Lerp(2f, maxParticlesPerCell, fearIntensity));
+                int minParticles = Mathf.RoundToInt(Mathf.Lerp(1f, MinParticlesPerCell, fearIntensity));
+                int maxParticles = Mathf.RoundToInt(Mathf.Lerp(2f, MaxParticlesPerCell, fearIntensity));
 
                 spawnInfos.Add(
-                    defaultSpawnInformation.With(
+                    DefaultSpawnInformation.With(
                         map,
                         pawn.Position,
                         fearIntensity,
@@ -106,7 +106,7 @@ public class FearsprenController : DynamicSprenController {
         debug.AppendLine($"  Is Fleeing: {(pawn.CurJob?.def == RimWorld.JobDefOf.Flee ? "Yes" : "No")}");
 
         bool isFearful = false;
-        float fearIntensity = cellSpawnChance;
+        float fearIntensity = CellSpawnChance;
 
         if (pawn.CurJob?.def == RimWorld.JobDefOf.Flee) {
             isFearful = true;

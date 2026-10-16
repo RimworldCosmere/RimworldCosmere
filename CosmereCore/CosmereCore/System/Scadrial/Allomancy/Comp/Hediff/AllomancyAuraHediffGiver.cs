@@ -54,37 +54,37 @@ public class AllomancyAuraHediffGiver : HediffComp {
     private readonly HashSet<Pawn> pawnsWithHediff = [];
     private Mote? mote;
 
-    private new AllomancyAuraHediffGiverProperties props => (AllomancyAuraHediffGiverProperties)base.props;
+    private AllomancyAuraHediffGiverProperties Props => (AllomancyAuraHediffGiverProperties)props;
 
-    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
+    private AllomanticHediff Parent => (AllomanticHediff)parent;
 
-    private bool isAtLeastPassive => parent.Severity >= 0.5f;
+    private bool IsAtLeastPassive => Parent.Severity >= 0.5f;
 
     /// <summary>
     ///     Gets how far the aura carries, rounded the way GetCellsAround rounds it so that anything
     ///     asking how big the aura is gets the size it actually applied.
     /// </summary>
-    public float Reach => Mathf.Round(props.radius * base.parent.Severity);
+    public float Reach => Mathf.Round(Props.radius * parent.Severity);
 
     /// <summary>Gets a value indicating whether this aura reaches for the mind. Zinc and brass do, and that is the reach copper shuts.</summary>
-    private bool isEmotional =>
-        parent.metal == MetallicArtsMetalDefOf.Zinc || parent.metal == MetallicArtsMetalDefOf.Brass;
+    private bool IsEmotional =>
+        Parent.Metal == MetallicArtsMetalDefOf.Zinc || Parent.Metal == MetallicArtsMetalDefOf.Brass;
 
     /// <summary>
     ///     Gets the first source ability, or none. An explicit first read, not a foreach that returns on
     ///     entry - that reads like a loop but can never take a second pass.
     /// </summary>
-    private IAbility<Allomancer, AllomanticHediff>? ability {
+    private IAbility<Allomancer, AllomanticHediff>? Ability {
         get {
             using HashSet<IAbility<Allomancer, IHediff<Allomancer>>>.Enumerator e =
-                parent.SourceAbilities.GetEnumerator();
+                Parent.SourceAbilities.GetEnumerator();
 
             return e.MoveNext() ? (IAbility<Allomancer, AllomanticHediff>?)e.Current : null;
         }
     }
 
-    private float moteScale =>
-        props.moteDef == null ? 1f : MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
+    private float MoteScale =>
+        Props.moteDef == null ? 1f : MoteUtility.GetMoteSize(Props.moteDef, Props.radius, Parent.Severity);
 
     public override void CompPostMake() {
         base.CompPostMake();
@@ -92,29 +92,29 @@ public class AllomancyAuraHediffGiver : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (!isAtLeastPassive) {
+        if (!IsAtLeastPassive) {
             return;
         }
 
         base.CompPostTickInterval(ref severityAdjustment, delta);
         float radius = Reach;
 
-        if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            CircleRenderer.Add(this, new CircleToRender(parent.pawn, radius, parent.metal.transparentLineColor));
+        if (DebugMode && Find.Selector.IsSelected(Parent.pawn)) {
+            CircleRenderer.Add(this, new CircleToRender(Parent.pawn, radius, Parent.Metal.TransparentLineColor));
         }
 
-        if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
+        if (!parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
             return;
         }
 
         HashSet<Pawn> nearbyPawns = [];
-        if (props.affectsSelf) {
-            nearbyPawns.Add(base.parent.pawn);
+        if (Props.affectsSelf) {
+            nearbyPawns.Add(parent.pawn);
         }
 
-        foreach (IntVec3 cell in base.parent.pawn.GetCellsAround(radius, true)) {
-            Pawn? cellPawn = cell.GetFirstPawn(base.parent.pawn.Map);
-            if (cellPawn != null && cellPawn != base.parent.pawn) {
+        foreach (IntVec3 cell in parent.pawn.GetCellsAround(radius, true)) {
+            Pawn? cellPawn = cell.GetFirstPawn(parent.pawn.Map);
+            if (cellPawn != null && cellPawn != parent.pawn) {
                 nearbyPawns.Add(cellPawn);
             }
         }
@@ -132,13 +132,13 @@ public class AllomancyAuraHediffGiver : HediffComp {
         List<Pawn> toRemove = [];
         foreach (Pawn pawn in pawnsWithHediff) {
             if (StillInReach(pawn, radius)) continue;
-            if (ability != null) {
+            if (Ability != null) {
                 AllomanticHediff? hediff = pawn.GetOrAddHediff(
-                    (AllomancyAbility)ability,
-                    props,
+                    (AllomancyAbility)Ability,
+                    Props,
                     Pawn
                 );
-                hediff?.RemoveSource(ability);
+                hediff?.RemoveSource(Ability);
             }
 
             toRemove.Add(pawn);
@@ -154,8 +154,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
     ///     sharing a cell reads as gone there and would lose a source it never walked out of.
     /// </summary>
     private bool StillInReach(Pawn other, float radius) {
-        Pawn self = base.parent.pawn;
-        if (other == self) return props.affectsSelf;
+        Pawn self = parent.pawn;
+        if (other == self) return Props.affectsSelf;
         if (!other.Spawned || other.Map != self.Map) return false;
 
         return self.DistanceTo(other.Position) <= radius;
@@ -171,22 +171,22 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         CreateMote()?.Maintain();
         if (mote != null) {
-            mote.Graphic.drawSize = new Vector2(moteScale, moteScale);
+            mote.Graphic.drawSize = new Vector2(MoteScale, MoteScale);
         }
     }
 
     private Mote? CreateMote() {
-        if (props.moteDef == null) return null;
+        if (Props.moteDef == null) return null;
 
         if (mote?.Destroyed == false) {
             return mote;
         }
 
         return mote ??= MoteMaker.MakeAttachedOverlay(
-            base.parent.pawn,
-            props.moteDef,
+            parent.pawn,
+            Props.moteDef,
             Vector3.zero,
-            moteScale
+            MoteScale
         );
     }
 
@@ -203,27 +203,27 @@ public class AllomancyAuraHediffGiver : HediffComp {
     ///     </para>
     /// </remarks>
     private void TrySeize(Pawn? target) {
-        if (target == null || ability == null) return;
-        if (!isEmotional) return;
-        if (Coppercloud.Hides(Pawn, target, parent.metal)) return;
+        if (target == null || Ability == null) return;
+        if (!IsEmotional) return;
+        if (Coppercloud.Hides(Pawn, target, Parent.Metal)) return;
         if (EmotionalResistance.Of(target) <= 0f) return;
         if (KolossControl.IsHeld(target)) return;
 
-        AllomancyAbility burning = (AllomancyAbility)ability;
-        KolossControl.TryBind(Pawn, target, burning.GetStrength(burning.nextStatus), burning.def.metal, burning.def);
+        AllomancyAbility burning = (AllomancyAbility)Ability;
+        KolossControl.TryBind(Pawn, target, burning.GetStrength(burning.NextStatus), burning.Def.metal, burning.Def);
     }
 
     private void Act(Pawn? target) {
-        if (target?.mindState == null || target.Dead || ability == null) {
+        if (target?.mindState == null || target.Dead || Ability == null) {
             return;
         }
 
         // silent: runs once a second on everyone in range, so a Rioter would narrate this forever
-        if (isEmotional && Coppercloud.Hides(Pawn, target, parent.metal)) {
+        if (IsEmotional && Coppercloud.Hides(Pawn, target, Parent.Metal)) {
             return;
         }
 
-        AllomanticHediff? hediff = target.GetOrAddHediff((AllomancyAbility)ability, props, Pawn);
+        AllomanticHediff? hediff = target.GetOrAddHediff((AllomancyAbility)Ability, Props, Pawn);
         if (hediff == null) return;
         pawnsWithHediff.Add(target);
 
@@ -242,6 +242,6 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         if (hediff.ageTicks >= GenTicks.TicksPerRealSecond) return;
 
-        MoteMaker.ThrowText(target.DrawPos, target.Map, props.verb, Color.cyan);
+        MoteMaker.ThrowText(target.DrawPos, target.Map, Props.verb, Color.cyan);
     }
 }

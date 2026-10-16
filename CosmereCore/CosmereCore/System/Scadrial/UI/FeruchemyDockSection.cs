@@ -159,11 +159,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
         FeruchemyCapacity capacity = FeruchemyCapacity.Of(gene);
 
-        bool compounding = gene?.isCompounding ?? false;
+        bool compounding = gene?.IsCompounding ?? false;
         MetalTileState state = MetalTileState.Idle;
         if (!capacity.HasMetalmind) state = MetalTileState.Inert;
         else if (compounding) state = MetalTileState.Flaring;
-        else if (gene != null && (gene.isTapping || gene.isStoring)) state = MetalTileState.Active;
+        else if (gene != null && (gene.IsTapping || gene.IsStoring)) state = MetalTileState.Active;
 
         string? foldLabel = null;
         if (capacity.HasMetalmind) {
@@ -280,14 +280,14 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private static string DirectionLabel(Feruchemist gene, FeruchemyCapacity capacity) {
         if (capacity.CompoundedRate < 0f) return "CC_Dock_Feruchemy_BurningMetalmind".Translate();
         if (capacity.CompoundedRate > 0f) return "CC_Dock_Feruchemy_Compounding".Translate();
-        if (gene.isTapping) return "CC_Dock_Feruchemy_Tapping".Translate();
-        if (gene.isStoring) return "CC_Dock_Feruchemy_Storing".Translate();
+        if (gene.IsTapping) return "CC_Dock_Feruchemy_Tapping".Translate();
+        if (gene.IsStoring) return "CC_Dock_Feruchemy_Storing".Translate();
 
         return "CC_Dock_Feruchemy_Idle".Translate();
     }
 
     private static Color RateTint(Feruchemist gene, float rate) {
-        if (gene.isCompounding) return FeruchemyPalette.CompoundTint;
+        if (gene.IsCompounding) return FeruchemyPalette.CompoundTint;
         if (Mathf.Approximately(rate, 0f)) return RateIdle;
 
         return rate < 0f ? FeruchemyPalette.TapFill : FeruchemyPalette.StoreFill;
@@ -354,7 +354,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (metalDefName == null || pawn.genes == null) return null;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Feruchemist f && f.metal.defName == metalDefName && !f.Overridden) return f;
+            if (all[i] is Feruchemist f && f.Metal.defName == metalDefName && !f.Overridden) return f;
         }
 
         return null;

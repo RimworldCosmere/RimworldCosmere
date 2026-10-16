@@ -321,7 +321,7 @@ public class CompAshVent : ThingComp {
     /// </summary>
     private void SpreadSoil(Verse.Map map, Map.AshDepthTracker tracker, float dayFraction) {
         soilRadius = AshVentSoilSpread.Advance(
-            soilRadius, Props.clearRadius, Scadrial.Mod.ventSoilReach, dayFraction
+            soilRadius, Props.clearRadius, Scadrial.Mod.VentSoilReach, dayFraction
         );
 
         float daysBefore = soilDays;

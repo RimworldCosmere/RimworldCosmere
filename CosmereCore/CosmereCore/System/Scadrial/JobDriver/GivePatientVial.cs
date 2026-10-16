@@ -7,16 +7,16 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public class GivePatientVial : Verse.AI.JobDriver {
     private const float FeedDurationMultiplier = 1.5f;
 
-    private Verse.Thing vial => job.targetA.Thing;
+    private Verse.Thing Vial => job.targetA.Thing;
 
-    private Pawn deliveree => job.targetB.Pawn;
+    private Pawn Deliveree => job.targetB.Pawn;
 
-    private Pawn_InventoryTracker? vialHolderInventory => vial?.ParentHolder as Pawn_InventoryTracker;
+    private Pawn_InventoryTracker? VialHolderInventory => Vial?.ParentHolder as Pawn_InventoryTracker;
 
-    private Pawn vialHolder => job.targetC.Pawn;
+    private Pawn VialHolder => job.targetC.Pawn;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        if (!pawn.Reserve(deliveree, job, errorOnFailed: errorOnFailed)) {
+        if (!pawn.Reserve(Deliveree, job, errorOnFailed: errorOnFailed)) {
             return false;
         }
 
@@ -24,7 +24,7 @@ public class GivePatientVial : Verse.AI.JobDriver {
             return true;
         }
 
-        if (!pawn.Reserve(vial, job, 10, 1, errorOnFailed: errorOnFailed)) {
+        if (!pawn.Reserve(Vial, job, 10, 1, errorOnFailed: errorOnFailed)) {
             return false;
         }
 
@@ -37,7 +37,7 @@ public class GivePatientVial : Verse.AI.JobDriver {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
         Toil carryVialFromInventory = Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.A);
         Toil goToVialHolder = Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch)
-            .FailOn(() => vialHolder != vialHolderInventory?.pawn || vialHolder.IsForbidden(pawn));
+            .FailOn(() => VialHolder != VialHolderInventory?.pawn || VialHolder.IsForbidden(pawn));
         Toil carryVialToPatient = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
 
         // ISSUE: reference to a compiler-generated method
@@ -45,23 +45,23 @@ public class GivePatientVial : Verse.AI.JobDriver {
             carryVialFromInventory,
             () => pawn.inventory != null && pawn.inventory.Contains(TargetThingA)
         );
-        yield return Toils_Haul.CheckItemCarriedByOtherPawn(vial, TargetIndex.C, goToVialHolder);
+        yield return Toils_Haul.CheckItemCarriedByOtherPawn(Vial, TargetIndex.C, goToVialHolder);
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnForbidden(TargetIndex.A);
-        yield return Toils_Ingest.PickupIngestible(TargetIndex.A, deliveree);
+        yield return Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree);
         yield return Toils_Jump.Jump(carryVialToPatient);
         yield return goToVialHolder;
         yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.C);
         yield return Toils_Haul.TakeFromOtherInventory(
-            vial,
+            Vial,
             pawn.inventory.innerContainer,
-            vialHolderInventory?.innerContainer,
+            VialHolderInventory?.innerContainer,
             job.count,
             TargetIndex.A
         );
         yield return carryVialFromInventory;
         yield return carryVialToPatient;
-        yield return Toils_Ingest.ChewIngestible(deliveree, FeedDurationMultiplier, TargetIndex.A)
+        yield return Toils_Ingest.ChewIngestible(Deliveree, FeedDurationMultiplier, TargetIndex.A)
             .FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);
-        yield return Toils_Ingest.FinalizeIngest(deliveree, TargetIndex.A);
+        yield return Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A);
     }
 }

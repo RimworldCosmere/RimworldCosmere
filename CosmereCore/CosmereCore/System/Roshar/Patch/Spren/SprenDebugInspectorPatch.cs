@@ -9,7 +9,7 @@ namespace Cosmere.System.Roshar.Patch.Spren;
 public abstract class SprenDebugInspectorPatch : EditWindow_DebugInspector {
     [Inject(At.Return, "CurrentDebugString")]
     private void AfterCurrentDebugString(ControlHandle<string> ch) {
-        if (!Core.Mod.debugMode) return;
+        if (!Core.Mod.DebugMode) return;
 
         LesserSprenSpawner? spawner = Find.CurrentMap?.GetComponent<LesserSprenSpawner>();
         if (spawner == null) return;

@@ -33,9 +33,9 @@ public class GoldBurn : HediffComp {
     private readonly List<ThoughtDef> memoriesAdded = [];
     private float lastSeverity;
 
-    private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
+    private MemoryThoughtHandler Memories => Pawn.needs.mood.thoughts.memories;
 
-    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
+    private AllomanticHediff Parent => (AllomanticHediff)parent;
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
@@ -44,23 +44,23 @@ public class GoldBurn : HediffComp {
             return;
         }
 
-        parent.ExtraSeverity += 0.01f;
-        lastSeverity = parent.Severity;
+        Parent.ExtraSeverity += 0.01f;
+        lastSeverity = Parent.Severity;
 
         // ~1 every 5 ticks
         if (Rand.Chance(0.2f)) {
             ThoughtDef random = GoldThoughts.RandomElement();
             memoriesAdded.AddDistinct(random);
-            Thought_Memory? thought = memories.GetFirstMemoryOfDef(random);
+            Thought_Memory? thought = Memories.GetFirstMemoryOfDef(random);
             if (thought == null) {
-                memories.TryGainMemoryFast(random);
+                Memories.TryGainMemoryFast(random);
             } else if (thought.CurStageIndex < random.stages.Count - 1) {
                 thought.SetForcedStage(thought.CurStageIndex + 1);
             }
         }
 
         if (Rand.Chance(0.0025f) && Pawn.mindState != null && !Pawn.InMentalState) {
-            IAllomancerAbility[] snapshot = [.. parent.SourceAbilities];
+            IAllomancerAbility[] snapshot = [.. Parent.SourceAbilities];
             for (int i = 0; i < snapshot.Length; i++) {
                 snapshot[i].UpdateStatus(BurningStatus.Off);
             }
@@ -81,10 +81,10 @@ public class GoldBurn : HediffComp {
         hediff.Severity = lastSeverity;
 
         for (int i = 0; i < memoriesAdded.Count; i++) {
-            memories.RemoveMemoriesOfDef(memoriesAdded[i]);
+            Memories.RemoveMemoriesOfDef(memoriesAdded[i]);
         }
 
-        Thought_Memory? thought = memories.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Thought_PostGold_Afterglow);
+        Thought_Memory? thought = Memories.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Thought_PostGold_Afterglow);
         if (thought != null) {
             thought.moodPowerFactor = lastSeverity;
         }

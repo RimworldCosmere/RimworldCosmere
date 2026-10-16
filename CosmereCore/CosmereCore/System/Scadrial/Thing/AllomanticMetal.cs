@@ -9,23 +9,23 @@ namespace Cosmere.System.Scadrial.Thing;
 public class AllomanticMetal : AllomanticVial {
     private MetallicArtsMetalDef? cachedMetal;
 
-    public override MetallicArtsMetalDef? metal =>
+    public override MetallicArtsMetalDef? Metal =>
         cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(def.defName);
 
     protected override void PostIngested(Pawn ingester) {
-        if (metal is null) return;
+        if (Metal is null) return;
 
-        if (metal.godMetal) {
-            IngestGodMetal(ingester, metal);
+        if (Metal.godMetal) {
+            IngestGodMetal(ingester, Metal);
             return;
         }
 
         Messages.Message(
-            "CS_IngestedThing".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
+            "CS_IngestedThing".Translate(ingester.NameFullColored.Named("PAWN"), Metal.ColoredLabel.Named("THING")),
             ingester,
             MessageTypeDefOf.PositiveEvent
         );
-        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(ScadrialMetallurgyConstants.RawMetalMetalAmount);
+        ingester.genes.GetAllomanticGeneForMetal(Metal)?.AddToReserve(ScadrialMetallurgyConstants.RawMetalMetalAmount);
 
         ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedRawMetal);
     }

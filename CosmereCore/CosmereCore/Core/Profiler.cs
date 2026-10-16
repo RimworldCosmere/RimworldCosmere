@@ -32,11 +32,11 @@ public static class Profiler {
     private static readonly bool Initialized;
 
     static Profiler() {
-        if (!Mod.debugMode) return;
+        if (!Mod.DebugMode) return;
 
         try {
             int attributed = 0;
-            foreach (MethodInfo method in profiledMethods) {
+            foreach (MethodInfo method in ProfiledMethods) {
                 ProfileAttribute attr = method.GetCustomAttribute<ProfileAttribute>()!;
                 Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Attrs[method] = attr;
@@ -57,7 +57,7 @@ public static class Profiler {
         }
     }
 
-    private static IEnumerable<MethodInfo> profiledMethods =>
+    private static IEnumerable<MethodInfo> ProfiledMethods =>
         AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && a.FullName?.StartsWith("Cosmere") == true)
             .SelectMany(a => SafeGetTypes(a))
@@ -149,9 +149,9 @@ public static class Profiler {
         if (stack.Count == 0) return;
         SampleToken token = stack.Pop();
 
-        if (!token.sampled || token.sw == null) return;
+        if (!token.Sampled || token.Sw == null) return;
 
-        token.sw.Stop();
+        token.Sw.Stop();
 
         // Scale by 1/p to get unbiased estimate
         float p = Mathf.Clamp(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability, 0.000001f, 1f);
@@ -159,9 +159,9 @@ public static class Profiler {
 
         if (attr.Aggregate) {
             Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
-            agg.Add(token.sw.ElapsedTicks, 1, weight);
+            agg.Add(token.Sw.ElapsedTicks, 1, weight);
         } else {
-            long estTicks = (long)(token.sw.ElapsedTicks * weight);
+            long estTicks = (long)(token.Sw.ElapsedTicks * weight);
             LogElapsed($"[SAMP] {label}", estTicks);
         }
     }
@@ -250,9 +250,9 @@ public static class Profiler {
     }
 
     private readonly struct SampleToken(bool sampled, Stopwatch? sw) {
-        public bool sampled { get; } = sampled;
+        public bool Sampled { get; } = sampled;
 
-        public Stopwatch? sw { get; } = sw;
+        public Stopwatch? Sw { get; } = sw;
     }
 
     private sealed class Agg(string label, string? category, ProfileMode mode) {

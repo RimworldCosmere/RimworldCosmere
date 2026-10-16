@@ -15,13 +15,13 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.JobDriver;
 
 public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
-    private Material lineMaterial => MaterialPool.MatFrom(
+    private Material LineMaterial => MaterialPool.MatFrom(
         GenDraw.LineTexPath,
         ShaderDatabase.SolidColorBehind,
-        ability.def.metal.color with { a = .3f }
+        Ability.Def.metal.color with { a = .3f }
     );
 
-    private AllomancyPolarity polarity => ability.def.metal.allomancy!.polarity ?? AllomancyPolarity.Pushing;
+    private AllomancyPolarity Polarity => Ability.Def.metal.allomancy!.polarity ?? AllomancyPolarity.Pushing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(TargetA, job, errorOnFailed: errorOnFailed);
@@ -35,19 +35,19 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         Toil? toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
         toil.initAction = () => {
             if (ShouldStopJob()) {
-                ability.UpdateStatus(BurningStatus.Off);
+                Ability.UpdateStatus(BurningStatus.Off);
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }
 
-            Status activeStatus = ability.nextStatus ?? BurningStatus.Burning;
-            ability.UpdateStatus(activeStatus);
+            Status activeStatus = Ability.NextStatus ?? BurningStatus.Burning;
+            Ability.UpdateStatus(activeStatus);
 
-            UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
+            UpdateBurnRate(Ability.GetDesiredBurnRateForStatus());
 
             MoveThing(TargetA.Thing, true);
 
-            ability.UpdateStatus(BurningStatus.Off);
+            Ability.UpdateStatus(BurningStatus.Off);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Instant;
 
@@ -69,7 +69,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         if (thing == pawn) {
             IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(
                 thing.Position,
-                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, ability.verb.EffectiveRange)),
+                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, Ability.verb.EffectiveRange)),
                 false
             );
             foreach (IntVec3 cell in cells) {
@@ -81,7 +81,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             return;
         }
 
-        float forceMultiplier = ability.GetStrength();
+        float forceMultiplier = Ability.GetStrength();
         float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) +
                          MassUtility.GearAndInventoryMass(pawn) * forceMultiplier;
 
@@ -100,7 +100,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
         float distance = Mathf.Lerp(0, massDifference, .333333f) * forceMultiplier;
-        if (polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
+        if (Polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
         if (distance > 0.05f) distance = Mathf.Max(distance, 1f);
 
         int distanceTiles = Mathf.RoundToInt(distance);
@@ -123,12 +123,12 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             );
             Current.Game.GetComponent<GradualMoverManager>()
                 .StartMovement(
-                    polarity,
+                    Polarity,
                     things.Item2,
                     things.Item1,
                     finalPos,
                     duration,
-                    lineMaterial
+                    LineMaterial
                 );
         }
 
@@ -137,7 +137,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
 
     private IntVec3 GetDirectionalOffsetFromTarget(Verse.Thing target, Verse.Thing source) {
         Vector3 offset = (source.Position.ToVector3() - target.Position.ToVector3()).normalized;
-        if (polarity == AllomancyPolarity.Pulling) offset = -offset;
+        if (Polarity == AllomancyPolarity.Pulling) offset = -offset;
 
         return new IntVec3(
             (int)Math.Round(offset.x, MidpointRounding.AwayFromZero),

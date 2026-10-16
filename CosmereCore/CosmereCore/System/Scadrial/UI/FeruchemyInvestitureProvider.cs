@@ -32,7 +32,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Feruchemist f || f.Overridden) continue;
 
-            List<IMetalmindSource> mms = f.metalminds;
+            List<IMetalmindSource> mms = f.Metalminds;
             float totalMax = 0f;
             float totalValue = 0f;
             for (int j = 0; j < mms.Count; j++) {
@@ -41,7 +41,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
             }
 
             ResourceBar bar = new ResourceBar(
-                f.metal.LabelCap,
+                f.Metal.LabelCap,
                 totalValue,
                 totalMax,
                 f.targetValue
@@ -50,12 +50,12 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
             // inverted copy, like Allomancy's - GUI.color multiplies, so raw black art renders black on black.
             cells.Add(
                 new InvestitureCell(
-                    f.metal.defName,
-                    f.metal.LabelCap,
-                    f.metal.feruchemy?.invertedIcon,
+                    f.Metal.defName,
+                    f.Metal.LabelCap,
+                    f.Metal.feruchemy?.invertedIcon,
                     bar,
-                    f.isTapping || f.isStoring,
-                    f.isCompounding,
+                    f.IsTapping || f.IsStoring,
+                    f.IsCompounding,
                     []
                 )
             );

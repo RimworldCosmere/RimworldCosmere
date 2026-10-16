@@ -10,7 +10,7 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public class ChargeCorpseSpike : Verse.AI.JobDriver {
     private const int WorkDuration = 1500;
 
-    private Corpse corpse => (Corpse)job.targetA.Thing;
+    private Corpse Corpse => (Corpse)job.targetA.Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         if (!pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed)) return false;
@@ -21,7 +21,7 @@ public class ChargeCorpseSpike : Verse.AI.JobDriver {
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOnDestroyedOrNull(TargetIndex.B);
-        AddFailCondition(() => corpse.Age > HemalurgicConstants.CorpseFreshnessTickLimit);
+        AddFailCondition(() => Corpse.Age > HemalurgicConstants.CorpseFreshnessTickLimit);
 
         yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch)
             .FailOnForbidden(TargetIndex.B);
@@ -42,10 +42,10 @@ public class ChargeCorpseSpike : Verse.AI.JobDriver {
         if (carried == null) return;
 
         HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
-        if (spikeComp == null || spikeComp.isCharged) return;
+        if (spikeComp == null || spikeComp.IsCharged) return;
 
-        Pawn donor = corpse.InnerPawn;
-        MetallicArtsMetalDef? metal = spikeComp.metal;
+        Pawn donor = Corpse.InnerPawn;
+        MetallicArtsMetalDef? metal = spikeComp.Metal;
         if (metal == null) return;
         HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
         bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
@@ -68,7 +68,7 @@ public class ChargeCorpseSpike : Verse.AI.JobDriver {
         if (candidates.Count == 0) {
             Messages.Message(
                 "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                corpse,
+                Corpse,
                 MessageTypeDefOf.RejectInput
             );
             DropSpikeAndEnd(carried);
@@ -95,7 +95,7 @@ public class ChargeCorpseSpike : Verse.AI.JobDriver {
             () => {
                 Messages.Message(
                     "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                    corpse,
+                    Corpse,
                     MessageTypeDefOf.RejectInput
                 );
                 DropSpikeAndEnd(carried);

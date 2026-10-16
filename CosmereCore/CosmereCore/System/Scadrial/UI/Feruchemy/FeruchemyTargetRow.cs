@@ -26,7 +26,7 @@ public static class FeruchemyTargetRow {
         float held = 0f;
         float max = 0f;
 
-        List<IMetalmindSource> sources = gene.metalminds;
+        List<IMetalmindSource> sources = gene.Metalminds;
         for (int i = 0; i < sources.Count; i++) {
             if (!MatchesDisplayTarget(gene, sources[i])) continue;
 
@@ -75,7 +75,7 @@ public static class FeruchemyTargetRow {
         float max = 0f;
         int count = 0;
 
-        List<IMetalmindSource> sources = gene.metalminds;
+        List<IMetalmindSource> sources = gene.Metalminds;
         for (int i = 0; i < sources.Count; i++) {
             bool internalOnly = target == Feruchemist.TargetInternal;
             bool externalOnly = target == Feruchemist.TargetExternal;
@@ -106,7 +106,7 @@ public static class FeruchemyTargetRow {
             ),
         ];
 
-        List<IMetalmindSource> sources = gene.metalminds;
+        List<IMetalmindSource> sources = gene.Metalminds;
         for (int i = 0; i < sources.Count; i++) {
             IMetalmindSource source = sources[i];
             string id = source.SourceId;

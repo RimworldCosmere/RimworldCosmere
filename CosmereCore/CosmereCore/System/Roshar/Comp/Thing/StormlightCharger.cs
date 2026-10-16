@@ -39,14 +39,14 @@ public class StormlightCharger : StormlightNode {
             if (budget <= 0f) break;
 
             InvestitureHolder? sphereHolder = items[i].TryGetComp<InvestitureHolder>();
-            if (sphereHolder == null || sphereHolder.isFull) continue;
+            if (sphereHolder == null || sphereHolder.IsFull) continue;
 
-            float space = sphereHolder.maxInvestitureSelf - sphereHolder.currentInvestitureSelf;
+            float space = sphereHolder.maxInvestitureSelf - sphereHolder.CurrentInvestitureSelf;
             float toCharge = Mathf.Min(space, budget);
             float drawn = network.Draw(toCharge);
 
             if (drawn > 0f) {
-                sphereHolder.currentInvestitureSelf += drawn;
+                sphereHolder.CurrentInvestitureSelf += drawn;
                 budget -= drawn;
             }
         }

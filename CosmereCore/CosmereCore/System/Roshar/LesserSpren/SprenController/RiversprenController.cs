@@ -7,31 +7,31 @@ using Verse;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class RiversprenController : StaticSprenController {
-    public override SprenType sprenType => SprenType.Riverspren;
+    public override SprenType SprenType => SprenType.Riverspren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.06f; // 6% chance per valid cell
+    public override float CellSpawnChance => 0.06f; // 6% chance per valid cell
 
-    public override int minParticlesPerCell => 2;
+    public override int MinParticlesPerCell => 2;
 
-    public override int maxParticlesPerCell => 4;
+    public override int MaxParticlesPerCell => 4;
 
-    protected override float maxSpreadDistance => 0.3f;
+    protected override float MaxSpreadDistance => 0.3f;
 
-    protected override float movementSpeed => 3f;
+    protected override float MovementSpeed => 3f;
 
-    protected override float randomDirectionAmount => 0.15f;
+    protected override float RandomDirectionAmount => 0.15f;
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Sapphire,
         GemDefOf.Zircon,
         GemDefOf.Diamond,
     ];
 
-    public override float captureRarityMultiplier => 1.0f;
+    public override float CaptureRarityMultiplier => 1.0f;
 
-    public override Color sprenColor => new Color(0.3f, 0.7f, 0.9f, 0.9f); // River blue color
+    public override Color SprenColor => new Color(0.3f, 0.7f, 0.9f, 0.9f); // River blue color
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
@@ -42,6 +42,6 @@ public class RiversprenController : StaticSprenController {
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain == null) return null;
 
-        return HasTerrainTag(terrain, "River") ? defaultSpawnInformation.With(map, position) : null;
+        return HasTerrainTag(terrain, "River") ? DefaultSpawnInformation.With(map, position) : null;
     }
 }

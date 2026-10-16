@@ -42,7 +42,7 @@ public static class InvestitureBandFilterPatch {
             ref band,
             0f,
             1f,
-            storage.props.thresholdLabel,
+            storage.Props.thresholdLabel,
             ToStringStyle.PercentZero,
             0f,
             GameFont.Small,

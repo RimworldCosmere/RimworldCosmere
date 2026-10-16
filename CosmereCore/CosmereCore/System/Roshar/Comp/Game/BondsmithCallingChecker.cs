@@ -195,7 +195,7 @@ public class BondsmithCallingChecker : GameComponent {
                 List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
                 for (int g = 0; g < genes.Count; g++) {
                     if (genes[g] is Surgebinder surgebinder &&
-                        surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith &&
+                        surgebinder.RadiantOrderDef == RadiantOrderDefOf.Bondsmith &&
                         !string.IsNullOrEmpty(surgebinder.godsprenName)) {
                         bondedGodspren.Add(surgebinder.godsprenName);
                     }
@@ -220,7 +220,7 @@ public class BondsmithCallingChecker : GameComponent {
     private static bool IsBondsmith(Pawn pawn) {
         List<Verse.Gene> genes = pawn.genes?.GenesListForReading ?? [];
         for (int g = 0; g < genes.Count; g++) {
-            if (genes[g] is Surgebinder surgebinder && surgebinder.radiantOrderDef == RadiantOrderDefOf.Bondsmith) {
+            if (genes[g] is Surgebinder surgebinder && surgebinder.RadiantOrderDef == RadiantOrderDefOf.Bondsmith) {
                 return true;
             }
         }

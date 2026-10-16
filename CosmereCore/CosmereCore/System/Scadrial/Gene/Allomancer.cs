@@ -27,7 +27,7 @@ public class Allomancer : Metalborn {
 
     public bool ShouldConsumeVialNow {
         get {
-            if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
+            if (Metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
             if (pawn.IsAsleep()) return false;
             if (pawn.IsShieldedAgainstInvestiture()) return false;
             if (
@@ -54,27 +54,27 @@ public class Allomancer : Metalborn {
         }
     }
 
-    private int burnTickRate {
+    private int BurnTickRate {
         get {
             if (!timeDilationFactor.HasValue) return UpkeepTicks;
             return Mathf.Max(1, Mathf.RoundToInt(UpkeepTicks / timeDilationFactor.Value));
         }
     }
 
-    public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
+    public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(Skill.Level + 1, 2f));
 
-    private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
+    private SkillRecord Skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
-    private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
+    private RecordDef MetalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(Metal);
 
-    private HediffDef? savantHediffDef =>
-        cachedSavantHediffDef ??= ScadrialSavantUtility.GetAllomanticSavantHediffDef(metal);
+    private HediffDef? SavantHediffDef =>
+        cachedSavantHediffDef ??= ScadrialSavantUtility.GetAllomanticSavantHediffDef(Metal);
 
-    private HediffDef? withdrawalHediffDef =>
-        cachedWithdrawalHediffDef ??= ScadrialSavantUtility.GetAllomanticWithdrawalHediffDef(metal);
+    private HediffDef? WithdrawalHediffDef =>
+        cachedWithdrawalHediffDef ??= ScadrialSavantUtility.GetAllomanticWithdrawalHediffDef(Metal);
 
-    private HediffDef? permanentHediffDef =>
-        cachedPermanentHediffDef ??= ScadrialSavantUtility.GetAllomanticPermanentHediffDef(metal);
+    private HediffDef? PermanentHediffDef =>
+        cachedPermanentHediffDef ??= ScadrialSavantUtility.GetAllomanticPermanentHediffDef(Metal);
 
     public override float Value {
         get => currentReserve;
@@ -92,7 +92,7 @@ public class Allomancer : Metalborn {
         float metalNeeded = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
         RemoveFromReserve(metalNeeded);
 
-        pawn.records.AddTo(metalBurntRecord, metalNeeded);
+        pawn.records.AddTo(MetalBurntRecord, metalNeeded);
 
         return true;
     }
@@ -110,10 +110,10 @@ public class Allomancer : Metalborn {
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
-            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
+            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(Skill.Level + 1, 2f)));
         }
 
-        if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {
+        if (sources.Count > 0 && pawn.IsHashIntervalTick(BurnTickRate, delta)) {
             BurnTickInterval();
         }
 
@@ -128,12 +128,12 @@ public class Allomancer : Metalborn {
     public void BurnTickInterval() {
         if (BurnRate <= 0) return;
 
-        pawn.TryConsumeVialIfNeeded(metal);
+        pawn.TryConsumeVialIfNeeded(Metal);
 
         if (TryBurnMetalForInvestiture(BurnRate)) return;
 
         RemoveAllSources();
-        Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
+        Log.Info($"{pawn.NameFullColored} can't burn {Metal} any more. Removing all burn sources for {Metal}.");
     }
 
     private void RemoveAllSources() {
@@ -146,10 +146,10 @@ public class Allomancer : Metalborn {
 
     private void UpdateSavantProgression(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
-        if (!SavantUtility.CanBeSavant(metal)) return;
+        if (!SavantUtility.CanBeSavant(Metal)) return;
 
         int previousStage = cachedSavantStage;
-        RecordDef recordDef = RecordDefOf.GetTimeSpentBurningForMetal(metal);
+        RecordDef recordDef = RecordDefOf.GetTimeSpentBurningForMetal(Metal);
         float ticks = pawn.records.GetValue(recordDef) - savantDecayOffset;
         int newStage = SavantUtility.GetAllomanticStage(ticks);
 
@@ -165,26 +165,26 @@ public class Allomancer : Metalborn {
 
         cachedSavantStage = newStage;
 
-        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, savantHediffDef, permanentHediffDef);
+        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, SavantHediffDef, PermanentHediffDef);
 
         if (newStage > previousStage && newStage > 0) {
-            SavantUtility.SendSavantLetter(pawn, newStage, "Allomancy", metal.LabelCap);
+            SavantUtility.SendSavantLetter(pawn, newStage, "Allomancy", Metal.LabelCap);
         }
 
         UpdateWithdrawal();
     }
 
     private void UpdateWithdrawal() {
-        if (cachedSavantStage < 2 || !SavantUtility.IsDependencyMetal(metal) || withdrawalHediffDef == null) {
-            Hediff? existing = withdrawalHediffDef != null
-                ? pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef)
+        if (cachedSavantStage < 2 || !SavantUtility.IsDependencyMetal(Metal) || WithdrawalHediffDef == null) {
+            Hediff? existing = WithdrawalHediffDef != null
+                ? pawn.health.hediffSet.GetFirstHediffOfDef(WithdrawalHediffDef)
                 : null;
             if (existing != null) pawn.health.RemoveHediff(existing);
             return;
         }
 
-        if (Burning) EaseWithdrawal(withdrawalHediffDef);
-        else DeepenWithdrawal(withdrawalHediffDef);
+        if (Burning) EaseWithdrawal(WithdrawalHediffDef);
+        else DeepenWithdrawal(WithdrawalHediffDef);
     }
 
     /// <summary>Burning settles it. Drop the hediff once there is nothing left to settle.</summary>
@@ -229,8 +229,8 @@ public class Allomancer : Metalborn {
     }
 
     public AcceptanceReport CanBurn(float requiredBreathEquivalentUnits) {
-        if (!CanLowerReserve(requiredBreathEquivalentUnits) && !pawn.HasVial(metal)) {
-            return "CS_CannotBurn".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
+        if (!CanLowerReserve(requiredBreathEquivalentUnits) && !pawn.HasVial(Metal)) {
+            return "CS_CannotBurn".Translate(pawn.Named("PAWN"), Metal.Named("METAL"));
         }
 
         return AcceptanceReport.WasAccepted;
@@ -252,17 +252,17 @@ public class Allomancer : Metalborn {
     /// <returns>The gene's own gizmos, plus one per koloss this metal is holding so the player can let any of them go.</returns>
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
         Comp.Game.KolossRoster? roster = Comp.Game.KolossRoster.Current;
-        List<Pawn> held = roster?.HeldOnMetal(pawn, metal) ?? [];
+        List<Pawn> held = roster?.HeldOnMetal(pawn, Metal) ?? [];
         if (held.Count == 0) yield break;
 
         yield return new Command_Action {
             defaultLabel = "CS_KolossRoster_Label".Translate(held.Count.Named("COUNT")),
             defaultDesc = "CS_KolossRoster_Desc".Translate(
-                metal.LabelCap.Named("METAL"),
+                Metal.LabelCap.Named("METAL"),
                 held.Select(one => one.LabelShortCap).ToCommaList().Named("HELD")
             ),
             icon = def.Icon,
-            action = () => Find.WindowStack.Add(new UI.Dialog_KolossRoster(pawn, metal)),
+            action = () => Find.WindowStack.Add(new UI.Dialog_KolossRoster(pawn, Metal)),
         };
 
         foreach (Verse.Gizmo order in UI.KolossOrders.For(pawn)) yield return order;

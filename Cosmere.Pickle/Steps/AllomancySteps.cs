@@ -200,7 +200,7 @@ public static class AllomancySteps {
 
         ability.localTarget = target;
         ability.UpdateStatus(BurningStatus.Burning);
-        target.GetOrAddHediff(ability, ability.def, ability.pawn);
+        target.GetOrAddHediff(ability, ability.Def, ability.pawn);
 
         CosmereLookup.AssertThat(
             ctx,
@@ -404,7 +404,7 @@ public static class AllomancySteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            spike.isCharged,
+            spike.IsCharged,
             $"the spike at ({x}, {z}) should hold a charge",
             () => DescribeSpike(spike));
     }
@@ -419,7 +419,7 @@ public static class AllomancySteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            !spike.isCharged,
+            !spike.IsCharged,
             $"the spike at ({x}, {z}) should hold nothing",
             () => DescribeSpike(spike));
     }
@@ -559,13 +559,13 @@ public static class AllomancySteps {
         HemalurgicSpike spike = RequireSpikeAt(ctx, x, z);
 
         ctx.Require(
-            spike.metal != null,
+            spike.Metal != null,
             $"the spike at ({x}, {z}) has no metal, so it has no steal type. forge it from a metallic arts metal");
 
-        HemalurgicStealType stealType = spike.stealType;
+        HemalurgicStealType stealType = spike.StealType;
         ctx.Require(
             !HemalurgicConstants.RequiresSelection(stealType) || selectedGene != null,
-            $"a {spike.metal!.defName} spike takes a {stealType} power, so the step has to name the gene it takes");
+            $"a {spike.Metal!.defName} spike takes a {stealType} power, so the step has to name the gene it takes");
 
         // injury off on purpose: a full spike kills the donor, and a corpse cannot be read for what it lost.
         HemalurgicChargeUtility.DriveHemalurgicCharge(
@@ -580,7 +580,7 @@ public static class AllomancySteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            spike.isCharged,
+            spike.IsCharged,
             $"the spike at ({x}, {z}) should hold a charge once it is driven through '{donorNickname}'",
             () => DescribeSpike(spike));
     }
@@ -699,9 +699,9 @@ public static class AllomancySteps {
         AcceptanceReport report = ability.CanCast;
         string refusal = report.Accepted ? "allowed" : $"refused: {report.Reason}";
 
-        return $"{ability.pawn.LabelShort} burns {ability.metal.defName} at power {ability.status.power} " +
+        return $"{ability.pawn.LabelShort} burns {ability.Metal.defName} at power {ability.status.power} " +
             $"(active={ability.status.IsActive}); reserve={gene.Value:0.###} of {gene.Max:0.###}, " +
-            $"rate={gene.BurnRate:0.#####}/charge, vial={ability.pawn.HasVial(ability.metal)}; {refusal}";
+            $"rate={gene.BurnRate:0.#####}/charge, vial={ability.pawn.HasVial(ability.Metal)}; {refusal}";
     }
 
     // holding and fired are the two that say whether the runner has acted on this pawn at all
@@ -734,15 +734,15 @@ public static class AllomancySteps {
     }
 
     private static string DescribeSpike(HemalurgicSpike spike) {
-        if (!spike.isCharged) {
+        if (!spike.IsCharged) {
             return $"the {spike.parent.Stuff?.defName ?? "(no metal)"} spike holds nothing " +
-                $"(steal type {spike.stealType})";
+                $"(steal type {spike.StealType})";
         }
 
         HemalurgicChargeData charge = spike.chargeData!;
 
         return $"the {spike.parent.Stuff?.defName ?? "(no metal)"} spike holds {charge.stealType} " +
-            $"'{charge.stolenDefName}' at strength {spike.currentStrength:0.##}, " +
+            $"'{charge.stolenDefName}' at strength {spike.CurrentStrength:0.##}, " +
             $"investiture {charge.storedInvestiture:0.###}";
     }
 

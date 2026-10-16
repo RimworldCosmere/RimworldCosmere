@@ -23,10 +23,10 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     public override Allomancer Gene {
         get {
             if (cachedGene != null) return cachedGene;
-            Allomancer? found = pawn.genes?.GetAllomanticGeneForMetal(metal);
+            Allomancer? found = pawn.genes?.GetAllomanticGeneForMetal(Metal);
             if (found == null) {
                 throw new InvalidOperationException(
-                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}"
+                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {Metal?.defName}"
                 );
             }
 
@@ -35,16 +35,16 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         }
     }
 
-    public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
+    public float FlareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
-    public new AllomanticAbilityDef def {
-        get => (AllomanticAbilityDef)base.def;
-        set => base.def = value;
+    public new AllomanticAbilityDef Def {
+        get => (AllomanticAbilityDef)base.Def;
+        set => base.Def = value;
     }
 
-    public bool atLeastBurning => status.power >= 1;
+    public bool AtLeastBurning => status.power >= 1;
 
-    public MetallicArtsMetalDef metal => def.metal;
+    public MetallicArtsMetalDef Metal => Def.metal;
 
     public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {
         return status.power == DuraluminBurnPower ? 0.00000000001f : base.GetDesiredBurnRateForStatus(desiredStatus);
@@ -55,18 +55,18 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
             ? pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f
             : base.GetStrength(desiredStatus);
 
-        return statusValue * pawn.GetRawAllomanticPower(metal);
+        return statusValue * pawn.GetRawAllomanticPower(Metal);
     }
 
     protected override void OnEnable() {
         base.OnEnable();
-        if (def.hediff != null && !def.targetRequired) {
+        if (Def.hediff != null && !Def.targetRequired) {
             GetOrAddHediff(pawn);
         }
     }
 
     protected override void OnDisable() {
-        if (def.hediff != null && !def.targetRequired) {
+        if (Def.hediff != null && !Def.targetRequired) {
             RemoveHediff(pawn);
         }
 
@@ -77,7 +77,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         base.OnPowerUp();
         flareStartTick = Find.TickManager.TicksGame;
         Pawn target = localTarget.HasValue ? localTarget.Value.Pawn ?? pawn : pawn;
-        if (target == pawn || def.applyDragOnTarget) {
+        if (target == pawn || Def.applyDragOnTarget) {
             RemoveDrag(target);
         }
     }
@@ -86,8 +86,8 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         base.OnPowerDown();
         if (flareStartTick < 0) return;
         Pawn target = localTarget.HasValue ? localTarget.Value.Pawn ?? pawn : pawn;
-        if (target == pawn || def.applyDragOnTarget) {
-            ApplyDrag(target, flareDuration / 3000f / 2);
+        if (target == pawn || Def.applyDragOnTarget) {
+            ApplyDrag(target, FlareDuration / 3000f / 2);
         }
 
         flareStartTick = -1;
@@ -104,7 +104,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
                 return "CS_Allomancy_NoShardPresent".Translate();
             }
 
-            return Gene.CanBurn(GetDesiredBurnRateForStatus(nextStatus ?? Status.PowerOne));
+            return Gene.CanBurn(GetDesiredBurnRateForStatus(NextStatus ?? Status.PowerOne));
         }
     }
 
@@ -116,14 +116,14 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     }
 
     protected void ApplyDrag(Pawn? targetPawn, float severity) {
-        if (targetPawn == null || def.dragHediff == null || severity < def.minSeverityForDrag) return;
+        if (targetPawn == null || Def.dragHediff == null || severity < Def.minSeverityForDrag) return;
 
-        Verse.Hediff? drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
+        Verse.Hediff? drag = targetPawn.health.GetOrAddHediff(Def.dragHediff);
         drag.Severity = severity;
     }
 
     protected void RemoveDrag(Pawn? targetPawn) {
-        Verse.Hediff? drag = targetPawn?.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
+        Verse.Hediff? drag = targetPawn?.health.hediffSet.GetFirstHediffOfDef(Def.dragHediff);
         if (drag == null) return;
 
         float existingSeverity = drag.Severity;
@@ -132,13 +132,13 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     }
 
     protected AllomanticHediff? GetOrAddHediff(Pawn targetPawn) {
-        return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def.hediff);
+        return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, Def.hediff);
     }
 
     protected void RemoveHediff(Pawn? targetPawn) {
         if (targetPawn == null) return;
 
-        HediffUtility.RemoveHediff(pawn, targetPawn, this, def.hediff);
+        HediffUtility.RemoveHediff(pawn, targetPawn, this, Def.hediff);
     }
 
     public override void ExposeData() {

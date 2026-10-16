@@ -32,7 +32,7 @@ public static class HemalurgicImplantUtility {
         if (amount <= 0f) return;
         InvestitureHolder? holder = target.TryGetComp<InvestitureHolder>();
         if (holder == null) return;
-        holder.currentInvestitureSelf += amount;
+        holder.CurrentInvestitureSelf += amount;
     }
 
     public static void RemoveDrabIfPresent(Pawn target) {
@@ -62,7 +62,7 @@ public static class HemalurgicImplantUtility {
         HemalurgicSpikes? spikesHediff = (HemalurgicSpikes?)target.health.hediffSet.GetFirstHediffOfDef(
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
-        int spikeCount = spikesHediff?.spikeCount ?? 0;
+        int spikeCount = spikesHediff?.SpikeCount ?? 0;
 
         RuinsInfluence? ruinsInfluence = (RuinsInfluence?)target.health.hediffSet.GetFirstHediffOfDef(
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_RuinsInfluence

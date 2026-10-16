@@ -11,28 +11,28 @@ using ThingRequestGroup = Verse.ThingRequestGroup;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class LifesprenController : DynamicSprenController {
-    public override SprenType sprenType => SprenType.Lifespren;
+    public override SprenType SprenType => SprenType.Lifespren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.7f;
+    public override float CellSpawnChance => 0.7f;
 
-    public override int minParticlesPerCell => 2;
+    public override int MinParticlesPerCell => 2;
 
-    public override int maxParticlesPerCell => 5;
+    public override int MaxParticlesPerCell => 5;
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Emerald,
         GemDefOf.Diamond,
         GemDefOf.Heliodor,
         GemDefOf.Topaz,
     ];
 
-    public override float captureRarityMultiplier => 0.6f;
+    public override float CaptureRarityMultiplier => 0.6f;
 
-    public override Color sprenColor => new Color(0.1f, 0.9f, 0.1f, 0.8f);
+    public override Color SprenColor => new Color(0.1f, 0.9f, 0.1f, 0.8f);
 
-    public override float sprenSizeMultiplier => 0.9f;
+    public override float SprenSizeMultiplier => 0.9f;
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         List<SprenSpawnInformation> spawnInfos = [];
@@ -41,7 +41,7 @@ public class LifesprenController : DynamicSprenController {
         spawnInfos.AddRange(
             from pawn in allPawns
             where pawn.ageTracker.AgeBiologicalTicks < GenDate.TicksPerDay
-            select defaultSpawnInformation.With(
+            select DefaultSpawnInformation.With(
                 position: pawn.Position,
                 spawnChance: 0.9f,
                 minParticles: 5,
@@ -53,7 +53,7 @@ public class LifesprenController : DynamicSprenController {
         foreach (Verse.Thing? plant in allPlants) {
             if (plant is Plant { Growth: > 0.8f, LifeStage: PlantLifeStage.Growing }) {
                 spawnInfos.Add(
-                    defaultSpawnInformation.With(
+                    DefaultSpawnInformation.With(
                         position: plant.Position,
                         spawnChance: 0.6f,
                         minParticles: 2,
@@ -70,7 +70,7 @@ public class LifesprenController : DynamicSprenController {
             where bed.TryGetComp<CompAssignableToPawn>()
                       ?.AssignedPawnsForReading?.Any(p => p.health.HasHediffsNeedingTend()) ==
                   true
-            select defaultSpawnInformation.With(
+            select DefaultSpawnInformation.With(
                 position: bed.Position,
                 spawnChance: 0.7f,
                 minParticles: 3,

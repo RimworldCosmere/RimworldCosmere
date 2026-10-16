@@ -13,29 +13,29 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 }
 
 public class MetalCost : CompAbilityEffect {
-    private new AllomancyAbility parent => (AllomancyAbility)base.parent;
+    private AllomancyAbility Parent => (AllomancyAbility)parent;
 
-    private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
+    private MetallicArtsMetalDef Metal => Parent.Def.metal.ToMetallicArts();
 
-    private Allomancer gene => parent.Gene;
+    private Allomancer Gene => Parent.Gene;
 
-    private float currentCost => parent.GetDesiredBurnRateForStatus(parent.nextStatus);
+    private float CurrentCost => Parent.GetDesiredBurnRateForStatus(Parent.NextStatus);
 
-    private bool hasEnoughMetal => gene.CanBurn(currentCost);
+    private bool HasEnoughMetal => Gene.CanBurn(CurrentCost);
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);
-        gene.RemoveFromReserve(currentCost);
+        Gene.RemoveFromReserve(CurrentCost);
     }
 
     public override bool GizmoDisabled(out string? reason) {
-        AcceptanceReport canUseMetal = parent.pawn.CanUseMetal(metal);
+        AcceptanceReport canUseMetal = Parent.pawn.CanUseMetal(Metal);
         if (!canUseMetal) {
             reason = canUseMetal.Reason;
             return true;
         }
 
-        AcceptanceReport canBurn = gene.CanBurn(currentCost);
+        AcceptanceReport canBurn = Gene.CanBurn(CurrentCost);
         if (!canBurn.Accepted) {
             reason = canBurn.Reason;
             return true;
@@ -46,6 +46,6 @@ public class MetalCost : CompAbilityEffect {
     }
 
     public override bool AICanTargetNow(LocalTargetInfo target) {
-        return hasEnoughMetal;
+        return HasEnoughMetal;
     }
 }

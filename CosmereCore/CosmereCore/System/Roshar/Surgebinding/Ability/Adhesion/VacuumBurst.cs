@@ -12,24 +12,24 @@ public class VacuumBurst : SurgebindingAbility {
 
     public VacuumBurst(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private float damage => BaseDamage + Gene.CurrentIdeal * 3f;
+    private float Damage => BaseDamage + Gene.CurrentIdeal * 3f;
 
-    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1f + Gene.CurrentIdeal * 0.5f));
+    private int StunTicks => (int)(GenTicks.TicksPerRealSecond * (1f + Gene.CurrentIdeal * 0.5f));
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Gene.RemoveFromReserve(cost);
 
-        float currentRadius = radius;
-        float currentDamage = damage;
+        float currentRadius = Radius;
+        float currentDamage = Damage;
 
         FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
 
@@ -51,7 +51,7 @@ public class VacuumBurst : SurgebindingAbility {
             );
             targetPawn.TakeDamage(dinfo);
 
-            targetPawn.stances?.stunner?.StunFor(stunTicks, pawn);
+            targetPawn.stances?.stunner?.StunFor(StunTicks, pawn);
         }
 
         return true;

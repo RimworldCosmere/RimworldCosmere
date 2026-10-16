@@ -234,7 +234,7 @@ public static class ConnectionUtility {
     /// </summary>
     /// <returns>The live Shard for this def, or null when it is not enabled in this save.</returns>
     private static Cosmere.Core.Entity.Shard? Entity(ShardDef shard) {
-        Comp.Game.Shards? shards = ShardUtility.shards;
+        Comp.Game.Shards? shards = ShardUtility.Shards;
         if (shards == null) return null;
 
         return shards.enabledShards.TryGetValue(shard.defName, out Cosmere.Core.Entity.Shard? entity)

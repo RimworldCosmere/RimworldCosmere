@@ -17,6 +17,6 @@ public static class HemalurgicSpikeUtility {
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
 
-        return spiked is Hediff.HemalurgicSpikes set ? set.spikeCount : 0;
+        return spiked is Hediff.HemalurgicSpikes set ? set.SpikeCount : 0;
     }
 }

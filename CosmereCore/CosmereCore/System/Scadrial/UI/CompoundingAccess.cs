@@ -37,8 +37,8 @@ public static class CompoundingAccess {
             return "CC_Dock_Feruchemy_CompoundLowSkill".Translate(SkillFloor.Named("LEVEL"));
         }
 
-        if (!pawn.genes.HasAllomanticGeneForMetal(gene.metal)) {
-            return "CC_Dock_Feruchemy_CompoundNoAllomancy".Translate(gene.metal.label.Named("METAL"));
+        if (!pawn.genes.HasAllomanticGeneForMetal(gene.Metal)) {
+            return "CC_Dock_Feruchemy_CompoundNoAllomancy".Translate(gene.Metal.label.Named("METAL"));
         }
 
         // not gated on room right now - the dial greys itself out instead of vanishing, which reads as broken.
@@ -50,7 +50,7 @@ public static class CompoundingAccess {
 
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Feruchemist f && f.metal.defName == metalDefName && !f.Overridden) return f;
+            if (all[i] is Feruchemist f && f.Metal.defName == metalDefName && !f.Overridden) return f;
         }
 
         return null;

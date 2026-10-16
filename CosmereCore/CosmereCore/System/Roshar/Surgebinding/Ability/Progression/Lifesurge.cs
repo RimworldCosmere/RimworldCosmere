@@ -21,7 +21,7 @@ public class Lifesurge : SurgebindingAbility {
     public Lifesurge(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
@@ -95,7 +95,7 @@ public class Lifesurge : SurgebindingAbility {
 
     private void HealEveryInjury(List<Hediff_Injury> injuries) {
         for (int i = 0; i < injuries.Count; i++) {
-            float healCost = def.beuPerTick * WoundHealCostFraction;
+            float healCost = Def.beuPerTick * WoundHealCostFraction;
             if (!Gene.CanLowerReserve(healCost)) break;
             Gene.RemoveFromReserve(healCost);
             injuries[i].Heal(injuries[i].Severity);
@@ -106,7 +106,7 @@ public class Lifesurge : SurgebindingAbility {
         for (int i = 0; i < injuries.Count; i++) {
             float partMaxHp = injuries[i].Part?.def.hitPoints ?? 30f;
             if (injuries[i].Severity > partMaxHp * 0.5f) continue;
-            float healCost = def.beuPerTick * WoundHealCostFraction;
+            float healCost = Def.beuPerTick * WoundHealCostFraction;
             if (!Gene.CanLowerReserve(healCost)) break;
             Gene.RemoveFromReserve(healCost);
             injuries[i].Heal(injuries[i].Severity);
@@ -116,7 +116,7 @@ public class Lifesurge : SurgebindingAbility {
     private void HealUpTo(List<Hediff_Injury> injuries, int maxWounds) {
         int healed = 0;
         for (int i = 0; i < injuries.Count && healed < maxWounds; i++) {
-            float healCost = def.beuPerTick * WoundHealCostFraction;
+            float healCost = Def.beuPerTick * WoundHealCostFraction;
             if (!Gene.CanLowerReserve(healCost)) break;
             Gene.RemoveFromReserve(healCost);
             injuries[i].Heal(injuries[i].Severity);
@@ -139,7 +139,7 @@ public class Lifesurge : SurgebindingAbility {
             int tier = GetRegenTier(missingParts[i].Part);
             if (ideal < tier) continue;
 
-            float regenCost = def.beuPerTick * LimbRegenCostMultiplier;
+            float regenCost = Def.beuPerTick * LimbRegenCostMultiplier;
             if (!Gene.CanLowerReserve(regenCost)) break;
 
             Gene.RemoveFromReserve(regenCost);
@@ -159,7 +159,7 @@ public class Lifesurge : SurgebindingAbility {
         }
 
         for (int i = 0; i < toRemove.Count; i++) {
-            float cureCost = def.beuPerTick * DiseaseCureCostMultiplier * Mathf.Max(toRemove[i].Severity, 0.1f);
+            float cureCost = Def.beuPerTick * DiseaseCureCostMultiplier * Mathf.Max(toRemove[i].Severity, 0.1f);
             if (!Gene.CanLowerReserve(cureCost)) break;
             Gene.RemoveFromReserve(cureCost);
             targetPawn.health.RemoveHediff(toRemove[i]);
@@ -184,7 +184,7 @@ public class Lifesurge : SurgebindingAbility {
     }
 
     private void ApplyLifesurgeHediff(Pawn targetPawn, int ideal) {
-        HediffDef? hediffDef = def.hediff;
+        HediffDef? hediffDef = Def.hediff;
         if (hediffDef == null) return;
 
         HediffWithComps hediff = (HediffWithComps)HediffMaker.MakeHediff(hediffDef, targetPawn);

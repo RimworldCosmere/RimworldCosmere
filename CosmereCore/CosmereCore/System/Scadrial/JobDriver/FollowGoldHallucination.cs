@@ -5,7 +5,7 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.JobDriver;
 
 public class FollowGoldHallucination : AllomanticJobDriver {
-    protected virtual Pawn hallucination => TargetA.Pawn;
+    protected virtual Pawn Hallucination => TargetA.Pawn;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(
@@ -30,13 +30,13 @@ public class FollowGoldHallucination : AllomanticJobDriver {
             defaultCompleteMode = ToilCompleteMode.Never,
             tickAction = () => {
                 if (ShouldStopJob()) {
-                    ability.UpdateStatus(BurningStatus.Off);
+                    Ability.UpdateStatus(BurningStatus.Off);
                     EndJobWith(JobCondition.Incompletable);
                     return;
                 }
 
                 // Maintain proximity
-                pawn.MaintainProximityTo(hallucination, job.followRadius, PathEndMode.InteractionCell);
+                pawn.MaintainProximityTo(Hallucination, job.followRadius, PathEndMode.InteractionCell);
             },
         };
 

@@ -4,16 +4,16 @@ using Verse;
 namespace Cosmere.System.Scadrial.StatPart;
 
 public class IngestedGodMetalGranter : RimWorld.StatPart {
-    private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
+    private bool Allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
 
-    private bool feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
+    private bool Feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
 
     public override void TransformValue(StatRequest req, ref float val) {
         if (!req.HasThing || req.Thing is not Pawn pawn) {
             return;
         }
 
-        if (allomancy) {
+        if (Allomancy) {
             if (!pawn.IsAllomancer()) {
                 return;
             }
@@ -23,7 +23,7 @@ public class IngestedGodMetalGranter : RimWorld.StatPart {
             } else {
                 val += pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasiumAlloy) / 16f;
             }
-        } else if (feruchemy) {
+        } else if (Feruchemy) {
             if (!pawn.IsFeruchemist()) {
                 return;
             }
@@ -41,7 +41,7 @@ public class IngestedGodMetalGranter : RimWorld.StatPart {
             return null;
         }
 
-        if (allomancy) {
+        if (Allomancy) {
             if (pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium) > 0) {
                 return "CS_StatsReport_IngestedLerasium".Translate() + ": 100%";
             }
@@ -53,7 +53,7 @@ public class IngestedGodMetalGranter : RimWorld.StatPart {
             }
         }
 
-        if (feruchemy) {
+        if (Feruchemy) {
             if (pawn.records.GetAsInt(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium) > 0) {
                 return "CS_StatsReport_IngestedLeratium".Translate() + ": 100%";
             }

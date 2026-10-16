@@ -22,21 +22,21 @@ public static class LesserSprenCaptureSystem {
         if (gem?.Stuff == null) return false;
 
         SprenContainer? sprenContainer = gem.TryGetComp<SprenContainer>();
-        if (sprenContainer != null && sprenContainer.hasCapturedSpren) return false;
+        if (sprenContainer != null && sprenContainer.HasCapturedSpren) return false;
 
         BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
-        if (!controller.canBeCaptured) return false;
+        if (!controller.CanBeCaptured) return false;
 
         GemDef? gemDef = gem.Stuff.GetModExtension<GemsLinked>()?.Gems.FirstOrDefault();
         if (gemDef == null) return false;
 
-        return controller.compatibleGemTypes.Contains(gemDef);
+        return controller.CompatibleGemTypes.Contains(gemDef);
     }
 
     public static bool AttemptCaptureSpren(IntVec3 position, Map map, ThingWithComps gem, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         SprenSpawnInformation? info =
-            controller?.activeSpawnInfo.FirstOrDefault(info => info.position.Equals(position));
+            controller?.ActiveSpawnInfo.FirstOrDefault(info => info.position.Equals(position));
 
         return info != null && AttemptCaptureSpren(info, map, gem, sprenType);
     }
@@ -60,7 +60,7 @@ public static class LesserSprenCaptureSystem {
         }
 
         InvestitureHolder? investiture = gem.TryGetComp<InvestitureHolder>();
-        if (investiture == null || investiture.currentInvestiture <= 0) {
+        if (investiture == null || investiture.CurrentInvestiture <= 0) {
             return false;
         }
 
@@ -70,15 +70,15 @@ public static class LesserSprenCaptureSystem {
             return PerformCapture(gem, targetSprenType, info);
         }
 
-        investiture.currentInvestitureSelf = investiture.maxInvestitureSelf * .1f;
+        investiture.CurrentInvestitureSelf = investiture.maxInvestitureSelf * .1f;
         return false;
     }
 
     private static bool IsSprenActiveWithinRadius(IntVec3 position, Map map, SprenType sprenType, float radius) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        if (controller == null || !controller.isEnabled) return false;
+        if (controller == null || !controller.IsEnabled) return false;
 
-        foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
+        foreach (SprenSpawnInformation info in controller.ActiveSpawnInfo) {
             if (info.map != map) continue;
             if (position.Equals(info.position!.Value)) return true;
             if (position.DistanceTo(info.position.Value) <= radius) return true;
@@ -89,23 +89,23 @@ public static class LesserSprenCaptureSystem {
 
     private static bool IsSprenActive(SprenSpawnInformation info, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        if (controller == null || !controller.isEnabled) return false;
+        if (controller == null || !controller.IsEnabled) return false;
 
-        return controller.activeSpawnInfo.Contains(info);
+        return controller.ActiveSpawnInfo.Contains(info);
     }
 
     private static bool IsSprenActive(IntVec3 position, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        if (controller == null || !controller.isEnabled) return false;
+        if (controller == null || !controller.IsEnabled) return false;
 
-        return controller.activeSpawnInfo.Any(info => info.position.Equals(position));
+        return controller.ActiveSpawnInfo.Any(info => info.position.Equals(position));
     }
 
     private static float CalculateCaptureChance(ThingWithComps gem, SprenType sprenType) {
         const float baseChance = .75f;
 
         BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
-        float rarityMultiplier = controller.captureRarityMultiplier;
+        float rarityMultiplier = controller.CaptureRarityMultiplier;
 
         CompQuality? quality = gem.TryGetComp<CompQuality>();
         float qualityMultiplier = quality != null ? 0.5f + (int)quality.Quality * 0.1f : 1f;
@@ -134,7 +134,7 @@ public static class LesserSprenCaptureSystem {
 
     private static void RemoveSprenWithInfo(SprenSpawnInformation info, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        if (controller == null || !controller.isEnabled) return;
+        if (controller == null || !controller.IsEnabled) return;
 
         controller.RemoveActiveSpawnInfo(info);
     }
@@ -148,7 +148,7 @@ public static class LesserSprenCaptureSystem {
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-            if (controller is { canBeCaptured: true } && IsSprenActiveWithinRadius(position, map, sprenType, radius)) {
+            if (controller is { CanBeCaptured: true } && IsSprenActiveWithinRadius(position, map, sprenType, radius)) {
                 capturableSpren.Add(controller);
             }
         }
@@ -161,7 +161,7 @@ public static class LesserSprenCaptureSystem {
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-            if (controller is { canBeCaptured: true } && IsSprenActive(position, sprenType)) {
+            if (controller is { CanBeCaptured: true } && IsSprenActive(position, sprenType)) {
                 capturableSpren.Add(sprenType);
             }
         }
@@ -197,10 +197,10 @@ public static class LesserSprenCaptureSystem {
     ) {
         List<BaseSprenController> availableSpren = GetCapturableSprenWithinRadius(position, map, radius);
 
-        availableSpren.Sort((a, b) => a.captureRarityMultiplier.CompareTo(b.captureRarityMultiplier));
+        availableSpren.Sort((a, b) => a.CaptureRarityMultiplier.CompareTo(b.CaptureRarityMultiplier));
 
-        return availableSpren.Where(c => CanGemCaptureSpren(gem, c.sprenType))
-            .Any(c => TryCaptureSprenWithinRadius(position, map, gem, c.sprenType, radius));
+        return availableSpren.Where(c => CanGemCaptureSpren(gem, c.SprenType))
+            .Any(c => TryCaptureSprenWithinRadius(position, map, gem, c.SprenType, radius));
     }
 
     public static bool TryCaptureAnySprenAtPosition(IntVec3 position, Map map, ThingWithComps gem) {
@@ -209,7 +209,7 @@ public static class LesserSprenCaptureSystem {
         availableSpren.Sort((a, b) => {
             BaseSprenController controllerA = SprenControllerRegistry.GetController(a)!;
             BaseSprenController controllerB = SprenControllerRegistry.GetController(b)!;
-            return controllerA.captureRarityMultiplier.CompareTo(controllerB.captureRarityMultiplier);
+            return controllerA.CaptureRarityMultiplier.CompareTo(controllerB.CaptureRarityMultiplier);
         }
         );
 
@@ -223,12 +223,12 @@ public static class LesserSprenCaptureSystem {
         float radius
     ) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        if (controller == null || !controller.isEnabled) return null;
+        if (controller == null || !controller.IsEnabled) return null;
 
         SprenSpawnInformation? closestInfo = null;
         float closestDistance = float.MaxValue;
 
-        foreach (SprenSpawnInformation? activeInfo in controller.activeSpawnInfo) {
+        foreach (SprenSpawnInformation? activeInfo in controller.ActiveSpawnInfo) {
             float distance = position.DistanceTo(activeInfo.position!.Value);
             if (!(distance <= radius) || !(distance < closestDistance)) continue;
             closestDistance = distance;

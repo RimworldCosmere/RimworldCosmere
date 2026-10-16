@@ -8,7 +8,7 @@ using Verse.AI;
 namespace Cosmere.Core.JobDriver;
 
 public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
-    protected InnerStorage? storage => Container.TryGetComp<InnerStorage>();
+    protected InnerStorage? Storage => Container.TryGetComp<InnerStorage>();
 
     protected abstract IEnumerable<Toil> GetToils();
 
@@ -68,14 +68,14 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDestroyedOrNull(TargetIndex.A);
-        this.FailOn(() => storage is null);
+        this.FailOn(() => Storage is null);
         this.FailOn(() => {
             Verse.Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.B).Thing;
-            if (thing == null || storage == null) {
+            if (thing == null || Storage == null) {
                 return true;
             }
 
-            if (!storage.parent.Destroyed) return !storage.Accepts(ThingToCarry);
+            if (!Storage.parent.Destroyed) return !Storage.Accepts(ThingToCarry);
 
             if (job.targetQueueB.NullOrEmpty()) return true;
 
@@ -93,7 +93,7 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
             job.targetQueueB.RemoveAll(target => target.Thing == nextTarget);
             job.targetB = nextTarget;
 
-            return !storage.Accepts(ThingToCarry);
+            return !Storage.Accepts(ThingToCarry);
         }
         );
         this.FailOnForbidden(TargetIndex.B);
@@ -112,13 +112,13 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
 
         gotoDest.AddFailCondition(
             (Func<bool>)(() => {
-                if (storage == null) return true;
+                if (Storage == null) return true;
                 if (Container.Destroyed ||
                     !gotoDest.actor.jobs.curJob.ignoreForbidden && Container.IsForbidden(gotoDest.actor)) {
                     return true;
                 }
 
-                ThingOwner? interactableThingOwner = storage.innerContainer;
+                ThingOwner? interactableThingOwner = Storage.innerContainer;
                 return interactableThingOwner != null &&
                        !interactableThingOwner.CanAcceptAnyOf(gotoDest.actor.carryTracker.CarriedThing);
             })

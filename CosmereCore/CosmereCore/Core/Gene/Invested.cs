@@ -32,7 +32,7 @@ public abstract class Invested : Gene_Resource {
 
             rate = UpkeepRate.PerSecond(rate, UpkeepTicks);
 
-            if (Value > 1f) rate += investitureHolder.drainRate / (GenTicks.TickRareInterval / 60f);
+            if (Value > 1f) rate += InvestitureHolder.drainRate / (GenTicks.TickRareInterval / 60f);
 
             return rate;
         }
@@ -62,9 +62,9 @@ public abstract class Invested : Gene_Resource {
 
     public virtual List<AbilityDef> Abilities => def.abilities;
 
-    protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
+    protected Need.Investiture Investiture => pawn.needs.TryGetNeed<Need.Investiture>();
 
-    protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
+    protected InvestitureHolder InvestitureHolder => pawn.TryGetComp<InvestitureHolder>();
 
     public override void Reset() {
         targetValue = 0.5f;
@@ -75,14 +75,14 @@ public abstract class Invested : Gene_Resource {
     public override void PostAdd() {
         base.PostAdd();
         PostAddOrRemove();
-        investitureHolder.maxInvestitureSelf = float.PositiveInfinity;
+        InvestitureHolder.maxInvestitureSelf = float.PositiveInfinity;
     }
 
     public override void PostRemove() {
         base.PostRemove();
         PostAddOrRemove();
-        investitureHolder.currentInvestitureSelf = 1;
-        investitureHolder.maxInvestitureSelf = 1;
+        InvestitureHolder.CurrentInvestitureSelf = 1;
+        InvestitureHolder.maxInvestitureSelf = 1;
     }
 
     public virtual bool CanLowerReserve(float breathEquivalentUnits) {

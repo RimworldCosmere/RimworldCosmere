@@ -9,13 +9,13 @@ using Verse;
 namespace Cosmere.System.Scadrial.Gene;
 
 public abstract class Metalborn : Invested {
-    public MetallicArtsMetalDef metal =>
+    public MetallicArtsMetalDef Metal =>
         def.GetModExtension<MetalsLinked>()?.Metals.FirstOrDefault()?.ToMetallicArts()
         ?? throw new InvalidOperationException($"Metalborn gene '{def.defName}' is missing MetalsLinked with a valid metal.");
 
-    protected override Color BarColor => metal.color.SaturationChanged(1f);
+    protected override Color BarColor => Metal.color.SaturationChanged(1f);
 
-    protected override Color BarHighlightColor => metal.color.SaturationChanged(2f);
+    protected override Color BarHighlightColor => Metal.color.SaturationChanged(2f);
 
     protected override void PostAddOrRemove() {
         MetalbornUtility.SyncMetalbornTrait(pawn);

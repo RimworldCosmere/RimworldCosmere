@@ -6,19 +6,19 @@ namespace Cosmere.Core.Extension;
 public static class RectExtension {
     public static Rect ContractedBy(this Rect rect, Padding padding) {
         return new Rect(
-            rect.x + padding.left,
-            rect.y + padding.top,
-            rect.width - padding.left - padding.right,
-            rect.height - padding.top - padding.bottom
+            rect.x + padding.Left,
+            rect.y + padding.Top,
+            rect.width - padding.Left - padding.Right,
+            rect.height - padding.Top - padding.Bottom
         );
     }
 
     public static Rect ExpandedBy(this Rect rect, Padding padding) {
         return new Rect(
-            rect.x - padding.left,
-            rect.y - padding.top,
-            rect.width + padding.left + padding.right,
-            rect.height + padding.top + padding.bottom
+            rect.x - padding.Left,
+            rect.y - padding.Top,
+            rect.width + padding.Left + padding.Right,
+            rect.height + padding.Top + padding.Bottom
         );
     }
 

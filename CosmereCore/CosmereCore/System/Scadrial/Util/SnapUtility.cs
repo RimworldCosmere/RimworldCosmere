@@ -11,7 +11,7 @@ public static class SnapUtility {
         if (pawn.health.hediffSet.HasHediff(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab)) return;
 
         DormantConnectionComp? comp = pawn.TryGetComp<DormantConnectionComp>();
-        if (comp == null || !comp.hasDormantConnections) return;
+        if (comp == null || !comp.HasDormantConnections) return;
 
         Thought_Memory memory = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Scadrial_Snapped, 0);
         memory.permanent = true;

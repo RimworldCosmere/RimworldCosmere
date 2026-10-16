@@ -16,7 +16,7 @@ public class BondToThing : Verse.AI.JobDriver {
 
     private Verse.Thing Target => job.targetB.Thing;
 
-    private Connection? connection => pawn.GetConnection(Target);
+    private Connection? Connection => pawn.GetConnection(Target);
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(Target, job, 1, -1, null, errorOnFailed);
@@ -69,7 +69,7 @@ public class BondToThing : Verse.AI.JobDriver {
             }
         );
 
-        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01((connection?.Value ?? 0f) / 1f));
+        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01((Connection?.Value ?? 0f) / 1f));
 
         yield return bondToil;
     }

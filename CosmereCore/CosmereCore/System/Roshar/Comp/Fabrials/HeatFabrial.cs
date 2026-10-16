@@ -47,9 +47,9 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
     public Verse.Thing? insertedGemstone;
     public bool powerOn;
 
-    public new CompPropertiesHeatrial props => (CompPropertiesHeatrial)base.props;
+    public CompPropertiesHeatrial Props => (CompPropertiesHeatrial)props;
 
-    public CompGlower glowerComp => parent.GetComp<CompGlower>();
+    public CompGlower GlowerComp => parent.GetComp<CompGlower>();
 
     public void AddGemstone(ThingWithComps gemstone) {
         if (gemstone.IsCutGemOfType(GemDefOf.Ruby)) {
@@ -71,7 +71,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
             InvestitureHolder? investiture =
                 (insertedGemstone as ThingWithComps)?.TryGetComp<InvestitureHolder>();
             if (investiture != null) {
-                powerOn = investiture.currentInvestiture > 0 && flickeredOn;
+                powerOn = investiture.CurrentInvestiture > 0 && flickeredOn;
                 return;
             }
         }
@@ -93,7 +93,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         ThingWithComps? gemstone = insertedGemstone as ThingWithComps;
         InvestitureHolder? investiture =
             gemstone?.TryGetComp<InvestitureHolder>();
-        return gemstone?.Label + "(" + (investiture?.currentInvestiture.ToString("F0") ?? "0") + ")";
+        return gemstone?.Label + "(" + (investiture?.CurrentInvestiture.ToString("F0") ?? "0") + ")";
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {

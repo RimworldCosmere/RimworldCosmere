@@ -9,7 +9,7 @@ public class HemalurgicSpikes : HediffWithComps {
     public List<ImplantedSpikeData> spikes = [];
     private bool stageDirty = true;
 
-    public int spikeCount => spikes.Count;
+    public int SpikeCount => spikes.Count;
 
     public override HediffStage CurStage {
         get {

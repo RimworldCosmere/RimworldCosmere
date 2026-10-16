@@ -5,16 +5,16 @@ using RimWorld;
 namespace Cosmere.System.Scadrial.Allomancy.Verb;
 
 public class SteelJump : Verb_CastAbilityJump {
-    private new AllomancyAbility ability => (AllomancyAbility)verbTracker.directOwner;
+    private new AllomancyAbility Ability => (AllomancyAbility)verbTracker.directOwner;
 
     public override float EffectiveRange {
         get {
-            int power = SteelJumpRange.PowerFor(ability.nextStatus?.power, ability.status.power);
+            int power = SteelJumpRange.PowerFor(Ability.NextStatus?.power, Ability.status.power);
 
             return SteelJumpRange.For(
                 base.EffectiveRange,
                 power,
-                CasterPawn.GetRawAllomanticPower(ability.metal),
+                CasterPawn.GetRawAllomanticPower(Ability.Metal),
                 caster.GetStatValue(RimWorld.StatDefOf.Mass)
             );
         }
@@ -22,7 +22,7 @@ public class SteelJump : Verb_CastAbilityJump {
 
     protected override bool TryCastShot() {
         bool result = base.TryCastShot();
-        ability.UpdateStatus(BurningStatus.Off);
+        Ability.UpdateStatus(BurningStatus.Off);
 
         return result;
     }

@@ -52,7 +52,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         bool gemInInventory = pawn.inventory?.innerContainer?.Contains(suitableGem) == true;
 
         foreach (BaseSprenController? controller in capturableSpren) {
-            SprenType sprenType = controller.sprenType;
+            SprenType sprenType = controller.SprenType;
 
             string sprenName = controller.GetLocalizedName();
 
@@ -61,7 +61,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
             }
 
             InvestitureHolder? investiture = suitableGem.TryGetComp<InvestitureHolder>();
-            if (investiture == null || investiture.currentInvestiture <= 0) {
+            if (investiture == null || investiture.CurrentInvestiture <= 0) {
                 options.Add(
                     new FloatMenuOption(
                         "SprenCapture_GemNeedsStormlight".Translate(sprenName),
@@ -97,7 +97,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     ) {
         List<ThingWithComps> suitableGems = [];
 
-        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn, [.. controllers.Select(x => x.sprenType)]);
+        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn, [.. controllers.Select(x => x.SprenType)]);
         if (inventoryGem != null) {
             suitableGems.Add(inventoryGem);
             return suitableGems;
@@ -105,7 +105,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         List<ThingWithComps> mapGems = FindSuitableGemsOnMapForSprenTypes(
             pawn,
-            [.. controllers.Select(x => x.sprenType)]
+            [.. controllers.Select(x => x.SprenType)]
         );
         suitableGems.AddRange(mapGems);
 
@@ -145,10 +145,10 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
 
     private static bool IsGemSuitableForSprenTypes(ThingWithComps gem, List<SprenType> sprenTypes) {
         SprenContainer? sprenContainer = gem.TryGetComp<SprenContainer>();
-        if (sprenContainer is null or { hasCapturedSpren: true }) return false;
+        if (sprenContainer is null or { HasCapturedSpren: true }) return false;
 
         InvestitureHolder? investiture = gem.TryGetComp<InvestitureHolder>();
-        if (investiture == null || investiture.currentInvestiture <= 0) return false;
+        if (investiture == null || investiture.CurrentInvestiture <= 0) return false;
 
         return Enumerable.Any(sprenTypes, sprenType => LesserSprenCaptureSystem.CanGemCaptureSpren(gem, sprenType));
     }

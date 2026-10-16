@@ -33,11 +33,11 @@ public class SeizeKoloss : EmotionalPush {
         if (target.Pawn is not { } koloss) return;
         if (Blocked(koloss)) return;
 
-        AcceptanceReport report = KolossControl.TryBind(parent.pawn, koloss, Reach, parent.def.metal, parent.def);
+        AcceptanceReport report = KolossControl.TryBind(Parent.pawn, koloss, Reach, Parent.Def.metal, Parent.Def);
         if (report.Accepted) {
             Messages.Message(
                 "CS_KolossBound".Translate(
-                    parent.pawn.LabelShortCap.Named("HOLDER"),
+                    Parent.pawn.LabelShortCap.Named("HOLDER"),
                     koloss.LabelShortCap.Named("KOLOSS")
                 ),
                 koloss,

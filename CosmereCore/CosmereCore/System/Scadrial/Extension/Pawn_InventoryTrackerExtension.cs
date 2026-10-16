@@ -15,7 +15,7 @@ public static class Pawn_InventoryTrackerExtension {
     }
 
     public static AllomanticVial? GetVial(this Pawn pawn, Allomancer gene) {
-        return pawn.GetVials().FirstOrDefault(x => x.IsForMetal(gene.metal));
+        return pawn.GetVials().FirstOrDefault(x => x.IsForMetal(gene.Metal));
     }
 
     public static AllomanticVial? GetVial(this Pawn pawn, MetalDef metal) {

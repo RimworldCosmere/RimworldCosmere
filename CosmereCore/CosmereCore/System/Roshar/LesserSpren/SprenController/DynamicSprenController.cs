@@ -8,11 +8,11 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 /// </summary>
 public abstract class DynamicSprenController : BaseSprenController {
     // Dynamic spren have shorter refresh intervals to respond to changing conditions
-    public override IntRange validInfoRefreshInterval => new IntRange(int.MaxValue, int.MaxValue);
+    public override IntRange ValidInfoRefreshInterval => new IntRange(int.MaxValue, int.MaxValue);
 
-    public override IntRange activeInfoRefreshInterval => new IntRange(0, 0);
+    public override IntRange ActiveInfoRefreshInterval => new IntRange(0, 0);
 
-    public override IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => activeSpawnInfo;
+    public override IReadOnlyCollection<SprenSpawnInformation> ValidSpawnInfo => ActiveSpawnInfo;
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map) {
         return GetDynamicSpawnInfo(map).Find(i => i.position.Equals(position));
@@ -26,7 +26,7 @@ public abstract class DynamicSprenController : BaseSprenController {
         activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);
 
         foreach (SprenSpawnInformation? info in GetDynamicSpawnInfo(map).Where(i => Rand.Chance(i.spawnChance))) {
-            activeSpawnInfoInt.Add(info.With(cleanupTick: GenTicks.TicksGame + lifetime.max.SecondsToTicks()));
+            activeSpawnInfoInt.Add(info.With(cleanupTick: GenTicks.TicksGame + Lifetime.max.SecondsToTicks()));
         }
     }
 }

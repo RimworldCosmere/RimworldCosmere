@@ -7,7 +7,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Fabrials;
 
 public class BasicFabrialAugmenter : BasicFabrial {
-    public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
+    public CompGlower? GlowerComp => parent.TryGetComp<CompGlower>();
 
     protected override HediffDef PainHediffDef => HediffDefOf.Cosmere_Roshar_Painrial_Augment;
 

@@ -179,9 +179,9 @@ public sealed class ScadrialCrest {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Feruchemist f || f.Overridden) continue;
 
-            metalminds += f.metalminds.Count;
-            if (f.isTapping) tapping++;
-            else if (f.isStoring) storing++;
+            metalminds += f.Metalminds.Count;
+            if (f.IsTapping) tapping++;
+            else if (f.IsStoring) storing++;
         }
 
         if (metalminds == 0) {

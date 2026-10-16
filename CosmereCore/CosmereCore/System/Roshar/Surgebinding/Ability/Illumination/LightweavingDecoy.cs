@@ -10,7 +10,7 @@ public class LightweavingDecoy : SurgebindingAbility {
 
     public LightweavingDecoy(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int decoyCount => Math.Clamp(Gene.CurrentIdeal, 1, 4);
+    private int DecoyCount => Math.Clamp(Gene.CurrentIdeal, 1, 4);
 
     protected override void OnEnable() {
         base.OnEnable();
@@ -25,7 +25,7 @@ public class LightweavingDecoy : SurgebindingAbility {
     private void SpawnDecoys() {
         if (!pawn.Spawned || pawn.Map == null) return;
 
-        int count = decoyCount;
+        int count = DecoyCount;
         for (int i = 0; i < count; i++) {
             IntVec3 spawnCell = CellFinder.RandomSpawnCellForPawnNear(pawn.Position, pawn.Map, 3);
             if (!spawnCell.IsValid) continue;

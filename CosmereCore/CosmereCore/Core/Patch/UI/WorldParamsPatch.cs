@@ -53,7 +53,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
         List<CosmereWorldDef> worlds = WorldUtility.All;
         if (worlds.Count == 0) return;
 
-        CosmereWorld? comp = WorldUtility.component;
+        CosmereWorld? comp = WorldUtility.Component;
         if (comp == null) return;
 
         // seeding here, not in Reset, covers back-navigation: a fresh Game rebuilds this as null.
@@ -179,7 +179,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
     }
 
     private static void ApplyDefaultShards(CosmereWorldDef world) {
-        Shards? shards = ShardUtility.shards;
+        Shards? shards = ShardUtility.Shards;
         if (shards == null) return;
 
         // A scenario's own list wins - it is what PreSelectShardForScenarioPatch already applied.

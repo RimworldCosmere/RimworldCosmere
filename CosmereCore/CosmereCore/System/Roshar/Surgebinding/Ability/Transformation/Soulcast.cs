@@ -21,13 +21,13 @@ public class Soulcast : SurgebindingAbility {
 
     public Soulcast(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    internal SoulcastMode? storedMode { get; set; }
+    internal SoulcastMode? StoredMode { get; set; }
 
-    internal ThingDef? storedMaterial { get; set; }
+    internal ThingDef? StoredMaterial { get; set; }
 
-    internal TerrainDef? storedTerrain { get; set; }
+    internal TerrainDef? StoredTerrain { get; set; }
 
-    private float BaseCost => def.beuPerTick / (1 << Gene.CurrentIdeal);
+    private float BaseCost => Def.beuPerTick / (1 << Gene.CurrentIdeal);
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
         ShowMaterialPicker();
@@ -36,19 +36,19 @@ public class Soulcast : SurgebindingAbility {
     }
 
     public void ExecuteStoredAction(LocalTargetInfo target) {
-        if (!storedMode.HasValue) return;
+        if (!StoredMode.HasValue) return;
 
         SoulcastOverlay.Remove(target.Cell, pawn.Map);
 
         if (!TryResolveTarget(ref target)) return;
 
-        ExecuteMode(storedMode.Value, target);
+        ExecuteMode(StoredMode.Value, target);
     }
 
     private bool TryResolveTarget(ref LocalTargetInfo target) {
         if (!target.HasThing &&
-            storedMode!.Value is not (SoulcastMode.Wall or SoulcastMode.Terraform or SoulcastMode.Geyser)) {
-            Verse.Thing? found = FindTargetThingAt(target.Cell, storedMode.Value);
+            StoredMode!.Value is not (SoulcastMode.Wall or SoulcastMode.Terraform or SoulcastMode.Geyser)) {
+            Verse.Thing? found = FindTargetThingAt(target.Cell, StoredMode.Value);
             if (found != null) target = new LocalTargetInfo(found);
         }
 
@@ -63,29 +63,29 @@ public class Soulcast : SurgebindingAbility {
     private void ExecuteMode(SoulcastMode mode, LocalTargetInfo target) {
         switch (mode) {
             case SoulcastMode.ConvertDrop:
-                if (storedMaterial != null && target.HasThing) DoConvertDrop(target.Thing, storedMaterial);
+                if (StoredMaterial != null && target.HasThing) DoConvertDrop(target.Thing, StoredMaterial);
                 break;
             case SoulcastMode.ChangeStuff:
-                if (storedMaterial != null && target.HasThing) DoChangeStuffOnTarget(target.Thing, storedMaterial);
+                if (StoredMaterial != null && target.HasThing) DoChangeStuffOnTarget(target.Thing, StoredMaterial);
                 break;
             case SoulcastMode.Wall:
-                if (storedMaterial != null) {
+                if (StoredMaterial != null) {
                     DoFortify(
                         target.Cell,
                         pawn.Map,
-                        storedMaterial,
-                        BaseCost * SoulcastMaterials.GetMaterialCost(storedMaterial) * AirWallMultiplier
+                        StoredMaterial,
+                        BaseCost * SoulcastMaterials.GetMaterialCost(StoredMaterial) * AirWallMultiplier
                     );
                 }
 
                 break;
             case SoulcastMode.Terraform:
-                if (storedTerrain != null) {
+                if (StoredTerrain != null) {
                     DoTerraform(
                         target.Cell,
                         pawn.Map,
-                        storedTerrain,
-                        TerrainBaseCost * SoulcastMaterials.GetTerrainCost(storedTerrain)
+                        StoredTerrain,
+                        TerrainBaseCost * SoulcastMaterials.GetTerrainCost(StoredTerrain)
                     );
                 }
 
@@ -94,7 +94,7 @@ public class Soulcast : SurgebindingAbility {
                 DoSpawnGeyser(target.Cell, pawn.Map);
                 break;
             case SoulcastMode.Sculpture:
-                if (storedMaterial != null && target.HasThing) DoSculpture(target, storedMaterial);
+                if (StoredMaterial != null && target.HasThing) DoSculpture(target, StoredMaterial);
                 break;
             case SoulcastMode.Destroy:
                 DoDestroy(target);
@@ -209,9 +209,9 @@ public class Soulcast : SurgebindingAbility {
     }
 
     private void StartTargeting(SoulcastMode mode, ThingDef? material, TerrainDef? terrain) {
-        storedMode = mode;
-        storedMaterial = material;
-        storedTerrain = terrain;
+        StoredMode = mode;
+        StoredMaterial = material;
+        StoredTerrain = terrain;
 
         Designator_Soulcast designator = new Designator_Soulcast(this, mode, material, terrain);
         Find.DesignatorManager.Select(designator);

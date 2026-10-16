@@ -7,11 +7,11 @@ namespace Cosmere.System.Scadrial.Thing;
 public class AllomanticVial : ThingWithComps {
     private MetallicArtsMetalDef? cachedMetal;
 
-    public virtual MetallicArtsMetalDef? metal =>
+    public virtual MetallicArtsMetalDef? Metal =>
         cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff?.defName);
 
     public bool IsForMetal(MetallicArtsMetalDef metalCheck) {
-        return metal?.Equals(metalCheck) ?? false;
+        return Metal?.Equals(metalCheck) ?? false;
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {
@@ -25,14 +25,14 @@ public class AllomanticVial : ThingWithComps {
     protected override void PostIngested(Pawn ingester) {
         base.PostIngested(ingester);
 
-        if (metal == null) return;
+        if (Metal == null) return;
 
-        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(ScadrialMetallurgyConstants.VialMetalAmount);
+        ingester.genes.GetAllomanticGeneForMetal(Metal)?.AddToReserve(ScadrialMetallurgyConstants.VialMetalAmount);
 
         ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedVial);
 
         Messages.Message(
-            "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
+            "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), Metal.ColoredLabel.Named("THING")),
             ingester,
             MessageTypeDefOf.PositiveEvent
         );

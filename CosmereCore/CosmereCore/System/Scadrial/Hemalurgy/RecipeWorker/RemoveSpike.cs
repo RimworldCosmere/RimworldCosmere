@@ -36,9 +36,9 @@ public class RemoveSpike : Recipe_Surgery {
         }
 
         HemalurgicSpikes? hediff = GetSpikesHediff(pawn);
-        if (hediff == null || hediff.spikeCount == 0) return;
+        if (hediff == null || hediff.SpikeCount == 0) return;
 
-        ImplantedSpikeData? removed = hediff.RemoveSpikeAt(hediff.spikeCount - 1);
+        ImplantedSpikeData? removed = hediff.RemoveSpikeAt(hediff.SpikeCount - 1);
         if (removed == null) return;
 
         RemoveGrantedGene(pawn, removed);

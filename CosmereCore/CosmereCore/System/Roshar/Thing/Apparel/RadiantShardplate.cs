@@ -11,10 +11,10 @@ namespace Cosmere.System.Roshar.Thing.Apparel;
 public class RadiantShardplate : Shardplate {
     private RadiantOrderDef? radiantOrderInt;
 
-    private RadiantOrderDef? radiantOrder =>
+    private RadiantOrderDef? RadiantOrder =>
         radiantOrderInt ??= SpawnedParentOrMe is Verse.Pawn pawn ? pawn.GetRadiantOrder() : null;
 
-    private GemDef? gemstone => radiantOrder?.gemstone;
+    private GemDef? Gemstone => RadiantOrder?.gemstone;
 
     public override void Notify_Unequipped(Verse.Pawn pawn) {
         base.Notify_Unequipped(pawn);
@@ -33,22 +33,22 @@ public class RadiantShardplate : Shardplate {
 
     public override void DrawWornExtras() {
         base.DrawWornExtras();
-        if (gemstone != null) {
-            cutoutLUT.props.glowColor = gemstone.glowColor ?? gemstone.color;
+        if (Gemstone != null) {
+            CutoutLUT.Props.glowColor = Gemstone.glowColor ?? Gemstone.color;
         }
     }
 
     public override List<LUTPaletteMaterial> GetMaterials() {
-        if (gemstone == null) return [];
+        if (Gemstone == null) return [];
 
-        LUTPaletteMaterial colorOne = new LUTPaletteMaterial { color = gemstone.color, metallic = .7f, smoothness = .7f };
-        LUTPaletteMaterial colorTwo = !gemstone.colorTwo.HasValue
+        LUTPaletteMaterial colorOne = new LUTPaletteMaterial { color = Gemstone.color, Metallic = .7f, Smoothness = .7f };
+        LUTPaletteMaterial colorTwo = !Gemstone.colorTwo.HasValue
             ? colorOne
-            : new LUTPaletteMaterial { color = gemstone.colorTwo.Value, metallic = .7f, smoothness = .7f };
-        LUTPaletteMaterial fallbackThree = gemstone.colorTwo.HasValue ? colorTwo : colorOne;
-        LUTPaletteMaterial colorThree = !gemstone.glowColor.HasValue
+            : new LUTPaletteMaterial { color = Gemstone.colorTwo.Value, Metallic = .7f, Smoothness = .7f };
+        LUTPaletteMaterial fallbackThree = Gemstone.colorTwo.HasValue ? colorTwo : colorOne;
+        LUTPaletteMaterial colorThree = !Gemstone.glowColor.HasValue
             ? fallbackThree
-            : new LUTPaletteMaterial { color = gemstone.glowColor.Value, metallic = 0, smoothness = 1f };
+            : new LUTPaletteMaterial { color = Gemstone.glowColor.Value, Metallic = 0, Smoothness = 1f };
 
         if (def == ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm) {
             /*

@@ -21,7 +21,7 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
     ///     Gets an empty list, so the Shards come from the scenario alone: Honor, Cultivation and
     ///     Odium. Naming them here too is how this quickstart used to run without the scenario at all.
     /// </summary>
-    public override IReadOnlyList<string> shards => [];
+    public override IReadOnlyList<string> Shards => [];
 
     public override void PostStart() {
         EnableDebugOverlays();
@@ -52,7 +52,7 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
 
         for (int i = 0; i < pawns.Count; i++) {
             InvestitureHolder? investiture = pawns[i].GetInvestiture();
-            if (investiture != null) investiture.currentInvestitureSelf = 1000;
+            if (investiture != null) investiture.CurrentInvestitureSelf = 1000;
         }
 
         LayOutGems(pawns[0]);
@@ -82,7 +82,7 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
             Core.ThingDefOf.RawEmerald
         );
         if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
-            broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
+            broamInvestiture.CurrentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
         }
 
         pouch.TryGetComp<InnerStorage>().innerContainer.TryAdd(broam);

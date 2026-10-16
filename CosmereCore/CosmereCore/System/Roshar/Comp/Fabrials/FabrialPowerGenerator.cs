@@ -12,9 +12,9 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
     public ThingWithComps? insertedGemstone;
     public bool powerOn;
 
-    public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
+    public CompGlower? GlowerComp => parent.TryGetComp<CompGlower>();
 
-    public bool hasGemstone => insertedGemstone != null;
+    public bool HasGemstone => insertedGemstone != null;
 
     public List<ThingDef> FilterList => filterListInt;
 
@@ -61,7 +61,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
     public void UpdatePowerState(bool flickeredOn) {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
-            powerOn = investiture.currentInvestiture > 0 && flickeredOn;
+            powerOn = investiture.CurrentInvestiture > 0 && flickeredOn;
             return;
         }
 
@@ -79,7 +79,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
 
         InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
         return "CRO_Fabrial_Inspect_NoSpren".Translate(
-            (investiture?.currentInvestiture ?? 0f).ToString("F0").Named("LIGHT"),
+            (investiture?.CurrentInvestiture ?? 0f).ToString("F0").Named("LIGHT"),
             GetTimeRemaining().Named("TIME")
         ).Resolve();
     }
@@ -92,7 +92,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         float investiturePerHour = investiture.drainRate * tickRaresPerHour;
         if (Mathf.Approximately(investiturePerHour, 0f)) return "CRO_Fabrial_TimeEndless".Translate();
 
-        int hoursLeft = (int)(investiture.currentInvestiture / investiturePerHour);
+        int hoursLeft = (int)(investiture.CurrentInvestiture / investiturePerHour);
         int daysLeft = hoursLeft / 24;
         hoursLeft %= 24;
         return "CRO_Fabrial_TimeRemaining".Translate(daysLeft.Named("DAYS"), hoursLeft.Named("HOURS")).Resolve();
@@ -103,7 +103,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 thing.HasComp<InvestitureHolder>() &&
-                thing.TryGetComp<InvestitureHolder>().currentInvestiture > 0 &&
+                thing.TryGetComp<InvestitureHolder>().CurrentInvestiture > 0 &&
                 FilterList.Contains(thing.def)
             ),
             500f

@@ -16,9 +16,9 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     private int mistsStartTick;
     private int nextMistsStartTick = -1;
 
-    private static bool enabled {
+    private static bool Enabled {
         get {
-            if (!Mod.enableMists) return false;
+            if (!Mod.EnableMists) return false;
 
             // no cache: this used to cache in one place and not another, so it could disagree with itself
             return FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Mists);
@@ -26,14 +26,14 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     }
 
     public override void FinalizeInit() {
-        if (!enabled) return;
+        if (!Enabled) return;
 
         base.FinalizeInit();
         ScheduleNextMists(); // In case it was missed on map load
     }
 
     public override void MapComponentTick() {
-        if (!enabled) return;
+        if (!Enabled) return;
 
         int currentTick = Find.TickManager.TicksGame;
 
@@ -52,7 +52,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
                 if (!pawn.RaceProps.Humanlike || pawn.Dead || pawn.Position.Roofed(map)) continue;
                 if (pawn.IsSnapped()) continue;
                 if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection) ||
-                    !dormantConnection.hasDormantConnections) {
+                    !dormantConnection.HasDormantConnections) {
                     continue;
                 }
 
@@ -121,7 +121,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     }
 
     private static int GetIntervalTicks() {
-        return Mod.mistsFrequency switch {
+        return Mod.MistsFrequency switch {
             MistsFrequency.Daily => GenDate.TicksPerDay,
             MistsFrequency.Weekly => 7 * GenDate.TicksPerDay,
             MistsFrequency.Monthly => 30 * GenDate.TicksPerDay,

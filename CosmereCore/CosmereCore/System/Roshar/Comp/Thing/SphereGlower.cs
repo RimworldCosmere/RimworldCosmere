@@ -29,7 +29,7 @@ public class SphereGlower : CompGlower {
     private bool FlickedOn = true;
     private bool spheresCacheDirty = true;
 
-    private List<Verse.Thing> spheres {
+    private List<Verse.Thing> Spheres {
         get {
             if (!spheresCacheDirty) return cachedSpheres;
             cachedSpheres.Clear();
@@ -39,26 +39,26 @@ public class SphereGlower : CompGlower {
         }
     }
 
-    private new SphereGlowerProperties props => (SphereGlowerProperties)base.props;
+    private new SphereGlowerProperties Props => (SphereGlowerProperties)props;
 
     public override float GlowRadius {
         get {
             float total = 0f;
             float max = 0f;
-            List<Verse.Thing> currentSpheres = spheres;
+            List<Verse.Thing> currentSpheres = Spheres;
             for (int i = 0; i < currentSpheres.Count; i++) {
                 if (!currentSpheres[i].TryGetComp(out InvestitureHolder investiture) ||
-                    investiture.currentInvestiture <= 0.0) {
+                    investiture.CurrentInvestiture <= 0.0) {
                     continue;
                 }
 
-                total += investiture.currentInvestiture;
-                max += investiture.maxInvestiture;
+                total += investiture.CurrentInvestiture;
+                max += investiture.MaxInvestiture;
             }
 
             if (max <= 0.0) return 0f;
             float percent = Mathf.Clamp01(total / max);
-            return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
+            return Mathf.Lerp(Props.minRadius, Props.maxRadius, percent);
         }
     }
 
@@ -66,12 +66,12 @@ public class SphereGlower : CompGlower {
         get {
             Color blended = Color.black;
             float totalWeight = 0f;
-            List<Verse.Thing> currentSpheres = spheres;
+            List<Verse.Thing> currentSpheres = Spheres;
             for (int i = 0; i < currentSpheres.Count; i++) {
                 InvestitureHolder? investiture = currentSpheres[i].GetInvestiture();
-                if (investiture == null || investiture.currentInvestiture <= 0f) continue;
+                if (investiture == null || investiture.CurrentInvestiture <= 0f) continue;
 
-                float weight = investiture.currentInvestiture;
+                float weight = investiture.CurrentInvestiture;
                 Color sphereColor = GetSphereColor(currentSpheres[i]);
 
                 blended += sphereColor * weight;
@@ -85,10 +85,10 @@ public class SphereGlower : CompGlower {
     protected override bool ShouldBeLitNow {
         get {
             if (!parent.Spawned || !FlickedOn) return false;
-            List<Verse.Thing> currentSpheres = spheres;
+            List<Verse.Thing> currentSpheres = Spheres;
             for (int i = 0; i < currentSpheres.Count; i++) {
                 InvestitureHolder? inv = currentSpheres[i].GetInvestiture();
-                if (inv != null && inv.currentInvestiture > 0) return true;
+                if (inv != null && inv.CurrentInvestiture > 0) return true;
             }
 
             return false;

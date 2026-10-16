@@ -15,10 +15,10 @@ namespace Cosmere.Core.Util;
 ///     itself. Reading the component is cheap; do not add a cache back.
 /// </remarks>
 public static class WorldUtility {
-    public static CosmereWorld? component => Verse.Current.Game?.GetComponent<CosmereWorld>();
+    public static CosmereWorld? Component => Verse.Current.Game?.GetComponent<CosmereWorld>();
 
     /// <summary>Gets the save's world, or null before one has been chosen.</summary>
-    public static CosmereWorldDef? Primary => component?.primary;
+    public static CosmereWorldDef? Primary => Component?.primary;
 
     /// <summary>Gets every world whose mod is loaded, in author-declared order.</summary>
     public static List<CosmereWorldDef> All {
@@ -30,7 +30,7 @@ public static class WorldUtility {
     }
 
     public static void Set(CosmereWorldDef? world) {
-        CosmereWorld? comp = component;
+        CosmereWorld? comp = Component;
         if (comp == null) {
             Log.Warn("WorldUtility: no CosmereWorld component, cannot set the world.");
             return;

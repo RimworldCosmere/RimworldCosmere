@@ -24,7 +24,7 @@ public static class KolossControl {
     ///     the kind of thing one colony wants tense and another wants survivable.
     /// </remarks>
     public static int GraceTicks =>
-        Mathf.Max(0, Mathf.RoundToInt(Mod.kolossGraceSeconds
+        Mathf.Max(0, Mathf.RoundToInt(Mod.KolossGraceSeconds
                                       * GenTicks.TicksPerRealSecond));
 
     public static bool IsHeld(Pawn? koloss) {

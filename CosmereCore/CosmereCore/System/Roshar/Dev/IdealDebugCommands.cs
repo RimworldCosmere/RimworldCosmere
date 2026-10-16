@@ -255,7 +255,7 @@ public static class IdealDebugCommands {
 
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"=== Ideal Info: {pawn.NameShortColored} ===");
-        sb.AppendLine($"Order: {surgebinder.radiantOrderDef.LabelCap}");
+        sb.AppendLine($"Order: {surgebinder.RadiantOrderDef.LabelCap}");
         sb.AppendLine($"Current Ideal: {surgebinder.CurrentIdealDisplay} (index {surgebinder.CurrentIdeal})");
         sb.AppendLine($"Pending Oath: {surgebinder.PendingOath}");
         sb.AppendLine(
@@ -265,7 +265,7 @@ public static class IdealDebugCommands {
 
         if (surgebinder.CurrentIdeal < 4) {
             int nextLevel = surgebinder.CurrentIdeal + 1;
-            bool satisfied = surgebinder.radiantOrderDef.idealChecker.IsSatisfied(pawn, surgebinder, nextLevel);
+            bool satisfied = surgebinder.RadiantOrderDef.idealChecker.IsSatisfied(pawn, surgebinder, nextLevel);
             sb.AppendLine($"IsSatisfied for level {nextLevel}: {satisfied}");
         }
 

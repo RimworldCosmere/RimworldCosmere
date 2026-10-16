@@ -14,20 +14,20 @@ public class SoftenGround : SurgebindingAbility {
 
     public SoftenGround(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (10f + Gene.CurrentIdeal * 5f));
+    private int DurationTicks => (int)(GenTicks.TicksPerRealSecond * (10f + Gene.CurrentIdeal * 5f));
 
-    private bool zoneActive => zoneExpiryTick > 0 && Find.TickManager.TicksGame < zoneExpiryTick;
+    private bool ZoneActive => zoneExpiryTick > 0 && Find.TickManager.TicksGame < zoneExpiryTick;
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Gene.RemoveFromReserve(cost);
 
         zoneCenter = target.Cell;
-        zoneExpiryTick = Find.TickManager.TicksGame + durationTicks;
+        zoneExpiryTick = Find.TickManager.TicksGame + DurationTicks;
 
         FleckMaker.Static(zoneCenter, pawn.Map, FleckDefOf.PsycastAreaEffect);
 
@@ -36,13 +36,13 @@ public class SoftenGround : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!zoneActive) return;
+        if (!ZoneActive) return;
         if (!pawn.IsHashIntervalTick(HediffRefreshTicks)) return;
 
-        HediffDef? hediffDef = def.hediff;
+        HediffDef? hediffDef = Def.hediff;
         if (hediffDef == null) return;
 
-        float currentRadius = radius;
+        float currentRadius = Radius;
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
                      zoneCenter,
                      pawn.Map,

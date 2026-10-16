@@ -7,16 +7,16 @@ public class RemoveGemFromFabrial : Verse.AI.JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;
     public const int JobDuration = 75;
 
-    protected Verse.Thing? fabrial => job.GetTarget(FabrialIndex).Thing;
+    protected Verse.Thing? Fabrial => job.GetTarget(FabrialIndex).Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(fabrial, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(Fabrial, job, 1, -1, null, errorOnFailed);
     }
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(FabrialIndex);
 
-        AddFailCondition(() => fabrial == null);
+        AddFailCondition(() => Fabrial == null);
 
         yield return Toils_General.DoAtomic(() => { job.count = 1; });
 

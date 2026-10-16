@@ -35,9 +35,9 @@ public class Soulcast : Verse.AI.JobDriver {
             if (soulcast == null) return;
 
             if (SoulcastOverlay.TryGetData(cell, pawn.Map, out SoulcastMode mode, out ThingDef? mat, out TerrainDef? ter)) {
-                soulcast.storedMode = mode;
-                soulcast.storedMaterial = mat;
-                soulcast.storedTerrain = ter;
+                soulcast.StoredMode = mode;
+                soulcast.StoredMaterial = mat;
+                soulcast.StoredTerrain = ter;
                 soulcast.ExecuteStoredAction(TargetA);
             }
 

@@ -24,7 +24,7 @@ public class SpecialThingFilterWorker_UnchargedSpike : SpecialThingFilterWorker 
         // isCharged, not a null check - a spike can carry invalid charge data, and the comp knows the difference
         HemalurgicSpike? spike = t.TryGetComp<HemalurgicSpike>();
 
-        return spike is not { isCharged: true };
+        return spike is not { IsCharged: true };
     }
 
     public override bool CanEverMatch(ThingDef def) {

@@ -51,7 +51,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
 
     public string? HeaderLabelFor(Pawn pawn) {
         Surgebinder? s = GetSurgebinder(pawn);
-        return s?.radiantOrderDef?.LabelCap;
+        return s?.RadiantOrderDef?.LabelCap;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
     /// </summary>
     /// <returns>The order's icon, or null when the pawn has no Radiant order.</returns>
     public Texture2D? SigilFor(Pawn pawn, bool selected) {
-        RadiantOrderDef? order = GetSurgebinder(pawn)?.radiantOrderDef;
+        RadiantOrderDef? order = GetSurgebinder(pawn)?.RadiantOrderDef;
         if (order == null) return null;
 
         // Plain white when it is not the active art, the order's own colours when it is.
@@ -68,14 +68,14 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
     }
 
     public Color? AccentFor(Pawn pawn) {
-        return GetSurgebinder(pawn)?.radiantOrderDef?.color;
+        return GetSurgebinder(pawn)?.RadiantOrderDef?.color;
     }
 
     public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
         Surgebinder? s = GetSurgebinder(pawn);
         if (s == null) return;
 
-        RadiantOrderDef order = s.radiantOrderDef;
+        RadiantOrderDef order = s.RadiantOrderDef;
         Color accent = order.color;
 
         float contentHeight = EstimateProgressionHeight(order, s.CurrentIdealDisplay, rect.width - 36f);
@@ -215,7 +215,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
             Pawn spren = gene.bondedSpren!;
 
             bool selected = state.SelectedSprenIndex == i;
-            Color orderColor = gene.radiantOrderDef?.color ?? Color.white;
+            Color orderColor = gene.RadiantOrderDef?.color ?? Color.white;
 
             Rect entryRect = new Rect(rect.x, rect.y + i * StripEntryHeight, rect.width, StripEntryHeight);
 
@@ -234,10 +234,10 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
             string sprenName = spren.Name?.ToStringShort ?? spren.LabelShortCap;
             TooltipHandler.TipRegion(
                 entryRect,
-                gene.radiantOrderDef != null
+                gene.RadiantOrderDef != null
                     ? "CC_Codex_Surgebinding_SprenEntry_Tip".Translate(
                         sprenName.Named("SPREN"),
-                        gene.radiantOrderDef.LabelCap.Named("ORDER")
+                        gene.RadiantOrderDef.LabelCap.Named("ORDER")
                     )
                     : "CC_Codex_Surgebinding_SprenEntry_TipUnsworn".Translate(sprenName.Named("SPREN"))
             );

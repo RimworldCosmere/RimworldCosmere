@@ -141,7 +141,7 @@ public static class PawnExtension {
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         List<MetallicArtsMetalDef> result = [];
         for (int i = 0; i < genes.Count; i++) {
-            if (genes[i].Burning) result.Add(genes[i].metal);
+            if (genes[i].Burning) result.Add(genes[i].Metal);
         }
 
         return result;

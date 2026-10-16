@@ -26,60 +26,60 @@ public abstract class BaseSprenController {
     private int nextActiveInfoRefresh;
     private int nextValidInfoRefresh;
 
-    public virtual Texture2D sprenTexture => DefaultTexture;
+    public virtual Texture2D SprenTexture => DefaultTexture;
 
-    public virtual Material sprenMaterial => GetConfiguredMaterial();
+    public virtual Material SprenMaterial => GetConfiguredMaterial();
 
-    public abstract SprenType sprenType { get; }
+    public abstract SprenType SprenType { get; }
 
-    public abstract bool isEnabled { get; }
+    public abstract bool IsEnabled { get; }
 
-    public virtual IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
+    public virtual IReadOnlyCollection<SprenSpawnInformation> ValidSpawnInfo => validSpawnInfoInt;
 
-    public virtual IReadOnlyCollection<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
+    public virtual IReadOnlyCollection<SprenSpawnInformation> ActiveSpawnInfo => activeSpawnInfoInt;
 
-    public abstract IntRange validInfoRefreshInterval { get; }
+    public abstract IntRange ValidInfoRefreshInterval { get; }
 
-    public abstract IntRange activeInfoRefreshInterval { get; }
+    public abstract IntRange ActiveInfoRefreshInterval { get; }
 
-    public virtual int minParticlesPerCell => 1;
+    public virtual int MinParticlesPerCell => 1;
 
-    public virtual int maxParticlesPerCell => 2;
+    public virtual int MaxParticlesPerCell => 2;
 
-    public virtual FloatRange lifetime => new FloatRange(4f, 10f);
+    public virtual FloatRange Lifetime => new FloatRange(4f, 10f);
 
-    public virtual float cellSpawnChance => 0.05f; // 5% default chance per valid cell to spawn spren
+    public virtual float CellSpawnChance => 0.05f; // 5% default chance per valid cell to spawn spren
 
-    protected virtual float maxSpreadDistance => 0.5f;
+    protected virtual float MaxSpreadDistance => 0.5f;
 
-    protected virtual float movementSpeed => 5f;
+    protected virtual float MovementSpeed => 5f;
 
-    protected virtual float randomDirectionAmount => 0.3f;
+    protected virtual float RandomDirectionAmount => 0.3f;
 
-    protected internal SprenSpawnInformation defaultSpawnInformation => new SprenSpawnInformation(
+    protected internal SprenSpawnInformation DefaultSpawnInformation => new SprenSpawnInformation(
         null,
         null,
-        cellSpawnChance,
-        minParticlesPerCell,
-        maxParticlesPerCell,
-        maxSpreadDistance,
-        movementSpeed,
-        randomDirectionAmount
+        CellSpawnChance,
+        MinParticlesPerCell,
+        MaxParticlesPerCell,
+        MaxSpreadDistance,
+        MovementSpeed,
+        RandomDirectionAmount
     );
 
-    public virtual List<GemDef> compatibleGemTypes => [];
+    public virtual List<GemDef> CompatibleGemTypes => [];
 
-    public virtual float captureRarityMultiplier => 0.7f;
+    public virtual float CaptureRarityMultiplier => 0.7f;
 
-    public virtual bool canBeCaptured => compatibleGemTypes.Count > 0;
+    public virtual bool CanBeCaptured => CompatibleGemTypes.Count > 0;
 
-    public abstract Color sprenColor { get; }
+    public abstract Color SprenColor { get; }
 
-    public virtual float sprenSizeMultiplier => 1f;
+    public virtual float SprenSizeMultiplier => 1f;
 
-    public virtual float emissionRateMultiplier => 1f;
+    public virtual float EmissionRateMultiplier => 1f;
 
-    public virtual float sprenSpeedMultiplier => 1f;
+    public virtual float SprenSpeedMultiplier => 1f;
 
     private Material GetConfiguredMaterial() {
         if (configuredMaterial == null) {
@@ -103,8 +103,8 @@ public abstract class BaseSprenController {
         RefreshActiveInfo(map);
 
         int currentTick = Find.TickManager?.TicksGame ?? 0;
-        nextValidInfoRefresh = currentTick + validInfoRefreshInterval.RandomInRange;
-        nextActiveInfoRefresh = currentTick + activeInfoRefreshInterval.RandomInRange;
+        nextValidInfoRefresh = currentTick + ValidInfoRefreshInterval.RandomInRange;
+        nextActiveInfoRefresh = currentTick + ActiveInfoRefreshInterval.RandomInRange;
 
         infoInitialized = true;
     }
@@ -116,13 +116,13 @@ public abstract class BaseSprenController {
 
         if (currentTick >= nextValidInfoRefresh) {
             RefreshValidInfo(map);
-            nextValidInfoRefresh = currentTick + validInfoRefreshInterval.RandomInRange;
+            nextValidInfoRefresh = currentTick + ValidInfoRefreshInterval.RandomInRange;
         }
 
         if (currentTick < nextActiveInfoRefresh) return false;
 
         RefreshActiveInfo(map);
-        nextActiveInfoRefresh = currentTick + activeInfoRefreshInterval.RandomInRange;
+        nextActiveInfoRefresh = currentTick + ActiveInfoRefreshInterval.RandomInRange;
 
         return true;
     }
@@ -142,7 +142,7 @@ public abstract class BaseSprenController {
         activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);
 
         foreach (SprenSpawnInformation? info in validSpawnInfoInt) {
-            if (Rand.Chance(cellSpawnChance)) {
+            if (Rand.Chance(CellSpawnChance)) {
                 activeSpawnInfoInt.Add(info);
             }
         }
@@ -192,6 +192,6 @@ public abstract class BaseSprenController {
     }
 
     public string GetLocalizedName() {
-        return $"SprenName_{sprenType}".Translate();
+        return $"SprenName_{SprenType}".Translate();
     }
 }

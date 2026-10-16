@@ -454,7 +454,7 @@ public partial class KolossTests {
             "SpecialThingFilterWorker_UnchargedSpike.cs"
         ));
 
-        Assert.IsTrue(worker.Contains("spike is not { isCharged: true }", StringComparison.Ordinal));
+        Assert.IsTrue(worker.Contains("spike is not { IsCharged: true }", StringComparison.Ordinal));
         Assert.IsTrue(
             worker.Contains("if (!CanEverMatch(t.def)) return false;", StringComparison.Ordinal),
             "Matching anything but a spike would quietly drop the medicine out of the same bill."

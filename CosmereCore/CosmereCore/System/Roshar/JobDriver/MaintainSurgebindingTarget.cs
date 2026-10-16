@@ -6,7 +6,7 @@ using Verse.AI;
 namespace Cosmere.System.Roshar.JobDriver;
 
 public class MaintainSurgebindingTarget : Verse.AI.JobDriver {
-    private SurgebindingAbility ability => (SurgebindingAbility)job.source!;
+    private SurgebindingAbility Ability => (SurgebindingAbility)job.source!;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(
@@ -22,8 +22,8 @@ public class MaintainSurgebindingTarget : Verse.AI.JobDriver {
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         AddFinishAction(condition => {
             if (condition == JobCondition.Ongoing) return;
-            if (ability.status.IsActive) {
-                ability.UpdateStatus(Active.Off);
+            if (Ability.status.IsActive) {
+                Ability.UpdateStatus(Active.Off);
             }
         }
         );
@@ -33,14 +33,14 @@ public class MaintainSurgebindingTarget : Verse.AI.JobDriver {
         Verse.AI.Toil maintainToil = ToilMaker.MakeToil(nameof(MaintainSurgebindingTarget));
         maintainToil.defaultCompleteMode = ToilCompleteMode.Never;
         maintainToil.tickAction = () => {
-            if (pawn.Downed || pawn.Dead || !ability.status.IsActive) {
+            if (pawn.Downed || pawn.Dead || !Ability.status.IsActive) {
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }
 
             Verse.Thing? targetThing = TargetA.Thing;
             if (targetThing == null || targetThing.Destroyed) {
-                ability.UpdateStatus(Active.Off);
+                Ability.UpdateStatus(Active.Off);
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }

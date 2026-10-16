@@ -19,7 +19,7 @@ public class RosharSavantCandidateProvider : ISavantCandidateProvider {
     }
 
     private static void ApplySurgebindingSavant(Pawn pawn, Surgebinder surgebinder) {
-        List<SurgeDef> surges = surgebinder.radiantOrderDef.surges;
+        List<SurgeDef> surges = surgebinder.RadiantOrderDef.surges;
         if (surges.Count == 0) return;
         SurgeDef chosenSurge = surges[Rand.Range(0, surges.Count)];
         SavantUtility.ApplySavantHediffs(

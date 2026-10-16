@@ -21,14 +21,14 @@ public class DisappearsScaled : HediffComp {
 
     private static int CurrentTick => Find.TickManager.TicksGame;
 
-    private new DisappearsScaledProperties props => (DisappearsScaledProperties)base.props;
+    private DisappearsScaledProperties Props => (DisappearsScaledProperties)props;
 
     public override string CompLabelInBracketsExtra => $"{ticksLeft.ToStringTicksToPeriod()} left";
 
     public override void CompPostMake() {
         base.CompPostMake();
         initialSeverity = parent.Severity;
-        totalTicks = ticksLeft = (int)(props.baseTicks * initialSeverity);
+        totalTicks = ticksLeft = (int)(Props.baseTicks * initialSeverity);
         startTick = CurrentTick;
     }
 
@@ -44,9 +44,9 @@ public class DisappearsScaled : HediffComp {
             return;
         }
 
-        if (!props.scaleSeverity) return;
+        if (!Props.scaleSeverity) return;
 
-        float targetSeverity = props.minSeverity;
+        float targetSeverity = Props.minSeverity;
         float decayAmount = (initialSeverity - targetSeverity) / totalTicks;
         severityAdjustment -= decayAmount;
     }

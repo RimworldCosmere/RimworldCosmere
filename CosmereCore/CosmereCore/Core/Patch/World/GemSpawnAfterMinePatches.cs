@@ -10,7 +10,7 @@ namespace Cosmere.Core.Patch;
 public abstract class GemSpawnAfterMinePatch : Mineable {
     private const float PlainRockGemChance = 0.01f;
 
-    private static ThingDef randomGemDef =>
+    private static ThingDef RandomGemDef =>
         DefDatabase<GemDef>.AllDefsListForReading
             .RandomElementByWeight(x => x.MineableItem.building.mineableScatterCommonality)
             .Item;
@@ -21,6 +21,6 @@ public abstract class GemSpawnAfterMinePatch : Mineable {
         if (def.HasModExtension<GemsLinked>()) return;
         if (!Rand.Chance(PlainRockGemChance)) return;
 
-        GenPlace.TryPlaceThing(ThingMaker.MakeThing(randomGemDef), Position, map, ThingPlaceMode.Direct);
+        GenPlace.TryPlaceThing(ThingMaker.MakeThing(RandomGemDef), Position, map, ThingPlaceMode.Direct);
     }
 }

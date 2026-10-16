@@ -369,9 +369,9 @@ public class FeruchemySteps {
 
         CosmereLookup.AssertThat(
             ctx,
-            comp.owner == owner,
+            comp.Owner == owner,
             $"the {metal} metalmind carried by '{nickname}' should be owned by '{ownerNickname}'",
-            () => $"it is owned by {comp.owner?.Name?.ToStringShort ?? "nobody"}");
+            () => $"it is owned by {comp.Owner?.Name?.ToStringShort ?? "nobody"}");
     }
 
     /// <summary>Asserts a pawn carries no metalmind of a metal, which is what a burn-out sweep

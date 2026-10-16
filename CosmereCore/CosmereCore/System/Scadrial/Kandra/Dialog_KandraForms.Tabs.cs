@@ -43,7 +43,7 @@ public partial class Dialog_KandraForms {
             Widgets.DrawHighlightIfMouseover(rect);
         }
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, live ? BorderColor : bodyTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, live ? BorderColor : BodyTextColor)) {
             Widgets.Label(rect, labelKey.Translate());
         }
 

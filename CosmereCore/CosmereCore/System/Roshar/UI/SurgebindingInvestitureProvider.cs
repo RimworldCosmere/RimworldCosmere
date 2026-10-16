@@ -45,7 +45,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
 
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Surgebinder s || s.Overridden) continue;
-            RadiantOrderDef order = s.radiantOrderDef;
+            RadiantOrderDef order = s.RadiantOrderDef;
 
             List<RadialLeaf> leaves = BuildOrderLeaves(s, abilities);
             if (leaves.Count == 0) continue;
@@ -67,7 +67,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
     }
 
     private static List<RadialLeaf> BuildOrderLeaves(Surgebinder s, List<Ability> abilities) {
-        RadiantOrderDef order = s.radiantOrderDef;
+        RadiantOrderDef order = s.RadiantOrderDef;
         List<RadialLeaf> leaves = [];
         HashSet<AbilityDef> seen = [];
 
@@ -83,7 +83,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
 
         for (int j = 0; j < abilities.Count; j++) {
             if (abilities[j] is not SurgebindingAbility sa) continue;
-            AbilityDef def = sa.def;
+            AbilityDef def = sa.Def;
             if (IsExcludedFromRadial(def)) continue;
             if (!seen.Add(def)) continue;
 

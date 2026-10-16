@@ -36,7 +36,7 @@ public partial class KandraDesignerPanesTests {
         )
     );
 
-    [GeneratedRegex(@"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(65\)\s*,\s*Spacing\.Get\(39\)\s*\)")]
+    [GeneratedRegex(@"InitialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(65\)\s*,\s*Spacing\.Get\(39\)\s*\)")]
     private static partial Regex DesignerWindowSize { get; }
 
     [GeneratedRegex(@"DrawColumnPlates\(")]

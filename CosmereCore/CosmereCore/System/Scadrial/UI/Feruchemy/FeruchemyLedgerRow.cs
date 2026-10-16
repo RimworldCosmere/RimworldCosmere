@@ -104,7 +104,7 @@ public static class FeruchemyLedgerRow {
     /// </summary>
     private static float StoredFor(Feruchemist gene, ConnectionKey key) {
         float total = 0f;
-        List<IMetalmindSource> sources = gene.metalminds;
+        List<IMetalmindSource> sources = gene.Metalminds;
         string target = gene.targetMetalmindId;
         for (int i = 0; i < sources.Count; i++) {
             if (!MetalmindDistribution.MatchesTarget(sources[i], target)) continue;

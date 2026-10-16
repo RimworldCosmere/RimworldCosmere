@@ -11,7 +11,7 @@ public class HemalurgicChargeData : IExposable {
     public float storedInvestiture;
     public float strength = 1f;
 
-    public bool isValid => strength > HemalurgicConstants.MinChargeStrength &&
+    public bool IsValid => strength > HemalurgicConstants.MinChargeStrength &&
                            (stealType == HemalurgicStealType.RemoveAllPowers ||
                             !stolenDefName.NullOrEmpty() ||
                             stolenDefNames.Count > 0 ||

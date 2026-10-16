@@ -23,17 +23,17 @@ public class StormlightBuildingGlowerProperties : CompProperties_Glower {
 }
 
 public class StormlightBuildingGlower : CompGlower {
-    private new StormlightBuildingGlowerProperties props => (StormlightBuildingGlowerProperties)base.props;
+    private new StormlightBuildingGlowerProperties Props => (StormlightBuildingGlowerProperties)props;
 
     public override float GlowRadius {
         get {
             InvestitureHolder? holder = parent.GetComp<InvestitureHolder>();
             if (holder == null) return 0f;
-            float current = holder.currentInvestitureSelf;
+            float current = holder.CurrentInvestitureSelf;
             float max = holder.maxInvestitureSelf;
             if (max <= 0f || current <= 0f) return 0f;
             float percent = Mathf.Clamp01(current / max);
-            return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
+            return Mathf.Lerp(Props.minRadius, Props.maxRadius, percent);
         }
     }
 
@@ -41,7 +41,7 @@ public class StormlightBuildingGlower : CompGlower {
         get {
             if (!parent.Spawned) return false;
             InvestitureHolder? holder = parent.GetComp<InvestitureHolder>();
-            return holder != null && holder.currentInvestitureSelf > 0f;
+            return holder != null && holder.CurrentInvestitureSelf > 0f;
         }
     }
 

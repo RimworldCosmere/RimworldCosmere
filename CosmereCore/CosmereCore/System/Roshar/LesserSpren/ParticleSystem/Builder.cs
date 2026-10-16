@@ -76,9 +76,9 @@ public static class Builder {
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         mainModule.startSize = 1f;
         mainModule.startLifetime =
-            new UnityEngine.ParticleSystem.MinMaxCurve(controller.lifetime.min, controller.lifetime.max);
+            new UnityEngine.ParticleSystem.MinMaxCurve(controller.Lifetime.min, controller.Lifetime.max);
 
-        mainModule.duration = controller.lifetime.RandomInRange;
+        mainModule.duration = controller.Lifetime.RandomInRange;
         mainModule.loop = true;
 
         // Use spawn info movement speed if available, otherwise use default range
@@ -168,8 +168,8 @@ public static class Builder {
 
     private static void ConfigureRenderer(UnityEngine.ParticleSystem particleSys, BaseSprenController controller) {
         ParticleSystemRenderer renderer = particleSys.GetComponent<ParticleSystemRenderer>();
-        renderer.material = controller.sprenMaterial;
-        renderer.material.SetColor(UnityEngine.Shader.PropertyToID("_MainTex"), controller.sprenColor);
-        renderer.material.SetTexture(UnityEngine.Shader.PropertyToID("_MainTex"), controller.sprenTexture);
+        renderer.material = controller.SprenMaterial;
+        renderer.material.SetColor(UnityEngine.Shader.PropertyToID("_MainTex"), controller.SprenColor);
+        renderer.material.SetTexture(UnityEngine.Shader.PropertyToID("_MainTex"), controller.SprenTexture);
     }
 }

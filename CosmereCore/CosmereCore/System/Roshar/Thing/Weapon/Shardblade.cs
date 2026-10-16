@@ -5,17 +5,17 @@ using Verse;
 namespace Cosmere.System.Roshar.Thing.Weapon;
 
 public abstract class Shardblade : ThingWithComps, IDynamicPalette {
-    private CutoutAdvanced cutoutLUT => GetComp<CutoutAdvanced>();
+    private CutoutAdvanced CutoutLUT => GetComp<CutoutAdvanced>();
 
     public abstract List<LUTPaletteMaterial> GetMaterials();
 
     public override void PostMake() {
         base.PostMake();
-        cutoutLUT.palettes = GetMaterials();
+        CutoutLUT.palettes = GetMaterials();
     }
 
     public override void Notify_Equipped(Verse.Pawn pawn) {
-        cutoutLUT.palettes = GetMaterials();
+        CutoutLUT.palettes = GetMaterials();
         base.Notify_Equipped(pawn);
     }
 }

@@ -67,7 +67,7 @@ public static class Coppercloud {
         List<RimWorld.Ability> abilities = pawn.abilities.abilities;
         for (int i = 0; i < abilities.Count; i++) {
             if (abilities[i] is not AllomancyAbility burn) continue;
-            if (burn.def.metal != metal || !burn.atLeastBurning) continue;
+            if (burn.Def.metal != metal || !burn.AtLeastBurning) continue;
 
             float strength = burn.GetStrength();
             if (strength > strongest) strongest = strength;

@@ -12,7 +12,7 @@ public struct LUTPaletteMaterial : IExposable {
 
     private float metallicInt = 0;
 
-    public float metallic {
+    public float Metallic {
         get => metallicInt;
         set => metallicInt = Mathf.Clamp01(value);
     }
@@ -21,7 +21,7 @@ public struct LUTPaletteMaterial : IExposable {
 
     public LUTPaletteMaterial() { }
 
-    public float smoothness {
+    public float Smoothness {
         get => smoothnessInt;
         set => smoothnessInt = Mathf.Clamp01(value);
     }

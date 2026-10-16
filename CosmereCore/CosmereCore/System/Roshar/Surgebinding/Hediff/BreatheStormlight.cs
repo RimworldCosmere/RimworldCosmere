@@ -19,7 +19,7 @@ public class BreatheStormlight : SurgebindingHediff {
         base.PostTickInterval(delta);
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
-        if (investiture == null || investiture.isFull) return;
+        if (Investiture == null || Investiture.IsFull) return;
 
         if (pawn.apparel?.WornApparel != null) {
             AbsorbFromAll(pawn.apparel.WornApparel);
@@ -45,11 +45,11 @@ public class BreatheStormlight : SurgebindingHediff {
     }
 
     private void TryAbsorbFromThing(Verse.Thing thing) {
-        if (investiture == null) return;
+        if (Investiture == null) return;
         if (!thing.TryGetComp(out InvestitureHolder investitureHolder)) return;
         if (!investitureHolder.sharingInvestiture) return;
-        if (Mathf.Approximately(investitureHolder.currentInvestiture, 0f)) return;
-        if (investiture.AbsorbInvestitureFrom(
+        if (Mathf.Approximately(investitureHolder.CurrentInvestiture, 0f)) return;
+        if (Investiture.AbsorbInvestitureFrom(
                 thing,
                 BaseAbsorbAmount * (Gene.CurrentIdeal + 1),
                 out float _

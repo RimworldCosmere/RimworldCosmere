@@ -78,7 +78,7 @@ public class KolossRoster : GameComponent {
     ///     Allomancer can carry any more - the metal running out is the only limit there is, so
     ///     this number is the whole balance of the mechanic.
     /// </remarks>
-    public static float HoldFraction => Mod.kolossHoldFraction;
+    public static float HoldFraction => Mod.KolossHoldFraction;
 
     /// <summary>How often the roster re-reads itself. The metal is charged by the gene.</summary>
     public const int BillingInterval = 250;

@@ -60,9 +60,9 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
     public override string LabelBase =>
         base.LabelBase + (SourceAbilities.Count > 1 ? $" ({SourceAbilities.Count} sources)" : string.Empty);
 
-    public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
+    public SeverityCalculator<TGene>? SeverityCalculator => GetComp<SeverityCalculator<TGene>>();
 
-    protected InvestitureHolder? investiture => pawn.GetInvestiture();
+    protected InvestitureHolder? Investiture => pawn.GetInvestiture();
 
     public TGene Gene {
         get => geneInt;
@@ -98,7 +98,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
         }
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) {
-            severityCalculator?.RecalculateSeverity();
+            SeverityCalculator?.RecalculateSeverity();
         }
 
         base.TickInterval(delta);
@@ -182,7 +182,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene>
         foreach (IAbility<TGene, IHediff<TGene>> source in SourceAbilities) {
             if (source is not AbstractAbility sourceAbility) continue;
             stringBuilder.AppendLine(
-                $"  {sourceAbility.pawn.NameShortColored} -> {sourceAbility.def.LabelCap}: {sourceAbility.GetStrength():0.0000}"
+                $"  {sourceAbility.pawn.NameShortColored} -> {sourceAbility.Def.LabelCap}: {sourceAbility.GetStrength():0.0000}"
             );
         }
 

@@ -37,7 +37,7 @@ public partial class KandraHairDesignerTests {
     [GeneratedRegex(@"""(CS_Kandra_HairColour_\w+)""")]
     private static partial Regex HairColourLabelKey { get; }
 
-    [GeneratedRegex(@"initialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(([0-9.]+)\)")]
+    [GeneratedRegex(@"InitialWindowSize\s*=>\s*new Vector2\(\s*Spacing\.Get\(([0-9.]+)\)")]
     private static partial Regex InitialWindowWidth { get; }
 
     [GeneratedRegex(@"Mathf\.Abs\([^)]*\.[rgba]\b")]

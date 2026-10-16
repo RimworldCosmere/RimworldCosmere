@@ -41,10 +41,10 @@ public class StormlightReceiver : StormlightNode {
         if (exposure <= 0f) return;
 
         InvestitureHolder? holder = Investiture;
-        if (holder == null || holder.isFull) return;
+        if (holder == null || holder.IsFull) return;
 
         float amount = Props.baseAbsorptionRate * intensity * exposure * TickInterval;
-        holder.currentInvestitureSelf += amount;
+        holder.CurrentInvestitureSelf += amount;
 
         if (exposure >= 1.0f && intensity > 0.4f) {
             ApplyStormDamage(intensity);
@@ -53,15 +53,15 @@ public class StormlightReceiver : StormlightNode {
 
     private void AbsorbFromGameConditions(Verse.Map map) {
         InvestitureHolder? holder = Investiture;
-        if (holder == null || holder.isFull) return;
+        if (holder == null || holder.IsFull) return;
 
         List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
         for (int i = 0; i < conditions.Count; i++) {
             string defName = conditions[i].def.defName;
             if (defName == "Cosmere_Roshar_GameCondition_SiblingBlessing") {
-                holder.currentInvestitureSelf += 0.5f;
+                holder.CurrentInvestitureSelf += 0.5f;
             } else if (defName == "Cosmere_Roshar_GameCondition_HonorPerpendicularity") {
-                holder.currentInvestitureSelf += 2.0f;
+                holder.CurrentInvestitureSelf += 2.0f;
             }
         }
     }

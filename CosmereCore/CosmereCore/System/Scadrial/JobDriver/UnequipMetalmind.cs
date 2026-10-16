@@ -5,20 +5,20 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.JobDriver;
 
 public class UnequipMetalmind : Verse.AI.JobDriver {
-    private Verse.Thing metalmind => job.targetA.Thing;
+    private Verse.Thing Metalmind => job.targetA.Thing;
 
-    private Metalmind? metalmindComp => metalmind.TryGetComp<Metalmind>();
+    private Metalmind? MetalmindComp => Metalmind.TryGetComp<Metalmind>();
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        if (!pawn.Reserve(metalmind, job, 1, 1, errorOnFailed: errorOnFailed)) {
+        if (!pawn.Reserve(Metalmind, job, 1, 1, errorOnFailed: errorOnFailed)) {
             return false;
         }
 
-        if (metalmind?.holdingOwner?.Owner != pawn) {
+        if (Metalmind?.holdingOwner?.Owner != pawn) {
             return false;
         }
 
-        if (metalmindComp == null || !metalmindComp.Equipped) {
+        if (MetalmindComp == null || !MetalmindComp.Equipped) {
             return false;
         }
 
@@ -31,6 +31,6 @@ public class UnequipMetalmind : Verse.AI.JobDriver {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
 
         yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.A);
-        yield return Toils_General.Do(() => { metalmindComp!.Equipped = false; });
+        yield return Toils_General.Do(() => { MetalmindComp!.Equipped = false; });
     }
 }

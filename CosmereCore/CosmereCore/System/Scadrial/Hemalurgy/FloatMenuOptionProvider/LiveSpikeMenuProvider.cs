@@ -47,7 +47,7 @@ public class LiveSpikeMenuProvider : HemalurgySpikeMenuProviderBase {
             HemalurgicSpike? comp = spike.TryGetComp<HemalurgicSpike>();
             if (comp == null) continue;
 
-            HemalurgicStealType stealType = comp.stealType;
+            HemalurgicStealType stealType = comp.StealType;
             string spikeLabel = HemalurgicSpikeLabels.GetSpikeLabel(spike, comp, stealType);
 
             if (HemalurgicConstants.RequiresSelection(stealType)) {

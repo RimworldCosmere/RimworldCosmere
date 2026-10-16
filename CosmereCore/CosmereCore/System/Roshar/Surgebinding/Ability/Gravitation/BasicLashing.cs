@@ -24,7 +24,7 @@ public class BasicLashing : SurgebindingAbility {
     protected override void OnEnable() {
         base.OnEnable();
         FlyingPawns.Add(pawn);
-        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, Def.hediff);
     }
 
     protected override void OnDisable() {
@@ -35,7 +35,7 @@ public class BasicLashing : SurgebindingAbility {
             Pawn ally = lashedAllies[i];
             if (ally != null && !ally.Dead) {
                 FlyingPawns.Remove(ally);
-                SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
+                SurgebindingHediffUtility.RemoveHediff(ally, this, Def.hediff);
             }
         }
 
@@ -69,7 +69,7 @@ public class BasicLashing : SurgebindingAbility {
             if (lashedAllies.Contains(ally)) continue;
 
             FlyingPawns.Add(ally);
-            SurgebindingHediffUtility.GetOrAddHediff(ally, this, def.hediff);
+            SurgebindingHediffUtility.GetOrAddHediff(ally, this, Def.hediff);
             lashedAllies.Add(ally);
         }
     }
@@ -80,7 +80,7 @@ public class BasicLashing : SurgebindingAbility {
             if (ally == null || ally.Dead || !ally.Position.InHorDistOf(pawn.Position, GroupRadius)) {
                 if (ally != null && !ally.Dead) {
                     FlyingPawns.Remove(ally);
-                    SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
+                    SurgebindingHediffUtility.RemoveHediff(ally, this, Def.hediff);
                 }
 
                 lashedAllies.RemoveAt(i);
@@ -99,7 +99,7 @@ public class BasicLashing : SurgebindingAbility {
         Command_Action flyToCommand = new Command_Action {
             defaultLabel = "CRO_Lashing_FlyTo_Label".Translate(),
             defaultDesc = "CRO_Lashing_FlyTo_Desc".Translate(),
-            icon = def.uiIcon,
+            icon = Def.uiIcon,
             action = BeginWorldFlight,
         };
         yield return flyToCommand;

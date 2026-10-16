@@ -43,7 +43,7 @@ public class ChargeSpike : Recipe_Surgery {
             return;
         }
 
-        MetallicArtsMetalDef? metal = spikeComp.metal;
+        MetallicArtsMetalDef? metal = spikeComp.Metal;
         if (metal == null) return;
         HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
@@ -140,7 +140,7 @@ public class ChargeSpike : Recipe_Surgery {
     private static HemalurgicSpike? FindUnchargedSpike(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {
             HemalurgicSpike? comp = ingredients[i].TryGetComp<HemalurgicSpike>();
-            if (comp != null && !comp.isCharged) return comp;
+            if (comp != null && !comp.IsCharged) return comp;
         }
 
         return null;

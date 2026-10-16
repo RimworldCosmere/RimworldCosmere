@@ -73,7 +73,7 @@ public class StrainedBond : HediffWithComps {
     }
 
     private void UpdateBondWarnings(Surgebinder surgebinder, float connection) {
-        string orderLabel = surgebinder.radiantOrderDef.LabelCap;
+        string orderLabel = surgebinder.RadiantOrderDef.LabelCap;
 
         if (connection < 0.15f && !sentBreakingWarning) {
             sentBreakingWarning = true;

@@ -12,10 +12,10 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
         List<Verse.Gene> allGenes = pawn.genes.GenesListForReading;
         for (int i = 0; i < allGenes.Count; i++) {
             Verse.Gene gene = allGenes[i];
-            if (gene is Allomancer allomancer && SavantUtility.CanBeSavant(allomancer.metal)) {
+            if (gene is Allomancer allomancer && SavantUtility.CanBeSavant(allomancer.Metal)) {
                 Allomancer chosen = allomancer;
                 candidates.Add(() => ApplyAllomanticSavant(pawn, chosen));
-            } else if (gene is Feruchemist feruchemist && SavantUtility.CanBeSavant(feruchemist.metal)) {
+            } else if (gene is Feruchemist feruchemist && SavantUtility.CanBeSavant(feruchemist.Metal)) {
                 Feruchemist chosen = feruchemist;
                 candidates.Add(() => ApplyFeruchemicalSavant(pawn, chosen));
             }
@@ -25,22 +25,22 @@ public class ScadrialSavantCandidateProvider : ISavantCandidateProvider {
     private static void ApplyAllomanticSavant(Pawn pawn, Allomancer chosen) {
         SavantUtility.ApplySavantHediffs(
             pawn,
-            ScadrialSavantUtility.GetAllomanticSavantHediffDef(chosen.metal),
-            ScadrialSavantUtility.GetAllomanticPermanentHediffDef(chosen.metal)
+            ScadrialSavantUtility.GetAllomanticSavantHediffDef(chosen.Metal),
+            ScadrialSavantUtility.GetAllomanticPermanentHediffDef(chosen.Metal)
         );
         Log.Info(
-            $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to allomantic savant for {chosen.metal.defName}"
+            $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to allomantic savant for {chosen.Metal.defName}"
         );
     }
 
     private static void ApplyFeruchemicalSavant(Pawn pawn, Feruchemist chosen) {
         SavantUtility.ApplySavantHediffs(
             pawn,
-            ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(chosen.metal),
-            ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(chosen.metal)
+            ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(chosen.Metal),
+            ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(chosen.Metal)
         );
         Log.Info(
-            $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to feruchemical savant for {chosen.metal.defName}"
+            $"ScadrialSavantCandidateProvider: forced {pawn.NameShortColored} to feruchemical savant for {chosen.Metal.defName}"
         );
     }
 }

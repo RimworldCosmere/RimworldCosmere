@@ -27,7 +27,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
     private ThingDef? AuraMoteDef => auraMoteDef ??= DefDatabase<ThingDef>.GetNamedSilentFail(AuraMoteDefName);
 
-    private float radius => BaseRadius + Gene.CurrentIdeal * 2;
+    private float Radius => BaseRadius + Gene.CurrentIdeal * 2;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -35,8 +35,8 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
     protected override void OnEnable() {
         base.OnEnable();
-        if (def.hediff != null) {
-            SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+        if (Def.hediff != null) {
+            SurgebindingHediffUtility.GetOrAddHediff(pawn, this, Def.hediff);
         }
 
         if (AuraMoteDef != null) {
@@ -60,8 +60,8 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
         for (int i = alliesInArea.Count - 1; i >= 0; i--) {
             Pawn ally = alliesInArea[i];
-            if (ally != null && !ally.Dead && def.hediff != null) {
-                SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
+            if (ally != null && !ally.Dead && Def.hediff != null) {
+                SurgebindingHediffUtility.RemoveHediff(ally, this, Def.hediff);
             }
         }
 
@@ -84,7 +84,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
         if (!pawn.IsHashIntervalTick(RefillIntervalTicks)) return;
 
-        float currentRadius = radius;
+        float currentRadius = Radius;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
                      pawn.Position,
@@ -111,8 +111,8 @@ public class OpenPerpendicularity : SurgebindingAbility {
         RefillRadiantStormlight(ally);
         HealAlly(ally);
 
-        if (def.hediff != null && ally != pawn) {
-            SurgebindingHediffUtility.GetOrAddHediff(ally, this, def.hediff);
+        if (Def.hediff != null && ally != pawn) {
+            SurgebindingHediffUtility.GetOrAddHediff(ally, this, Def.hediff);
             alliesInArea.AddDistinct(ally);
         }
     }
@@ -140,8 +140,8 @@ public class OpenPerpendicularity : SurgebindingAbility {
         for (int i = alliesInArea.Count - 1; i >= 0; i--) {
             Pawn ally = alliesInArea[i];
             if (ally == null || ally.Dead || !ally.Position.InHorDistOf(pawn.Position, currentRadius)) {
-                if (ally != null && !ally.Dead && def.hediff != null) {
-                    SurgebindingHediffUtility.RemoveHediff(ally, this, def.hediff);
+                if (ally != null && !ally.Dead && Def.hediff != null) {
+                    SurgebindingHediffUtility.RemoveHediff(ally, this, Def.hediff);
                 }
 
                 alliesInArea.RemoveAt(i);

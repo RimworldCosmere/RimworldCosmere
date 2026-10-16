@@ -35,8 +35,8 @@ public class ApparelFabrialDiminisher : ThingComp {
     public void InfuseStormlight(float amount) {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
-            investiture.currentInvestitureSelf = Math.Min(
-                investiture.currentInvestitureSelf + amount,
+            investiture.CurrentInvestitureSelf = Math.Min(
+                investiture.CurrentInvestitureSelf + amount,
                 investiture.maxInvestitureSelf
             );
         }
@@ -49,7 +49,7 @@ public class ApparelFabrialDiminisher : ThingComp {
             return;
         }
 
-        powerOn = investiture.currentInvestiture > 0;
+        powerOn = investiture.CurrentInvestiture > 0;
         if (powerOn) investiture.drainRate = 0.25f;
     }
 
@@ -57,6 +57,6 @@ public class ApparelFabrialDiminisher : ThingComp {
         if (insertedGemstone == null) return "No gem in fabrial.";
 
         InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
-        return "Stormlight: " + (investiture?.currentInvestiture.ToString("F0") ?? "0");
+        return "Stormlight: " + (investiture?.CurrentInvestiture.ToString("F0") ?? "0");
     }
 }

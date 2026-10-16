@@ -61,7 +61,7 @@ public static class KolossGrowthTuning {
         HediffDef? growth = HediffDefOf.Cosmere_Scadrial_Hediff_KolossGrowth;
         if (growth?.comps == null) return;
 
-        float years = Mod.kolossGrowthYears;
+        float years = Mod.KolossGrowthYears;
         if (years < MinYears) years = MinYears;
 
         for (int i = 0; i < growth.comps.Count; i++) {

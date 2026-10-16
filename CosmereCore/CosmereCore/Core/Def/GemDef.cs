@@ -10,7 +10,7 @@ public class GemDef : Verse.Def {
     public Color? colorTwo;
     public Color? glowColor;
 
-    public string coloredLabel => label.Colorize(ColoredText.DateTimeColor);
+    public string ColoredLabel => label.Colorize(ColoredText.DateTimeColor);
 
     public ThingDef Item => cachedItem ??= DefDatabase<ThingDef>.GetNamed("Raw" + defName);
 

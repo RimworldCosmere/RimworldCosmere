@@ -55,11 +55,11 @@ public class ImplantSpike : Recipe_Surgery {
         }
 
         HemalurgicChargeData charge = spikeComp.chargeData;
-        float strength = spikeComp.currentStrength;
+        float strength = spikeComp.CurrentStrength;
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 
         ImplantedSpikeData spikeData = new ImplantedSpikeData {
-            metalDefName = spikeComp.metal?.defName ?? "Unknown",
+            metalDefName = spikeComp.Metal?.defName ?? "Unknown",
             stealType = charge.stealType,
             stolenDefName = charge.stolenDefName,
             stolenDefNames = [.. charge.stolenDefNames],
@@ -77,7 +77,7 @@ public class ImplantSpike : Recipe_Surgery {
         Messages.Message(
             "CS_Hemalurgy_ImplantSuccess".Translate(
                 billDoer.Named("SURGEON"),
-                spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
+                spikeComp.Metal?.Named("METAL") ?? "unknown".Named("METAL"),
                 pawn.Named("RECIPIENT")
             ),
             pawn,
@@ -88,7 +88,7 @@ public class ImplantSpike : Recipe_Surgery {
     private static HemalurgicSpike? FindChargedSpike(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {
             HemalurgicSpike? comp = ingredients[i].TryGetComp<HemalurgicSpike>();
-            if (comp is { isCharged: true }) return comp;
+            if (comp is { IsCharged: true }) return comp;
         }
 
         return null;

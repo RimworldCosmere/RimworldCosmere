@@ -22,9 +22,9 @@ public class Bloom : SurgebindingAbility {
 
     public Bloom(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private HediffDef? hediffToApply => def.hediff;
+    private HediffDef? HediffToApply => Def.hediff;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -32,8 +32,8 @@ public class Bloom : SurgebindingAbility {
 
     protected override void OnEnable() {
         base.OnEnable();
-        if (hediffToApply != null) {
-            SurgebindingHediffUtility.GetOrAddHediff(pawn, this, hediffToApply);
+        if (HediffToApply != null) {
+            SurgebindingHediffUtility.GetOrAddHediff(pawn, this, HediffToApply);
         }
 
         if (AuraMoteDef != null) {
@@ -53,8 +53,8 @@ public class Bloom : SurgebindingAbility {
 
         for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
             Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn != null && !targetPawn.Dead && hediffToApply != null) {
-                SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+            if (targetPawn != null && !targetPawn.Dead && HediffToApply != null) {
+                SurgebindingHediffUtility.RemoveHediff(targetPawn, this, HediffToApply);
             }
         }
 
@@ -71,7 +71,7 @@ public class Bloom : SurgebindingAbility {
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
 
-        float currentRadius = radius;
+        float currentRadius = Radius;
 
         if (Gene.CurrentIdeal >= 1) {
             UpdateAllyHediffs(currentRadius);
@@ -96,9 +96,9 @@ public class Bloom : SurgebindingAbility {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;
             if (targetPawn.Faction != pawn.Faction) continue;
-            if (hediffToApply == null) continue;
+            if (HediffToApply == null) continue;
 
-            SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
+            SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, HediffToApply);
             pawnsInArea.AddDistinct(targetPawn);
         }
     }
@@ -109,8 +109,8 @@ public class Bloom : SurgebindingAbility {
             if (targetPawn == null ||
                 targetPawn.Dead ||
                 !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
-                if (targetPawn != null && !targetPawn.Dead && hediffToApply != null) {
-                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+                if (targetPawn != null && !targetPawn.Dead && HediffToApply != null) {
+                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, HediffToApply);
                 }
 
                 pawnsInArea.RemoveAt(i);

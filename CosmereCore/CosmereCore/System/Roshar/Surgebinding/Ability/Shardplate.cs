@@ -19,8 +19,8 @@ public class Shardplate : SurgebindingAbility {
     public Shardplate(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     protected override void OnEnable() {
-        Apparel shardplate = (Apparel)ThingMaker.MakeThing(ShardplateDef, radiantOrder.gemstone.Item);
-        Apparel shardhelm = (Apparel)ThingMaker.MakeThing(ShardhelmDef, radiantOrder.gemstone.Item);
+        Apparel shardplate = (Apparel)ThingMaker.MakeThing(ShardplateDef, RadiantOrder.gemstone.Item);
+        Apparel shardhelm = (Apparel)ThingMaker.MakeThing(ShardhelmDef, RadiantOrder.gemstone.Item);
 
         pawn.apparel?.Wear(shardplate, false, true);
         pawn.apparel?.Wear(shardhelm, false, true);

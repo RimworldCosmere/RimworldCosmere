@@ -165,7 +165,7 @@ public partial class Dialog_KandraForms {
         DrawIris(socket, IrisLeft(designGender == Gender.Female, irisSize), designEyeColour, light, IrisChipCoords);
         GUI.color = previous;
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : DefaultBodyTextColor)) {
             Rect text = new Rect(socket.xMax + 6f, row.y, row.width - IrisChipSize - 14f, row.height);
             Widgets.Label(text, label);
         }
@@ -211,7 +211,7 @@ public partial class Dialog_KandraForms {
 
     /// <summary>The line under a checkbox saying what ticking it actually does.</summary>
     private static float DrawNote(float y, float width, TaggedString text, float height) {
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, DefaultBodyTextColor)) {
             Widgets.Label(new Rect(0f, y, width, height), text);
         }
 
@@ -225,7 +225,7 @@ public partial class Dialog_KandraForms {
 
         if (!enabled) TooltipHandler.TipRegion(row, "CS_Kandra_EyeOptionNeedsStone".Translate());
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, enabled ? BodyTextColor : BorderColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, enabled ? DefaultBodyTextColor : BorderColor)) {
             Widgets.CheckboxLabeled(row, labelKey.Translate(), ref on, !enabled);
         }
     }

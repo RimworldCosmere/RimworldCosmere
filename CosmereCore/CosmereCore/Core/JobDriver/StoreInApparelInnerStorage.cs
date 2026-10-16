@@ -5,10 +5,10 @@ using Verse.AI;
 namespace Cosmere.Core.JobDriver;
 
 public class StoreInApparelInnerStorage : InnerStorageJobDriver {
-    private Pawn? apparelWearer => storage?.ParentPawn;
+    private Pawn? ApparelWearer => Storage?.ParentPawn;
 
     protected override IEnumerable<Toil> GetToils() {
-        this.FailOn(() => apparelWearer != GetActor());
+        this.FailOn(() => ApparelWearer != GetActor());
 
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch, true)
             .FailOn(() => ThingToCarry.ParentHolder is MinifiedThing)

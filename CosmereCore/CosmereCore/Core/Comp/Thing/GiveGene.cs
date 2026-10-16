@@ -12,17 +12,17 @@ public class GiveGeneProperties : CompProperties {
 }
 
 public class GiveGene : ThingComp {
-    public new GiveGeneProperties props => (GiveGeneProperties)base.props;
+    public GiveGeneProperties Props => (GiveGeneProperties)props;
 
     public override void PrePostIngested(Pawn ingester) {
         base.PrePostIngested(ingester);
-        if (ingester?.genes == null || props.geneDef == null) return;
+        if (ingester?.genes == null || Props.geneDef == null) return;
 
-        ingester.genes.EnsureGene(props.geneDef);
+        ingester.genes.EnsureGene(Props.geneDef);
         Messages.Message(
             "CC_GiveGene".Translate(
                     ingester.NameFullColored.Named("PAWN"),
-                    props.geneDef.LabelCap.Colorize(ColoredText.GeneColor)
+                    Props.geneDef.LabelCap.Colorize(ColoredText.GeneColor)
                 )
                 .Resolve(),
             ingester,

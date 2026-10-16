@@ -28,13 +28,13 @@ public class ITab_StorageWithInventory : ITab_Storage {
 
     protected override bool StillValid => true;
 
-    private InnerStorage selStorage => storage ?? SelThing.TryGetComp<InnerStorage>();
+    private InnerStorage SelStorage => storage ?? SelThing.TryGetComp<InnerStorage>();
 
-    private IEnumerable<Verse.Thing> heldThings => selStorage.innerContainer ?? [];
+    private IEnumerable<Verse.Thing> HeldThings => SelStorage.innerContainer ?? [];
 
-    protected override IStoreSettingsParent SelStoreSettingsParent => selStorage;
+    protected override IStoreSettingsParent SelStoreSettingsParent => SelStorage;
 
-    private bool canControl {
+    private bool CanControl {
         get {
             if (SelPawn == null) return SelThing?.Faction == Faction.OfPlayer;
             if (SelPawn.Faction != Faction.OfPlayer && !SelPawn.IsPrisonerOfColony) return false;
@@ -55,13 +55,13 @@ public class ITab_StorageWithInventory : ITab_Storage {
         }
     }
 
-    private bool canControlColonist => canControl && (SelPawn?.IsColonistPlayerControlled ?? false);
+    private bool CanControlColonist => CanControl && (SelPawn?.IsColonistPlayerControlled ?? false);
 
-    private float topAreaHeight => IsPrioritySettingVisible ? 35 : 20;
+    private float TopAreaHeight => IsPrioritySettingVisible ? 35 : 20;
 
     protected override void FillTab() {
         base.FillTab();
-        Rect rect = new Rect(300, topAreaHeight, WinSize.x - 300, WinSize.y - topAreaHeight).ContractedBy(10f);
+        Rect rect = new Rect(300, TopAreaHeight, WinSize.x - 300, WinSize.y - TopAreaHeight).ContractedBy(10f);
 
         using (new TextBlock(GameFont.Small, Color.white)) {
             Widgets.BeginGroup(rect);
@@ -72,7 +72,7 @@ public class ITab_StorageWithInventory : ITab_Storage {
             Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
 
             workingInvList.Clear();
-            workingInvList.AddRange(heldThings);
+            workingInvList.AddRange(HeldThings);
             foreach (Verse.Thing t in workingInvList) {
                 DrawThingRow(ref curY, viewRect.width, t);
             }
@@ -137,7 +137,7 @@ public class ITab_StorageWithInventory : ITab_Storage {
     ///     row also needs.
     /// </summary>
     private bool DrawDropButton(ref Rect rect, float y, Verse.Thing thing) {
-        if (!canControl) return false;
+        if (!CanControl) return false;
 
         Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
         bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
@@ -164,7 +164,7 @@ public class ITab_StorageWithInventory : ITab_Storage {
     }
 
     private void DrawIngestButton(ref Rect rect, float y, Verse.Thing thing) {
-        if (!canControlColonist) return;
+        if (!CanControlColonist) return;
 
         if (SelPawn != null && FoodUtility.WillIngestFromInventoryNow(SelPawn, thing)) {
             Rect rect3 = new Rect(rect.width - 24f, y, 24f, 24f);
@@ -181,6 +181,6 @@ public class ITab_StorageWithInventory : ITab_Storage {
     private void InterfaceDrop(Verse.Thing t) {
         if (t.def.destroyOnDrop) return;
 
-        selStorage.innerContainer.TryDrop(t, SelThing.Position, SelThing.Map, ThingPlaceMode.Near, out _);
+        SelStorage.innerContainer.TryDrop(t, SelThing.Position, SelThing.Map, ThingPlaceMode.Near, out _);
     }
 }

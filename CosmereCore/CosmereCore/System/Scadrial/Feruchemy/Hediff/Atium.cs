@@ -42,16 +42,16 @@ public class Atium : HediffWithComps {
         }
     }
 
-    private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
+    private bool IsTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
 
-    private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
+    private bool IsStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
 
-    private Feruchemist? atium => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
+    private Feruchemist? FeruchemicGene => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
 
     public override void PostMake() {
         base.PostMake();
 
-        if (atium == null) {
+        if (FeruchemicGene == null) {
             Log.Error("CS_Error_MissingRequirement".Translate("Atium", "the Atium gene"));
             pawn.health.RemoveHediff(this);
         }
@@ -62,7 +62,7 @@ public class Atium : HediffWithComps {
     ///     floor is not charged for the part that did nothing.
     /// </summary>
     private void RefundUnused(float fraction) {
-        Feruchemist? gene = atium;
+        Feruchemist? gene = FeruchemicGene;
         if (gene == null || fraction <= 0f) return;
 
         float refund = FeruchemyRate.PerSecond(Severity, gene.RateMultiplier, gene.Efficiency) * fraction;
@@ -74,7 +74,7 @@ public class Atium : HediffWithComps {
 
     // Stops whichever dial is drawing on this metal, leaving the other alone.
     private void ParkDial() {
-        Feruchemist? gene = atium;
+        Feruchemist? gene = FeruchemicGene;
         if (gene == null) return;
 
         if (CompoundedTap.IsCompounded(def)) {
@@ -96,10 +96,10 @@ public class Atium : HediffWithComps {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
 
-        if (!isTapping && !isStoring) return;
+        if (!IsTapping && !IsStoring) return;
 
         // age has a floor; a dial pushed against it burns charge and the metalmind for nothing, so park it.
-        float direction = isStoring ? +1f : -1f;
+        float direction = IsStoring ? +1f : -1f;
         float severityFactor = CompoundedTap.Scale(def, Severity) / 5.0f;
         long requested = (long)(delta * AgeTicksPerGameTick * severityFactor);
         long current = pawn.ageTracker.AgeBiologicalTicks;
@@ -111,7 +111,7 @@ public class Atium : HediffWithComps {
         }
 
         float ageYears = pawn.ageTracker.AgeBiologicalYearsFloat;
-        if (!isTapping ||
+        if (!IsTapping ||
             !(ageYears <= 55f) ||
             !pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta) && Rand.Chance(1 / 100f)) {
             return;

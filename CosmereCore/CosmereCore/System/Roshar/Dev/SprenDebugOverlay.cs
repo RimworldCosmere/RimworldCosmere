@@ -7,29 +7,29 @@ namespace Cosmere.System.Roshar.Dev;
 
 [StaticConstructorOnStartup]
 public static class SprenDebugOverlay {
-    public static bool showOverlay { get; set; }
+    public static bool ShowOverlay { get; set; }
 
     private static Color GetSprenColor(SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-        return controller?.sprenColor ?? Color.yellow;
+        return controller?.SprenColor ?? Color.yellow;
     }
 
     public static void DrawOverlay() {
-        if (!showOverlay || Find.CurrentMap == null) return;
+        if (!ShowOverlay || Find.CurrentMap == null) return;
 
         Verse.Map map = Find.CurrentMap;
         float zoomLevel = Current.CameraDriver.ZoomRootSize;
         CellRect rect = Current.CameraDriver.CurrentViewRect.ClipInsideMap(map).ExpandedBy(1);
-        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
-            Color color = GetSprenColor(controller.sprenType);
+        foreach (BaseSprenController controller in SprenControllerRegistry.EnabledControllers) {
+            Color color = GetSprenColor(controller.SprenType);
 
             if (zoomLevel <= 25) {
                 color.a = 0.2f;
-                DrawMarkers(controller.validSpawnInfo, map, rect, color, MeshPool.plane10, 0f);
+                DrawMarkers(controller.ValidSpawnInfo, map, rect, color, MeshPool.plane10, 0f);
             }
 
             color.a = 0.8f;
-            DrawMarkers(controller.activeSpawnInfo, map, rect, color, MeshPool.plane05, 0.1f);
+            DrawMarkers(controller.ActiveSpawnInfo, map, rect, color, MeshPool.plane05, 0.1f);
         }
     }
 

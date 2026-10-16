@@ -14,7 +14,7 @@ public class PainDiminisher : HediffComp {
                 .GetComp<ApparelFabrialDiminisher>();
 
             if (comp?.insertedGemstone?.TryGetComp<InvestitureHolder>() is InvestitureHolder investiture) {
-                return $"Stormlight: {investiture.currentInvestiture:F0}";
+                return $"Stormlight: {investiture.CurrentInvestiture:F0}";
             }
 
             return string.Empty;

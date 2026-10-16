@@ -16,6 +16,6 @@ public class RigidizeClothing : SurgebindingAbility {
 
     protected override void OnEnable() {
         base.OnEnable();
-        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, Def.hediff);
     }
 }

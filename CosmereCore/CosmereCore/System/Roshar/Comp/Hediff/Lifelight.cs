@@ -14,7 +14,7 @@ public class LifelightProperties : HediffCompProperties {
 }
 
 public class Lifelight : HediffComp {
-    private new LifelightProperties props => (LifelightProperties)base.props;
+    private LifelightProperties Props => (LifelightProperties)props;
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
         if (!GenTicks.IsTickIntervalDelta(GenDate.TicksPerDay, delta)) return;
@@ -30,6 +30,6 @@ public class Lifelight : HediffComp {
         InvestitureHolder? holder = pawn.TryGetComp<InvestitureHolder>();
         if (holder == null) return;
 
-        holder.currentInvestitureSelf += foodLevel * props.investiturePerDay;
+        holder.CurrentInvestitureSelf += foodLevel * Props.investiturePerDay;
     }
 }

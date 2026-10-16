@@ -17,7 +17,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
     private const int SurgeryDuration = 100;
     private const int WaitForRecipientTimeout = 10000;
 
-    private Pawn recipient => (Pawn)job.targetA.Thing;
+    private Pawn Recipient => (Pawn)job.targetA.Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         if (!pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed)) return false;
@@ -28,7 +28,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOnDestroyedOrNull(TargetIndex.B);
-        AddFailCondition(() => recipient.Dead);
+        AddFailCondition(() => Recipient.Dead);
         AddFinishAction(condition => {
             if (pawn.carryTracker.CarriedThing != null) {
                 pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
@@ -36,16 +36,16 @@ public class ImplantSpike : Verse.AI.JobDriver {
         }
         );
 
-        bool recipientInBed = recipient.InBed();
-        bool voluntary = recipient.Faction == Faction.OfPlayer &&
-                         !recipient.IsPrisonerOfColony &&
-                         !recipient.IsSlaveOfColony;
+        bool recipientInBed = Recipient.InBed();
+        bool voluntary = Recipient.Faction == Faction.OfPlayer &&
+                         !Recipient.IsPrisonerOfColony &&
+                         !Recipient.IsSlaveOfColony;
 
         DeliveryMode mode;
-        if (recipientInBed || (voluntary && !recipient.Downed)) {
+        if (recipientInBed || (voluntary && !Recipient.Downed)) {
             mode = DeliveryMode.AwaitInBed;
         } else {
-            mode = recipient.Downed ? DeliveryMode.CarryDirect : DeliveryMode.CarryAnesthetize;
+            mode = Recipient.Downed ? DeliveryMode.CarryDirect : DeliveryMode.CarryAnesthetize;
         }
 
         if (mode == DeliveryMode.CarryAnesthetize) {
@@ -85,9 +85,9 @@ public class ImplantSpike : Verse.AI.JobDriver {
     private Toil MakeAnesthetizeToil() {
         Toil toil = ToilMaker.MakeToil("Anesthetize");
         toil.initAction = () => {
-            Verse.Hediff anesthesia = HediffMaker.MakeHediff(RimWorld.HediffDefOf.Anesthetic, recipient);
+            Verse.Hediff anesthesia = HediffMaker.MakeHediff(RimWorld.HediffDefOf.Anesthetic, Recipient);
             anesthesia.Severity = 1.0f;
-            recipient.health.AddHediff(anesthesia);
+            Recipient.health.AddHediff(anesthesia);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Instant;
         return toil;
@@ -102,7 +102,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
         };
         toil.tickAction = () => {
             waitedTicks++;
-            if (recipient.InBed()) {
+            if (Recipient.InBed()) {
                 ReadyForNextToil();
                 return;
             }
@@ -112,7 +112,7 @@ public class ImplantSpike : Verse.AI.JobDriver {
             }
         };
         toil.defaultCompleteMode = ToilCompleteMode.Never;
-        toil.AddFailCondition(() => recipient.Dead || recipient.Downed);
+        toil.AddFailCondition(() => Recipient.Dead || Recipient.Downed);
         return toil;
     }
 
@@ -126,15 +126,15 @@ public class ImplantSpike : Verse.AI.JobDriver {
             }
 
             HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
-            if (spikeComp == null || !spikeComp.isCharged) {
-                Log.Warn($"ImplantSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
+            if (spikeComp == null || !spikeComp.IsCharged) {
+                Log.Warn($"ImplantSpike: spike comp null={spikeComp == null}, charged={spikeComp?.IsCharged}");
                 return;
             }
 
             if (spikeComp.chargeData!.stealType == HemalurgicStealType.RemoveAllPowers) {
                 Messages.Message(
                     "CS_Hemalurgy_CannotImplantAluminum".Translate(),
-                    recipient,
+                    Recipient,
                     MessageTypeDefOf.RejectInput
                 );
                 DropSpike(carried);
@@ -142,11 +142,11 @@ public class ImplantSpike : Verse.AI.JobDriver {
             }
 
             HemalurgicChargeData charge = spikeComp.chargeData;
-            float strength = spikeComp.currentStrength;
+            float strength = spikeComp.CurrentStrength;
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 
             ImplantedSpikeData spikeData = new ImplantedSpikeData {
-                metalDefName = spikeComp.metal?.defName ?? "Unknown",
+                metalDefName = spikeComp.Metal?.defName ?? "Unknown",
                 stealType = charge.stealType,
                 stolenDefName = charge.stolenDefName,
                 stolenDefNames = [.. charge.stolenDefNames],
@@ -156,26 +156,26 @@ public class ImplantSpike : Verse.AI.JobDriver {
             };
 
             BodyPartRecord? torso = null;
-            foreach (BodyPartRecord part in recipient.health.hediffSet.GetNotMissingParts()) {
+            foreach (BodyPartRecord part in Recipient.health.hediffSet.GetNotMissingParts()) {
                 if (part.def == pawn.RaceProps.body.corePart.def) {
                     torso = part;
                     break;
                 }
             }
 
-            HemalurgicImplantUtility.ApplyHemalurgicEffect(recipient, spikeData);
-            HemalurgicImplantUtility.AddToUnifiedHediff(recipient, spikeData, torso);
-            HemalurgicImplantUtility.GrantStoredInvestiture(recipient, charge.storedInvestiture);
-            HemalurgicImplantUtility.RemoveDrabIfPresent(recipient);
-            HemalurgicImplantUtility.UpdateRuinsInfluence(recipient);
+            HemalurgicImplantUtility.ApplyHemalurgicEffect(Recipient, spikeData);
+            HemalurgicImplantUtility.AddToUnifiedHediff(Recipient, spikeData, torso);
+            HemalurgicImplantUtility.GrantStoredInvestiture(Recipient, charge.storedInvestiture);
+            HemalurgicImplantUtility.RemoveDrabIfPresent(Recipient);
+            HemalurgicImplantUtility.UpdateRuinsInfluence(Recipient);
 
             Messages.Message(
                 "CS_Hemalurgy_ImplantSuccess".Translate(
                     pawn.Named("SURGEON"),
-                    spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
-                    recipient.Named("RECIPIENT")
+                    spikeComp.Metal?.Named("METAL") ?? "unknown".Named("METAL"),
+                    Recipient.Named("RECIPIENT")
                 ),
-                recipient,
+                Recipient,
                 MessageTypeDefOf.PositiveEvent
             );
 

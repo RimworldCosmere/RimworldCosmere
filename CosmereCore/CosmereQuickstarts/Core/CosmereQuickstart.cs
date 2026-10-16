@@ -14,7 +14,7 @@ public class CosmereQuickstart : CosmereQuickstartBase {
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
 
-    public override IReadOnlyList<string> shards => [
+    public override IReadOnlyList<string> Shards => [
         "Preservation",
         "Ruin",
         "Honor",
@@ -26,7 +26,7 @@ public class CosmereQuickstart : CosmereQuickstartBase {
     ///     Gets the era to force. All-Stars spans every shard, so its scenario cannot pick one on its
     ///     own, and era-gated content would be filtered out of the sandbox instead of reachable.
     /// </summary>
-    public override string? era => "Cosmere_Scadrial_Era_PreCatacendre";
+    public override string? Era => "Cosmere_Scadrial_Era_PreCatacendre";
 
     public override void PostApplyConfiguration() {
         Find.GameInitData.startingPawnCount = 16;
@@ -76,7 +76,7 @@ public class CosmereQuickstart : CosmereQuickstartBase {
     private static void SetupCharacter(int index, Pawn pawn) {
         if (index is < 0 or > 15) return;
 
-        pawn.GetInvestiture()!.currentInvestitureSelf = 500;
+        pawn.GetInvestiture()!.CurrentInvestitureSelf = 500;
         QuickstartCharacterSetupRegistry.Apply(index, pawn);
         if (index == 0) {
             Find.Selector.Select(pawn, false);

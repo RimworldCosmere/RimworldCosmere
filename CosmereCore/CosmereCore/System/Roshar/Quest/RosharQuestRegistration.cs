@@ -13,7 +13,7 @@ public static class RosharQuestRegistration {
 
     private static KeyValuePair<string, int>? ProbeSurgebinder(Pawn pawn) {
         Surgebinder? gene = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-        RadiantOrderDef? order = gene?.radiantOrderDef;
+        RadiantOrderDef? order = gene?.RadiantOrderDef;
         if (order == null) return null;
 
         // Display, not CurrentIdeal: a first-ideal Radiant is 0, and minIdeal cannot go below 1.

@@ -26,27 +26,27 @@ public class TimeAbility : AllomancyAbility {
 
     public TimeAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private ThingDef moteDef => metal.Equals(MetallicArtsMetalDefOf.Cadmium)
+    private ThingDef MoteDef => Metal.Equals(MetallicArtsMetalDefOf.Cadmium)
         ? ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleCadmium
         : ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
 
-    private ThingDef warpMoteDef { get; } = ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleWarp;
+    private ThingDef WarpMoteDef { get; } = ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleWarp;
 
-    private float moteScale => MoteUtility.GetMoteSize(moteDef, BaseRadius, GetStrength());
+    private float MoteScale => MoteUtility.GetMoteSize(MoteDef, BaseRadius, GetStrength());
 
-    private HediffDef hediffToApply => metal == MetallicArtsMetalDefOf.Cadmium
+    private HediffDef HediffToApply => Metal == MetallicArtsMetalDefOf.Cadmium
         ? HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleCadmium
         : HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleBendalloy;
 
     public bool AnchorsToSelf =>
-        ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal) >= SavantStageForMobileBubble;
+        ScadrialSavantUtility.GetAllomanticSavantStage(pawn, Metal) >= SavantStageForMobileBubble;
 
     protected override void OnEnable() {
         base.OnEnable();
 
         centre = pawn.Position;
-        bubble = MoteMaker.MakeStaticMote(centre, pawn.MapHeld, moteDef, moteScale);
-        bubbleWithDistortion = MoteMaker.MakeStaticMote(centre, pawn.MapHeld, warpMoteDef, moteScale * 0.8f);
+        bubble = MoteMaker.MakeStaticMote(centre, pawn.MapHeld, MoteDef, MoteScale);
+        bubbleWithDistortion = MoteMaker.MakeStaticMote(centre, pawn.MapHeld, WarpMoteDef, MoteScale * 0.8f);
 
         bubble.Maintain();
         bubbleWithDistortion.Maintain();
@@ -61,7 +61,7 @@ public class TimeAbility : AllomancyAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!atLeastBurning) return;
+        if (!AtLeastBurning) return;
 
         bubble?.Maintain();
         bubbleWithDistortion?.Maintain();
@@ -74,19 +74,19 @@ public class TimeAbility : AllomancyAbility {
             bubbleWithDistortion.exactPosition = pawn.DrawPos;
         }
 
-        bubble.Scale = moteScale;
-        bubbleWithDistortion.Scale = moteScale * 0.8f;
+        bubble.Scale = MoteScale;
+        bubbleWithDistortion.Scale = MoteScale * 0.8f;
 
         float radius = BaseRadius * GetStrength();
 
-        if (debugMode) {
-            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, metal.solidLineColor);
+        if (DebugMode) {
+            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, Metal.SolidLineColor);
         }
 
         for (int i = pawnsInBubble.Count - 1; i >= 0; i--) {
             Pawn pawnInBubble = pawnsInBubble[i];
             if (!pawnInBubble.Position.InHorDistOf(centre, radius)) {
-                pawnInBubble.RemoveHediff(this, hediffToApply);
+                pawnInBubble.RemoveHediff(this, HediffToApply);
             }
         }
 
@@ -105,7 +105,7 @@ public class TimeAbility : AllomancyAbility {
 
         foreach (Pawn? targetPawn in GenRadial.RadialDistinctThingsAround(centre, bubble.Map, radius, true)
                      .OfType<Pawn>()) {
-            targetPawn.GetOrAddHediff(this, hediffToApply);
+            targetPawn.GetOrAddHediff(this, HediffToApply);
             pawnsInBubble.AddDistinct(targetPawn);
         }
     }

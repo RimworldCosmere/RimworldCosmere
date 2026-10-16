@@ -89,7 +89,7 @@ public static class HemalurgySurgeryJob {
         List<Verse.Thing> things = map.listerThings.ThingsOfDef(def);
         for (int i = 0; i < things.Count; i++) {
             HemalurgicSpike? comp = things[i].TryGetComp<HemalurgicSpike>();
-            if (comp == null || comp.isCharged != charged) continue;
+            if (comp == null || comp.IsCharged != charged) continue;
             if (things[i].IsForbidden(pawn)) continue;
             result.Add(things[i]);
         }

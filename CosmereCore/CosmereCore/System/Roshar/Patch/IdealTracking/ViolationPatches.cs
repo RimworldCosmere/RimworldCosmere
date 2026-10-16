@@ -49,7 +49,7 @@ public abstract class PawnKillPatch : Pawn {
         Surgebinder? surgebinder = ViolationUtility.GetSurgebinder(killer);
         if (surgebinder == null) return;
 
-        RadiantOrderDef orderDef = surgebinder.radiantOrderDef;
+        RadiantOrderDef orderDef = surgebinder.RadiantOrderDef;
         bool killerInBerserk = killer.InMentalState && killer.MentalStateDef == MentalStateDefOf.Berserk;
 
         if (orderDef == RadiantOrderDefOf.Windrunner) {
@@ -81,7 +81,7 @@ public abstract class FriendlyFireViolationPatch : DamageWorker {
         bool targetIsFriendly = !targetPawn.HostileTo(attacker);
         if (!targetIsFriendly) return;
 
-        RadiantOrderDef orderDef = surgebinder.radiantOrderDef;
+        RadiantOrderDef orderDef = surgebinder.RadiantOrderDef;
         if (orderDef == RadiantOrderDefOf.Dustbringer) {
             ViolationUtility.ApplyViolation(attacker, 0.3f, "attacking a friendly");
         }

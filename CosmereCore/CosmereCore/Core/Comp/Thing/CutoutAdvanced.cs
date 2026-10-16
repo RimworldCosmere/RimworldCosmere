@@ -85,7 +85,7 @@ internal class Mask(MaskType type, string path) {
     ///     Gets the loaded mask texture. Loads automatically on first access.
     ///     Naming convention: [path]_m[type].png (e.g., "sword_mwear.png").
     /// </summary>
-    public Texture2D? mask {
+    public Texture2D? Texture {
         get {
             if (loaded) return maskInt;
 
@@ -117,17 +117,17 @@ public class CutoutAdvanced : ThingComp {
 
     public List<LUTPaletteMaterial> palettes = [];
 
-    public new CutoutAdvancedProperties props => (CutoutAdvancedProperties)base.props;
+    public CutoutAdvancedProperties Props => (CutoutAdvancedProperties)props;
 
-    public Material? lastMaterial { get; set; }
+    public Material? LastMaterial { get; set; }
 
-    public Verse.Graphic? lastGraphic { get; set; }
+    public Verse.Graphic? LastGraphic { get; set; }
 
     private Mask? GetMask(MaskType type, Verse.Graphic graphic, Material material) {
         switch (type) {
-            case MaskType.Wear when !props.useWear:
-            case MaskType.Glow when !props.useGlow:
-            case MaskType.Special when !props.useSpecial:
+            case MaskType.Wear when !Props.useWear:
+            case MaskType.Glow when !Props.useGlow:
+            case MaskType.Special when !Props.useSpecial:
                 return null;
         }
 
@@ -154,15 +154,15 @@ public class CutoutAdvanced : ThingComp {
         Verse.Graphic graphic,
         Material material
     ) {
-        lastGraphic = graphic;
-        lastMaterial = material;
+        LastGraphic = graphic;
+        LastMaterial = material;
         block.Clear();
         block.SetTexture(CutoutAdvancedShaderProperties.MainTex, material.mainTexture);
         if (palettes.Count == 0) {
             // ask the parent before the def: IDynamicPalette lets a Thing derive its palette from runtime state.
-            palettes = parent is IDynamicPalette dynamicPalette ? dynamicPalette.GetMaterials() : props.palettes;
+            palettes = parent is IDynamicPalette dynamicPalette ? dynamicPalette.GetMaterials() : Props.palettes;
             if (palettes.Count == 0) {
-                palettes = props.palettes;
+                palettes = Props.palettes;
             }
         }
 
@@ -178,19 +178,19 @@ public class CutoutAdvanced : ThingComp {
 
         SetShaderKeywords(material);
 
-        block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
+        block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, Props.blendStrength);
 
-        material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
-        block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask.mask);
+        material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.Texture);
+        block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask.Texture);
         block.SetLUTColorMask(palettes, material);
-        block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, props.materialIntesity);
+        block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, Props.materialIntesity);
 
         ApplyWear(block, wearMask);
         ApplyGlow(block, glowMask);
 
-        block.SetFloat(CutoutAdvancedShaderProperties.UseSpecialMask, props.useSpecial ? 1 : 0);
-        if (props.useSpecial && specialMask?.mask != null) {
-            block.SetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex, specialMask.mask);
+        block.SetFloat(CutoutAdvancedShaderProperties.UseSpecialMask, Props.useSpecial ? 1 : 0);
+        if (Props.useSpecial && specialMask?.Texture != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex, specialMask.Texture);
         }
 
         block.SetVector(
@@ -209,33 +209,33 @@ public class CutoutAdvanced : ThingComp {
     }
 
     private void ApplyWear(MaterialPropertyBlock block, Mask? wearMask) {
-        block.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, props.useWear ? 1 : 0);
-        if (!props.useWear) return;
+        block.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, Props.useWear ? 1 : 0);
+        if (!Props.useWear) return;
 
-        block.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, props.wearDarkness);
+        block.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, Props.wearDarkness);
         block.SetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel, currentWearLevel);
-        block.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, props.wearLevelCount);
-        if (wearMask?.mask != null) {
-            block.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, wearMask.mask);
+        block.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, Props.wearLevelCount);
+        if (wearMask?.Texture != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, wearMask.Texture);
         }
     }
 
     private void ApplyGlow(MaterialPropertyBlock block, Mask? glowMask) {
-        block.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, props.useGlow ? 1 : 0);
-        if (!props.useGlow) return;
+        block.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, Props.useGlow ? 1 : 0);
+        if (!Props.useGlow) return;
 
-        block.SetColor(CutoutAdvancedShaderProperties.GlowColor, props.glowColor);
-        block.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, props.glowIntensity);
+        block.SetColor(CutoutAdvancedShaderProperties.GlowColor, Props.glowColor);
+        block.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, Props.glowIntensity);
         block.SetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel, currentGlowLevel);
-        block.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, props.glowLevelCount);
-        if (glowMask?.mask != null) {
-            block.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, glowMask.mask);
+        block.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, Props.glowLevelCount);
+        if (glowMask?.Texture != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, glowMask.Texture);
         }
     }
 
     public override void CompDrawWornExtras() {
         base.CompDrawWornExtras();
-        if (lastMaterial != null && lastGraphic != null) UpdateMaterialPropertyBlock(MPB, lastGraphic, lastMaterial);
+        if (LastMaterial != null && LastGraphic != null) UpdateMaterialPropertyBlock(MPB, LastGraphic, LastMaterial);
     }
 
     private void SetShaderKeywords(Material material) {
@@ -245,7 +245,7 @@ public class CutoutAdvanced : ThingComp {
         material.DisableKeyword("BLEND_SHARP");
         material.DisableKeyword("BLEND_STEP");
 
-        switch (props.blendMode) {
+        switch (Props.blendMode) {
             case CutoutAdvancedBlendMode.Linear:
                 material.EnableKeyword("BLEND_LINEAR");
                 break;
@@ -261,19 +261,19 @@ public class CutoutAdvanced : ThingComp {
         }
 
         // Set mask feature keywords
-        if (props.useWear) {
+        if (Props.useWear) {
             material.EnableKeyword("USE_WEAR_MASK");
         } else {
             material.DisableKeyword("USE_WEAR_MASK");
         }
 
-        if (props.useGlow) {
+        if (Props.useGlow) {
             material.EnableKeyword("USE_GLOW_MASK");
         } else {
             material.DisableKeyword("USE_GLOW_MASK");
         }
 
-        if (props.useSpecial) {
+        if (Props.useSpecial) {
             material.EnableKeyword("USE_SPECIAL_MASK");
         } else {
             material.DisableKeyword("USE_SPECIAL_MASK");

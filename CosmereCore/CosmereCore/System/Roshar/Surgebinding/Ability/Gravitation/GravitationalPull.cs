@@ -13,9 +13,9 @@ public class GravitationalPull : SurgebindingAbility {
 
     public GravitationalPull(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private HediffDef hediffToApply => def.hediff!;
+    private HediffDef HediffToApply => Def.hediff!;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -27,7 +27,7 @@ public class GravitationalPull : SurgebindingAbility {
         for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
             Pawn targetPawn = pawnsInArea[i];
             if (targetPawn != null && !targetPawn.Dead) {
-                SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+                SurgebindingHediffUtility.RemoveHediff(targetPawn, this, HediffToApply);
             }
         }
 
@@ -38,7 +38,7 @@ public class GravitationalPull : SurgebindingAbility {
         base.AbilityTick();
         if (!status.IsActive) return;
 
-        float currentRadius = radius;
+        float currentRadius = Radius;
 
         PruneDepartedPawns(currentRadius);
 
@@ -54,7 +54,7 @@ public class GravitationalPull : SurgebindingAbility {
             if (targetPawn.Dead) continue;
             if (targetPawn.Faction != pawn.Faction) continue;
 
-            SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
+            SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, HediffToApply);
             pawnsInArea.AddDistinct(targetPawn);
         }
     }
@@ -66,7 +66,7 @@ public class GravitationalPull : SurgebindingAbility {
                 targetPawn.Dead ||
                 !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
                 if (targetPawn != null && !targetPawn.Dead) {
-                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
+                    SurgebindingHediffUtility.RemoveHediff(targetPawn, this, HediffToApply);
                 }
 
                 pawnsInArea.RemoveAt(i);

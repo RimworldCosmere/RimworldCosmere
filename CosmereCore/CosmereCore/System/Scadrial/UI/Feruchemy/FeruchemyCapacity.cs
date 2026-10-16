@@ -79,7 +79,7 @@ internal readonly struct FeruchemyCapacity {
     public static FeruchemyCapacity Of(Feruchemist? gene) {
         if (gene == null) return default;
 
-        List<IMetalmindSource> sources = gene.metalminds;
+        List<IMetalmindSource> sources = gene.Metalminds;
         float internalHeld = 0f;
         float externalHeld = 0f;
         float internalMax = 0f;
@@ -104,10 +104,10 @@ internal readonly struct FeruchemyCapacity {
             ExternalMax = externalMax,
             Max = max,
             HasMetalmind = sources.Count > 0,
-            CanTap = gene.canTap,
-            CanStore = gene.canStore,
-            CanTapCompounded = gene.canTapCompounded,
-            CanStoreCompounded = gene.canStoreCompounded,
+            CanTap = gene.CanTap,
+            CanStore = gene.CanStore,
+            CanTapCompounded = gene.CanTapCompounded,
+            CanStoreCompounded = gene.CanStoreCompounded,
             CompoundedRate = gene.CompoundedRatePerSecond,
         };
     }

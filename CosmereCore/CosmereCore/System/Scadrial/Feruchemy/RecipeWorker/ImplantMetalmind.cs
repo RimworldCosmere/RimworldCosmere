@@ -50,7 +50,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             StoredAmount = metalmindComp.StoredAmount,
             CompoundedAmount = metalmindComp.CompoundedAmount,
             MaxAmount = metalmindComp.MaxAmount,
-            ownerName = metalmindComp.owner?.Name?.ToStringFull ?? string.Empty,
+            ownerName = metalmindComp.Owner?.Name?.ToStringFull ?? string.Empty,
         };
 
         ImplantedMetalminds.Attach(pawn, data, part);

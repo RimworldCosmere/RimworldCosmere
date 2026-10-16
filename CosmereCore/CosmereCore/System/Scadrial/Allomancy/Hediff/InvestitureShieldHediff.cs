@@ -30,7 +30,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         MetallicArtsMetalDef? metal = null;
         foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in SourceAbilities) {
             if (sa is AllomancyAbility allomancyAbility) {
-                metal = allomancyAbility.metal;
+                metal = allomancyAbility.Metal;
                 break;
             }
         }
@@ -40,7 +40,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         for (int i = genes.Count - 1; i >= 0; i--) {
             bool aluminumOnAluminum = metal == MetallicArtsMetalDefOf.Aluminum
-                                      && genes[i].metal == MetallicArtsMetalDefOf.Aluminum;
+                                      && genes[i].Metal == MetallicArtsMetalDefOf.Aluminum;
 
             if (Mathf.Approximately(genes[i].Value, 0f) || aluminumOnAluminum) {
                 genes.RemoveAt(i);
@@ -55,7 +55,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         List<MetallicArtsMetalDef> metalsToWipe = [];
         for (int i = 0; i < genes.Count; i++) {
             genes[i].WipeReserve();
-            metalsToWipe.Add(genes[i].metal);
+            metalsToWipe.Add(genes[i].Metal);
         }
 
         if (!messageSent) {
@@ -74,7 +74,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
             return "CS_WipeReserves".Translate(
                     pawn.Named("pawn"),
                     pawn.NameFullColored.Named("PAWN"),
-                    metal.coloredLabel.Named("METAL"),
+                    metal.ColoredLabel.Named("METAL"),
                     metalsToWipeString.Named("METALS")
                 )
                 .Resolve();

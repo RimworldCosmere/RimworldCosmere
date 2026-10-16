@@ -16,7 +16,7 @@ public class CosmereQuestManager : GameComponent {
     /// <summary>
     ///     Gets or sets the callback that supplies the era a running quickstart forces. Null when nothing is forcing one.
     /// </summary>
-    public static Func<string?>? eraProvider { get; set; }
+    public static Func<string?>? EraProvider { get; set; }
 
     private Dictionary<string, CapstoneState> capstoneStates = [];
     private Dictionary<string, HashSet<int>> pawnBurns = [];
@@ -71,7 +71,7 @@ public class CosmereQuestManager : GameComponent {
             state.flags.Add(flag);
         }
 
-        Cosmere.Core.Comp.Game.Shards? shards = ShardUtility.shards;
+        Cosmere.Core.Comp.Game.Shards? shards = ShardUtility.Shards;
         if (shards != null) {
             foreach (string shardDefName in shards.enabledShards.Keys) {
                 state.enabledShards.Add(shardDefName);
@@ -393,7 +393,7 @@ public class CosmereQuestManager : GameComponent {
         if (reached != null && reached.Length > 0) return reached;
 
         // A cross-shard quickstart declares its own era, because its scenario cannot.
-        string? forced = eraProvider?.Invoke();
+        string? forced = EraProvider?.Invoke();
         if (forced != null && forced.Length > 0) return forced;
 
         string? scenarioName = Find.Scenario?.name;

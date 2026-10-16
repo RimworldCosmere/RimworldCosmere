@@ -12,7 +12,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     private List<SprenForPawn> pawnSprens = [];
     private List<SpawnInfo> spawnInfo = [];
 
-    public List<Pawn> pawns {
+    public List<Pawn> Pawns {
         get {
             Verse.Map? currentMap = map;
             if (currentMap?.mapPawns == null) return [];
@@ -29,13 +29,13 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    private static float baseSpawnChance =>
+    private static float BaseSpawnChance =>
         1 / Mod.Settings.nahelSprenSpawnAverageIntervalTicks * Current.Game.storyteller.difficulty.threatScale;
 
     public override void MapComponentTick() {
         // spren are Honor's and Cultivation's; a Scadrial map should not be growing any
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Spren)) return;
-        if (baseSpawnChance == 0) return;
+        if (BaseSpawnChance == 0) return;
 
         base.MapComponentTick();
         SpawnSpren();
@@ -53,14 +53,14 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     }
 
     private void SpawnSpren() {
-        foreach (Pawn pawn in pawns) {
+        foreach (Pawn pawn in Pawns) {
             SpawnInfo spawnInfoForPawn = GetSpawnInfo(pawn);
-            if (spawnInfoForPawn.ticksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMinIntervalTicks) continue;
+            if (spawnInfoForPawn.TicksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMinIntervalTicks) continue;
             if (HasSpawnedSpren(pawn)) continue;
             if (pawn.IsAsleep()) continue;
 
-            if (!Rand.Chance(baseSpawnChance) &&
-                spawnInfoForPawn.ticksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMaxIntervalTicks) {
+            if (!Rand.Chance(BaseSpawnChance) &&
+                spawnInfoForPawn.TicksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMaxIntervalTicks) {
                 continue;
             }
 
@@ -165,7 +165,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         public int lastSpawn;
         public Pawn pawn = null!;
 
-        public int ticksSinceLastSpawn => GenTicks.TicksGame - lastSpawn;
+        public int TicksSinceLastSpawn => GenTicks.TicksGame - lastSpawn;
 
         public void ExposeData() {
             Scribe_References.Look(ref pawn, "pawn");

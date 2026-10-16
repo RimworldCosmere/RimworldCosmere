@@ -30,9 +30,9 @@ public abstract class StorageTabPatch : Verse.Thing {
         List<Apparel> apparel = pawn.apparel.WornApparel;
         for (int i = 0; i < apparel.Count; i++) {
             if (!apparel[i].TryGetComp(out Comp.Thing.InnerStorage comp)) continue;
-            if (!seenTabNames.Add(comp.props.tabName)) continue;
+            if (!seenTabNames.Add(comp.Props.tabName)) continue;
 
-            yield return new ITab_StorageWithInventory(comp.props.tabName, comp);
+            yield return new ITab_StorageWithInventory(comp.Props.tabName, comp);
         }
     }
 }

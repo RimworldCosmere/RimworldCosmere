@@ -7,9 +7,9 @@ using Verse;
 namespace Cosmere.System.Roshar.Thing.Pawn.Animal;
 
 public class TrueSpren : Spren {
-    private Verse.Pawn? bond => playerSettings?.Master;
+    private Verse.Pawn? Bond => playerSettings?.Master;
 
-    private Connection? connectionWithBond => bond == null ? null : this.GetConnection(bond);
+    private Connection? ConnectionWithBond => Bond == null ? null : this.GetConnection(Bond);
 
     public override void Notify_SignalReceived(Signal signal) {
         base.Notify_SignalReceived(signal);
@@ -18,12 +18,12 @@ public class TrueSpren : Spren {
     }
 
     private void TryConsummateBond() {
-        if (bond == null || connectionWithBond == null) return;
-        if (connectionWithBond.Value < 1.0) return;
+        if (Bond == null || ConnectionWithBond == null) return;
+        if (ConnectionWithBond.Value < 1.0) return;
 
-        if (RadiantOrderUtility.BondWithSpren(bond)) return;
+        if (RadiantOrderUtility.BondWithSpren(Bond)) return;
 
-        Map.GetComponent<TrueSprenSpawner>().DespawnSpren(bond, this);
+        Map.GetComponent<TrueSprenSpawner>().DespawnSpren(Bond, this);
         Destroy();
     }
 

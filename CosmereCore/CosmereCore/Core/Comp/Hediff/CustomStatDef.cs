@@ -23,7 +23,7 @@ public class MentalBreakHandler : HediffComp {
             ["Remove_Factor"] = (h, v) => h.HandleMentalBreakRemoveFactor(v),
         };
 
-    private static List<StatDef> customStatDefs {
+    private static List<StatDef> CustomStatDefs {
         get {
             if (!cacheInitialized) {
                 customStatDefsCache = [];
@@ -44,11 +44,11 @@ public class MentalBreakHandler : HediffComp {
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
 
-        if (customStatDefs.Count == 0) return;
+        if (CustomStatDefs.Count == 0) return;
         if (!Pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-        for (int i = 0; i < customStatDefs.Count; i++) {
-            StatDef stat = customStatDefs[i];
+        for (int i = 0; i < CustomStatDefs.Count; i++) {
+            StatDef stat = CustomStatDefs[i];
             string handlerName = stat.defName.Replace(StatPrefix, string.Empty);
             if (Handlers.TryGetValue(handlerName, out Action<MentalBreakHandler, float>? handler)) {
                 float value = Pawn.GetStatValue(stat);

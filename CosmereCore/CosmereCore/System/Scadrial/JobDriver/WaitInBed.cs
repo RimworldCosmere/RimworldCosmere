@@ -8,7 +8,7 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public class WaitInBed : Verse.AI.JobDriver {
     private const int MaxWaitTicks = 10000;
 
-    private Building_Bed bed => (Building_Bed)job.targetA.Thing;
+    private Building_Bed Bed => (Building_Bed)job.targetA.Thing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return true;
@@ -19,7 +19,7 @@ public class WaitInBed : Verse.AI.JobDriver {
 
         Toil gotoToil = ToilMaker.MakeToil("GotoSurgeryBed");
         gotoToil.initAction = () => {
-            IntVec3 sleepSpot = RestUtility.GetBedSleepingSlotPosFor(pawn, bed);
+            IntVec3 sleepSpot = RestUtility.GetBedSleepingSlotPosFor(pawn, Bed);
             pawn.pather.StartPath(sleepSpot, PathEndMode.OnCell);
         };
         gotoToil.defaultCompleteMode = ToilCompleteMode.PatherArrival;

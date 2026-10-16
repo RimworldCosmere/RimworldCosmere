@@ -53,7 +53,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         }
     }
 
-    protected override bool hasFooter => true;
+    protected override bool HasFooter => true;
 
     private static List<RadiantOrderDef> NormalOrders => normalOrders ??= BuildNormalOrders();
 
@@ -91,7 +91,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         if (order.ideals.Count > 1 && order.ideals[1].quotes.Count > 0) {
             quotes ??= [order.ideals[1].quotes.RandomElement()];
 
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor)) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, BodyTextColor)) {
                 for (int i = 0; i < quotes.Length; i++) {
                     listing.Label($"<i>\"{quotes[i]}\"</i>");
                 }
@@ -105,7 +105,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
         base.DrawOverviewTab(listing);
     }
 
-    protected override float footerHeight => hasFooter ? Spacing.Get(8) : 0;
+    protected override float FooterHeight => HasFooter ? Spacing.Get(8) : 0;
 
     protected override TaggedString? GetPositionReadout() {
         if (forcedBondsmithSpren != null || availableOrders.Count <= 1) return null;
@@ -121,8 +121,8 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
 
         if (forcedBondsmithSpren != null || availableOrders.Count <= 1) return;
 
-        float contentTop = inRect.y + headerHeight;
-        float railTop = inRect.yMax - footerHeight + padding.top;
+        float contentTop = inRect.y + HeaderHeight;
+        float railTop = inRect.yMax - FooterHeight + Padding.Top;
         float height = RadiantFilmstripLayout.ArrowColumnHeight(contentTop, railTop);
         if (height <= 0f) return;
 
@@ -231,7 +231,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
     }
 
     protected override void DrawFooter(Rect rect) {
-        Rect innerRect = rect.ContractedBy(padding);
+        Rect innerRect = rect.ContractedBy(Padding);
         bool isBondsmithLocked = forcedBondsmithSpren != null;
 
         Rect railRect = new Rect(
@@ -244,7 +244,7 @@ public class Dialog_ChooseRadiantOrder : Dialog_RadiantOrderDialogBase {
             innerRect.x,
             railRect.yMax + Spacing.Get(0.5f),
             innerRect.width,
-            footerButtonHeight
+            FooterButtonHeight
         );
 
         if (!isBondsmithLocked && availableOrders.Count > 1) {

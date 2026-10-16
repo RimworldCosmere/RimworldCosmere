@@ -6,7 +6,7 @@ namespace Cosmere.System.Roshar.Extension;
 
 public static class PawnExtension {
     public static RadiantOrderDef? GetRadiantOrder(this Pawn pawn) {
-        return pawn.genes?.GetFirstGeneOfType<Surgebinder>()?.radiantOrderDef;
+        return pawn.genes?.GetFirstGeneOfType<Surgebinder>()?.RadiantOrderDef;
     }
 
     public static bool IsPawnEligibleForDoctoring(this Pawn pawn) {

@@ -8,13 +8,13 @@ namespace Cosmere.System.Scadrial.JobDriver;
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     private ILoadReferenceable? cachedSource;
 
-    protected virtual Pawn? targetPawn => TargetA.Pawn;
+    protected virtual Pawn? TargetPawn => TargetA.Pawn;
 
-    protected virtual AllomancyAbility ability => (AllomancyAbility)(job?.source ?? cachedSource)!;
+    protected virtual AllomancyAbility Ability => (AllomancyAbility)(job?.source ?? cachedSource)!;
 
-    protected virtual Allomancer gene => ability.Gene;
+    protected virtual Allomancer Gene => Ability.Gene;
 
-    protected virtual bool targetIsPawn => targetPawn != null;
+    protected virtual bool TargetIsPawn => TargetPawn != null;
 
     protected override IEnumerable<Toil> MakeNewToils() {
         AddFinishAction(UpdateStatusToOff);
@@ -24,17 +24,17 @@ public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
 
     protected virtual void UpdateStatusToOff(JobCondition condition) {
         if (condition == JobCondition.Ongoing) return;
-        if (ability.status != BurningStatus.Off) {
-            ability.UpdateStatus(BurningStatus.Off);
+        if (Ability.status != BurningStatus.Off) {
+            Ability.UpdateStatus(BurningStatus.Off);
         }
     }
 
     protected virtual void UpdateBurnRate(float desiredBurnRate) {
-        gene.UpdateDrainSource((ability.def, desiredBurnRate));
+        Gene.UpdateDrainSource((Ability.Def, desiredBurnRate));
     }
 
     protected virtual bool ShouldStopJob() {
-        return pawn.Downed || pawn.Dead || !pawn.CanUseMetal(gene.metal);
+        return pawn.Downed || pawn.Dead || !pawn.CanUseMetal(Gene.Metal);
     }
 
     public override void ExposeData() {

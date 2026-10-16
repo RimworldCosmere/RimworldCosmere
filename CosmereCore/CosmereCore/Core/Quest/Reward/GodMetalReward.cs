@@ -50,10 +50,10 @@ public class GodMetalReward : QuestReward {
     public override string Describe() {
         if (metal == null) return string.Empty;
         return countMin == countMax
-            ? "CC_Quest_Reward_Metal_Exact".Translate(metal.coloredLabel.Named("METAL"), countMin.Named("COUNT"))
+            ? "CC_Quest_Reward_Metal_Exact".Translate(metal.ColoredLabel.Named("METAL"), countMin.Named("COUNT"))
                 .Resolve()
             : "CC_Quest_Reward_Metal_Range".Translate(
-                metal.coloredLabel.Named("METAL"),
+                metal.ColoredLabel.Named("METAL"),
                 countMin.Named("MIN"),
                 countMax.Named("MAX")
             ).Resolve();

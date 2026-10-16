@@ -23,9 +23,9 @@ public class EntropicAura : SurgebindingAbility {
 
     public EntropicAura(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private float damage => BaseDamage + Gene.CurrentIdeal * 1.5f;
+    private float Damage => BaseDamage + Gene.CurrentIdeal * 1.5f;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -33,7 +33,7 @@ public class EntropicAura : SurgebindingAbility {
 
     protected override void OnEnable() {
         base.OnEnable();
-        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
+        SurgebindingHediffUtility.GetOrAddHediff(pawn, this, Def.hediff);
         if (AuraMoteDef != null) {
             float moteScale = MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
@@ -42,7 +42,7 @@ public class EntropicAura : SurgebindingAbility {
 
     protected override void OnDisable() {
         base.OnDisable();
-        SurgebindingHediffUtility.RemoveHediff(pawn, this, def.hediff);
+        SurgebindingHediffUtility.RemoveHediff(pawn, this, Def.hediff);
         if (auraMote != null && !auraMote.Destroyed) {
             auraMote.Destroy();
         }
@@ -61,8 +61,8 @@ public class EntropicAura : SurgebindingAbility {
         if (!status.IsActive) return;
         if (!pawn.IsHashIntervalTick(DamageIntervalTicks)) return;
 
-        float currentRadius = radius;
-        float currentDamage = damage;
+        float currentRadius = Radius;
+        float currentDamage = Damage;
         float structureDamage = currentDamage * 0.5f;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(

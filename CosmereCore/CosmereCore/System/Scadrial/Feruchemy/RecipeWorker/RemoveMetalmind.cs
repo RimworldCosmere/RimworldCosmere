@@ -35,9 +35,9 @@ public class RemoveMetalmind : Recipe_Surgery {
         }
 
         ImplantedMetalminds? hediff = GetMetalmindsHediff(pawn);
-        if (hediff == null || hediff.metalmindCount == 0) return;
+        if (hediff == null || hediff.MetalmindCount == 0) return;
 
-        ImplantedMetalmindData? removed = hediff.RemoveMetalmindAt(hediff.metalmindCount - 1);
+        ImplantedMetalmindData? removed = hediff.RemoveMetalmindAt(hediff.MetalmindCount - 1);
         if (removed == null) return;
 
         SpawnExtractedMetalmind(pawn, removed);

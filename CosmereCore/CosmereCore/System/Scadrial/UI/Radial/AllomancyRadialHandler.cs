@@ -20,9 +20,9 @@ public sealed class AllomancyRadialHandler : IRadialActionHandler {
 
         List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < abilities.Count; i++) {
-            if (abilities[i] is not AllomancyAbility a || a.def != leaf.AbilityDef) continue;
+            if (abilities[i] is not AllomancyAbility a || a.Def != leaf.AbilityDef) continue;
 
-            a.UpdateStatus(BurnToggle.Next(a.status, flareShift && a.def.maxPower > 1));
+            a.UpdateStatus(BurnToggle.Next(a.status, flareShift && a.Def.maxPower > 1));
             return;
         }
 

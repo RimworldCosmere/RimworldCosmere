@@ -10,20 +10,20 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 ///     class only handles the readout and its preconditions.
 /// </summary>
 public class Nicrosil : HediffWithComps {
-    private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
+    private Investiture? Investiture => pawn?.needs?.TryGetNeed<Investiture>();
 
-    private Feruchemist? nicrosil => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
+    private Feruchemist? FeruchemicGene => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 
     public override void PostMake() {
         base.PostMake();
 
-        if (investiture == null) {
+        if (Investiture == null) {
             Log.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "investiture"));
             pawn.health.RemoveHediff(this);
             return;
         }
 
-        if (nicrosil == null) {
+        if (FeruchemicGene == null) {
             Log.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
             pawn.health.RemoveHediff(this);
         }

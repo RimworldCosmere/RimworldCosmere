@@ -8,10 +8,10 @@ public class Stiffen : SurgebindingAbility {
 
     public Stiffen(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (15f + Gene.CurrentIdeal * 5f));
+    private int DurationTicks => (int)(GenTicks.TicksPerRealSecond * (15f + Gene.CurrentIdeal * 5f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
@@ -20,14 +20,14 @@ public class Stiffen : SurgebindingAbility {
         Gene.RemoveFromReserve(cost);
 
         bool isFriendly = targetPawn.Faction == pawn.Faction;
-        HediffDef? hediffDef = isFriendly ? def.hediffFriendly : def.hediffHostile;
-        if (hediffDef == null) hediffDef = def.hediff;
+        HediffDef? hediffDef = isFriendly ? Def.hediffFriendly : Def.hediffHostile;
+        if (hediffDef == null) hediffDef = Def.hediff;
         if (hediffDef == null) return false;
 
         HediffWithComps hediff = (HediffWithComps)HediffMaker.MakeHediff(hediffDef, targetPawn);
         HediffComp_Disappears? disappears = hediff.TryGetComp<HediffComp_Disappears>();
         if (disappears != null) {
-            disappears.ticksToDisappear = durationTicks;
+            disappears.ticksToDisappear = DurationTicks;
         }
 
         targetPawn.health.AddHediff(hediff);

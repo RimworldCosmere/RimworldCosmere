@@ -30,7 +30,7 @@ public static class CosmereQuicktest {
     static CosmereQuicktest() {
         VanillaQuicktest.RowAction = () => Find.WindowStack.Add(new Dialog_QuicktestShards());
         VanillaQuicktest.Configuring += ApplyPendingShards;
-        CosmereQuestManager.eraProvider = ForcedEra;
+        CosmereQuestManager.EraProvider = ForcedEra;
     }
 
     /// <summary>Starts vanilla's quicktest with the given Shards enabled.</summary>
@@ -58,7 +58,7 @@ public static class CosmereQuicktest {
     }
 
     private static string? ForcedEra() {
-        return (Quickstarter.Instance?.Quickstart as CosmereQuickstartBase)?.era;
+        return (Quickstarter.Instance?.Quickstart as CosmereQuickstartBase)?.Era;
     }
 
     private static void ApplyPendingShards() {

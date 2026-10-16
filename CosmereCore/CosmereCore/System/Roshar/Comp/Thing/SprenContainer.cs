@@ -9,7 +9,7 @@ namespace Cosmere.System.Roshar.Comp.Thing;
 public class SprenContainer : ThingComp {
     private SprenType? capturedSprenType;
 
-    public bool hasCapturedSpren => capturedSprenType.HasValue;
+    public bool HasCapturedSpren => capturedSprenType.HasValue;
 
     public SprenType? CapturedSprenType => capturedSprenType;
 
@@ -27,7 +27,7 @@ public class SprenContainer : ThingComp {
     }
 
     public override string? CompInspectStringExtra() {
-        if (hasCapturedSpren) {
+        if (HasCapturedSpren) {
             return "CRO_SprenContainer_Contains".Translate(capturedSprenType.ToString().Named("SPREN")).Resolve();
         }
 
@@ -43,7 +43,7 @@ public class SprenContainer : ThingComp {
     }
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
-        if (Core.Mod.debugMode) {
+        if (Core.Mod.DebugMode) {
             yield return new Command_Action {
                 defaultLabel = "CRO_SprenContainer_Debug_Label".Translate(),
                 defaultDesc = "CRO_SprenContainer_Debug_Desc".Translate(),

@@ -8,7 +8,7 @@ namespace Cosmere.System.Roshar.Comp.Fabrials;
 public class BasicFabrialDiminisher : BasicFabrial {
     private float tempWhenTurnedOn;
 
-    public CompGlower glowerComp => parent.GetComp<CompGlower>();
+    public CompGlower GlowerComp => parent.GetComp<CompGlower>();
 
     protected override HediffDef PainHediffDef => HediffDefOf.Cosmere_Roshar_Painrial_Diminisher;
 
@@ -35,7 +35,7 @@ public class BasicFabrialDiminisher : BasicFabrial {
     public override void UpdatePowerState(bool flickeredOn) {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
-            bool power = investiture.currentInvestiture > 0 && flickeredOn;
+            bool power = investiture.CurrentInvestiture > 0 && flickeredOn;
             if (!powerOn && power) {
                 tempWhenTurnedOn = parent.GetRoom().Temperature;
             }

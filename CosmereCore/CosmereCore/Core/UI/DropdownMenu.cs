@@ -10,9 +10,4 @@ public class DropdownMenu : FloatMenu {
         this.dropdownRect = dropdownRect;
         vanishIfMouseDistant = false;
     }
-
-    public new bool vanishIfMouseDistant {
-        get => base.vanishIfMouseDistant;
-        set => base.vanishIfMouseDistant = value;
-    }
 }

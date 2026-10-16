@@ -20,7 +20,7 @@ public class Regrowth : SurgebindingHediff {
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
-        if (!Gene.CanLowerReserve(ability.def.beuPerTick)) {
+        if (!Gene.CanLowerReserve(ability.Def.beuPerTick)) {
             pawn.health.RemoveHediff(this);
             return;
         }

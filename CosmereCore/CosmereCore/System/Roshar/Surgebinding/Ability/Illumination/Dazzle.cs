@@ -10,18 +10,18 @@ public class Dazzle : SurgebindingAbility {
 
     public Dazzle(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + Gene.CurrentIdeal;
+    private float Radius => BaseRadius + Gene.CurrentIdeal;
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (8f + Gene.CurrentIdeal * 4f));
+    private int DurationTicks => (int)(GenTicks.TicksPerRealSecond * (8f + Gene.CurrentIdeal * 4f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Gene.RemoveFromReserve(cost);
 
-        float currentRadius = radius;
-        HediffDef? hediffDef = def.hediff;
+        float currentRadius = Radius;
+        HediffDef? hediffDef = Def.hediff;
         if (hediffDef == null) return false;
 
         FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
@@ -40,7 +40,7 @@ public class Dazzle : SurgebindingAbility {
             HediffWithComps hediff = (HediffWithComps)HediffMaker.MakeHediff(hediffDef, targetPawn);
             HediffComp_Disappears? disappears = hediff.TryGetComp<HediffComp_Disappears>();
             if (disappears != null) {
-                disappears.ticksToDisappear = durationTicks;
+                disappears.ticksToDisappear = DurationTicks;
             }
 
             targetPawn.health.AddHediff(hediff);

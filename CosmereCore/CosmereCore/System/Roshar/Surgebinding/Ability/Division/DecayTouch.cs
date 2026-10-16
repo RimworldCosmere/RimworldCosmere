@@ -12,9 +12,9 @@ public class DecayTouch : SurgebindingAbility {
 
     public DecayTouch(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float pawnDamage => 3f + Gene.CurrentIdeal * 2f;
+    private float PawnDamage => 3f + Gene.CurrentIdeal * 2f;
 
-    private float structureDamage => 5f + Gene.CurrentIdeal * 5f;
+    private float StructureDamage => 5f + Gene.CurrentIdeal * 5f;
 
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
@@ -40,12 +40,12 @@ public class DecayTouch : SurgebindingAbility {
         if (target is Pawn targetPawn) {
             DamageInfo dinfo = new DamageInfo(
                 DamageDefOf.Burn,
-                pawnDamage,
+                PawnDamage,
                 instigator: pawn
             );
             targetPawn.TakeDamage(dinfo);
         } else {
-            float dmg = structureDamage;
+            float dmg = StructureDamage;
             target.HitPoints = Math.Max(0, target.HitPoints - (int)dmg);
             if (target.HitPoints <= 0) {
                 target.Destroy(DestroyMode.KillFinalize);

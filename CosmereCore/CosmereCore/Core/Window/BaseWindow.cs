@@ -8,8 +8,8 @@ namespace Cosmere.Core.Window;
 
 [StaticConstructorOnStartup]
 public abstract class BaseWindow : Verse.Window {
-    protected static readonly Color BodyTextColor = new Color(.80f, .80f, .80f);
-    protected static readonly Color HeaderTextColor = new Color(.95f, .95f, .95f);
+    protected static readonly Color DefaultBodyTextColor = new Color(.80f, .80f, .80f);
+    protected static readonly Color DefaultHeaderTextColor = new Color(.95f, .95f, .95f);
     protected static readonly Texture2D Border = ContentFinder<Texture2D>.Get("Window/Border");
     protected static readonly Texture2D Background = ContentFinder<Texture2D>.Get("Window/BackgroundWide");
     protected static readonly Texture2D DarkBackground = ContentFinder<Texture2D>.Get("Window/BackgroundDarker");
@@ -46,52 +46,52 @@ public abstract class BaseWindow : Verse.Window {
     }
 
     protected BaseWindow(Vector2 initialWindowSize) : this() {
-        this.initialWindowSize = initialWindowSize;
+        this.InitialWindowSize = initialWindowSize;
     }
 
-    protected virtual Vector2 initialWindowSize { get; }
+    protected virtual Vector2 InitialWindowSize { get; }
 
-    protected virtual bool hasFooter { get; set; } = false;
+    protected virtual bool HasFooter { get; set; } = false;
 
-    protected virtual bool drawBorder { get; set; } = false;
+    protected virtual bool HasBorder { get; set; } = false;
 
-    protected virtual float headerHeight => Spacing.Get(6);
+    protected virtual float HeaderHeight => Spacing.Get(6);
 
-    protected virtual float footerHeight => hasFooter ? Spacing.Get(4) : 0;
+    protected virtual float FooterHeight => HasFooter ? Spacing.Get(4) : 0;
 
-    protected virtual float footerButtonHeight => Spacing.Get(2);
+    protected virtual float FooterButtonHeight => Spacing.Get(2);
 
-    protected virtual float bodyHeight => initialWindowSize.y - headerHeight - footerHeight;
+    protected virtual float BodyHeight => InitialWindowSize.y - HeaderHeight - FooterHeight;
 
-    protected virtual Padding padding => Padding.Spacing;
+    protected virtual Padding Padding => Padding.Spacing;
 
-    protected virtual float bodyPadding => Spacing.Get(scrollViewStatus.scrollVisibile ? 2 : 4);
+    protected virtual float BodyPadding => Spacing.Get(scrollViewStatus.scrollVisibile ? 2 : 4);
 
-    protected virtual bool drawHeaderSeparator => true;
+    protected virtual bool DrawHeaderSeparator => true;
 
-    protected virtual bool drawFooterSeparator => true;
+    protected virtual bool DrawFooterSeparator => true;
 
     /// <summary>
     ///     Gets how far the body is pulled in from the window edge, so a scrollbar rides inside the
     ///     frame rather than on top of the border.
     /// </summary>
-    protected virtual float bodyInset => 0f;
+    protected virtual float BodyInset => 0f;
 
-    protected override float Margin => drawBorder ? 1 : 0;
+    protected override float Margin => HasBorder ? 1 : 0;
 
-    public sealed override Vector2 InitialSize => initialWindowSize;
+    public sealed override Vector2 InitialSize => InitialWindowSize;
 
-    protected virtual TextAnchor headerAlignment => TextAnchor.MiddleCenter;
+    protected virtual TextAnchor HeaderAlignment => TextAnchor.MiddleCenter;
 
-    protected virtual Color headerTextColor => HeaderTextColor;
+    protected virtual Color HeaderTextColor => DefaultHeaderTextColor;
 
-    protected virtual Color bodyTextColor => BodyTextColor;
+    protected virtual Color BodyTextColor => DefaultBodyTextColor;
 
-    protected virtual GameFont titleFont => GameFont.Medium;
+    protected virtual GameFont TitleFont => GameFont.Medium;
 
-    protected virtual GameFont subtitleFont => GameFont.Small;
+    protected virtual GameFont SubtitleFont => GameFont.Small;
 
-    protected virtual GameFont bodyFont => GameFont.Small;
+    protected virtual GameFont BodyFont => GameFont.Small;
 
     protected abstract TaggedString GetTitle();
 
@@ -100,11 +100,11 @@ public abstract class BaseWindow : Verse.Window {
     }
 
     protected virtual void DrawHeader(Rect rect) {
-        Rect innerRect = rect.ContractedBy(padding);
+        Rect innerRect = rect.ContractedBy(Padding);
         FoundationListing listing = new FoundationListing { maxOneColumn = true };
         listing.Begin(innerRect);
 
-        using (new TextBlock(headerAlignment, headerTextColor)) {
+        using (new TextBlock(HeaderAlignment, HeaderTextColor)) {
             DrawHeaderContent(listing, innerRect);
         }
 
@@ -112,12 +112,12 @@ public abstract class BaseWindow : Verse.Window {
     }
 
     protected virtual void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
-        using (new TextBlock(titleFont)) listing.Label($"<b>{GetTitle()}</b>");
+        using (new TextBlock(TitleFont)) listing.Label($"<b>{GetTitle()}</b>");
 
         TaggedString? subtitle = GetSubtitle();
         if (subtitle == null) return;
 
-        using (new TextBlock(subtitleFont)) listing.Label(subtitle);
+        using (new TextBlock(SubtitleFont)) listing.Label(subtitle);
     }
 
     protected virtual float DrawBody(Rect rect) {
@@ -129,10 +129,10 @@ public abstract class BaseWindow : Verse.Window {
 
         listing.Begin(rect);
         float originalWidth = listing.ColumnWidth;
-        listing.ColumnWidth -= bodyPadding * 2;
-        listing.Indent(bodyPadding);
+        listing.ColumnWidth -= BodyPadding * 2;
+        listing.Indent(BodyPadding);
         DrawBodyContent(listing);
-        listing.Outdent(bodyPadding);
+        listing.Outdent(BodyPadding);
         listing.ColumnWidth = originalWidth;
         listing.End();
         listing.Gap();
@@ -160,34 +160,34 @@ public abstract class BaseWindow : Verse.Window {
     }
 
     public override void DoWindowContents(Rect inRect) {
-        if (drawBorder) Widgets.DrawBox(inRect, (int)Margin, BorderTexture);
+        if (HasBorder) Widgets.DrawBox(inRect, (int)Margin, BorderTexture);
         GUI.DrawTexture(inRect.ContractedBy(Margin), BodyBackground, ScaleMode.ScaleAndCrop);
 
-        Rect headerRect = new Rect(inRect.x, inRect.y, inRect.width, headerHeight);
+        Rect headerRect = new Rect(inRect.x, inRect.y, inRect.width, HeaderHeight);
         Rect bodyRect = new Rect(
-            inRect.x + bodyInset,
-            inRect.y + headerHeight,
-            inRect.width - bodyInset * 2f,
-            bodyHeight
+            inRect.x + BodyInset,
+            inRect.y + HeaderHeight,
+            inRect.width - BodyInset * 2f,
+            BodyHeight
         );
-        Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - footerHeight, inRect.width, footerHeight);
+        Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - FooterHeight, inRect.width, FooterHeight);
 
         GUI.DrawTexture(headerRect.ContractedBy(Margin), HeaderBackground);
         DrawHeader(headerRect);
-        if (drawHeaderSeparator) DrawBorder(headerRect, 3, bottom: true);
+        if (DrawHeaderSeparator) DrawBorder(headerRect, 3, bottom: true);
 
         if (CloseButtonFor(inRect.AtZero())) {
             Close();
         }
 
         using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {
-            using (new TextBlock(bodyFont)) sv.height = DrawBody(sv.rect);
+            using (new TextBlock(BodyFont)) sv.Height = DrawBody(sv.rect);
         }
 
-        if (hasFooter) {
+        if (HasFooter) {
             GUI.DrawTexture(footerRect.ContractedBy(Margin), FooterBackground);
             DrawFooter(footerRect);
-            if (drawFooterSeparator) DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
+            if (DrawFooterSeparator) DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
         }
     }
 

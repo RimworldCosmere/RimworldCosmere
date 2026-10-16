@@ -98,7 +98,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         Surgebinder? gene = ActiveBond(pawn);
         if (gene == null || snapshot.PrimaryBar == null) return 0f;
 
-        RefreshAbilities(gene, gene.radiantOrderDef);
+        RefreshAbilities(gene, gene.RadiantOrderDef);
         StepReveal();
 
         float height = Pad
@@ -135,7 +135,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         Surgebinder? gene = ActiveBond(pawn);
         if (gene == null || snapshot.PrimaryBar == null) return;
 
-        RadiantOrderDef order = gene.radiantOrderDef;
+        RadiantOrderDef order = gene.RadiantOrderDef;
         RefreshAbilities(gene, order);
         StepReveal();
 
@@ -347,11 +347,11 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         if (bonds.Count == 0) return null;
 
         for (int i = 0; i < bonds.Count; i++) {
-            if (bonds[i].radiantOrderDef.defName == selectedOrder) return bonds[i];
+            if (bonds[i].RadiantOrderDef.defName == selectedOrder) return bonds[i];
         }
 
         // nothing chosen yet, the chosen bond broke, or this is a different pawn than last time.
-        selectedOrder = bonds[0].radiantOrderDef.defName;
+        selectedOrder = bonds[0].RadiantOrderDef.defName;
         CloseSurge();
 
         return bonds[0];
@@ -361,7 +361,7 @@ public sealed class SurgebindingDockSection : DockSectionBase {
         float width = (row.width - TabGap * (bonds.Count - 1)) / bonds.Count;
 
         for (int i = 0; i < bonds.Count; i++) {
-            RadiantOrderDef order = bonds[i].radiantOrderDef;
+            RadiantOrderDef order = bonds[i].RadiantOrderDef;
             bool active = order.defName == selectedOrder;
             Rect tab = new Rect(row.x + i * (width + TabGap), row.y, width, row.height);
 

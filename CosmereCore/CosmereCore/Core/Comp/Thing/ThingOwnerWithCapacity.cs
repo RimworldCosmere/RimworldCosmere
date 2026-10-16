@@ -40,12 +40,12 @@ public class ThingOwnerWithCapacity<T> : ThingOwner<T>
     )
         : base(owner, oneStackOnly, contentsLookMode, removeContentsIfDestroyed) { }
 
-    public int remainingCapacity => Mathf.Max(maxCapacity - TotalStackCount, 0);
+    public int RemainingCapacity => Mathf.Max(maxCapacity - TotalStackCount, 0);
 
     public override int GetCountCanAccept(Verse.Thing? item, bool canMergeWithExistingStacks = true) {
         if (maxStacks == 1) return base.GetCountCanAccept(item, canMergeWithExistingStacks);
 
-        return Mathf.Min(remainingCapacity, item?.stackCount ?? 0);
+        return Mathf.Min(RemainingCapacity, item?.stackCount ?? 0);
     }
 
     public override void ExposeData() {

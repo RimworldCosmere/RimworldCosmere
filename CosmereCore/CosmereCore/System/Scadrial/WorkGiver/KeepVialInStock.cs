@@ -8,14 +8,14 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.WorkGiver;
 
 public class KeepVialInStock : WorkGiver_Scanner {
-    private static ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
+    private static ThingDef VialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => Verse.AI.PathEndMode.ClosestTouch;
 
-    public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(vialDef);
+    public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(VialDef);
 
     public override IEnumerable<Verse.Thing> PotentialWorkThingsGlobal(Pawn pawn) {
-        return pawn.Map.listerThings.ThingsOfDef(vialDef);
+        return pawn.Map.listerThings.ThingsOfDef(VialDef);
     }
 
     public override bool HasJobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
@@ -57,7 +57,7 @@ public class KeepVialInStock : WorkGiver_Scanner {
         if (pawn.genes == null) return null;
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            if (vial.Stuff != gene.metal.Item) continue;
+            if (vial.Stuff != gene.Metal.Item) continue;
             if (StockOf(pawn, gene) >= gene.RequestedVialStock) continue;
 
             return gene;
@@ -67,6 +67,6 @@ public class KeepVialInStock : WorkGiver_Scanner {
     }
 
     private static int StockOf(Pawn pawn, Allomancer gene) {
-        return pawn.inventory.innerContainer.TotalStackCountOfDef(vialDef, gene.metal.Item);
+        return pawn.inventory.innerContainer.TotalStackCountOfDef(VialDef, gene.Metal.Item);
     }
 }

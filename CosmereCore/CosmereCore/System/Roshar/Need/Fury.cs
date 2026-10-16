@@ -120,7 +120,7 @@ public class Fury : RimWorld.Need {
     private bool IsDustbringer() {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
-        return surgebinder.radiantOrderDef == RadiantOrderDefOf.Dustbringer;
+        return surgebinder.RadiantOrderDef == RadiantOrderDefOf.Dustbringer;
     }
 
     private bool IsPyromaniac() {

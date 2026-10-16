@@ -16,13 +16,13 @@ public class AllomanticHediff : AbstractHediff<Allomancer> {
         ability
     ) { }
 
-    public MetallicArtsMetalDef metal => Gene.metal;
+    public MetallicArtsMetalDef Metal => Gene.Metal;
 
     public override void TickInterval(int delta) {
         SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);
-        if (surge != null && severityCalculator != null && def.defName != surge.def.defName) {
+        if (surge != null && SeverityCalculator != null && def.defName != surge.def.defName) {
             surge.Burn(
-                severityCalculator.RecalculateSeverity,
+                SeverityCalculator.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,
                 () => {
                     List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
@@ -32,7 +32,7 @@ public class AllomanticHediff : AbstractHediff<Allomancer> {
                         }
                     }
 
-                    severityCalculator.RecalculateSeverity();
+                    SeverityCalculator.RecalculateSeverity();
                 }
             );
         }

@@ -23,7 +23,7 @@ public static class AshEra {
     /// <returns>True when ash should still be falling on this map.</returns>
     public static bool CanAccumulate(Verse.Map? map) {
         if (map == null) return false;
-        if (!Mod.enableAshfall) return false;
+        if (!Mod.EnableAshfall) return false;
 
         // world/era gated, not Shard - the Ashmounts are Rashek's engineering, run regardless of which Shards are held.
         if (!FeatureUtility.IsActive(FeatureDefOf.Cosmere_Feature_Ashfall)) return false;

@@ -31,7 +31,7 @@ public class IncidentWorker_Highstorm : IncidentWorker {
             return false;
         }
 
-        int stormDuration = Mod.highstormDurationTicks > 0 ? Mod.highstormDurationTicks : ext.stormDuration;
+        int stormDuration = Mod.HighstormDurationTicks > 0 ? Mod.HighstormDurationTicks : ext.stormDuration;
         RimWorld.GameCondition storm = GameConditionMaker.MakeCondition(stormDef, stormDuration);
         map.gameConditionManager.RegisterCondition(storm);
 

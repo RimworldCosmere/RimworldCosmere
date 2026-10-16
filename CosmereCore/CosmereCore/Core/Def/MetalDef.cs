@@ -24,23 +24,23 @@ public class MetalDef : Verse.Def {
     /// </remarks>
     public List<ShardGrant> shards = [];
 
-    public Material transparentLineColor => cachedTransparentLineColor ??=
+    public Material TransparentLineColor => cachedTransparentLineColor ??=
         MaterialPool.MatFrom(GenDraw.LineTexPath, Verse.ShaderDatabase.Transparent, color);
 
-    public Material? transparentLineColorTwo => cachedTransparentLineColorTwo ??=
+    public Material? TransparentLineColorTwo => cachedTransparentLineColorTwo ??=
         colorTwo is null
             ? null
             : MaterialPool.MatFrom(GenDraw.LineTexPath, Verse.ShaderDatabase.Transparent, colorTwo.Value);
 
-    public Material solidLineColor => cachedSolidLineColor ??=
+    public Material SolidLineColor => cachedSolidLineColor ??=
         MaterialPool.MatFrom(GenDraw.LineTexPath, Verse.ShaderDatabase.SolidColorBehind, color);
 
-    public Material? solidLineColorTwo => cachedSolidLineColorTwo ??=
+    public Material? SolidLineColorTwo => cachedSolidLineColorTwo ??=
         colorTwo is null
             ? null
             : MaterialPool.MatFrom(GenDraw.LineTexPath, Verse.ShaderDatabase.SolidColorBehind, colorTwo.Value);
 
-    public string coloredLabel => label.Colorize(ColoredText.DateTimeColor);
+    public string ColoredLabel => label.Colorize(ColoredText.DateTimeColor);
 
     public ThingDef Item => DefDatabase<ThingDef>.GetNamed(defName);
 }

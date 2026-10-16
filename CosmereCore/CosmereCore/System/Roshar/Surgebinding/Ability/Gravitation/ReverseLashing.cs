@@ -10,12 +10,12 @@ public class ReverseLashing : SurgebindingAbility {
 
     public ReverseLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float damage => BaseDamage + Gene.CurrentIdeal * 10f;
+    private float Damage => BaseDamage + Gene.CurrentIdeal * 10f;
 
-    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1.5f + Gene.CurrentIdeal * 0.5f));
+    private int StunTicks => (int)(GenTicks.TicksPerRealSecond * (1.5f + Gene.CurrentIdeal * 0.5f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
@@ -30,13 +30,13 @@ public class ReverseLashing : SurgebindingAbility {
 
         DamageInfo dinfo = new DamageInfo(
             DamageDefOf.Crush,
-            damage,
+            Damage,
             instigator: pawn
         );
         targetPawn.TakeDamage(dinfo);
 
         if (!targetPawn.Dead && targetPawn.Spawned) {
-            targetPawn.stances?.stunner?.StunFor(stunTicks, pawn);
+            targetPawn.stances?.stunner?.StunFor(StunTicks, pawn);
 
             RimWorld.PawnFlyer flyer = RimWorld.PawnFlyer.MakeFlyer(
                 RimWorld.ThingDefOf.PawnFlyer_Stun,

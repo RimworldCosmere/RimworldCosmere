@@ -57,12 +57,12 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         currentTab = DialogTab.Overview;
     }
 
-    protected override Vector2 initialWindowSize => new Vector2(
+    protected override Vector2 InitialWindowSize => new Vector2(
         Spacing.Get(65),
         Mathf.Max(Spacing.Get(30), Verse.UI.screenHeight - Spacing.Get(10))
     );
 
-    protected override float headerHeight => Spacing.Get(16);
+    protected override float HeaderHeight => Spacing.Get(16);
 
     /// <summary>Where this order sits in a browsable list. Null when there is nothing to browse.</summary>
     /// <returns>The position line, such as a place in a list, or null when there is nothing to browse.</returns>
@@ -73,18 +73,18 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     protected override void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
         listing.Gap(BannerSize - BannerOverhang + Spacing.Get(0.5f));
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, HeaderTextColor))
             listing.Label($"<b>{order.LabelCap}</b>");
 
         TaggedString? position = GetPositionReadout();
         if (position != null) {
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, bodyTextColor))
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor))
                 listing.Label(position.Value);
         }
 
         TaggedString title = GetTitle();
         if (title != null) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, BodyTextColor))
                 listing.Label(title);
         }
     }
@@ -116,7 +116,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     }
 
     private void DrawTabBar(FoundationListing listing) {
-        float bodyPad = bodyPadding;
+        float bodyPad = BodyPadding;
         Rect tabRow = listing.GetRect(TabHeight);
         tabRow.x -= bodyPad;
         tabRow.width += bodyPad * 2;
@@ -148,7 +148,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     private void DrawTab(Rect rect, string label, DialogTab tab) {
         bool isActive = currentTab == tab;
 
-        Color textColor = isActive ? headerTextColor : bodyTextColor;
+        Color textColor = isActive ? HeaderTextColor : BodyTextColor;
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, textColor))
             Widgets.Label(rect, isActive ? $"<b>{label}</b>" : label);
 
@@ -167,7 +167,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     }
 
     protected virtual void DrawOverviewTab(FoundationListing listing) {
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, BodyTextColor)) {
             float width = listing.ColumnWidth;
             float height = Text.CalcHeight(order.description, width);
             Rect rect = listing.GetRect(height);
@@ -183,7 +183,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
 
         if (quoteIdealIndex < order.ideals.Count && order.ideals[quoteIdealIndex].quotes.Count > 0) {
             string quote = order.ideals[quoteIdealIndex].quotes[0];
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, BodyTextColor))
                 listing.Label($"<i>\"{quote}\"</i>");
             listing.Gap();
         }
@@ -191,7 +191,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         listing.GapLine(color: BorderColor);
         listing.Gap();
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, bodyTextColor)) {
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, BodyTextColor)) {
             TaggedString str = "CRO_Bond_Choose_Surges".Translate(order.LabelCap.Named("ORDER"));
             Rect labelRect = listing.Label($"<b>{str}</b>");
             DrawBorder(
@@ -250,7 +250,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         GUI.DrawTexture(centered, surge.icon, ScaleMode.ScaleToFit);
         leftListing.Gap();
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, HeaderTextColor))
             leftListing.Label(surge.LabelCap);
         leftListing.End();
 
@@ -258,7 +258,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         rightListing.Begin(rightBox);
         rightListing.Gap(rightPadding / 2);
 
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor))
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, HeaderTextColor))
             rightListing.Label(surge.description);
 
         rightListing.End();
@@ -470,10 +470,10 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     }
 
     protected virtual void DrawTraitsTab(FoundationListing listing) {
-        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, HeaderTextColor))
             listing.Label($"<b>{"CRO_RadiantOrder_Traits_Favorable".Translate()}</b>");
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor))
             listing.Label("CRO_RadiantOrder_Traits_FavorableEffect".Translate());
 
         listing.Gap(Spacing.Get(0.5f));
@@ -489,10 +489,10 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
         listing.GapLine(color: BorderColor);
         listing.Gap();
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, headerTextColor))
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, HeaderTextColor))
             listing.Label($"<b>{"CRO_RadiantOrder_Traits_Incompatible".Translate()}</b>");
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor))
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor))
             listing.Label("CRO_RadiantOrder_Traits_IncompatibleEffect".Translate());
 
         listing.Gap(Spacing.Get(0.5f));

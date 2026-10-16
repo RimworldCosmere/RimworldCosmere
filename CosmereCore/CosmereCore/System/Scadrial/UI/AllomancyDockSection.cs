@@ -539,7 +539,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Allomancer a && a.metal.defName == metalDefName && !a.Overridden) return a;
+            if (all[i] is Allomancer a && a.Metal.defName == metalDefName && !a.Overridden) return a;
         }
 
         return null;
@@ -597,7 +597,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
         List<Ability> all = pawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is AllomancyAbility a && a.def == ability.Def) return a;
+            if (all[i] is AllomancyAbility a && a.Def == ability.Def) return a;
         }
 
         return null;
@@ -633,7 +633,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         if (pawn.genes == null) return;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Allomancer a && a.metal.defName == cell.SubsystemId && !a.Overridden) {
+            if (all[i] is Allomancer a && a.Metal.defName == cell.SubsystemId && !a.Overridden) {
                 Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(a));
                 return;
             }

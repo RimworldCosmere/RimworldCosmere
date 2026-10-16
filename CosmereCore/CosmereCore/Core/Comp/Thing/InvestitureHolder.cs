@@ -59,30 +59,30 @@ public class InvestitureHolder : ThingComp {
     public float maxInvestitureSelf;
     public bool sharingInvestiture;
 
-    public float currentInvestitureSelf {
-        get => props.isInfinite ? float.PositiveInfinity : currentInvestitureSelfInt;
+    public float CurrentInvestitureSelf {
+        get => Props.isInfinite ? float.PositiveInfinity : currentInvestitureSelfInt;
         set {
             currentInvestitureSelfInt = Mathf.Max(
                 0,
-                Mathf.Min(value, props.isInfinite ? float.PositiveInfinity : maxInvestitureSelf)
+                Mathf.Min(value, Props.isInfinite ? float.PositiveInfinity : maxInvestitureSelf)
             );
             parent.BroadcastCompSignal("Cosmere_Investiture_Changed");
         }
     }
 
-    public float currentInvestitureSelfStack => currentInvestitureSelf * parent.stackCount;
+    public float CurrentInvestitureSelfStack => CurrentInvestitureSelf * parent.stackCount;
 
-    public float maxInvestitureSelfStack => maxInvestitureSelf * parent.stackCount;
+    public float MaxInvestitureSelfStack => maxInvestitureSelf * parent.stackCount;
 
-    public float currentInvestiture {
+    public float CurrentInvestiture {
         get {
-            float total = currentInvestitureSelf * parent.stackCount;
-            if (!props.valueBasedOnChildren) return total;
-            List<Verse.Thing> childList = children;
+            float total = CurrentInvestitureSelf * parent.stackCount;
+            if (!Props.valueBasedOnChildren) return total;
+            List<Verse.Thing> childList = Children;
             for (int i = 0; i < childList.Count; i++) {
                 InvestitureHolder? holder = childList[i].TryGetComp<InvestitureHolder>();
                 if (holder != null) {
-                    total += holder.currentInvestiture;
+                    total += holder.CurrentInvestiture;
                 }
             }
 
@@ -90,15 +90,15 @@ public class InvestitureHolder : ThingComp {
         }
     }
 
-    public float maxInvestiture {
+    public float MaxInvestiture {
         get {
             float total = maxInvestitureSelf * parent.stackCount;
-            if (!props.valueBasedOnChildren) return total;
-            List<Verse.Thing> childList = children;
+            if (!Props.valueBasedOnChildren) return total;
+            List<Verse.Thing> childList = Children;
             for (int i = 0; i < childList.Count; i++) {
                 InvestitureHolder? holder = childList[i].TryGetComp<InvestitureHolder>();
                 if (holder != null) {
-                    total += holder.maxInvestiture;
+                    total += holder.MaxInvestiture;
                 }
             }
 
@@ -106,7 +106,7 @@ public class InvestitureHolder : ThingComp {
         }
     }
 
-    public List<Verse.Thing> children {
+    public List<Verse.Thing> Children {
         get {
             int currentTick = Find.TickManager?.TicksGame ?? 0;
             if (cachedChildren != null && cachedChildrenTick == currentTick) {
@@ -159,15 +159,15 @@ public class InvestitureHolder : ThingComp {
         }
     }
 
-    private new InvestitureHolderProperties props => (InvestitureHolderProperties)base.props;
+    private InvestitureHolderProperties Props => (InvestitureHolderProperties)props;
 
-    public bool isFull => Mathf.Approximately(currentInvestiture, maxInvestiture);
+    public bool IsFull => Mathf.Approximately(CurrentInvestiture, MaxInvestiture);
 
     public override void Initialize(CompProperties props) {
         base.Initialize(props);
-        currentInvestitureSelfInt = this.props.startingInvestiture;
-        drainRate = this.props.drainRate;
-        sharingInvestiture = this.props.shareInvestitureByDefault;
+        currentInvestitureSelfInt = this.Props.startingInvestiture;
+        drainRate = this.Props.drainRate;
+        sharingInvestiture = this.Props.shareInvestitureByDefault;
     }
 
     public float ExudeInvestitureInto(Verse.Thing thing, float amountToDraw) {
@@ -202,12 +202,12 @@ public class InvestitureHolder : ThingComp {
             return false;
         }
 
-        if (amountToAbsorb > maxInvestiture) {
-            amountToAbsorb = maxInvestiture;
+        if (amountToAbsorb > MaxInvestiture) {
+            amountToAbsorb = MaxInvestiture;
         }
 
-        if (amountToAbsorb > thingInvestiture.currentInvestiture) {
-            amountToAbsorb = thingInvestiture.currentInvestiture;
+        if (amountToAbsorb > thingInvestiture.CurrentInvestiture) {
+            amountToAbsorb = thingInvestiture.CurrentInvestiture;
         }
 
         // capped by space/efficiency, so the multiplied gain fills the space without overflowing
@@ -215,18 +215,18 @@ public class InvestitureHolder : ThingComp {
         float drawn = Mathf.Min(
             amountToAbsorb,
             Mathf.Min(
-                (maxInvestitureSelfStack - currentInvestitureSelfStack) / efficiency,
-                thingInvestiture.currentInvestitureSelfStack
+                (MaxInvestitureSelfStack - CurrentInvestitureSelfStack) / efficiency,
+                thingInvestiture.CurrentInvestitureSelfStack
             )
         );
 
         amountAbsorbed = drawn;
         if (drawn > 0) {
-            currentInvestitureSelf += drawn * efficiency / parent.stackCount;
-            thingInvestiture.currentInvestitureSelf -= drawn / thing.stackCount;
+            CurrentInvestitureSelf += drawn * efficiency / parent.stackCount;
+            thingInvestiture.CurrentInvestitureSelf -= drawn / thing.stackCount;
         }
 
-        List<Verse.Thing> thingChildren = thingInvestiture.children;
+        List<Verse.Thing> thingChildren = thingInvestiture.Children;
         for (int i = 0; i < thingChildren.Count; i++) {
             amountAbsorbed += AbsorbInvestitureFrom(thingChildren[i], amountToAbsorb);
         }
@@ -238,14 +238,14 @@ public class InvestitureHolder : ThingComp {
         InvestitureHolder? otherHolder = other.TryGetComp<InvestitureHolder>();
         if (otherHolder == null) return false;
 
-        return Mathf.Approximately(otherHolder.currentInvestitureSelf, currentInvestitureSelf);
+        return Mathf.Approximately(otherHolder.CurrentInvestitureSelf, CurrentInvestitureSelf);
     }
 
     public override void PostPostMake() {
         base.PostPostMake();
         parent.def.tickerType = TickerType.Normal;
 
-        maxInvestitureSelf = props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value;
+        maxInvestitureSelf = Props.maxIsInfinity ? float.PositiveInfinity : Props.maxInvestiture!.Value;
     }
 
     private string GetInvestitureLabel() {
@@ -264,12 +264,12 @@ public class InvestitureHolder : ThingComp {
     public override string CompInspectStringExtra() {
         StringBuilder sb = new StringBuilder();
         sb.Append(GetInvestitureLabel());
-        sb.AppendFormat(": {0:F0}", currentInvestiture);
-        if (props.showMax) {
-            sb.AppendFormat(" / {0:F0}", maxInvestiture);
+        sb.AppendFormat(": {0:F0}", CurrentInvestiture);
+        if (Props.showMax) {
+            sb.AppendFormat(" / {0:F0}", MaxInvestiture);
         }
 
-        if (drainRate > 0.0 && currentInvestiture > 0.0) {
+        if (drainRate > 0.0 && CurrentInvestiture > 0.0) {
             sb.AppendFormat(" (-{0:F4}/sec)", drainRate);
         }
 
@@ -284,54 +284,54 @@ public class InvestitureHolder : ThingComp {
         base.CompTickInterval(delta);
 
         if (!GenTicks.IsTickIntervalDelta(GenTicks.TickRareInterval, delta)) return;
-        if (Mathf.Approximately(drainRate, 0) || Mathf.Approximately(maxInvestiture, 0)) return;
+        if (Mathf.Approximately(drainRate, 0) || Mathf.Approximately(MaxInvestiture, 0)) return;
 
-        if (parent is Pawn && currentInvestitureSelf <= 1) return;
-        currentInvestitureSelf -= drainRate;
+        if (parent is Pawn && CurrentInvestitureSelf <= 1) return;
+        CurrentInvestitureSelf -= drainRate;
     }
 
     public override void PreAbsorbStack(Verse.Thing otherStack, int count) {
         float otherInvestiture = GetCurrentInvestiture(otherStack);
         if (otherInvestiture > 0) {
-            currentInvestitureSelf += otherInvestiture * count;
+            CurrentInvestitureSelf += otherInvestiture * count;
         }
     }
 
     public override void PostSplitOff(Verse.Thing piece) {
         InvestitureHolder? pieceHolder = piece.TryGetComp<InvestitureHolder>();
         if (pieceHolder != null) {
-            pieceHolder.currentInvestitureSelf = currentInvestitureSelf;
+            pieceHolder.CurrentInvestitureSelf = CurrentInvestitureSelf;
         }
     }
 
     public static float GetCurrentInvestiture(Verse.Thing thing, bool self = true) {
         if (!thing.TryGetComp(out InvestitureHolder investiture)) return 0f;
 
-        return self ? investiture.currentInvestitureSelf : investiture.currentInvestiture;
+        return self ? investiture.CurrentInvestitureSelf : investiture.CurrentInvestiture;
     }
 
     public void FillInvestiture() {
-        currentInvestitureSelf = maxInvestitureSelf;
-        foreach (Verse.Thing child in children) {
+        CurrentInvestitureSelf = maxInvestitureSelf;
+        foreach (Verse.Thing child in Children) {
             child.TryGetComp<InvestitureHolder>()?.FillInvestiture();
         }
     }
 
     public void WipeInvestiture() {
-        currentInvestitureSelf = 0;
-        foreach (Verse.Thing child in children) {
+        CurrentInvestitureSelf = 0;
+        foreach (Verse.Thing child in Children) {
             child.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
     }
 
     public override void PostExposeData() {
         base.PostExposeData();
-        Scribe_Values.Look(ref currentInvestitureSelfInt, "currentInvestitureSelf", props.startingInvestiture);
-        Scribe_Values.Look(ref drainRate, "drainRate", props.drainRate);
+        Scribe_Values.Look(ref currentInvestitureSelfInt, "currentInvestitureSelf", Props.startingInvestiture);
+        Scribe_Values.Look(ref drainRate, "drainRate", Props.drainRate);
         Scribe_Values.Look(
             ref maxInvestitureSelf,
             "maxInvestitureSelf",
-            props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value
+            Props.maxIsInfinity ? float.PositiveInfinity : Props.maxInvestiture!.Value
         );
         Scribe_Values.Look(ref sharingInvestiture, "sharingInvestiture");
     }

@@ -109,7 +109,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
     ) {
         for (int i = 0; i < candidates.Count; i++) {
             HemalurgicSpike? comp = candidates[i].TryGetComp<HemalurgicSpike>();
-            if (comp == null || comp.isCharged) continue;
+            if (comp == null || comp.IsCharged) continue;
             if (candidates[i].IsForbidden(pawn)) continue;
 
             float dist = candidates[i].Position.DistanceToSquared(pawn.Position);

@@ -16,8 +16,8 @@ public static class StormlightUtility {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
 
-        if (surgebinder.radiantOrderDef.defName == "Windrunner" && surgebinder.CurrentIdeal >= 1) return true;
-        if (surgebinder.radiantOrderDef.defName == "Bondsmith" && surgebinder.godsprenName == "Stormfather")
+        if (surgebinder.RadiantOrderDef.defName == "Windrunner" && surgebinder.CurrentIdeal >= 1) return true;
+        if (surgebinder.RadiantOrderDef.defName == "Bondsmith" && surgebinder.godsprenName == "Stormfather")
             return true;
 
         return false;

@@ -9,14 +9,14 @@ public static class SprenControllerRegistry {
     private static List<BaseSprenController> cachedStatic = [];
     private static List<BaseSprenController> cachedDynamic = [];
 
-    public static IReadOnlyList<BaseSprenController> enabledControllers => cachedEnabled;
+    public static IReadOnlyList<BaseSprenController> EnabledControllers => cachedEnabled;
 
-    public static IReadOnlyList<BaseSprenController> enabledStaticControllers => cachedStatic;
+    public static IReadOnlyList<BaseSprenController> EnabledStaticControllers => cachedStatic;
 
-    public static IReadOnlyList<BaseSprenController> enabledDynamicControllers => cachedDynamic;
+    public static IReadOnlyList<BaseSprenController> EnabledDynamicControllers => cachedDynamic;
 
     public static void Register(BaseSprenController controller) {
-        Controllers[controller.sprenType] = controller;
+        Controllers[controller.SprenType] = controller;
         RebuildCaches();
     }
 
@@ -26,7 +26,7 @@ public static class SprenControllerRegistry {
 
     public static bool IsSprenTypeEnabled(SprenType sprenType) {
         BaseSprenController? controller = GetController(sprenType);
-        return controller?.isEnabled ?? false;
+        return controller?.IsEnabled ?? false;
     }
 
     private static void RebuildCaches() {
@@ -34,7 +34,7 @@ public static class SprenControllerRegistry {
         cachedStatic = [];
         cachedDynamic = [];
         foreach (BaseSprenController c in Controllers.Values) {
-            if (!c.isEnabled) continue;
+            if (!c.IsEnabled) continue;
             cachedEnabled.Add(c);
             if (c is StaticSprenController) cachedStatic.Add(c);
             else if (c is DynamicSprenController) cachedDynamic.Add(c);

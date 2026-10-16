@@ -62,7 +62,7 @@ public class Shardblade : SurgebindingAbility {
     }
 
     private void SummonBladeInstantly() {
-        ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(ShardbladeDef, radiantOrder.gemstone.Item);
+        ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(ShardbladeDef, RadiantOrder.gemstone.Item);
 
         if (pawn.equipment != null) {
             pawn.equipment.AddEquipment(shardblade);

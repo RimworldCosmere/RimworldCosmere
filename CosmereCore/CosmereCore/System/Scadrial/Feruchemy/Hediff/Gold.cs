@@ -5,14 +5,14 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Gold : HediffWithComps {
-    private bool isTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
+    private bool IsTapping => CompoundedTap.IsTap(def, HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
 
-    private Feruchemist? gold => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
+    private Feruchemist? FeruchemicGene => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
 
     public override void PostMake() {
         base.PostMake();
 
-        if (gold == null) {
+        if (FeruchemicGene == null) {
             Log.Error("CS_Error_MissingRequirement".Translate("Gold", "the Gold gene"));
             pawn.health.RemoveHediff(this);
         }
@@ -23,7 +23,7 @@ public class Gold : HediffWithComps {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
 
-        if (!isTapping) return;
+        if (!IsTapping) return;
 
         List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs;
         for (int i = 0; i < hediffs.Count; i++) {

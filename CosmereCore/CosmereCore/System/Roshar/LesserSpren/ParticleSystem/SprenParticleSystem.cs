@@ -9,31 +9,31 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     private float? lastEmit;
     public Dictionary<IntVec3, (int, float)> particleCache = [];
 
-    private int mapID { get; } = mapID;
+    private int MapID { get; } = mapID;
 
-    public UnityEngine.ParticleSystem? particleSystem { get; private set; }
+    public UnityEngine.ParticleSystem? ParticleSystem { get; private set; }
 
     public void Initialize() {
-        if (particleSystem == null) {
-            CreateParticleSystem(mapID);
+        if (ParticleSystem == null) {
+            CreateParticleSystem(MapID);
         }
     }
 
     private void CreateParticleSystem(int mapID) {
-        particleSystem =
-            Builder.CreateLesserSprenParticleSystem(mapID, controller, controller.defaultSpawnInformation);
+        ParticleSystem =
+            Builder.CreateLesserSprenParticleSystem(mapID, controller, controller.DefaultSpawnInformation);
 
-        particleSystem.transform.position = Vector3.zero;
+        ParticleSystem.transform.position = Vector3.zero;
 
-        ConfigureForSprenType(particleSystem);
+        ConfigureForSprenType(ParticleSystem);
 
-        UnityEngine.ParticleSystem.MainModule main = particleSystem.main;
+        UnityEngine.ParticleSystem.MainModule main = ParticleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
 
-        particleSystem.gameObject.SetActive(true);
-        particleSystem.Play();
+        ParticleSystem.gameObject.SetActive(true);
+        ParticleSystem.Play();
 
-        UnityEngine.ParticleSystem.MainModule mainModule = particleSystem.main;
+        UnityEngine.ParticleSystem.MainModule mainModule = ParticleSystem.main;
         mainModule.simulationSpeed = 1f;
 
         UpdateParticles();
@@ -42,72 +42,72 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     private void ConfigureForSprenType(UnityEngine.ParticleSystem ps) {
         UnityEngine.ParticleSystem.MainModule main = ps.main;
 
-        main.startColor = controller.sprenColor;
-        main.startSize = main.startSize.constant * controller.sprenSizeMultiplier;
+        main.startColor = controller.SprenColor;
+        main.startSize = main.startSize.constant * controller.SprenSizeMultiplier;
 
         UnityEngine.ParticleSystem.EmissionModule emission = ps.emission;
         emission.rateOverTime = 0f;
     }
 
     public void UpdateParticles() {
-        if (particleSystem == null) {
+        if (ParticleSystem == null) {
             Log.Error(
-                $"[Spren] Cannot update particles - ParticleSystem: {particleSystem != null}"
+                $"[Spren] Cannot update particles - ParticleSystem: {ParticleSystem != null}"
             );
             return;
         }
 
-        if (controller.validSpawnInfo.Count == 0) {
-            particleSystem.Stop();
+        if (controller.ValidSpawnInfo.Count == 0) {
+            ParticleSystem.Stop();
             return;
         }
 
         // Disable mesh-based emission since we're doing manual positioning
-        UnityEngine.ParticleSystem.ShapeModule shapeModule = particleSystem.shape;
+        UnityEngine.ParticleSystem.ShapeModule shapeModule = ParticleSystem.shape;
         shapeModule.enabled = false;
 
         UpdateParticleCount();
 
         EmitParticlesForActiveCells();
 
-        if (!particleSystem.isPlaying) {
-            particleSystem.Play();
+        if (!ParticleSystem.isPlaying) {
+            ParticleSystem.Play();
         }
     }
 
     private void UpdateParticleCount() {
-        UnityEngine.ParticleSystem.MainModule main = particleSystem!.main;
-        UnityEngine.ParticleSystem.EmissionModule emission = particleSystem.emission;
+        UnityEngine.ParticleSystem.MainModule main = ParticleSystem!.main;
+        UnityEngine.ParticleSystem.EmissionModule emission = ParticleSystem.emission;
 
-        int maxParticlesPerCell = controller.maxParticlesPerCell;
-        int expectedParticles = controller.validSpawnInfo.Count * maxParticlesPerCell;
+        int maxParticlesPerCell = controller.MaxParticlesPerCell;
+        int expectedParticles = controller.ValidSpawnInfo.Count * maxParticlesPerCell;
         main.maxParticles = Mathf.Max(10, expectedParticles);
 
         emission.rateOverTime = 0f;
     }
 
     public bool ShouldReEmitParticles() {
-        return lastEmit < (Time.time + particleSystem?.main.duration ?? 0);
+        return lastEmit < (Time.time + ParticleSystem?.main.duration ?? 0);
     }
 
     public void EmitParticlesForActiveCells() {
-        if (controller.activeSpawnInfo.Count == 0 || !Mod.Settings.lesserSprenSpawn) return;
+        if (controller.ActiveSpawnInfo.Count == 0 || !Mod.Settings.lesserSprenSpawn) return;
         if (Current.CameraDriver.ZoomRootSize > Mod.Settings.lesserSprenMaxZoomSpawn) return;
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
-        int minParticles = controller.minParticlesPerCell;
-        int maxParticles = controller.maxParticlesPerCell;
+        int minParticles = controller.MinParticlesPerCell;
+        int maxParticles = controller.MaxParticlesPerCell;
 
         CellRect rect = Current.CameraDriver.CurrentViewRect.ClipInsideMap(Find.CurrentMap).ExpandedBy(1);
 
         particleCache.RemoveAll(p => Time.time > p.Value.Item2);
-        foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
+        foreach (SprenSpawnInformation info in controller.ActiveSpawnInfo) {
             QueueCellParticles(info, rect, emitParamsList, minParticles, maxParticles);
         }
 
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
-            particleSystem!.Emit(emitParams, 1);
+            ParticleSystem!.Emit(emitParams, 1);
         }
 
         lastEmit = Time.time;
@@ -148,15 +148,15 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
         int alreadyCached = particleCache.TryGetValue(position, out (int, float) cached) ? cached.Item1 : 0;
         particleCache[position] = (alreadyCached + particlesForThisCell,
-            particleSystem!.main.duration + Time.time);
+            ParticleSystem!.main.duration + Time.time);
     }
 
     public void SetVisible(bool visible) {
-        if (particleSystem == null) return;
-        particleSystem.gameObject.SetActive(visible);
+        if (ParticleSystem == null) return;
+        ParticleSystem.gameObject.SetActive(visible);
     }
 
     public void Destroy() {
-        if (particleSystem is not null) Object.Destroy(particleSystem.gameObject);
+        if (ParticleSystem is not null) Object.Destroy(ParticleSystem.gameObject);
     }
 }

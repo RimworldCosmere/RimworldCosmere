@@ -16,9 +16,9 @@ public class HemalurgicSpike : ThingComp {
     public HemalurgicChargeData? chargeData;
     public GeneDef? pendingStealTarget;
 
-    public bool isCharged => chargeData is { isValid: true };
+    public bool IsCharged => chargeData is { IsValid: true };
 
-    public MetallicArtsMetalDef? metal {
+    public MetallicArtsMetalDef? Metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             if (parent.Stuff != null) {
@@ -34,9 +34,9 @@ public class HemalurgicSpike : ThingComp {
         }
     }
 
-    public HemalurgicStealType stealType => metal != null ? HemalurgicConstants.GetStealType(metal) : default;
+    public HemalurgicStealType StealType => Metal != null ? HemalurgicConstants.GetStealType(Metal) : default;
 
-    public bool isInAluminumCase {
+    public bool IsInAluminumCase {
         get {
             if (parent.Map == null || !parent.Spawned) return false;
             List<Verse.Thing> things = parent.Map.thingGrid.ThingsListAtFast(parent.Position);
@@ -50,11 +50,11 @@ public class HemalurgicSpike : ThingComp {
         }
     }
 
-    public float currentStrength {
+    public float CurrentStrength {
         get {
             if (chargeData == null) return 0f;
             if (parent.holdingOwner?.Owner is Pawn) return chargeData.strength;
-            return chargeData.GetCurrentStrength(Find.TickManager.TicksGame, isInAluminumCase);
+            return chargeData.GetCurrentStrength(Find.TickManager.TicksGame, IsInAluminumCase);
         }
     }
 
@@ -73,7 +73,7 @@ public class HemalurgicSpike : ThingComp {
         if (parent.holdingOwner?.Owner is Pawn) return;
         if (!parent.IsHashIntervalTick(HemalurgicConstants.DecayIntervalTicks)) return;
 
-        float strength = chargeData.GetCurrentStrength(Find.TickManager.TicksGame, isInAluminumCase);
+        float strength = chargeData.GetCurrentStrength(Find.TickManager.TicksGame, IsInAluminumCase);
         if (strength <= 0f) {
             chargeData = null;
         }
@@ -89,11 +89,11 @@ public class HemalurgicSpike : ThingComp {
 
     public override string CompInspectStringExtra() {
         StringBuilder sb = new StringBuilder();
-        if (isCharged) {
+        if (IsCharged) {
             sb.AppendLine("CS_Hemalurgy_SpikeCharged".Translate());
             string typeLabel = HemalurgicConstants.GetStealTypeLabel(chargeData!.stealType);
             sb.AppendLine("CS_Hemalurgy_SpikeCategory".Translate(typeLabel));
-            float str = currentStrength;
+            float str = CurrentStrength;
             string strengthLabel = str switch {
                 >= 0.8f => "CS_Hemalurgy_StrengthStrong".Translate(),
                 >= 0.5f => "CS_Hemalurgy_StrengthModerate".Translate(),
@@ -101,7 +101,7 @@ public class HemalurgicSpike : ThingComp {
                 _ => "CS_Hemalurgy_StrengthFading".Translate(),
             };
             sb.Append("CS_Hemalurgy_SpikeStrength".Translate(strengthLabel));
-            if (isInAluminumCase) {
+            if (IsInAluminumCase) {
                 sb.AppendLine();
                 sb.Append("CS_Hemalurgy_DecayPrevented".Translate());
             }

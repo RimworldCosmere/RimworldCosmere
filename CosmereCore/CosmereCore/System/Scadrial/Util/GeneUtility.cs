@@ -7,11 +7,11 @@ using Verse;
 namespace Cosmere.System.Scadrial.Util;
 
 public static class GeneUtility {
-    private static bool isHarmony => ShardUtility.AreAnyEnabled(ShardDefOf.Harmony);
+    private static bool IsHarmony => ShardUtility.AreAnyEnabled(ShardDefOf.Harmony);
 
-    private static bool isRuin => ShardUtility.AreAnyEnabled(ShardDefOf.Ruin);
+    private static bool IsRuin => ShardUtility.AreAnyEnabled(ShardDefOf.Ruin);
 
-    private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
+    private static bool IsPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
     /// <summary>
     ///     Genes are assigned before the pawn is named, so a fresh generation has none yet - only a
@@ -44,13 +44,13 @@ public static class GeneUtility {
             return;
         }
 
-        if (isPreservation) {
+        if (IsPreservation) {
             AssignPreservationGenes(pawn, isNoble, isTerris);
             return;
         }
 
         // Harmony system: no nobles, no block, no mistborn/full feruchemists
-        if (isHarmony) AssignHarmonyGenes(pawn, isTerris);
+        if (IsHarmony) AssignHarmonyGenes(pawn, isTerris);
     }
 
     /// <summary>Preservation and Ruin, the pre-Catacendre split: nobles roll Allomancy, Terris Feruchemy.</summary>
@@ -59,7 +59,7 @@ public static class GeneUtility {
         if (isNoble) RollAllomanticLineage(pawn, preservation);
 
         // Ruin logic
-        if (!isRuin) return;
+        if (!IsRuin) return;
         if (!isTerris) return;
 
         RollFeruchemicLineage(pawn);
@@ -240,7 +240,7 @@ public static class GeneUtility {
     }
 
     private static bool IsMetalbornBlocked(Pawn pawn) {
-        return !isHarmony && pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaPurity) == true;
+        return !IsHarmony && pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaPurity) == true;
     }
 
     /// <summary>

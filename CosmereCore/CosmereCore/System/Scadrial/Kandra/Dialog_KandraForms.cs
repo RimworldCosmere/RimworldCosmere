@@ -122,9 +122,9 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         absorbInputAroundWindow = true;
     }
 
-    protected override Vector2 initialWindowSize => new Vector2(Spacing.Get(65), Spacing.Get(39));
+    protected override Vector2 InitialWindowSize => new Vector2(Spacing.Get(65), Spacing.Get(39));
 
-    protected override float headerHeight => Spacing.Get(3.5);
+    protected override float HeaderHeight => Spacing.Get(3.5);
 
     private Pawn? Pawn => forms.parent as Pawn;
 
@@ -220,7 +220,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Widgets.Label(new Rect(x, y, width, 20f), "CS_Kandra_TrueFormHeader".Translate());
         }
 
@@ -228,12 +228,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         DrawPortrait(new Rect(x, y, width, WellHeight), forms.TrueBody, RailPortrait, 1.12f);
         y += WellHeight + 8f;
 
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, HeaderTextColor)) {
             Widgets.Label(new Rect(x, y, width, 22f), Pawn?.LabelShortCap ?? string.Empty);
         }
 
         y += 24f;
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Widgets.Label(new Rect(x, y, width, 18f), KindLine());
             DrawMaterial(new Rect(x, y + 18f, width, 18f));
         }
@@ -352,7 +352,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Widgets.Label(new Rect(x, y, width, 20f), "CS_Kandra_ReshapeNow".Translate());
         }
 
@@ -360,12 +360,12 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         DrawPortrait(new Rect(x, y, width, WellHeight), forms.TrueBody, RailPortrait, 1.12f);
         y += WellHeight + 8f;
 
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, HeaderTextColor)) {
             Widgets.Label(new Rect(x, y, width, 22f), Pawn?.LabelShortCap ?? string.Empty);
         }
 
         y += 24f;
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             DrawMaterial(new Rect(x, y, width, 18f));
         }
 
@@ -427,7 +427,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         y += GenderButtonHeight + Spacing.Get(0.5f);
         TaggedString reads = "CS_Kandra_GenderReads".Translate(designGender.GetLabel().CapitalizeFirst().Named("GENDER"));
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Rect line = new Rect(inner.x, y, inner.width, Text.CalcHeight(reads, inner.width));
             Widgets.Label(line, reads);
             y = line.yMax + Spacing.Get(0.5f);
@@ -514,7 +514,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Rect inner = plate.ContractedBy(Spacing.Get());
         Rect preview = new Rect(inner.x, inner.y, PreviewSize.x, PreviewSize.y);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, BodyTextColor)) {
             Widgets.Label(new Rect(preview.x, preview.yMax, preview.width, 18f), "CS_Kandra_ReshapeAfter".Translate());
         }
 
@@ -541,7 +541,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Rect cost = new Rect(x, inner.yMax - ButtonHeight - 18f, width, 18f);
         DrawSummary(new Rect(x, inner.y, width, cost.y - inner.y), material);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Widgets.Label(cost, "CS_Kandra_ReshapeCost".Translate());
         }
 
@@ -571,7 +571,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     ///     would double the eye lines the translators have to carry.
     /// </summary>
     private void DrawSummary(Rect region, Color material) {
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, HeaderTextColor)) {
             Widgets.Label(
                 new Rect(region.x, region.y, region.width, SummaryNameHeight),
                 "CS_Kandra_SummaryName".Translate((Pawn?.LabelShortCap ?? string.Empty).Named("PAWN"))
@@ -580,7 +580,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         float y = region.y + SummaryNameHeight;
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             y = SummaryLine(region, y, material, BuildSummary());
 
             TaggedString? hair = HairSummary();
@@ -686,7 +686,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         GUI.DrawTexture(thumb, gender == Gender.Female ? FemaleTrueBody : MaleTrueBody, ScaleMode.ScaleToFit);
         GUI.color = previous;
 
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, selected ? BorderColor : bodyTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
             Widgets.Label(new Rect(thumb.xMax + 6f, rect.y, rect.width - 36f, rect.height), gender.GetLabel().CapitalizeFirst());
         }
 
@@ -840,7 +840,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
             GUI.color = previous;
         }
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, selected ? BorderColor : bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, selected ? BorderColor : BodyTextColor)) {
             Widgets.Label(
                 new Rect(cell.x + 2f, cell.y + HairThumbSize + 4f, cell.width - 4f, cell.height - HairThumbSize - 6f),
                 hair.LabelCap
@@ -862,7 +862,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Rect chip = new Rect(row.x + 4f, row.y + (row.height - 14f) / 2f, 14f, 14f);
         Widgets.DrawBoxSolid(chip, BodyColor);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : DefaultBodyTextColor)) {
             Widgets.Label(
                 new Rect(chip.xMax + 6f, row.y, row.width - 26f, row.height),
                 "CS_Kandra_EyeColourNone".Translate()
@@ -885,7 +885,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Rect chip = new Rect(row.x + 4f, row.y + (row.height - 14f) / 2f, 14f, 14f);
         Widgets.DrawBoxSolid(chip, Parse(hex));
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : BodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, selected ? BorderColor : DefaultBodyTextColor)) {
             Widgets.Label(new Rect(chip.xMax + 6f, row.y, row.width - 26f, row.height), label);
         }
 
@@ -949,7 +949,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         Widgets.DrawMenuSection(card);
         DrawPortrait(new Rect(card.x + 5f, card.y + 6f, CardPortrait.x, CardPortrait.y), form, CardPortrait, 1.2f);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, BodyTextColor)) {
             Widgets.Label(new Rect(card.x + 4f, card.y + 93f, card.width - 8f, 26f), form.Label);
         }
 
@@ -986,13 +986,13 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         float width = rail.width - RailPad * 2f;
         float y = rail.y + RailPad;
 
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, HeaderTextColor)) {
             Rect title = new Rect(x, y, width, Text.CalcHeight("CS_Kandra_AdoptTitle".Translate(), width));
             Widgets.Label(title, "CS_Kandra_AdoptTitle".Translate());
             y = title.yMax + 8f;
         }
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, BodyTextColor)) {
             Rect blurb = new Rect(x, y, width, Text.CalcHeight("CS_Kandra_AdoptBody".Translate(), width));
             Widgets.Label(blurb, "CS_Kandra_AdoptBody".Translate());
             y = blurb.yMax + 12f;
@@ -1003,7 +1003,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         DrawPortrait(was, forms.TrueBody, new Vector2(98f, 96f), 1.05f);
         DrawPortrait(now, form, new Vector2(98f, 96f), 1.05f);
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, BodyTextColor)) {
             Widgets.Label(new Rect(was.x, was.yMax + 4f, was.width, 28f), CurrentTrueLabel());
         }
 
@@ -1030,11 +1030,11 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     }
 
     private void DrawEmpty(Rect region) {
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperCenter, headerTextColor)) {
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperCenter, HeaderTextColor)) {
             Widgets.Label(new Rect(region.x, region.y + 150f, region.width, 24f), "CS_Kandra_NoFormsYet".Translate());
         }
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, bodyTextColor)) {
+        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, BodyTextColor)) {
             Widgets.Label(
                 new Rect(region.x + 56f, region.y + 178f, region.width - 112f, 60f),
                 "CS_Kandra_NoFormsYetHint".Translate()
@@ -1067,7 +1067,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         Pawn? pawn = form?.PortraitPawn;
         if (pawn == null) {
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, bodyTextColor)) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, BodyTextColor)) {
                 Widgets.Label(well, "CS_Kandra_NoPortrait".Translate());
             }
 
@@ -1237,7 +1237,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
 
         if (form.faction != null) text.AppendLine(Tinted(form.faction.LabelCap, form.faction.DefaultColor));
         if (form.ideo != null) text.AppendLine(Tinted(form.ideo.name, form.ideo.Color));
-        if (form.xenotype != null) text.AppendLine(Tinted(form.xenotype.LabelCap, BodyTextColor));
+        if (form.xenotype != null) text.AppendLine(Tinted(form.xenotype.LabelCap, DefaultBodyTextColor));
 
         text.AppendLine();
         text.Append((picking ? "CS_Kandra_PickTrueTip" : "CS_Kandra_PickFormTip").Translate().Resolve());

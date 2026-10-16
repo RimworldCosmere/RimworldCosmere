@@ -9,31 +9,31 @@ using ShaderDatabase = Cosmere.System.Roshar.Shader.ShaderDatabase;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class WindsprenController : StaticSprenController {
-    public override SprenType sprenType => SprenType.Windspren;
+    public override SprenType SprenType => SprenType.Windspren;
 
-    public override bool isEnabled => true;
+    public override bool IsEnabled => true;
 
-    public override float cellSpawnChance => 0.02f;
+    public override float CellSpawnChance => 0.02f;
 
-    public override int minParticlesPerCell => 2;
+    public override int MinParticlesPerCell => 2;
 
-    public override int maxParticlesPerCell => 4;
+    public override int MaxParticlesPerCell => 4;
 
-    protected override float maxSpreadDistance => 0.3f;
+    protected override float MaxSpreadDistance => 0.3f;
 
-    protected override float movementSpeed => 2f;
+    protected override float MovementSpeed => 2f;
 
-    protected override float randomDirectionAmount => 0.1f;
+    protected override float RandomDirectionAmount => 0.1f;
 
-    public override List<GemDef> compatibleGemTypes => [
+    public override List<GemDef> CompatibleGemTypes => [
         GemDefOf.Emerald,
         GemDefOf.Diamond,
         GemDefOf.Heliodor,
     ];
 
-    public override float captureRarityMultiplier => 1.0f;
+    public override float CaptureRarityMultiplier => 1.0f;
 
-    public override Color sprenColor => new Color(0.7f, 0.7f, 0.9f, 1.0f);
+    public override Color SprenColor => new Color(0.7f, 0.7f, 0.9f, 1.0f);
 
     protected override Material GetBaseMaterial() {
         return ShaderDatabase.FlowingParticleStreamMaterial;
@@ -41,8 +41,8 @@ public class WindsprenController : StaticSprenController {
 
     protected override void ConfigureMaterial(Material material) {
         base.ConfigureMaterial(material);
-        material.SetColor("_Color", sprenColor);
-        material.SetColor("_StreamColor", sprenColor);
+        material.SetColor("_Color", SprenColor);
+        material.SetColor("_StreamColor", SprenColor);
         material.SetColor("_ParticleColor", new Color(1f, 1f, 1f, 0.8f));
         material.SetInt("_FlowPattern", 1);
         material.SetFloat("_FlowSpeed", 2.0f);
@@ -58,12 +58,12 @@ public class WindsprenController : StaticSprenController {
         float windTurbineMultiplier = GetWindTurbineMultiplier(position, map!);
 
         if (windTurbineMultiplier > 0) {
-            return defaultSpawnInformation.With(
+            return DefaultSpawnInformation.With(
                 map,
                 position,
-                cellSpawnChance * windTurbineMultiplier,
-                Mathf.RoundToInt(minParticlesPerCell * windTurbineMultiplier),
-                Mathf.RoundToInt(maxParticlesPerCell * windTurbineMultiplier)
+                CellSpawnChance * windTurbineMultiplier,
+                Mathf.RoundToInt(MinParticlesPerCell * windTurbineMultiplier),
+                Mathf.RoundToInt(MaxParticlesPerCell * windTurbineMultiplier)
             );
         }
 
@@ -79,7 +79,7 @@ public class WindsprenController : StaticSprenController {
 
         bool isClearArea = IsClearOfObstacles(position, map!);
 
-        return isClearArea ? defaultSpawnInformation.With(map, position) : null;
+        return isClearArea ? DefaultSpawnInformation.With(map, position) : null;
     }
 
     private static bool IsElevatedTerrain(TerrainDef terrain) {

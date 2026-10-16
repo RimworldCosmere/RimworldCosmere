@@ -43,8 +43,8 @@ public abstract class MouseoverSprenInfoPatch : MouseoverReadout {
         List<string> sprenNames = [];
 
         // Check each enabled spren controller directly for active spren at this position
-        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
-            if (controller.activeSpawnInfo.Any(s => s.position.Equals(cell))) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.EnabledControllers) {
+            if (controller.ActiveSpawnInfo.Any(s => s.position.Equals(cell))) {
                 sprenNames.Add(controller.GetLocalizedName());
             }
         }

@@ -74,7 +74,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
     private StorageSettings? settings;
 
-    public new InnerStorageProperties props => (InnerStorageProperties)base.props;
+    public InnerStorageProperties Props => (InnerStorageProperties)props;
 
     public Pawn? ParentPawn => ParentThing as Pawn;
 
@@ -105,7 +105,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     }
 
     public StorageSettings GetParentStoreSettings() {
-        return props.fixedStorageSettings ?? StorageSettings.EverStorableFixedSettings();
+        return Props.fixedStorageSettings ?? StorageSettings.EverStorableFixedSettings();
     }
 
     public void Notify_SettingsChanged() { }
@@ -113,7 +113,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public bool Accepts(Verse.Thing t) {
         if (!innerContainer.CanAcceptAnyOf(t)) return false;
         if (!GetStoreSettings().AllowedToAccept(t)) return false;
-        if (props.maxItems >= 0 && innerContainer.TotalStackCount >= props.maxItems) return false;
+        if (Props.maxItems >= 0 && innerContainer.TotalStackCount >= Props.maxItems) return false;
         if (!WithinInvestitureBand(t)) return false;
 
         return !AtStackLimit(t);
@@ -134,11 +134,11 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     /// <param name="t">The thing being offered.</param>
     /// <returns>True when the band allows it, or when no band is configured.</returns>
     private bool WithinInvestitureBand(Verse.Thing t) {
-        if (!props.investitureThreshold) return true;
+        if (!Props.investitureThreshold) return true;
         if (!t.TryGetComp(out InvestitureHolder held)) return true;
 
         return InvestitureRange.Within(
-            held.currentInvestitureSelf,
+            held.CurrentInvestitureSelf,
             held.maxInvestitureSelf,
             allowedInvestiture.min,
             allowedInvestiture.max
@@ -154,7 +154,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     ///     nobody wants by default.
     /// </remarks>
     private void EjectDrifted() {
-        if (!ejectOutOfRange || !props.investitureThreshold) return;
+        if (!ejectOutOfRange || !Props.investitureThreshold) return;
         if (ParentThing is not { Spawned: true } holder) return;
 
         for (int i = innerContainer.Count - 1; i >= 0; i--) {
@@ -175,8 +175,8 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     /// <param name="t">The thing being offered.</param>
     /// <returns>True when the stack count is spent and nothing here can absorb it.</returns>
     private bool AtStackLimit(Verse.Thing t) {
-        if (props.maxStacks < 0) return false;
-        if (innerContainer.Count < props.maxStacks) return false;
+        if (Props.maxStacks < 0) return false;
+        if (innerContainer.Count < Props.maxStacks) return false;
 
         for (int i = 0; i < innerContainer.Count; i++) {
             Verse.Thing held = innerContainer[i];
@@ -202,7 +202,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     ///     A def that sets only <c>maxStacks</c> has no headcount to give, and the container needs
     ///     one, so it gets an effectively unbounded budget and lets the stack limit do the work.
     /// </remarks>
-    private int ItemCapacity => props.maxItems >= 0 ? props.maxItems : int.MaxValue;
+    private int ItemCapacity => Props.maxItems >= 0 ? Props.maxItems : int.MaxValue;
 
     public string GetUniqueLoadID() {
         return parent.GetUniqueLoadID();
@@ -237,7 +237,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public override void PostDestroy(DestroyMode mode, Verse.Map? previousMap) {
         base.PostDestroy(mode, previousMap);
         previousMap?.haulDestinationManager?.RemoveHaulDestination(this);
-        if (mode == DestroyMode.Deconstruct && props.dropItemsWhenDeconstructed) {
+        if (mode == DestroyMode.Deconstruct && Props.dropItemsWhenDeconstructed) {
             foreach (Verse.Thing thing in innerContainer.ToList()) {
                 innerContainer.TryDrop(
                     thing,
@@ -259,16 +259,16 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
         // Ticker type HAS to be normal for the parent
         parent.def.tickerType = TickerType.Normal;
-        innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, ItemCapacity, props.oneStackOnly);
+        innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, ItemCapacity, Props.oneStackOnly);
 
         settings = new StorageSettings(this);
-        if (props.defaultStorageSettings != null) {
-            settings.CopyFrom(props.defaultStorageSettings);
+        if (Props.defaultStorageSettings != null) {
+            settings.CopyFrom(Props.defaultStorageSettings);
         }
 
         // the band draws in the hit points slider's spot; vanilla skips this method if it isn't configurable.
-        if (props.investitureThreshold) BandByFilter.Remove(settings.filter);
-        if (props.investitureThreshold) BandByFilter.Add(settings.filter, this);
+        if (Props.investitureThreshold) BandByFilter.Remove(settings.filter);
+        if (Props.investitureThreshold) BandByFilter.Add(settings.filter, this);
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
@@ -276,7 +276,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     }
 
     public override void PostExposeData() {
-        Scribe_Deep.Look(ref innerContainer, "innerContainer", this, ItemCapacity, props.oneStackOnly);
+        Scribe_Deep.Look(ref innerContainer, "innerContainer", this, ItemCapacity, Props.oneStackOnly);
         Scribe_Deep.Look(ref settings, "storageSettings", this);
         Scribe_Values.Look(ref allowedInvestiture, "allowedInvestiture", new FloatRange(0f, 1f));
         Scribe_Values.Look(ref ejectOutOfRange, "ejectOutOfRange");

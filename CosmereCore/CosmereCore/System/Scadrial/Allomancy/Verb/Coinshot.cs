@@ -8,18 +8,18 @@ using Verse.AI;
 namespace Cosmere.System.Scadrial.Allomancy.Verb;
 
 public class Coinshot : Verb_Shoot {
-    private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;
+    private CoinshotAbility Ability => (CoinshotAbility)verbTracker.directOwner;
 
     public override ThingDef Projectile => ThingDefOf.Cosmere_Scadrial_Thing_ClipProjectile;
 
     public override void WarmupComplete() {
-        ability.UpdateStatus(ability.nextStatus!.Value);
+        Ability.UpdateStatus(Ability.NextStatus!.Value);
 
         SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(CasterPawn);
         surge?.Burn();
         base.WarmupComplete();
         surge?.PostBurn();
-        ability.UpdateStatus(BurningStatus.Off);
+        Ability.UpdateStatus(BurningStatus.Off);
     }
 
     protected override bool TryCastShot() {
@@ -39,7 +39,7 @@ public class Coinshot : Verb_Shoot {
             return false;
         }
 
-        if (!ability.Gene.TryBurnMetalForInvestiture(ability.def.beuPerTick)) return false;
+        if (!Ability.Gene.TryBurnMetalForInvestiture(Ability.Def.beuPerTick)) return false;
         base.TryCastShot();
 
         // Consume the clip
@@ -50,7 +50,7 @@ public class Coinshot : Verb_Shoot {
     }
 
     public override void OrderForceTarget(LocalTargetInfo target) {
-        Job job = ability.GetJob(target, null);
+        Job job = Ability.GetJob(target, null);
         CasterPawn.jobs.TryTakeOrderedJob(job);
     }
 }

@@ -18,7 +18,7 @@ public class ShapeStone : SurgebindingAbility {
     }
 
     public void ExecuteAt(IntVec3 cell, Map map) {
-        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        float cost = Def.beuPerTick / (1 << Gene.CurrentIdeal);
         if (!Gene.CanLowerReserve(cost)) return;
 
         Building? building = cell.GetFirstBuilding(map);

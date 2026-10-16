@@ -5,6 +5,6 @@
   "devDependencies": {
     "@rimworks/mod-ci": "github:RimWorks/mod-ci#v5",
     "semantic-release": "^25.0.9",
-    "semantic-release-steam": "^3.0.0"
+    "semantic-release-steam": "^3.1.0"
   }
 }

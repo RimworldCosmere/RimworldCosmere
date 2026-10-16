@@ -6,8 +6,18 @@ import { basename } from 'node:path';
 const publishedFileIds = JSON.parse(
     readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
 );
-const descriptionHeader = readFileSync(new URL('./.github/README.header.md', import.meta.url), 'utf8');
-const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', import.meta.url), 'utf8');
+const localizedFile = name => ({
+    default: readFileSync(new URL(`./.github/README.${name}.md`, import.meta.url), 'utf8'),
+    ...Object.fromEntries(
+        ['spanish', 'russian', 'schinese'].map(code => [
+            code,
+            readFileSync(new URL(`./.github/README.${name}.${code}.md`, import.meta.url), 'utf8'),
+        ]),
+    ),
+});
+
+const descriptionHeader = localizedFile('header');
+const descriptionFooter = localizedFile('footer');
 
 const titles = {
     CosmereCore: 'Cosmere - Core',

@@ -30,7 +30,10 @@ public class AshGrid : IExposable {
         depth = new byte[map.cellIndices.NumGridCells];
     }
 
-    /// <summary>Cheap enough to poll every tick, and the only thing the render gate needs.</summary>
+    /// <summary>
+    ///     Gets the running total of ash units across the map. Cheap enough to poll every tick, and
+    ///     the only thing the render gate needs.
+    /// </summary>
     public long TotalUnits { get; private set; }
 
     public bool Any => TotalUnits > 0;
@@ -55,6 +58,7 @@ public class AshGrid : IExposable {
     }
 
     /// <summary>0 to 1 against the maximum, which is what the shader and the buckets both want.</summary>
+    /// <returns>That cell's depth as 0 to 1 against the maximum.</returns>
     public float GetFraction(int index) {
         return depth[index] * UnitMm / (float)MaxDepthMm;
     }
@@ -64,6 +68,7 @@ public class AshGrid : IExposable {
     }
 
     /// <summary>Roofed cells never gather ash. That is the whole reason skaa build roofs.</summary>
+    /// <returns>True when the cell is unroofed, so ash can gather there.</returns>
     public bool CanHaveAsh(IntVec3 cell) {
         return !map.roofGrid.Roofed(cell);
     }
@@ -72,6 +77,7 @@ public class AshGrid : IExposable {
     ///     Returns the millimetres actually added, which is less than asked for near the cap.
     ///     Callers owe the buried set: sweep stripe, own refresh, or tolerate a 64-tick lag.
     /// </summary>
+    /// <returns>The millimetres actually added, 0 when the cell is already at the cap.</returns>
     public int AddDepthMm(int index, int millimetres) {
         byte before = depth[index];
         int after = Mathf.Clamp(before + millimetres / UnitMm, 0, MaxDepthMm / UnitMm);
@@ -86,6 +92,7 @@ public class AshGrid : IExposable {
     ///     Returns the millimetres actually removed, so clearing can conserve mass.
     ///     Callers owe the buried set: sweep stripe, own refresh, or tolerate a 64-tick lag.
     /// </summary>
+    /// <returns>The millimetres actually removed, 0 when the cell is already bare.</returns>
     public int RemoveDepthMm(int index, int millimetres) {
         byte before = depth[index];
         if (before == 0) return 0;

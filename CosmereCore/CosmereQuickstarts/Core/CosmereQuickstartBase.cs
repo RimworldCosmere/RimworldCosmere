@@ -10,14 +10,15 @@ namespace Cosmere.Core.Quickstart;
 /// </summary>
 public abstract class CosmereQuickstartBase : AbstractQuickstart {
     /// <summary>
-    ///     Def names, not ShardDefs: Radiant grants need Honor even from Scadrial code, and the
-    ///     Roshar ShardDefOf lives in a namespace Scadrial must not import.
+    ///     Gets the Shards the game comes up with, as def names rather than ShardDefs: Radiant grants
+    ///     need Honor even from Scadrial code, and the Roshar ShardDefOf lives in a namespace Scadrial
+    ///     must not import.
     /// </summary>
     public virtual IReadOnlyList<string> shards => [];
 
     /// <summary>
-    ///     Overrides whatever era the scenario declares. Null defers to the scenario, which is
-    ///     what every quickstart that isn't deliberately cross-shard wants.
+    ///     Gets the era that overrides whatever the scenario declares. Null defers to the scenario,
+    ///     which is what every quickstart that isn't deliberately cross-shard wants.
     /// </summary>
     public virtual string? era => null;
 

@@ -23,6 +23,7 @@ public static class UpkeepRate {
     ///     Allomancy spends thousandths of a breath-equivalent unit per charge, which rounds away
     ///     at the two decimals the strip has room for; a reserve share stays legible at that scale.
     /// </summary>
+    /// <returns>Percent of the full reserve the upkeep spends each second, 0 when either the conversion rate or the maximum reserve is 0 or less.</returns>
     public static float ReservePercentPerSecond(
         float ratePerCharge,
         int ticksPerCharge,

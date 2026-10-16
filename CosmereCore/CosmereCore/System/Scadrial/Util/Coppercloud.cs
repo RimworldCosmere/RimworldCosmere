@@ -27,6 +27,7 @@ public static class Coppercloud {
     /// <summary>
     ///     Whether this map has any cloud at all, so a scan can skip the rest of the work.
     /// </summary>
+    /// <returns>True when at least one pawn on the map is burning copper. False for a null map.</returns>
     public static bool AnyOn(Map? map) {
         return map != null && CloudsOn(map).Count > 0;
     }
@@ -34,6 +35,7 @@ public static class Coppercloud {
     /// <summary>
     ///     What the clouds covering this thing are worth together, or zero if none reach it.
     /// </summary>
+    /// <returns>The combined cloud strength, or 0 when the thing is null or off-map.</returns>
     public static float StrengthOver(Verse.Thing? thing) {
         Map? map = thing?.Map;
         if (map == null) return 0f;
@@ -53,6 +55,7 @@ public static class Coppercloud {
     /// <summary>
     ///     How hard this pawn is burning that metal right now, or zero if they are not.
     /// </summary>
+    /// <returns>The strongest matching burn, or 0 when the pawn cannot burn that metal.</returns>
     /// <remarks>
     ///     Both halves of the contest are read through here, so a Smoker and a Seeker are always
     ///     measured on the same scale.
@@ -76,6 +79,7 @@ public static class Coppercloud {
     /// <summary>
     ///     Whether a cloud on the target is enough to hide it from this burn.
     /// </summary>
+    /// <returns>True when the target is hidden. False when either side is null.</returns>
     public static bool Hides(Pawn? seeker, Verse.Thing? target, MetallicArtsMetalDef? metal) {
         if (seeker == null || target == null) return false;
 
@@ -86,6 +90,7 @@ public static class Coppercloud {
     ///     The same question with the burn already measured, for scans that test many things
     ///     against one burn.
     /// </summary>
+    /// <returns>True when the cloud over the target beats the sense strength.</returns>
     public static bool Hides(Verse.Thing? target, float senseStrength) {
         return CoppercloudContest.Blocks(StrengthOver(target), senseStrength);
     }

@@ -10,6 +10,7 @@ public static class SteelJumpRange {
     ///     The targeter asks for the range before anything has lit the metal, so an idle ability
     ///     reports power 0 and sizes the jump to nothing. QueueCastingJob defaults to 1; match it.
     /// </summary>
+    /// <returns>The power to size the jump with, never under 1.</returns>
     public static int PowerFor(int? nextPower, int currentPower) {
         return nextPower ?? Math.Max(currentPower, 1);
     }
@@ -18,6 +19,7 @@ public static class SteelJumpRange {
     ///     rawPower is a modifier around 1, not a factor: it floors at 0.1, so multiplying the
     ///     def's range by it directly left a fresh Misting jumping two tiles out of a stated twelve.
     /// </summary>
+    /// <returns>How far the pawn can jump, in cells.</returns>
     public static float For(float baseRange, int power, float rawPower, float mass) {
         float massFactor = Math.Max(mass / BaselineMass, MinMassFactor);
 

@@ -140,8 +140,8 @@ public class SurgebindingSteps {
     /// game stores, so the Second Ideal is 1 here and reads as 2 on screen.</summary>
     /// <param name="ctx">The scenario's context.</param>
     /// <param name="nickname">The pawn's short name.</param>
-    /// <param name="orderDefName">The order defName.</param>
     /// <param name="ideal">The zero-based Ideal to move to.</param>
+    /// <param name="orderDefName">The order defName.</param>
     [When("{string} reaches ideal {int} of the radiant order {string}")]
     public static void SetIdeal(PickleContext ctx, string nickname, int ideal, string orderDefName) {
         ctx.Require(ideal is >= 0 and <= 4, $"an Ideal runs 0 to 4 on the stored scale; got {ideal}");

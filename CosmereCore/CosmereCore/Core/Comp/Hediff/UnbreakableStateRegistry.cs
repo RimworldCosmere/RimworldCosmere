@@ -25,6 +25,7 @@ public static class UnbreakableStateRegistry {
     }
 
     /// <summary>True when this pawn's current state must be left exactly where it is.</summary>
+    /// <returns>True when the pawn is in a registered state, so nothing may calm them out of it.</returns>
     public static bool Guards(Pawn? pawn) {
         MentalStateDef? state = pawn?.MentalStateDef;
 

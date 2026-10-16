@@ -49,7 +49,7 @@ public class Dialog_ProgressionChoice : Verse.Window {
     }
 
     /// <summary>
-    ///     Margin to 0 leaves Spacing.Get() as the only contraction in play, so CalcHeight's
+    ///     Gets 0, which leaves Spacing.Get() as the only contraction in play, so CalcHeight's
     ///     content width matches what DoWindowContents actually draws into.
     /// </summary>
     protected override float Margin => 0f;

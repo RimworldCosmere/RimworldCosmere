@@ -23,6 +23,7 @@ public class DeadShardblade : ThingWithComps, IDynamicPalette {
     ///     because a dead blade has lost its lustre. The last three entries are the hilt, matching the
     ///     living blade's.
     /// </summary>
+    /// <returns>Six palette materials: three dulled blade tones drawn from the gem, then the three hilt tones.</returns>
     public List<LUTPaletteMaterial> GetMaterials() {
         Color baseColor = DrawColor;
         GemDef? gem = GemForStuff();

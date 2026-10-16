@@ -21,6 +21,7 @@ public class IncidentWorker_CosmereQuest : IncidentWorker {
     ///     not change between them, and TryExecuteWorker validates its own pick independently
     ///     through CosmereQuestBuilder.TryBuild.
     /// </summary>
+    /// <returns>True when the target is a map and at least one repeatable quest is eligible on it.</returns>
     protected override bool CanFireNowSub(IncidentParms parms) {
         if (!base.CanFireNowSub(parms)) return false;
         if (!(parms.target is Verse.Map map)) return false;

@@ -10,6 +10,7 @@ public class StormlightConduitProperties : CompProperties {
 
 public class StormlightConduit : StormlightNode {
     /// <summary>A conduit is wall trim, not a node the player inspects for network totals.</summary>
+    /// <returns>Always null, so the inspect pane shows nothing for this comp.</returns>
     public override string? CompInspectStringExtra() {
         return null;
     }

@@ -9,6 +9,8 @@ public static class ScadrialMetallurgyConstants {
      * metalmind holds more of an attribute than a crude one, enough that quality
      * outweighs the choice of metalmind: a legendary earring carries more than an
      * awful bracelet.
+     *
+     * <returns>A multiplier on base capacity: 0.5 at awful, 1 at normal, 2 at legendary.</returns>
      */
     public static float MetalmindCapacityFactor(QualityCategory quality) {
         return quality switch {

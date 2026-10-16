@@ -18,6 +18,7 @@ public static class HeadTypeUtility {
     /// <summary>
     ///     Every head the generator would consider for this pawn, in def order.
     /// </summary>
+    /// <returns>The head types the generator could pick for this pawn, in def order. Empty when none of them pass.</returns>
     public static List<HeadTypeDef> Available(Gender gender, Pawn? pawn = null) {
         List<HeadTypeDef> all = DefDatabase<HeadTypeDef>.AllDefsListForReading;
         List<HeadTypeDef> usable = [];
@@ -38,6 +39,7 @@ public static class HeadTypeUtility {
     /// <summary>
     ///     One head, weighted the way the generator weights them, or the fallback if none fit.
     /// </summary>
+    /// <returns>A head drawn at random by selection weight, or the fallback when no head fits the pawn. Null when no fallback was passed.</returns>
     public static HeadTypeDef? RandomFor(Gender gender, Pawn? pawn = null, HeadTypeDef? fallback = null) {
         List<HeadTypeDef> usable = Available(gender, pawn);
         if (usable.Count == 0) return fallback;

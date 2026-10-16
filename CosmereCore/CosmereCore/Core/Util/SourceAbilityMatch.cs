@@ -14,6 +14,7 @@ public static class SourceAbilityMatch {
     ///     Missing is an ordinary answer, not an error. An ability can be gone by the time a save
     ///     reloads - spiked out, or the mod that added it removed.
     /// </remarks>
+    /// <returns>The roster index of the wanted def, or -1 when the name is empty or the pawn no longer has that ability.</returns>
     public static int IndexOf(List<string> abilityDefNames, string? wanted) {
         if (string.IsNullOrEmpty(wanted)) return -1;
 

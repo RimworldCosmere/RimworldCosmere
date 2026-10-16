@@ -45,6 +45,7 @@ public abstract class QuestPart_CosmereActivable : QuestPartActivable {
     protected virtual void OnSkipped() { }
 
     /// <summary>True once this objective is done. Called on the check interval, not every tick.</summary>
+    /// <returns>True once the objective has been met, which completes the part.</returns>
     protected abstract bool IsSatisfied();
 
     protected virtual void OnSatisfied() {

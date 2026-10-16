@@ -34,13 +34,14 @@ public static class AshVentSoilLadder {
         { "Riverbank", TopRung },
     };
 
-    /// <summary>Every rung, for a caller that has to resolve the names against a def database.</summary>
+    /// <summary>Gets every rung, for a caller that has to resolve the names against a def database.</summary>
     public static IReadOnlyDictionary<string, string> Rungs => chain;
 
     /// <summary>
     ///     What this ground becomes next, or null when the vent has nothing to give it. Stone, ice,
     ///     water and terrain the mod has never heard of fall out here rather than default into it.
     /// </summary>
+    /// <returns>The next rung up from that ground, or null when the vent has nothing to give it.</returns>
     public static string? NextRung(string? terrain) {
         if (terrain == null) return null;
 
@@ -51,6 +52,7 @@ public static class AshVentSoilLadder {
     ///     Days after the vent lit before its front covers a cell this far out. A cell's dwell runs
     ///     from there, so ground the vent has only just reached starts its first rung then.
     /// </summary>
+    /// <returns>Days after the vent lit before its front covers a cell that far out, 0 inside the clear radius.</returns>
     public static float WarmedAtDays(float distance, float clearRadius) {
         if (distance <= clearRadius) return 0f;
 
@@ -61,6 +63,7 @@ public static class AshVentSoilLadder {
     ///     A cell's own place in the rung window. Without it a ring would come due on one tick and
     ///     swamp the sweep's ration, because the front takes a cell in the time a rung takes.
     /// </summary>
+    /// <returns>That cell's own offset into the rung window, from 0 up to one rung's worth of days.</returns>
     public static float JitterDays(int x, int z) {
         unchecked {
             int hash = (x * 73856093) ^ (z * 19349663);
@@ -73,6 +76,7 @@ public static class AshVentSoilLadder {
     }
 
     /// <summary>Whole rungs a cell has earned after dwelling this long, never fewer than none.</summary>
+    /// <returns>Whole rungs earned for that dwell time, 0 below one rung's worth.</returns>
     public static int RungsClimbed(float dwellDays) {
         if (dwellDays < DaysPerRung) return 0;
 
@@ -80,6 +84,7 @@ public static class AshVentSoilLadder {
     }
 
     /// <summary>Whether a cell finishes a rung between two readings of the vent's clock.</summary>
+    /// <returns>True when the cell finishes a rung between the two clock readings.</returns>
     public static bool RungIsDue(
         int x, int z, float distance, float clearRadius, float daysBefore, float daysAfter
     ) {

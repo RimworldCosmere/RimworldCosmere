@@ -14,11 +14,13 @@ public static class AshEra {
     public const string AshEraDefName = "Cosmere_Scadrial_Era_PreCatacendre";
 
     /// <summary>Pure so it can be tested without Verse. Every era but the first is ash-free.</summary>
+    /// <returns>True when that era is the one ash falls in.</returns>
     public static bool IsAshEra(string? eraDefName) {
         return eraDefName == AshEraDefName;
     }
 
     /// <summary>Governs map generation, the ashfall condition, eruptions and deposition.</summary>
+    /// <returns>True when ash should still be falling on this map.</returns>
     public static bool CanAccumulate(Verse.Map? map) {
         if (map == null) return false;
         if (!Mod.enableAshfall) return false;
@@ -33,6 +35,7 @@ public static class AshEra {
     ///     Governs the section layer and the falling veil. Outlives the era flip so ash already on
     ///     the ground drains visibly rather than disappearing the moment Harmony rises.
     /// </summary>
+    /// <returns>True when ash should be drawn, either because it is still falling or because some is left on the ground.</returns>
     public static bool ShouldRender(Verse.Map? map) {
         if (map == null) return false;
         if (CanAccumulate(map)) return true;

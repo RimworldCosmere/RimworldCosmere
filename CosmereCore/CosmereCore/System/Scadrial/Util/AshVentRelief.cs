@@ -18,6 +18,7 @@ public static class AshVentRelief {
     public const float PerVent = MaxRelief / AshVentSiting.MaxVents;
 
     /// <summary>Fraction of a map's severity its sealed vents have taken off it.</summary>
+    /// <returns>The share of severity the seals have removed, 0 when nothing is sealed and capped at 0.5.</returns>
     public static float Fraction(int sealedVents) {
         if (sealedVents <= 0) return 0f;
 
@@ -29,6 +30,7 @@ public static class AshVentRelief {
     ///     Severity the map actually falls at. Taking a flat 0.5 off the Final Empire's 0.15 would
     ///     leave clear sky on the tiles carrying the most vents, so the relief scales instead.
     /// </summary>
+    /// <returns>The severity left after the seals take their share, handed back unchanged when it is already 0 or less.</returns>
     public static float Relieve(float severity, int sealedVents) {
         if (severity <= 0f) return severity;
 

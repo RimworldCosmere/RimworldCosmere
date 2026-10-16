@@ -22,6 +22,7 @@ public class QuestPart_PersistentSite : QuestPart_CosmereActivable {
     public float threatPoints;
 
     /// <summary>Never satisfied on purpose: it runs until the quest ends and Cleanup tidies up.</summary>
+    /// <returns>Always false. The objective runs until the quest ends.</returns>
     protected override bool IsSatisfied() {
         Site? current = site;
         Verse.Map? map = current == null || current.Destroyed ? null : current.Map;

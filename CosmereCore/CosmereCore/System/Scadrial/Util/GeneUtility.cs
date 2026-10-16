@@ -82,7 +82,7 @@ public static class GeneUtility {
         if (success) AddRandomAllomanticGene(pawn);
     }
 
-    /// Full Feruchemists were far more common than Ferrings among Terris - most were Full, or nothing.
+    // Full Feruchemists were far more common than Ferrings among Terris - most were Full, or nothing.
     private static void RollFeruchemicLineage(Pawn pawn) {
         bool success = RollChance(16, out string roll);
         Log.Debug(

@@ -14,6 +14,7 @@ public class Harden : SurgebindingAbility {
     ///     The hit point multiplier a building is currently hardened by, if any. The map itself
     ///     stays private so only this class can write to it.
     /// </summary>
+    /// <returns>True when the building is hardened, which also sets <paramref name="multiplier" /> to its hit point multiplier.</returns>
     public static bool TryGetHardenMultiplier(Building building, out float multiplier) {
         return hardenedBuildings.TryGetValue(building, out multiplier);
     }

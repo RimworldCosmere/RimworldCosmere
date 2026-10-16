@@ -81,10 +81,10 @@ public class CompKandraForms : ThingComp {
 
     public bool IsWearingSomeoneElse => current != null;
 
-    /// <summary>Whether the body underneath is the one it built rather than one it ate.</summary>
+    /// <summary>Gets a value indicating whether the body underneath is the one it built rather than one it ate.</summary>
     public bool TrueBodyCrafted => trueBody?.crafted == true;
 
-    /// <summary>Whether this kandra can shape a body nobody has ever worn.</summary>
+    /// <summary>Gets a value indicating whether this kandra can shape a body nobody has ever worn.</summary>
     public bool CanFreeForm {
         get {
             if (parent is not Pawn pawn) return false;
@@ -94,7 +94,7 @@ public class CompKandraForms : ThingComp {
     }
 
     /// <summary>
-    ///     How convincing the disguise is, 0 to 1. Bronze sees through it regardless.
+    ///     Gets how convincing the disguise is, 0 to 1. Bronze sees through it regardless.
     /// </summary>
     public float Conviction {
         get {
@@ -227,7 +227,7 @@ public class CompKandraForms : ThingComp {
     }
 
     /// <summary>
-    ///     The name the colony hears, or null when the kandra is being itself. A shape that
+    ///     Gets the name the colony hears, or null when the kandra is being itself. A shape that
     ///     carries the kandra's own name is not an impersonation, so it reads as nothing.
     /// </summary>
     public string? WornName {
@@ -248,6 +248,7 @@ public class CompKandraForms : ThingComp {
     ///     The player has to be able to tell at a glance which of their colonists is currently a
     ///     kandra wearing somebody. Nobody else in the colony gets this line.
     /// </remarks>
+    /// <returns>The panel line naming who the kandra is wearing, or an empty string when it is being itself.</returns>
     public override string CompInspectStringExtra() {
         string? worn = WornName;
 
@@ -294,6 +295,7 @@ public class CompKandraForms : ThingComp {
     }
 
     /// <summary>Applies a finished reshape. False when there was nothing waiting.</summary>
+    /// <returns>True when a waiting reshape was written onto the true body. False when nothing was pending, or the kandra has no true body yet.</returns>
     public bool CommitReshape() {
         if (pendingMaterial == null && pendingGender == null && pendingHair == null &&
             pendingHairColour == null && pendingEyeColour == null && pendingEyeColourTwo == null &&
@@ -368,7 +370,7 @@ public class CompKandraForms : ThingComp {
     }
 
     /// <summary>
-    ///     Whether anybody has worked out what this is while it wears the current shape.
+    ///     Gets a value indicating whether anybody has worked out what this is while it wears the current shape.
     /// </summary>
     /// <remarks>
     ///     Stays true for as long as the shape does. Changing shape is the way out, which is the
@@ -395,6 +397,7 @@ public class CompKandraForms : ThingComp {
     }
 
     /// <summary>Whether the kandra has raised a hand to anyone since putting this shape on.</summary>
+    /// <returns>True when the pawn has attacked something since the current shape went on.</returns>
     public bool FoughtInThisShape(Pawn wearing) {
         int last = wearing.mindState?.lastAttackTargetTick ?? 0;
 
@@ -439,6 +442,7 @@ public class CompKandraForms : ThingComp {
     ///     restore, quietly flattening a player's tuned 1s and 4s the first time their kandra
     ///     changed shape.
     /// </remarks>
+    /// <returns>The pawn's real stored work priorities, or null when the private field cannot be read.</returns>
     private static DefMap<WorkTypeDef, int>? StoredPriorities(Pawn pawn) {
         prioritiesField ??= typeof(Pawn_WorkSettings).GetField(
             "priorities",

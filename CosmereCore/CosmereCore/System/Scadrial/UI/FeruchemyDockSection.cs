@@ -21,8 +21,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float DialHeight = 12f;
     private const float StripButtonHeight = 22f;
 
-    /// A closed strip never asks its gene for anything; an open one adds whatever
-    /// FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
+    /// <summary>
+    ///     A closed strip never asks its gene for anything; an open one adds whatever
+    ///     FeruchemyLedgerRow will actually draw for it, so the two never drift apart.
+    /// </summary>
+    /// <returns>The open strip's full height in pixels, or 0 when the pawn has no Feruchemist gene.</returns>
     private static float StripHeightFor(Feruchemist? gene) {
         if (gene == null) return 0f;
 
@@ -48,16 +51,20 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private int cachedCellCount = -1;
     private string? expandedMetal;
 
-    /// Which strip is on screen, not the same as which one the player has open: a closing
-    /// strip has to keep drawing until it has finished sliding away.
+    /// <summary>
+    ///     Which strip is on screen, not the same as which one the player has open: a closing
+    ///     strip has to keep drawing until it has finished sliding away.
+    /// </summary>
     private string? revealedMetal;
     private float revealedHeight;
 
     // picked while another metal is open, held until that one finishes sliding away.
     private string? pendingMetal;
 
-    /// Idempotent, because height is asked for several times a frame. Reveal itself only
-    /// advances once per frame; this just re-reads where it got to.
+    /// <summary>
+    ///     Idempotent, because height is asked for several times a frame. Reveal itself only
+    ///     advances once per frame; this just re-reads where it got to.
+    /// </summary>
     private void StepReveal(float openHeight) {
         // one panel at a time - swapping mid-slide would jump rows and read as a glitch.
         if (expandedMetal == null && pendingMetal != null && revealedHeight < 1f) {
@@ -70,8 +77,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         else if (revealedHeight < 1f) revealedMetal = null;
     }
 
-    /// Clicking the open metal closes it; clicking a different one closes it first and
-    /// queues the new one behind it.
+    /// <summary>
+    ///     Clicking the open metal closes it; clicking a different one closes it first and
+    ///     queues the new one behind it.
+    /// </summary>
     private void ToggleMetal(string subsystemId) {
         if (expandedMetal == subsystemId) {
             expandedMetal = null;
@@ -93,8 +102,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return IsGroupCollapsed(group.LabelKey);
     }
 
-    /// Folding a quadrant closes any metal open inside it - the strip would otherwise keep
-    /// its height with nothing above it to say where it came from.
+    /// <summary>
+    ///     Folding a quadrant closes any metal open inside it, so the strip does not keep
+    ///     its height with nothing above it to say where it came from.
+    /// </summary>
     private void ToggleGroup(MetalGroup group) {
         if (!ToggleGroupFold(group.LabelKey)) return;
 
@@ -265,7 +276,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         }
     }
 
-    /// Burning reads first - the loudest thing happening, and the only one that destroys something.
+    // Burning reads first - the loudest thing happening, and the only one that destroys something.
     private static string DirectionLabel(Feruchemist gene, FeruchemyCapacity capacity) {
         if (capacity.CompoundedRate < 0f) return "CC_Dock_Feruchemy_BurningMetalmind".Translate();
         if (capacity.CompoundedRate > 0f) return "CC_Dock_Feruchemy_Compounding".Translate();
@@ -299,8 +310,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    /// What this metal stores and taps, in the metal def's own words. The tooltip
-    /// described the click rather than the power before this.
+    /// <summary>
+    ///     What this metal stores and taps, in the metal def's own words, with the pawn's
+    ///     name filled in.
+    /// </summary>
+    /// <returns>The metal's feruchemy description, or an empty string when the def carries none.</returns>
     private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
         MetallicArtsMetalDef? metal =
             DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);

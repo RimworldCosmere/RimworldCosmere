@@ -53,8 +53,10 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
 
     public bool CanTap => Equipped && StoredAmount > 0f;
 
-    /// Burning draws on whatever the metalmind holds; stored-by-hand charge is the
-    /// same charge, just set alight rather than drawn out normally.
+    /// <summary>
+    ///     Gets a value indicating whether this metalmind can be burned right now. Burning draws on whatever it holds, and
+    ///     stored-by-hand charge is the same charge, just set alight rather than drawn out normally.
+    /// </summary>
     public bool CanTapCompounded => Equipped && TotalStored > 0f;
 
     public bool CanStoreCompounded => Equipped && FreeSpace > 0f;
@@ -118,8 +120,10 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return new Dictionary<string, float>(chargeByLedger);
     }
 
-    /// Deep-scribed data never sees PostLoadInit, so the owning hediff calls this
-    /// after load to keep the two pools inside a capacity that may have changed.
+    /// <summary>
+    ///     Keeps the two pools inside a capacity that may have changed. Deep-scribed data never sees
+    ///     PostLoadInit, so the owning hediff calls this after load.
+    /// </summary>
     public void ReconcileCapacity() {
         if (storedAmountInt + compoundedAmountInt > maxAmountInt) {
             compoundedAmountInt = Mathf.Max(0f, maxAmountInt - storedAmountInt);
@@ -151,8 +155,11 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         return compoundedAmountInt - before;
     }
 
-    /// Drawing compounded charge spends the metalmind that carries it: capacity falls by
-    /// what was drawn, so the metal runs out exactly when the charge does.
+    /// <summary>
+    ///     Draws compounded charge, which spends the metalmind that carries it. Capacity falls by what was
+    ///     drawn, so the metal runs out exactly when the charge does.
+    /// </summary>
+    /// <returns>How much charge was actually drawn, which is 0 when the metalmind cannot be tapped.</returns>
     public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTapCompounded) return 0f;
 

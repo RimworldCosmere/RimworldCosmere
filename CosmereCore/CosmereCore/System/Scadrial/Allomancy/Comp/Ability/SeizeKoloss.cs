@@ -54,6 +54,7 @@ public class SeizeKoloss : EmotionalPush {
     ///     Only things that can be bound at all. Resistance is zero for everything else, which is
     ///     also what keeps this off ordinary colonists.
     /// </summary>
+    /// <returns>True when the target is a pawn that can be bound at all.</returns>
     public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) {
         return target.Pawn != null && EmotionalResistance.Of(target.Pawn) > 0f;
     }

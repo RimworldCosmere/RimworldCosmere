@@ -25,7 +25,10 @@ public class KandraHeritage : Verse.Gene {
 
     private int generation;
 
-    /// <summary>First generation, down to tenth. Lower is older and harder to push around.</summary>
+    /// <summary>
+    ///     Gets the generation, 1 for the first down to 10 for the tenth. Lower is older and
+    ///     harder to push around.
+    /// </summary>
     public int Generation {
         get {
             if (generation == 0) Roll();
@@ -42,7 +45,7 @@ public class KandraHeritage : Verse.Gene {
         Apply();
     }
 
-    /// <summary>1.0 for the first generation, tailing to 0.0 for the tenth.</summary>
+    /// <summary>Gets the seniority: 1.0 for the first generation, tailing to 0.0 for the tenth.</summary>
     public float Seniority => 1f - (Generation - Earliest) / (float)(Latest - Earliest);
 
     /// <summary>Years the first generation has been walking around. Made at the Ascension.</summary>
@@ -52,7 +55,7 @@ public class KandraHeritage : Verse.Gene {
     private const float YoungestYears = 40f;
 
     /// <summary>
-    ///     How long this kandra has existed, which follows its generation and nothing else.
+    ///     Gets how long this kandra has existed, which follows its generation and nothing else.
     /// </summary>
     /// <remarks>
     ///     Jitter comes off the pawn's own id rather than a roll, so it is the same on every call

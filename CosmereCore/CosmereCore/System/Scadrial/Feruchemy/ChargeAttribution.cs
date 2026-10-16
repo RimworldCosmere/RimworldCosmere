@@ -8,6 +8,7 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 /// </summary>
 public static class ChargeAttribution {
     /// <summary>Sums the map. Null or empty totals 0.</summary>
+    /// <returns>The sum of every entry, or 0 for a null or empty map.</returns>
     public static float Total(Dictionary<string, float>? map) {
         if (map == null) return 0f;
 
@@ -31,7 +32,8 @@ public static class ChargeAttribution {
         for (int i = 0; i < keys.Count; i++) map[keys[i]] = Math.Max(0f, map[keys[i]] * factor);
     }
 
-    /// <summary>Removes up to <paramref name="amount" />, split by each entry's share of the total. Returns what was actually removed.</summary>
+    /// <summary>Removes up to <paramref name="amount" />, split by each entry's share of the total.</summary>
+    /// <returns>How much was actually removed, which is 0 when the map is empty.</returns>
     public static float Drain(Dictionary<string, float> map, float amount) {
         float total = Total(map);
         amount = Math.Max(0f, amount);
@@ -49,7 +51,8 @@ public static class ChargeAttribution {
         return amount;
     }
 
-    /// <summary>Removes <paramref name="amount" /> from <paramref name="key" /> first; anything past that entry's balance drains from the rest of the map like <see cref="Drain" />. Returns what was actually removed.</summary>
+    /// <summary>Removes <paramref name="amount" /> from <paramref name="key" /> first; anything past that entry's balance drains from the rest of the map like <see cref="Drain" />.</summary>
+    /// <returns>How much was actually removed, counting both the named entry and the rest of the map.</returns>
     public static float DrainNamed(Dictionary<string, float> map, string key, float amount) {
         amount = Math.Max(0f, amount);
         if (amount <= 0f) return 0f;

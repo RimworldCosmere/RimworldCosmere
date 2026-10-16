@@ -37,6 +37,7 @@ public class ResidenceTracker : Verse.GameComponent {
     }
 
     /// <summary>What this pawn has earned by living here, on the 0-100 Connection scale.</summary>
+    /// <returns>The Connection strength residence has earned, 0 to 100. 0 when the pawn is null, when the save has no naturalising world, or when that world's Shards do not include this one.</returns>
     public int StrengthFor(Pawn? pawn, ShardDef shard) {
         if (pawn == null) return 0;
 
@@ -60,6 +61,7 @@ public class ResidenceTracker : Verse.GameComponent {
 
     /// <summary>Moves a pawn's residence and reports how much actually moved.</summary>
     /// <remarks>Some gameplay moves stored residence rather than only accumulating it, so this runs in both directions.</remarks>
+    /// <returns>How many ticks the residence really moved once clamped, which can be less than the delta asked for. 0 when the pawn is null or the delta is 0.</returns>
     public int AdjustTicks(Pawn? pawn, int delta) {
         if (pawn == null || delta == 0) return 0;
 
@@ -72,6 +74,7 @@ public class ResidenceTracker : Verse.GameComponent {
     }
 
     /// <summary>Raw ticks resident, with no shard-ancestry gate. The read half of <see cref="AdjustTicks" />.</summary>
+    /// <returns>Ticks the pawn has been resident, seeded from its age the first time it is asked for. 0 when the pawn is null or the save has no naturalising world.</returns>
     public int TicksFor(Pawn? pawn) {
         if (pawn == null) return 0;
 
@@ -110,6 +113,7 @@ public class ResidenceTracker : Verse.GameComponent {
     }
 
     /// <summary>The world a pawn can naturalise into, or null when this save has none.</summary>
+    /// <returns>The save's primary world, or null when there is no primary world or it is the cross-world sentinel.</returns>
     private static CosmereWorldDef? NaturalisingWorld() {
         CosmereWorldDef? world = WorldUtility.Primary;
 

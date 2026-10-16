@@ -18,6 +18,7 @@ public static class CompoundingAccess {
     ///     Whether the pawn has any business seeing compounding controls.
     ///     Looser than <see cref="Gate"/>: controls appear once either half is earned, then say what's missing.
     /// </summary>
+    /// <returns>True once the research is finished, or once both powers reach the skill floor.</returns>
     public static bool Discovered(Pawn pawn) {
         if (Research is { IsFinished: true }) return true;
 

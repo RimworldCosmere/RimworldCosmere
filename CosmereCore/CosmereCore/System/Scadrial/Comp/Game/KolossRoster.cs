@@ -71,7 +71,7 @@ public class KolossBond : IExposable {
 /// </remarks>
 public class KolossRoster : GameComponent {
     /// <summary>
-    ///     What holding costs against what seizing cost, per koloss.
+    ///     Gets what holding costs against what seizing cost, per koloss.
     /// </summary>
     /// <remarks>
     ///     Taking hold is the hard part and keeping hold is not. Nothing caps how many an
@@ -95,6 +95,7 @@ public class KolossRoster : GameComponent {
     }
 
     /// <summary>The Allomancer holding this koloss, or nobody.</summary>
+    /// <returns>The Allomancer holding that koloss, or null when nobody holds it or the koloss is null.</returns>
     public Pawn? HolderOf(Pawn? koloss) {
         if (koloss == null) return null;
 
@@ -106,6 +107,7 @@ public class KolossRoster : GameComponent {
     }
 
     /// <summary>Everything this Allomancer is holding, oldest bond first.</summary>
+    /// <returns>The koloss that Allomancer holds, oldest bond first. Empty when they hold none.</returns>
     public List<Pawn> HeldBy(Pawn? holder) {
         List<Pawn> held = [];
         if (holder == null) return held;
@@ -119,15 +121,8 @@ public class KolossRoster : GameComponent {
         return held;
     }
 
-    /// <summary>
-    ///     Takes hold, and hands the thing over to whoever took it.
-    /// </summary>
-    /// <remarks>
-    ///     Drafting gates on IsColonistPlayerControlled, which needs the pawn in the player
-    ///     faction. Without the transfer a held koloss reported a holder and still could not be
-    ///     given a single order, which is the whole point of holding one.
-    /// </remarks>
     /// <summary>Everything this Allomancer holds on one particular metal.</summary>
+    /// <returns>The koloss that Allomancer holds through that metal. Empty when none of their bonds use it.</returns>
     public List<Pawn> HeldOnMetal(Pawn? holder, Cosmere.Core.Def.MetalDef metal) {
         List<Pawn> held = [];
         if (holder == null) return held;
@@ -143,6 +138,14 @@ public class KolossRoster : GameComponent {
         return held;
     }
 
+    /// <summary>
+    ///     Takes hold, and hands the thing over to whoever took it.
+    /// </summary>
+    /// <remarks>
+    ///     Drafting gates on IsColonistPlayerControlled, which needs the pawn in the player
+    ///     faction. Without the transfer a held koloss reported a holder and still could not be
+    ///     given a single order, which is the whole point of holding one.
+    /// </remarks>
     public void Bind(Pawn holder, Pawn koloss, Cosmere.Core.Def.MetalDef? metal = null, Cosmere.Core.Def.AbilityDef? through = null) {
         Release(koloss);
         bonds.Add(new KolossBond(
@@ -176,6 +179,7 @@ public class KolossRoster : GameComponent {
     }
 
     /// <summary>True if a bond was actually there to break.</summary>
+    /// <returns>True when a bond was there to break, false when nobody was holding that koloss.</returns>
     public bool Release(Pawn? koloss) {
         if (koloss == null) return false;
 
@@ -217,13 +221,6 @@ public class KolossRoster : GameComponent {
         }
     }
 
-    /// <summary>
-    ///     Charges every holder for everything they are holding, and drops what they cannot afford.
-    /// </summary>
-    /// <remarks>
-    ///     Newest first, so an army built up over a campaign survives a bad moment and the koloss
-    ///     seized one second before the metal ran out is the one that goes.
-    /// </remarks>
     /// <summary>
     ///     Publishes what every hold costs, and drops the ones nobody can pay for.
     /// </summary>
@@ -284,6 +281,7 @@ public class KolossRoster : GameComponent {
     }
 
     /// <summary>Newest first, so an army built over a campaign outlives a greedy seizure.</summary>
+    /// <returns>That holder's intact bonds, newest first. Empty when they hold nothing.</returns>
     private List<KolossBond> BondsOf(Pawn holder) {
         List<KolossBond> mine = [];
         for (int i = 0; i < bonds.Count; i++) {
@@ -319,6 +317,7 @@ public class KolossRoster : GameComponent {
     ///     Zinc or brass, whichever this Allomancer has. Either one holds a koloss; the books do
     ///     not care which direction you push somebody's emotions to own them.
     /// </summary>
+    /// <returns>The holder's zinc gene, their brass gene when there is no zinc, or null when they have neither.</returns>
     public static Allomancer? HoldingGene(Pawn? holder) {
         if (holder?.genes == null) return null;
 

@@ -10,6 +10,7 @@ public static class LineFade {
     ///     Opaque within 3 tiles, then linear down to a 0.3 floor at the edge. A radius of 3 or
     ///     less is entirely "near" - that guard also stops the falloff divide handing back NaN.
     /// </summary>
+    /// <returns>The line's alpha at that distance, 1 within 3 tiles of the source and never under 0.3.</returns>
     public static float For(float radius, float distance) {
         float falloff = radius - NearRadius;
         if (falloff <= 0f) return 1f;

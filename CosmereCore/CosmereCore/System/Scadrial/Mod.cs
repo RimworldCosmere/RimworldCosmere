@@ -13,19 +13,19 @@ public class Mod(ModContentPack content) : CosmereMod<ScadrialModSettings>(conte
 
     public static bool alwaysShowAllomanticAuras => Settings.alwaysShowAllomanticAuras;
 
-    /// <summary>Years from the fourth spike to the skin giving out.</summary>
+    /// <summary>Gets how many years pass between the fourth spike and the skin giving out.</summary>
     public static float kolossGrowthYears => Settings.kolossGrowthYears;
 
-    /// <summary>Cells a vent's fertile ground creeps out to.</summary>
+    /// <summary>Gets how many cells a vent's fertile ground creeps out to.</summary>
     public static float ventSoilReach => Settings.ventSoilReach;
 
-    /// <summary>Seconds a koloss stands loose before it turns on whatever is nearest.</summary>
+    /// <summary>Gets how many seconds a koloss stands loose before it turns on whatever is nearest.</summary>
     public static float kolossGraceSeconds => Settings.kolossGraceSeconds;
 
-    /// <summary>What holding one costs per interval, against what seizing it cost.</summary>
+    /// <summary>Gets what holding one costs per interval, against what seizing it cost.</summary>
     public static float kolossHoldFraction => Settings.kolossHoldFraction;
 
-    /// <summary>Multiplies how hard a koloss or kandra is to take hold of.</summary>
+    /// <summary>Gets the multiplier on how hard a koloss or kandra is to take hold of.</summary>
     public static float kolossResistance => Settings.kolossResistance;
 
     /// <summary>

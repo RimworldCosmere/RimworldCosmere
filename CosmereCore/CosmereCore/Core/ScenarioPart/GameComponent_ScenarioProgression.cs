@@ -63,7 +63,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
     }
 
     /// <summary>
-    ///     Days since the running arc took over, rather than since the campaign began. An arc
+    ///     Gets the days since the running arc took over, rather than since the campaign began. An arc
     ///     entered part-way through a long game has every absolute day threshold already behind
     ///     it, so without this its whole run of events fires in one tick.
     /// </summary>
@@ -177,7 +177,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
         }
     }
 
-    /// <summary>The mechanical outcomes of the block currently running, one per line.</summary>
+    /// <summary>Gets the mechanical outcomes of the block currently running, one per line.</summary>
     public string? PendingEffects { get; private set; }
 
     private static string? Summarise(List<ProgressionAction> actions) {

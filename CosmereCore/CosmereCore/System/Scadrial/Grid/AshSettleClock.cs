@@ -17,10 +17,11 @@ public class AshSettleClock : IExposable {
         this.map = map;
     }
 
-    /// <summary>Cells counting down. Zero lets the array go.</summary>
+    /// <summary>Gets the number of cells counting down. Zero lets the array go.</summary>
     public int PendingCount { get; private set; }
 
     /// <summary>Starts the wait on first sight of the cell, then reports when it is up.</summary>
+    /// <returns>True once the wait is up. False on the first look, which starts the clock.</returns>
     public bool IsDue(int index, int today, bool settling) {
         due ??= new ushort[map.cellIndices.NumGridCells];
 

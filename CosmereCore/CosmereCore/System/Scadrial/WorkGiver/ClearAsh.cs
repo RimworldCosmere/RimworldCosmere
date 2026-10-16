@@ -20,6 +20,7 @@ public class ClearAsh : WorkGiver_Scanner {
     ///     The removal zone plus the home area. Players expect the home area to keep itself
     ///     swept the way it does for filth, without designating a second zone on top of it.
     /// </summary>
+    /// <returns>Every cell in the removal zone, then the home area cells it does not already cover.</returns>
     public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn) {
         Area removal = pawn.Map.areaManager.SnowOrSandClear;
         foreach (IntVec3 cell in removal.ActiveCells) {

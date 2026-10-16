@@ -10,8 +10,10 @@ public static class MetalmindDistribution {
     // Every metalmind, which is what a pawn carrying a dozen wants by default.
     public const string TargetAll = "";
 
-    /// Worn and carried metalminds only. Safe to draw on, since none of them can
-    /// be compounded and so none of them can be burned away.
+    /// <summary>
+    ///     Worn and carried metalminds only. Safe to draw on, since none of them can be compounded
+    ///     and so none of them can be burned away.
+    /// </summary>
     public const string TargetExternal = "group:external";
 
     // Implanted metalminds only, which is everything compounding can reach.
@@ -21,8 +23,11 @@ public static class MetalmindDistribution {
         return target is TargetAll or TargetExternal or TargetInternal;
     }
 
-    /// A target naming a metalmind that has since burned out matches nothing, which keeps
-    /// charge from landing somewhere the player did not pick.
+    /// <summary>
+    ///     Whether a source answers to the given target. A target naming a metalmind that has since
+    ///     burned out matches nothing, which keeps charge off a metalmind the player did not pick.
+    /// </summary>
+    /// <returns>True when the target is the catch-all, matches the source's implanted side, or names this source by id.</returns>
     public static bool MatchesTarget(IMetalmindSource source, string target) {
         return target switch {
             TargetAll => true,
@@ -37,6 +42,7 @@ public static class MetalmindDistribution {
     ///     Dumping the full amount into the first eligible metalmind let its own clamp discard
     ///     the overflow silently, so the remainder is carried to the next one instead.
     /// </remarks>
+    /// <returns>How much charge actually moved, 0 when the amount is 0 or less or when no source would take any.</returns>
     public static float Transfer(
         List<IMetalmindSource> sources,
         MetalmindOperation operation,
@@ -61,6 +67,7 @@ public static class MetalmindDistribution {
     }
 
     /// <summary>What one source will take of the remainder, after the target and key bounds.</summary>
+    /// <returns>How much this source took, 0 when it does not match the target, cannot run the operation, or has no room left.</returns>
     private static float TakeFrom(
         IMetalmindSource source,
         MetalmindOperation operation,
@@ -86,8 +93,11 @@ public static class MetalmindDistribution {
         return Apply(source, operation, ledgerKey, take);
     }
 
-    /// Only the stores get an unbounded walk. An operation nobody added here is bounded by the
-    /// key, so a forgotten entry under-fills where it can be seen instead of minting Connection.
+    /// <summary>
+    ///     Whether this operation fills a metalmind rather than drawing from one. Only the stores get
+    ///     an unbounded walk, so a forgotten entry under-fills in the open instead of minting Connection.
+    /// </summary>
+    /// <returns>True for Store and StoreCompounded, false for every other operation.</returns>
     private static bool IsFill(MetalmindOperation operation) {
         return operation is MetalmindOperation.Store or MetalmindOperation.StoreCompounded;
     }

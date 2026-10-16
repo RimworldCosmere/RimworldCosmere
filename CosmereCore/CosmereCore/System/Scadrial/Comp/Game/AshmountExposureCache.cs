@@ -17,6 +17,7 @@ public class AshmountExposureCache : GameComponent {
     ///     1 for any tile no mount reaches, and for any layer but the surface - tile ids are only
     ///     unique within a layer, and only the surface is ever populated.
     /// </summary>
+    /// <returns>The tile's ash multiplier, or 1 for an invalid tile, a tile off the surface layer, or one no mount reaches.</returns>
     public static float For(PlanetTile tile) {
         if (!tile.Valid || !tile.Layer.IsRootSurface) return 1f;
 

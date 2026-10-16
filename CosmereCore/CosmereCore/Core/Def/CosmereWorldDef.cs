@@ -53,7 +53,7 @@ public class CosmereWorldDef : Verse.Def {
     /// </summary>
     public string? skinId;
 
-    /// <summary>The skin to theme this world with.</summary>
+    /// <summary>Gets the skin to theme this world with.</summary>
     public string SkinId => skinId ?? defName;
 
     /// <summary>
@@ -66,6 +66,7 @@ public class CosmereWorldDef : Verse.Def {
     public int listOrder;
 
     /// <summary>The Shards this world switches on for an era, falling back when it has no entry.</summary>
+    /// <returns>The Shards listed for that era, or the fallback list when the era has no entry.</returns>
     public List<ShardDef> DefaultShardsFor(EraDef? era) {
         if (era != null) {
             for (int i = 0; i < defaultShardsByEra.Count; i++) {

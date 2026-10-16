@@ -27,6 +27,7 @@ public static class FeruchemyRate {
     /// <summary>
     ///     How much less charge this feruchemist spends for the same effect.
     /// </summary>
+    /// <returns>A divisor on the charge spent, from 1 at no skill up to <see cref="MaxEfficiency" />.</returns>
     /// <remarks>
     ///     Skill and strength buy duration rather than magnitude - the ladder a metal pays out on
     ///     is the same for everyone, but a master draws on it half as fast. Savant rank multiplies
@@ -41,6 +42,7 @@ public static class FeruchemyRate {
     }
 
     /// <summary>Charge moved per real second at this dial setting, in either direction.</summary>
+    /// <returns>Charge per second, or 0 when the dial is at rest.</returns>
     public static float PerSecond(float severity, float metalRateMultiplier, float efficiency) {
         if (severity <= 0f) return 0f;
 
@@ -48,6 +50,7 @@ public static class FeruchemyRate {
     }
 
     /// <summary>How long a metalmind of this size takes to fill, or to empty. They are the same.</summary>
+    /// <returns>Seconds to move that much charge, or positive infinity when the dial is at rest.</returns>
     public static float SecondsToMove(float amount, float severity, float metalRateMultiplier, float efficiency) {
         float perSecond = PerSecond(severity, metalRateMultiplier, efficiency);
 

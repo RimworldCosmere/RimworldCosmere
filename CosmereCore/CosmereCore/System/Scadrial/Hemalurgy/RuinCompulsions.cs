@@ -46,6 +46,7 @@ public static class RuinCompulsions {
     ];
 
     /// <summary>Picks what Ruin wants, from what this many spikes let it ask for.</summary>
+    /// <returns>One compulsion drawn at random from the ones this spike count unlocks, or null when none of them have a mental state to run.</returns>
     public static RuinCompulsion? Choose(int spikes) {
         List<RuinCompulsion> available = [];
         for (int i = 0; i < All.Count; i++) {
@@ -58,6 +59,7 @@ public static class RuinCompulsions {
     /// <summary>
     ///     Whether the pawn is still in a state to be used. Ruin needs someone on their feet.
     /// </summary>
+    /// <returns>True when the pawn is alive, upright, awake, not a prisoner, and not already in a mental state.</returns>
     public static bool CanBeMoved(Pawn pawn) {
         if (pawn.Dead || pawn.Downed) return false;
         if (pawn.InMentalState) return false;

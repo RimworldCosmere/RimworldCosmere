@@ -25,6 +25,7 @@ public static class AshmountRing {
     ///     Greedy: shuffle within the annulus, hills first, and accept whatever still clears the
     ///     spacing. Returns fewer than asked for rather than looping when the band is too tight.
     /// </summary>
+    /// <returns>The tile ids that took a mount, up to the number asked for and fewer when the band cannot hold them.</returns>
     public static List<int> Choose(
         IReadOnlyList<Candidate> candidates,
         float innerRadius,
@@ -54,6 +55,7 @@ public static class AshmountRing {
     }
 
     /// <summary>Only the candidates sitting inside the band, in the order they came.</summary>
+    /// <returns>The candidates whose distance from the centre falls between the two radii.</returns>
     private static List<Candidate> InsideAnnulus(
         IReadOnlyList<Candidate> candidates, float innerRadius, float outerRadius
     ) {

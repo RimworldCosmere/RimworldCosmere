@@ -27,7 +27,7 @@ public class SpecialThingFilterWorker_WrongSpikeMetal : SpecialThingFilterWorker
     private bool resolved;
 
     /// <summary>
-    ///     The worker is not given its own def, so it finds itself once and remembers.
+    ///     Gets the metal this filter is for. The worker is not handed its own def, so it finds itself once and remembers.
     /// </summary>
     private string? Metal {
         get {

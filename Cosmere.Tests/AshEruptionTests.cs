@@ -62,7 +62,7 @@ public partial class AshEruptionTests {
         return value;
     }
 
-    /// <summary>The condition's own source, for the checks a Verse-bound tick cannot be run for.</summary>
+    /// <summary>Gets the condition's own source, for the checks a Verse-bound tick cannot be run for.</summary>
     private static string ConditionSource {
         get {
             string path = Path.Combine(

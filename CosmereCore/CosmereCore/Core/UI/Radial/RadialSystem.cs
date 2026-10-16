@@ -13,6 +13,7 @@ public sealed record RadialSystem(
     ///     Wheel and dock ribbons name and mark a system the same way by asking the skin, not carrying
     ///     their own copy - a duplicated copy once drifted, mislabeling Surgebinding as "Stormlight".
     /// </summary>
+    /// <returns>A system entry carrying the header label and sigil the system's skin supplies.</returns>
     public static RadialSystem ForSystem(string systemId, IReadOnlyList<RadialSubsection> subsections) {
         ISystemSkin skin = SystemSkinRegistry.ForOrFallback(systemId);
 

@@ -11,6 +11,7 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 /// </remarks>
 public static class InvestitureBudget {
     /// <summary>Charge the pawn still has in them to give. You cannot store what you no longer have.</summary>
+    /// <returns>Charge the pawn can still store, or 0 when a charge is worth no Investiture.</returns>
     public static float Storable(float currentLevel, float beuPerCharge) {
         if (beuPerCharge <= 0f) return 0f;
 
@@ -18,6 +19,7 @@ public static class InvestitureBudget {
     }
 
     /// <summary>The mirror of that floor: charge the pawn has room to take back.</summary>
+    /// <returns>Charge the pawn has room to take back, or 0 when a charge is worth no Investiture.</returns>
     public static float Tappable(float currentLevel, float maxLevel, float beuPerCharge) {
         if (beuPerCharge <= 0f) return 0f;
 
@@ -25,6 +27,7 @@ public static class InvestitureBudget {
     }
 
     /// <summary>What a transfer of this much charge is worth to the need.</summary>
+    /// <returns>The Investiture, in BEUs, that this much charge moves.</returns>
     public static float BeuFor(float charge, float beuPerCharge) {
         return charge * beuPerCharge;
     }

@@ -38,30 +38,38 @@ public class Feruchemist : Metalborn {
     private float savantDecayOffset;
     private readonly ChargeLedger chargeLedger = new ChargeLedger();
 
-    /// The compounded pool has its own dial: below idle it taps, above idle it
-    /// compounds, burning allomantic reserve to fill itself.
+    /// <summary>
+    ///     The compounded pool has its own dial: below idle it taps, above idle it compounds,
+    ///     burning allomantic reserve to fill itself.
+    /// </summary>
     public float compoundedTargetValue = IdleTarget;
 
-    /// The target vocabulary lives with the matcher that reads it. These keep the gene's
-    /// own callers spelling it the way they always have.
+    /// <summary>
+    ///     The target vocabulary lives with the matcher that reads it. These keep the gene's own
+    ///     callers spelling it the way they always have.
+    /// </summary>
     public const string TargetAll = MetalmindDistribution.TargetAll;
 
     public const string TargetExternal = MetalmindDistribution.TargetExternal;
 
     public const string TargetInternal = MetalmindDistribution.TargetInternal;
 
-    /// Which metalmind the dials act on: one of the group tokens above, or a
-    /// single metalmind's SourceId.
+    /// <summary>
+    ///     Which metalmind the dials act on: one of the group tokens above, or a single
+    ///     metalmind's SourceId.
+    /// </summary>
     public string targetMetalmindId = TargetAll;
 
-    /// Which tie duralumin's dial spends. A ledger with no capacity parks the dial.
+    // Which tie duralumin's dial spends. A ledger with no capacity parks the dial.
     public DuraluminLedger targetLedger = DuraluminLedger.Residence;
 
     // Which Shard the Shard ledger acts on. Seeded once, then the player's to change.
     public string targetShardDefName = string.Empty;
 
-    /// Duralumin moves whole points and each dial pays out a fraction of one a second, so an ask
-    /// banks here until it is worth a point. A bank holds intent, never charge.
+    /// <summary>
+    ///     Duralumin moves whole points and each dial pays out a fraction of one a second, so an ask banks
+    ///     here until it is worth a point. A bank holds intent, never charge.
+    /// </summary>
     private float ordinaryCarry;
 
     private float compoundedCarry;
@@ -69,8 +77,10 @@ public class Feruchemist : Metalborn {
     // What the banks were filled for. A dial pointed somewhere new banks nothing from the old tie.
     private string? bankedKey;
 
-    /// Whether the dial is pointed at the compounded pool. Held here, not the panel,
-    /// so a metal that stops paying out can end the mode instead of just parking it.
+    /// <summary>
+    ///     Whether the dial is pointed at the compounded pool. Held here, not the panel, so a metal
+    ///     that stops paying out can end the mode instead of just parking it.
+    /// </summary>
     public bool compounding;
 
     // How hard the dial is calling for compounding, nought to one.
@@ -120,8 +130,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Whether everything the dials can currently reach is implanted, which is
-    /// the condition for compounding. True for a single implant or the internal group.
+    /// <summary>
+    ///     Gets a value indicating whether everything the dials can currently reach is implanted, which is the condition
+    ///     for compounding. True for a single implant or the internal group.
+    /// </summary>
     public bool TargetIsInternalOnly {
         get {
             if (SelectedSource is { IsImplanted: true }) return true;
@@ -141,8 +153,11 @@ public class Feruchemist : Metalborn {
         return MetalmindDistribution.IsGroupTarget(target);
     }
 
-    /// A metal is declared twice, as MetalDef and as the richer MetallicArtsMetalDef,
-    /// so the two are never the same object. Compare by defName, not reference.
+    /// <summary>
+    ///     Whether a candidate names this gene's metal. A metal is declared twice, as MetalDef and as the
+    ///     richer MetallicArtsMetalDef, so the two are never the same object: compare by defName.
+    /// </summary>
+    /// <returns>True when the candidate's defName matches this gene's metal. False when the candidate is null.</returns>
     private bool SameMetal(Core.Def.MetalDef? candidate) {
         return candidate != null && candidate.defName == metal.defName;
     }
@@ -185,8 +200,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Room in the one metalmind compounding is filling right now. Deposits go in
-    /// order, so this is the first that will accept charge.
+    /// <summary>
+    ///     Gets the room left in the one metalmind compounding is filling right now. Deposits go in
+    ///     order, so this is the first one that will accept charge.
+    /// </summary>
     public float CurrentCompoundedFreeSpace {
         get {
             List<IMetalmindSource> mms = metalminds;
@@ -300,14 +317,18 @@ public class Feruchemist : Metalborn {
     private HediffDef? permanentHediffDef =>
         cachedPermanentHediffDef ??= ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(metal);
 
-    /// Nicrosil's charge is the pawn's own Investiture rather than a notional attribute, so
-    /// the pawn sits at the far end of every transfer this gene makes.
+    /// <summary>
+    ///     Gets a value indicating whether this gene stores real Investiture. Nicrosil's charge is the pawn's own Investiture
+    ///     rather than a notional attribute, so the pawn sits at the far end of every transfer it makes.
+    /// </summary>
     private bool storesInvestiture => metal == MetallicArtsMetalDefOf.Nicrosil;
 
     private Investiture? investitureNeed => storesInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
 
-    /// Duralumin's charge is the pawn's own Connection, counted in points, so it puts the pawn at
-    /// the far end of every transfer the same way nicrosil does.
+    /// <summary>
+    ///     Gets a value indicating whether this gene stores real Connection. Duralumin's charge is the pawn's own Connection,
+    ///     counted in points, so it puts the pawn at the far end of every transfer the way nicrosil does.
+    /// </summary>
     public bool StoresConnection => metal == MetallicArtsMetalDefOf.Duralumin;
 
     private IConnectionLedger? cachedLedger;
@@ -316,8 +337,10 @@ public class Feruchemist : Metalborn {
     private DuraluminLedger resolvedFor;
     private string resolvedForShard = string.Empty;
 
-    /// The ledger the dial names, or none for a ledger with no capacity and for a Shard this save
-    /// does not have. Cached, because the dock reads it every frame through the capacity readout.
+    /// <summary>
+    ///     Gets the ledger the dial names, or none for a ledger with no capacity and for a Shard this save
+    ///     does not have. Cached, because the dock reads it every frame through the capacity readout.
+    /// </summary>
     public IConnectionLedger? SelectedLedger {
         get {
             if (!StoresConnection) return null;
@@ -369,8 +392,10 @@ public class Feruchemist : Metalborn {
         cachedLedgerKey = ConnectionKey.For(targetLedger, targetShardDefName);
     }
 
-    /// Picked once and scribed, so charge banked against one Shard is only ever given back to that
-    /// Shard. The player retargets it from the selector; this is only the opening guess.
+    /// <summary>
+    ///     Picks the Shard this gene banks against, once, and scribes it, so charge banked against one Shard
+    ///     is only ever given back to it. The player retargets from the selector; this is the opening guess.
+    /// </summary>
     private void EnsureShardTarget() {
         if (!StoresConnection || !string.IsNullOrEmpty(targetShardDefName)) return;
 
@@ -386,8 +411,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Why duralumin's dial is parked, for the selector to show, or none when it can move. Covers
-    /// invalid choices and a valid tie with nothing left in either direction.
+    /// <summary>
+    ///     Gets why duralumin's dial is parked, for the selector to show, or none when it can move. Covers
+    ///     invalid choices and a valid tie with nothing left in either direction.
+    /// </summary>
     public string? LedgerBlockedReason {
         get {
             if (!StoresConnection) return null;
@@ -443,8 +470,10 @@ public class Feruchemist : Metalborn {
     private float connectionStorable;
     private float connectionTappable;
 
-    /// Both bounds come off one read of the ledger, memoized per tick because the dock's capacity
-    /// readout asks four times a frame.
+    /// <summary>
+    ///     Rereads how much Connection the dial may move in each direction. Both bounds come off one read of
+    ///     the ledger, memoized per tick because the dock's capacity readout asks four times a frame.
+    /// </summary>
     private void RefreshConnectionBudget() {
         int now = Find.TickManager.TicksGame;
         if (connectionBudgetTick == now &&
@@ -472,16 +501,21 @@ public class Feruchemist : Metalborn {
         connectionTappable = ConnectionBudget.Tappable(ledger.HeadroomPoints(pawn), stored, targetLedger);
     }
 
-    /// Neither nicrosil nor duralumin gets a stage ladder for a compounded burn to amplify
-    /// through, so the burn pays out faster instead of larger: the same charge, a tenth of the time.
+    /// <summary>
+    ///     Paces a compounded burn. Neither nicrosil nor duralumin gets a stage ladder for one to amplify
+    ///     through, so the burn pays out faster instead of larger: the same charge, a tenth of the time.
+    /// </summary>
+    /// <returns>The rate sped up by the compounded multiplier for nicrosil and duralumin, and the rate unchanged for every other metal.</returns>
     private float CompoundedBurnRate(float perSecond) {
         return storesInvestiture || StoresConnection
             ? perSecond * CompoundedTap.EffectMultiplier
             : perSecond;
     }
 
-    /// Charge the pawn still has to give; every other metal stores something notional, so only
-    /// nicrosil's owner and duralumin's ledger bound it.
+    /// <summary>
+    ///     Gets the charge the pawn still has to give. Every other metal stores something notional, so only
+    ///     nicrosil's owner and duralumin's ledger bound it.
+    /// </summary>
     private float storableFromPawn {
         get {
             if (StoresConnection) {
@@ -585,20 +619,28 @@ public class Feruchemist : Metalborn {
 
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
 
-    /// The compounded dial is clear of its rest point. Inside the dead band
-    /// SeverityForTarget is 0, so the dial moves nothing and this must read false.
+    /// <summary>
+    ///     Gets a value indicating whether the compounded dial is clear of its rest point. Inside the dead band SeverityForTarget
+    ///     is 0, so the dial moves nothing and this must read false.
+    /// </summary>
     public bool isCompounding => Mathf.Abs(compoundedTargetValue - IdleTarget) >= DeadBand;
 
-    /// Compounding pours charge into a metalmind exactly as storing does, so it counts
-    /// as storing too - mirroring isTapping, which already covers both channels.
+    /// <summary>
+    ///     Gets a value indicating whether either channel is storing. Compounding pours charge into a metalmind exactly as storing
+    ///     does, so it counts as storing too, mirroring isTapping, which already covers both channels.
+    /// </summary>
     public bool isStoringAny => isStoring || (compoundedTargetValue > IdleTarget && canStoreCompounded);
 
-    /// Per-metal pacing, applied to every path that moves charge so the dial readout
-    /// and the actual drain cannot drift apart. One figure for both directions.
+    /// <summary>
+    ///     Gets the per-metal pacing, applied to every path that moves charge so the dial readout and the
+    ///     actual drain cannot drift apart. One figure for both directions.
+    /// </summary>
     public float RateMultiplier => metal.feruchemy?.rateMultiplier ?? 1f;
 
-    /// Skill and strength buy duration, not magnitude: the ladder pays the same for
-    /// everyone, but a master draws on it more slowly and runs longer on one metalmind.
+    /// <summary>
+    ///     Gets how far skill and strength stretch a metalmind. They buy duration, not magnitude: the ladder
+    ///     pays the same for everyone, but a master draws on it slower and runs longer on one metalmind.
+    /// </summary>
     public float Efficiency {
         get {
             SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
@@ -611,8 +653,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// What the compounded dial is moving: negative while tapping it, positive
-    /// while compounding into it. Zero inside the dead band.
+    /// <summary>
+    ///     Gets what the compounded dial is moving: negative while tapping it, positive while compounding
+    ///     into it. Zero inside the dead band.
+    /// </summary>
     public float CompoundedRatePerSecond {
         get {
             float severity = SeverityForTarget(compoundedTargetValue);
@@ -628,8 +672,10 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    /// Both dials move charge at once, so the readout carries the pair or it
-    /// understates what is happening.
+    /// <summary>
+    ///     Gets the charge both dials move together. Both run at once, so the readout carries the pair or it
+    ///     understates what is happening.
+    /// </summary>
     public float TransferRatePerSecond => dialRatePerSecond + CompoundedRatePerSecond;
 
     private float dialRatePerSecond {
@@ -647,8 +693,10 @@ public class Feruchemist : Metalborn {
     private const float DeadBand = 2f;
     private const float CurveExponent = 2.5f;
 
-    /// One step per severity point, which is also one step per rung of the hediff
-    /// ladder - the dial cannot land between two stages and pay for one it does not get.
+    /// <summary>
+    ///     One step per severity point, which is also one step per rung of the hediff ladder. The dial cannot
+    ///     land between two stages and pay for one it does not get.
+    /// </summary>
     public const float RateQuantum = FeruchemyRate.AmountPerSecond;
 
     private static float SeverityQuantum => RateQuantum / FeruchemyRate.AmountPerSecond;
@@ -843,8 +891,10 @@ public class Feruchemist : Metalborn {
             : Mathf.Min(perSecond, budget);
     }
 
-    /// Moves the pawn's Connection to match what the metalmind just moved, then hands back whichever
-    /// side moved more. Settled per move: a netted tick hides two half-failed moves that cancel.
+    /// <summary>
+    ///     Moves the pawn's Connection to match what the metalmind just moved, then settles on whichever side
+    ///     moved more. Settled per move: a netted tick hides two half-failed moves that cancel out.
+    /// </summary>
     private void SettleConnection(float chargeMoved, bool storing) {
         if (!StoresConnection || chargeMoved <= 0f) return;
 
@@ -871,8 +921,10 @@ public class Feruchemist : Metalborn {
         );
     }
 
-    /// Nicrosil's charge is the pawn's own Investiture, so what the metalmind gains is
-    /// exactly what the pawn gives up. Every other metal stores a notional attribute.
+    /// <summary>
+    ///     Takes the same charge out of the pawn's Investiture. Nicrosil's charge is the pawn's own Investiture,
+    ///     so what the metalmind gains is exactly what the pawn gives up.
+    /// </summary>
     private void MirrorToInvestiture(float chargeMoved) {
         if (chargeMoved == 0f) return;
 
@@ -919,15 +971,20 @@ public class Feruchemist : Metalborn {
         return moved;
     }
 
-    /// A metalmind emptied of compounded charge has no capacity left, so it is gone.
-    /// The cache is dropped because the sweep can remove entries it holds.
+    /// <summary>
+    ///     Clears out burned-out metalminds. One emptied of compounded charge has no capacity left, so it is
+    ///     gone, and the cache is dropped because the sweep can remove entries it holds.
+    /// </summary>
     private void SweepBurnedOut() {
         MetalmindBurnout.Sweep(pawn);
         cachedMetalminds = null;
     }
 
-    /// The operation picks the bound as well as the work, so a tap cannot be walked unbounded.
-    /// Metalminds are read fresh: one can burn out mid-tick and take the dial's chosen target with it.
+    /// <summary>
+    ///     Hands an amount to the matching metalminds. The operation picks the bound as well as the work, so a
+    ///     tap cannot be walked unbounded, and metalminds are read fresh in case one burned out mid-tick.
+    /// </summary>
+    /// <returns>How much charge actually moved, which is 0 when no metalmind matches the dial's target or none of them will take any.</returns>
     private float MoveCharge(MetalmindOperation operation, float amount) {
         return MetalmindDistribution.Transfer(metalminds, operation, targetMetalmindId, transferKey, amount);
     }

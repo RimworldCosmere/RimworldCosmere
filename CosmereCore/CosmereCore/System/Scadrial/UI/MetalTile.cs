@@ -5,8 +5,10 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-/// How a metal's tile reads at a glance. Inert is not the same as Empty: an inert metal has no
-/// metalmind to work with; an empty one is ready to fill.
+/// <summary>
+///     How a metal's tile reads at a glance. Inert is not the same as Empty: an inert metal has no
+///     metalmind to work with, an empty one is ready to fill.
+/// </summary>
 public enum MetalTileState {
     Idle,
     Active,
@@ -14,10 +16,12 @@ public enum MetalTileState {
     Inert,
 }
 
-/// A single cell of the table: glyph, name, a right-aligned note, and a colour band along the base.
+// A single cell of the table: glyph, name, a right-aligned note, and a colour band along the base.
 public static class MetalTile {
-    /// Tall enough to hold the glyph and the band without colliding. The band is the reserve readout,
-    /// sized to be read rather than a hairline, and sits clear of the bottom edge.
+    /// <summary>
+    ///     Tall enough to hold the glyph and the band without colliding. The band is the reserve readout,
+    ///     sized to be read rather than a hairline, and sits clear of the bottom edge.
+    /// </summary>
     public const float Height = 64f;
 
     public static readonly Color Border = new Color(0.298f, 0.243f, 0.169f);
@@ -120,7 +124,7 @@ public static class MetalTile {
         return new Color(0.769f, 0.737f, 0.675f);
     }
 
-    /// Two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
+    // Two pools, two gauges - compounded sits below as a thinner stripe on a warmer track, no legend needed.
     private static void DrawBands(
         Rect rect, float fraction, Color metalColor, float compoundedFraction, Color? compoundedTint
     ) {
@@ -142,8 +146,10 @@ public static class MetalTile {
         );
     }
 
-    /// Savant standing is earned per metal, marked per tile rather than summarised elsewhere. A folded
-    /// corner costs no layout, and the three stages read as three brightnesses of the same fold.
+    /// <summary>
+    ///     Marks savant standing on the tile, since it is earned per metal rather than summarised elsewhere.
+    ///     A folded corner costs no layout, and the three stages read as three brightnesses of the same fold.
+    /// </summary>
     private static void DrawSavantFold(Rect rect, int stage) {
         if (stage <= 0) return;
 

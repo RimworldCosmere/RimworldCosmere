@@ -8,7 +8,7 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Dock;
 
 public abstract class DockSectionBase : IDockSection {
-    /// Folded groups, by label key. Session-only - a fold is a glance, not a setting.
+    // Folded groups, by label key. Session-only - a fold is a glance, not a setting.
     private readonly HashSet<string> collapsedGroups = [];
 
     public abstract string SystemId { get; }
@@ -41,7 +41,8 @@ public abstract class DockSectionBase : IDockSection {
         return collapsedGroups.Contains(groupKey);
     }
 
-    /// Returns true when the click folded the group, so the caller can close whatever was open inside it.
+    /// <summary>Folds a group open or shut, and clicks so the player hears it land.</summary>
+    /// <returns>True when the click folded the group, so the caller can close what was open inside it.</returns>
     protected bool ToggleGroupFold(string groupKey) {
         bool folded = collapsedGroups.Add(groupKey);
         if (!folded) collapsedGroups.Remove(groupKey);

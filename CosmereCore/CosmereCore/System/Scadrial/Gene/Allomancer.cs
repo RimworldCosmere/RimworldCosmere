@@ -249,6 +249,7 @@ public class Allomancer : Metalborn {
     ///     on the metal's own gene means zinc and brass each answer for their own, which is also
     ///     how the upkeep is billed.
     /// </remarks>
+    /// <returns>The gene's own gizmos, plus one per koloss this metal is holding so the player can let any of them go.</returns>
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
         Comp.Game.KolossRoster? roster = Comp.Game.KolossRoster.Current;
         List<Pawn> held = roster?.HeldOnMetal(pawn, metal) ?? [];

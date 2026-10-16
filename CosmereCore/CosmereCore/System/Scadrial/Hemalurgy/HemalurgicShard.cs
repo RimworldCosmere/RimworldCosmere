@@ -18,7 +18,7 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 /// </remarks>
 public static class HemalurgicShard {
     /// <summary>
-    ///     Harmony where Harmony exists, Ruin otherwise. Ruin is also the fallback for a save
+    ///     Gets Harmony where Harmony exists, Ruin otherwise. Ruin is also the fallback for a save
     ///     that somehow has neither, because a spike with nothing behind it is still Ruin's idea.
     /// </summary>
     public static ShardDef? Current {
@@ -29,6 +29,6 @@ public static class HemalurgicShard {
         }
     }
 
-    /// <summary>The name to put in front of the player. Never empty.</summary>
+    /// <summary>Gets the name to put in front of the player. Never empty.</summary>
     public static string Name => Current?.LabelCap.ToString() ?? "Ruin";
 }

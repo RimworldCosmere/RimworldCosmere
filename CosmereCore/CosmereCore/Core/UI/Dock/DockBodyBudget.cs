@@ -8,6 +8,7 @@ public static class DockBodyBudget {
     ///     Never negative. A tall pinned strip or a bottomed-out window used to hand the scroll view
     ///     a negative rect, which drew the next header over the strip above it.
     /// </summary>
+    /// <returns>How tall the body may be, never under 0.</returns>
     public static float For(float remaining, float sectionMax, float pinned) {
         float byScreen = remaining > 0f ? remaining : 0f;
         float bySetting = sectionMax - pinned;

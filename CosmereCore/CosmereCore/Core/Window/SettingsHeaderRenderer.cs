@@ -16,6 +16,7 @@ public static class SettingsHeaderRenderer {
     ///     Vanilla hangs its own close X off the window chrome. This one lives in our top bar
     ///     instead, so the header owns the whole row rather than leaving a gap for it.
     /// </summary>
+    /// <returns>True when the player clicked the close mark this frame.</returns>
     public static bool DrawCrest(Rect rect, ISystemSkin skin, string label) {
         Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), skin.AccentColor);
 
@@ -103,6 +104,7 @@ public static class SettingsHeaderRenderer {
     ///     GameFont stops at Medium, so a glyph cannot be scaled to carry a crest this size.
     ///     Two rotated bars give the mark whatever weight the header needs.
     /// </summary>
+    /// <returns>True when the player clicked the mark this frame.</returns>
     private static bool DrawClose(Rect rect, ISystemSkin skin) {
         bool hovered = Mouse.IsOver(rect);
         Color color = hovered ? skin.AccentColor : skin.HeaderTextColor;

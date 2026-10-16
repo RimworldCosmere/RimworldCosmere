@@ -17,6 +17,7 @@ public static class CoppercloudContest {
     ///     cloud, and a duralumin-fed cloud swallowing a Seeker, both fall out of this comparison
     ///     without a rule of their own.
     /// </remarks>
+    /// <returns>True when the cloud hides the pawn, meaning it has some strength and is at least as strong as the burn reaching through it.</returns>
     public static bool Blocks(float cloud, float sense) {
         return cloud > 0f && cloud >= sense;
     }

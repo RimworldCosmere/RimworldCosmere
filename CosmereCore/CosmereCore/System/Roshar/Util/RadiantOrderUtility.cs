@@ -23,6 +23,7 @@ public static class RadiantOrderUtility {
     ///     the order-choice comp and sends the letter, and the order is only granted once that choice is
     ///     made. Returns why it declined so callers can say so rather than failing silently.
     /// </summary>
+    /// <returns>Offered once the choice comp is attached, or the reason the bond was refused.</returns>
     public static SprenBondResult TryBondWithSpren(Pawn pawn, bool showLetter = true) {
         if (pawn.IsSurgebinder()) return SprenBondResult.AlreadySurgebinder;
 

@@ -6,6 +6,7 @@ public static class WorldGate {
     /// <summary>
     ///     Permissive in every unknown case. Only two known worlds that disagree fail.
     /// </summary>
+    /// <returns>True unless both worlds are named, the save is not cross-world, and the two names differ.</returns>
     public static bool Matches(string? contentWorld, string? saveWorld, bool crossWorld) {
         if (string.IsNullOrEmpty(contentWorld)) return true;
         if (crossWorld) return true;

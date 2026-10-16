@@ -27,6 +27,7 @@ public static class AshVentSoilSpread {
     ///     Where the front stands after this cycle. The vent always holds its own clearing, so a
     ///     fresh one starts there rather than at nothing, and a lowered setting pulls it back in.
     /// </summary>
+    /// <returns>The new front, never under the vent's own clearing and never past the reach.</returns>
     public static float Advance(float front, float clearRadius, float reach, float days) {
         if (reach < 0f) reach = 0f;
 
@@ -38,6 +39,7 @@ public static class AshVentSoilSpread {
     }
 
     /// <summary>Whether the front covers a cell this far out. Squared, to keep the walk off Sqrt.</summary>
+    /// <returns>True when the front has already covered a cell at that squared distance.</returns>
     public static bool Reaches(int distanceSquared, float front) {
         return distanceSquared <= front * front;
     }

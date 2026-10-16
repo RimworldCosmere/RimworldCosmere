@@ -54,6 +54,7 @@ public static class KolossAppearance {
     /// <summary>
     ///     The body texture this pawn's build gene calls for, or null when it is not a koloss.
     /// </summary>
+    /// <returns>The body texture path for the pawn's koloss build gene, or null when it has neither build gene.</returns>
     public static string? BodyGraphicPathFor(Pawn? pawn) {
         if (pawn?.genes == null) return null;
         if (pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_KolossBuild_Mature)) {

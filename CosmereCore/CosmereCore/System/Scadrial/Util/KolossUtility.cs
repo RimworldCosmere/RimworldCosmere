@@ -22,6 +22,7 @@ public static class KolossUtility {
     }
 
     /// <summary>How many spikes are still in it. Counting them is Hemalurgy's question.</summary>
+    /// <returns>How many hemalurgic spikes are still in the pawn.</returns>
     public static int SpikeCount(Pawn? pawn) {
         return Hemalurgy.HemalurgicSpikeUtility.SpikeCount(pawn);
     }
@@ -127,6 +128,7 @@ public static class KolossUtility {
     ///         there is no corpse to bury and no spikes to take back out of one.
     ///     </para>
     /// </remarks>
+    /// <returns>The koloss standing where the subject was, or null when there was no map to stand it on.</returns>
     public static Pawn? Make(Pawn subject, XenotypeDef koloss) {
         return MakeFrom(subject, koloss);
     }
@@ -139,6 +141,7 @@ public static class KolossUtility {
     ///     standing in for a person. Both paths end the same way - nothing of the body is left -
     ///     so both come through here.
     /// </remarks>
+    /// <returns>The koloss standing where the subject was, or null when there was no map to stand it on.</returns>
     public static Pawn? MakeFrom(Pawn subject, XenotypeDef koloss) {
         Log.Info($"Koloss: making one out of {subject.LabelShort}.");
 

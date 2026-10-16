@@ -15,6 +15,7 @@ public static class ConnectionBudget {
     public const int ChargePerPoint = 9;
 
     /// <summary>Points this ledger can hold. Social is declared but unreachable.</summary>
+    /// <returns>How many points that ledger holds, 0 for a ledger with no capacity.</returns>
     public static int Capacity(DuraluminLedger ledger) {
         return ledger switch {
             DuraluminLedger.Residence => 30,
@@ -32,6 +33,7 @@ public static class ConnectionBudget {
     }
 
     /// <summary>Charge the pawn may give: capped by what they hold and by the ledger's remaining room.</summary>
+    /// <returns>Charge the pawn may give, 0 when the ledger has no room left.</returns>
     public static float Storable(float heldPoints, float storedCharge, DuraluminLedger ledger) {
         float room = ChargeForPoints(Capacity(ledger)) - storedCharge;
 
@@ -39,6 +41,7 @@ public static class ConnectionBudget {
     }
 
     /// <summary>The mirror of that floor: charge the pawn may take back, capped by what is recorded and by their headroom.</summary>
+    /// <returns>Charge the pawn may take back, 0 when the ledger has no capacity.</returns>
     public static float Tappable(float headroomPoints, float storedCharge, DuraluminLedger ledger) {
         if (Capacity(ledger) <= 0) return 0f;
 
@@ -49,6 +52,7 @@ public static class ConnectionBudget {
     ///     What one side of a finished transfer still owes the other, in charge. Positive when the
     ///     metalmind moved more than the pawn paid for, negative when the pawn moved more.
     /// </summary>
+    /// <returns>The charge still owed, or 0 when either amount is negative.</returns>
     public static float Settlement(float chargeMoved, float pointsMoved) {
         if (chargeMoved < 0f || pointsMoved < 0f) return 0f;
 
@@ -56,6 +60,7 @@ public static class ConnectionBudget {
     }
 
     /// <summary>The part of a running ask worth whole points, signed like the ask. A sub-point ask is worth nothing yet.</summary>
+    /// <returns>The whole-point part of the ask, in charge, or 0 when the ask is under one point.</returns>
     public static float WholeCharge(float carry) {
         return ChargeForPoints((float)Math.Truncate(carry / ChargePerPoint));
     }

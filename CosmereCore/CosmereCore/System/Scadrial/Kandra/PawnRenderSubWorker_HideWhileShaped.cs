@@ -19,7 +19,7 @@ namespace Cosmere.System.Scadrial.Kandra;
 /// </remarks>
 public class PawnRenderSubWorker_HideWhileShaped : PawnRenderSubWorker {
     /// <summary>
-    ///     How many times this has hidden a human part, for the spike to report.
+    ///     Gets how many times this has hidden a human part, for the spike to report.
     /// </summary>
     /// <remarks>
     ///     The question the spike exists to answer is whether vanilla consults a subworker added

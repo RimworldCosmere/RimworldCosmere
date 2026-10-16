@@ -8,7 +8,7 @@ public abstract class CosmereModSettings : IExposable {
 
     public virtual string SkinId => Name;
 
-    /// <summary>The name the settings window shows, in both the sidebar and the crest.</summary>
+    /// <summary>Gets the name the settings window shows, in both the sidebar and the crest.</summary>
     public virtual string DisplayLabel => Name;
 
     public virtual bool Enabled => true;

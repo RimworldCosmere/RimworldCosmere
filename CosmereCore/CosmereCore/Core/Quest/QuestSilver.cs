@@ -12,9 +12,9 @@ namespace Cosmere.Core.Quest;
 /// </summary>
 public static class QuestSilver {
     /// <summary>
-    ///     Attempts to destroy amount silver across player home maps. Returns false and
-    ///     charges nothing if the player does not have enough.
+    ///     Attempts to destroy amount silver across player home maps.
     /// </summary>
+    /// <returns>True when the silver was taken. False charges nothing, because the player cannot afford it.</returns>
     public static bool TryCharge(int amount) {
         if (amount <= 0) return true;
         if (GetTotalSilver() < amount) return false;
@@ -35,6 +35,7 @@ public static class QuestSilver {
     ///     Counts silver across every player home map without touching any of it. Safe to call
     ///     every frame for UI affordability checks.
     /// </summary>
+    /// <returns>How much silver sits on player home maps, counting every stack.</returns>
     public static int GetTotalSilver() {
         List<Verse.Thing> stacks = CollectStacks();
         int total = 0;

@@ -14,7 +14,7 @@ namespace Cosmere.Core.Quest;
 /// </summary>
 public class CosmereQuestManager : GameComponent {
     /// <summary>
-    ///     Supplies the era a running quickstart forces. Null when nothing is forcing one.
+    ///     Gets or sets the callback that supplies the era a running quickstart forces. Null when nothing is forcing one.
     /// </summary>
     public static Func<string?>? eraProvider { get; set; }
 
@@ -107,6 +107,7 @@ public class CosmereQuestManager : GameComponent {
     ///     The same snapshot, narrowed to one pawn. Hediffs are flattened to defNames so the
     ///     prereqs stay free of Verse types.
     /// </summary>
+    /// <returns>The world snapshot, with the pawn's id and hediff defNames added when a pawn is given.</returns>
     public QuestWorldState BuildWorldState(Pawn? subject) {
         QuestWorldState state = BuildWorldState();
         if (subject == null) return state;
@@ -128,6 +129,7 @@ public class CosmereQuestManager : GameComponent {
     ///     Picks a Threat that may arrive right now, weighted like the offer pool. Separate from
     ///     PickWeighted because Threats are excluded from the storyteller's offers by design.
     /// </summary>
+    /// <returns>A Threat quest drawn by weight, or null when none is deliverable right now.</returns>
     public CosmereQuestDef? PickThreat(Verse.Map map) {
         QuestWorldState state = BuildWorldState();
 
@@ -248,6 +250,7 @@ public class CosmereQuestManager : GameComponent {
     ///     Starts a Threat quest already accepted. A Threat is not an offer - it arrives and the
     ///     player deals with it - so there is no accept/dec‍line letter and no acceptance deadline.
     /// </summary>
+    /// <returns>True when the Threat was built and added, false when the def is not a Threat or the build failed.</returns>
     public bool TryStartThreat(CosmereQuestDef def, Verse.Map map, Pawn? subject) {
         if (def.kind != QuestKind.Threat) {
             Log.Error($"{def.defName}: TryStartThreat called on a {def.kind} quest.");
@@ -319,6 +322,7 @@ public class CosmereQuestManager : GameComponent {
     ///     Moves the campaign into the era that follows the one it is in. Returns false at the
     ///     end of a shardworld's timeline, where the current era declares no successor.
     /// </summary>
+    /// <returns>True when the campaign moved into the next era, false when there is no era to advance from or no successor.</returns>
     public bool AdvanceEra() {
         string? active = FindActiveEra();
         if (active == null || active.Length == 0) {

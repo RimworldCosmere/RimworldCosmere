@@ -26,6 +26,7 @@ public class PawnRenderNodeWorker_KandraShape : PawnRenderNodeWorker {
     ///     gets a scalar that fits the whole animal in the window. On the map it draws at its own
     ///     size, which is the entire point.
     /// </remarks>
+    /// <returns>The node's scale, shrunk to fit the portrait window when drawing a portrait and left as the base gives it on the map.</returns>
     public override Vector3 ScaleFor(PawnRenderNode node, PawnDrawParms parms) {
         Vector3 scale = base.ScaleFor(node, parms);
         if (!parms.flags.FlagSet(PawnRenderFlags.Portrait)) return scale;

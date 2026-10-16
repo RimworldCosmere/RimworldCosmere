@@ -24,6 +24,7 @@ public sealed class GameComponent_Autocast : GameComponent {
     ///     Every rule a pawn holds against one target. A metal or an ability can carry several,
     ///     each with its own conditions and its own action.
     /// </summary>
+    /// <returns>The pawn's rules of that kind aimed at that target. Empty when the pawn has none.</returns>
     public List<AutocastRule> RulesFor(Pawn pawn, AutocastRuleKind kind, string targetId) {
         List<AutocastRule> matches = [];
         List<AutocastRule> all = GetOrCreateRules(pawn);
@@ -58,6 +59,7 @@ public sealed class GameComponent_Autocast : GameComponent {
     ///     The seeded rule for an ability, made on first sight. Players can add more beside it;
     ///     this only ever returns the first.
     /// </summary>
+    /// <returns>The pawn's first rule for that ability, created with the default settings when there is not one yet.</returns>
     public AutocastRule GetOrCreateRule(Pawn pawn, string abilityDefName) {
         List<AutocastRule> list = GetOrCreateRules(pawn);
         for (int i = 0; i < list.Count; i++) {

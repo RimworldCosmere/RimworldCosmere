@@ -29,6 +29,7 @@ public static class ThreatContributorRegistry {
     ///     invested by two shards stacks them through DiminishingStack, so the second gift counts
     ///     for something without the pawn being billed twice over.
     /// </summary>
+    /// <returns>The pawn's worth as a multiple of an ordinary colonist, 1 when no shard claims them.</returns>
     public static float MultipleForPawn(Pawn pawn) {
         List<float> gains = [];
         for (int i = 0; i < contributors.Count; i++) {

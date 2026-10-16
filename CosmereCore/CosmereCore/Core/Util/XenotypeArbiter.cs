@@ -45,6 +45,7 @@ public static class XenotypeArbiter {
     }
 
     /// <summary>Whether <paramref name="world" />'s patch may set the xenotype for this pawn.</summary>
+    /// <returns>True when that world's patch may set this pawn's xenotype.</returns>
     public static bool MayAnswer(CosmereWorldDef? world) {
         if (world == null) return false;
 
@@ -69,6 +70,7 @@ public static class XenotypeArbiter {
     ///     cross-world save had even odds of coming out Skaa while Alethkar's own set said
     ///     darkeyes and lighteyes.
     /// </remarks>
+    /// <returns>True when the request's faction declares its own xenotypes, so no world should answer.</returns>
     public static bool FactionSpeaksForItself(PawnGenerationRequest request) {
         XenotypeSet? set = request.Faction?.def?.xenotypeSet;
 

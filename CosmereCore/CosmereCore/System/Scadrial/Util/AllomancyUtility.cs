@@ -55,6 +55,7 @@ public static class AllomancyUtility {
     ///     How much of this colony the copperclouds are hiding. A cloud only conceals what stands
     ///     inside it, so the full reduction is scaled by the share of colonists actually covered.
     /// </summary>
+    /// <returns>The detection reduction the clouds are worth, 0 when nobody is burning copper, capped at 0.25 before the covered share scales it.</returns>
     public static float GetCoppercloudStrength(Map map) {
         List<Pawn> colonists = map.mapPawns.FreeColonists;
 
@@ -84,6 +85,7 @@ public static class AllomancyUtility {
     ///     The share of colonists standing inside a cloud, asked of Coppercloud so the radius is
     ///     read from the comp that applies it rather than restated here.
     /// </summary>
+    /// <returns>The share of colonists a cloud covers, 0 through 1, and 0 with no colonists.</returns>
     private static float ShelteredShare(List<Pawn> colonists) {
         if (colonists.Count == 0) return 0f;
 

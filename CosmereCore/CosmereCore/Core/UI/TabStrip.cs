@@ -8,6 +8,7 @@ using Verse.Sound;
 namespace Cosmere.Core.UI;
 
 /// <summary>One tab: what it says, what colour it carries, and what it is.</summary>
+/// <typeparam name="T">The value a tab stands for, handed back when it is clicked.</typeparam>
 public readonly struct TabStripItem<T> {
     public TabStripItem(T value, string label, Color accent, string? tooltip = null) {
         Value = value;
@@ -41,7 +42,10 @@ public static class TabStrip {
     private const float UnderlineHeight = 3f;
     private const float MinTabWidth = 90f;
 
-    /// <summary>Draws the strip and returns the item clicked this frame, if any.</summary>
+    /// <summary>Draws the strip and reports which tab the player clicked this frame.</summary>
+    /// <typeparam name="T">The value a tab stands for, handed back through clicked.</typeparam>
+    /// <returns>True when the player clicked a tab that was not already selected, which is the only
+    ///     case where clicked holds anything other than selected.</returns>
     public static bool Draw<T>(Rect rect, IReadOnlyList<TabStripItem<T>> items, T selected, out T clicked)
         where T : class {
         clicked = selected;

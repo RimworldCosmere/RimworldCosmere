@@ -22,6 +22,7 @@ public static class ConnectionInvestitureRegistry {
     ///     same Investiture ten times over and put a starting pawn at Ascendant. Taking the
     ///     highest keeps a Mistborn at Mistborn.
     /// </remarks>
+    /// <returns>The highest reading any registered source gives, and 0 when either argument is null or nothing claims the pawn.</returns>
     public static int StrengthFor(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 

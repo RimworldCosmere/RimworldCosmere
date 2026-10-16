@@ -78,6 +78,7 @@ public class EasilyInfluenced : Verse.Gene {
     /// <summary>
     ///     One line saying who has this thing, because the whole mechanic is invisible otherwise.
     /// </summary>
+    /// <returns>One line naming whoever holds this koloss, or saying it is loose.</returns>
     public string InspectLine() {
         Pawn? holder = Holder;
 

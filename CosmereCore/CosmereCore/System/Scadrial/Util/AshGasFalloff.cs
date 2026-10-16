@@ -11,6 +11,7 @@ public static class AshGasFalloff {
     ///     Straight-line distance out of the vent's footprint, so the falloff rounds off the corners
     ///     instead of ringing an even-sided mouth in another square.
     /// </summary>
+    /// <returns>Cells from the cell to the nearest edge of the vent's footprint, 0 anywhere inside it.</returns>
     public static float DistanceToMouth(int x, int z, int minX, int minZ, int maxX, int maxZ) {
         int dx = OutsideSpan(x, minX, maxX);
         int dz = OutsideSpan(z, minZ, maxZ);
@@ -19,6 +20,7 @@ public static class AshGasFalloff {
     }
 
     /// <summary>How far one coordinate sits outside a span. Zero anywhere inside it.</summary>
+    /// <returns>How far the value sits outside the span, 0 anywhere inside it.</returns>
     private static int OutsideSpan(int value, int min, int max) {
         if (value < min) return min - value;
 
@@ -30,6 +32,7 @@ public static class AshGasFalloff {
     ///     puts AshLungMath's gain and recede crossover about three quarters out, so the last ring
     ///     or two is already net relief rather than a wall a pawn can stand against.
     /// </summary>
+    /// <returns>How exposed the cell is, from 0 at or past the radius up to 1 fully exposed.</returns>
     public static float Exposure(float distance, float radius, float atMouth) {
         if (radius <= 0f || distance >= radius) return 0f;
 

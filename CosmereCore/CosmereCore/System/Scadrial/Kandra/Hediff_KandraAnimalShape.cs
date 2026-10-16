@@ -24,7 +24,7 @@ public class Hediff_KandraAnimalShape : HediffWithComps {
     private PawnKindDef? builtFor;
 
     /// <summary>
-    ///     The animal's numbers, cached per instance.
+    ///     Gets the animal's numbers, cached per instance.
     /// </summary>
     /// <remarks>
     ///     Hit once per stat lookup, so it must never allocate on the common path. The cache is

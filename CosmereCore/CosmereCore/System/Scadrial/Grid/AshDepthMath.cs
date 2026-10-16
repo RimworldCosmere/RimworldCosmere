@@ -49,6 +49,7 @@ public static class AshDepthMath {
     ///     reload and a save scum cannot shake a different map out of it. Salted by direction so
     ///     the ground does not come back in the same pattern it went under.
     /// </summary>
+    /// <returns>Days between <see cref="SettleMinDays" /> and <see cref="SettleMaxDays" />.</returns>
     public static int SettleDelayDays(int cellIndex, bool settling) {
         // murmur3 finalizer on a knuth-scrambled index - anything weaker bands cells into stripes, not patches
         uint hash = (uint)cellIndex * 2654435761u;
@@ -68,6 +69,7 @@ public static class AshDepthMath {
     ///     the cell's own depth so a shallow cell clears sooner than a drift, which is what
     ///     thinning looks like.
     /// </summary>
+    /// <returns>Millimetres to subtract from a cell on this sweep.</returns>
     public static float DrainMmPerSweep(int maxDepthMm, float sweepsPerDay) {
         return maxDepthMm / (DrainDays * sweepsPerDay);
     }
@@ -82,6 +84,7 @@ public static class AshDepthMath {
     }
 
     /// <summary>Extra ticks a pawn spends crossing a cell at this depth.</summary>
+    /// <returns>Ticks to add to the cell's path cost, 0 for a dusting or no ash at all.</returns>
     public static int MovementTicksAddOn(AshBucket bucket) {
         return bucket switch {
             AshBucket.Dusting => 0,
@@ -96,6 +99,7 @@ public static class AshDepthMath {
     ///     Millimetres per hour at a given severity. Deliberately not linear - the Final Empire is
     ///     a nuisance a single sweeper keeps up with, and Hero of Ages is not.
     /// </summary>
+    /// <returns>Millimetres of ash falling on a cell each hour.</returns>
     public static float FallRateMmPerHour(float severity, float ratePerDayAtFull) {
         float shaped = severity * severity * (3f - 2f * severity);
         return shaped * ratePerDayAtFull / 24f;
@@ -108,6 +112,7 @@ public static class AshDepthMath {
     ///     Severity never jumps to its target. A progression beat lands over days so the player
     ///     reads it as the world thickening rather than as a cut.
     /// </summary>
+    /// <returns>The new severity, at most <paramref name="perDayCap" /> per day away from the old one.</returns>
     public static float EaseSeverity(float current, float target, float perDayCap, float daysElapsed) {
         float maxDelta = perDayCap * daysElapsed;
         float diff = target - current;
@@ -122,6 +127,7 @@ public static class AshDepthMath {
     }
 
     /// <summary>Keeps the swap decision out of the MapComponent, where it cannot be tested.</summary>
+    /// <returns>Leave when the cell already matches its depth, otherwise Swap or Restore.</returns>
     public static AshTerrainAction NextTerrainAction(int millimetres, bool alreadySwapped) {
         bool wanted = ShouldSwapToAshTerrain(millimetres, alreadySwapped);
         if (wanted == alreadySwapped) return AshTerrainAction.Leave;

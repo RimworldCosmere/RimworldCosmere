@@ -15,19 +15,19 @@ namespace Cosmere.System.Scadrial.Render;
 /// </summary>
 [StaticConstructorOnStartup]
 public class AshParticles {
-    /// <summary>Particles per second at severity 1. Mutable so the dev tuner can drive it live.</summary>
+    /// <summary>Gets or sets the particles per second at severity 1. Mutable so the dev tuner can drive it live.</summary>
     public static float MaxEmissionRate { get; set; } = 1035f;
 
-    /// <summary>Particles per second at severity 0.</summary>
+    /// <summary>Gets or sets the particles per second at severity 0.</summary>
     public static float MinEmissionRate { get; set; } = 15f;
 
-    /// <summary>Curve between the two. Above 1 keeps the low end sparse; 1 is linear.</summary>
+    /// <summary>Gets or sets the curve between the two rates. Above 1 keeps the low end sparse, and 1 is linear.</summary>
     public static float EmissionExponent { get; set; } = 2f;
 
-    /// <summary>Live count, for the dev tuner readout.</summary>
+    /// <summary>Gets the number of particles alive right now, for the dev tuner readout.</summary>
     public int LiveCount => system == null ? 0 : system.particleCount;
 
-    /// <summary>Rate actually used last frame, for the dev tuner readout.</summary>
+    /// <summary>Gets the emission rate actually used last frame, for the dev tuner readout.</summary>
     public float LastRate { get; private set; }
 
     /// <summary>Height above the terrain the field lives at, between weather and the map.</summary>
@@ -54,14 +54,14 @@ public class AshParticles {
         system.Play();
     }
 
+    /// <summary>Gets a value indicating whether the host still exists. False once Unity has torn it down, and the owner must rebuild.</summary>
+    public bool Alive => host != null && system != null;
+
     /// <summary>
     ///     Repositions the emitter over the current view and retunes it for wind and severity.
     ///     Called every frame. The emitter box follows the camera but simulationSpace is World,
     ///     so particles already in flight stay put and you pan *through* them.
     /// </summary>
-    /// <summary>False once Unity has torn the host down; the owner must rebuild.</summary>
-    public bool Alive => host != null && system != null;
-
     public void Update(Verse.Map map, float severity) {
         if (!Alive) return;
 

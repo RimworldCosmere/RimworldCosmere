@@ -17,6 +17,7 @@ public class AshBuriedCells {
     ///     Rebuilds the set off a saved array. A length that does not match the map is dropped
     ///     rather than indexed - the sweep recomputes the whole grid within 64 ticks.
     /// </summary>
+    /// <returns>The restored set, or an empty one when the saved array does not match the map.</returns>
     public static AshBuriedCells Restore(bool[]? saved, int cellCount) {
         AshBuriedCells cells = new AshBuriedCells(cellCount);
         if (saved == null || saved.Length != cellCount) return cells;

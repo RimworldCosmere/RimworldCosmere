@@ -7,7 +7,7 @@ public static class BurningStripLayout {
     public const float Padding = 6f;
     public const float Footer = 6f;
 
-    /// Nothing burning costs no height at all, so the table sits straight under the heading.
+    // Nothing burning costs no height at all, so the table sits straight under the heading.
     public static float HeightFor(int rows) {
         return rows <= 0 ? 0f : HeaderHeight + Padding + rows * RowHeight + Footer;
     }

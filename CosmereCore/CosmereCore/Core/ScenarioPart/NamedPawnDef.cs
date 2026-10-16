@@ -149,6 +149,7 @@ public class NamedPawnDef {
     ///     Always a NameTriple, even with no surname: vanilla's spouse-relation generator casts
     ///     starting pawns' names to NameTriple with no null check, and a NameSingle here takes out map gen.
     /// </summary>
+    /// <returns>The pawn's name as a NameTriple, or null when the def names nobody.</returns>
     public Name? GetName() {
         if (firstName == null) return null;
 

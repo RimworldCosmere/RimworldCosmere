@@ -12,6 +12,7 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 /// </remarks>
 public static class ConnectionCarry {
     /// <summary>Banks this second's rate and returns the charge it can pay for now, debiting only what it hands over.</summary>
+    /// <returns>Whole charge to move now, or 0 while the bank is still short of a point.</returns>
     public static float Bank(ref float carry, float perSecond, float budget, bool storing) {
         float rate = Math.Max(0f, perSecond);
         carry += storing ? rate : -rate;

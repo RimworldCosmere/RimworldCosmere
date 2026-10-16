@@ -28,6 +28,7 @@ public static class AshVentSiting {
     ///     The half of the rule a caller can answer without walking a grid. Split out so map gen
     ///     can reject a cell before paying for the elevation and rock discs.
     /// </summary>
+    /// <returns>True when the cell is dry land that is not already farmable.</returns>
     public static bool PassesCheapRules(float fertility, bool isWater) {
         if (isWater) return false;
 
@@ -38,6 +39,7 @@ public static class AshVentSiting {
     ///     What survives on the fallback pass. Elevation and fertility go; a starved map is meant
     ///     to get its vent somewhere rather than nowhere.
     /// </summary>
+    /// <returns>True for any cell that is not water.</returns>
     public static bool IsPlausibleFallback(bool isWater) {
         return !isWater;
     }
@@ -46,6 +48,7 @@ public static class AshVentSiting {
     ///     Exposure runs 1 to 3. One vent at the belt's edge, six on a mount-adjacent tile, and
     ///     the steps between are what makes distance to a mount feel like a choice.
     /// </summary>
+    /// <returns>How many vents the map gets, 1 at exposure 1 or below and 6 at exposure 3 or above.</returns>
     public static int CountForExposure(float exposure) {
         if (exposure <= 1f) return MinVents;
         if (exposure >= 3f) return MaxVents;

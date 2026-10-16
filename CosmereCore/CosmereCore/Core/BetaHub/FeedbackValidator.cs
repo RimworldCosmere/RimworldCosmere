@@ -31,6 +31,7 @@ public static class FeedbackValidator {
     /// <summary>
     ///     Steps are required on a bug and do not exist on a suggestion.
     /// </summary>
+    /// <returns>True when a bug carries steps, and always true for a suggestion.</returns>
     public static bool AreStepsPresent(FeedbackKind kind, string? steps) {
         return kind != FeedbackKind.Bug || !string.IsNullOrWhiteSpace(steps);
     }

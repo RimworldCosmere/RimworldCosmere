@@ -5,9 +5,11 @@ using UnityEngine;
 namespace Cosmere.Core.Extension;
 
 public static class MaterialPropertyBlockExtension {
-    /// Storage buffers, because a constant buffer pads every array element to 16 bytes and three
-    /// 32-entry arrays came to 1712 bytes against 512. The material carries them: a block-only
-    /// binding never reaches this draw, which is why the colour mask above is set on both.
+    /// <summary>
+    ///     Binds the palette through storage buffers, because a constant buffer pads every array element
+    ///     to 16 bytes and three 32-entry arrays came to 1712 bytes against 512. The material carries them,
+    ///     since a block-only binding never reaches this draw.
+    /// </summary>
     public static void SetLUTColorMask(
         this MaterialPropertyBlock block,
         List<LUTPaletteMaterial> palette,

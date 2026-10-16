@@ -39,8 +39,10 @@ public class ImplantedMetalminds : HediffWithComps {
         Severity = metalminds.Count;
     }
 
-    /// Ids only need to be unique per pawn. Never reuse one after a burn-out, or the
-    /// player's chosen target silently moves to a different metalmind.
+    /// <summary>
+    ///     Ids only need to be unique per pawn. Never reuse one after a burn-out, or the player's chosen
+    ///     target silently moves to a different metalmind.
+    /// </summary>
     private int NextLoadId() {
         int next = 0;
         for (int i = 0; i < metalminds.Count; i++) {

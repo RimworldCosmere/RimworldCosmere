@@ -14,6 +14,7 @@ public abstract class QuestReward {
     public abstract void Give(QuestBuildContext ctx);
 
     /// <summary>Player-facing summary for the quest tab. Must not reveal a rolled outcome.</summary>
+    /// <returns>One player-facing line naming the reward, with no rolled outcome in it.</returns>
     public abstract string Describe();
 
     public virtual string? ConfigError() {

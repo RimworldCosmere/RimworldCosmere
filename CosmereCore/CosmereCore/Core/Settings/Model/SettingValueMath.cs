@@ -3,8 +3,11 @@ using global::System;
 namespace Cosmere.Core.Settings.Model;
 
 public static class SettingValueMath {
-    /// Mathf.Approximately without the Unity reference, so the settings model still
-    /// loads outside the game.
+    /// <summary>
+    ///     Mathf.Approximately without the Unity reference, so the settings model still loads
+    ///     outside the game.
+    /// </summary>
+    /// <returns>True when the two values differ by less than a relative tolerance of 1e-6, with a small absolute floor so values near zero still compare equal.</returns>
     public static bool NearlyEqual(float a, float b) {
         return Math.Abs(b - a) < Math.Max(1e-6f * Math.Max(Math.Abs(a), Math.Abs(b)), float.Epsilon * 8f);
     }

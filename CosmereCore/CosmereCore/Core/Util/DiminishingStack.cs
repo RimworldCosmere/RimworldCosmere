@@ -13,6 +13,7 @@ public static class DiminishingStack {
     /// <summary>
     ///     Adds sources up with each one counting for half of the last.
     /// </summary>
+    /// <returns>The combined strength, which is 0 for an empty list.</returns>
     /// <remarks>
     ///     Two beat one and four never beat two twice over, so stacking buys something real without
     ///     letting a colony brick an effect by rostering enough bodies. Sorted strongest first -

@@ -37,6 +37,7 @@ public class RolledReward : QuestReward {
     ///     Deliberately vague. Naming the branches here would put the whole table in the
     ///     offer letter, which is the leak this design exists to prevent.
     /// </summary>
+    /// <returns>One line for the offer letter that names no branch.</returns>
     public override string Describe() {
         return "CC_Quest_Reward_Rolled".Translate().Resolve();
     }

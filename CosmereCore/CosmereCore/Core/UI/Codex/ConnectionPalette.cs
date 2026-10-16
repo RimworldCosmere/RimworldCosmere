@@ -35,6 +35,7 @@ public static class ConnectionPalette {
     ///     Tier colour. Deliberately one hue getting brighter rather than five different hues:
     ///     the bands are ordered, so the colour should read as ordered too.
     /// </summary>
+    /// <returns>The colour for that tier, getting brighter as the tier rises.</returns>
     public static Color ForTier(ConnectionTier tier) {
         return tier switch {
             ConnectionTier.Ascendant => ascendant,

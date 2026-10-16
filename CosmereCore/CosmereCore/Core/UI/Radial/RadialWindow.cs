@@ -35,8 +35,8 @@ public sealed class RadialWindow : Verse.Window {
     protected override float Margin => 0f;
 
     /// <summary>
-    ///     Sized to the wheel, not the screen: a fullscreen window would swallow every click outside
-    ///     the wheel for as long as it stays open.
+    ///     Gets how far the window reaches, sized to the wheel rather than the screen. A fullscreen
+    ///     window would swallow every click outside the wheel for as long as it stayed open.
     /// </summary>
     private static float WindowExtent => RadialLayout.AbilityRingOuter + 24f;
 

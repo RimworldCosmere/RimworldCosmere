@@ -32,7 +32,7 @@ public static class ScenarioDefUtility {
     }
 
     /// <summary>
-    ///     Whether the running scenario is one we ship, by the mod that declares it.
+    ///     Gets a value indicating whether the running scenario is one we ship, judged by the mod that declares it.
     /// </summary>
     /// <remarks>
     ///     This used to be a set of label prefixes - StartsWith("Stormlight:"), ("Roshar:"),
@@ -49,14 +49,14 @@ public static class ScenarioDefUtility {
         }
     }
 
-    /// <summary>The era the running scenario starts in, or null when it names none.</summary>
+    /// <summary>Gets the era the running scenario starts in, or null when it names none.</summary>
     public static EraDef? CurrentEra => Current?.GetModExtension<ScenarioEra>()?.era;
 
-    /// <summary>What the running scenario says about Shards, or null when it says nothing.</summary>
+    /// <summary>Gets what the running scenario says about Shards, or null when it says nothing.</summary>
     public static DefModExtension_Shards? CurrentShards => Current?.GetModExtension<DefModExtension_Shards>();
 
     /// <summary>
-    ///     Whether the player may change the world and Shards. True when no scenario is
+    ///     Gets a value indicating whether the player may change the world and Shards. True when no scenario is
     ///     recognised, so a custom scenario stays editable rather than silently locking.
     /// </summary>
     public static bool AllowsChange => CurrentShards?.allowChange ?? true;

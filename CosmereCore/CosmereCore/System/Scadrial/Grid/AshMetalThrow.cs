@@ -10,6 +10,7 @@ public static class AshMetalThrow {
     ///     throws now due, keeping the rest. Same shape as <see cref="AshPlume.Bank"/>, unit of 1
     ///     throw instead of a millimetre multiple.
     /// </summary>
+    /// <returns>How many whole throws are due now, 0 until the remainder reaches one.</returns>
     public static int Bank(ref float remainder, float throwsPerDay, float dayFraction) {
         remainder += throwsPerDay * dayFraction;
         if (remainder < 1f) return 0;
@@ -24,6 +25,7 @@ public static class AshMetalThrow {
     ///     seed. Same murmur3 finalizer as <see cref="AshDepthMath.SettleDelayDays"/>: seed takes
     ///     the cell-index role, throwOrdinal the salt.
     /// </summary>
+    /// <returns>An index into the vent's metal list, from 0 to metalCount minus 1.</returns>
     public static int MetalIndex(int throwOrdinal, int seed, int metalCount) {
         uint hash = (uint)seed * 2654435761u;
         hash ^= (uint)throwOrdinal;

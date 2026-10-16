@@ -12,6 +12,7 @@ public abstract class ProgressionAction {
     ///         a goodwill number and the card reporting it follows automatically.
     ///     </para>
     /// </summary>
+    /// <returns>One line naming the mechanical change, or null when this action has no outcome to show.</returns>
     public virtual string? Describe() {
         return null;
     }

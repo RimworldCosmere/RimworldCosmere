@@ -21,6 +21,7 @@ public static class AshLungMath {
     ///     Positive while breathing ash, negative in clear air. Blends gain and recede by
     ///     effective exposure, so a half-filtered mask lands between the two, not on one side.
     /// </summary>
+    /// <returns>The severity change for one hour: positive while ash is getting through, negative in clear air.</returns>
     public static float SeverityDeltaPerHour(float rawExposure, float filtration) {
         float effective = EffectiveExposure(rawExposure, filtration);
         return effective * GainRatePerHourAtFullExposure - (1f - effective) * RecedeRatePerHour;
@@ -30,6 +31,7 @@ public static class AshLungMath {
     ///     Raw exposure after filtration, clamped to [0,1]. Stacked equippedStatOffsets can push
     ///     filtration past 1.0, so the clamp sits on the fraction itself, not just the result.
     /// </summary>
+    /// <returns>The share of ash that still reaches the lungs, clamped to 0 through 1.</returns>
     public static float EffectiveExposure(float rawExposure, float filtration) {
         float clearFraction = 1f - filtration;
         if (clearFraction < 0f) clearFraction = 0f;

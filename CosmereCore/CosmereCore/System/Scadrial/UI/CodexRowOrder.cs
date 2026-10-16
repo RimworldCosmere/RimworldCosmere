@@ -10,6 +10,7 @@ namespace Cosmere.System.Scadrial.UI;
 /// </remarks>
 public static class CodexRowOrder {
     /// <summary>Descending savant stage, then descending ticks worked.</summary>
+    /// <returns>A negative number when the first row sorts ahead of the second, positive when it sorts behind, and 0 when the two match on both stage and ticks.</returns>
     public static int Compare(int stageA, int ticksA, int stageB, int ticksB) {
         if (stageA != stageB) return stageB.CompareTo(stageA);
 

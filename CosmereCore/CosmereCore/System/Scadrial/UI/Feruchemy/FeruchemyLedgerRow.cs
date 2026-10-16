@@ -38,8 +38,11 @@ public static class FeruchemyLedgerRow {
         return HeightFor(gene.StoresConnection, gene.targetLedger);
     }
 
-    /// How much taller the strip becomes: nothing for a metal that isn't duralumin, one row
-    /// for a non-Shard tie, two rows plus the gap between them for Shard.
+    /// <summary>
+    ///     How much taller the strip becomes once a duralumin connection row is drawn into it.
+    /// </summary>
+    /// <returns>0 for a metal that is not duralumin, one row's height for a non-Shard tie, two rows
+    ///     plus the gap between them for Shard.</returns>
     public static float HeightFor(bool storesConnection, DuraluminLedger targetLedger) {
         if (!storesConnection) return 0f;
 
@@ -95,8 +98,10 @@ public static class FeruchemyLedgerRow {
         return new FloatMenuOption(label, () => gene.targetLedger = ledger);
     }
 
-    /// Scoped the same way Feruchemist.StoredForLedger is, so the dropdown preview never
-    /// shows a percentage the row's own label then contradicts.
+    /// <summary>
+    ///     Scoped the same way Feruchemist.StoredForLedger is, so the dropdown preview never shows a
+    ///     percentage the row's own label then contradicts.
+    /// </summary>
     private static float StoredFor(Feruchemist gene, ConnectionKey key) {
         float total = 0f;
         List<IMetalmindSource> sources = gene.metalminds;

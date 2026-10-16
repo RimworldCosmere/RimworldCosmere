@@ -79,6 +79,7 @@ public static class KandraAppearance {
     ///     The row a stored hair colour name points at, or null. Same reason as
     ///     <see cref="FindMaterial" />: an older save can name a colour that is gone.
     /// </summary>
+    /// <returns>The matching hair colour row, or null when no row carries that name.</returns>
     public static HairColourRow? FindHairColour(string? name) {
         foreach (HairColourRow colour in HairColourTable) {
             if (colour.name == name) return colour;
@@ -88,6 +89,7 @@ public static class KandraAppearance {
     }
 
     /// <summary>The colour a stored hair colour name draws with. White when nothing matches.</summary>
+    /// <returns>The colour for that hair name, or white when nothing matches.</returns>
     public static Color HairColorFor(string? name) {
         HairColourRow? picked = FindHairColour(name);
         return picked != null ? Parse(picked.Value.hex) : Color.white;
@@ -122,6 +124,7 @@ public static class KandraAppearance {
     ///     The row a stored eye colour name points at, or null. Same reason as
     ///     <see cref="FindHairColour" />: an older save can name a colour that is gone.
     /// </summary>
+    /// <returns>The matching eye colour row, or null when no row carries that name.</returns>
     public static EyeColourRow? FindEyeColour(string? name) {
         foreach (EyeColourRow colour in EyeColourTable) {
             if (colour.name == name) return colour;
@@ -131,6 +134,7 @@ public static class KandraAppearance {
     }
 
     /// <summary>The colour a stored eye colour name draws with. White when nothing matches.</summary>
+    /// <returns>The colour for that eye name, or white when nothing matches.</returns>
     public static Color EyeColorFor(string? name) {
         EyeColourRow? picked = FindEyeColour(name);
         return picked != null ? Parse(picked.Value.hex) : Color.white;
@@ -149,6 +153,7 @@ public static class KandraAppearance {
     public static readonly IReadOnlyList<IrisRow> AllIrisSizes = IrisSizes;
 
     /// <summary>The row a stored iris size name points at, or null.</summary>
+    /// <returns>The matching iris size row, or null when no row carries that name.</returns>
     public static IrisRow? FindIrisSize(string? name) {
         foreach (IrisRow iris in IrisSizes) {
             if (iris.name == name) return iris;
@@ -180,6 +185,7 @@ public static class KandraAppearance {
     public static readonly IReadOnlyList<EyeLightRow> AllEyeLights = EyeLights;
 
     /// <summary>The row a stored light strength name points at, or null.</summary>
+    /// <returns>The matching light strength row, or null when no row carries that name.</returns>
     public static EyeLightRow? FindEyeLight(string? name) {
         foreach (EyeLightRow light in EyeLights) {
             if (light.name == name) return light;
@@ -192,6 +198,7 @@ public static class KandraAppearance {
     ///     The brightness multiple for a stored light name. Anything the table does not carry gives
     ///     1 and no lift, so a retuned palette cannot leave a pawn lit that the designer calls dark.
     /// </summary>
+    /// <returns>The brightness multiple for that light name, or 1 when the table has no such row.</returns>
     public static float EyeLightStrengthFor(string? name) {
         return FindEyeLight(name)?.strength ?? 1f;
     }
@@ -207,6 +214,7 @@ public static class KandraAppearance {
     ///     amount to every channel, which clamps on a pale stone - the bloom node carries the rest
     ///     of the separation, so the iris does not have to.
     /// </summary>
+    /// <returns>The colour the iris draws with, every channel clamped to 0-1.</returns>
     public static Color EyeDrawColorFor(string? colourName, string? lightName) {
         Color stone = EyeColorFor(colourName);
         float lift = (EyeLightStrengthFor(lightName) - 1f) * LightLift;
@@ -232,11 +240,13 @@ public static class KandraAppearance {
         .ToArray();
 
     /// <summary>The body texture for a formless kandra, or null when it is wearing a face.</summary>
+    /// <returns>The body texture path, or null when the pawn is not showing its true body.</returns>
     public static string? BodyGraphicPathFor(Pawn? pawn) {
         return IsFormless(pawn) ? BodyDir + Suffix(pawn!) : null;
     }
 
     /// <summary>The head texture for a formless kandra, or null when it is wearing a face.</summary>
+    /// <returns>The head texture path, or null when the pawn is not showing its true body.</returns>
     public static string? HeadGraphicPathFor(Pawn? pawn) {
         return IsFormless(pawn) ? HeadDir + Suffix(pawn!) : null;
     }
@@ -247,6 +257,7 @@ public static class KandraAppearance {
     ///     is rather than whether the eyes draw - the node's subworker and a missing eye colour
     ///     already decide that twice over.
     /// </summary>
+    /// <returns>The texture path for that eye, without the direction on the end.</returns>
     public static string EyeGraphicPathFor(Pawn pawn, string? irisSizeName, bool rightEye) {
         string size = (FindIrisSize(irisSizeName) ?? FindIrisSize(DefaultIris) ?? IrisSizes[0]).name;
 
@@ -265,6 +276,7 @@ public static class KandraAppearance {
     ///     Whether the crafted true body is showing. Runs per node per frame for every pawn, so
     ///     the gene lookup goes first and nothing that is not a kandra reaches the comp scan.
     /// </summary>
+    /// <returns>True when the pawn is showing its crafted true body.</returns>
     public static bool IsFormless(Pawn? pawn) {
         if (pawn?.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_TrueBody) != true) return false;
 
@@ -321,6 +333,7 @@ public static class KandraAppearance {
     ///     What this kandra's true body is made of. A picked material wins; anything else rolls
     ///     off the pawn id, so an undesigned kandra keeps the same body across reloads.
     /// </summary>
+    /// <returns>The material's name and the colour it draws with.</returns>
     public static (string name, Color colour) TrueBodyMaterialFor(Pawn pawn) {
         MaterialRow? picked = FindMaterial(pawn.TryGetComp<Kandra.CompKandraForms>()?.TrueBodyMaterial);
         if (picked != null) return (picked.Value.name, Parse(picked.Value.hex));
@@ -346,6 +359,7 @@ public static class KandraAppearance {
     ///     The row a stored material name points at, or null. A save from an older build can
     ///     name a material the table no longer carries, so this never assumes a hit.
     /// </summary>
+    /// <returns>The matching material row, or null when no row carries that name.</returns>
     public static MaterialRow? FindMaterial(string? name) {
         foreach (MaterialRow material in Materials) {
             if (material.name == name) return material;
@@ -355,6 +369,7 @@ public static class KandraAppearance {
     }
 
     /// <summary>The colour half of <see cref="TrueBodyMaterialFor" />.</summary>
+    /// <returns>The colour of this kandra's true body material.</returns>
     public static Color TrueBodyColorFor(Pawn pawn) {
         return TrueBodyMaterialFor(pawn).colour;
     }
@@ -364,6 +379,7 @@ public static class KandraAppearance {
     }
 
     /// <summary>Two sets of art. Gender None falls in with the male one.</summary>
+    /// <returns>"Kandra_Female" for a female pawn, "Kandra_Male" for anyone else.</returns>
     private static string Suffix(Pawn pawn) {
         return pawn.gender == Gender.Female ? "Kandra_Female" : "Kandra_Male";
     }

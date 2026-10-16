@@ -14,7 +14,7 @@ namespace Cosmere.Tests;
 /// </summary>
 [TestClass]
 public class AshRoomFillTests {
-    /// <summary>The shipped vent's mouth rate, read out of the def rather than restated here.</summary>
+    /// <summary>Gets the shipped vent's mouth rate, read out of the def rather than restated here.</summary>
     private static float ShippedMillimetresPerDay {
         get {
             string path = Path.Combine(RepoRoot, "CosmereScadrial", "Defs", "Things", "Building", "AshVent.xml");

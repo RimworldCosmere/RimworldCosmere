@@ -23,8 +23,8 @@ public class CosmereQuickstart : CosmereQuickstartBase {
     ];
 
     /// <summary>
-    ///     All-Stars spans every shard, so its scenario cannot pick an era on its own. Set here so
-    ///     era-gated content is reachable in the sandbox instead of silently filtered out.
+    ///     Gets the era to force. All-Stars spans every shard, so its scenario cannot pick one on its
+    ///     own, and era-gated content would be filtered out of the sandbox instead of reachable.
     /// </summary>
     public override string? era => "Cosmere_Scadrial_Era_PreCatacendre";
 

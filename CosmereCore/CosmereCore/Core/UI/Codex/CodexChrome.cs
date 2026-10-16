@@ -35,6 +35,7 @@ public static class CodexChrome {
     ///     up with the panel title above them and with each other. Rows and tables are not padded: they
     ///     run to the frame.
     /// </summary>
+    /// <returns>The rect to draw the heading block in, inset one gutter from each side of the body.</returns>
     public static Rect ContentHeader(Rect body, float y, float height) {
         return new Rect(body.x + Gutter, y, body.width - Gutter * 2f, height);
     }

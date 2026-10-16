@@ -25,6 +25,7 @@ public static class QuestBranch {
     ///     True when something tagged for one branch should run. An untagged thing always
     ///     runs; a tagged one runs only on its own branch.
     /// </summary>
+    /// <returns>True when the thing should run: always for something untagged, otherwise only on its own branch.</returns>
     public static bool Matches(string? afterChoice, RimWorld.Quest? quest) {
         if (afterChoice == null || afterChoice.Length == 0) return true;
         return ChosenKey(quest) == afterChoice;

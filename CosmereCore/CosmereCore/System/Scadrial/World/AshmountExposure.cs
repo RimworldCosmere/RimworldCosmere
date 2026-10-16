@@ -14,6 +14,7 @@ public static class AshmountExposure {
     public const float MaxMultiplier = 3f;
 
     /// <summary>One mount's share. Quadratic so the falloff is gentle near and steep far.</summary>
+    /// <returns>That mount's share of the fall rate, 0 at or past <see cref="RangeTiles" />.</returns>
     public static float Contribution(float distanceInTiles) {
         if (distanceInTiles >= RangeTiles) return 0f;
 
@@ -22,6 +23,7 @@ public static class AshmountExposure {
     }
 
     /// <summary>1 is an ordinary tile. Clamped at <see cref="MaxMultiplier" />.</summary>
+    /// <returns>The fall rate multiplier for the tile, between 1 and <see cref="MaxMultiplier" />.</returns>
     public static float Multiplier(IReadOnlyList<float> distancesInTiles) {
         float sum = 0f;
         for (int i = 0; i < distancesInTiles.Count; i++) {

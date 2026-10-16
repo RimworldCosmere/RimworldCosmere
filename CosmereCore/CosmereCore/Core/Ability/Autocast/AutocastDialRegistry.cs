@@ -13,7 +13,7 @@ public interface IAutocastDial {
     float IdleTarget { get; }
 
     /// <summary>
-    ///     The ends of the dial's travel, so Core can offer a rule the whole range without
+    ///     Gets the low end of the dial's travel, so Core can offer a rule the whole range without
     ///     knowing what either end means.
     /// </summary>
     float MinTarget { get; }

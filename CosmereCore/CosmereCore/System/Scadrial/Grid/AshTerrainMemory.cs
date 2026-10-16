@@ -25,7 +25,7 @@ public class AshTerrainMemory : IExposable {
         this.map = map;
     }
 
-    /// <summary>Cells still standing as ash. Zero means the map owes nothing back.</summary>
+    /// <summary>Gets the number of cells still standing as ash. Zero means the map owes nothing back.</summary>
     public int SwappedCount { get; private set; }
 
     public bool IsSwapped(int index) {
@@ -41,6 +41,7 @@ public class AshTerrainMemory : IExposable {
     }
 
     /// <summary>Hands the original back and forgets the cell. Null if nothing was recorded.</summary>
+    /// <returns>The terrain that cell held before the ash, or null when nothing was recorded for it.</returns>
     public TerrainDef? Take(int index) {
         if (original == null) return null;
 
@@ -100,6 +101,7 @@ public class AshTerrainMemory : IExposable {
     ///     Soil when the def is gone, matching what TerrainGrid does for a missing hash. Leaving
     ///     the cell as ash instead would strand it there for the rest of the game.
     /// </summary>
+    /// <returns>The terrain with that short hash, or soil when no loaded def carries it.</returns>
     private static TerrainDef Lookup(ushort hash) {
         if (byHash == null) {
             byHash = [];

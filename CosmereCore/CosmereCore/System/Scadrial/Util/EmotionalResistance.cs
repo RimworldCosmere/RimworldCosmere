@@ -36,7 +36,8 @@ public static class EmotionalResistance {
     private const float KandraOldestYears = 1000f;
 
     /// <summary>
-    ///     Scales every resistance at once, so a colony can decide whether koloss come easily.
+    ///     Gets the multiplier applied to every resistance at once, so a colony can decide whether
+    ///     koloss come easily.
     /// </summary>
     private static float Scaling =>
         Mathf.Max(0.01f, Mod.kolossResistance);
@@ -45,6 +46,7 @@ public static class EmotionalResistance {
     ///     Zero for anything that cannot be bound at all, so callers can test the number rather
     ///     than the species.
     /// </summary>
+    /// <returns>How hard that pawn is to seize, 0 for anything that cannot be bound at all.</returns>
     public static float Of(Pawn? pawn) {
         if (pawn == null || pawn.Dead) return 0f;
 
@@ -74,6 +76,7 @@ public static class EmotionalResistance {
     ///     that way. Nothing extra is needed to make duralumin the way you exceed your reach; it
     ///     already is.
     /// </remarks>
+    /// <returns>True when the target can be bound and the Allomancer's reach meets its resistance.</returns>
     public static bool CanSeize(float reach, Pawn? target) {
         float needed = Of(target);
 

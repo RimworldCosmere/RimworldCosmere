@@ -17,7 +17,7 @@ namespace Cosmere.System.Scadrial.Util;
 /// </remarks>
 public static class KolossControl {
     /// <summary>
-    ///     Ticks a koloss stands loose before it turns. Long enough to fix a mistake.
+    ///     Gets the ticks a koloss stands loose before it turns. Long enough to fix a mistake.
     /// </summary>
     /// <remarks>
     ///     Read from settings rather than fixed, because how forgiving a lost hold should be is
@@ -34,6 +34,7 @@ public static class KolossControl {
     /// <summary>
     ///     Attempts a seizure, and says why not when it fails.
     /// </summary>
+    /// <returns>Accepted when the hold takes, otherwise a report carrying the reason to show.</returns>
     /// <remarks>
     ///     Both numbers go in the failure text. A bind that fails without saying how short it fell
     ///     reads as a broken button, and the player has no way to learn that duralumin is the

@@ -26,10 +26,10 @@ public class AshDepthTracker : MapComponent {
 
     private float exposureMultiplier = 1f;
 
-    /// <summary>How much worse this tile is than open ground, 1 to 3. Set once at FinalizeInit.</summary>
+    /// <summary>Gets how much worse this tile is than open ground, 1 to 3. Set once at FinalizeInit.</summary>
     public float ExposureMultiplier => exposureMultiplier;
 
-    /// <summary>What the sweep actually deposits at severity 1 on this map.</summary>
+    /// <summary>Gets what the sweep actually deposits at severity 1 on this map.</summary>
     public float FullRateMmPerDay => BaseRateMmPerDay * exposureMultiplier;
 
     /// <summary>Rain heavier than this washes ash off unroofed ground. Vanilla's filth threshold.</summary>
@@ -69,12 +69,12 @@ public class AshDepthTracker : MapComponent {
     public AshGrid Grid => grid;
 
     /// <summary>
-    ///     Cells holding enough ash to swallow what is on them. The sweep catches up within 64
+    ///     Gets the cells holding enough ash to swallow what is on them. The sweep catches up within 64
     ///     ticks; anything writing depth and dirtying the mesh sooner has to update this itself.
     /// </summary>
     public AshBuriedCells Buried => buried;
 
-    /// <summary>What the deep cells were before the ash, so the Catacendre can put them back.</summary>
+    /// <summary>Gets what the deep cells were before the ash, so the Catacendre can put them back.</summary>
     public AshTerrainMemory TerrainMemory => terrainMemory;
 
     public bool HasAnyAsh => Grid.Any;
@@ -82,7 +82,7 @@ public class AshDepthTracker : MapComponent {
     public float Severity => severity;
 
     /// <summary>
-    ///     Vents breathing into a sealed room rather than over the map. Counted on demand off six
+    ///     Gets how many vents breathe into a sealed room rather than over the map. Counted on demand off six
     ///     bools rather than cached, so a roof torn down takes effect on the same tick it falls.
     /// </summary>
     private int SealedVents {
@@ -97,7 +97,7 @@ public class AshDepthTracker : MapComponent {
     }
 
     /// <summary>
-    ///     What the map actually falls at. Derived here rather than written into the target, which
+    ///     Gets what the map actually falls at. Derived here rather than written into the target, which
     ///     the story arc owns and an eruption re-derives from - two writers there is already one too many.
     /// </summary>
     public float EffectiveSeverity => AshVentRelief.Relieve(severity, SealedVents);
@@ -163,7 +163,7 @@ public class AshDepthTracker : MapComponent {
         gasVents.Remove(gas);
     }
 
-    /// <summary>The vents breathing on this map, for the dev action that fires them all at once.</summary>
+    /// <summary>Gets the vents breathing on this map, for the dev action that fires them all at once.</summary>
     public IReadOnlyList<Comp.Thing.CompAshVent> Vents => vents;
 
     /// <summary>
@@ -216,7 +216,7 @@ public class AshDepthTracker : MapComponent {
         if (changed) NotifyAshChanged();
     }
 
-    /// <summary>Rain carries ash off exactly as it washes vanilla filth away.</summary>
+    /// <summary>Gets a value indicating whether the rain is heavy enough to carry ash off, at the threshold vanilla uses to wash filth away.</summary>
     private bool RainWashing => map.weatherManager.RainRate >= RainWashThreshold;
 
     public override void MapComponentUpdate() {
@@ -293,6 +293,7 @@ public class AshDepthTracker : MapComponent {
     }
 
     /// <summary>Dev shortcut. Settles every stripe at once instead of waiting out the dwell.</summary>
+    /// <returns>How many cells are standing as ash terrain once every stripe has settled.</returns>
     public int RunTerrainSweepNow() {
         settleClock.ExpireAll();
 
@@ -335,6 +336,7 @@ public class AshDepthTracker : MapComponent {
     }
 
     /// <summary>One cell's swap or restore, once its dwell is up. True only when the terrain moved.</summary>
+    /// <returns>True when the cell's terrain changed. False when there was nothing to do, or its dwell is not up yet.</returns>
     private bool TryTurnOverCell(int index, int mm, int today, bool ignoreDwell) {
         AshTerrainAction action = AshDepthMath.NextTerrainAction(mm, terrainMemory.IsSwapped(index));
 
@@ -354,6 +356,7 @@ public class AshDepthTracker : MapComponent {
     }
 
     /// <summary>Only natural ground goes under. A floor the colony laid stays theirs.</summary>
+    /// <returns>True when the cell went under ash. False when it is already ash, or the ground is water, impassable, temporary, or something the colony built.</returns>
     private bool SwapToAsh(int index) {
         TerrainDef current = map.terrainGrid.TerrainAt(index);
         if (current == AshTerrain) return false;
@@ -371,6 +374,7 @@ public class AshDepthTracker : MapComponent {
     ///     Puts the cell back only if it is still the ash we put there. Anything else means the
     ///     player built over it while it was buried, and that is theirs to keep.
     /// </summary>
+    /// <returns>True when the cell went back to the terrain it had. False when nothing was remembered for it, or it is no longer the ash we laid.</returns>
     private bool RestoreUnderAsh(int index) {
         TerrainDef? original = terrainMemory.Take(index);
         if (original == null) return false;

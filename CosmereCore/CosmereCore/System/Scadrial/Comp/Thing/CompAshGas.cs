@@ -49,6 +49,7 @@ public class CompAshGas : ThingComp {
     }
 
     /// <summary>Raw exposure on a cell before the pawn's mask. Zero outside the radius.</summary>
+    /// <returns>Exposure at that cell before any mask is applied, 0 outside the vent's radius.</returns>
     public float RawExposureAt(IntVec3 cell) {
         float distance = AshGasFalloff.DistanceToMouth(cell.x, cell.z, mouth.minX, mouth.minZ, mouth.maxX, mouth.maxZ);
 

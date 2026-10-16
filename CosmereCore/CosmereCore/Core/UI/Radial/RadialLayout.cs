@@ -32,6 +32,7 @@ public static class RadialLayout {
     ///     intersected directly, and the ring's own inner and outer walls bound the near-horizontal
     ///     wedges where the label runs radially instead of across.
     /// </remarks>
+    /// <returns>The widest label width that fits, in pixels. 0 when the wheel has no wedges.</returns>
     public static float LabelFitWidthAt(int index, int wedgeCount, float radius, float innerRadius, float outerRadius) {
         if (wedgeCount <= 0) return 0f;
 
@@ -84,6 +85,7 @@ public static class RadialLayout {
     ///     Where a horizontal line through (px, py) meets the ray leaving the centre at edgeDeg. An
     ///     edge that is itself horizontal never meets it, and is reported as unbounded.
     /// </summary>
+    /// <returns>The horizontal distance from (px, py) out to that edge ray, or float.MaxValue when the edge is horizontal.</returns>
     private static float EdgeRayHalfWidth(float px, float py, float edgeDeg) {
         float rad = edgeDeg * Mathf.Deg2Rad;
         float cos = Mathf.Cos(rad);

@@ -51,6 +51,7 @@ public static class DiagnosticsText {
     /// <summary>
     ///     One line BetaHub parses into structured device data on the issue.
     /// </summary>
+    /// <returns>One line of operating system, GPU and memory, in the shape BetaHub parses.</returns>
     public static string BuildDeviceInfo(DiagnosticsFacts facts) {
         return $"{facts.OperatingSystem} | {facts.GraphicsDevice} | {facts.SystemMemoryMb} MB RAM";
     }
@@ -59,6 +60,7 @@ public static class DiagnosticsText {
     ///     Suggestions accept no attachments, so build context rides in the description instead.
     ///     The SteamID stays out since that text is public.
     /// </summary>
+    /// <returns>A footer block naming the build, the game version, the operating system and the active Cosmere mods.</returns>
     public static string BuildInlineFooter(DiagnosticsFacts facts) {
         string cosmereMods = string.Join(", ", facts.ActiveMods.Where(m => m.StartsWith("Cosmere")));
 

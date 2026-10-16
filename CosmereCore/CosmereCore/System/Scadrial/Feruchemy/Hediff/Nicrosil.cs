@@ -5,8 +5,10 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
-/// The gene applies the Investiture mirror since it ticks even without this hediff alive.
-/// This class only handles the readout and its preconditions.
+/// <summary>
+///     The gene applies the Investiture mirror, since it ticks even without this hediff alive. This
+///     class only handles the readout and its preconditions.
+/// </summary>
 public class Nicrosil : HediffWithComps {
     private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
 

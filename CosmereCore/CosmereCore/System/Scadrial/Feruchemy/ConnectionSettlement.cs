@@ -21,6 +21,7 @@ public readonly struct ConnectionSettlement {
     public float PawnPoints { get; }
 
     /// <summary>The signed whole-point ask the pawn's ledger gets: negative takes from them, positive gives to them.</summary>
+    /// <returns>The points to ask the ledger for: negative while storing, positive while tapping.</returns>
     public static float Ask(float chargeMoved, bool storing) {
         float points = ConnectionBudget.PointsForCharge(ConnectionBudget.WholeCharge(Math.Max(0f, chargeMoved)));
 
@@ -28,6 +29,7 @@ public readonly struct ConnectionSettlement {
     }
 
     /// <summary>Reads what the ledger reported back against what the metalmind moved, and decides which side settles.</summary>
+    /// <returns>What the short side still owes: charge back to the metalmind, points back to the pawn, or nothing when the two match.</returns>
     public static ConnectionSettlement Resolve(float chargeMoved, bool storing, float signedPointsMoved) {
         float pointsMoved = storing ? -signedPointsMoved : signedPointsMoved;
         float owed = ConnectionBudget.Settlement(chargeMoved, Math.Max(0f, pointsMoved));

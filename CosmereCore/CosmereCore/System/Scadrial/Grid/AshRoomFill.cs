@@ -7,7 +7,7 @@ namespace Cosmere.System.Scadrial.Grid;
 /// </summary>
 public static class AshRoomFill {
     /// <summary>
-    ///     Widest room a vent will fill. Sat at the plume's own footprint so a room misread as
+    ///     Gets the widest room a vent will fill. Sat at the plume's own footprint so a room misread as
     ///     enclosed can never turn a bounded local write into a map scan.
     /// </summary>
     public static int MaxCells => AshPlume.CellCount;
@@ -16,6 +16,7 @@ public static class AshRoomFill {
     ///     Whether this room takes the plume rather than letting it out. Anything wider is a
     ///     cavern, and a vent in one goes on behaving as it does under open sky.
     /// </summary>
+    /// <returns>True when the room is enclosed and no wider than <see cref="MaxCells" />.</returns>
     public static bool HoldsThePlume(int cellCount, bool psychologicallyOutdoors) {
         if (psychologicallyOutdoors) return false;
         if (cellCount <= 0) return false;
@@ -27,6 +28,7 @@ public static class AshRoomFill {
     ///     One cell's share of a mouth's output. The mass is the same the plume would have spread
     ///     over open ground; only the ground it lands on has shrunk.
     /// </summary>
+    /// <returns>Millimetres landing on each cell of the room, or 0 for an empty room.</returns>
     public static float PerCellMm(float mouthMm, int cellCount) {
         if (cellCount <= 0) return 0f;
 

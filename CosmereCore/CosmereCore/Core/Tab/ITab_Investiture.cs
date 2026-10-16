@@ -17,9 +17,9 @@ public class ITab_Investiture : ITab {
     }
 
     /// <summary>
-    ///     Open for any colonist or prisoner, Invested or not. Connection is chrome above the
-    ///     system switcher and everyone has one - a pawn with none at all is exactly who the
-    ///     reading is most worth having for.
+    ///     Gets a value indicating whether the tab is open. It opens for any colonist or prisoner, Invested
+    ///     or not. Connection is chrome above the system switcher and everyone has one, and a pawn with none
+    ///     at all is exactly who the reading is most worth having for.
     /// </summary>
     public override bool IsVisible {
         get {

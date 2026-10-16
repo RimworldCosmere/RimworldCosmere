@@ -47,6 +47,7 @@ public static class KolossBulk {
     /// <summary>
     ///     1.0 for anything that is not a koloss, so callers can multiply without asking first.
     /// </summary>
+    /// <returns>How many times a man's size this koloss is, or 1 for anything that is not one.</returns>
     public static float For(Pawn? pawn) {
         if (pawn == null) return 1f;
 

@@ -36,6 +36,7 @@ public class ConnectionOffsets : Verse.GameComponent {
     }
 
     /// <summary>How much of this pawn's tie to this Shard is held elsewhere, on the 0-100 scale.</summary>
+    /// <returns>How much of the tie is held elsewhere, on the 0-100 scale, or 0 when nothing is.</returns>
     public static float Get(Pawn? pawn, ShardDef? shard) {
         ConnectionOffsets? store = Store();
         if (store == null || pawn == null || shard == null) return 0f;
@@ -52,6 +53,7 @@ public class ConnectionOffsets : Verse.GameComponent {
     }
 
     /// <summary>Null outside a running game, which is the right answer: nothing is held anywhere yet.</summary>
+    /// <returns>The game's offset store, or null outside a running game.</returns>
     private static ConnectionOffsets? Store() {
         return GameComponentCache<ConnectionOffsets>.Get();
     }

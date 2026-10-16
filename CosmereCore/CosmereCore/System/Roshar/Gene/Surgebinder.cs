@@ -105,9 +105,12 @@ public class Surgebinder : Invested {
     }
 
     /// <summary>
-    ///     Multiple Nahel bonds share one Stormlight pool; the most advanced order sets the ceiling, so a
-    ///     second bond never shrinks it. Reading only this gene lets gene-list order decide the capacity.
+    ///     Gets the Stormlight ceiling shared by every Nahel bond on this pawn. The most advanced
+    ///     order sets it, so a second bond never shrinks it.
     /// </summary>
+    /// <remarks>
+    ///     Reading only this gene would let gene-list order decide the capacity.
+    /// </remarks>
     public override float MaxInvestitureLevel {
         get {
             float ceiling = 0f;

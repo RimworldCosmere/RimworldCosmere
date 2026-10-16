@@ -42,6 +42,7 @@ public abstract class EmotionalPush : CompAbilityEffect {
     ///     quietly does nothing reads as a broken ability, and the player has no other way to learn
     ///     that the Smoker across the room is the reason.
     /// </remarks>
+    /// <returns>True when a coppercloud hides the target, in which case the player is also told why.</returns>
     protected bool Blocked(Pawn target) {
         if (!Coppercloud.Hides(parent.pawn, target, parent.def.metal)) return false;
 

@@ -65,6 +65,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     protected override float headerHeight => Spacing.Get(16);
 
     /// <summary>Where this order sits in a browsable list. Null when there is nothing to browse.</summary>
+    /// <returns>The position line, such as a place in a list, or null when there is nothing to browse.</returns>
     protected virtual TaggedString? GetPositionReadout() {
         return null;
     }
@@ -612,6 +613,7 @@ public abstract class Dialog_RadiantOrderDialogBase : BaseWindow {
     ///     Vanilla resolves Gender.None to "it", which reads wrong on a person, so a genderless
     ///     or missing pawn falls back to they/them.
     /// </summary>
+    /// <returns>Vanilla's pronoun for a male or female pawn, otherwise the neutral they/them key.</returns>
     private static string Pronoun(Pawn? pawn, Func<Gender, string> vanilla, string neutralKey) {
         return pawn is { gender: Gender.Male or Gender.Female }
             ? vanilla(pawn.gender)

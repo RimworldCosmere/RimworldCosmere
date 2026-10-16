@@ -39,7 +39,8 @@ public class HediffComp_KandraShapeVerbs : HediffComp_VerbGiver, IVerbOwner {
     private PawnKindDef? borrowedFrom;
 
     /// <summary>
-    ///     Reads as the animal's own body, not as a piece of equipment.
+    ///     Gets the owner type that makes a borrowed attack read as the animal's own body, not as a
+    ///     piece of equipment.
     /// </summary>
     /// <remarks>
     ///     <c>HediffComp_VerbGiver</c> reports <c>ImplementOwnerTypeDefOf.Hediff</c>, and
@@ -49,7 +50,7 @@ public class HediffComp_KandraShapeVerbs : HediffComp_VerbGiver, IVerbOwner {
     /// </remarks>
     ImplementOwnerTypeDef IVerbOwner.ImplementOwnerTypeDef => ImplementOwnerTypeDefOf.Bodypart;
 
-    /// <summary>The animal's attacks, re-anchored to a part the wearer actually has.</summary>
+    /// <summary>Gets the animal's attacks, re-anchored to a part the wearer actually has.</summary>
     public new List<Tool>? Tools {
         get {
             PawnKindDef? worn = KandraShapeGraphicUtility.WornKind(Pawn);
@@ -82,7 +83,7 @@ public class HediffComp_KandraShapeVerbs : HediffComp_VerbGiver, IVerbOwner {
         base.CompPostTick(ref severityAdjustment);
     }
 
-    /// <summary>Teeth is the one attack group both a human and a quadruped body carry.</summary>
+    /// <summary>Gets the Teeth group, the one attack group both a human and a quadruped body carry.</summary>
     private static BodyPartGroupDef? Bite =>
         bite ??= DefDatabase<BodyPartGroupDef>.GetNamedSilentFail("Teeth");
 

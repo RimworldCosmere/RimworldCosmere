@@ -10,12 +10,16 @@ namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 public class Atium : HediffWithComps {
     private const float AgeTicksPerGameTick = 43200f;
 
-    /// How young atium will take a pawn. Flat rather than read off the race, since
-    /// life stages are flagged loosely enough that teenagers count as adult.
+    /// <summary>
+    ///     How young atium will take a pawn. Flat rather than read off the race, since life stages are
+    ///     flagged loosely enough that teenagers count as adult.
+    /// </summary>
     private const int MinAgeYears = 18;
 
-    /// Held as a long, not float: float loses whole ticks past ~16M ticks, and this
-    /// floor sits at 65M, so a float compare would never see it arrive.
+    /// <summary>
+    ///     Held as a long, not float. Float loses whole ticks past ~16M ticks and this floor sits at 65M,
+    ///     so a float compare would never see it arrive.
+    /// </summary>
     private const long MinAgeTicks = MinAgeYears * (long)GenDate.TicksPerYear;
 
     private static readonly string[] AgeConditionNames = [
@@ -53,8 +57,10 @@ public class Atium : HediffWithComps {
         }
     }
 
-    /// Hands back the share of this interval's draw that bought no years, so a
-    /// pawn arriving at the floor is not charged for the part that did nothing.
+    /// <summary>
+    ///     Hands back the share of this interval's draw that bought no years, so a pawn arriving at the
+    ///     floor is not charged for the part that did nothing.
+    /// </summary>
     private void RefundUnused(float fraction) {
         Feruchemist? gene = atium;
         if (gene == null || fraction <= 0f) return;

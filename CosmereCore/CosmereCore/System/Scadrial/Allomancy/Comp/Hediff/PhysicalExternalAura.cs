@@ -18,6 +18,7 @@ public class PhysicalExternalAura : LineDrawingAura {
     ///     The targeting preview builds its lines through here too, so a line previewed under the
     ///     cursor is the same line the aura draws once the metal is lit.
     /// </summary>
+    /// <returns>The line between pawn and metal, thickened by mass and faded by distance.</returns>
     public static LineToRender MetalLine(Pawn pawn, Verse.Thing thing, bool pulling, Material material, float radius) {
         float distance = (thing.DrawPos - pawn.DrawPos).ToIntVec3().LengthHorizontal;
         float mass = thing.GetMetalMass() * thing.stackCount;

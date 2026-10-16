@@ -54,6 +54,7 @@ public class QuestPart_SpawnThing : QuestPart_CosmereActivable {
     }
 
     /// <summary>Never actually evaluated - Enable() completes or fails synchronously, so state is already Disabled before any QuestPartTick could poll. Unreachable by construction.</summary>
+    /// <returns>Always true. The part is already finished by the time anything could poll it.</returns>
     protected override bool IsSatisfied() {
         return true;
     }

@@ -16,6 +16,7 @@ public class QuestPart_SiteCleared : QuestPart_CosmereActivable {
     ///     countDormantPawnsAsHostile stays true so a sleeping garrison still blocks completion;
     ///     canBeFogged stays false so an undiscovered threat does not block forever.
     /// </summary>
+    /// <returns>True once the site map holds no hostile threat. False while it still has one, or has no map.</returns>
     protected override bool IsSatisfied() {
         if (site == null || site.Destroyed) {
             Fail();

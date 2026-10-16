@@ -11,9 +11,15 @@ public static class AutocastDecision {
     ///     What a rule should do to an ability this pass, given the ability's shape, whether the
     ///     rule's triggers pass, and whether autocast is the one that lit it.
     /// </summary>
+    /// <param name="toggleable">The ability sustains once lit.</param>
+    /// <param name="active">The ability is lit right now.</param>
+    /// <param name="triggersPass">Every trigger on the rule is satisfied this pass.</param>
+    /// <param name="releaseOnStop">The player wants the burn released when the rule stops.</param>
     /// <param name="autocastLit">
     ///     The rule lit this ability itself. A burn the player lit is never put out.
     /// </param>
+    /// <param name="targetRequired">The ability needs a target the rule cannot pick on its own.</param>
+    /// <returns>Cast, TurnOff, or None when the ability should be left where it is.</returns>
     public static AutocastAction For(
         bool toggleable,
         bool active,
@@ -44,6 +50,7 @@ public static class AutocastDecision {
     /// <param name="active">The ability is lit right now.</param>
     /// <param name="wasHolding">The rule owned it before this pass.</param>
     /// <param name="action">What this pass decided to do.</param>
+    /// <returns>True when the rule owns the ability going into the next pass.</returns>
     public static bool NextHolding(
         bool dormant,
         bool abilityFound,
@@ -68,6 +75,7 @@ public static class AutocastDecision {
     /// </summary>
     /// <param name="holding">The rule lit this burn itself.</param>
     /// <param name="releaseOnStop">The player wants the burn released when the rule stops.</param>
+    /// <returns>True when the burn should be put out as the rule goes dormant.</returns>
     public static bool ReleasesWhenDormant(bool holding, bool releaseOnStop) {
         return holding && releaseOnStop;
     }

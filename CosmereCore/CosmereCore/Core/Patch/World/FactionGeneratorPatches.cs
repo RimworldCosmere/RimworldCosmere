@@ -74,6 +74,7 @@ public static class FactionGeneratorPatch {
     ///     missing - broken Royalty quests, no mech clusters, no infestations. Sound advice in a
     ///     vanilla game and noise in a Cosmere one, where their absence is the premise.
     /// </summary>
+    /// <returns>True for Empire, Mechanoid and Insect, the three factions vanilla warns about.</returns>
     public static bool IsWarnedAboutWhenMissing(FactionDef faction) {
         string defName = faction.defName ?? string.Empty;
         return defName == "Empire" || defName == "Mechanoid" || defName == "Insect";

@@ -63,8 +63,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
         set => equippedInt = value;
     }
 
-    /// The comp reference is cached, not the factor: quality is assigned after PostPostMake,
-    /// so caching the value would freeze every metalmind at normal quality.
+    /// <summary>
+    ///     Gets the quality multiplier on capacity. The comp reference is cached, not the factor, because
+    ///     quality is assigned after PostPostMake and a cached value would freeze every metalmind at normal.
+    /// </summary>
     private float CapacityFactor {
         get {
             if (!qualityCompResolved) {
@@ -78,8 +80,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    /// props.maxAmount is shared by the def; quality scales that shared base, then per-instance
-    /// capacityLost is subtracted, so burning any quality costs the same absolute capacity.
+    /// <summary>
+    ///     Gets this metalmind's capacity. props.maxAmount is shared by the def, quality scales that shared
+    ///     base, then per-instance capacityLost is subtracted, so burning any quality costs the same amount.
+    /// </summary>
     public float MaxAmount => Mathf.Max(0f, props.maxAmount * CapacityFactor - capacityLostInt);
 
     public bool IsBurnedOut => MaxAmount <= 0f;
@@ -90,14 +94,18 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public float TotalStored => storedAmountInt + compoundedAmountInt;
 
-    /// Memories and attribute charge share one piece of metal. A coppermind full of a
-    /// childhood has no room left for mental speed, and vice versa.
+    /// <summary>
+    ///     Gets how much of the metal is in use. Memories and attribute charge share one piece of metal, so
+    ///     a coppermind full of a childhood has no room left for mental speed, and vice versa.
+    /// </summary>
     public float TotalOccupied => TotalStored + UsedMemorySpace;
 
     public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalOccupied);
 
-    /// A gate that ignored the owner said yes where the action said no, so a thief lit the
-    /// tap hediff and got the attribute while the metal never drained.
+    /// <summary>
+    ///     Gets a value indicating whether the current holder may use this metalmind. A gate that ignored the owner said yes
+    ///     where the action said no, so a thief lit the tap hediff and got the attribute for free.
+    /// </summary>
     private bool OwnerAllows {
         get {
             Pawn? currentHolder = GetHoldingPawn();
@@ -134,8 +142,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    /// A nicrosilmind holds Investiture itself, so it mirrors at nicrosil's own rate
-    /// instead of the generic per-attribute conversion every other metalmind uses.
+    /// <summary>
+    ///     Gets the Breath-equivalent units one unit of charge is worth. A nicrosilmind holds Investiture
+    ///     itself, so it mirrors at nicrosil's own rate instead of the generic per-attribute conversion.
+    /// </summary>
     private float BeuPerUnit => Metal?.defName == "Nicrosil"
         ? ScadrialMetallurgyConstants.NicrosilBeuPerCharge
         : ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
@@ -203,8 +213,11 @@ public class Metalmind : ThingComp, IMetalmindSource {
         return CompoundedAmount - before;
     }
 
-    /// Drawing compounded charge eats the metalmind that carried it. Capacity drops
-    /// by what was spent, so the two run out together.
+    /// <summary>
+    ///     Draws compounded charge, which eats the metalmind that carried it. Capacity drops by what was
+    ///     spent, so the two run out together.
+    /// </summary>
+    /// <returns>How much charge was actually drawn, which is 0 when the metalmind cannot be tapped or the holder is not allowed to use it.</returns>
     public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
         if (!CanTapCompounded) return 0f;
         if (!ValidateOwner()) return 0f;

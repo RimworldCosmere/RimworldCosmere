@@ -32,6 +32,7 @@ public static class KandraDisguise {
     public const float NoticeRangePerSkill = 0.75f;
 
     /// <summary>Whether this pawn is currently pretending to be something else.</summary>
+    /// <returns>True when the pawn is a kandra wearing someone else's shape.</returns>
     public static bool IsDisguised(Pawn pawn) {
         return pawn.TryGetComp<CompKandraForms>()?.IsWearingSomeoneElse == true;
     }
@@ -39,6 +40,7 @@ public static class KandraDisguise {
     /// <summary>
     ///     The kandra behind the shape, which is the pawn itself.
     /// </summary>
+    /// <returns>The pawn when it is disguised, or null when it is not.</returns>
     /// <remarks>
     ///     Kept as a named call rather than inlined because it says what it means at the call
     ///     sites, and because it used to unwrap a second pawn - anything still asking is asking
@@ -51,6 +53,7 @@ public static class KandraDisguise {
     /// <summary>
     ///     Bronze does not guess. Anyone burning it near a kandra knows.
     /// </summary>
+    /// <returns>True when a pawn in range is burning bronze and no coppercloud covers the kandra.</returns>
     /// <remarks>
     ///     Deliberately not a roll. A Seeker reads the Investiture directly, so a first-generation
     ///     kandra with centuries of practice is exactly as visible as one made last week. That is
@@ -92,6 +95,9 @@ public static class KandraDisguise {
     /// <summary>
     ///     Whether an ordinary observer notices something wrong, this look.
     /// </summary>
+    /// <returns>
+    ///     True when somebody is watching and the suspicion roll lands, which blows the disguise.
+    /// </returns>
     /// <remarks>
     ///     Conviction runs 0 to 1 off the Shapeshift skill, so a practised kandra is effectively
     ///     never caught by eye alone and a new one is caught often enough to matter. Bronze is
@@ -110,6 +116,7 @@ public static class KandraDisguise {
     /// <summary>
     ///     Whether a stranger is close enough to see something wrong.
     /// </summary>
+    /// <returns>True when a living humanlike stranger is standing inside the notice range.</returns>
     /// <remarks>
     ///     Colonists and the player's own factions are excluded: they are the people the disguise
     ///     is being kept up in front of every day, and if they were going to work it out they
@@ -150,6 +157,7 @@ public static class KandraDisguise {
     /// <summary>
     ///     How close a stranger has to be. Practice shrinks it.
     /// </summary>
+    /// <returns>The notice range in cells, never below five.</returns>
     /// <remarks>
     ///     Twenty cells for a kandra that has just learned to hold a face, down to five for one
     ///     that has been doing it for centuries - so an old kandra is only ever caught by somebody
@@ -165,6 +173,7 @@ public static class KandraDisguise {
     ///     Whether a disguise stands between these two, so neither should treat the other as a
     ///     threat.
     /// </summary>
+    /// <returns>True when either thing is fooled by the other's shape.</returns>
     /// <remarks>
     ///     This is what the whole thing is for. A kandra wearing an obligator walks through a
     ///     Steel Ministry raid, and one wearing a wolfhound is just another animal on the map. The

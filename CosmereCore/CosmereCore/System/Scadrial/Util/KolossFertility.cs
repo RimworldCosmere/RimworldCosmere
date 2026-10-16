@@ -17,6 +17,7 @@ namespace Cosmere.System.Scadrial.Util;
 /// </remarks>
 public static class KolossFertility {
     /// <summary>Pure so it can be tested without Verse, the same as IsAshEra.</summary>
+    /// <returns>True for any named era other than the Ash era, and false when no era is set.</returns>
     public static bool CanBreed(string? eraDefName) {
         return eraDefName != null && eraDefName != AshEra.AshEraDefName;
     }

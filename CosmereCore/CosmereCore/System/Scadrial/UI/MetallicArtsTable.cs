@@ -6,8 +6,10 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-/// Lays metals out as the book's Metallic Arts table: one block per quadrant, two tiles across.
-/// Allomancy and Feruchemy share this layout and supply their own tile drawing and interaction.
+/// <summary>
+///     Lays metals out as the book's Metallic Arts table: one block per quadrant, two tiles across.
+///     Allomancy and Feruchemy share this layout and supply their own tile drawing and interaction.
+/// </summary>
 public static class MetallicArtsTable {
     private static float QuadHeaderHeight => Text.LineHeightOf(GameFont.Tiny) + 3f;
 
@@ -18,8 +20,10 @@ public static class MetallicArtsTable {
     private const float TileGap = 3f;
     private const int Columns = 2;
 
-    /// The open tile runs through this gap into its detail panel, clearing the closed tile beside it.
-    /// Only the open tile crosses it - that is what reads the pair as one shape, its neighbour as separate.
+    /// <summary>
+    ///     The open tile runs through this gap into its detail panel, clearing the closed tile beside it.
+    ///     Only the open tile crosses it, which is what reads the pair as one shape and its neighbour as separate.
+    /// </summary>
     public const float JoinGap = TileGap;
 
     public static float HeightFor(

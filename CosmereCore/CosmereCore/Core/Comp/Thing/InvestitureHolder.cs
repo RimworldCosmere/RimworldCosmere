@@ -181,7 +181,7 @@ public class InvestitureHolder : ThingComp {
     }
 
     /// <summary>
-    ///     Received per unit drawn. Only a pawn carries the stat; anything else trades one for one.
+    ///     Gets the Investiture received per unit drawn. Only a pawn carries the stat, anything else trades one for one.
     /// </summary>
     private float AbsorptionEfficiency {
         get {

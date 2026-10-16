@@ -89,6 +89,7 @@ public class KandraForm : IExposable {
     public KandraForm() { }
 
     /// <summary>An animal shape, remembered by its kind rather than by its face.</summary>
+    /// <returns>An animal form of that kind, taking its gender from the source pawn.</returns>
     public static KandraForm FromAnimal(Pawn source, PawnKindDef wornAs) {
         return FromAnimalKind(wornAs, source.gender);
     }
@@ -97,6 +98,7 @@ public class KandraForm : IExposable {
     ///     The same shape without a body to copy it off, for scenarios that hand a kandra a form
     ///     it never had to eat anybody for.
     /// </summary>
+    /// <returns>An animal form of that kind and gender, labelled with the kind's own name.</returns>
     public static KandraForm FromAnimalKind(PawnKindDef wornAs, Gender gender) {
         return new KandraForm {
             nameFull = wornAs.label,
@@ -124,7 +126,10 @@ public class KandraForm : IExposable {
 
     public string Label => nameShort ?? nameFull ?? "unknown";
 
-    /// <summary>Builds the stand-in on first use. Null if generation failed for any reason.</summary>
+    /// <summary>
+    ///     Gets the stand-in pawn used to draw this form, built on first use. Null if generation
+    ///     failed for any reason.
+    /// </summary>
     public Pawn? PortraitPawn {
         get {
             if (portrait != null) return portrait;

@@ -94,8 +94,9 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     }
 
     /// <summary>
-    ///     Priced at the status the cast would move to, so a flare is charged as a flare. The base
-    ///     asks only whether the reserve covers one tick, which let the wheel start a burn the gizmo refused.
+    ///     Gets whether the burn can start, priced at the status the cast would move to so a flare is
+    ///     charged as a flare. The base asks only whether the reserve covers one tick, which let the
+    ///     wheel start a burn the gizmo refused.
     /// </summary>
     public override AcceptanceReport CanCast {
         get {

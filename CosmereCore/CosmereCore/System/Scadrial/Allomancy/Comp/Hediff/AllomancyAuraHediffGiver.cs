@@ -61,17 +61,17 @@ public class AllomancyAuraHediffGiver : HediffComp {
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
     /// <summary>
-    ///     How far the aura carries, rounded the way GetCellsAround rounds it so that anything
+    ///     Gets how far the aura carries, rounded the way GetCellsAround rounds it so that anything
     ///     asking how big the aura is gets the size it actually applied.
     /// </summary>
     public float Reach => Mathf.Round(props.radius * base.parent.Severity);
 
-    /// <summary>Zinc and brass reach for the mind, which is the reach copper shuts.</summary>
+    /// <summary>Gets a value indicating whether this aura reaches for the mind. Zinc and brass do, and that is the reach copper shuts.</summary>
     private bool isEmotional =>
         parent.metal == MetallicArtsMetalDefOf.Zinc || parent.metal == MetallicArtsMetalDefOf.Brass;
 
     /// <summary>
-    ///     The first source ability, or none. An explicit first read, not a foreach that returns on
+    ///     Gets the first source ability, or none. An explicit first read, not a foreach that returns on
     ///     entry - that reads like a loop but can never take a second pass.
     /// </summary>
     private IAbility<Allomancer, AllomanticHediff>? ability {

@@ -58,6 +58,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider, ICodexSyst
     ///     The order's own glyph and colour, so a Dustbringer reads as a Dustbringer in the rail
     ///     rather than as generic Surgebinding.
     /// </summary>
+    /// <returns>The order's icon, or null when the pawn has no Radiant order.</returns>
     public Texture2D? SigilFor(Pawn pawn, bool selected) {
         RadiantOrderDef? order = GetSurgebinder(pawn)?.radiantOrderDef;
         if (order == null) return null;

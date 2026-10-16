@@ -33,6 +33,7 @@ public static class KandraShapeGraphicUtility {
     ///     The animal a pawn is showing. A kandra whose true body is an animal wears nothing and
     ///     is still a dog, so the true body answers when no disguise is on.
     /// </summary>
+    /// <returns>The animal kind the pawn is showing, or null when the pawn has no kandra comp and no animal true body.</returns>
     public static PawnKindDef? WornKind(Pawn? pawn) {
         CompKandraForms? forms = pawn?.TryGetComp<CompKandraForms>();
         if (forms == null) return null;
@@ -54,6 +55,7 @@ public static class KandraShapeGraphicUtility {
     ///         falls through to the extension, and the spike is additive rather than a cutover.
     ///     </para>
     /// </remarks>
+    /// <returns>The graphic data for the worn animal, or null when there is no worn animal and no def extension to fall back on.</returns>
     public static GraphicData? DataFor(Pawn? pawn) {
         PawnKindDef? kind = WornKind(pawn);
         if (kind?.lifeStages is { Count: > 0 }) {
@@ -95,6 +97,7 @@ public class PawnRenderNode_KandraShape : PawnRenderNode {
     ///     <c>Graphic.MeshAt</c>, so a graphic's own drawSize is never consulted and a bluebird
     ///     authored at 0.6 was stretched over a human.
     /// </remarks>
+    /// <returns>A mesh set sized to the worn animal, or the base human quad when that animal has no usable draw size.</returns>
     public override GraphicMeshSet MeshSetFor(Pawn pawn) {
         Vector2 size = KandraShapeGraphicUtility.DrawSizeFor(pawn);
         if (size.x <= 0f || size.y <= 0f) return base.MeshSetFor(pawn);

@@ -17,10 +17,10 @@ namespace Cosmere.Core.Util;
 public static class WorldUtility {
     public static CosmereWorld? component => Verse.Current.Game?.GetComponent<CosmereWorld>();
 
-    /// <summary>The save's world, or null before one has been chosen.</summary>
+    /// <summary>Gets the save's world, or null before one has been chosen.</summary>
     public static CosmereWorldDef? Primary => component?.primary;
 
-    /// <summary>Every world whose mod is loaded, in author-declared order.</summary>
+    /// <summary>Gets every world whose mod is loaded, in author-declared order.</summary>
     public static List<CosmereWorldDef> All {
         get {
             List<CosmereWorldDef> worlds = [..DefDatabase<CosmereWorldDef>.AllDefsListForReading];
@@ -44,6 +44,7 @@ public static class WorldUtility {
     }
 
     /// <summary>Whether <paramref name="world" /> is the one this save runs on.</summary>
+    /// <returns>True when that world is the save's primary world. False when it is null.</returns>
     public static bool IsPrimary(CosmereWorldDef? world) {
         return world != null && Primary == world;
     }
@@ -53,6 +54,7 @@ public static class WorldUtility {
     ///     cross-world save for every loaded world, which is what lets those scenarios reach
     ///     every system.
     /// </summary>
+    /// <returns>True when that world's content should run: no world has been chosen yet, it is the chosen one, or the save is cross-world. False when the world is null.</returns>
     public static bool IsActive(CosmereWorldDef? world) {
         if (world == null) return false;
 
@@ -72,11 +74,13 @@ public static class WorldUtility {
     ///     they are Honor's. Mists are Preservation's, on Scadrial. Gating on only one of the two
     ///     gets a save where Honor is switched off but the storms still roll in.
     /// </remarks>
+    /// <returns>True when the world's content should run and at least one of those Shards exists in the save.</returns>
     public static bool IsActive(CosmereWorldDef? world, params ShardDef[] anyOf) {
         return IsActive(world) && ShardUtility.AreAnyEnabled(anyOf);
     }
 
     /// <summary>The world a xenotype is born to, for the ancestry floor. Null when it is nobody's.</summary>
+    /// <returns>The first loaded shardworld that lists the xenotype, or null when the xenotype is null or no world claims it.</returns>
     public static CosmereWorldDef? WorldForXenotype(XenotypeDef? xenotype) {
         if (xenotype == null) return null;
 
@@ -93,6 +97,7 @@ public static class WorldUtility {
     ///     The world a faction belongs to. Null for vanilla and DLC factions, which belong to no
     ///     shardworld.
     /// </summary>
+    /// <returns>The shardworld named in the faction's defName, or null for a faction that names none.</returns>
     public static CosmereWorldDef? WorldForFaction(FactionDef? faction) {
         return WorldForDefName(faction?.defName);
     }
@@ -111,6 +116,7 @@ public static class WorldUtility {
     ///         the def belongs to every world.
     ///     </para>
     /// </remarks>
+    /// <returns>The shardworld whose defName appears in that defName, or null when the name is empty or carries no world token.</returns>
     public static CosmereWorldDef? WorldForDefName(string? defName) {
         if (string.IsNullOrEmpty(defName)) return null;
 
@@ -128,6 +134,7 @@ public static class WorldUtility {
     ///     gathers from every loaded world rather than listing them, so it does not dangle when
     ///     a shard mod is absent.
     /// </summary>
+    /// <returns>The Shards that world grants an ancestry floor for, gathered from every loaded world on a cross-world save. Empty when the world is null.</returns>
     public static List<ShardDef> AncestryShards(CosmereWorldDef? world) {
         if (world == null) return [];
         if (!world.crossWorld) return world.DefaultShardsFor(null);
@@ -148,6 +155,7 @@ public static class WorldUtility {
     ///     What a world switches on at game start. A cross-world save takes each other world's
     ///     own default set, which keeps every set internally conflict-free.
     /// </summary>
+    /// <returns>The Shards the save starts with, pooled from every loaded world on a cross-world save. Empty when the world is null.</returns>
     public static List<ShardDef> StartingShards(CosmereWorldDef? world, EraDef? era) {
         if (world == null) return [];
         if (!world.crossWorld) return world.DefaultShardsFor(era);
@@ -175,6 +183,7 @@ public static class WorldUtility {
     ///     and the dev quicktest - both set their Shards *after* generating the world, so they
     ///     have to call this themselves at the right point.
     /// </remarks>
+    /// <returns>The world it committed to: the one the scenario implies, else the cross-world sentinel, else the first world in list order. Null when no worlds are loaded.</returns>
     public static CosmereWorldDef? SeedFromScenario() {
         List<CosmereWorldDef> worlds = All;
         if (worlds.Count == 0) return null;
@@ -197,6 +206,7 @@ public static class WorldUtility {
     ///     The world that permits every Shard the scenario declares. A set spanning two worlds
     ///     matches only the cross-world sentinel, which is what those scenarios want.
     /// </summary>
+    /// <returns>The world that permits every Shard the scenario declares, the cross-world sentinel when no single world does, or null when the scenario declares no Shards.</returns>
     public static CosmereWorldDef? InferFromScenario(List<CosmereWorldDef>? worlds = null) {
         worlds ??= All;
 

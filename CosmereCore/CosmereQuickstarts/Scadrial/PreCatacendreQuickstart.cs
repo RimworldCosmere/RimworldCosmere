@@ -23,8 +23,9 @@ public class PreCatacendreQuickstart : CosmereQuickstartBase {
     public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre;
 
     /// <summary>
-    ///     nothing beyond what the scenario sets (Ruin, Preservation): adding Honor/Cultivation/Odium here turned
-    ///     a Mistborn colony into one with highstorms and Rosharan genes rolling; use All-Stars quickstart for that
+    ///     Gets no Shards beyond the ones the scenario sets (Ruin, Preservation). Adding Honor,
+    ///     Cultivation or Odium here turned a Mistborn colony into one with highstorms and Rosharan
+    ///     genes rolling, so use the All-Stars quickstart for that instead.
     /// </summary>
     public override IReadOnlyList<string> shards => [];
 

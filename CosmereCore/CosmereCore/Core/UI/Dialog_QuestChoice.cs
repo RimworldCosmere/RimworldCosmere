@@ -50,9 +50,13 @@ public class Dialog_QuestChoice : Verse.Window {
     }
 
     /// <summary>
-    ///     Window.InnerWindowOnGUI contracts the window rect by Margin (18f) before calling
-    ///     DoWindowContents. Overriding to 0 keeps CalcHeight's content width matching what DoWindowContents actually renders at.
+    ///     Gets the window margin, which is 0 for this dialog.
     /// </summary>
+    /// <remarks>
+    ///     Window.InnerWindowOnGUI contracts the window rect by Margin (18f) before calling
+    ///     DoWindowContents. Overriding it to 0 keeps CalcHeight's content width matching what
+    ///     DoWindowContents actually renders at.
+    /// </remarks>
     protected override float Margin => 0f;
 
     public override Vector2 InitialSize => new Vector2(WindowWidth, CalcHeight());

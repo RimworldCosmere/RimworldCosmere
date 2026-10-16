@@ -32,6 +32,7 @@ public static class BetaHubStatusMapper {
     ///     picks between two recovery paths, never between success and failure, so leaning on
     ///     an unstable message here cannot turn a failed report into a reported success.
     /// </remarks>
+    /// <returns>True when the 403 is about release permission rather than the daily cap.</returns>
     public static bool IsMissingReleasePermission(long httpStatus, string? body) {
         return httpStatus == 403
                && body != null

@@ -47,6 +47,7 @@ public static class ScadrialThreat {
     ///     A metalborn's worth. Single metals never out-price the full gift they are a fraction of,
     ///     which the clamps enforce rather than leaving it to the tuning numbers staying in order.
     /// </summary>
+    /// <returns>The pawn's threat worth, counted in ordinary colonists. Never below 1.</returns>
     public static float ForMetalborn(
         bool isMistborn,
         bool isFullFeruchemist,
@@ -77,6 +78,7 @@ public static class ScadrialThreat {
     ///     A coppercloud shrinks the whole threat value, not only the Scadrial share of it, but it
     ///     only hides what stands inside it. A cloud burning out in the wilderness conceals nothing.
     /// </summary>
+    /// <returns>The threat value with the hidden share taken off. 0 at full coverage.</returns>
     public static float Coppercloud(float threatValue, float coverage) {
         float hidden = Clamp01(coverage);
 
@@ -87,6 +89,7 @@ public static class ScadrialThreat {
     ///     What the clouds hide across a whole colony, from the cloud strength over each colonist.
     ///     A colonist standing outside every cloud contributes nothing and still counts as a head.
     /// </summary>
+    /// <returns>The mean cloud strength per colonist, 0 to 1. 0 for a null or empty list.</returns>
     public static float Coverage(IReadOnlyList<float>? strengthPerColonist) {
         if (strengthPerColonist == null || strengthPerColonist.Count == 0) return 0f;
 
@@ -109,6 +112,7 @@ public static class ScadrialThreat {
     ///     What a metalborn's kit is worth. Priced on what the pawn carries rather than on how full
     ///     a reserve is right now, so threat does not flicker every time a vial is drained.
     /// </summary>
+    /// <returns>What the carried metalminds and vials add to the pawn's threat worth.</returns>
     public static float ForGear(int chargedMetalminds, int vials) {
         float minds = Math.Min(Math.Max(chargedMetalminds, 0) * ChargedMetalmindWorth, MetalmindCeiling);
         float metal = Math.Min(Math.Max(vials, 0) * VialWorth, VialCeiling);

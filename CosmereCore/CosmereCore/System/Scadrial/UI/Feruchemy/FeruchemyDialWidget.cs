@@ -16,8 +16,11 @@ public sealed class FeruchemyDialWidget {
         return gene.TargetIsInternalOnly;
     }
 
-    /// Compounding is only offered on an implanted metalmind - burning one destroys it, and a worn
-    /// band is not what the pawn means to set alight. The toggle parks the other pool so only one moves.
+    /// <summary>
+    ///     Compounding is only offered on an implanted metalmind, because burning one destroys it and a worn
+    ///     band is not what the pawn means to set alight. The toggle parks the other pool so only one moves.
+    /// </summary>
+    /// <returns>The y the next control draws at, pulled back 6 pixels when the pawn has no implant to compound into.</returns>
     internal static float DrawCompoundToggle(Rect inner, float y, Pawn pawn, Feruchemist gene, float buttonHeight) {
         // internal group is every implant - compounding reaches it the same as a single one.
         bool eligible = ShowsCompoundToggle(gene);
@@ -102,8 +105,10 @@ public sealed class FeruchemyDialWidget {
         );
     }
 
-    /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider brings its own
-    /// tan gradient, which fights everything around it.
+    /// <summary>
+    ///     Draws the dial by hand so it keeps the section's chrome. The vanilla slider brings its own tan
+    ///     gradient, which fights everything around it.
+    /// </summary>
     internal void DrawDial(Rect rect, string metalId, Feruchemist gene, FeruchemyCapacity capacity, bool compounded) {
         if (compounded) DrawCompoundedDialBacking(rect, gene, capacity);
         else DrawDialBacking(rect, gene, capacity);
@@ -118,8 +123,10 @@ public sealed class FeruchemyDialWidget {
         HandleDialDrag(rect, metalId, gene, capacity, compounded);
     }
 
-    /// Shared by both dials. Compounded runs tap-only, so its reachable span stops at the
-    /// idle point rather than continuing into the store half.
+    /// <summary>
+    ///     Shared by both dials. Compounded runs tap-only, so its reachable span stops at the idle point
+    ///     rather than continuing into the store half.
+    /// </summary>
     private void HandleDialDrag(Rect rect, string dialId, Feruchemist gene, FeruchemyCapacity capacity, bool compounded) {
         bool tappable = compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded;
         bool storable = compounded ? capacity.CanStoreCompounded : capacity.CanStore;

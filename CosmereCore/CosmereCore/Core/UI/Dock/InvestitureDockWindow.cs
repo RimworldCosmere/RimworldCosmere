@@ -79,6 +79,12 @@ public sealed class InvestitureDockWindow : Verse.Window {
         if (settings.dockPositionSet) desiredPosition = settings.dockPosition;
     }
 
+    private void TryBeginShiftDrag(Rect inRect) {
+        if (!Event.current.shift) return;
+
+        TryBeginDrag(inRect);
+    }
+
     /// <summary>
     ///     Extends <paramref name="rect" /> past any screen edge the dock is sitting against, so the
     ///     border on that side falls outside the window and is clipped away. Sides that are free keep
@@ -89,12 +95,6 @@ public sealed class InvestitureDockWindow : Verse.Window {
     ///     True for the collapsed ribbons: they are discrete strips stacked with gaps, so their top and
     ///     bottom edges are always interior and always want a border, whatever the dock is against.
     /// </param>
-    private void TryBeginShiftDrag(Rect inRect) {
-        if (!Event.current.shift) return;
-
-        TryBeginDrag(inRect);
-    }
-
     private Rect BleedFlushEdges(Rect rect, bool horizontalOnly) {
         const float tolerance = 1f;
 

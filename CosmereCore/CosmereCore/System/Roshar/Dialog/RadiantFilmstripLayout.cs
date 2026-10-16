@@ -20,6 +20,7 @@ public static class RadiantFilmstripLayout {
     public static float SelectedDotSize => DotSize * SelectedScale;
 
     /// <summary>Width of the whole dot group, gaps included.</summary>
+    /// <returns>The width of the whole dot group, 0 when there are no dots.</returns>
     public static float RailWidth(int count) {
         if (count <= 0) return 0f;
 
@@ -27,6 +28,7 @@ public static class RadiantFilmstripLayout {
     }
 
     /// <summary>Height the rail needs so the enlarged dot and its ring still fit.</summary>
+    /// <returns>The height the rail needs so the enlarged dot and its ring still fit.</returns>
     public static float RailHeight() {
         return SelectedDotSize + SelectedRingWidth * 2f;
     }
@@ -44,6 +46,7 @@ public static class RadiantFilmstripLayout {
     }
 
     /// <summary>Arrow columns stop at the rail so they never cover a dot or the join button.</summary>
+    /// <returns>The height an arrow column gets, 0 when the rail already reaches the top of the content.</returns>
     public static float ArrowColumnHeight(float contentTop, float railTop) {
         return Math.Max(0f, railTop - contentTop);
     }

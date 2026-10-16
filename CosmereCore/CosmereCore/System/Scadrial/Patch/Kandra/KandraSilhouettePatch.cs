@@ -44,7 +44,8 @@ public static class KandraSilhouette {
         return pawnField?.GetValue(renderer) as Pawn;
     }
 
-    /// <summary>The animal's graphic, or null when this pawn is not wearing one.</summary>
+    /// <summary>Looks up the outline graphic for the animal shape a kandra wears, caching it per kind and gender.</summary>
+    /// <returns>The animal's graphic, or null when this pawn is not wearing one.</returns>
     public static Graphic? For(Pawn? pawn) {
         PawnKindDef? kind = KandraShapeGraphicUtility.WornKind(pawn);
         if (kind == null) return null;

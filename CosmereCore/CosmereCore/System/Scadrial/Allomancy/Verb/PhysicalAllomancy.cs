@@ -33,8 +33,8 @@ public class PhysicalAllomancy : Verb_CastAbility {
     private int lastScanFrame = -1;
 
     /// <summary>
-    ///     Matches LineDrawingAuraProperties.lineMaterial. A different texture or shader here and
-    ///     the preview stops looking like the aura it is previewing.
+    ///     Gets the preview line material, which matches LineDrawingAuraProperties.lineMaterial. A
+    ///     different texture or shader here and the preview stops looking like the aura it previews.
     /// </summary>
     private Material LineMaterial =>
         cachedLineMaterial ??= MaterialPool.MatFrom(

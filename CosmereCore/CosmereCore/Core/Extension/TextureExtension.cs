@@ -78,6 +78,7 @@ public static class TextureExtension {
     ///     Flattens every pixel to <paramref name="color" /> while keeping the original alpha, giving a
     ///     solid-colour silhouette of the artwork.
     /// </summary>
+    /// <returns>The same texture, recoloured in place, or untouched when it is not readable.</returns>
     /// <remarks>
     ///     Needed because GUI.color multiplies: a glyph that is already painted red cannot be drawn
     ///     white by tinting it, only darker. Recolouring the pixels is the only way.

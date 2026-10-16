@@ -39,7 +39,7 @@ public class MetallicArtsMetalDef : MetalDef {
     public Texture2D? uiIcon;
 
     /// <summary>
-    ///     Whether swallowing this metal does anything at all.
+    ///     Gets a value indicating whether swallowing this metal does anything at all.
     /// </summary>
     /// <remarks>
     ///     A god metal with neither Allomancy nor Feruchemy has no effect to give. Harmonium and

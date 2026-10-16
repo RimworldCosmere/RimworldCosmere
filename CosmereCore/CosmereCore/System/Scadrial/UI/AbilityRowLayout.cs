@@ -21,8 +21,10 @@ public static class AbilityRowLayout {
         return ordered;
     }
 
-    /// One heading per kind a metal actually has. Without it a lone row never says whether
-    /// clicking it holds a burn or opens targeting.
+    /// <summary>
+    ///     One heading per kind a metal actually has. Without it a lone row never says whether clicking it
+    ///     holds a burn or opens targeting.
+    /// </summary>
     private static int KindCount(IReadOnlyList<AbilityRow> rows) {
         bool sustained = false;
         bool targeted = false;

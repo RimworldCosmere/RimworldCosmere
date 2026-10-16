@@ -22,6 +22,7 @@ namespace Cosmere.Core.ShardConnection;
 /// </remarks>
 public static class ConnectionUtility {
     /// <summary>What the pawn has earned toward this Shard, ignoring who they were born as.</summary>
+    /// <returns>The earned points of Connection, or 0 when either argument is null or that Shard is not enabled in this save.</returns>
     public static int Earned(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
@@ -34,6 +35,7 @@ public static class ConnectionUtility {
     /// <summary>
     ///     The pawn's full strength toward this Shard, including Harmony's implication.
     /// </summary>
+    /// <returns>The pawn's total Connection to this Shard, or 0 when either argument is null.</returns>
     public static int StrengthOf(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
@@ -70,6 +72,7 @@ public static class ConnectionUtility {
     ///     What a top-up measures against. Setting a tie aside must not make a pawn eligible for a
     ///     grant they already took, which is what measuring against the reduced reading allowed.
     /// </remarks>
+    /// <returns>The total the pawn would read with nothing held elsewhere, or 0 when either argument is null.</returns>
     private static int StrengthBeforeOffset(Pawn? pawn, ShardDef? shard) {
         if (pawn == null || shard == null) return 0;
 
@@ -77,6 +80,7 @@ public static class ConnectionUtility {
     }
 
     /// <summary>The one Harmony body. Both public readings differ only in which base they compose from.</summary>
+    /// <returns>The pawn's own reading, with Harmony's implication folded in for Ruin, Preservation and Harmony.</returns>
     private static int StrengthFrom(Pawn pawn, ShardDef shard, bool ignoreHeld) {
         int own = Carried(pawn, shard, ignoreHeld);
 
@@ -107,6 +111,7 @@ public static class ConnectionUtility {
     }
 
     /// <summary>What the pawn carries toward this Shard, or would carry with everything taken back.</summary>
+    /// <returns>The composed total when ignoreHeld is true, otherwise that total with anything held elsewhere taken off.</returns>
     private static int Carried(Pawn pawn, ShardDef shard, bool ignoreHeld) {
         return ignoreHeld ? Composed(pawn, shard) : Raw(pawn, shard);
     }
@@ -123,6 +128,7 @@ public static class ConnectionUtility {
     ///     person becomes Connected, so gating it would deny it to exactly the people it exists
     ///     for.
     /// </remarks>
+    /// <returns>True when the pawn's Connection to this Shard is deep enough to burn its god metal.</returns>
     public static bool MayUse(Pawn? pawn, ShardDef? shard) {
         return ConnectionMath.MayUseGodMetal(StrengthOf(pawn, shard));
     }
@@ -139,6 +145,10 @@ public static class ConnectionUtility {
     ///         Ruin both, and someone who holds only one half can still swallow it.
     ///     </para>
     /// </remarks>
+    /// <returns>
+    ///     True when the metal is not a god metal, names no Shards, grants Connection itself, or the pawn is
+    ///     Connected enough to at least one of its Shards.
+    /// </returns>
     public static bool MayUseMetal(Pawn? pawn, MetalDef? metal) {
         if (metal is not { godMetal: true }) return true;
         if (metal.shards.Count == 0) return true;
@@ -152,6 +162,7 @@ public static class ConnectionUtility {
     }
 
     /// <summary>The first Shard this pawn is not Connected enough to, for the refusal message.</summary>
+    /// <returns>The first Shard in the metal the pawn is not Connected enough to, or null when the metal is null or every Shard passes.</returns>
     public static ShardDef? FirstUnreachedShard(Pawn? pawn, MetalDef? metal) {
         if (metal == null) return null;
 
@@ -204,6 +215,7 @@ public static class ConnectionUtility {
     ///     Bounded below by nothing held and above by <see cref="ConnectionMath.OffsetCeiling" />, so
     ///     the last point of a tie can never leave and a stripped pawn can always take theirs back.
     /// </remarks>
+    /// <returns>How much the held amount actually moved, which is 0 when the bounds or a missing game swallowed the write.</returns>
     public static float AdjustOffset(Pawn? pawn, ShardDef? shard, float delta) {
         if (pawn == null || shard == null || delta == 0f) return 0f;
 
@@ -220,6 +232,7 @@ public static class ConnectionUtility {
     ///     enabled in this save, which is the right answer: you cannot be tied to a Shard this
     ///     cosmere does not have.
     /// </summary>
+    /// <returns>The live Shard for this def, or null when it is not enabled in this save.</returns>
     private static Cosmere.Core.Entity.Shard? Entity(ShardDef shard) {
         Comp.Game.Shards? shards = ShardUtility.shards;
         if (shards == null) return null;
@@ -237,6 +250,7 @@ public static class ConnectionUtility {
     }
 
     /// <summary>The four parts of the tie, before anything held elsewhere comes off the total.</summary>
+    /// <returns>Ancestry, residence, Investiture and the earned portion composed into one total.</returns>
     private static int Composed(Pawn pawn, ShardDef shard) {
         return ConnectionMath.Compose(
             AncestryFloor(pawn, shard),
@@ -261,6 +275,7 @@ public static class ConnectionUtility {
     ///         are.
     ///     </para>
     /// </remarks>
+    /// <returns>The ancestry floor when the pawn's xenotype comes from a world this Shard holds, otherwise 0.</returns>
     private static int AncestryFloor(Pawn pawn, ShardDef shard) {
         CosmereWorldDef? home = WorldUtility.WorldForXenotype(pawn.genes?.Xenotype);
         if (home == null) return 0;

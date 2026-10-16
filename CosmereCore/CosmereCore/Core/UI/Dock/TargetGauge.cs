@@ -20,6 +20,7 @@ public static class TargetGauge {
     private static string? draggingGauge;
 
     /// <summary>Returns the target, moved if the player dragged it; caller writes it back to its field.</summary>
+    /// <returns>The refill threshold after this frame, moved when the player dragged the notch.</returns>
     public static float Draw(
         Rect rect,
         float current,

@@ -46,6 +46,7 @@ public static class RadiantThreat {
     ///     A whole pawn's worth. A second spren divides a Radiant's attention, so bonds stack
     ///     through DiminishingStack rather than adding up.
     /// </summary>
+    /// <returns>What the pawn is worth in colonists, counting every bond and whatever shards they carry.</returns>
     public static float ForPawn(IReadOnlyList<float>? bondWorths, float shardWorth) {
         if (bondWorths == null || bondWorths.Count == 0) return 1f + shardWorth;
 

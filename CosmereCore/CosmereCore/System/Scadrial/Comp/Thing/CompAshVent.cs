@@ -29,7 +29,7 @@ public class CompProperties_AshVent : CompProperties {
 
     private List<ThingDef> resolvedMetals = [];
 
-    /// <summary><see cref="metals"/> looked up once at load rather than once per throw.</summary>
+    /// <summary>Gets the defs for <see cref="metals"/>, looked up once at load rather than once per throw.</summary>
     public List<ThingDef> ResolvedMetals => resolvedMetals;
 
     public CompProperties_AshVent() {
@@ -71,13 +71,13 @@ public class CompAshVent : ThingComp {
     public CompProperties_AshVent Props => (CompProperties_AshVent)props;
 
     /// <summary>
-    ///     Whether the mouth is breathing into a sealed room instead of over the map. The tracker
+    ///     Gets a value indicating whether the mouth is breathing into a sealed room instead of over the map. The tracker
     ///     reads it to work out how much of the map's severity this vent has stopped paying for.
     /// </summary>
     public bool Contained => contained;
 
     /// <summary>
-    ///     The chain, resolved against the def database once. A rung whose terrain no loaded mod
+    ///     Gets the soil ladder, resolved against the def database once. A rung whose terrain no loaded mod
     ///     declares is dropped rather than throwing, so one missing def costs one rung.
     /// </summary>
     private static Dictionary<TerrainDef, TerrainDef> Ladder {
@@ -101,7 +101,7 @@ public class CompAshVent : ThingComp {
         }
     }
 
-    /// <summary>Every cell inside the plume radius, built once and shared by every vent.</summary>
+    /// <summary>Gets every cell inside the plume radius, built once and shared by every vent.</summary>
     private static List<IntVec3> Offsets {
         get {
             if (offsets != null) return offsets;
@@ -117,7 +117,7 @@ public class CompAshVent : ThingComp {
         }
     }
 
-    /// <summary>Carried sub-unit remainder per offset cell, banked so no fraction is ever lost.</summary>
+    /// <summary>Gets the carried sub-unit remainder per offset cell, banked so no fraction is ever lost.</summary>
     private float[] Remainder => remainder ??= new float[Offsets.Count];
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
@@ -159,6 +159,7 @@ public class CompAshVent : ThingComp {
     ///     Puts this cycle's share on the ground - into the room when the mouth is roofed, over the
     ///     map when it is not. Returns whether anything changed, so the mesh only dirties when it must.
     /// </summary>
+    /// <returns>True when some cell's depth moved, so the mesh needs rebuilding.</returns>
     public bool ContributeToGrid(AshGrid grid, float dayFraction) {
         Verse.Map? map = parent.Map;
         if (map == null) return false;
@@ -397,6 +398,7 @@ public class CompAshVent : ThingComp {
     ///     Lands one stack of one metal near the vent. False when no cell in range took it. Carries
     ///     no era check of its own, so every caller but the dev action has to bring one.
     /// </summary>
+    /// <returns>True when a stack landed. False when nothing in range could take it.</returns>
     public bool ThrowOnce() {
         Verse.Map? map = parent.Map;
         if (map == null) return false;

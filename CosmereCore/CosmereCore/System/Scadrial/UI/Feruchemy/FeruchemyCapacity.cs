@@ -14,8 +14,10 @@ internal readonly struct FeruchemyCapacity {
 
     public float ExternalMax { get; init; }
 
-    /// Each kind of metalmind reads against its own capacity - a kind the pawn has none of
-    /// is left out rather than shown as a flat zero.
+    /// <summary>
+    ///     Gets the capacity line shown to the player. Each kind of metalmind reads against its own
+    ///     capacity, and a kind the pawn has none of is left out rather than shown as a flat zero.
+    /// </summary>
     public string Readout {
         get {
             bool hasInternal = InternalMax > 0f;
@@ -66,8 +68,10 @@ internal readonly struct FeruchemyCapacity {
 
     public float Fraction => Max > 0f ? (Internal + External) / Max : 0f;
 
-    /// Each band fills against its own capacity, so a full set of implants reads as a full bar,
-    /// not as its share of the combined total - matching the percentages drawn above it.
+    /// <summary>
+    ///     Gets how full the worn metalminds are. Each band fills against its own capacity, so a full set
+    ///     reads as a full bar rather than its share of the combined total, matching the percentages above.
+    /// </summary>
     public float StoredFraction => ExternalMax > 0f ? External / ExternalMax : 0f;
 
     public float CompoundedFraction => InternalMax > 0f ? Internal / InternalMax : 0f;

@@ -20,6 +20,7 @@ public static class RadialWedgeTex {
     ///     A small spoked ring standing in for the wheel, drawn rather than shipped as art so it
     ///     matches whatever the ring geometry becomes.
     /// </summary>
+    /// <returns>The ring texture, built on the first call and cached after that.</returns>
     public static Texture2D GizmoIcon() {
         if (gizmoIconCache != null) return gizmoIconCache;
 
@@ -176,6 +177,7 @@ public static class RadialWedgeTex {
     ///     Baked at its final angle rather than drawn rotated. Rotating GUI.matrix mid-window fights
     ///     the IMGUI clip stack and smears the wedges at any UI scale above 1.
     /// </summary>
+    /// <returns>The wedge texture for that slot, built on the first call and cached after that.</returns>
     public static Texture2D Get(int count, int index) {
         int key = count * 1000 + index;
         if (cache.TryGetValue(key, out Texture2D? cached)) return cached;

@@ -18,6 +18,7 @@ public static class UIText {
     ///     For places that have limited width but plenty of height - a radial wedge, say - where cutting
     ///     a label down to "Summon Sh..." loses the very thing the label is for.
     /// </remarks>
+    /// <returns>The rect the wrapped label was drawn into.</returns>
     public static Rect WrappedLabel(
         Vector2 centre,
         float width,
@@ -35,6 +36,7 @@ public static class UIText {
     }
 
     /// <summary>How tall <paramref name="text" /> will be once wrapped to <paramref name="width" />.</summary>
+    /// <returns>The wrapped height in pixels, or 0 for null or empty text.</returns>
     public static float WrappedHeight(string? text, float width, GameFont font) {
         if (text.NullOrEmpty()) return 0f;
 

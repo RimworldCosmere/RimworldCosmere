@@ -14,7 +14,7 @@ namespace Cosmere.System.Scadrial.Dev;
 ///     them wasted a launch, so this asks.
 /// </remarks>
 public static class KandraAppearanceReport {
-    /// A blank column and an undesigned one read the same, so name the gap.
+    // A blank column and an undesigned one read the same, so name the gap.
     private const string NotDesigned = "not designed";
 
     [DebugAction(

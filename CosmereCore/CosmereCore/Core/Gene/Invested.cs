@@ -13,15 +13,15 @@ public abstract class Invested : Gene_Resource {
     public List<DrainSource> Sources => sources;
 
     /// <summary>
-    ///     Every invested system spends off this one list, so the cadence they are charged on
-    ///     is one shared setting rather than a constant per system.
+    ///     Gets the tick interval every invested system is charged upkeep on. One shared setting
+    ///     rather than a constant per system.
     /// </summary>
     public static int UpkeepTicks =>
         UpkeepRate.TicksFor(Mod.GetModSettings<CoreModSettings>().upkeepCadence);
 
     /// <summary>
-    ///     Reserve loss per second right now. Upkeep and the holder's passive decay run on
-    ///     different cadences, both rescaled to seconds; also floors to zero, matching the holder.
+    ///     Gets how much reserve is lost per second right now. Upkeep and the holder's passive decay
+    ///     run on different cadences, both rescaled to seconds, and this floors at zero like the holder.
     /// </summary>
     public float DrainPerSecond {
         get {

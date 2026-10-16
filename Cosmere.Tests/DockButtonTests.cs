@@ -67,7 +67,7 @@ public class DockButtonTests {
     }
 
     /// <summary>
-    ///     GenText.Truncate is not tag-aware, so a bold label cut mid-tag renders "Steelsight</".
+    ///     GenText.Truncate is not tag-aware, so a bold label cut mid-tag renders "Steelsight.</".
     /// </summary>
     [TestMethod]
     public void BoldIsAppliedAfterTruncationNotBefore() {

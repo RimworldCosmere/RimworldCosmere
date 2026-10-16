@@ -18,8 +18,8 @@ public class TrueDesolationQuickstart : CosmereQuickstartBase {
     public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Roshar_Scenario_TrueDesolation;
 
     /// <summary>
-    ///     Nothing beyond what the scenario itself sets: Honor, Cultivation and Odium. Naming them
-    ///     here too is how this quickstart used to run without the scenario at all.
+    ///     Gets an empty list, so the Shards come from the scenario alone: Honor, Cultivation and
+    ///     Odium. Naming them here too is how this quickstart used to run without the scenario at all.
     /// </summary>
     public override IReadOnlyList<string> shards => [];
 

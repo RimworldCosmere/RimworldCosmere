@@ -33,6 +33,7 @@ public class CosmereQuestDef : Verse.Def {
     public FactionDef? targetFaction;
 
     /// <summary>Projects this def onto the plain shape CosmereQuestEligibility reads.</summary>
+    /// <returns>A candidate carrying this def's gating fields and its resolved world.</returns>
     public QuestCandidate ToCandidate() {
         return new QuestCandidate {
             defName = defName,

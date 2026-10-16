@@ -5,8 +5,10 @@ namespace Cosmere.System.Scadrial.Feruchemy;
 public interface IMetalmindSource {
     float StoredAmount { get; }
 
-    /// Charge put here by Compounding. Shares MaxAmount with StoredAmount, and
-    /// pays out far harder when tapped.
+    /// <summary>
+    ///     Gets the charge put here by Compounding. Shares MaxAmount with StoredAmount, and pays out
+    ///     far harder when tapped.
+    /// </summary>
     float CompoundedAmount { get; }
 
     float MaxAmount { get; }
@@ -17,8 +19,10 @@ public interface IMetalmindSource {
 
     bool CanTapCompounded { get; }
 
-    /// Only a metalmind inside the body can be compounded into. Worn bands and
-    /// earrings still hold compounded charge once it is there.
+    /// <summary>
+    ///     Gets a value indicating whether this metalmind sits inside the body, which is the only kind that can be compounded
+    ///     into. Worn bands and earrings still hold compounded charge once it is there.
+    /// </summary>
     bool IsImplanted { get; }
 
     bool Equipped { get; }
@@ -33,12 +37,16 @@ public interface IMetalmindSource {
 
     float FreeSpace { get; }
 
-    /// Compounded charge consumes the metalmind carrying it, so capacity falls as
-    /// it is drawn. True once nothing is left to hold and the metalmind is spent.
+    /// <summary>
+    ///     Gets a value indicating whether the metalmind is spent. Compounded charge consumes the metalmind carrying it, so
+    ///     capacity falls as it is drawn, and this reads true once nothing is left to hold.
+    /// </summary>
     bool IsBurnedOut { get; }
 
-    /// Stable across saves and across other metalminds being destroyed, so the
-    /// player's chosen target survives a burn-out somewhere else in the list.
+    /// <summary>
+    ///     Gets an id that is stable across saves and across other metalminds being destroyed, so the
+    ///     player's chosen target survives a burn-out somewhere else in the list.
+    /// </summary>
     string SourceId { get; }
 
     // What the target picker calls this one.

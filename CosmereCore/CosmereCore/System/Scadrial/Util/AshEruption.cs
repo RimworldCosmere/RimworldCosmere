@@ -47,6 +47,7 @@ public static class AshEruption {
     public const float TremorShake = 0.15f;
 
     /// <summary>Where severity sits while the mountain is open, given what it sat at before.</summary>
+    /// <returns>The standing severity plus <see cref="PeakStep" />, clamped to 0 through 1.</returns>
     public static float SpikeSeverity(float standing) {
         float spike = standing + PeakStep;
         if (spike < 0f) return 0f;
@@ -59,6 +60,7 @@ public static class AshEruption {
     ///     <paramref name="durationTicks" />. Derived from elapsed ticks rather than counted, so an
     ///     eruption carries no tally of its own and a reload cannot lose one.
     /// </summary>
+    /// <returns>True when a beat lands on this tick. False once all the beats are spent.</returns>
     public static bool DueOn(int ticksPassed, int durationTicks, int count) {
         if (ticksPassed < 0 || durationTicks <= 0 || count <= 0) return false;
 
@@ -71,6 +73,7 @@ public static class AshEruption {
     }
 
     /// <summary>Damage one tremor does this far from a mouth. Linear down to nothing at the edge.</summary>
+    /// <returns>Hit points to take off, or 0 at or past the radius.</returns>
     public static int TremorDamage(float distance, float radius, int peak) {
         if (distance < 0f || radius <= 0f || peak <= 0) return 0;
         if (distance >= radius) return 0;

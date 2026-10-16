@@ -20,11 +20,12 @@ public static class AshPlume {
     ///     Whether an offset falls inside the disc. The comp's cell list, the cell count and the
     ///     weights all ask this, so none of the three can drift away from the other two.
     /// </summary>
+    /// <returns>True when the offset is within the plume radius of the vent.</returns>
     public static bool InRange(int offsetX, int offsetZ) {
         return offsetX * offsetX + offsetZ * offsetZ <= RadiusCells * RadiusCells;
     }
 
-    /// <summary>Cells one vent writes in a cycle. The bound a roofed vent has to stay inside too.</summary>
+    /// <summary>Gets the number of cells one vent writes in a cycle. A roofed vent has to stay inside the same bound.</summary>
     public static int CellCount {
         get {
             if (cellCount < 0) Measure();
@@ -34,7 +35,7 @@ public static class AshPlume {
     }
 
     /// <summary>
-    ///     Every cell's weight added up, wind neutral. A vent's whole output in millimetre-cells is
+    ///     Gets every cell's weight added up, wind neutral. A vent's whole output in millimetre-cells is
     ///     its mouth rate times this, which is the mass a roofed vent has to put somewhere else.
     /// </summary>
     public static float TotalWeight {
@@ -49,6 +50,7 @@ public static class AshPlume {
     ///     1 at the vent, thinning to about 0.014 on the boundary ring and 0 past it. Skew runs 0
     ///     to 1 and leans the plume along the heading, which gives a map a downwind side.
     /// </summary>
+    /// <returns>The share of the vent's output this cell takes, 0 to 1, and 0 for an offset outside the disc.</returns>
     public static float Weight(int offsetX, int offsetZ, float headingX, float headingZ, float skew) {
         if (!InRange(offsetX, offsetZ)) return 0f;
 
@@ -77,6 +79,7 @@ public static class AshPlume {
     ///     The deepest a cell this close to a vent is allowed to stay. 0 on the mouth itself,
     ///     rising to shin deep at the edge of the warmed ground and leaving anything past it alone.
     /// </summary>
+    /// <returns>The depth this cell may keep: 0 on the vent mouth, the ceiling for its distance inside the radius, and the depth unchanged past it.</returns>
     public static int AllowedDepthMm(int depthMm, float distance, float radius) {
         if (distance <= 0f) return 0;
         if (distance > radius) return depthMm;
@@ -89,6 +92,7 @@ public static class AshPlume {
     ///     Held under the restore line the whole way out, not just inside the clearing. Above it the
     ///     ground swaps to ash terrain and the soil ladder stalls, which stranded the outer front.
     /// </summary>
+    /// <returns>The deepest this distance from the vent may hold, scaling straight out to WarmCeilingMm at the radius.</returns>
     private static int CeilingMm(float distance, float radius) {
         return (int)(distance / radius * WarmCeilingMm);
     }
@@ -98,6 +102,7 @@ public static class AshPlume {
     ///     rest. Depositing without banking loses everything under one unit, which starves the
     ///     plume's tail completely.
     /// </summary>
+    /// <returns>The whole units of depth to deposit now, or 0 while the banked remainder is still under one unit.</returns>
     public static int Bank(ref float remainder, float millimetres, int unitMm) {
         remainder += millimetres;
         if (remainder < unitMm) return 0;
@@ -111,6 +116,7 @@ public static class AshPlume {
     ///     Rebuilds a saved bank, discarding one whose length no longer matches the offset list.
     ///     A stale length would index past the array inside the tick loop; losing fractions will not.
     /// </summary>
+    /// <returns>The saved remainders as an array, or null when nothing was saved or its length no longer matches the offset list.</returns>
     public static float[]? RestoreBank(List<float>? saved, int cellCount) {
         if (saved == null || saved.Count != cellCount) return null;
 

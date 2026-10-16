@@ -147,6 +147,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     ///     Returns the rect's own height so the window's scroll view never engages. The grid runs
     ///     its own scroll, and a scroll view inside a scroll view eats the wheel.
     /// </summary>
+    /// <returns>The rect's own height, which leaves the window's scroll view with nothing to scroll.</returns>
     protected override float DrawBody(Rect rect) {
         Rect body = rect.ContractedBy(Spacing.Get(0.75f));
         Rect rail = new Rect(body.x, body.y, RailWidth, body.height);
@@ -850,7 +851,6 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         if (Widgets.ButtonInvisible(cell)) designHair = hair;
     }
 
-    /// <summary>One chip row, shared by the material palette and the dye palette.</summary>
     /// <summary>The row that puts the eyes out, drawn as an empty socket rather than a stone.</summary>
     private static bool DrawNoEyesRow(Rect row, bool selected) {
         if (selected) {
@@ -874,6 +874,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         return Widgets.ButtonInvisible(row);
     }
 
+    /// <summary>One chip row, shared by the material palette and the dye palette.</summary>
     private static bool DrawSwatch(Rect row, string hex, TaggedString label, bool selected, string? tip = null) {
         if (selected) {
             Widgets.DrawHighlightSelected(row);

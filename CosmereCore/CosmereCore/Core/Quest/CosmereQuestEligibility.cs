@@ -55,6 +55,7 @@ public static class CosmereQuestEligibility {
     ///     player through scenario progression and Threats simply arrive, so neither belongs in the
     ///     random offer pool no matter how eligible it otherwise is.
     /// </summary>
+    /// <returns>True only for a Repeatable quest that is otherwise eligible right now.</returns>
     public static bool IsOfferableByStoryteller(QuestCandidate? candidate, QuestWorldState? state) {
         if (candidate == null) return false;
         if (candidate.kind != QuestKind.Repeatable) return false;
@@ -66,6 +67,7 @@ public static class CosmereQuestEligibility {
     ///     pool entirely - they are not chosen from, they happen - so they need their own
     ///     predicate rather than sharing the Repeatable one.
     /// </summary>
+    /// <returns>True only for a Threat quest that is otherwise eligible right now.</returns>
     public static bool IsDeliverableAsThreat(QuestCandidate? candidate, QuestWorldState? state) {
         if (candidate == null) return false;
         if (candidate.kind != QuestKind.Threat) return false;
@@ -79,6 +81,7 @@ public static class CosmereQuestEligibility {
     ///     that need the general "may this quest run right now" predicate should call IsEligible
     ///     directly instead.
     /// </summary>
+    /// <returns>The candidates the storyteller may offer now, empty when none qualify or the list is null.</returns>
     public static List<QuestCandidate> Filter(List<QuestCandidate>? candidates, QuestWorldState state) {
         List<QuestCandidate> result = [];
         if (candidates == null) return result;

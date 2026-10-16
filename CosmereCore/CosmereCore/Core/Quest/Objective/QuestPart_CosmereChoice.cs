@@ -25,6 +25,7 @@ public class QuestPart_CosmereChoice : QuestPartActivable {
     ///     completes. Returns false without completing if the option costs silver the player
     ///     cannot pay - the dialog stays open so the player can choose differently.
     /// </summary>
+    /// <returns>True when the choice was applied and the part completed. False when the player cannot pay the silver cost.</returns>
     public bool Choose(QuestChoiceOption option) {
         if (option.silverCost > 0 && !QuestSilver.TryCharge(option.silverCost)) {
             Messages.Message("CC_Quest_Choice_InsufficientSilver".Translate(), MessageTypeDefOf.RejectInput, false);

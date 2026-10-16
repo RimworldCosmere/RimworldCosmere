@@ -85,7 +85,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public bool StorageTabVisible => true;
 
     /// <summary>
-    ///     Whether the colony's haul search may pick this storage as a destination.
+    ///     Gets a value indicating whether the colony's haul search may pick this storage as a destination.
     /// </summary>
     /// <remarks>
     ///     Worn storage is its wearer's business. Vanilla's storage search has no idea who a
@@ -196,7 +196,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     }
 
     /// <summary>
-    ///     The item budget the container itself is built with.
+    ///     Gets the item budget the container itself is built with.
     /// </summary>
     /// <remarks>
     ///     A def that sets only <c>maxStacks</c> has no headcount to give, and the container needs

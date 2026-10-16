@@ -24,7 +24,7 @@ public static class KandraUtility {
         return pawn?.genes?.Xenotype?.defName == KandraXenotype;
     }
 
-    /// <summary>Every Blessing there is, in the order the Contract ranks them.</summary>
+    /// <summary>Gets every Blessing there is, in the order the Contract ranks them.</summary>
     public static IReadOnlyList<HediffDef> Blessings => blessings ??= BuildBlessings();
 
     private static List<HediffDef>? blessings;
@@ -59,6 +59,7 @@ public static class KandraUtility {
     }
 
     /// <summary>Every Blessing the kandra carries. Kandra can hold more than one.</summary>
+    /// <returns>The Blessing hediffs on the pawn, in Contract order. Empty when the pawn is null or carries none.</returns>
     public static List<Hediff> BlessingsOn(Pawn? pawn) {
         List<Hediff> found = [];
         HediffSet? set = pawn?.health?.hediffSet;
@@ -80,6 +81,7 @@ public static class KandraUtility {
     ///     Each Blessing stands on its own pair. Pulling one spike breaks that Blessing and
     ///     leaves the others alone, so a kandra with three of them can lose one and carry on.
     /// </remarks>
+    /// <returns>The Blessings that still have both of their spikes in. Empty when none of them do.</returns>
     public static List<Hediff> CompleteBlessingsOn(Pawn? pawn) {
         List<Hediff> whole = [];
         List<Hediff> all = BlessingsOn(pawn);
@@ -96,12 +98,13 @@ public static class KandraUtility {
     }
 
     /// <summary>
-    ///     True when the kandra has lost a spike and cannot hold a shape any more.
+    ///     Whether the kandra still has the whole mind a borrowed shape takes.
     /// </summary>
     /// <remarks>
     ///     Covers both the one-spike state and the no-spike one. Shapeshifting needs a whole
     ///     mind, so neither of them gets to do it.
     /// </remarks>
+    /// <returns>True when the kandra can still hold a shape. False when it is half-blessed, down to a mistwraith, or has no health tracker.</returns>
     public static bool CanHoldAShape(Pawn? pawn) {
         HediffSet? set = pawn?.health?.hediffSet;
         if (set == null) return false;
@@ -122,6 +125,7 @@ public static class KandraUtility {
     ///     Both spikes in a pair are the same metal, so a hemalurgist looking at a kandra sees a
     ///     matched set rather than the scavenged mess most spiked people carry.
     /// </remarks>
+    /// <returns>The metal and the theft that Blessing's spike pair is made of, or null when the hediff is not one of the four Blessings.</returns>
     private static (string metal, HemalurgicStealType steal)? RecipeFor(HediffDef blessing) {
         if (blessing == HediffDefOf.Cosmere_Scadrial_Hediff_BlessingOfPresence) {
             return (MetalDefOf.Copper.defName, HemalurgicStealType.MentalFortitude);
@@ -143,6 +147,7 @@ public static class KandraUtility {
     }
 
     /// <summary>Counting spikes moved to Hemalurgy, which is whose question it always was.</summary>
+    /// <returns>How many hemalurgic spikes the pawn carries, 0 for a pawn with none.</returns>
     public static int SpikeCount(Pawn? pawn) {
         return Hemalurgy.HemalurgicSpikeUtility.SpikeCount(pawn);
     }
@@ -155,6 +160,7 @@ public static class KandraUtility {
     ///     body would let a kandra keep its mind on a scavenged pair of somebody else's, which is
     ///     not what a Blessing is. Anything the kandra picked up elsewhere is ignored here.
     /// </remarks>
+    /// <returns>How many of the pawn's spikes match that Blessing's metal and theft. 0 when the hediff is not a Blessing, or the pawn carries no spikes at all.</returns>
     public static int MatchingSpikeCount(Pawn? pawn, HediffDef blessing) {
         (string metal, HemalurgicStealType steal)? recipe = RecipeFor(blessing);
         if (recipe == null) return 0;

@@ -13,10 +13,11 @@ namespace Cosmere.Core.Quest;
 /// </summary>
 public static class CosmereQuestBuilder {
     /// <summary>
-    ///     Builds def into a ready-to-accept quest. Returns false and sets quest to null if
-    ///     any stage's objective cannot resolve. The caller must not add quest to
+    ///     Builds def into a ready-to-accept quest. The caller must not add quest to
     ///     Find.QuestManager unless this returns true.
     /// </summary>
+    /// <returns>True when the quest is built and ready to accept. False sets quest to null, because
+    ///     some stage's objective could not resolve.</returns>
     public static bool TryBuild(CosmereQuestDef def, Verse.Map map, Pawn? subject, out RimWorld.Quest? quest) {
         RimWorld.Quest built = RimWorld.Quest.MakeRaw();
         built.root = DefDatabase<QuestScriptDef>.GetNamed("Cosmere_Quest_Root");

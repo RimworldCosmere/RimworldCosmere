@@ -141,7 +141,7 @@ public static class BetaHubClient {
     private static string? ReadIssuePath(string? issueUrl) {
         if (string.IsNullOrEmpty(issueUrl)) return null;
 
-        int lastSlash = issueUrl!.LastIndexOf('/');
+        int lastSlash = issueUrl.LastIndexOf('/');
 
         return lastSlash < 0 ? null : issueUrl.Substring(lastSlash + 1);
     }

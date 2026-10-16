@@ -625,7 +625,7 @@ public class SurgebindingSteps {
         if (Enum.TryParse(name, ignoreCase: true, out QuestState state)) return state;
 
         throw new InvalidOperationException(
-            $"'{name}' is not a quest state. try one of: {string.Join(", ", Enum.GetNames(typeof(QuestState)))}");
+            $"'{name}' is not a quest state. try one of: {string.Join(", ", Enum.GetNames<QuestState>())}");
     }
 
     private static float RateOf(Surgebinder bond, AbilityDef def) {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
@@ -22,6 +23,12 @@ public abstract class MouseoverSprenInfoPatch : MouseoverReadout {
         )!;
 
     [Inject(At.Transpiler, nameof(MouseoverReadoutOnGUI))]
+    [SuppressMessage(
+        "Performance",
+        "CA1859",
+        Justification =
+            "Concord.Analyzers.InjectedMemberAnalyzer matches a transpiler's return type by name, accepting only System.Collections.Generic.IEnumerable<CodeInstruction>; returning List<CodeInstruction> makes this an invalid transpiler signature."
+    )]
     private static IEnumerable<CodeInstruction> AppendSprenReadout(IEnumerable<CodeInstruction> instructions) {
         return new CodeMatcher(instructions)
             .End() // Go to the end

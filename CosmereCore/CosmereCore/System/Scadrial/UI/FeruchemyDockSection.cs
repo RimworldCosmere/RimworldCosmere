@@ -322,7 +322,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         return string.IsNullOrEmpty(description)
             ? string.Empty
-            : description!.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
+            : description.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
     }
 
     private IReadOnlyList<MetalGroup> GroupsFor(Pawn pawn, InvestitureSnapshot snapshot) {

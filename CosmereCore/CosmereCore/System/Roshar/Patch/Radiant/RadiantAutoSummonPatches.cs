@@ -101,7 +101,7 @@ public static class RadiantAutoSummon {
 [Patch]
 public abstract class RadiantAutoSummonJobPatch : JobGiver_ConfigurableHostilityResponse {
     [Inject(At.Return, "TryGetAttackNearbyEnemyJob")]
-    private void AfterTryGetAttackNearbyEnemyJob(Pawn pawn, ControlHandle<Verse.AI.Job> ch) {
+    private static void AfterTryGetAttackNearbyEnemyJob(Pawn pawn, ControlHandle<Verse.AI.Job> ch) {
         if (ch.ReturnValue == null) return;
         if (pawn.playerSettings?.hostilityResponse != HostilityResponseMode.Attack) return;
         RadiantAutoSummon.TryAutoSummon(pawn);

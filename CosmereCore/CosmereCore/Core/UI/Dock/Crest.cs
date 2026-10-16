@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Verse;
 
@@ -45,6 +46,7 @@ public static class Crest {
     ///     A pawn with one identity gets one mark beside the title. One assembled out of several
     ///     gets one mark each on their own row - a dozen will not fit in the space one sigil occupies.
     /// </summary>
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static void Draw(
         Rect rect,
         Texture2D? glyph,

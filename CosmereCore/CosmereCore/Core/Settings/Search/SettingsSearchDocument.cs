@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Settings.Model;
 
 namespace Cosmere.Core.Settings.Search;
 
 public sealed record SettingsSearchDocument {
+    [SuppressMessage("Major Code Smell", "S107", Justification = "every parameter sets one property on this value object, so the list is the type's own field set")]
     public SettingsSearchDocument(
         string systemKey,
         string systemName,

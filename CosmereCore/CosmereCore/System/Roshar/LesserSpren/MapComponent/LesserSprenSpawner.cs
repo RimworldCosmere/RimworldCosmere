@@ -174,7 +174,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
 
         bool foundValidSpren = false;
 
-        foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
+        foreach (SprenType sprenType in Enum.GetValues<SprenType>()) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller == null || !controller.IsEnabled) continue;
             if (AppendSprenDebug(info, controller, sprenType, position)) foundValidSpren = true;

@@ -1,4 +1,5 @@
-﻿using Cosmere.Core.Shader.Properties;
+﻿using System;
+using Cosmere.Core.Shader.Properties;
 using UnityEngine;
 using Verse;
 
@@ -141,7 +142,7 @@ public class CutoutAdvanced : ThingComp {
 
         if (material != null) {
             int lastSlash = path.LastIndexOf('/');
-            path = lastSlash >= 0 ? path.Substring(0, lastSlash + 1) + material.mainTexture.name : path;
+            path = lastSlash >= 0 ? string.Concat(path.AsSpan(0, lastSlash + 1), material.mainTexture.name) : path;
         }
 
         if (maskCache.TryGetValue((type, path), out Mask? mask)) return mask;

@@ -49,6 +49,6 @@ public static class BetaHubFormEncoder {
     private static void Add(List<KeyValuePair<string, string>> form, string key, string? value) {
         if (string.IsNullOrWhiteSpace(value)) return;
 
-        form.Add(new KeyValuePair<string, string>(key, value!));
+        form.Add(new KeyValuePair<string, string>(key, value));
     }
 }

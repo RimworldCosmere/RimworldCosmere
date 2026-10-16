@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using global::System.Collections.Generic;
 
 namespace Cosmere.Core.Settings.Model;
 
 public static class SettingsDescriptorValidator {
+    [SuppressMessage("Minor Code Smell", "S1075", Justification = "the slash joins settings keys into a descriptor path, not a filesystem path")]
     public static IReadOnlyList<string> Validate(string systemKey, IReadOnlyList<SettingSection> sections) {
         List<string> errors = [];
         HashSet<string> sectionKeys = new HashSet<string>(global::System.StringComparer.Ordinal);

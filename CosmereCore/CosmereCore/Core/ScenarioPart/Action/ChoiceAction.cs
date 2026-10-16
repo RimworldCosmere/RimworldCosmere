@@ -49,7 +49,7 @@ public class ChoiceAction : ProgressionAction {
     /// </summary>
     public void Execute(GameComponent_ScenarioProgression comp, global::System.Action? continuation) {
         string? required = requiresPawn;
-        if (required != null && required.Length > 0 && comp.FindPawnByName(required) == null) {
+        if (required != null && required.Length > 0 && GameComponent_ScenarioProgression.FindPawnByName(required) == null) {
             bool explicitPath = onMissing.Count > 0;
             Log.Info(
                 $"ScenarioProgression: '{required}' is gone, taking the " +

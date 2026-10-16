@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy;
@@ -54,7 +55,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         yield return toil;
     }
 
-    // TODO: Add distance from target to equation of push strength
+    // TODO(push strength still ignores range): distance falloff
 
     /// <summary>
     ///     Right now, if thing hits a cell that isnt walkable, it stops.
@@ -62,6 +63,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     ///     math still works out, otherwise it should flip,
     ///     and start pushing the opposite way for the remainder of the distance.
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S1135", Justification = "the TODO on this method is open work, not a note: a shove's distance is still mass-only, so a target at the edge of range is thrown exactly as hard as one in the next cell")]
     private void MoveThing(Verse.Thing thing, bool movePawn) {
         SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);
         surge?.Burn();

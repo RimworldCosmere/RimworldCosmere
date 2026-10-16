@@ -190,7 +190,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
         return lines.Count == 0 ? null : string.Join("\n", lines);
     }
 
-    public Pawn? FindPawnByName(string firstName) {
+    public static Pawn? FindPawnByName(string firstName) {
         List<Map> maps = Find.Maps;
         for (int m = 0; m < maps.Count; m++) {
             List<Pawn> colonists = maps[m].mapPawns.FreeColonists;

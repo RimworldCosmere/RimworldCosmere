@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -15,6 +16,7 @@ public static class FloatSubMenuFactory {
         return () => subOption.OpenMenu();
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "mirrors a vanilla FloatMenuOption constructor one for one, so the parameter list is not ours to change")]
     public static FloatMenuOption CompatMMMCreate(
         string label,
         List<FloatMenuOption> subOptions,
@@ -33,6 +35,7 @@ public static class FloatSubMenuFactory {
         return new FloatSubMenu(label, subOptions, priority, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority);
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "mirrors a vanilla FloatMenuOption constructor one for one, so the parameter list is not ours to change")]
     public static FloatMenuOption CompatMMMCreate(
         string label,
         List<FloatMenuOption> subOptions,
@@ -70,6 +73,7 @@ public static class FloatSubMenuFactory {
         return new FloatSubMenu(label, subOptions, shownItemForIcon, thingStyle, forceBasicStyle, priority, revalidateClickTarget, extraPartWidth, extraPartOnGUI, revalidateWorldClickTarget, playSelectionSound, orderInPriority, graphicIndexOverride);
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "mirrors a vanilla FloatMenuOption constructor one for one, so the parameter list is not ours to change")]
     public static FloatMenuOption CompatMMMCreate(
         string label,
         List<FloatMenuOption> subOptions,

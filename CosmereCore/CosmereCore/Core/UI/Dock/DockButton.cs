@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -23,6 +24,7 @@ public static class DockButton {
     private static readonly Color GhostFill = new Color(0.086f, 0.098f, 0.110f, 0.55f);
     private static readonly Color LabelText = new Color(0.851f, 0.878f, 0.902f);
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static bool Draw(
         Rect rect,
         string label,

@@ -28,7 +28,7 @@ public class RenamePawnAction : ProgressionAction {
     public bool optional = true;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) {
             if (optional) {
                 Log.Debug($"ScenarioProgression: '{pawnName}' is not here, so there is nobody to rename.");
@@ -44,7 +44,7 @@ public class RenamePawnAction : ProgressionAction {
             return;
         }
 
-        pawn.Name = Rename(pawn, newFirstName!, newLastName, newNickName);
+        pawn.Name = Rename(pawn, newFirstName, newLastName, newNickName);
 
         if (letterTitle != null && letterText != null) {
             Find.LetterStack.ReceiveLetter(letterTitle, letterText, LetterDefOf.NeutralEvent, pawn);

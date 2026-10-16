@@ -1,13 +1,9 @@
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.UI;
 
 public class DropdownMenu : FloatMenu {
-    private readonly Rect dropdownRect;
-
-    public DropdownMenu(Rect dropdownRect, List<FloatMenuOption> options) : base(options) {
-        this.dropdownRect = dropdownRect;
+    public DropdownMenu(List<FloatMenuOption> options) : base(options) {
         vanishIfMouseDistant = false;
     }
 }

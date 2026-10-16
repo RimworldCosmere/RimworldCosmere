@@ -103,11 +103,5 @@ public class PawnKindApparelTests {
         Assert.IsGreaterThan(skaa, terris, "Skaa are the poorest of the Final Empire.");
     }
 
-    private static bool HasAny(IEnumerable<XElement> elements) {
-        foreach (XElement _ in elements) {
-            return true;
-        }
-
-        return false;
-    }
+    private static bool HasAny(IEnumerable<XElement> elements) => elements.Any();
 }

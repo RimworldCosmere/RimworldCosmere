@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading;
 using Cosmere.Core.Attribute;
@@ -31,6 +32,12 @@ public static class Profiler {
 
     private static readonly bool Initialized;
 
+    [SuppressMessage(
+        "Minor Code Smell",
+        "S3963",
+        Justification =
+            "No inline initializer can do what this body does: it returns early unless Mod.DebugMode is set, fills two dictionaries from a reflection walk over every [Profile] method inside a try/catch, and sets Initialized only once that walk completes."
+    )]
     static Profiler() {
         if (!Mod.DebugMode) return;
 
@@ -38,7 +45,7 @@ public static class Profiler {
             int attributed = 0;
             foreach (MethodInfo method in ProfiledMethods) {
                 ProfileAttribute attr = method.GetCustomAttribute<ProfileAttribute>()!;
-                Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
+                Labels[method] = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label;
                 Attrs[method] = attr;
                 attributed++;
             }
@@ -214,7 +221,7 @@ public static class Profiler {
 
 #pragma warning disable CS9113
     // Nothing constructs this: Game.FillComponents reflects over every GameComponent subclass.
-    private sealed class ProfilerFlushComponent(Game _) : GameComponent {
+    internal sealed class ProfilerFlushComponent(Game _) : GameComponent {
         public override void GameComponentUpdate() {
             if ((int)Time.time % FlushSeconds == 0) Flush();
         }

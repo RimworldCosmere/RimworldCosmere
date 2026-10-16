@@ -8,5 +8,5 @@ public class ProgressionEvent {
     public string key = string.Empty;
     public bool repeatable;
     public int repeatIntervalDays;
-    public List<ProgressionTrigger> triggers = [];
+    public List<IProgressionTrigger> triggers = [];
 }

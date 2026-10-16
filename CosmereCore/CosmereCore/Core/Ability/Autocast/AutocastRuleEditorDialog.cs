@@ -8,7 +8,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
     private const string PercentArg = "PERCENT";
 
     private static readonly AutocastComparison[] Comparisons =
-        (AutocastComparison[])Enum.GetValues(typeof(AutocastComparison));
+        Enum.GetValues<AutocastComparison>();
 
     private readonly string abilityLabel;
     private readonly AutocastRule rule;
@@ -161,7 +161,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         Rect releaseRect = new Rect(inRect.x, y, 220f, 24f);
         if (Widgets.ButtonText(releaseRect, ReleaseLabel(rule.Release))) {
             List<FloatMenuOption> opts = [];
-            foreach (AutocastRelease release in Enum.GetValues(typeof(AutocastRelease))) {
+            foreach (AutocastRelease release in Enum.GetValues<AutocastRelease>()) {
                 AutocastRelease captured = release;
                 opts.Add(new FloatMenuOption(ReleaseLabel(release), () => rule.Release = captured));
             }
@@ -259,7 +259,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         Rect kindRect = new Rect(row.x, row.y + 8f, 150f, 24f);
         if (Widgets.ButtonText(kindRect, TriggerKindLabel(trigger.Kind))) {
             List<FloatMenuOption> opts = [];
-            foreach (AutocastTriggerKind kind in Enum.GetValues(typeof(AutocastTriggerKind))) {
+            foreach (AutocastTriggerKind kind in Enum.GetValues<AutocastTriggerKind>()) {
                 AutocastTriggerKind captured = kind;
                 opts.Add(new FloatMenuOption(TriggerKindLabel(kind), () => trigger.Kind = captured));
             }

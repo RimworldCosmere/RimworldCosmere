@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Extension;
 using Cosmere.Core.Gene;
@@ -130,6 +131,7 @@ public class Surgebinder : Invested {
         }
     }
 
+    [SuppressMessage("Major Code Smell", "S4275", Justification = "Gene_Resource.max is vanilla's fixed cap; this override reads the cap off the investiture pool")]
     public override float Max => Investiture.MaxLevel;
 
     public override float Value {
@@ -139,6 +141,7 @@ public class Surgebinder : Invested {
 
     public int GriefRecoveryCount => griefRecoveryCount;
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public bool WasDownedInCombat {
         get => wasDownedInCombat;
         set => wasDownedInCombat = value;
@@ -314,7 +317,7 @@ public class Surgebinder : Invested {
         );
     }
 
-    public void OnWitnessedDeath(Pawn deceased) {
+    public static void OnWitnessedDeath(Pawn deceased) {
         // hook the death-witness patch always calls. no order reacts to a witnessed death yet.
     }
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using UnityEngine;
@@ -34,6 +35,7 @@ public static class MetalTile {
     private const float CompoundedBandHeight = 8f;
     private const float BandGap = 3f;
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static void Draw(
         Rect rect,
         Texture2D? icon,

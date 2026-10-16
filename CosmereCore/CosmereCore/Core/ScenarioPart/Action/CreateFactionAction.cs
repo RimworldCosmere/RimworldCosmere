@@ -53,14 +53,14 @@ public class CreateFactionAction : ProgressionAction {
             if (delta != 0) player.TryAffectGoodwillWith(made, delta, false, false);
         }
 
-        InstallLeader(made, comp);
+        InstallLeader(made);
         Log.Info($"ScenarioProgression: '{faction}' now exists, led by {made.leader?.Name?.ToStringShort ?? "nobody"}.");
     }
 
-    private void InstallLeader(Faction made, GameComponent_ScenarioProgression comp) {
+    private void InstallLeader(Faction made) {
         if (leaderPawnName.Length == 0) return;
 
-        Pawn? leader = comp.FindPawnByName(leaderPawnName) ?? FindWorldPawn(leaderPawnName);
+        Pawn? leader = GameComponent_ScenarioProgression.FindPawnByName(leaderPawnName) ?? FindWorldPawn(leaderPawnName);
         if (leader == null || leader.Dead) {
             // Nobody by that name left. Vanilla's generated leader is better than none at all.
             if (made.leader == null) made.TryGenerateNewLeader();

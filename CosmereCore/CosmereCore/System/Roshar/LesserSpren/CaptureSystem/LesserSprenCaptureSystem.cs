@@ -146,7 +146,7 @@ public static class LesserSprenCaptureSystem {
     ) {
         List<BaseSprenController> capturableSpren = [];
 
-        foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
+        foreach (SprenType sprenType in Enum.GetValues<SprenType>()) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller is { CanBeCaptured: true } && IsSprenActiveWithinRadius(position, map, sprenType, radius)) {
                 capturableSpren.Add(controller);
@@ -159,7 +159,7 @@ public static class LesserSprenCaptureSystem {
     public static List<SprenType> GetCapturableSprenAtPosition(IntVec3 position, Map map) {
         List<SprenType> capturableSpren = [];
 
-        foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
+        foreach (SprenType sprenType in Enum.GetValues<SprenType>()) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller is { CanBeCaptured: true } && IsSprenActive(position, sprenType)) {
                 capturableSpren.Add(sprenType);

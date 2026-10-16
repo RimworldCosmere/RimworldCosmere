@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Cosmere.Core.Def;
 using Cosmere.Core.Investiture;
@@ -281,6 +282,7 @@ public class ConnectionSuiteSteps {
     /// <param name="sourceX">The source's x coordinate.</param>
     /// <param name="sourceZ">The source's z coordinate.</param>
     [When("the {string} at \\({int}, {int}\\) absorbs {float} investiture from the {string} at \\({int}, {int}\\)")]
+    [SuppressMessage("Major Code Smell", "S107", Justification = "the parameters are this step's gherkin captures, so the count is set by the scenario line")]
     public static void AbsorbFromThing(
         PickleContext ctx,
         string defName,

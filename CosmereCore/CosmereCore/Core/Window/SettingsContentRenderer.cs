@@ -103,7 +103,7 @@ public sealed class SettingsContentRenderer {
         return sectionOffsets.TryGetValue(sectionKey, out offset);
     }
 
-    private MeasuredSection MeasureSection(string systemKey, SettingSection section, float columnWidth) {
+    private static MeasuredSection MeasureSection(string systemKey, SettingSection section, float columnWidth) {
         List<MeasuredRow> rows = [];
 
         // rows are inset by section padding on both sides; measuring against bare column width mis-wraps text.
@@ -121,7 +121,7 @@ public sealed class SettingsContentRenderer {
                 if (rows.Count > 1) height += RowGap;
             } catch (Exception exception) {
                 Log.Error($"Settings descriptor {systemKey}/{section.Key}/{descriptor.Key} failed: {exception}");
-                rows.Add(new MeasuredRow(descriptor, controlRenderer.HeightFor(descriptor.Control) + RowVerticalPadding * 2f, true));
+                rows.Add(new MeasuredRow(descriptor, SettingsControlRenderer.HeightFor(descriptor.Control) + RowVerticalPadding * 2f, true));
                 height += rows[^1].Height;
                 if (rows.Count > 1) height += RowGap;
             }
@@ -130,7 +130,7 @@ public sealed class SettingsContentRenderer {
         return new MeasuredSection(section, rows, height + SectionPadding);
     }
 
-    private float MeasureRow(SettingDescriptor descriptor, float labelWidth) {
+    private static float MeasureRow(SettingDescriptor descriptor, float labelWidth) {
         float labelHeight;
         using (new TextBlock(GameFont.Small)) {
             labelHeight = Text.CalcHeight((string)descriptor.LabelKey.Translate(), labelWidth);
@@ -143,7 +143,7 @@ public sealed class SettingsContentRenderer {
             }
         }
 
-        return Mathf.Max(controlRenderer.HeightFor(descriptor.Control), labelHeight + descriptionHeight) + RowVerticalPadding * 2f;
+        return Mathf.Max(SettingsControlRenderer.HeightFor(descriptor.Control), labelHeight + descriptionHeight) + RowVerticalPadding * 2f;
     }
 
     private void AssignPlacements(IReadOnlyList<SettingSectionPlacement> placements) {
@@ -266,12 +266,12 @@ public sealed class SettingsContentRenderer {
         }
     }
 
-    private void DrawUnavailableRow(Rect rect, ISystemSkin skin) {
+    private static void DrawUnavailableRow(Rect rect, ISystemSkin skin) {
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, DisabledTextColor(skin))) {
             Widgets.Label(rect.LeftPart(0.48f), "CC_Settings_Unavailable".Translate());
         }
 
-        controlRenderer.DrawUnavailable(rect.RightPart(0.48f), skin);
+        SettingsControlRenderer.DrawUnavailable(rect.RightPart(0.48f), skin);
         TooltipHandler.TipRegion(rect, "CC_Settings_Unavailable".Translate());
     }
 

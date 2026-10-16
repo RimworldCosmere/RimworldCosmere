@@ -37,7 +37,7 @@ public class GiveSpikeAction : ProgressionAction {
     public bool optional;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) {
             if (!optional) Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for GiveSpike");
             return;

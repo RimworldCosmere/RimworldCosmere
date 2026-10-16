@@ -18,7 +18,7 @@ public class RecallPawnAction : ProgressionAction {
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         // Already home. A beat that welcomes somebody back should not duplicate them.
-        if (comp.FindPawnByName(pawnName) != null) return;
+        if (GameComponent_ScenarioProgression.FindPawnByName(pawnName) != null) return;
 
         Pawn? pawn = FindInWorld(pawnName);
         if (pawn == null) {

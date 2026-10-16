@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using global::System;
 
 namespace Cosmere.Core.Settings.Model;
 
 public sealed record IntRangeControl : SettingControl {
+    [SuppressMessage("Major Code Smell", "S107", Justification = "every parameter sets one property on this value object, so the list is the type's own field set")]
     public IntRangeControl(
         Func<int> getMin,
         Action<int> setMin,

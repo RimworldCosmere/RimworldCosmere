@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -266,6 +267,7 @@ public class FloatSubMenu : FloatMenuOption {
         }
     }
 
+    [SuppressMessage("Major Code Smell", "S2696", Justification = "the static field is vanilla's own RimWorld.SoundDefOf.FloatMenu_Open, read by the FloatMenu constructor on the next line so the nested menu opens without a second open sound, and restored immediately after; the method cannot be static because it builds the sub menu from this option's own subOptions and stores it in the instance field subMenu")]
     private void OpenSubMenu(FloatMenu parentMenu, Vector2 localPos) {
         if (!Open) {
             Vector2 mouse = Event.current.mousePosition;

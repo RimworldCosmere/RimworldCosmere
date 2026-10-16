@@ -252,7 +252,7 @@ public static class RadialCenterPreview {
         int high = text.Length;
         while (low < high) {
             int mid = (low + high + 1) / 2;
-            if (Text.CalcHeight(text.Substring(0, mid) + "...", width) <= maxHeight) low = mid;
+            if (Text.CalcHeight(string.Concat(text.AsSpan(0, mid), "..."), width) <= maxHeight) low = mid;
             else high = mid - 1;
         }
 

@@ -25,7 +25,7 @@ public class RemovePawnAction : ProgressionAction {
     public string? describeKey;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) {
             if (optional) {
                 Log.Debug($"ScenarioProgression: '{pawnName}' is already gone, nothing to remove.");

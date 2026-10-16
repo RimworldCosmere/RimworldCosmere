@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using UnityEngine;
@@ -56,6 +57,7 @@ public static class MetallicArtsTable {
         return height;
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static void Draw(
         Rect rect,
         IReadOnlyList<MetalGroup> groups,
@@ -104,6 +106,7 @@ public static class MetallicArtsTable {
     }
 
     /// <summary>One group's tiles, plus the open metal's strip. Returns the y below them.</summary>
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     private static float DrawGroupRows(
         Rect rect,
         float y,
@@ -195,6 +198,7 @@ public static class MetallicArtsTable {
     }
 
     /// <summary>The detail panel under an open tile, clipped while it is still sliding out.</summary>
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     private static void DrawOpenStrip(
         Rect rect,
         float y,

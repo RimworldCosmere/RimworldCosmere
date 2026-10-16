@@ -10,7 +10,7 @@ public class HediffPrereq : QuestPrereq {
     public override bool IsMet(QuestWorldState state) {
         if (state.subjectPawnId == 0) return false;
 
-        return !string.IsNullOrEmpty(hediffDefName) && state.subjectHediffs.Contains(hediffDefName!);
+        return !string.IsNullOrEmpty(hediffDefName) && state.subjectHediffs.Contains(hediffDefName);
     }
 
     public override string? ConfigError() {

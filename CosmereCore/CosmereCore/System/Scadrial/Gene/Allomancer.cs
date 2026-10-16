@@ -1,4 +1,5 @@
-﻿using Cosmere.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using Cosmere.Core;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Savant;
@@ -61,6 +62,7 @@ public class Allomancer : Metalborn {
         }
     }
 
+    [SuppressMessage("Major Code Smell", "S4275", Justification = "Gene_Resource.max is vanilla's fixed cap; this override scales the cap with allomantic skill level")]
     public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(Skill.Level + 1, 2f));
 
     private SkillRecord Skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
@@ -76,6 +78,7 @@ public class Allomancer : Metalborn {
     private HediffDef? PermanentHediffDef =>
         cachedPermanentHediffDef ??= ScadrialSavantUtility.GetAllomanticPermanentHediffDef(Metal);
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public override float Value {
         get => currentReserve;
         set => currentReserve = value;

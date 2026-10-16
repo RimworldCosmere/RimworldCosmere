@@ -1,6 +1,6 @@
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
-public class EventOccurredTrigger : ProgressionTrigger {
+public class EventOccurredTrigger : IProgressionTrigger {
     public string eventKey = string.Empty;
 
     /// <summary>
@@ -10,7 +10,7 @@ public class EventOccurredTrigger : ProgressionTrigger {
     /// </summary>
     public bool negate;
 
-    public override bool IsMet(GameComponent_ScenarioProgression comp) {
+    public bool IsMet(GameComponent_ScenarioProgression comp) {
         return comp.HasEventFired(eventKey) != negate;
     }
 }

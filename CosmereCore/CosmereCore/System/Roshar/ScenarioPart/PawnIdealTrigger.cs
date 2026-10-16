@@ -5,12 +5,12 @@ using Verse;
 
 namespace Cosmere.System.Roshar.ScenarioPart;
 
-public class PawnIdealTrigger : ProgressionTrigger {
+public class PawnIdealTrigger : IProgressionTrigger {
     public int minIdeal;
     public string pawnName = string.Empty;
 
-    public override bool IsMet(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+    public bool IsMet(GameComponent_ScenarioProgression comp) {
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) return false;
 
         Surgebinder? surgebinder =

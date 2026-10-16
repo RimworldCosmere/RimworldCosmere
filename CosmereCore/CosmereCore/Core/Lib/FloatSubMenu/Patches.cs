@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Concord;
 using Verse;
 
@@ -13,6 +14,7 @@ internal abstract class FloatMenuUpdateBaseColorPatch : FloatMenu {
     protected FloatMenuUpdateBaseColorPatch(List<FloatMenuOption> options) : base(options) { }
 
     [Inject(At.Head, "UpdateBaseColor")]
+    [SuppressMessage("Major Code Smell", "S2696", Justification = "DistanceOverride.replaceDist and .dist are read by DistFromRectPatch.BeforeDistFromRect during the GenUI.DistFromRect call vanilla makes inside this UpdateBaseColor; the handler must stay an instance method because Concord only hands it the patched FloatMenu as `this` that way, and ShouldReplaceDistanceFor needs that menu")]
     private void BeforeUpdateBaseColor() {
         // Make sure we do not replace any values needed to calculate replacement.
         DistanceOverride.replaceDist = false;
@@ -20,7 +22,7 @@ internal abstract class FloatMenuUpdateBaseColorPatch : FloatMenu {
     }
 
     [Inject(At.Return, "UpdateBaseColor")]
-    private void AfterUpdateBaseColor() {
+    private static void AfterUpdateBaseColor() {
         DistanceOverride.replaceDist = false;
     }
 }

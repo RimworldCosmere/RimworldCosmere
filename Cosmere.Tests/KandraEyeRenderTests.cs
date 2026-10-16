@@ -220,7 +220,7 @@ public partial class KandraEyeRenderTests {
         string[] masks = [
             .. Directory.EnumerateFiles(EyeTextureRoot, "*.png")
                 .Where(file => Path.GetFileName(file).EndsWith("m.png", StringComparison.Ordinal))
-                .Select(file => Path.GetFileName(file)!),
+                .Select(file => Path.GetFileName(file)),
         ];
 
         Assert.IsEmpty(
@@ -329,7 +329,7 @@ public partial class KandraEyeRenderTests {
                 foreach (string side in Sides) {
                     foreach (string direction in Directions) {
                         string file = EyeTextureFile(gender, TitleCase(sizeName), side, direction);
-                        if (!File.Exists(file)) missing.Add(Path.GetFileName(file)!);
+                        if (!File.Exists(file)) missing.Add(Path.GetFileName(file));
                     }
                 }
             }
@@ -424,7 +424,9 @@ public partial class KandraEyeRenderTests {
     private static int Paeth(int a, int b, int c) {
         int p = a + b - c, pa = Math.Abs(p - a), pb = Math.Abs(p - b), pc = Math.Abs(p - c);
 
-        return pa <= pb && pa <= pc ? a : pb <= pc ? b : c;
+        if (pa <= pb && pa <= pc) return a;
+
+        return pb <= pc ? b : c;
     }
 
     [TestMethod]

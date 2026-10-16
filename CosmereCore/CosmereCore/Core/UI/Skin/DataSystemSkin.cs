@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Verse;
 
@@ -9,6 +10,7 @@ public sealed class DataSystemSkin : ISystemSkin {
     private readonly Func<Texture2D?>? sigilSource;
     private Texture2D? cachedSigil;
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "every parameter sets one property on this value object, so the list is the type's own field set")]
     public DataSystemSkin(
         string systemId,
         string headerLabelKey,

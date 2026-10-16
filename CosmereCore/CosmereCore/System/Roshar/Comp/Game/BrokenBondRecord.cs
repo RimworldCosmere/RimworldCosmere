@@ -7,7 +7,7 @@ public class BrokenBondRecord : IExposable {
     public string orderDefName = string.Empty;
 
     public void ExposeData() {
-        Scribe_Values.Look(ref orderDefName!, "orderDefName");
+        Scribe_Values.Look(ref orderDefName, "orderDefName", string.Empty);
         Scribe_Values.Look(ref breakTick, "breakTick");
     }
 }

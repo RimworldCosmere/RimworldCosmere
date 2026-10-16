@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Concord;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
@@ -49,6 +50,7 @@ public abstract class WorldParamsPatch : Page_CreateWorldParams {
     protected abstract void RebuildFactionCounts();
 
     [Inject(At.Return, nameof(DoWindowContents))]
+    [SuppressMessage("Major Code Smell", "S2696", Justification = "factionsBuiltFor is read by the ReferenceEquals check one line above, on the next frame's draw, which is how a world picked in a FloatMenu callback gets noticed; the handler cannot be static because it calls the instance members RebuildFactionCounts, GetMainRect and Margin")]
     private void AfterDoWindowContents(Rect rect) {
         List<CosmereWorldDef> worlds = WorldUtility.All;
         if (worlds.Count == 0) return;

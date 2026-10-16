@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Concord;
 using Cosmere.System.Roshar.Surgebinding.Ability.Gravitation;
 using Verse;
@@ -83,6 +84,7 @@ public abstract class FlyingReachabilityDirectPatch : Reachability {
         nameof(CanReach),
         parameterTypes: [typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms)]
     )]
+    [SuppressMessage("Major Code Smell", "S2696", Justification = "passingThrough is the reentrancy guard read by the first line of this same handler when the CanReach call below re-enters it; the handler cannot be static because that call is this.CanReach on the patched Reachability instance")]
     private Control BeforeCanReach(
         IntVec3 start,
         LocalTargetInfo dest,

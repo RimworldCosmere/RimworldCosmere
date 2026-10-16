@@ -2,7 +2,7 @@ using RimWorld;
 
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
-public class DaysPassedTrigger : ProgressionTrigger {
+public class DaysPassedTrigger : IProgressionTrigger {
     public int days;
 
     /// <summary>
@@ -12,7 +12,7 @@ public class DaysPassedTrigger : ProgressionTrigger {
     /// </summary>
     public bool sinceArcStart;
 
-    public override bool IsMet(GameComponent_ScenarioProgression comp) {
+    public bool IsMet(GameComponent_ScenarioProgression comp) {
         return (sinceArcStart ? comp.DaysInActiveArc : GenDate.DaysPassed) >= days;
     }
 }

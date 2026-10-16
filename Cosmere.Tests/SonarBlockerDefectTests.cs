@@ -53,7 +53,7 @@ public partial class SonarBlockerDefectTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return Path.Combine(dir!.FullName, "CosmereCore", "CosmereCore");
+            return Path.Combine(dir.FullName, "CosmereCore", "CosmereCore");
         }
     }
 

@@ -152,7 +152,7 @@ public sealed class FeedbackDialog : BaseWindow {
 
             // printed, not just linked: OpenURL reaches no browser in a container or a locked-down machine.
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DefaultBodyTextColor)) {
-                listing.Label(finished.IssueUrl!);
+                listing.Label(finished.IssueUrl);
             }
 
             return;
@@ -161,7 +161,7 @@ public sealed class FeedbackDialog : BaseWindow {
         if (string.IsNullOrEmpty(finished.ServerMessage)) return;
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DefaultBodyTextColor)) {
-            listing.Label(finished.ServerMessage!);
+            listing.Label(finished.ServerMessage);
         }
     }
 
@@ -331,7 +331,7 @@ public sealed class FeedbackDialog : BaseWindow {
             if (Widgets.ButtonText(actionRect, "CC_BetaHub_ViewOnline".Translate())) {
                 // copied too: OpenURL fails silently with no browser reachable, so this stays readable.
                 GUIUtility.systemCopyBuffer = finished.IssueUrl;
-                Application.OpenURL(finished.IssueUrl!);
+                Application.OpenURL(finished.IssueUrl);
                 Messages.Message("CC_BetaHub_LinkCopied".Translate(), RimWorld.MessageTypeDefOf.TaskCompletion, false);
             }
 

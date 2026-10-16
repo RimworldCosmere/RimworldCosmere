@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -262,6 +263,7 @@ public class CompKandraForms : ThingComp {
     public string? TrueBodyMaterial => trueBodyMaterial;
 
     /// <summary>Records what the reshape job will produce when it finishes.</summary>
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public void BeginReshape(
         string material,
         Gender gender,

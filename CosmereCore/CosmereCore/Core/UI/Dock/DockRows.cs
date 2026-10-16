@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
 using Verse;
@@ -62,6 +63,7 @@ public static class DockRows {
         return Widgets.ButtonInvisible(rect);
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static Rect BeginRichCell(
         Rect rect,
         Texture2D? icon,

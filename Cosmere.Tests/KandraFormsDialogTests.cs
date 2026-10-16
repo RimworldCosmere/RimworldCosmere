@@ -75,8 +75,8 @@ public partial class KandraFormsDialogTests {
     public void TheCallToActionStaysRareEnoughToMeanSomething() {
         string source = DialogSource;
 
-        int cta = CtaButtonPattern.Matches(source).Count;
-        int plain = PlainButtonPattern.Matches(source).Count;
+        int cta = CtaButtonPattern.Count(source);
+        int plain = PlainButtonPattern.Count(source);
 
         // One CTA per committing state: revert, reshape, adopt. No more than that.
         Assert.IsLessThanOrEqualTo(

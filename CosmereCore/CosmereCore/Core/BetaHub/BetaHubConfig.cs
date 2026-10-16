@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Framework;
 using Cosmere.Core.Settings;
 
@@ -9,6 +10,7 @@ namespace Cosmere.Core.BetaHub;
 /// </summary>
 public static class BetaHubConfig {
     public const string ProjectId = "pr-4628785616";
+    [SuppressMessage("Minor Code Smell", "S1075", Justification = "the betahub service endpoint, not a path this build resolves")]
     public const string BaseUrl = "https://app.betahub.io";
     public const string SourceTag = "rimworld_ingame";
 

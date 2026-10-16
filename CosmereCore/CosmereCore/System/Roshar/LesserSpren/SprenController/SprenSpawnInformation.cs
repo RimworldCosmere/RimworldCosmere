@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Verse;
 
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
@@ -23,6 +24,7 @@ public record SprenSpawnInformation(
     public readonly float spawnChance = spawnChance;
     public IntVec3? position = position;
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "one optional override per record field, which is what makes it a builder")]
     public SprenSpawnInformation With(
         Map? map = null,
         IntVec3? position = null,

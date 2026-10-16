@@ -7,7 +7,7 @@ namespace Cosmere.Core.Patch;
 [Patch]
 public abstract class ResearchWindowHeaderLabelPatch : MainTabWindow_Research {
     [Inject(At.Head, "HeaderLabel")]
-    private Control BeforeHeaderLabel(
+    private static Control BeforeHeaderLabel(
         ResearchPrerequisitesUtility.UnlockedHeader headerProject,
         ControlHandle<string> ch
     ) {

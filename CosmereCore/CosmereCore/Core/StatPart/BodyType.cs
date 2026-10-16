@@ -21,11 +21,11 @@ public class BodyType : RimWorld.StatPart {
         return null;
     }
 
-    private bool TryGetBodyType(StatRequest req, out float bodyType) {
+    private static bool TryGetBodyType(StatRequest req, out float bodyType) {
         return StatUtility.TryGetPawnStat(req, GetBodyTypeMultiplier, _ => 0f, out bodyType);
     }
 
-    private float GetBodyTypeMultiplier(Pawn pawn) {
+    private static float GetBodyTypeMultiplier(Pawn pawn) {
         float estimatedWeightKg = baseWeight; // default base
 
         BodyTypeDef? bodyType = pawn.story?.bodyType;

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Concord;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Entity;
@@ -8,6 +9,7 @@ namespace Cosmere.Core.Patch.World;
 [Patch(typeof(PawnGenerator))]
 public static class ConnectionPatch {
     [Inject(At.Return, nameof(PawnGenerator.GeneratePawn), parameterTypes: [typeof(PawnGenerationRequest)])]
+    [SuppressMessage("Minor Code Smell", "S1135", Justification = "the TODO below is open work, not a note: Shards carries no layer mapping yet, so until it does every pawn gets a connection to every enabled Shard")]
     private static void AfterGeneratePawn(ControlHandle<Pawn> ch) {
         Pawn result = ch.ReturnValue;
         if (result == null || result.NonHumanlikeOrWildMan()) return;

@@ -123,7 +123,7 @@ public static class WorldUtility {
         List<CosmereWorldDef> worlds = DefDatabase<CosmereWorldDef>.AllDefsListForReading;
         for (int i = 0; i < worlds.Count; i++) {
             if (worlds[i].crossWorld) continue;
-            if (defName!.Contains(worlds[i].defName)) return worlds[i];
+            if (defName.Contains(worlds[i].defName)) return worlds[i];
         }
 
         return null;

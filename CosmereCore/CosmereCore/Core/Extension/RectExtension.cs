@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.UI;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public static class RectExtension {
         );
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "one optional override per Rect field, which is what makes it a builder")]
     public static Rect With(
         this Rect rect,
         float? x = null,

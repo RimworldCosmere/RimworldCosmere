@@ -35,14 +35,14 @@ public static class RadialWedgeTex {
         Color32[] pixels = new Color32[size * size];
         for (int py = 0; py < size; py++) {
             for (int px = 0; px < size; px++) {
-                float x = (px + 0.5f) / size - 0.5f;
-                float y = (py + 0.5f) / size - 0.5f;
-                float r = Mathf.Sqrt(x * x + y * y);
+                float dx = (px + 0.5f) / size - 0.5f;
+                float dy = (py + 0.5f) / size - 0.5f;
+                float r = Mathf.Sqrt(dx * dx + dy * dy);
 
                 float ring = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
 
                 // Spokes are evenly spaced clockwise from straight up, so Atan2 takes the axes swapped.
-                float theta = Mathf.Atan2(y: x, x: y);
+                float theta = Mathf.Atan2(dx, dy);
                 float step = Mathf.PI * 2f / spokes;
                 float offset = Mathf.Abs(Mathf.Repeat(theta + step * 0.5f, step) - step * 0.5f);
                 float gap = Mathf.Clamp01((offset - halfSpoke) / (aa * 2f));

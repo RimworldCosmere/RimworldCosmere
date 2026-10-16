@@ -159,10 +159,6 @@ public partial class KandraEyePaletteTests {
         return [.. stone.Select(channel => Math.Clamp(channel * dim + lift, 0f, 1f))];
     }
 
-    private static float MinDelta(float[] a, float[] b) {
-        return a.Zip(b, (left, right) => Math.Abs(left - right)).Min();
-    }
-
     private static List<float> Strengths() {
         return [
             .. EyeLightStrengthPattern.Matches(Source("EyeLights"))

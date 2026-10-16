@@ -24,7 +24,7 @@ public class GiveThoughtAction : ProgressionAction {
         }
 
         if (pawnName.Length > 0) {
-            Pawn? pawn = comp.FindPawnByName(pawnName);
+            Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
             if (pawn == null) {
                 Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for GiveThought");
                 return;

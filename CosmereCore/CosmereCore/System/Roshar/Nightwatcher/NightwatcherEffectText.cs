@@ -61,7 +61,7 @@ public static class NightwatcherEffectText {
                 ? new NightwatcherApplicationContext(choiceKey)
                 : null;
             string? extra = describer.DescribeEffects(ctx);
-            if (!string.IsNullOrEmpty(extra)) effects.Add(extra!);
+            if (!string.IsNullOrEmpty(extra)) effects.Add(extra);
         }
 
         return effects.Count > 0 ? string.Join("  |  ", effects) : string.Empty;
@@ -97,7 +97,7 @@ public static class NightwatcherEffectText {
 
         if (curse.Applicator is INightwatcherEffectDescriber describer) {
             string? extra = describer.DescribeEffects();
-            if (!string.IsNullOrEmpty(extra)) effects.Add(extra!);
+            if (!string.IsNullOrEmpty(extra)) effects.Add(extra);
         }
 
         if (curse.cultivationEvolutionDays > 0) {

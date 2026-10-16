@@ -7,7 +7,7 @@ public static class BetaHubGate {
     public const string BetaMarker = "-beta.";
 
     public static bool IsBetaRevision(string? revision) {
-        return !string.IsNullOrEmpty(revision) && revision!.Contains(BetaMarker);
+        return !string.IsNullOrEmpty(revision) && revision.Contains(BetaMarker);
     }
 
     public static bool ShouldShow(string? revision, string? token, bool enabledInSettings) {

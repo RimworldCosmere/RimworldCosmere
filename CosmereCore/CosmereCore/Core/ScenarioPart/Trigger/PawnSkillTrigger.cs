@@ -3,13 +3,13 @@ using Verse;
 
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
-public class PawnSkillTrigger : ProgressionTrigger {
+public class PawnSkillTrigger : IProgressionTrigger {
     public int minLevel;
     public string pawnName = string.Empty;
     public string skill = string.Empty;
 
-    public override bool IsMet(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+    public bool IsMet(GameComponent_ScenarioProgression comp) {
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) return false;
 
         SkillDef? skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(skill);

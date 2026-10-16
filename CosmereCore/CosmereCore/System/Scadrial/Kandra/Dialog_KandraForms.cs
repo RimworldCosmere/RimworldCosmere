@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Listing;
 using Cosmere.Core.UI;
 using Cosmere.System.Scadrial.Util;
@@ -1042,6 +1043,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
         }
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     private void DrawPortrait(
         Rect well,
         KandraForm? form,
@@ -1087,6 +1089,7 @@ public partial class Dialog_KandraForms : Core.Window.BaseWindow {
     ///     The crafted body drawn from its own textures, in the material it is made of. Body and
     ///     head are separate files, and the head rides where this pawn's body type puts one.
     /// </summary>
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     private void DrawTrueBody(
         Rect well,
         KandraForm form,

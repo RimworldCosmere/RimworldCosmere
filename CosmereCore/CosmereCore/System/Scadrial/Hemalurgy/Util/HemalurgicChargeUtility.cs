@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Framework;
 using Cosmere.System.Scadrial.Gene;
@@ -10,6 +11,7 @@ using Verse;
 namespace Cosmere.System.Scadrial.Hemalurgy;
 
 public static class HemalurgicChargeUtility {
+    [SuppressMessage("Major Code Smell", "S107", Justification = "the inputs to one hemalurgy operation; a request type would carry the same eight decisions")]
     public static void DriveHemalurgicCharge(
         Pawn donor,
         Pawn surgeon,

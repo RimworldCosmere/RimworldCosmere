@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.UI;
 
 public static class UIHelpers {
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static void DrawIcon(
         Rect rect,
         Texture2D icon,
@@ -32,6 +34,7 @@ public static class UIHelpers {
         }
     }
 
+    [SuppressMessage("Major Code Smell", "S107", Justification = "a draw primitive takes its layout and style as parameters; an options type per call site would carry the same decisions without removing one")]
     public static void Dropdown<T>(
         Listing_Standard listing,
         Func<T?, string?> labelGetter,
@@ -59,7 +62,7 @@ public static class UIHelpers {
             options.Add(new FloatMenuOption(kv.Key, () => onSelected(value)));
         }
 
-        Find.WindowStack.Add(new DropdownMenu(buttonRect, options));
+        Find.WindowStack.Add(new DropdownMenu(options));
     }
 
     public static Dictionary<string, int> GetEnumValues<T>()

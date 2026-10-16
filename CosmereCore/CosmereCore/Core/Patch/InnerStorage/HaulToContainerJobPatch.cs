@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 using Concord;
@@ -12,6 +13,7 @@ namespace Cosmere.Core.Patch.InnerStorage;
 [Patch(typeof(HaulAIUtility))]
 public static class HaulToContainerJobPatch {
     [Inject(At.Transpiler, nameof(HaulAIUtility.HaulToStorageJob))]
+    [SuppressMessage("Major Code Smell", "S127", Justification = "the `i += 8` steps the cursor over the eight instructions just inserted at i, so the loop resumes past the original isinst instead of matching it a second time and logging the multiple-call warning against this patch's own output")]
     private static IEnumerable<CodeInstruction> AddInnerStorageCheck(
         IEnumerable<CodeInstruction> instructions,
         ITranspilerContext context

@@ -2,10 +2,10 @@ using Verse;
 
 namespace Cosmere.Core.ScenarioPart.Trigger;
 
-public class ResearchCompletedTrigger : ProgressionTrigger {
+public class ResearchCompletedTrigger : IProgressionTrigger {
     public string research = string.Empty;
 
-    public override bool IsMet(GameComponent_ScenarioProgression comp) {
+    public bool IsMet(GameComponent_ScenarioProgression comp) {
         ResearchProjectDef? def = DefDatabase<ResearchProjectDef>.GetNamedSilentFail(research);
         return def != null && def.IsFinished;
     }

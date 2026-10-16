@@ -158,6 +158,6 @@ public static class ShardSteps {
         }
 
         throw new InvalidOperationException(
-            $"'{tierName}' is not a connection tier. try one of: {string.Join(", ", Enum.GetNames(typeof(ConnectionTier)))}");
+            $"'{tierName}' is not a connection tier. try one of: {string.Join(", ", Enum.GetNames<ConnectionTier>())}");
     }
 }

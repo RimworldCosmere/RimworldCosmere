@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Def;
@@ -58,6 +59,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     private InvestitureHolder InvestitureHolder => parent.GetComp<InvestitureHolder>();
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public bool Equipped {
         get => equippedInt;
         set => equippedInt = value;

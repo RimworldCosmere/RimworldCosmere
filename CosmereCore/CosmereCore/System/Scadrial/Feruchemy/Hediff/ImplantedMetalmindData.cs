@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Def;
 using UnityEngine;
 using Verse;
@@ -29,16 +30,19 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         chargeByLedger ??= [];
     }
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public float StoredAmount {
         get => storedAmountInt;
         set => storedAmountInt = value;
     }
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public float MaxAmount {
         get => maxAmountInt;
         set => maxAmountInt = value;
     }
 
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
     public float CompoundedAmount {
         get => compoundedAmountInt;
         set => compoundedAmountInt = value;

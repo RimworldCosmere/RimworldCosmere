@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Concord;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Shader.Properties;
@@ -179,6 +180,7 @@ public abstract class GraphicDrawMeshIntPatch : Verse.Graphic {
     private static Verse.Thing? drawingThing;
 
     [Inject(At.Around, nameof(DrawWorker))]
+    [SuppressMessage("Major Code Smell", "S2696", Justification = "drawingThing is the [ThreadStatic] handoff read by BeforeDrawMeshInt below, which vanilla calls from inside this DrawWorker without passing the Thing; the handler stays an instance method because Concord binds an At.Around on an instance target that way, and making it static would change what it hooks")]
     private void AroundDrawWorker(
         Vector3 loc,
         Rot4 rot,

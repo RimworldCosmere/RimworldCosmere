@@ -12,7 +12,7 @@ public class RadiantOrderPrereq : QuestPrereq {
 
     public override bool IsMet(QuestWorldState state) {
         if (!string.IsNullOrEmpty(order)) {
-            return state.bondedOrders.TryGetValue(order!, out int ideal) && ideal >= minIdeal;
+            return state.bondedOrders.TryGetValue(order, out int ideal) && ideal >= minIdeal;
         }
 
         foreach (KeyValuePair<string, int> pair in state.bondedOrders) {

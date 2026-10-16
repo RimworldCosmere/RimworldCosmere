@@ -67,8 +67,11 @@ public static class RadialLayout {
         float dist = delta.magnitude;
         if (dist < innerRadius || dist > outerRadius) return -1;
 
+        float dx = delta.x;
+        float dy = delta.y;
+
         // the wheel measures clockwise from straight up, so the axes go into Atan2 swapped on purpose.
-        float angle = Mathf.Atan2(y: delta.x, x: -delta.y) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(dx, -dy) * Mathf.Rad2Deg;
         if (angle < 0f) angle += 360f;
 
         float wedgeSize = 360f / wedgeCount;

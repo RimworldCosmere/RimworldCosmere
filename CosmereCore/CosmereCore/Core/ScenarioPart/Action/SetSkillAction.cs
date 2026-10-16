@@ -18,7 +18,7 @@ public class SetSkillAction : ProgressionAction {
     public string skill = string.Empty;
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
-        Pawn? pawn = comp.FindPawnByName(pawnName);
+        Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
         if (pawn == null) {
             Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for SetSkill");
             return;

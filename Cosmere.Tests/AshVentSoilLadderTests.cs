@@ -309,8 +309,8 @@ public class AshVentSoilLadderTests {
 
         for (int x = -reach; x <= 1 + reach; x++) {
             for (int z = -reach; z <= 1 + reach; z++) {
-                int dx = x < 0 ? -x : x > 1 ? x - 1 : 0;
-                int dz = z < 0 ? -z : z > 1 ? z - 1 : 0;
+                int dx = AxisDistance(x);
+                int dz = AxisDistance(z);
                 int distanceSquared = dx * dx + dz * dz;
                 if (!AshVentSoilSpread.Reaches(distanceSquared, radius)) continue;
 
@@ -319,5 +319,11 @@ public class AshVentSoilLadderTests {
         }
 
         return cells;
+    }
+
+    private static int AxisDistance(int coord) {
+        if (coord < 0) return -coord;
+
+        return coord > 1 ? coord - 1 : 0;
     }
 }

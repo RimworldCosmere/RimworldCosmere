@@ -189,7 +189,7 @@ public partial class KandraDesignerPanesTests {
 
         Assert.IsGreaterThanOrEqualTo(
             2,
-            StonesCountRead.Matches(colours).Count,
+            StonesCountRead.Count(colours),
             "The eye list does not take both its scroll height and its loop bound from the table, so "
             + "retuning the table leaves rows unreachable or scrolls past nothing."
         );

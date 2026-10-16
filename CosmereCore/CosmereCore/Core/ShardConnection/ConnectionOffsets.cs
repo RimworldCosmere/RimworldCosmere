@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core.Def;
 using Verse;
 
@@ -73,7 +74,7 @@ public class ConnectionOffsets : Verse.GameComponent {
         heldByPawn.Clear();
         foreach (KeyValuePair<string, float> pair in scribed) {
             int split = pair.Key.IndexOf(':');
-            if (split <= 0 || !int.TryParse(pair.Key.Substring(0, split), out int id)) continue;
+            if (split <= 0 || !int.TryParse(pair.Key.AsSpan(0, split), out int id)) continue;
 
             heldByPawn[(id, pair.Key.Substring(split + 1))] = pair.Value;
         }

@@ -86,7 +86,7 @@ public static class MetalDetector {
         if (thing.def.defName.StartsWith("Mineable")) {
             return thing.def.building.mineableYield *
                    10 *
-                   metals.First().Item.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
+                   metals[0].Item.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
         }
 
         return null;

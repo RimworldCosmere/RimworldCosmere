@@ -27,7 +27,7 @@ public static class DeathWitnessTracking {
             Surgebinder? surgebinder = colonist.genes?.GetFirstGeneOfType<Surgebinder>();
             if (surgebinder == null) continue;
 
-            surgebinder.OnWitnessedDeath(victim);
+            Surgebinder.OnWitnessedDeath(victim);
         }
     }
 }

@@ -453,7 +453,7 @@ public class FeruchemySteps {
     private static ConnectionKey RequireKey(string ledger) {
         if (!Enum.TryParse(ledger, true, out DuraluminLedger parsed)) {
             throw new InvalidOperationException(
-                $"'{ledger}' is not a duralumin ledger; use {string.Join(", ", Enum.GetNames(typeof(DuraluminLedger)))}");
+                $"'{ledger}' is not a duralumin ledger; use {string.Join(", ", Enum.GetNames<DuraluminLedger>())}");
         }
 
         return ConnectionKey.For(parsed, null);

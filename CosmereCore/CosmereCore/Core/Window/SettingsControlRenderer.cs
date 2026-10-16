@@ -19,7 +19,7 @@ public sealed class SettingsControlRenderer {
 
     private readonly Dictionary<string, string> numericBuffers = [];
 
-    public float HeightFor(SettingControl control) {
+    public static float HeightFor(SettingControl control) {
         return control is ButtonControl ? ButtonHeight + ButtonStatusHeight + 4f : StandardControlHeight;
     }
 
@@ -60,7 +60,7 @@ public sealed class SettingsControlRenderer {
         }
     }
 
-    public void DrawUnavailable(Rect rect, ISystemSkin skin) {
+    public static void DrawUnavailable(Rect rect, ISystemSkin skin) {
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, DisabledTextColor(skin))) {
             Widgets.Label(rect, "CC_Settings_Unavailable".Translate());
         }

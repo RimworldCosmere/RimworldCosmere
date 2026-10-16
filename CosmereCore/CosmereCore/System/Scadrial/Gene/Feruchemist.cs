@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Def;
 using Cosmere.Core.Need;
 using Cosmere.Core.Savant;
@@ -230,6 +231,7 @@ public class Feruchemist : Metalborn {
 
     public override float InitialResourceMax => 100f;
 
+    [SuppressMessage("Major Code Smell", "S4275", Justification = "Gene_Resource.max is vanilla's fixed cap; this override reports a fixed percentage scale instead")]
     public override float Max => 100f;
 
     public override float Value {

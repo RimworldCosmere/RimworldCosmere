@@ -29,7 +29,7 @@ public class AddHediffAction : ProgressionAction {
         }
 
         if (pawnName.Length > 0) {
-            Pawn? pawn = comp.FindPawnByName(pawnName);
+            Pawn? pawn = GameComponent_ScenarioProgression.FindPawnByName(pawnName);
             if (pawn == null) {
                 if (!optional) Log.Warn($"ScenarioProgression: Pawn '{pawnName}' not found for AddHediff");
                 return;

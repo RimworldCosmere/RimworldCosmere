@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Verse;
 
 namespace Cosmere.Core.ShardConnection;
@@ -10,6 +11,12 @@ namespace Cosmere.Core.ShardConnection;
 ///     GetComponent walks the component list, and the Connection read path runs it twice per read
 ///     on every frame a panel is open. A new or loaded game is a new Game, so identity invalidates.
 /// </remarks>
+[SuppressMessage(
+    "Major Code Smell",
+    "S2743",
+    Justification =
+        "One cached component per closed type is the point: GameComponentCache<ResidenceTracker> and GameComponentCache<ConnectionOffsets> must hold different components, so sharing the statics across close constructions would break the cache."
+)]
 public static class GameComponentCache<T>
     where T : Verse.GameComponent {
     private static Verse.Game? owner;

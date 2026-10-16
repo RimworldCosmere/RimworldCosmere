@@ -148,9 +148,9 @@ public partial class KandraTrueBodyArtTests {
         if (span == 0f) return (0f, 0f);
 
         float hue;
-        if (max == r) {
+        if (Math.Abs(max - r) < 0.0001f) {
             hue = 60f * ((g - b) / span % 6f);
-        } else if (max == g) {
+        } else if (Math.Abs(max - g) < 0.0001f) {
             hue = 60f * ((b - r) / span + 2f);
         } else {
             hue = 60f * ((r - g) / span + 4f);
@@ -198,8 +198,7 @@ public partial class KandraTrueBodyArtTests {
                 $"The wolfhound is not OreSeur's true body in {file}, so he arrives as a person there."
             );
 
-            Assert.AreEqual(
-                true,
+            Assert.IsTrue(
                 oreSeur.Element("kandraKnownFaces")?.Elements("li").Any(li => li.Value == "Lord Renoux"),
                 $"OreSeur has no Lord Renoux face in {file}."
             );

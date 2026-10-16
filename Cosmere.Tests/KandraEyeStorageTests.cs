@@ -38,7 +38,7 @@ public partial class KandraEyeStorageTests {
 
             Assert.IsNotNull(dir, "Could not find the repo root from the test output directory.");
 
-            return dir!.FullName;
+            return dir.FullName;
         }
     }
 

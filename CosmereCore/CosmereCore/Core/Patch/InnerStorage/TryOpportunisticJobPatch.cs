@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 using Concord;
@@ -30,6 +31,7 @@ public abstract class TryOpportunisticJobPatch : Pawn_JobTracker {
     protected TryOpportunisticJobPatch(Pawn newPawn) : base(newPawn) { }
 
     [Inject(At.Transpiler, nameof(TryOpportunisticJob))]
+    [SuppressMessage("Major Code Smell", "S127", Justification = "the `i += newInstructions.Count` steps the cursor over the block just inserted at i; that block ends in a ldloc.s directly before the original isinst, which is exactly the two-instruction shape IsSlotGroupParentCheck matches, so without the skip the loop would patch the same site twice")]
     private static IEnumerable<CodeInstruction> AddInnerStorageCheck(
         IEnumerable<CodeInstruction> instructions,
         ITranspilerContext context

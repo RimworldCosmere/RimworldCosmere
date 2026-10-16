@@ -34,13 +34,13 @@ public class DelayedActionScheduler {
         }
     }
 
-    private class ScheduledAction {
+    private sealed class ScheduledAction {
         public Action? action;
         public int ticksLeft;
     }
 
     // Nothing constructs this: Game.FillComponents reflects over every GameComponent subclass.
-    private class GameComponentDelayedActionScheduler : GameComponent {
+    internal class GameComponentDelayedActionScheduler : GameComponent {
         public GameComponentDelayedActionScheduler() { }
 
         public GameComponentDelayedActionScheduler(Game game) { }

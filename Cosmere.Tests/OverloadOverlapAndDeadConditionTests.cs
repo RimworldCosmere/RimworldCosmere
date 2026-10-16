@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -18,7 +19,7 @@ public partial class OverloadOverlapAndDeadConditionTests {
             }
 
             Assert.IsNotNull(dir, "Could not locate CosmereScadrial/Defs above the test output directory.");
-            return Path.Combine(dir!.FullName, "CosmereCore", "CosmereCore");
+            return Path.Combine(dir.FullName, "CosmereCore", "CosmereCore");
         }
     }
 
@@ -201,6 +202,7 @@ public partial class OverloadOverlapAndDeadConditionTests {
     [GeneratedRegex(@"named\.Length\s*==\s*0")]
     private static partial Regex EmptyJoinedNamesCheck { get; }
 
+    [SuppressMessage("Major Code Smell", "S1144", Justification = "built by Activator.CreateInstance, which sonar cannot see")]
     private sealed class OnlyOptionalTail {
         public OnlyOptionalTail(int required, bool optional = true) {
             Required = required;

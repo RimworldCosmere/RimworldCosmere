@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Soulcast</defName>
+        <label>Soulcast</label>
+        <description>Reach into the Cognitive Realm and convince matter to become something else. Stone becomes metal. Wood becomes crystal. The object does not break and reform. It changes, as if it had always been the new thing and simply forgotten. At higher Ideals, even living beings can be transformed, their essence reshaped into cold, unyielding stone.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Transformation.Soulcast</abilityClass>
+        <beuPerTick>20</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>1</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

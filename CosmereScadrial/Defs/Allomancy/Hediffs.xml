@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractBurnHediff" ParentName="AbstractCosmereHediff" Abstract="True">
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractBurnHediff" ParentName="Cosmere_Core_Hediff_BaseHediff" Abstract="True">
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>
@@ -9,9 +9,11 @@
     </HediffDef>
     <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractBurnHediff" Abstract="True">
         <alwaysShowSeverity>true</alwaysShowSeverity>
-        <hediffClass>CosmereScadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
+        <hediffClass>Cosmere.System.Scadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties" />
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+               <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+            </li>
         </comps>
     </HediffDef>
     <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractTargetHostileBurnHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">

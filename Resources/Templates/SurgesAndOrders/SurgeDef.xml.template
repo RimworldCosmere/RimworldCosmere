@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgeDef Name="Cosmere_Roshar_Surge_{{defName surge.name}}">
+        <defName>{{defName surge.name}}</defName>
+        <label>{{title surge.name}}</label>
+        <description>{{surge.description}}</description>
+        <abilities>
+            {{#each surge.abilities}}
+            <li>{{this}}</li>
+            {{/each}}
+        </abilities>
+    </Cosmere.System.Roshar.Def.SurgeDef>
+</Defs>

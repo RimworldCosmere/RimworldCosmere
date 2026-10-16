@@ -1,0 +1,417 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Cosmere.Core.Comp.Thing;
+using Cosmere.Core.Def;
+using Cosmere.Core.DefModExtension;
+using Cosmere.System.Scadrial.Feruchemy.Memory;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
+
+public class MetalmindProperties : CompProperties {
+    public float maxAmount;
+
+    public MetalmindProperties() {
+        compClass = typeof(Metalmind);
+    }
+}
+
+public class Metalmind : ThingComp, IMetalmindSource {
+    private MetalDef? cachedMetal;
+    private CompQuality? cachedQualityComp;
+    private bool qualityCompResolved;
+
+    private bool equippedInt = true;
+
+    private float compoundedAmountInt;
+    private float capacityLostInt;
+    private float storedAmountInt;
+    private List<StoredMemory> storedMemoriesInt = [];
+
+    // Keyed by ConnectionKey; empty for every metal but duralumin.
+    private Dictionary<string, float> chargeByLedger = [];
+
+    private Pawn? ownerInt;
+
+    public Pawn? Owner {
+        get => ownerInt;
+        private set => ownerInt = value;
+    }
+
+    private MetalmindProperties Props => (MetalmindProperties)props;
+
+    public bool IsCoppermind => Metal?.defName == "Copper";
+
+    public IReadOnlyList<StoredMemory> StoredMemories => storedMemoriesInt;
+
+    public float UsedMemorySpace {
+        get {
+            float total = 0f;
+            for (int i = 0; i < storedMemoriesInt.Count; i++) {
+                total += storedMemoriesInt[i].MoodMagnitude;
+            }
+
+            return total;
+        }
+    }
+
+    private InvestitureHolder InvestitureHolder => parent.GetComp<InvestitureHolder>();
+
+    [SuppressMessage("Minor Code Smell", "S2292", Justification = "the backing field is passed to Scribe_Values.Look by ref, which an auto-property backing field cannot be")]
+    public bool Equipped {
+        get => equippedInt;
+        set => equippedInt = value;
+    }
+
+    /// <summary>
+    ///     Gets the quality multiplier on capacity. The comp reference is cached, not the factor, because
+    ///     quality is assigned after PostPostMake and a cached value would freeze every metalmind at normal.
+    /// </summary>
+    private float CapacityFactor {
+        get {
+            if (!qualityCompResolved) {
+                cachedQualityComp = parent.TryGetComp<CompQuality>();
+                qualityCompResolved = true;
+            }
+
+            return cachedQualityComp == null
+                ? 1f
+                : ScadrialMetallurgyConstants.MetalmindCapacityFactor(cachedQualityComp.Quality);
+        }
+    }
+
+    /// <summary>
+    ///     Gets this metalmind's capacity. props.maxAmount is shared by the def, quality scales that shared
+    ///     base, then per-instance capacityLost is subtracted, so burning any quality costs the same amount.
+    /// </summary>
+    public float MaxAmount => Mathf.Max(0f, Props.maxAmount * CapacityFactor - capacityLostInt);
+
+    public bool IsBurnedOut => MaxAmount <= 0f;
+
+    public string SourceId => "thing:" + parent.thingIDNumber;
+
+    public string SourceLabel => parent.LabelNoCount;
+
+    public float TotalStored => storedAmountInt + compoundedAmountInt;
+
+    /// <summary>
+    ///     Gets how much of the metal is in use. Memories and attribute charge share one piece of metal, so
+    ///     a coppermind full of a childhood has no room left for mental speed, and vice versa.
+    /// </summary>
+    public float TotalOccupied => TotalStored + UsedMemorySpace;
+
+    public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalOccupied);
+
+    /// <summary>
+    ///     Gets a value indicating whether the current holder may use this metalmind. A gate that ignored the owner said yes
+    ///     where the action said no, so a thief lit the tap hediff and got the attribute for free.
+    /// </summary>
+    private bool OwnerAllows {
+        get {
+            Pawn? currentHolder = GetHoldingPawn();
+
+            return Owner == null || currentHolder == null || Owner.Equals(currentHolder);
+        }
+    }
+
+    // Both pools draw on the same space, so filling either is bounded by the total.
+    public bool CanStore => Equipped && OwnerAllows && FreeSpace > 0f;
+
+    public bool CanTap => Equipped && OwnerAllows && StoredAmount > 0f;
+
+    public bool CanTapCompounded => Equipped && OwnerAllows && TotalStored > 0f;
+
+    // Worn metalminds can hold compounded charge but cannot be compounded into.
+    public bool CanStoreCompounded => false;
+
+    public bool IsImplanted => false;
+
+    public float StoredAmount {
+        get => storedAmountInt;
+        private set {
+            storedAmountInt = value;
+            SyncInvestitureMirror();
+        }
+    }
+
+    public float CompoundedAmount {
+        get => compoundedAmountInt;
+        private set {
+            compoundedAmountInt = value;
+            SyncInvestitureMirror();
+        }
+    }
+
+    /// <summary>
+    ///     Gets the Breath-equivalent units one unit of charge is worth. A nicrosilmind holds Investiture
+    ///     itself, so it mirrors at nicrosil's own rate instead of the generic per-attribute conversion.
+    /// </summary>
+    private float BeuPerUnit => Metal?.defName == "Nicrosil"
+        ? ScadrialMetallurgyConstants.NicrosilBeuPerCharge
+        : ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalmindUnit;
+
+    private void SyncInvestitureMirror() {
+        InvestitureHolder.CurrentInvestitureSelf = TotalOccupied * BeuPerUnit;
+
+        // max mirrored here too, not just PostPostMake: quality stamps on late and compounding shrinks capacity later.
+        InvestitureHolder.maxInvestitureSelf = MaxAmount * BeuPerUnit;
+    }
+
+    public MetalDef? Metal {
+        get {
+            if (cachedMetal != null) return cachedMetal;
+            if (parent.def.GetModExtension<MetalsLinked>() is { } metalsLinked) {
+                cachedMetal = metalsLinked.Metals.FirstOrDefault();
+            }
+
+            if (parent.Stuff is { } stuff) {
+                cachedMetal = DefDatabase<MetalDef>.GetNamed(stuff.defName);
+            }
+
+            if (cachedMetal != null) return cachedMetal;
+
+            Log.Error("Metalmind doesn't have a metal");
+            return null;
+        }
+    }
+
+    public float AddStored(float amount, ConnectionKey? ledgerKey = null) {
+        if (!CanStore) return 0f;
+        if (!ValidateOwner()) return 0f;
+
+        float before = StoredAmount;
+        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount - UsedMemorySpace);
+        float moved = StoredAmount - before;
+        RecordStored(ledgerKey, moved);
+
+        return moved;
+    }
+
+    public float ConsumeStored(float amount, ConnectionKey? ledgerKey = null) {
+        if (!CanTap) return 0f;
+        if (!ValidateOwner()) return 0f;
+
+        float before = StoredAmount;
+        StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
+        float moved = before - StoredAmount;
+
+        if (moved != 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, moved);
+            else ChargeAttribution.Drain(chargeByLedger, moved);
+        }
+
+        return moved;
+    }
+
+    public float AddCompounded(float amount) {
+        if (!CanStore) return 0f;
+        if (!ValidateOwner()) return 0f;
+
+        float before = CompoundedAmount;
+        CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount - UsedMemorySpace);
+
+        return CompoundedAmount - before;
+    }
+
+    /// <summary>
+    ///     Draws compounded charge, which eats the metalmind that carried it. Capacity drops by what was
+    ///     spent, so the two run out together.
+    /// </summary>
+    /// <returns>How much charge was actually drawn, which is 0 when the metalmind cannot be tapped or the holder is not allowed to use it.</returns>
+    public float ConsumeCompounded(float amount, ConnectionKey? ledgerKey = null) {
+        if (!CanTapCompounded) return 0f;
+        if (!ValidateOwner()) return 0f;
+
+        float spent = Mathf.Min(amount, TotalStored);
+
+        float fromCompounded = Mathf.Min(spent, CompoundedAmount);
+        CompoundedAmount -= fromCompounded;
+        StoredAmount -= spent - fromCompounded;
+
+        capacityLostInt += spent;
+
+        // only the ordinary pool is attributed, so a burn drains the map by the part it took from there.
+        float fromStored = spent - fromCompounded;
+        if (fromStored > 0f) {
+            if (ledgerKey != null) RecordConsumed(ledgerKey.Value, fromStored);
+            else ChargeAttribution.Drain(chargeByLedger, fromStored);
+        }
+
+        return spent;
+    }
+
+    public float StoredFor(ConnectionKey ledgerKey) {
+        return chargeByLedger.TryGetValue(ledgerKey.Name, out float amount) ? amount : 0f;
+    }
+
+    private void RecordStored(ConnectionKey? ledgerKey, float moved) {
+        if (ledgerKey == null || moved == 0f) return;
+
+        string key = ledgerKey.Value.Name;
+        chargeByLedger.TryGetValue(key, out float existing);
+        chargeByLedger[key] = existing + moved;
+    }
+
+    private void RecordConsumed(ConnectionKey ledgerKey, float moved) {
+        ChargeAttribution.DrainNamed(chargeByLedger, ledgerKey.Name, moved);
+    }
+
+    // Merges in attribution already scaled by the caller - used on explant handover.
+    public void ReceiveAttribution(Dictionary<string, float> transferred) {
+        foreach (KeyValuePair<string, float> pair in transferred) {
+            chargeByLedger.TryGetValue(pair.Key, out float existing);
+            chargeByLedger[pair.Key] = existing + pair.Value;
+        }
+    }
+
+    public bool CanFitMemory(float magnitude) {
+        return UsedMemorySpace + magnitude <= MaxAmount - TotalStored;
+    }
+
+    public void StoreMemory(StoredMemory memory) {
+        storedMemoriesInt.Add(memory);
+        SyncInvestitureMirror();
+    }
+
+    public StoredMemory? RemoveStoredMemoryAt(int index) {
+        if (index < 0 || index >= storedMemoriesInt.Count) return null;
+        StoredMemory removed = storedMemoriesInt[index];
+        storedMemoriesInt.RemoveAt(index);
+        SyncInvestitureMirror();
+
+        return removed;
+    }
+
+    public void SyncInjectedThoughts(Pawn holder) {
+        if (!IsCoppermind) return;
+        if (holder == null) return;
+        if (Owner == null) Owner = holder;
+        if (holder != Owner) return;
+
+        MemoryThoughtHandler? handler = holder.needs?.mood?.thoughts?.memories;
+        if (handler == null) return;
+
+        for (int i = 0; i < storedMemoriesInt.Count; i++) {
+            StoredMemory stored = storedMemoriesInt[i];
+            if (stored.def == null) continue;
+            if (InjectedThoughtExistsFor(handler, stored)) continue;
+
+            Thought_Memory_Coppermind thought = new Thought_Memory_Coppermind {
+                def = stored.def,
+                age = stored.age,
+                moodPowerFactor = stored.moodPowerFactor,
+                otherPawn = stored.otherPawn,
+                sourceCoppermind = this,
+                storedMemory = stored,
+            };
+            handler.TryGainMemory(thought);
+        }
+    }
+
+    private static bool InjectedThoughtExistsFor(MemoryThoughtHandler handler, StoredMemory stored) {
+        List<Thought_Memory> all = handler.Memories;
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is Thought_Memory_Coppermind injected && injected.storedMemory == stored) return true;
+        }
+
+        return false;
+    }
+
+    public override void PostPostMake() {
+        SyncInvestitureMirror();
+    }
+
+    public override void PostSpawnSetup(bool respawningAfterLoad) {
+        base.PostSpawnSetup(respawningAfterLoad);
+
+        // By now quality has been stamped on, so the mirror written at make time is stale.
+        SyncInvestitureMirror();
+    }
+
+    public Pawn? GetHoldingPawn() {
+        IThingHolder? holder = parent.ParentHolder;
+        while (holder != null) {
+            if (holder is Pawn_InventoryTracker inv) return inv.pawn;
+            if (holder is Pawn_EquipmentTracker eq) return eq.pawn;
+            if (holder is Pawn_ApparelTracker app) return app.pawn;
+            if (holder is Pawn p) return p;
+            holder = holder.ParentHolder;
+        }
+
+        return null;
+    }
+
+    // Claims an unowned metalmind for whoever is acting; otherwise reads the same check the gates do.
+    private bool ValidateOwner() {
+        if (Owner != null) return OwnerAllows;
+
+        Owner = GetHoldingPawn();
+
+        return true;
+    }
+
+    public override void PostExposeData() {
+        base.PostExposeData();
+
+        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
+        Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
+        Scribe_Values.Look(ref capacityLostInt, "capacityLost", 0f);
+        Scribe_Values.Look(ref equippedInt, "equipped");
+        Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
+        storedMemoriesInt ??= [];
+        Scribe_References.Look(ref ownerInt, "owner");
+        Scribe_Collections.Look(ref chargeByLedger, "chargeByLedger", LookMode.Value, LookMode.Value);
+        chargeByLedger ??= [];
+
+        if (Scribe.mode == LoadSaveMode.PostLoadInit) {
+            cachedMetal = null;
+            cachedQualityComp = null;
+            qualityCompResolved = false;
+            if (parent?.Stuff != null) {
+                cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
+            }
+
+            // Only saves written before owner was scribed land here, and they claim the holder as they always did.
+            Owner ??= GetHoldingPawn();
+
+            // loads over-full when compounding burnt capacity, or when a save predates quality scaling.
+            float roomForCharge = Mathf.Max(0f, MaxAmount - UsedMemorySpace);
+            if (storedAmountInt + compoundedAmountInt > roomForCharge) {
+                compoundedAmountInt = Mathf.Max(0f, roomForCharge - storedAmountInt);
+                storedAmountInt = Mathf.Min(storedAmountInt, roomForCharge);
+            }
+
+            ReconcileAttribution();
+            SyncInvestitureMirror();
+        }
+    }
+
+    // Duralumin only, after the clamp above: drops unclaimed charge, then rescales.
+    private void ReconcileAttribution() {
+        if (Metal?.defName != "Duralumin") return;
+
+        float attributed = ChargeAttribution.Total(chargeByLedger);
+        if (storedAmountInt > attributed) {
+            float discarded = storedAmountInt - attributed;
+            storedAmountInt = attributed;
+            Log.Info($"Duralumin: discarded {discarded:F1} unattributed charge from {SourceLabel} on load");
+        }
+
+        ChargeAttribution.Rescale(chargeByLedger, storedAmountInt);
+    }
+
+    public override string CompInspectStringExtra() {
+        StringBuilder sb = new StringBuilder();
+        TaggedString coloredOwner = Owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
+        sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
+        NamedArgument coloredMetal = Metal?.ColoredLabel.Named("METAL") ?? "unknown".Named("METAL");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalOccupied:F1} / {MaxAmount:F1}");
+        if (compoundedAmountInt > 0f) {
+            sb.Append(" " + "CS_MetalmindCompounded".Translate(compoundedAmountInt.ToString("F1").Named("COMPOUNDED")));
+        }
+
+        return sb.ToString();
+    }
+}

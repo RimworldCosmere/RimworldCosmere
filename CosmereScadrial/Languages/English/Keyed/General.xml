@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+	<LoadCosmereMod>Loading Cosmere - Scadrial</LoadCosmereMod>
     <CS_CannotBurn>{PAWN} doesn't have enough {METAL} to burn, and no vial to replenish {PAWN_possessive} reserves.</CS_CannotBurn>
     <CS_CannotFlareAsleep>{PAWN} cannot flare {METAL} while they are sleeping.</CS_CannotFlareAsleep>
     <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>
@@ -12,7 +13,83 @@
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
 	<CS_Flare>flare</CS_Flare>
 	<CS_Deflare>de-flare</CS_Deflare>
-	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
+    <CS_Koloss_Name>koloss</CS_Koloss_Name>
+    <CS_Kandra_Material_Ruby>Ruby</CS_Kandra_Material_Ruby>
+    <CS_Kandra_Material_Sapphire>Sapphire</CS_Kandra_Material_Sapphire>
+    <CS_Kandra_Material_Emerald>Emerald</CS_Kandra_Material_Emerald>
+    <CS_Kandra_Material_Topaz>Topaz</CS_Kandra_Material_Topaz>
+    <CS_Kandra_Material_Amethyst>Amethyst</CS_Kandra_Material_Amethyst>
+    <CS_Kandra_Material_Diamond>Diamond</CS_Kandra_Material_Diamond>
+    <CS_Kandra_Material_Garnet>Garnet</CS_Kandra_Material_Garnet>
+    <CS_Kandra_Material_Heliodor>Heliodor</CS_Kandra_Material_Heliodor>
+    <CS_Kandra_Material_Zircon>Zircon</CS_Kandra_Material_Zircon>
+    <CS_Kandra_Material_Smokestone>Smokestone</CS_Kandra_Material_Smokestone>
+    <CS_Kandra_Material_MilkyQuartzite>Milky quartzite</CS_Kandra_Material_MilkyQuartzite>
+    <CS_Kandra_Material_RoseQuartzite>Rose quartzite</CS_Kandra_Material_RoseQuartzite>
+    <CS_Kandra_Material_SmokyQuartzite>Smoky quartzite</CS_Kandra_Material_SmokyQuartzite>
+    <CS_Kandra_Material_Marble>Marble</CS_Kandra_Material_Marble>
+    <CS_Kandra_Material_Obsidian>Obsidian</CS_Kandra_Material_Obsidian>
+    <CS_Kandra_Material_PaleWood>Pale wood</CS_Kandra_Material_PaleWood>
+    <CS_Kandra_Material_Walnut>Walnut</CS_Kandra_Material_Walnut>
+    <CS_Kandra_Material_Blackwood>Blackwood</CS_Kandra_Material_Blackwood>
+    <CS_Kandra_MaterialGroup_Gem>Gemstone</CS_Kandra_MaterialGroup_Gem>
+    <CS_Kandra_MaterialGroup_Stone>Stone</CS_Kandra_MaterialGroup_Stone>
+    <CS_Kandra_MaterialGroup_Wood>Wood</CS_Kandra_MaterialGroup_Wood>
+    <CS_Kandra_HairHeader>Hair</CS_Kandra_HairHeader>
+    <CS_Kandra_HairColourHeader>Hair colour</CS_Kandra_HairColourHeader>
+    <CS_Kandra_HairColour_AshBlonde>Ash blonde</CS_Kandra_HairColour_AshBlonde>
+    <CS_Kandra_HairColour_Wheat>Wheat</CS_Kandra_HairColour_Wheat>
+    <CS_Kandra_HairColour_Copper>Copper</CS_Kandra_HairColour_Copper>
+    <CS_Kandra_HairColour_Auburn>Auburn</CS_Kandra_HairColour_Auburn>
+    <CS_Kandra_HairColour_Chestnut>Chestnut</CS_Kandra_HairColour_Chestnut>
+    <CS_Kandra_HairColour_Soot>Soot</CS_Kandra_HairColour_Soot>
+    <CS_Kandra_HairColour_IronGrey>Iron grey</CS_Kandra_HairColour_IronGrey>
+    <CS_Kandra_HairColour_BoneWhite>Bone white</CS_Kandra_HairColour_BoneWhite>
+    <CS_Kandra_HairColour_Stormlight>Stormlight</CS_Kandra_HairColour_Stormlight>
+    <CS_Kandra_HairColour_Oxide>Oxide</CS_Kandra_HairColour_Oxide>
+    <CS_Kandra_HairColour_Wine>Wine</CS_Kandra_HairColour_Wine>
+    <CS_Kandra_HairColour_Ink>Ink</CS_Kandra_HairColour_Ink>
+    <CS_Kandra_EyeColour_Carnelian>Carnelian</CS_Kandra_EyeColour_Carnelian>
+    <CS_Kandra_EyeColour_Amber>Amber</CS_Kandra_EyeColour_Amber>
+    <CS_Kandra_EyeColour_Citrine>Citrine</CS_Kandra_EyeColour_Citrine>
+    <CS_Kandra_EyeColour_Peridot>Peridot</CS_Kandra_EyeColour_Peridot>
+    <CS_Kandra_EyeColour_Malachite>Malachite</CS_Kandra_EyeColour_Malachite>
+    <CS_Kandra_EyeColour_Turquoise>Turquoise</CS_Kandra_EyeColour_Turquoise>
+    <CS_Kandra_EyeColour_Lapis>Lapis</CS_Kandra_EyeColour_Lapis>
+    <CS_Kandra_EyeColour_Iolite>Iolite</CS_Kandra_EyeColour_Iolite>
+    <CS_Kandra_EyeColour_Sugilite>Sugilite</CS_Kandra_EyeColour_Sugilite>
+    <CS_Kandra_EyeColour_Moonstone>Moonstone</CS_Kandra_EyeColour_Moonstone>
+    <CS_Kandra_EyeColour_Hematite>Hematite</CS_Kandra_EyeColour_Hematite>
+    <CS_Kandra_EyeColour_Onyx>Onyx</CS_Kandra_EyeColour_Onyx>
+    <CS_Kandra_Iris_Small>Small</CS_Kandra_Iris_Small>
+    <CS_Kandra_Iris_Standard>Standard</CS_Kandra_Iris_Standard>
+    <CS_Kandra_EyeLight_Dim>Dim</CS_Kandra_EyeLight_Dim>
+    <CS_Kandra_EyeLight_Steady>Steady</CS_Kandra_EyeLight_Steady>
+    <CS_Kandra_EyeLight_Burning>Burning</CS_Kandra_EyeLight_Burning>
+    <CS_Kandra_Tab_Body>Body</CS_Kandra_Tab_Body>
+    <CS_Kandra_Tab_Hair>Hair</CS_Kandra_Tab_Hair>
+    <CS_Kandra_Tab_Eyes>Eyes</CS_Kandra_Tab_Eyes>
+    <CS_Kandra_BuildHeader>Build</CS_Kandra_BuildHeader>
+    <CS_Kandra_EyeColourNone>No eyes</CS_Kandra_EyeColourNone>
+    <CS_Kandra_LeftEyeHeader>Left eye</CS_Kandra_LeftEyeHeader>
+    <CS_Kandra_RightEyeHeader>Right eye</CS_Kandra_RightEyeHeader>
+    <CS_Kandra_EyeColourHeader>Colour</CS_Kandra_EyeColourHeader>
+    <CS_Kandra_IrisHeader>Iris</CS_Kandra_IrisHeader>
+    <CS_Kandra_OddEyesHeader>Odd eyes</CS_Kandra_OddEyesHeader>
+    <CS_Kandra_EyeLightHeader>Light</CS_Kandra_EyeLightHeader>
+    <CS_Kandra_BuildNote>The build decides the body and head the kandra grows, and which apparel fits it. Nothing about it is permanent.</CS_Kandra_BuildNote>
+    <CS_Kandra_OddEyesToggle>Give the right eye its own colour</CS_Kandra_OddEyesToggle>
+    <CS_Kandra_OddEyesDesc>A kandra that cut its eyes from two stones.</CS_Kandra_OddEyesDesc>
+    <CS_Kandra_EyeLightToggle>Let the eyes carry light</CS_Kandra_EyeLightToggle>
+    <CS_Kandra_EyeOptionNeedsStone>Cut the eyes from a stone first.</CS_Kandra_EyeOptionNeedsStone>
+    <CS_Kandra_EyeLightDesc>Decoration. It lights nothing and hides nothing.</CS_Kandra_EyeLightDesc>
+    <CS_Kandra_SummaryName>{PAWN}, remade</CS_Kandra_SummaryName>
+    <CS_Kandra_SummaryBuild>{GENDER} build, {MATERIAL}</CS_Kandra_SummaryBuild>
+    <CS_Kandra_SummaryHair>{HAIR}, {DYE}</CS_Kandra_SummaryHair>
+    <CS_Kandra_SummaryEyes>{IRIS} {COLOUR} eyes</CS_Kandra_SummaryEyes>
+    <CS_Kandra_SummaryEyesOdd>{IRIS} {COLOUR} and {COLOURTWO} eyes</CS_Kandra_SummaryEyesOdd>
+    <CS_Kandra_SummaryEyesLit>{IRIS} {COLOUR} eyes, {LIGHT}</CS_Kandra_SummaryEyesLit>
+    <CS_Kandra_SummaryEyesOddLit>{IRIS} {COLOUR} and {COLOURTWO} eyes, {LIGHT}</CS_Kandra_SummaryEyesOddLit>
 </LanguageData>

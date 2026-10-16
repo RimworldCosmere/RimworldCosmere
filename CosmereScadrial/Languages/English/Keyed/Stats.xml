@@ -8,4 +8,5 @@
 	<CS_StatsReport_IngestedLerasiumAlloy>Ingested Lerasium-Alloy</CS_StatsReport_IngestedLerasiumAlloy>
 	<CS_StatsReport_IngestedLeratium>Ingested Leratium</CS_StatsReport_IngestedLeratium>
 	<CS_StatsReport_IngestedLeratiumAlloy>Ingested Leratium-Alloy</CS_StatsReport_IngestedLeratiumAlloy>
+	<CS_StatsReport_FeruchemyMemoryLoad>Carrying {COUNT} active memories: +{OFFSET}</CS_StatsReport_FeruchemyMemoryLoad>
 </LanguageData>

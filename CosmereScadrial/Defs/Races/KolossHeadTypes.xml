@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Two faces per build, so a line of koloss does not read as one thing copied. Which build a
+       koloss has is its age, so requiredGenes points at the build gene rather than at heritage -
+       that keeps koloss heads out of the human pool and lets KolossAppearance swap the head when
+       the body changes under it. -->
+  <HeadTypeDef Name="Cosmere_Scadrial_KolossHeadBase" Abstract="True">
+    <hairMeshSize>(1.5, 1.5)</hairMeshSize>
+    <beardMeshSize>(1.5, 1.5)</beardMeshSize>
+    <gender>None</gender>
+    <selectionWeight>1</selectionWeight>
+  </HeadTypeDef>
+
+  <HeadTypeDef ParentName="Cosmere_Scadrial_KolossHeadBase">
+    <defName>Cosmere_Scadrial_KolossHead_Young_A</defName>
+    <graphicPath>Things/Pawn/Humanlike/Heads/Koloss_Young_A</graphicPath>
+    <requiredGenes>
+      <li>Cosmere_Scadrial_Gene_KolossBuild_Young</li>
+    </requiredGenes>
+  </HeadTypeDef>
+
+  <HeadTypeDef ParentName="Cosmere_Scadrial_KolossHeadBase">
+    <defName>Cosmere_Scadrial_KolossHead_Young_B</defName>
+    <graphicPath>Things/Pawn/Humanlike/Heads/Koloss_Young_B</graphicPath>
+    <requiredGenes>
+      <li>Cosmere_Scadrial_Gene_KolossBuild_Young</li>
+    </requiredGenes>
+  </HeadTypeDef>
+
+  <HeadTypeDef ParentName="Cosmere_Scadrial_KolossHeadBase">
+    <defName>Cosmere_Scadrial_KolossHead_Mature_A</defName>
+    <graphicPath>Things/Pawn/Humanlike/Heads/Koloss_Mature_A</graphicPath>
+    <requiredGenes>
+      <li>Cosmere_Scadrial_Gene_KolossBuild_Mature</li>
+    </requiredGenes>
+  </HeadTypeDef>
+
+  <HeadTypeDef ParentName="Cosmere_Scadrial_KolossHeadBase">
+    <defName>Cosmere_Scadrial_KolossHead_Mature_B</defName>
+    <graphicPath>Things/Pawn/Humanlike/Heads/Koloss_Mature_B</graphicPath>
+    <requiredGenes>
+      <li>Cosmere_Scadrial_Gene_KolossBuild_Mature</li>
+    </requiredGenes>
+  </HeadTypeDef>
+
+</Defs>

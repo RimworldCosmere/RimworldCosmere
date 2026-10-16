@@ -1,0 +1,21 @@
+name: codeql
+
+on:
+  push:
+    branches: [main, beta]
+  pull_request:
+    branches: [main, beta, alpha]
+  schedule:
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    uses: RimWorks/mod-ci/.github/workflows/codeql.yml@v5
+    permissions:
+      contents: read
+      security-events: write
+    with:
+      languages: '["csharp", "actions"]'

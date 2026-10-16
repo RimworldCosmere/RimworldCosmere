@@ -1,0 +1,7 @@
+extends: occurrence
+message: "Keep sentences to 25 words or fewer (ASD-STE100 rule 6.4)."
+link: https://www.asd-ste100.org/
+level: error
+scope: sentence
+max: 25
+token: '\b\w+\b'

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Scadrial_Thing_HemalurgicSpike</defName>
+        <thingClass>ThingWithComps</thingClass>
+        <label>hemalurgic spike</label>
+        <description>A spike forged from metallic arts metal, designed to pierce the spirit web. When driven through a donor, it captures a fragment of their power. When implanted in a recipient, it transfers that stolen essence - at a cost only Ruin could appreciate. A full spike always kills the donor.</description>
+        <graphicData>
+            <texPath>Things/Item/HemalurgicSpike</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.5</drawSize>
+        </graphicData>
+        <techLevel>Medieval</techLevel>
+        <statBases>
+            <MaxHitPoints>100</MaxHitPoints>
+            <Flammability>0</Flammability>
+            <DeteriorationRate>0</DeteriorationRate>
+            <Mass>0.5</Mass>
+            <MarketValue>50</MarketValue>
+        </statBases>
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_AllomanticMetals</li>
+        </stuffCategories>
+        <costStuffCount>5</costStuffCount>
+        <recipeMaker>
+            <workAmount>3000</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>Smith</effectWorking>
+            <soundWorking>Recipe_Smith</soundWorking>
+            <workSkill>Crafting</workSkill>
+            <skillRequirements>
+                <Crafting>6</Crafting>
+            </skillRequirements>
+            <researchPrerequisites>
+                <li>Cosmere_Scadrial_Hemalurgy</li>
+            </researchPrerequisites>
+            <recipeUsers Inherit="False">
+                <li>Cosmere_Core_Table_Forge</li>
+            </recipeUsers>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>Cosmere_Core_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Core_ThingCategory_GodMetal</li>
+                </categories>
+            </defaultIngredientFilter>
+        </recipeMaker>
+        <stackLimit>1</stackLimit>
+        <thingCategories>
+            <li>Cosmere_Scadrial_ThingCategory_Hemalurgy</li>
+        </thingCategories>
+        <tradeTags>
+            <li>Hemalurgy</li>
+        </tradeTags>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.Comp.Thing.HemalurgicSpikeProperties" />
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Scadrial_Thing_HemalurgicNeedle</defName>
+        <thingClass>ThingWithComps</thingClass>
+        <label>hemalurgic needle</label>
+        <description>A thinner variant of the hemalurgic spike, crafted with precision techniques. Less likely to kill the donor, but captures a weaker charge. Requires knowledge of hemalurgic precision to forge.</description>
+        <graphicData>
+            <texPath>Things/Item/HemalurgicNeedle</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.4</drawSize>
+        </graphicData>
+        <techLevel>Medieval</techLevel>
+        <statBases>
+            <MaxHitPoints>60</MaxHitPoints>
+            <Flammability>0</Flammability>
+            <DeteriorationRate>0</DeteriorationRate>
+            <Mass>0.2</Mass>
+            <MarketValue>40</MarketValue>
+        </statBases>
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_AllomanticMetals</li>
+        </stuffCategories>
+        <costStuffCount>3</costStuffCount>
+        <recipeMaker>
+            <workAmount>2000</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>Smith</effectWorking>
+            <soundWorking>Recipe_Smith</soundWorking>
+            <workSkill>Crafting</workSkill>
+            <skillRequirements>
+                <Crafting>8</Crafting>
+            </skillRequirements>
+            <researchPrerequisites>
+                <li>Cosmere_Scadrial_HemalurgicPrecision</li>
+            </researchPrerequisites>
+            <recipeUsers Inherit="False">
+                <li>Cosmere_Core_Table_Forge</li>
+            </recipeUsers>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>Cosmere_Core_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Core_ThingCategory_GodMetal</li>
+                </categories>
+            </defaultIngredientFilter>
+        </recipeMaker>
+        <stackLimit>1</stackLimit>
+        <thingCategories>
+            <li>Cosmere_Scadrial_ThingCategory_Hemalurgy</li>
+        </thingCategories>
+        <tradeTags>
+            <li>Hemalurgy</li>
+        </tradeTags>
+        <comps>
+            <li Class="Cosmere.System.Scadrial.Hemalurgy.Comp.Thing.HemalurgicSpikeProperties" />
+        </comps>
+    </ThingDef>
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>Cosmere_Scadrial_Thing_AluminumSpikeCase</defName>
+        <label>aluminum spike case</label>
+        <description>A case forged from aluminum, designed to preserve hemalurgic spikes. The aluminum blocks the investiture bleed that normally degrades a spike's charge when left outside a living body.</description>
+        <thingClass>Building_Storage</thingClass>
+        <graphicData>
+            <texPath>Things/Building/AluminumSpikeCase</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <size>(1,1)</size>
+        <passability>PassThroughOnly</passability>
+        <fillPercent>0.4</fillPercent>
+        <pathCost>14</pathCost>
+        <canOverlapZones>false</canOverlapZones>
+        <rotatable>false</rotatable>
+        <designationCategory>Furniture</designationCategory>
+        <inspectorTabs>
+            <li>ITab_Storage</li>
+        </inspectorTabs>
+        <costList>
+            <Aluminum>15</Aluminum>
+        </costList>
+        <building>
+            <maxItemsInCell>12</maxItemsInCell>
+            <fixedStorageSettings>
+                <filter>
+                    <categories>
+                        <li>Cosmere_Scadrial_ThingCategory_Hemalurgy</li>
+                    </categories>
+                </filter>
+            </fixedStorageSettings>
+            <defaultStorageSettings>
+                <priority>Important</priority>
+                <filter>
+                    <categories>
+                        <li>Cosmere_Scadrial_ThingCategory_Hemalurgy</li>
+                    </categories>
+                </filter>
+            </defaultStorageSettings>
+        </building>
+        <researchPrerequisites>
+            <li>Cosmere_Scadrial_Hemalurgy</li>
+        </researchPrerequisites>
+        <statBases>
+            <MaxHitPoints>150</MaxHitPoints>
+            <WorkToBuild>2000</WorkToBuild>
+            <Mass>5</Mass>
+            <Flammability>0</Flammability>
+        </statBases>
+    </ThingDef>
+
+    <ThingCategoryDef>
+        <defName>Cosmere_Scadrial_ThingCategory_Hemalurgy</defName>
+        <label>hemalurgy</label>
+        <parent>Cosmere</parent>
+    </ThingCategoryDef>
+</Defs>

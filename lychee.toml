@@ -1,0 +1,14 @@
+# Link checking for the docs. Run in CI; see .github/workflows/ci.yml.
+
+# Steam and the Workshop reject unattended requests, so a live check on those
+# reports a false failure rather than a broken link.
+exclude = [
+  "^https://steamcommunity\\.com/",
+  "^https://sonarcloud\\.io/",
+]
+
+exclude_path = []
+
+max_retries = 2
+timeout = 20
+accept = ["200", "204", "206", "429"]

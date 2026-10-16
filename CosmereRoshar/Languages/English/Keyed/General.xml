@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <LoadCosmereMod>Loading Cosmere - Roshar</LoadCosmereMod>
+    <CR_Example_General>Example</CR_Example_General>
+    <CRO_InspectorTab_SphereTab>Spheres</CRO_InspectorTab_SphereTab>
+    <CRO_RadiantOrder_Ideal>Ideal</CRO_RadiantOrder_Ideal>
+    <Cosmere_Roshar_TabSpherePouch>spheres</Cosmere_Roshar_TabSpherePouch>
+    <CRO_LightweavingDecoy_Inspect>Illusory decoy made of woven light.</CRO_LightweavingDecoy_Inspect>
+    <CRO_LightweavingDecoy_CasterLabel>Created by {PAWN}</CRO_LightweavingDecoy_CasterLabel>
+    <CRO_LightweavingDecoy_TimeLeft>Fading in: {0}</CRO_LightweavingDecoy_TimeLeft>
+
+    <CRO_Highstorm_Span_Days>{0} days</CRO_Highstorm_Span_Days>
+    <CRO_Highstorm_Span_Hours>{0} hours</CRO_Highstorm_Span_Hours>
+    <CRO_Highstorm_Readout_Storm>Highstorm</CRO_Highstorm_Readout_Storm>
+    <CRO_Highstorm_Readout_Weeping>The Weeping</CRO_Highstorm_Readout_Weeping>
+    <CRO_Highstorm_Readout_Imminent>Stormwall Imminent</CRO_Highstorm_Readout_Imminent>
+    <CRO_Highstorm_Readout_Countdown>Highstorm: {0}</CRO_Highstorm_Readout_Countdown>
+    <CRO_Highstorm_Readout_AfterWeeping>Highstorm: {0}, past the Weeping</CRO_Highstorm_Readout_AfterWeeping>
+    <CRO_Highstorm_Tip_Storm>A highstorm rages across the land. The winds carry stones and debris from the east, scouring everything unsheltered.</CRO_Highstorm_Tip_Storm>
+    <CRO_Highstorm_Tip_Weeping>The Weeping has settled over the land. Constant light rain falls, but no highstorms will come until it passes.</CRO_Highstorm_Tip_Weeping>
+    <CRO_Highstorm_Tip_Imminent>The stormwall draws near. Those caught in the open will not survive.</CRO_Highstorm_Tip_Imminent>
+    <CRO_Highstorm_Tip_Countdown>The next highstorm will arrive in approximately {0}.\nHighstorms sweep from east to west, carrying debris with enough force to shatter bone. Seek shelter behind solid eastern walls.\nSeasonal intensity: {1}</CRO_Highstorm_Tip_Countdown>
+    <CRO_Highstorm_Tip_AfterWeeping>The Weeping falls before the next highstorm. The skies will weep for weeks, and no storm will cross them until it ends.\nThe next highstorm will arrive in approximately {0}.\nSeasonal intensity: {1}</CRO_Highstorm_Tip_AfterWeeping>
+
+    <!-- Gemheart expedition -->
+    <CRO_Gemheart_Title>Gemheart Expedition</CRO_Gemheart_Title>
+    <CRO_Gemheart_Blurb>Select {MIN} to {MAX} colonists for the plateau run. Stronger fighters and Radiants improve the odds.</CRO_Gemheart_Blurb>
+    <CRO_Gemheart_Selected>Selected: {COUNT} of {MAX}</CRO_Gemheart_Selected>
+    <CRO_Gemheart_Skills>Melee: {MELEE}  Shooting: {SHOOTING}</CRO_Gemheart_Skills>
+    <CRO_Gemheart_SkillsRadiant>Melee: {MELEE}  Shooting: {SHOOTING}  Radiant (Ideal {IDEAL})</CRO_Gemheart_SkillsRadiant>
+    <CRO_Gemheart_March>March</CRO_Gemheart_March>
+    <CRO_Gemheart_Cancel>Cancel</CRO_Gemheart_Cancel>
+
+    <!-- Radiant order dialogs -->
+    <CRO_RadiantOrder_Nav_Previous>Previous</CRO_RadiantOrder_Nav_Previous>
+    <CRO_RadiantOrder_Nav_Next>Next</CRO_RadiantOrder_Nav_Next>
+    <CRO_RadiantOrder_Status_Achieved>Sworn</CRO_RadiantOrder_Status_Achieved>
+    <CRO_RadiantOrder_Status_Current>Next</CRO_RadiantOrder_Status_Current>
+    <CRO_RadiantOrder_Status_Future>Unrevealed</CRO_RadiantOrder_Status_Future>
+    <CRO_RadiantOrder_Status_Blocked>Blocked</CRO_RadiantOrder_Status_Blocked>
+    <CRO_RadiantOrder_Ideal_Heading>{IDEAL} ({STATUS})</CRO_RadiantOrder_Ideal_Heading>
+    <CRO_RadiantOrder_Traits_Favorable>Favorable Traits</CRO_RadiantOrder_Traits_Favorable>
+    <CRO_RadiantOrder_Traits_FavorableEffect>1.25x progression speed</CRO_RadiantOrder_Traits_FavorableEffect>
+    <CRO_RadiantOrder_Traits_Incompatible>Incompatible Traits</CRO_RadiantOrder_Traits_Incompatible>
+    <CRO_RadiantOrder_Traits_IncompatibleEffect>Blocks progression at the Third Ideal</CRO_RadiantOrder_Traits_IncompatibleEffect>
+    <CRO_RadiantOrder_Traits_None>None</CRO_RadiantOrder_Traits_None>
+    <CRO_RadiantOrder_Traits_Unknown>Unknown</CRO_RadiantOrder_Traits_Unknown>
+    <CRO_RadiantOrder_Trait_Has>{PAWN} has this trait.</CRO_RadiantOrder_Trait_Has>
+    <CRO_RadiantOrder_Trait_Lacks>{PAWN} does not have this trait.</CRO_RadiantOrder_Trait_Lacks>
+    <CRO_RadiantOrder_Trait_Tooltip>{STATUS}\n\n{DESCRIPTION}</CRO_RadiantOrder_Trait_Tooltip>
+    <CRO_RadiantOrder_Info_Title>{PAWN} of the {ORDER}</CRO_RadiantOrder_Info_Title>
+    <CRO_RadiantOrder_Info_IdealOfOrder>{ORDINAL} Ideal of the {ORDER}</CRO_RadiantOrder_Info_IdealOfOrder>
+    <CRO_RadiantOrder_Info_ProgressLine>{RECORD}: {VALUE}</CRO_RadiantOrder_Info_ProgressLine>
+    <CRO_RadiantOrder_Close>Close</CRO_RadiantOrder_Close>
+
+    <!-- Neutral pronouns, used when a pawn has no gender -->
+    <CRO_Pronoun_They>they</CRO_Pronoun_They>
+    <CRO_Pronoun_Their>their</CRO_Pronoun_Their>
+    <CRO_Pronoun_Them>them</CRO_Pronoun_Them>
+
+    <!-- Fabrials -->
+    <CRO_Fabrial_NoGemAvailable>No suitable gem available</CRO_Fabrial_NoGemAvailable>
+    <CRO_Fabrial_ReplaceGem>Replace with {GEM}</CRO_Fabrial_ReplaceGem>
+    <CRO_Fabrial_RemoveGem>Remove gemstone</CRO_Fabrial_RemoveGem>
+    <CRO_Fabrial_SetFilters>Set gem filters</CRO_Fabrial_SetFilters>
+    <CRO_Fabrial_SetFiltersDesc>Choose which gems this fabrial accepts.</CRO_Fabrial_SetFiltersDesc>
+
+    <!-- Surgebinding abilities -->
+    <CRO_Lashing_FlyTo_Label>Fly To...</CRO_Lashing_FlyTo_Label>
+    <CRO_Lashing_FlyTo_Desc>Lash yourself and nearby allies to a destination on the world map, arriving instantly.</CRO_Lashing_FlyTo_Desc>
+    <CRO_Lashing_FlyHere>Fly to this location</CRO_Lashing_FlyHere>
+    <CRO_Portal_SelectDestination>Select portal destination</CRO_Portal_SelectDestination>
+    <CRO_Portal_OpenHere>Open portal to this location</CRO_Portal_OpenHere>
+    <CRO_Portal_Caravan_Label>Portal: {PAWN}</CRO_Portal_Caravan_Label>
+    <CRO_Portal_Caravan_Desc>Open a portal to move this caravan to another location instantly.</CRO_Portal_Caravan_Desc>
+    <CRO_World_OutOfBounds>Out of bounds</CRO_World_OutOfBounds>
+</LanguageData>

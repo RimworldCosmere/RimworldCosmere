@@ -1,0 +1,40 @@
+<Project>
+
+  <PropertyGroup>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- The tree sits at zero warnings, so a new one is a regression. Failing here is what
+         stops style drift arriving through a pull request nobody built. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- the RimWorks packages still ship net48 assemblies. they load through the runtime's
+         compatibility shim; drop this once those three retarget. -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+
+  <!-- untracked, so a machine can build against a version this repo does not name -->
+  <Import Project="Directory.Build.local.props" Condition="Exists('Directory.Build.local.props')" />
+
+  <PropertyGroup>
+    <GameRefsVersion Condition="'$(GameRefsVersion)' == ''">1.7</GameRefsVersion>
+    <GamecrateCache Condition="'$(GamecrateCache)' == '' And '$(XDG_CACHE_HOME)' != ''">$(XDG_CACHE_HOME)</GamecrateCache>
+    <GamecrateCache Condition="'$(GamecrateCache)' == ''">$([System.IO.Path]::Combine($([System.Environment]::GetFolderPath(SpecialFolder.UserProfile)), '.cache'))</GamecrateCache>
+    <GamecrateRefs Condition="'$(GamecrateRefs)' == '' And '$(GameManagedDir)' != ''">$(GameManagedDir)</GamecrateRefs>
+    <GamecrateRefs Condition="'$(GamecrateRefs)' == ''">$([System.IO.Path]::Combine($(GamecrateCache), 'gamecrate', 'refs', 'version', 'rimworld', '$(GameRefsVersion)'))</GamecrateRefs>
+    <HasGameRefs>false</HasGameRefs>
+    <HasGameRefs Condition="Exists('$(GamecrateRefs)/Assembly-CSharp.dll')">true</HasGameRefs>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="all" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.33.*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+</Project>

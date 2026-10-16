@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "documentInterfaces": false,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentPrivateFields": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "systemUsingDirectivesFirst": true
+    },
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": false
+    },
+    "namingRules": {
+      "tupleElementNameCasing": "camelCase",
+      "includeInferredTupleElementNames": false
+    }
+  }
+}

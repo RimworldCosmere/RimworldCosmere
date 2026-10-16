@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <BodyDef Name="Splinter">
+        <defName>Cosmere_Core_Body_Splinter</defName>
+        <label>splinter</label>
+        <corePart>
+            <def>Cosmere_Core_Part_SplinterBody</def>
+            <height>Top</height>
+            <depth>Outside</depth>
+            <coverage>1</coverage>
+        </corePart>
+    </BodyDef>
+    
+    <BodyPartDef>
+        <defName>Cosmere_Core_Part_SplinterBody</defName>
+        <label>body</label>
+        <hitPoints>100</hitPoints>
+        <frostbiteVulnerability>0.00001</frostbiteVulnerability>
+        <skinCovered>true</skinCovered>
+        <canScarify>false</canScarify>
+        <beautyRelated>false</beautyRelated>
+        <solid>false</solid>
+        <canSuggestAmputation>false</canSuggestAmputation>
+        <bleedRate>0</bleedRate>
+        <tags>
+            <li>SightSource</li>
+            <li>BloodPumpingSource</li>
+            <li>ConsciousnessSource</li>
+            <li>BreathingSource</li>
+            <li>MetabolismSource</li>
+            <li>ManipulationLimbCore</li>
+            <li>MovingLimbCore</li>
+        </tags>
+    </BodyPartDef>
+</Defs>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Tin</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Tin</hediff>
+        <stages>
+            <li>
+                <label>tin withdrawal (mild)</label>
+                <description>The world feels muffled without tin.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>tin withdrawal (moderate)</label>
+                <description>Everything is dull and distant. I need tin.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>tin withdrawal (severe)</label>
+                <description>I can barely see, barely hear. I'm suffocating in the silence.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Pewter</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Pewter</hediff>
+        <stages>
+            <li>
+                <label>pewter withdrawal (mild)</label>
+                <description>My body feels sluggish without pewter. Everything takes more effort.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>pewter withdrawal (moderate)</label>
+                <description>I can barely lift my arms. My body is betraying me without pewter.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>pewter withdrawal (severe)</label>
+                <description>Every step is agony. My bones grind and my muscles scream. I need pewter or I'll collapse.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Brass</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Brass</hediff>
+        <stages>
+            <li>
+                <label>brass withdrawal (mild)</label>
+                <description>Other people's emotions feel raw and unfiltered without brass.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>brass withdrawal (moderate)</label>
+                <description>I can't Soothe anyone. Their feelings crash against me and I can't push back.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>brass withdrawal (severe)</label>
+                <description>Every emotion around me is a storm I can't quiet. I'm drowning in feelings that aren't mine.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Zinc</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Zinc</hediff>
+        <stages>
+            <li>
+                <label>zinc withdrawal (mild)</label>
+                <description>Without zinc, everything feels flat and grey.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>zinc withdrawal (moderate)</label>
+                <description>I feel nothing. No anger, no joy. Just hollow numbness where passion used to be.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>zinc withdrawal (severe)</label>
+                <description>I am empty. The fire is gone. I'd Riot my own heart if I could, just to feel something again.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Copper</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Copper</hediff>
+        <stages>
+            <li>
+                <label>copper withdrawal (mild)</label>
+                <description>My thoughts feel exposed without the coppercloud. Hard to concentrate.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>copper withdrawal (moderate)</label>
+                <description>I can't hold a thought straight. My mind wanders and scatters like mist.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>copper withdrawal (severe)</label>
+                <description>My mind is naked and fragmented. Every thought slips away before I can grasp it.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Thought_AllomanticWithdrawal_Bronze</defName>
+        <workerClass>RimWorld.ThoughtWorker_Hediff</workerClass>
+        <hediff>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Bronze</hediff>
+        <stages>
+            <li>
+                <label>bronze withdrawal (mild)</label>
+                <description>The Allomantic pulses have gone quiet. The silence is unsettling.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <li>
+                <label>bronze withdrawal (moderate)</label>
+                <description>I used to feel every burn, every pulse. Now there's just a hollow ringing where awareness used to be.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+            <li>
+                <label>bronze withdrawal (severe)</label>
+                <description>The world is deaf to me. I know they're burning out there, but I can't sense any of it. The void is maddening.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

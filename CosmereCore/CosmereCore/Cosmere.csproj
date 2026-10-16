@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>CryptikLemur</Authors>
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutDir>..\Assemblies\</OutDir>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <PackageId>Cosmere</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyMetadata Include="BuildTime" Value="$([System.DateTime]::UtcNow.ToString('o'))"/>
+    </ItemGroup>
+
+    <!-- Tagged CI builds pass InformationalVersion from the tag. Everything else gets git describe. -->
+    <Target Name="StampGitDescribe" BeforeTargets="GetAssemblyVersion" Condition="'$(InformationalVersion)' == ''">
+        <Exec Command="git describe --tags --always" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low">
+            <Output TaskParameter="ConsoleOutput" PropertyName="InformationalVersion"/>
+        </Exec>
+    </Target>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
+    <!-- The optional quickstart assembly is part of this mod, split out only so a player
+         who does not run the dev tool never has to resolve it. -->
+    <ItemGroup>
+        <InternalsVisibleTo Include="Cosmere.Quickstarts"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="System.Linq"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="Cosmere.Core.Extension"/>
+        <!-- Deliberately shadows Verse.Log. Every log line goes through RimLogging. -->
+        <Using Include="RimWorks.RimLogging.Log" Alias="Log"/>
+        <Using Include="Cosmere.System.Scadrial.Extension"/>
+        <Using Include="Cosmere.System.Roshar.Extension"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Concord.Ref" Version="0.22.*"/>
+        <PackageReference Include="RimWorks.RimLogging" Version="2.*"/>
+        <PackageReference Include="RimWorks.Pickle.Ref" Version="4.*"/>
+        <PackageReference Include="Concord.Analyzers" Version="0.22.*" PrivateAssets="all"/>
+        <PackageReference Include="Concord.Generators" Version="0.22.*" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+
+        <Reference Include="$(GamecrateRefs)/*.dll" Condition="'$(HasGameRefs)' == 'true'"
+                   Exclude="$(GamecrateRefs)/System.*.dll;$(GamecrateRefs)/System.dll;$(GamecrateRefs)/Microsoft.*.dll;$(GamecrateRefs)/mscorlib.dll;$(GamecrateRefs)/netstandard.dll;$(GamecrateRefs)/WindowsBase.dll">
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+
+    <Target Name="RequireGameRefs" BeforeTargets="ResolveAssemblyReferences" Condition="'$(HasGameRefs)' != 'true'">
+        <Error Text="no rimworld $(GameRefsVersion) assemblies at $(GamecrateRefs). run: gamecrate steam build rimworld --beta version-$(GameRefsVersion)" />
+    </Target>
+
+</Project>

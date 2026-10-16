@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Cosmere.Pickle</AssemblyName>
+    <RootNamespace>Cosmere.Pickle</RootNamespace>
+    <!-- Pickle globs Pickle/Assemblies/*.dll, top directory only. A step class in
+         CosmereCore/Assemblies is never scanned. -->
+    <OutDir>$(MSBuildProjectDirectory)/../CosmereCore/Pickle/Assemblies/</OutDir>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>embedded</DebugType>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Linq"/>
+    <Using Include="System.Collections.Generic"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- ExcludeAssets and PrivateAssets keep a second copy of each reference out of
+         Pickle/Assemblies, where the loader would pick the stub over the real one. -->
+    <PackageReference Include="RimWorks.Pickle.Ref" Version="4.*" ExcludeAssets="runtime" PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="../CosmereCore/CosmereCore/Cosmere.csproj" Private="False"/>
+  </ItemGroup>
+
+  <!-- RimWorld itself, from the same install paths Cosmere.csproj searches. -->
+  <ItemGroup>
+
+
+
+
+
+    <Reference Include="$(GamecrateRefs)/*.dll" Condition="'$(HasGameRefs)' == 'true'"
+               Exclude="$(GamecrateRefs)/System.*.dll;$(GamecrateRefs)/System.dll;$(GamecrateRefs)/Microsoft.*.dll;$(GamecrateRefs)/mscorlib.dll;$(GamecrateRefs)/netstandard.dll;$(GamecrateRefs)/WindowsBase.dll">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="RequireGameRefs" BeforeTargets="ResolveAssemblyReferences" Condition="'$(HasGameRefs)' != 'true'">
+    <Error Text="no rimworld $(GameRefsVersion) assemblies at $(GamecrateRefs). run: gamecrate steam build rimworld --beta version-$(GameRefsVersion)" />
+  </Target>
+
+</Project>

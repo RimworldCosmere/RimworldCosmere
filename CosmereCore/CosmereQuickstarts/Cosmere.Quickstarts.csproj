@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>CryptikLemur</Authors>
+        <AssemblyName>Cosmere.Quickstarts</AssemblyName>
+        <RootNamespace>Cosmere.Core.Quickstart</RootNamespace>
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <!-- Loaded only when the Quickstarts mod is active. See ../loadFolders.xml. -->
+        <OutDir>..\Quickstarts\Assemblies\</OutDir>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <Using Include="System.Linq"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="RimWorks.Quickstarts"/>
+        <Using Include="RimWorks.RimLogging.Log" Alias="Log"/>
+        <Using Include="Cosmere.Core.Extension"/>
+        <Using Include="Cosmere.System.Scadrial.Extension"/>
+        <Using Include="Cosmere.System.Roshar.Extension"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RimWorks.Quickstarts.Ref" Version="3.*"/>
+        <PackageReference Include="RimWorks.RimLogging" Version="2.*"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <ProjectReference Include="..\CosmereCore\Cosmere.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="$(GamecrateRefs)/*.dll" Condition="'$(HasGameRefs)' == 'true'"
+                   Exclude="$(GamecrateRefs)/System.*.dll;$(GamecrateRefs)/System.dll;$(GamecrateRefs)/Microsoft.*.dll;$(GamecrateRefs)/mscorlib.dll;$(GamecrateRefs)/netstandard.dll;$(GamecrateRefs)/WindowsBase.dll">
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+
+    <Target Name="RequireGameRefs" BeforeTargets="ResolveAssemblyReferences" Condition="'$(HasGameRefs)' != 'true'">
+        <Error Text="no rimworld $(GameRefsVersion) assemblies at $(GamecrateRefs). run: gamecrate steam build rimworld --beta version-$(GameRefsVersion)" />
+    </Target>
+
+</Project>

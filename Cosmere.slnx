@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="CosmereCore/CosmereCore/Cosmere.csproj" />
+  <Project Path="CosmereCore/CosmereQuickstarts/Cosmere.Quickstarts.csproj" />
+  <Project Path="Cosmere.Pickle/Cosmere.Pickle.csproj" />
+  <Project Path="Cosmere.Tests/Cosmere.Tests.csproj" />
+</Solution>

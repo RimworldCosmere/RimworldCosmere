@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Rigidized</defName>
+        <label>rigidized clothing</label>
+        <description>Every piece of clothing on this person has gone rigid with Tension. The fabric holds its shape against impacts that should tear through it, deflecting cuts and absorbing blows like something far sturdier than it looks. It still bends at the joints, barely, but a fist against the chest would feel like striking a wall.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Tension.Rigidized</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statOffsets>
+                    <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+                    <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

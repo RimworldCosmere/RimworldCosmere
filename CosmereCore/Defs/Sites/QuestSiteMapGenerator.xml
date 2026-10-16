@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Vanilla's Encounter generator, minus every step that scatters a prefab. A quest site
+       exists for the one thing the quest is about, and ancient ruins beside it read as the more
+       interesting find. Order values live on the GenStepDefs, so dropping entries here changes
+       nothing about how the rest sequence against a site part's own steps. -->
+  <MapGeneratorDef>
+    <defName>Cosmere_MapGenerator_QuestSite</defName>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Terrain</li>
+      <li>MutatorPostTerrain</li>
+      <li>Roads</li>
+      <li>RocksFromGrid_NoMinerals</li>
+      <li>RockChunks</li>
+      <li>MutatorCriticalStructures</li>
+      <li>MutatorNonCriticalStructures</li>
+      <li>SteamGeysers</li>
+      <li>FindPlayerStartSpot</li>
+      <li>ScenParts</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">Pollution</li>
+      <li>Plants</li>
+      <li>Snow</li>
+      <li>MutatorFinal</li>
+      <li>Animals</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <!-- MapParent.MapGeneratorDef reads def.mapGenerator and falls back to Encounter, so pointing
+       a site at a different generator means giving it a different WorldObjectDef. Everything
+       else comes from vanilla's Site. -->
+  <WorldObjectDef ParentName="Site">
+    <defName>Cosmere_WorldObject_QuestSite</defName>
+    <mapGenerator>Cosmere_MapGenerator_QuestSite</mapGenerator>
+  </WorldObjectDef>
+
+</Defs>

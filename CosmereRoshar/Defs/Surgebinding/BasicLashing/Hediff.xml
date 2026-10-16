@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Lashed</defName>
+        <label>gravitationally lashed</label>
+        <description>Gravity no longer pulls this person toward the ground. They move through the air as if falling sideways, the wind catching their clothing and trailing Stormlight behind them. The world blurs at these speeds. Something about the way they move feels wrong to watch, like the sky itself has claimed them.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Gravitation.Lashed</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MoveSpeed>1.80</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

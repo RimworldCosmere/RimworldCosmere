@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Blooming</defName>
+        <label>blooming</label>
+        <description>The Surge of Progression settles into this person like warmth from a fire. It is gentle, not forceful. Wounds close at their own pace, just faster than they should. The same energy that coaxes seeds to sprout works quietly beneath the skin, encouraging the body to remember what whole feels like.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Progression.Blooming</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>1.5</InjuryHealingFactor>
+                    <ImmunityGainSpeed>1.25</ImmunityGainSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

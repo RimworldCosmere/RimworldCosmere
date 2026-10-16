@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_ToggleShardplate</defName>
+        <label>summon Shardplate</label>
+        <description>Call the lesser spren that follow your bond and let them form into Shardplate around you. The armor materializes piece by piece, clicking into place with a sound like settling stone. It is lighter than it looks, and stronger than anything forged by mortal hands.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Shardplate</abilityClass>
+        <beuPerTick>0</beuPerTick>
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

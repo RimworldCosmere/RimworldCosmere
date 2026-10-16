@@ -1,0 +1,9 @@
+{
+  "name": "abrasion",
+  "description": "Abrasion allows the manipulation of friction between objects. A Surgebinder can reduce friction to slide across surfaces effortlessly or increase it to cling to walls or resist motion. It represents control over interaction and touch, the subtle influence of presence.",
+  "abilities": [
+    "Cosmere_Roshar_Ability_Slick",
+    "Cosmere_Roshar_Ability_Grip",
+    "Cosmere_Roshar_Ability_FrictionTrap"
+  ]
+}

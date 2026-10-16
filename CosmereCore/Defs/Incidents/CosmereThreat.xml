@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <IncidentDef>
+    <defName>Cosmere_Incident_Threat</defName>
+    <label>Investiture turns on you</label>
+    <!-- ThreatBig, not Misc: a Threat quest is something the storyteller should count against
+         the colony's danger budget, the way it counts a raid. -->
+    <category>ThreatBig</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>Cosmere.Core.Quest.IncidentWorker_CosmereThreat</workerClass>
+    <baseChance>1.2</baseChance>
+  </IncidentDef>
+</Defs>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <MemeGroupDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Investiture</defName>
+        <drawOffset>(0.5, 0.5)</drawOffset>
+    </MemeGroupDef>
+
+    <MemeGroupDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Society</defName>
+        <drawOffset>(0.5, 1.0)</drawOffset>
+    </MemeGroupDef>
+
+</Defs>

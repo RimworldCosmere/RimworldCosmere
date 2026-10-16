@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Blend, Cull, ZWrite and the queue tag used to sit in the .shader; 1.7 reads them here. -->
+    <ShaderDef>
+        <defName>Cosmere_CrystallineFacet</defName>
+        <shaderProgram>
+            <vertexShaderFileName>Cosmere_CrystallineFacet.vert.glsl</vertexShaderFileName>
+            <fragmentShaderFileName>Cosmere_CrystallineFacet.frag.glsl</fragmentShaderFileName>
+            <transparent>true</transparent>
+            <depthWrite>false</depthWrite>
+            <cullMode>None</cullMode>
+            <renderQueue>3000</renderQueue>
+        </shaderProgram>
+    </ShaderDef>
+
+    <ShaderDef>
+        <defName>Cosmere_FlowingParticleStream</defName>
+        <shaderProgram>
+            <fragmentShaderFileName>Cosmere_FlowingParticleStream.frag.glsl</fragmentShaderFileName>
+            <transparent>true</transparent>
+            <depthWrite>false</depthWrite>
+            <cullMode>None</cullMode>
+            <renderQueue>3150</renderQueue>
+        </shaderProgram>
+    </ShaderDef>
+
+</Defs>

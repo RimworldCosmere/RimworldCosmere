@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_PitsBroken</defName>
+    <label>the Pits are broken</label>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <durationDays>60</durationDays>
+    <stages>
+      <li>
+        <label>the Pits are broken</label>
+        <description>A thousand years of skaa went into that ground and never came out. We walked in, took the crop, and walked out again. Whatever else the Lord Ruler still holds, he does not hold the Pits.</description>
+        <baseMoodEffect>20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

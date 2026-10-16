@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_GravitationallyShielded</defName>
+        <label>gravitationally shielded</label>
+        <description>Gravity bends around this person in ways that make the eyes ache. Projectiles curve away before impact. Blades glance off at angles that make no physical sense, as if something invisible is nudging them aside at the last moment. The air itself feels heavier here, thick with the pull of forces that should not exist.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Gravitation.GravitationallyShielded</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statOffsets>
+                    <MeleeDodgeChance>0.15</MeleeDodgeChance>
+                </statOffsets>
+                <statFactors>
+                    <IncomingDamageFactor>0.85</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

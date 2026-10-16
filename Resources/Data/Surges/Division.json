@@ -1,0 +1,9 @@
+{
+  "name": "division",
+  "description": "Division grants the ability to break down matter at the molecular level, decaying and disintegrating substances with a touch. This destructive power symbolizes entropy, corrosion, and the inevitable dissolution of all things, both physical and spiritual.",
+  "abilities": [
+    "Cosmere_Roshar_Ability_EntropicAura",
+    "Cosmere_Roshar_Ability_DecayTouch",
+    "Cosmere_Roshar_Ability_Disintegrate"
+  ]
+}

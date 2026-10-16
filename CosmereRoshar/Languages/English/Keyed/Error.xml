@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CR_Error_Example>Example Error</CR_Error_Example>
+    <CRO_Surgebinding_HonorNotPresent>Honor is not present.</CRO_Surgebinding_HonorNotPresent>
+    <CRO_Radiant_Requires_Honor>Surgebinding requires the Honor shard, which is not enabled in this game. Start a scenario that includes Honor.</CRO_Radiant_Requires_Honor>
+
+    <CRO_Gemheart_NeedMore>Select at least {MIN} colonists before the expedition can march.</CRO_Gemheart_NeedMore>
+    <CRO_RadiantOrder_BondsmithCapReached>Honor sustains no more than {MAX} Bondsmiths. That number has been reached.</CRO_RadiantOrder_BondsmithCapReached>
+    <CRO_Surgebinding_NotEnoughStormlight>Not enough Stormlight.</CRO_Surgebinding_NotEnoughStormlight>
+    <CRO_Soulcast_BondedSpren>A bonded spren cannot be Soulcast.</CRO_Soulcast_BondedSpren>
+    <CRO_SprenContainer_SelectPawn>Select a pawn first.</CRO_SprenContainer_SelectPawn>
+</LanguageData>

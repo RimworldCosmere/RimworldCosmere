@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Slick</defName>
+        <label>Slick</label>
+        <description>Strip the friction from your body. Blades skid across your skin without catching. Hands that try to grab you find nothing to hold. You move like something poured across the ground, faster than anyone should be, every surface as slick as oiled glass beneath your feet.\n\nCannot be active at the same time as Grip.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Abrasion.Slick</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Slicked</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

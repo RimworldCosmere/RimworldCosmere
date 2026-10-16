@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Survivor Priest: single leader of the Church -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_SurvivorPriest</defName>
+        <label>survivor priest</label>
+        <description>Chief preacher of the Survivor's Church. They bear the scars of Kelsier's memory and carry his gospel of defiance into a world that still needs to be saved.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.5</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Preacher: multi role, itinerant teachers of the Survivor's gospel -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_SurvivorPreacher</defName>
+        <label>preacher</label>
+        <description>A travelling preacher of the Survivor's word. They remind the faithful that Kelsier stood against the Lord Ruler and won, and that hope is a weapon sharper than any blade.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>5</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>4</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.15</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>Reassure</li>
+            <li>ConversionRitual</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

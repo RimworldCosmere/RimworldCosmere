@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Queue 2401 and the flipTextureST/cull/depth set all match vanilla Snow, which this sits with.
+         No slash anywhere, so defName, shaderPath and the filename stem are all one string. -->
+    <ShaderDef>
+        <defName>Cosmere_AshGround</defName>
+        <shaderProgram>
+            <!-- Core's own vert, the one vanilla Snow uses. Gives vColor plus object-space XZ. -->
+            <vertexShaderFileName>MapWorldUV.vert.glsl</vertexShaderFileName>
+            <fragmentShaderFileName>Cosmere_AshGround.frag.glsl</fragmentShaderFileName>
+            <useTexture>false</useTexture>
+            <flipTextureST>false</flipTextureST>
+            <transparent>true</transparent>
+            <depthWrite>false</depthWrite>
+            <cullMode>None</cullMode>
+            <renderQueue>2401</renderQueue>
+        </shaderProgram>
+    </ShaderDef>
+
+</Defs>

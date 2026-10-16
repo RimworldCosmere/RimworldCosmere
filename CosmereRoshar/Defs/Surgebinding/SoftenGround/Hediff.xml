@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_SoftenedGround</defName>
+        <label>mired</label>
+        <description>The ground under this person's feet has gone soft. Each step sinks ankle-deep into earth that should be solid, and pulling free takes more effort than it should. The Surge of Cohesion has turned the terrain itself against them. Running is out of the question.</description>
+        <isBad>true</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>180~180</disappearsAfterTicks>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>0.35</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

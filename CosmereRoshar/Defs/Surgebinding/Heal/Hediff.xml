@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Heal</defName>
+        <label>Radiant Healing</label>
+        <description>Stormlight threads through this person's body like veins of liquid fire, mending what it touches. Wounds close visibly, the flesh knitting together as if remembering what it was supposed to be. Bruises yellow and fade in moments. The healing is fast, almost violent in its urgency, and it consumes Stormlight with every heartbeat.\n\nThe body fights harder. Pain recedes. But the light is always hungry for more.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Heal</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>3</InjuryHealingFactor>
+                    <ImmunityGainSpeed>3</ImmunityGainSpeed>
+                    <PainShockThreshold>3</PainShockThreshold>
+                    <ToxicResistance>3</ToxicResistance>
+                    <ToxicEnvironmentResistance>3</ToxicEnvironmentResistance>
+                    <IncomingDamageFactor>0.75</IncomingDamageFactor>
+                    <StaggerDurationFactor>0.75</StaggerDurationFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

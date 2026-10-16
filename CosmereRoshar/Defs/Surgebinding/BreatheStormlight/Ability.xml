@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_BreatheStormlight</defName>
+        <label>Breathe Stormlight</label>
+        <description>Draw in Stormlight from nearby spheres, infused gems, or the charged air itself. The light comes eagerly, pulled into the lungs like a breath of something alive. It fills you, settles into your bones, and the world sharpens. Wounds begin to close. Your limbs feel stronger than they should.\n\nThis is the foundation of all Surgebinding. Without Stormlight, a Radiant is just a person with oaths to keep.</description>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
+        <hediff>Cosmere_Roshar_Hediff_BreatheStormlight</hediff>
+        <beuPerTick>0</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

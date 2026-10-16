@@ -1,28 +1,47 @@
-## Support & Feedback
+![Recommendations](../.github/assets/fallback/recommendations.png)
 
-Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
-experience for everyone in the
-Cosmere.
+Mods that pair well with the Cosmere mods:
+
+* [Nice Bill Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3520130671)
+    * Rusts! One of the best looking UI mods this game has. Makes the Bills UI far easier to work with
+* [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
+    * Storms! Another one from Andromeda. Does the same for the Health tab
+* [Gotta Go Fast](https://steamcommunity.com/sharedfiles/filedetails/?id=3712112476)
+    * Speeds up pathfinding for pawns that move faster than normal, or that fly
+* [BetterWeight](https://steamcommunity.com/sharedfiles/filedetails/?id=2221387317)
+    * Gives buildings real weights based on what they are built from. Steel Pushing and Iron Pulling on Scadrial
+      feel right with it installed. Heavy steel walls resist a Coinshot's Push. Light wooden furniture goes flying
+
+​
+
+![Support &amp; Feedback](../.github/assets/fallback/support.png)
+
+Bugs and suggestions go in either place below. We read both.
 
 - [GitHub Source](https://github.com/RimworldCosmere/RimworldCosmere)
 - [Discord Community](https://discord.gg/jTcrKfXdYU)
 
-## Recommended Mods
+​
 
-Here are a couple recommended mods that work really well with the Cosmere mods:
+![Support Us or Follow Along](../.github/assets/fallback/support us.png)
 
-* [Nice Bill Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3520130671)
-    * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
-* [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
-    * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+Follow development at https://rimworldcosmere.com
 
-## Attributions
+Donations go toward art and other commissions:
 
-* Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
-* Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art
-* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially `aelanna`) for helping with
-  random questions
+* Recurring: https://rimworldcosmere.com/#/portal/
+* One time: https://rimworldcosmere.com/#/portal/support
 
-## Support Us
+​
 
-https://rimworldcosmere.com
+![Attributions](../.github/assets/fallback/attributions.png)
+
+Thank you to:
+
+* Sir Van ('sir_vann' on Discord) for in-game art
+* Immortalus ('_immortalus' on Discord) for the mod previews and a lot more art
+* Everyone in the RimWorld Discord #mod-development channel, 'aelanna' especially, for fielding a pile of odd
+  questions
+
+***This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
+Entertainment, LLC or Ludeon Studios.***

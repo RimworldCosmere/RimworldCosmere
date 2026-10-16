@@ -1,0 +1,247 @@
+﻿using Cosmere.Core.Listing;
+using Cosmere.Core.UI;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+
+namespace Cosmere.Core.Window;
+
+[StaticConstructorOnStartup]
+public abstract class BaseWindow : Verse.Window {
+    protected static readonly Color DefaultBodyTextColor = new Color(.80f, .80f, .80f);
+    protected static readonly Color DefaultHeaderTextColor = new Color(.95f, .95f, .95f);
+    protected static readonly Texture2D Border = ContentFinder<Texture2D>.Get("Window/Border");
+    protected static readonly Texture2D Background = ContentFinder<Texture2D>.Get("Window/BackgroundWide");
+    protected static readonly Texture2D DarkBackground = ContentFinder<Texture2D>.Get("Window/BackgroundDarker");
+    protected static readonly Texture2D UniformBackground = ContentFinder<Texture2D>.Get("Window/BackgroundTall");
+    protected static readonly Texture2D HeaderBar = ContentFinder<Texture2D>.Get("Window/HeaderLine");
+    protected static readonly Texture2D HeaderBackground = Widgets.MenuSectionBGFillColor.ToSolidColorTexture();
+    protected static readonly Texture2D BodyBackground = DarkBackground;
+    protected static readonly Texture2D FooterBackground = HeaderBackground;
+
+    private static readonly Texture2D
+        InvertedDropShadow = ContentFinder<Texture2D>.Get("UI/Widgets/InvertedDropShadow");
+
+    protected static readonly Color BodyColor = Widgets.WindowBGFillColor;
+    protected static readonly Color FooterColor = Widgets.MenuSectionBGFillColor;
+    protected static readonly Color BorderColor = new Color(.79f, .65f, .37f);
+    protected static readonly Color InactiveCTAColor = new Color(1f, 1f, 1f, .35f);
+    protected static readonly Color InactiveCTALabelColor = new Color(.72f, .70f, .66f, .6f);
+    protected static readonly Texture2D BorderTexture = BorderColor.ToSolidColorTexture();
+    protected static readonly Texture2D CloseButton = ContentFinder<Texture2D>.Get("UI/Buttons/Abandon");
+    protected static readonly float DropShadowContract = -7f;
+    protected static readonly float DropShadowX = 1f;
+    protected static readonly float DropShadowY = 1f;
+
+    public static readonly Texture2D CTAButtonBGAtlas = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBG");
+    public static readonly Texture2D CTAButtonBGAtlasMouseover = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGMouseover");
+    public static readonly Texture2D CTAButtonBGAtlasClick = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGClick");
+
+    private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
+
+    protected BaseWindow() {
+        forcePause = true;
+        draggable = true;
+        doWindowBackground = false;
+    }
+
+    protected BaseWindow(Vector2 initialWindowSize) : this() {
+        this.InitialWindowSize = initialWindowSize;
+    }
+
+    protected virtual Vector2 InitialWindowSize { get; }
+
+    protected virtual bool HasFooter { get; set; } = false;
+
+    protected virtual bool HasBorder { get; set; } = false;
+
+    protected virtual float HeaderHeight => Spacing.Get(6);
+
+    protected virtual float FooterHeight => HasFooter ? Spacing.Get(4) : 0;
+
+    protected virtual float FooterButtonHeight => Spacing.Get(2);
+
+    protected virtual float BodyHeight => InitialWindowSize.y - HeaderHeight - FooterHeight;
+
+    protected virtual Padding Padding => Padding.Spacing;
+
+    protected virtual float BodyPadding => Spacing.Get(scrollViewStatus.scrollVisibile ? 2 : 4);
+
+    protected virtual bool DrawHeaderSeparator => true;
+
+    protected virtual bool DrawFooterSeparator => true;
+
+    /// <summary>
+    ///     Gets how far the body is pulled in from the window edge, so a scrollbar rides inside the
+    ///     frame rather than on top of the border.
+    /// </summary>
+    protected virtual float BodyInset => 0f;
+
+    protected override float Margin => HasBorder ? 1 : 0;
+
+    public sealed override Vector2 InitialSize => InitialWindowSize;
+
+    protected virtual TextAnchor HeaderAlignment => TextAnchor.MiddleCenter;
+
+    protected virtual Color HeaderTextColor => DefaultHeaderTextColor;
+
+    protected virtual Color BodyTextColor => DefaultBodyTextColor;
+
+    protected virtual GameFont TitleFont => GameFont.Medium;
+
+    protected virtual GameFont SubtitleFont => GameFont.Small;
+
+    protected virtual GameFont BodyFont => GameFont.Small;
+
+    protected abstract TaggedString GetTitle();
+
+    protected virtual TaggedString? GetSubtitle() {
+        return null;
+    }
+
+    protected virtual void DrawHeader(Rect rect) {
+        Rect innerRect = rect.ContractedBy(Padding);
+        FoundationListing listing = new FoundationListing { maxOneColumn = true };
+        listing.Begin(innerRect);
+
+        using (new TextBlock(HeaderAlignment, HeaderTextColor)) {
+            DrawHeaderContent(listing, innerRect);
+        }
+
+        listing.End();
+    }
+
+    protected virtual void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
+        using (new TextBlock(TitleFont)) listing.Label($"<b>{GetTitle()}</b>");
+
+        TaggedString? subtitle = GetSubtitle();
+        if (subtitle == null) return;
+
+        using (new TextBlock(SubtitleFont)) listing.Label(subtitle);
+    }
+
+    protected virtual float DrawBody(Rect rect) {
+        if (scrollViewStatus.scrollVisibile) {
+            rect = new Rect(rect.x + Spacing.Get(1.25), rect.y, rect.width - Spacing.Get(1.25), rect.height);
+        }
+
+        FoundationListing listing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
+
+        listing.Begin(rect);
+        float originalWidth = listing.ColumnWidth;
+        listing.ColumnWidth -= BodyPadding * 2;
+        listing.Indent(BodyPadding);
+        DrawBodyContent(listing);
+        listing.Outdent(BodyPadding);
+        listing.ColumnWidth = originalWidth;
+        listing.End();
+        listing.Gap();
+
+        return listing.CurHeight;
+    }
+
+    protected abstract void DrawBodyContent(FoundationListing listing);
+
+    protected virtual void DrawFooter(Rect rect) { }
+
+    protected virtual bool CloseButtonFor(Rect rectToClose) {
+        float buttonPadding = Spacing.Get(.5);
+        float imageWidth = Spacing.Get(1.5);
+
+        return Widgets.ButtonImage(
+            new Rect(
+                rectToClose.x + rectToClose.width - buttonPadding - imageWidth,
+                rectToClose.y + buttonPadding,
+                imageWidth,
+                imageWidth
+            ),
+            CloseButton
+        );
+    }
+
+    public override void DoWindowContents(Rect inRect) {
+        if (HasBorder) Widgets.DrawBox(inRect, (int)Margin, BorderTexture);
+        GUI.DrawTexture(inRect.ContractedBy(Margin), BodyBackground, ScaleMode.ScaleAndCrop);
+
+        Rect headerRect = new Rect(inRect.x, inRect.y, inRect.width, HeaderHeight);
+        Rect bodyRect = new Rect(
+            inRect.x + BodyInset,
+            inRect.y + HeaderHeight,
+            inRect.width - BodyInset * 2f,
+            BodyHeight
+        );
+        Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - FooterHeight, inRect.width, FooterHeight);
+
+        GUI.DrawTexture(headerRect.ContractedBy(Margin), HeaderBackground);
+        DrawHeader(headerRect);
+        if (DrawHeaderSeparator) DrawBorder(headerRect, 3, bottom: true);
+
+        if (CloseButtonFor(inRect.AtZero())) {
+            Close();
+        }
+
+        using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {
+            using (new TextBlock(BodyFont)) sv.Height = DrawBody(sv.rect);
+        }
+
+        if (HasFooter) {
+            GUI.DrawTexture(footerRect.ContractedBy(Margin), FooterBackground);
+            DrawFooter(footerRect);
+            if (DrawFooterSeparator) DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
+        }
+    }
+
+    protected virtual void DrawBorder(
+        Rect rect,
+        int thickness,
+        Texture2D? borderTexture = null,
+        bool top = false,
+        bool right = false,
+        bool bottom = false,
+        bool left = false
+    ) {
+        if (thickness <= 0) return;
+        Texture2D texture = borderTexture ?? BorderTexture;
+
+        if (top) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, rect.width, thickness), thickness, texture);
+        if (right) {
+            Widgets.DrawBox(new Rect(rect.xMax - thickness, rect.yMin, thickness, rect.height), thickness, texture);
+        }
+
+        if (bottom) {
+            Widgets.DrawBox(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), thickness, texture);
+        }
+
+        if (left) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, thickness, rect.height), thickness, texture);
+    }
+
+    protected static void DrawDropShadow(Rect rect) {
+        Rect rect1 = rect.ContractedBy(DropShadowContract);
+        rect1.x += DropShadowX;
+        rect1.y += DropShadowY;
+        Widgets.DrawAtlas(rect1, InvertedDropShadow);
+    }
+
+    public virtual bool CTAButtonText(Rect rect, string label, bool active = true) {
+        Texture2D atlas = CTAButtonBGAtlas;
+        if (active && Mouse.IsOver(rect)) {
+            atlas = CTAButtonBGAtlasMouseover;
+            if (Input.GetMouseButton(0)) {
+                atlas = CTAButtonBGAtlasClick;
+            }
+        }
+
+        using (new TextBlock(active ? Color.white : InactiveCTAColor)) {
+            Widgets.DrawAtlas(rect, atlas);
+        }
+
+        if (active) MouseoverSounds.DoRegion(rect);
+
+        Color labelColor = active ? Color.white : InactiveCTALabelColor;
+        using (new TextBlock(null, TextAnchor.MiddleCenter, rect.height >= Text.LineHeight * 2f, labelColor)) {
+            Widgets.Label(rect, label);
+        }
+
+        return active && Widgets.ButtonInvisible(rect, false);
+    }
+}

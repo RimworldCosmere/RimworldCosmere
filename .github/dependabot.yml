@@ -9,3 +9,22 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+
+  # The release tooling. Left off the list until now, which is how the npm tree
+  # collected 69 alerts with no update PR ever opening.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Nothing watched the workflow actions before, so a pinned major tag only moved when
+  # someone happened to look. chore is absent from releaseRules, so these cut no release.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"

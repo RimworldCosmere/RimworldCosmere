@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_ToggleShardblade</defName>
+        <label>summon Shardblade</label>
+        <description>Will your spren into blade form. For a Radiant of the Third Ideal or higher, the weapon appears in a flash of mist, solid and familiar in the hand. Dead Shardblades are different. They require ten heartbeats, each one heavy with intention, before the blade will answer.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Shardblade</abilityClass>
+        <beuPerTick>0</beuPerTick>
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

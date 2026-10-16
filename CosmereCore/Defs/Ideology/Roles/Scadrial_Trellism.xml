@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Trellist Prelate: single leader -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_TrellistPrelate</defName>
+        <label>trellist prelate</label>
+        <description>High priest of Trell, conductor of the Set's quieter work. The prelate weaves whispered orders into doctrine and trades truth for power without flinching.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                    <Intellectual>5</Intellectual>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>NegotiationAbility</statDef>
+                <modifier>0.3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Trial</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Cultist: multi combat role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_TrellistCultist</defName>
+        <label>cultist</label>
+        <description>An armed devotee of Trell, sent to silence enemies of the Set. Cultists fight without conscience because Trell alone judges what is mercy.</description>
+        <iconPath>UI/Roles/SpecialistMelee</iconPath>
+        <nameMaker>NamerRoleBrawler</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>4</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Melee>6</Melee>
+                    <Shooting>6</Shooting>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeHitChance</statDef>
+                <modifier>4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ShootingAccuracyPawn</statDef>
+                <modifier>4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>PainShockThreshold</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>BerserkTrance</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Violent</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+    <!-- Saboteur: multi social/infiltration role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_TrellistSaboteur</defName>
+        <label>saboteur</label>
+        <description>A deep-cover servant of the Set, moving unseen through rival factions. The saboteur's faith is measured in the secrets they carry and the plans they unmake.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>700</displayOrderInImpact>
+        <defaultSelectionWeight>0.75</defaultSelectionWeight>
+        <maxCount>3</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                    <Intellectual>5</Intellectual>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>NegotiationAbility</statDef>
+                <modifier>0.25</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>TradePriceImprovement</statDef>
+                <modifier>0.15</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MoveSpeed</statDef>
+                <modifier>0.3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Counsel</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

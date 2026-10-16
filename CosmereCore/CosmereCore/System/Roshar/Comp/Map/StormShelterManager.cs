@@ -1,0 +1,168 @@
+using System;
+using RimWorld;
+using Verse;
+using Verse.AI;
+
+namespace Cosmere.System.Roshar.Comp.Map;
+
+public static class StormShelterManager {
+    private static readonly Dictionary<IntVec3, int> CellToRegionIndex
+        = [];
+
+    private static readonly List<RegionInfo> Regions
+        = [];
+
+    private static bool cacheStale = true;
+
+    /// <summary>
+    ///     Rebuilds once per storm. An empty Regions list cannot stand in for this: a colony with
+    ///     no roof at all is a legitimately empty cache, and it would re-scan the map every tick.
+    /// </summary>
+    public static void EnsureShelterCache(Verse.Map map) {
+        if (!cacheStale) return;
+        RebuildShelterCache(map);
+    }
+
+    public static void RebuildShelterCache(Verse.Map map) {
+        CellToRegionIndex.Clear();
+        Regions.Clear();
+
+        foreach (IntVec3 cell in map.AllCells) {
+            if (!cell.Roofed(map)) continue;
+            if (CellToRegionIndex.ContainsKey(cell)) continue;
+
+            Building b = cell.GetEdifice(map);
+            if (IsWallOrClosedDoor(b)) continue;
+
+            HashSet<IntVec3> newRegionCells = FloodFillRoofedArea(cell, map);
+
+            bool isShelter = IsEastSealedShelter(newRegionCells, map);
+            RegionInfo newRegion = new RegionInfo {
+                cells = newRegionCells,
+                isShelter = isShelter,
+            };
+            Regions.Add(newRegion);
+
+            int regionIndex = Regions.Count - 1;
+            foreach (IntVec3 c in newRegionCells) {
+                CellToRegionIndex[c] = regionIndex;
+            }
+        }
+
+        cacheStale = false;
+    }
+
+    public static bool IsInsideShelter(IntVec3 pos) {
+        if (!CellToRegionIndex.TryGetValue(pos, out int idx)) return false;
+        return Regions[idx].isShelter;
+    }
+
+    public static bool IsProtectedByShelter(IntVec3 pos, Verse.Map map) {
+        if (IsInsideShelter(pos)) return true;
+        for (int i = 0; i < GenAdj.CardinalDirections.Length; i++) {
+            IntVec3 adj = pos + GenAdj.CardinalDirections[i];
+            if (!adj.InBounds(map)) continue;
+            if (IsInsideShelter(adj)) return true;
+        }
+
+        return false;
+    }
+
+    public static IntVec3 FindNearestShelterCell(IntVec3 from, Verse.Map map, TraverseParms traverseParms) {
+        if (IsInsideShelter(from)) return from;
+
+        if (Regions.Count == 0) RebuildShelterCache(map);
+
+        int cellCount = GenRadial.NumCellsInRadius(Math.Min(120f, GenRadial.MaxRadialPatternRadius - 1f));
+        for (int i = 0; i < cellCount; i++) {
+            IntVec3 cell = from + GenRadial.RadialPattern[i];
+            if (!cell.InBounds(map)) continue;
+            if (!IsInsideShelter(cell)) continue;
+            if (!cell.Standable(map)) continue;
+            if (!map.reachability.CanReach(from, cell, PathEndMode.OnCell, traverseParms)) continue;
+            return cell;
+        }
+
+        return IntVec3.Invalid;
+    }
+
+    public static void ClearCache() {
+        CellToRegionIndex.Clear();
+        Regions.Clear();
+        cacheStale = true;
+    }
+
+    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Verse.Map map) {
+        HashSet<IntVec3> visited = [];
+        Queue<IntVec3> queue = new Queue<IntVec3>();
+
+        if (!start.InBounds(map) || !start.Roofed(map)) return visited;
+        if (IsWallOrClosedDoor(start.GetEdifice(map))) return visited;
+
+        visited.Add(start);
+        queue.Enqueue(start);
+
+        while (queue.Count > 0) {
+            EnqueueRoofedNeighbors(queue.Dequeue(), map, visited, queue);
+        }
+
+        return visited;
+    }
+
+    private static void EnqueueRoofedNeighbors(
+        IntVec3 current,
+        Verse.Map map,
+        HashSet<IntVec3> visited,
+        Queue<IntVec3> queue
+    ) {
+        foreach (IntVec3 dir in GenAdj.CardinalDirections) {
+            IntVec3 next = current + dir;
+
+            if (!next.InBounds(map)) continue;
+            if (visited.Contains(next)) continue;
+            if (!next.Roofed(map)) continue;
+            if (IsWallOrClosedDoor(next.GetEdifice(map))) continue;
+
+            visited.Add(next);
+            queue.Enqueue(next);
+        }
+    }
+
+    private static bool IsWallOrClosedDoor(Building b) {
+        if (b == null) return false;
+        if (b.def.passability == Traversability.Impassable) return true;
+        if (b.def.IsDoor && b is Building_Door door && !door.Open) return true;
+        return false;
+    }
+
+    private static bool IsEastSealedShelter(HashSet<IntVec3> area, Verse.Map map) {
+        if (area == null || area.Count == 0) return false;
+
+        int maxX = int.MinValue;
+        foreach (IntVec3 p in area) {
+            if (p.x > maxX) maxX = p.x;
+        }
+
+        foreach (IntVec3 pos in area) {
+            if (pos.x != maxX) continue;
+            if (!IsEastSideBlocked(pos, map)) return false;
+        }
+
+        return true;
+    }
+
+    private static bool IsEastSideBlocked(IntVec3 pos, Verse.Map map) {
+        IntVec3 east = pos + IntVec3.East;
+        if (!east.InBounds(map)) return true;
+
+        Building eastBuilding = east.GetEdifice(map);
+        if (eastBuilding == null) return false;
+        if (eastBuilding.def.passability == Traversability.Impassable) return true;
+        return eastBuilding.def.IsDoor;
+    }
+
+    private struct RegionInfo {
+        public HashSet<IntVec3> cells;
+        public bool isShelter;
+    }
+}

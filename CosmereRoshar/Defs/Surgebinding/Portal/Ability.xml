@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Portal</defName>
+        <label>Portal</label>
+        <description>Tear a hole between two points in the world. The first portal opens at your feet with a sound like ripping cloth, and the second appears wherever you choose. Step through one and you emerge from the other, the journey between them taking no time at all. The portals hold as long as you feed them Stormlight, a constant drain that keeps the way open.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Transportation.Portal</abilityClass>
+        <beuPerTick>4</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+
+    <ThingDef>
+        <defName>Cosmere_Roshar_Thing_SurgePortal</defName>
+        <label>surge portal</label>
+        <description>A shimmering tear in the air where the Surge of Transportation has bent space. Step through and you arrive at the linked portal on the other side, the journey between them lasting less than a heartbeat.</description>
+        <thingClass>Cosmere.System.Roshar.Surgebinding.Thing.SurgePortal</thingClass>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <useHitPoints>false</useHitPoints>
+        <altitudeLayer>FloorEmplacement</altitudeLayer>
+        <statBases>
+            <Flammability>0</Flammability>
+        </statBases>
+        <size>(1,1)</size>
+        <passability>Standable</passability>
+        <graphicData>
+            <texPath>Things/Building/Misc/PartySpot</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+        </graphicData>
+        <building>
+            <isEdifice>false</isEdifice>
+        </building>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,236 @@
+using System;
+using Cosmere.Core.UI.Dock;
+using Cosmere.Core.UI.Skin;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.Core.UI.Radial;
+
+public static class RadialRingRenderer {
+    public static void DrawSystemRing(
+        Vector2 center,
+        IReadOnlyList<RadialSystem> systems,
+        int hoveredIndex
+    ) {
+        DrawRing(
+            center,
+            systems.Count,
+            hoveredIndex,
+            i => (systems[i].Label, systems[i].Icon, null, null, false, false, false, false, null, false)
+        );
+    }
+
+    public static void DrawSubsectionRing(
+        Vector2 center,
+        RadialSystem system,
+        int hoveredIndex
+    ) {
+        DrawRing(
+            center,
+            system.Subsections.Count,
+            hoveredIndex,
+            i => {
+                RadialSubsection subsection = system.Subsections[i];
+
+                // collapsed metal never reaches the ability ring, so lit state comes from its leaves.
+                bool anyActive = false;
+                bool anyFlaring = false;
+                for (int leafIndex = 0; leafIndex < subsection.Leaves.Count; leafIndex++) {
+                    anyActive |= subsection.Leaves[leafIndex].IsActive;
+                    anyFlaring |= subsection.Leaves[leafIndex].IsFlaring;
+                }
+
+                return (
+                    subsection.Label,
+                    subsection.Icon,
+                    subsection.AccentColor,
+                    (float?)null,
+                    anyActive,
+                    anyFlaring,
+                    false,
+                    false,
+                    (string?)null,
+                    false
+                );
+            }
+        );
+    }
+
+    public static void DrawAbilityRing(
+        Vector2 center,
+        RadialSubsection subsection,
+        ISystemSkin skin,
+        int hoveredIndex
+    ) {
+        DrawRing(
+            center,
+            subsection.Leaves.Count,
+            hoveredIndex,
+            i => {
+                RadialLeaf leaf = subsection.Leaves[i];
+                return (
+                    leaf.Label,
+                    leaf.Icon,
+                    skin.AccentColor,
+                    leaf.ReserveFraction,
+                    leaf.IsActive,
+                    leaf.IsFlaring,
+                    leaf.IsSustained,
+                    leaf.IsLocked,
+                    leaf.LockReason,
+                    leaf.HasInsufficientResources
+                );
+            }
+        );
+    }
+
+    private static void DrawRing(
+        Vector2 center,
+        int count,
+        int hoveredIndex,
+        Func<int, (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
+            bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources)> getAt
+    ) {
+        if (count <= 0) return;
+
+        float texDrawSize = RadialLayout.AbilityRingOuter * 2f;
+        Rect texRect = new Rect(center.x - texDrawSize / 2f, center.y - texDrawSize / 2f, texDrawSize, texDrawSize);
+
+        Color backingPrev = GUI.color;
+        GUI.color = new Color(0.16f, 0.175f, 0.205f, 0.97f);
+        GUI.DrawTexture(texRect, RadialWedgeTex.Backing());
+        GUI.color = backingPrev;
+
+        for (int i = 0; i < count; i++) {
+            (string label, Texture2D? icon, Color? tint, _, bool isActive, bool isFlaring,
+                    bool isSustained, bool isLocked, _, bool hasInsufficientResources) = getAt(i);
+
+            // locked or unaffordable wedges do not highlight on hover: that would invite a click that fails.
+            bool disabled = isLocked || hasInsufficientResources;
+            Color bg = WedgeFill(tint, isActive, i == hoveredIndex, disabled, isLocked);
+
+            Texture2D wedgeTex = RadialWedgeTex.Get(count, i);
+            Color prevColor = GUI.color;
+            if (isFlaring) {
+                GUI.color = new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f);
+                GUI.DrawTexture(texRect.ExpandedBy(5f), wedgeTex);
+            } else if (isActive) {
+                GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.3f);
+                GUI.DrawTexture(texRect.ExpandedBy(4f), wedgeTex);
+            }
+
+            GUI.color = bg;
+            GUI.DrawTexture(texRect, wedgeTex);
+
+            if (i == hoveredIndex && !disabled) {
+                GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.85f);
+                GUI.DrawTexture(texRect, RadialWedgeTex.InnerEdge(count, i));
+            }
+
+            GUI.color = prevColor;
+
+            Vector2 iconMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.IconBandRadius, center);
+            Rect iconRect = new Rect(iconMid.x - 16f, iconMid.y - 16f, 32f, 32f);
+            DrawWedgeIcon(iconRect, icon, disabled);
+            DrawWedgeBadges(iconRect, iconMid, isSustained, isLocked, hasInsufficientResources);
+
+            Vector2 labelMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.LabelBandRadius, center);
+            float labelWidth = RadialLayout.LabelFitWidthAt(
+                i,
+                count,
+                RadialLayout.LabelBandRadius,
+                RadialLayout.AbilityRingInner,
+                RadialLayout.AbilityRingOuter
+            ) - 8f;
+            bool flareArmed = i == hoveredIndex
+                && !disabled
+                && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+
+            // wrapped, not truncated: wedge is short on width but has height, and "Summon Sh..." tells nothing.
+            UIText.WrappedLabel(
+                labelMid,
+                labelWidth,
+                label,
+                GameFont.Tiny,
+                TextAnchor.MiddleCenter,
+                WedgeLabelColor(disabled, flareArmed, i == hoveredIndex)
+            );
+        }
+
+        // Every divider in one unrotated draw, laid over the fills.
+        Color sepPrev = GUI.color;
+        GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
+        GUI.DrawTexture(texRect, RadialWedgeTex.Separators(count));
+        GUI.color = sepPrev;
+    }
+
+    private static Color WedgeFill(Color? tint, bool isActive, bool hovered, bool disabled, bool isLocked) {
+        Color bg = tint.HasValue
+            ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
+            : new Color(0.16f, 0.175f, 0.205f);
+        bg.a = 0.97f;
+
+        // active metal keeps a warm fill so it reads as burning even off-hover; hover still wins over it.
+        if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
+        if (hovered && !disabled) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
+
+        if (!disabled) return bg;
+
+        // drained of colour, not just faded: washed-out reads as unavailable, translucent just looks tinted.
+        float grey = (bg.r + bg.g + bg.b) / 3f;
+        return new Color(
+            Mathf.Lerp(bg.r, grey, 0.8f) * 0.75f,
+            Mathf.Lerp(bg.g, grey, 0.8f) * 0.75f,
+            Mathf.Lerp(bg.b, grey, 0.8f) * 0.75f,
+            isLocked ? 0.45f : 0.7f
+        );
+    }
+
+    private static void DrawWedgeIcon(Rect iconRect, Texture2D? icon, bool disabled) {
+        if (icon == null) return;
+
+        Color originalGui = GUI.color;
+        GUI.color = new Color(0f, 0f, 0f, 0.45f);
+        GUI.DrawTexture(iconRect.ExpandedBy(5f), RadialWedgeTex.Disc());
+        GUI.color = disabled ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
+        GUI.DrawTexture(iconRect, icon);
+        GUI.color = originalGui;
+    }
+
+    /// <summary>
+    ///     The three marks that hang off an icon: the sustained dot, the unaffordable line and the
+    ///     lock cross.
+    /// </summary>
+    private static void DrawWedgeBadges(
+        Rect iconRect,
+        Vector2 iconMid,
+        bool isSustained,
+        bool isLocked,
+        bool hasInsufficientResources
+    ) {
+        if (isSustained) {
+            Rect dot = new Rect(iconRect.xMax + 2f, iconRect.y + 2f, 5f, 5f);
+            Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
+        }
+
+        // A bare "1%" under an icon reads as a chance or a progress bar. Say the actual problem.
+        if (!isLocked && hasInsufficientResources) {
+            Rect reasonRect = new Rect(iconMid.x - 45f, iconRect.yMax + 3f, 90f, Text.LineHeightOf(GameFont.Tiny));
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
+                Widgets.Label(reasonRect, "CC_Radial_CannotAfford".Translate());
+        }
+
+        if (isLocked) {
+            Rect lockRect = new Rect(iconMid.x - 5f, iconRect.yMax + 3f, 10f, Text.LineHeightOf(GameFont.Tiny));
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
+                Widgets.Label(lockRect, "x");
+        }
+    }
+
+    private static Color WedgeLabelColor(bool disabled, bool flareArmed, bool hovered) {
+        if (disabled) return new Color(0.36f, 0.42f, 0.46f);
+        if (flareArmed) return DockPalette.Flare;
+        if (hovered) return Color.white;
+        return new Color(0.81f, 0.85f, 0.87f);
+    }
+}

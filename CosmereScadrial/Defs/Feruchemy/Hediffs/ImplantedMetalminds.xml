@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<HediffDef>
+		<defName>Cosmere_Scadrial_Hediff_ImplantedMetalminds</defName>
+		<hediffClass>Cosmere.System.Scadrial.Feruchemy.Hediff.ImplantedMetalminds</hediffClass>
+		<label>implanted metalminds</label>
+		<description>Metalminds grafted beneath the skin, woven into the body's own network of veins and sinew. Though hidden from sight, a Feruchemist feels each one as keenly as their own heartbeat.</description>
+		<isBad>false</isBad>
+		<tendable>false</tendable>
+		<everCurableByItem>false</everCurableByItem>
+		<countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+		<makesSickThought>false</makesSickThought>
+		<initialSeverity>1</initialSeverity>
+		<maxSeverity>20</maxSeverity>
+		<stages>
+			<li>
+				<label>implanted</label>
+			</li>
+		</stages>
+	</HediffDef>
+</Defs>

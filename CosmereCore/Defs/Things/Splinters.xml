@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="MoteBase">
+        <defName>Cosmere_Core_Mote_InvestitureGlow</defName>
+        <graphicData>
+            <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
+            <texPath>Things/Mote/BrightFlash</texPath>
+            <color>(0.85, 0.85, 0.9, 0.5)</color>
+            <renderInstanced>true</renderInstanced>
+            <shaderType>MoteGlowPulse</shaderType>
+            <shaderParameters>
+                <_Interval>.5</_Interval>
+                <_PulseMin>.3</_PulseMin>
+                <_PulseMax>1</_PulseMax>
+            </shaderParameters>
+            <drawSize>4</drawSize>
+        </graphicData>
+        <thingClass>MoteThrownAttached</thingClass>
+        <altitudeLayer>MetaOverlays</altitudeLayer>
+        <mote>
+            <fadeInTime>0</fadeInTime>
+            <solidTime>77777</solidTime>
+            <fadeOutTime>1</fadeOutTime>
+            <needsMaintenance>true</needsMaintenance>
+        </mote>
+    </ThingDef>
+    
+    <ThingDef Name="Cosmere_Core_Race_Splinter" ParentName="AnimalThingBase" Abstract="True">
+        <defName>Cosmere_Core_Race_Splinter</defName>
+        <label>splinter</label>
+        <thingClass>Cosmere.Core.Thing.Splinter</thingClass>
+        <selectable>true</selectable>
+        <description>A Splinter from the spiritual and cognitive realms</description>
+        <race>
+            <hasGenders>true</hasGenders>
+            <intelligence>Animal</intelligence>
+            <thinkTreeMain>Cosmere_Core_ThinkTree_Splinter</thinkTreeMain>
+            <thinkTreeConstant>Cosmere_Core_ThinkTree_SplinterConstant</thinkTreeConstant>
+            <nameCategory>NoName</nameCategory>
+            <foodType>None</foodType>
+            <baseHungerRate>0</baseHungerRate>
+            <needsRest>false</needsRest>
+            <makesFootprints>false</makesFootprints>
+            <body>Cosmere_Core_Body_Splinter</body>
+            <canBePredatorPrey>false</canBePredatorPrey>
+            <baseBodySize>1</baseBodySize>
+      		<predator>false</predator>
+            <trainability>Advanced</trainability>
+            <herdAnimal>false</herdAnimal>
+            <lifeExpectancy>99999</lifeExpectancy>
+            <petness>0</petness>
+            <alwaysAwake>true</alwaysAwake>
+            <isImmuneToInfections>true</isImmuneToInfections>
+            <nameOnTameChance>0</nameOnTameChance>
+            <bleedRateFactor>0</bleedRateFactor>
+            <disableMating>true</disableMating>
+            <hasMeat>false</hasMeat>
+            <canFlyInVacuum>true</canFlyInVacuum>
+            <flightStartChanceOnJobStart>1</flightStartChanceOnJobStart>
+            <canFlyIntoMap>true</canFlyIntoMap>
+            <canLeaveMapFlying>true</canLeaveMapFlying>
+            <lifeStageAges>
+                <li>
+                    <def>AnimalBaby</def>
+                    <minAge>0</minAge>
+                </li>
+                <li>
+                    <def>AnimalJuvenile</def>
+                    <minAge>500</minAge>
+                </li>
+                <li>
+                    <def>AnimalAdult</def>
+                    <minAge>3000</minAge>
+                </li>
+            </lifeStageAges>
+        </race>
+        <statBases>
+            <Mass>0</Mass>
+            <Wildness>1</Wildness>
+            <PawnBeauty>20</PawnBeauty>
+            <MeleeDodgeChance>1000</MeleeDodgeChance>
+            <MaxFlightTime>Infinity</MaxFlightTime>
+            <FlightCooldown>0</FlightCooldown>
+            <MaxHitPoints>Infinity</MaxHitPoints>
+            <MarketValue>0</MarketValue>
+            <ComfyTemperatureMin>-2000</ComfyTemperatureMin>
+            <ComfyTemperatureMax>2000</ComfyTemperatureMax>
+            <MoveSpeed>8</MoveSpeed>
+            <Flammability>0</Flammability>
+            <IncomingDamageFactor>0</IncomingDamageFactor>
+            <StaggerDurationFactor>0</StaggerDurationFactor>
+            <MentalBreakThreshold>0.01</MentalBreakThreshold>
+            <CarryingCapacity>0</CarryingCapacity>
+            <FilthRate>0</FilthRate>
+            <LifespanFactor>Infinity</LifespanFactor>
+        </statBases>
+        <comps Inherit="False">
+			<li><compClass>CompAttachBase</compClass></li>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <isInfinite>true</isInfinite>
+                <maxIsInfinity>true</maxIsInfinity>
+                <showMax>false</showMax>
+            </li>
+			<li Class="CompProperties_Glower">
+				<glowRadius>1</glowRadius>
+				<glowColor>(217, 217, 230)</glowColor>
+			</li>
+            <!-- Splinter Comp? -->
+        </comps>
+    </ThingDef>
+    
+    <PawnKindDef Name="Cosmere_Core_PawnKind_Splinter" ParentName="AnimalKindBase" Abstract="True">
+        <defName>Cosmere_Core_PawnKind_Splinter</defName>
+        <label>splinter</label>
+        <labelPlural>splinters</labelPlural>
+        <race>Cosmere_Core_Race_Splinter</race>
+        <defaultFactionDef>Ancients</defaultFactionDef> <!-- Change to "Splinters" -->
+        <combatPower>0</combatPower>
+        <canArriveManhunter>false</canArriveManhunter>
+        <ecoSystemWeight>0</ecoSystemWeight>
+        
+        <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Splinter/Splinter_</flyingAnimationFramePathPrefix>
+        <flyingAnimationFrameCount>14</flyingAnimationFrameCount>
+        <flyingAnimationTicksPerFrame>8</flyingAnimationTicksPerFrame>
+        <flyingAnimationDrawSize>1</flyingAnimationDrawSize>
+        <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+        <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+        
+        <wildGroupSize>0~0</wildGroupSize>
+        <immuneToTraps>true</immuneToTraps>
+        <immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+        <collidesWithPawns>false</collidesWithPawns>
+        <canMeleeAttack>false</canMeleeAttack>
+        <canOpenAnyDoor>true</canOpenAnyDoor>
+        <canOpenDoors>true</canOpenDoors>
+        <lifeStages>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Splinter</texPath>
+                    <drawSize>.9</drawSize>
+                    <shadowData><volume>(0, 0, 0)</volume></shadowData>
+                </bodyGraphicData>
+            </li>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Splinter</texPath>
+                    <drawSize>1.1</drawSize>
+                    <shadowData><volume>(0, 0, 0)</volume></shadowData>
+                </bodyGraphicData>
+            </li>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Splinter</texPath>
+                    <drawSize>1.4</drawSize>
+                    <shadowData><volume>(0, 0, 0)</volume></shadowData>
+                </bodyGraphicData>
+            </li>
+        </lifeStages>
+    </PawnKindDef>
+</Defs>

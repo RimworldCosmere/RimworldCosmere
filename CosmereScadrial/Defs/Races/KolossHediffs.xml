@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- A koloss grows for as long as it lives, and the growing is what eventually kills it. The
+       severity of this hediff is the koloss's size: the render worker reads it every frame, and
+       the last stage is the one where the skin finally gives out. -->
+  <HediffDef>
+    <defName>Cosmere_Scadrial_Hediff_KolossGrowth</defName>
+    <label>unchecked growth</label>
+    <description>Nothing in this body tells it to stop. Muscle and bone keep laying themselves down year after year, and the skin over them does not keep up.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.65, 0.75)</defaultLabelColor>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <!-- A hair above zero, and both halves of that matter. The default is 0.5 and Hediff.PostMake
+         does Severity = Max(Severity, initialSeverity), so leaving it alone starts every koloss
+         forty percent of the way to splitting. But Hediff.ShouldRemove is `Severity <= 0f`, so a
+         literal zero makes the hediff delete itself on the next tick and the koloss has no growth
+         clock at all - which is exactly what it did. -->
+    <initialSeverity>0.001</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+
+    <!-- lifeThreatening kills nothing on its own; it only feeds TendPriority, the alert and the
+         caravan-banish check. Hediff.IsLethal reads lethalSeverity, and it is also what puts a
+         percentage in the health tab so the player can see it coming. -->
+    <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <!-- Eight years from spiking to splitting. ScadrialModSettings.kolossGrowthYears
+           rewrites this at startup and whenever the settings window closes, so this value is
+           the default rather than the truth. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0.00208333</severityPerDay>
+      </li>
+      <!-- Eight years is long enough that a koloss reaching its last stage with no warning reads
+           as the game hiding it. One message per rung. -->
+      <!-- Ours rather than vanilla's HediffCompProperties_MessageStageIncreased, which does
+           Props.message.Formatted(Pawn) and never translates - hand it a key and it prints the
+           key. Its one use in the whole game puts a literal English sentence in the def. -->
+      <li Class="Cosmere.System.Scadrial.Comp.Hediff.StageMessageProperties">
+        <message>CS_KolossGrew</message>
+        <messageType>NegativeEvent</messageType>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>young</label>
+        <minSeverity>0</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <statFactors>
+          <MeleeDamageFactor>1.0</MeleeDamageFactor>
+        </statFactors>
+      </li>
+      <li>
+        <label>grown</label>
+        <minSeverity>0.25</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <hungerRateFactor>1.4</hungerRateFactor>
+        <statFactors>
+          <MeleeDamageFactor>1.25</MeleeDamageFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+        <!-- The skin stops keeping up here. HediffGiver_Random rolls against mtbDays on the
+             hediff's own tick, so this is the first stage where the body starts failing rather
+             than merely aching. -->
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>45</mtbDays>
+          </li>
+        </hediffGivers>
+      </li>
+      <li>
+        <label>overgrown</label>
+        <minSeverity>0.55</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <painOffset>0.10</painOffset>
+        <hungerRateFactor>1.9</hungerRateFactor>
+        <!-- The splits stop closing. This is what makes the gene's InjuryHealingFactor 0.7 mean
+             anything - until now it only slowed healing that still finished. -->
+        <naturalHealingFactor>0.35</naturalHealingFactor>
+        <statFactors>
+          <MeleeDamageFactor>1.5</MeleeDamageFactor>
+        </statFactors>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>18</mtbDays>
+          </li>
+        </hediffGivers>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>splitting</label>
+        <minSeverity>0.80</minSeverity>
+        <!-- It has no opinion about where it is or how it feels there. GeneDef has no
+             disablesNeeds, so this rides the hediff every koloss carries, on every stage. -->
+        <disablesNeeds>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>RoomSize</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <painOffset>0.25</painOffset>
+        <lifeThreatening>true</lifeThreatening>
+        <hungerRateFactor>2.6</hungerRateFactor>
+        <naturalHealingFactor>0</naturalHealingFactor>
+        <!-- lethalSeverity is the backstop and lands on the exact day the clock runs out, which
+             for a batch spiked together is the same day for all of them. This kills them a little
+             apart, which is the difference between a loss and a cliff. -->
+        <deathMtbDays>25</deathMtbDays>
+        <statFactors>
+          <MeleeDamageFactor>1.7</MeleeDamageFactor>
+        </statFactors>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Cosmere_Scadrial_Hediff_SplitSkin</hediff>
+            <partsToAffect>
+              <li>Shoulder</li>
+              <li>Leg</li>
+            </partsToAffect>
+            <canAffectAnyLivePart>true</canAffectAnyLivePart>
+            <mtbDays>6</mtbDays>
+          </li>
+        </hediffGivers>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.30</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- Nothing troubles a koloss for long. It is not brave and it is not calm - there is simply
+       very little in there for a bad day to land on. Keyed to the growth hediff rather than the
+       gene because ThoughtWorker_Hediff is the vanilla worker for exactly this, and every koloss
+       carries that hediff from the moment it is made. -->
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_Thought_SimpleMinded</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>Cosmere_Scadrial_Hediff_KolossGrowth</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>simple minded</label>
+        <description>There is not much in here to upset. Things happen, and then they stop happening.</description>
+        <baseMoodEffect>15</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+
+  <!-- Eating ash. Grit and cold cinder, and it stays with you. A koloss does not register it,
+       which is what makes an ashfall a food supply for them and a famine for everyone else. -->
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_Thought_AteAsh</defName>
+    <durationDays>1</durationDays>
+    <nullifyingGenes>
+      <li>Cosmere_Scadrial_Gene_KolossHeritage</li>
+    </nullifyingGenes>
+    <stages>
+      <li>
+        <label>ate ash</label>
+        <description>I ate ash off the ground. It was dry and it was gritty and it is still in my teeth.</description>
+        <baseMoodEffect>-12</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- What "the skin does not keep up" actually looks like. Bleeds, can be tended, and on the
+       late stages does not close on its own - so an old koloss is a thing being kept alive rather
+       than a thing that happens to be large. -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>Cosmere_Scadrial_Hediff_SplitSkin</defName>
+    <label>split skin</label>
+    <description>The muscle underneath went on growing and the skin over it did not. It has given way, and what is beneath is open to the air.</description>
+    <defaultLabelColor>(0.66, 0.32, 0.30)</defaultLabelColor>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>bound</labelTendedWell>
+        <labelTendedWellInner>closed</labelTendedWellInner>
+        <labelSolidTendedWell>bound</labelSolidTendedWell>
+      </li>
+      <li Class="HediffCompProperties_Infecter">
+        <infectionChance>0.15</infectionChance>
+      </li>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>scarred over</permanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.0125</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00625</averagePainPerSeverityPermanent>
+      <bleedRate>0.06</bleedRate>
+      <canMerge>true</canMerge>
+    </injuryProps>
+  </HediffDef>
+
+</Defs>

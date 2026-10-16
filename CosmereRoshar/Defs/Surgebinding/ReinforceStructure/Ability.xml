@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_ReinforceStructure</defName>
+        <label>Reinforce Structure</label>
+        <description>Let the Sibling's power flow through the bones of the settlement. Every wall, every floor, every structure that belongs to the colony feels it. Cracks seal. Damage reverses. Weakened supports strengthen as if they were newly built. The Sibling remembers Urithiru, and through the Bondsmith, it extends that same care to every building under its protection.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.ReinforceStructure</abilityClass>
+        <beuPerTick>0</beuPerTick>
+        <maxPower>1</maxPower>
+        <toggleable>false</toggleable>
+        <cooldownTicksRange>300000~300000</cooldownTicksRange>
+        <radiantOrder>Bondsmith</radiantOrder>
+        <minIdeal>2</minIdeal>
+        <orderMinIdeal>
+            <li><order>Bondsmith</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

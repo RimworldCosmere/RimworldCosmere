@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_BrassAura</defName>
         <label>soothing aura</label>
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
         <metal>Brass</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_BrassAura</hediff>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+        <beuPerTick>0.0008</beuPerTick>
+        <maxPower>2</maxPower>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
+    <!-- One push, not a channel. AbstractToggleTargetBurnAbility runs
+         Cosmere_Scadrial_Job_MaintainAllomanticTarget, which walks the caster to the target and
+         holds them there - a leash, on the one mechanic built to have none. -->
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_BrassTarget</defName>
+        <!-- Vanilla's ability job, not the allomantic one. AbstractTargetBurnAbility runs
+             CastAllomanticAbilityAtTarget, which is the iron and steel driver - it calls MoveThing
+             and physically throws whatever you aimed at, and never runs a single ability comp.
+             Rioting somebody sent them flying and took hold of nothing. CastAbilityOnThing goes
+             through Verb_CastAbility, which is what actually applies the comps below. -->
+        <jobDef>CastAbilityOnThing</jobDef>
         <label>soothe target</label>
         <description>Suppress emotional outburst and calm the mind of a target Brass. Has a chance to break mental states.</description>
         <metal>Brass</metal>
@@ -23,5 +34,17 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
+        <beuPerTick>0.0008</beuPerTick>
+        <maxPower>2</maxPower>
+        <!-- Seizing a koloss or a kandra is the same push, aimed at something that can be owned.
+             The comp answers with both numbers when the target resists, so the player can see how
+             far short they fell and that duralumin closes it. -->
+        <comps>
+            <!-- The allomantic driver used to spend the metal. Vanilla's does not, so the cost
+                 comes back as a comp, the way Steelpush already does it. -->
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.MetalCostProperties" />
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.QuellBreakProperties" />
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Ability.SeizeKolossProperties" />
+        </comps>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

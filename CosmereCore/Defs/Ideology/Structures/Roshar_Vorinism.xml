@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Vorinism</defName>
+        <label>Vorinism</label>
+        <description>The Almighty judges. The Heralds defend. The ardents interpret. Vorinism is the dominant religion across the Vorin kingdoms of Roshar. It teaches that men must prepare for the Desolation through warfare, while women preserve knowledge and art.</description>
+        <iconPath>UI/Ideology/Cosmere/Vorinism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>chapel</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->highpriest</li>
+                <li>memeLeaderNoun->hierocrat</li>
+                <li>memeLeaderNoun->curate</li>
+                <li>memeLeaderAdjective->almighty's</li>
+                <li>memeLeaderAdjective->holy</li>
+                <li>memeLeaderAdjective->vorin</li>
+                <li>memeMoralist->ardent</li>
+                <li>memeMoralist->devotary head</li>
+                <li>memeMoralist->curate</li>
+                <li>memeConcept->honor</li>
+                <li>memeConcept->oath</li>
+                <li>memeConcept->duty</li>
+                <li>memeHyphenPrefix->honor</li>
+                <li>memeHyphenPrefix->oath</li>
+                <li>memeHyphenPrefix->vor</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_vorinism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The Almighty</name>
+                <type>god of oaths</type>
+            </li>
+            <li>
+                <name>Honor</name>
+                <type>keeper of the Oathpact</type>
+            </li>
+            <li>
+                <name>Tanavast</name>
+                <type>the eternal</type>
+            </li>
+            <li>
+                <name>He of the Oathpact</name>
+                <type>binder of Heralds</type>
+            </li>
+            <li>
+                <name>Jezerezeh</name>
+                <type>Herald of Kings</type>
+            </li>
+            <li>
+                <name>Nalan</name>
+                <type>Herald of Justice</type>
+            </li>
+            <li>
+                <name>Chanarach</name>
+                <type>Herald of Fire</type>
+            </li>
+            <li>
+                <name>Vedeledev</name>
+                <type>Herald of Healing</type>
+            </li>
+            <li>
+                <name>Pailiah</name>
+                <type>Herald of Learning</type>
+            </li>
+            <li>
+                <name>Shalash</name>
+                <type>Herald of Beauty</type>
+            </li>
+            <li>
+                <name>Battah</name>
+                <type>Herald of Wisdom</type>
+            </li>
+            <li>
+                <name>Kelek</name>
+                <type>Herald of Storms</type>
+            </li>
+            <li>
+                <name>Talenelat</name>
+                <type>Herald of War</type>
+            </li>
+            <li>
+                <name>Ishi</name>
+                <type>Herald of Luck</type>
+            </li>
+            <!-- Every deity name has to be unique across every ideo in the world, and five Vorin kingdoms each want one. The Heralds are venerated by name in Vorinism anyway. -->
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Vorinism</ideoName>
+                <adjective>Vorin</adjective>
+                <member>Vorin</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Vorin Church</ideoName>
+                <adjective>church</adjective>
+                <member>faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Almighty's Faith</ideoName>
+                <adjective>almighty's</adjective>
+                <member>devotee</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Heralds' Way</ideoName>
+                <adjective>herald's</adjective>
+                <member>follower</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

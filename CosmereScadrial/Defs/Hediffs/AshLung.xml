@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_AshLung</defName>
+        <label>ash lung</label>
+        <description>Ash and vent gas settled deep in the lungs. Those who work the vents know the progression: a dry cough that will not clear, then breath that comes short, then breath that does not come at all.\n\nIt fades in clean air, slowly. Medicine does not touch it. A mask that filters ash prevents it.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.55, 0.52, 0.48)</defaultLabelColor>
+        <isBad>true</isBad>
+        <makesSickThought>true</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <tendable>false</tendable>
+        <initialSeverity>0.01</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <lethalSeverity>1</lethalSeverity>
+        <stages>
+            <li>
+                <label>irritation</label>
+                <becomeVisible>false</becomeVisible>
+            </li>
+            <li>
+                <label>ash cough</label>
+                <minSeverity>0.05</minSeverity>
+                <painOffset>0.03</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Breathing</capacity>
+                        <offset>-0.08</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>ash lung</label>
+                <minSeverity>0.35</minSeverity>
+                <painOffset>0.10</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Breathing</capacity>
+                        <offset>-0.25</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>suffocating</label>
+                <minSeverity>0.75</minSeverity>
+                <painOffset>0.25</painOffset>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Breathing</capacity>
+                        <offset>-0.55</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Marker only. PersistentSiteMapPatch keys on it to stop CheckRemoveMapNow tearing the
+       map down when the last colonist leaves, so anything mined out stays mined out. -->
+  <SitePartDef>
+    <defName>Cosmere_SitePart_Persistent</defName>
+    <label>established dig</label>
+    <description>Worked ground. What is taken from here does not come back.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/PreciousLump</expandingIconTexture>
+    <displayOnInspectPane>false</displayOnInspectPane>
+    <tags>
+      <li>Cosmere_Persistent</li>
+    </tags>
+  </SitePartDef>
+
+</Defs>

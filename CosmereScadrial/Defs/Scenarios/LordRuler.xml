@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_LordRuler</defName>
+    <label>Cosmere - Scadrial - The Lord Ruler</label>
+    <description>You are Rashek. You held the power of Preservation at the Well of Ascension and used it to reshape the world. You moved the planet, raised the ashmounts, and transformed the Terris people. Now the power fades, but you remain - Mistborn and Feruchemist both, immortal and unyielding. A thousand years of rule begins with a single settlement.</description>
+    <scenario>
+      <summary>Build an empire as the immortal Lord Ruler.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_FinalEmpire</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Lord</firstName>
+              <lastName>Ruler</lastName>
+              <nickName>Rashek</nickName>
+              <age>21</age>
+              <chronologicalAge>1050</chronologicalAge>
+              <gender>Male</gender>
+              <childhood>Cosmere_Scadrial_Backstory_Terris_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_LordRuler</adulthood>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <noRandomTraits>true</noRandomTraits>
+              <mistborn>true</mistborn>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>2</degree></li>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Shooting</def><level>12</level></li>
+                <li><def>Crafting</def><level>12</level></li>
+                <li><def>Construction</def><level>12</level></li>
+                <li><def>Medicine</def><level>12</level></li>
+                <li><def>Cooking</def><level>12</level></li>
+                <li><def>Mining</def><level>12</level></li>
+                <li><def>Plants</def><level>12</level></li>
+                <li><def>Animals</def><level>12</level></li>
+                <li><def>Artistic</def><level>12</level></li>
+              </skills>
+              <inventory>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Iron</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Steel</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Tin</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Pewter</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Zinc</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Brass</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Copper</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Bronze</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Iron</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Steel</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Tin</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Pewter</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Zinc</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Brass</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Copper</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Bronze</stuff><count>1</count></li>
+              </inventory>
+            </li>
+          </pawns>
+        </li>
+
+        <!-- Sits after ScenPart_NamedPawns on purpose. That part clears the roster
+             and this one regenerates it, with NamedPawns stamping its templates onto
+             each pawn through Notify_PawnGenerated as it comes out. -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>1</pawnChoiceCount>
+          <!-- TotalPawnCount is the sum of these, and it is what sets
+               startingPawnCount. An empty list means zero starting pawns and an
+               index error during map generation. No xenotype named, so the named
+               pawns decide their own. -->
+          <xenotypeCounts>
+            <li>
+              <count>1</count>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>200</count>
+        </li>
+
+        <!-- No progression on purpose. This is a sandbox: you are Rashek at the Ascension,
+             a thousand years before anything in the books, and there is no script to follow.
+             It previously ran a scripted arc that handed off into the Final Empire, which
+             dropped a one-pawn Ascension colony into Kelsier's crew story. -->
+
+        <li Class="Cosmere.Core.ScenarioPart.Parts.ScenPart_FactionRelations">
+          <def>Cosmere_ScenPart_FactionRelations</def>
+          <relations>
+            <Cosmere_Scadrial_Faction_HouseVenture>80</Cosmere_Scadrial_Faction_HouseVenture>
+            <Cosmere_Scadrial_Faction_HouseElariel>80</Cosmere_Scadrial_Faction_HouseElariel>
+            <Cosmere_Scadrial_Faction_HouseHasting>80</Cosmere_Scadrial_Faction_HouseHasting>
+            <Cosmere_Scadrial_Faction_HouseLekal>80</Cosmere_Scadrial_Faction_HouseLekal>
+            <Cosmere_Scadrial_Faction_HouseTekiel>80</Cosmere_Scadrial_Faction_HouseTekiel>
+            <Cosmere_Scadrial_Faction_HouseRenoux>80</Cosmere_Scadrial_Faction_HouseRenoux>
+            <Cosmere_Scadrial_Faction_HouseCett>80</Cosmere_Scadrial_Faction_HouseCett>
+            <Cosmere_Scadrial_Faction_SkaaRebels>-100</Cosmere_Scadrial_Faction_SkaaRebels>
+            <Cosmere_Scadrial_Faction_Terris>-100</Cosmere_Scadrial_Faction_Terris>
+          </relations>
+        <between>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseCett</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseElariel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseHasting</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseLekal</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseRenoux</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseTekiel</b>
+            <goodwill>-100</goodwill>
+          </li>
+          <li>
+            <a>Cosmere_Scadrial_Faction_SkaaRebels</a>
+            <b>Cosmere_Scadrial_Faction_HouseVenture</b>
+            <goodwill>-100</goodwill>
+          </li>
+        </between>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The power fades, but what remains is enough. You have moved the planet, raised mountains of fire, and remade the very people who walk the land. You are Rashek, the Lord Ruler, Sliver of Infinity. A thousand years begins now. Your empire will be built by your hand alone - at first. The skaa will come. The nobility will rise. And through it all, you will endure. You must. Ruin stirs beneath the world, and only you stand between it and annihilation.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+      <li Class="Cosmere.Core.DefModExtension.ScenarioEra">
+        <era>Cosmere_Scadrial_Era_PreCatacendre</era>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

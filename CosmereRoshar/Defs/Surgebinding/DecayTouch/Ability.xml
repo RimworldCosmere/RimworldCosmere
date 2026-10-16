@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleHostileTargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_DecayTouch</defName>
+        <label>Decay Touch</label>
+        <description>Press your hand against something and let Division flow through it. Stone crumbles to powder. Metal flakes apart. Living things fare worse. As long as you maintain contact, the target breaks down, the matter simply forgetting how to hold together. Requires you to be close enough to touch.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Division.DecayTouch</abilityClass>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>1</minIdeal>
+        <orderMinIdeal>
+            <li><order>Skybreaker</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>1.5</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>true</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetMechs>true</canTargetMechs>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

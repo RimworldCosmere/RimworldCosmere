@@ -1,0 +1,33 @@
+game: rimworld
+defaultProfile: cosmere
+build: always
+replace: true
+resolution: 2560x1440
+profiles:
+  cosmere:
+    gameVersion: "1.7"
+    mods:
+      - concordlib.concord
+      - Cosmere.Core
+      - Cosmere.Scadrial
+      - Cosmere.Roshar
+      - rimworks.quickstarts
+      - rimworks.pickle
+    aliases:
+      - cos
+    autoDependencies: true
+  cosmere-lean:
+    mods:
+      - concordlib.concord
+      - Cosmere.Core
+      - Cosmere.Scadrial
+      - Cosmere.Roshar
+      - rimworks.quickstarts
+      - rimworks.pickle
+    aliases:
+      - lean
+    autoDependencies: true
+  nalthis:
+    extends: cosmere
+    mods:
+      - Cosmere.Nalthis

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_HemalurgicPrecision</defName>
+		<label>hemalurgic precision</label>
+		<tab>Cosmere</tab>
+		<description>Deeper understanding of the bind points and spiritual anatomy allows the hemalurgist to place spikes with greater accuracy, reducing the risk of killing the donor during the charging process.</description>
+		<baseCost>2000</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>1.40</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_Hemalurgy</li>
+		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;hemalurgic precision</li>
+	      <li>subject_story-&gt;mapped where a spike must land and how little that mercy is worth</li>
+	      <li>subject_story-&gt;reduced the loss from a spiking and was not thanked for it</li>
+	      <li>subject_story-&gt;made a terrible thing accurate, which is not the same as making it better</li>
+	      <li>subject_gerund-&gt;placing spikes precisely</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_HemalurgicMastery</defName>
+		<label>hemalurgic mastery</label>
+		<tab>Cosmere</tab>
+		<description>Mastery of hemalurgic art reveals the precise angles and depths required to pierce the spirit web without severing its host. A skilled surgeon can now charge spikes with minimal risk to the donor's life.</description>
+		<baseCost>4000</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>3.00</researchViewX>
+		<researchViewY>1.40</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_HemalurgicPrecision</li>
+		</prerequisites>
+	  <generalRules>
+	    <rulesStrings>
+	      <li>subject-&gt;hemalurgic mastery</li>
+	      <li>subject_story-&gt;understood the whole of the third Art and stopped sleeping well</li>
+	      <li>subject_story-&gt;worked out what the Lord Ruler had known, and why he kept it quiet</li>
+	      <li>subject_story-&gt;reached the end of the subject and wished the subject had been shorter</li>
+	      <li>subject_gerund-&gt;mastering Hemalurgy</li>
+	    </rulesStrings>
+	  </generalRules>
+	</ResearchProjectDef>
+</Defs>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Gripped</defName>
+        <label>gripped</label>
+        <description>This person is anchored in place by impossible friction. Their feet might as well be part of the ground. Blows that should send them stumbling do nothing. When they swing, the strike lands true every time, driven by a body that simply will not budge. Movement is difficult, as if the world is holding on to them, though mastery of the Surge eases this over time.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Abrasion.Gripped</hediffClass>
+        <stages>
+            <!-- Severity 0-1.24: 1st-2nd Ideal — rooted, no movement -->
+            <li>
+                <minSeverity>0</minSeverity>
+                <statOffsets>
+                    <MeleeHitChance>0.15</MeleeHitChance>
+                </statOffsets>
+                <statFactors>
+                    <MoveSpeed>0.01</MoveSpeed>
+                    <StaggerDurationFactor>0</StaggerDurationFactor>
+                </statFactors>
+            </li>
+            <!-- Severity 1.25-1.74: 3rd Ideal — very slow -->
+            <li>
+                <minSeverity>1.25</minSeverity>
+                <statOffsets>
+                    <MeleeHitChance>0.25</MeleeHitChance>
+                </statOffsets>
+                <statFactors>
+                    <MoveSpeed>0.35</MoveSpeed>
+                    <StaggerDurationFactor>0</StaggerDurationFactor>
+                </statFactors>
+            </li>
+            <!-- Severity 1.75-2.24: 4th Ideal — moderate movement -->
+            <li>
+                <minSeverity>1.75</minSeverity>
+                <statOffsets>
+                    <MeleeHitChance>0.35</MeleeHitChance>
+                </statOffsets>
+                <statFactors>
+                    <MoveSpeed>0.60</MoveSpeed>
+                    <StaggerDurationFactor>0</StaggerDurationFactor>
+                </statFactors>
+            </li>
+            <!-- Severity 2.25+: 5th Ideal — near-normal movement -->
+            <li>
+                <minSeverity>2.25</minSeverity>
+                <statOffsets>
+                    <MeleeHitChance>0.45</MeleeHitChance>
+                </statOffsets>
+                <statFactors>
+                    <MoveSpeed>0.80</MoveSpeed>
+                    <StaggerDurationFactor>0</StaggerDurationFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

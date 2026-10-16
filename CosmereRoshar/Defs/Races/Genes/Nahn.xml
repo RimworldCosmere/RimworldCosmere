@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Nahn ranks for darkeyes. Only one can be active at a time. -->
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Nahn_High</defName>
+        <label>high nahn (1st-3rd)</label>
+        <description>A sergeant, master craftsman, or successful merchant. The highest station a darkeyes can achieve through merit alone. Respected by peers and grudgingly acknowledged by lighteyes.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statFactors>
+            <WorkSpeedGlobal>1.05</WorkSpeedGlobal>
+        </statFactors>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Nahn_Mid</defName>
+        <label>mid nahn (4th-7th)</label>
+        <description>A common worker, soldier, or tradesman. The bulk of darkeyed society. Neither privileged nor destitute, simply enduring.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statOffsets>
+            <SocialImpact>-0.1</SocialImpact>
+        </statOffsets>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Nahn_Low</defName>
+        <label>low nahn (8th-10th)</label>
+        <description>A tenner. The lowest rung. Servants, laborers for hire, those with nothing but their hands and their willingness to use them. What the caste system takes in dignity, it repays in callouses.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statOffsets>
+            <SocialImpact>-0.2</SocialImpact>
+        </statOffsets>
+        <statFactors>
+            <WorkSpeedGlobal>1.1</WorkSpeedGlobal>
+        </statFactors>
+    </GeneDef>
+</Defs>

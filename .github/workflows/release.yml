@@ -128,7 +128,7 @@ jobs:
 
       - name: Stage game assemblies
         id: refs
-        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v5
         with:
           image: ${{ needs.game-image.outputs.image-ref }}
 
@@ -306,7 +306,7 @@ jobs:
   publish:
     needs: semantic-release
     if: needs.semantic-release.outputs.published == 'true'
-    uses: RimWorks/mod-ci/.github/workflows/publish.yml@v4
+    uses: RimWorks/mod-ci/.github/workflows/publish.yml@v5
     permissions:
       contents: read
     secrets:

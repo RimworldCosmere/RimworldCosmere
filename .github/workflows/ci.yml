@@ -16,13 +16,13 @@ concurrency:
 jobs:
   prose:
     name: Prose
-    uses: RimWorks/mod-ci/.github/workflows/prose.yml@v4
+    uses: RimWorks/mod-ci/.github/workflows/prose.yml@v5
     permissions:
       contents: read
 
   links:
     name: Links
-    uses: RimWorks/mod-ci/.github/workflows/links.yml@v4
+    uses: RimWorks/mod-ci/.github/workflows/links.yml@v5
     permissions:
       contents: read
     with:
@@ -53,7 +53,7 @@ jobs:
 
       - name: Stage game assemblies
         id: refs
-        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v5
         with:
           image: ${{ needs.game-image.outputs.image-ref }}
 
@@ -126,7 +126,7 @@ jobs:
 
       - name: Stage game assemblies
         id: refs
-        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v4
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v5
         with:
           image: ${{ needs.game-image.outputs.image-ref }}
 
@@ -148,7 +148,7 @@ jobs:
 
       # the pickle-run action, not pickle-suite.yml: one leg, no matrix, so the reusable's
       # prep and merge jobs would run for nothing
-      - uses: RimWorks/mod-ci/.github/actions/pickle-run@v4
+      - uses: RimWorks/mod-ci/.github/actions/pickle-run@v5
         with:
           game-image: ${{ needs.game-image.outputs.image-ref }}
           mod-name: Cosmere - Core
@@ -186,7 +186,7 @@ jobs:
   sonar:
     name: Sonar
     needs: [ game-image ]
-    uses: RimWorks/mod-ci/.github/workflows/sonar.yml@v4
+    uses: RimWorks/mod-ci/.github/workflows/sonar.yml@v5
     permissions:
       contents: read
       packages: read

@@ -202,26 +202,7 @@ public class Investiture : RimWorld.Need {
             valueRect.width - labelMargin * 2f,
             valueRect.height - labelHeight
         );
-        if (DebugSettings.ShowDevGizmos) {
-            float lineHeight = Text.LineHeight;
-            Rect rect2 = new Rect(valueRect.xMax - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
-            if (Widgets.ButtonImage(rect2.ContractedBy(4f), TexButton.Plus)) {
-                OffsetDebugPercent(0.1f);
-            }
-
-            if (Mouse.IsOver(rect2)) {
-                TooltipHandler.TipRegion(rect2, (TipSignal)"+ 10%");
-            }
-
-            Rect rect3 = new Rect(rect2.xMin - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
-            if (Widgets.ButtonImage(rect3.ContractedBy(4f), TexButton.Minus)) {
-                OffsetDebugPercent(-0.1f);
-            }
-
-            if (Mouse.IsOver(rect3)) {
-                TooltipHandler.TipRegion(rect3, (TipSignal)"- 10%");
-            }
-        }
+        if (DebugSettings.ShowDevGizmos) DrawDebugOffsetButtons(valueRect);
 
         valueRect.width += 20f;
 
@@ -234,6 +215,27 @@ public class Investiture : RimWorld.Need {
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
             Widgets.Label(valueRect, colored);
+        }
+    }
+
+    private void DrawDebugOffsetButtons(Rect valueRect) {
+        float lineHeight = Text.LineHeight;
+        Rect plusRect = new Rect(valueRect.xMax - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
+        if (Widgets.ButtonImage(plusRect.ContractedBy(4f), TexButton.Plus)) {
+            OffsetDebugPercent(0.1f);
+        }
+
+        if (Mouse.IsOver(plusRect)) {
+            TooltipHandler.TipRegion(plusRect, (TipSignal)"+ 10%");
+        }
+
+        Rect minusRect = new Rect(plusRect.xMin - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
+        if (Widgets.ButtonImage(minusRect.ContractedBy(4f), TexButton.Minus)) {
+            OffsetDebugPercent(-0.1f);
+        }
+
+        if (Mouse.IsOver(minusRect)) {
+            TooltipHandler.TipRegion(minusRect, (TipSignal)"- 10%");
         }
     }
 

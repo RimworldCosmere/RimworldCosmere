@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
@@ -55,6 +55,30 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         yield return toil;
     }
 
+    private void ShoveEveryMetalInRange(Verse.Thing origin) {
+        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(
+            origin.Position,
+            Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, Ability.verb.EffectiveRange)),
+            false
+        );
+        foreach (IntVec3 cell in cells) {
+            foreach (Verse.Thing? newThing in cell.GetThingList(pawn.Map).Where(x => MetalDetector.HasMetal(x))) {
+                MoveThing(newThing, false);
+            }
+        }
+    }
+
+    private IntVec3 FirstBlockedStop(IntVec3 start, IntVec3 dir, int distanceTiles, IntVec3 destination) {
+        for (int i = 1; i <= distanceTiles; i++) {
+            IntVec3 cell = start + dir * i;
+            if (cell.InBounds(pawn.Map) && cell.Walkable(pawn.Map)) continue;
+
+            return start + dir * (i - 1);
+        }
+
+        return destination;
+    }
+
     // TODO(push strength still ignores range): distance falloff
 
     /// <summary>
@@ -69,17 +93,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         surge?.Burn();
 
         if (thing == pawn) {
-            IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(
-                thing.Position,
-                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, Ability.verb.EffectiveRange)),
-                false
-            );
-            foreach (IntVec3 cell in cells) {
-                foreach (Verse.Thing? newThing in cell.GetThingList(pawn.Map).Where(x => MetalDetector.HasMetal(x))) {
-                    MoveThing(newThing, false);
-                }
-            }
-
+            ShoveEveryMetalInRange(thing);
             return;
         }
 
@@ -109,14 +123,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         IntVec3 destination = things.Item1.Position + dir * distanceTiles;
         if (Mathf.Approximately(distance, distanceBetweenThings)) destination = things.Item2.Position;
 
-        IntVec3 finalPos = destination;
-        for (int i = 1; i <= distanceTiles; i++) {
-            IntVec3 cell = things.Item1.Position + dir * i;
-            if (cell.InBounds(pawn.Map) && cell.Walkable(pawn.Map)) continue;
-
-            finalPos = things.Item1.Position + dir * (i - 1);
-            break;
-        }
+        IntVec3 finalPos = FirstBlockedStop(things.Item1.Position, dir, distanceTiles, destination);
 
         // a shove resolving onto the caster's own cell would pin them under the mover while dust plays.
         if (finalPos != things.Item1.Position) {

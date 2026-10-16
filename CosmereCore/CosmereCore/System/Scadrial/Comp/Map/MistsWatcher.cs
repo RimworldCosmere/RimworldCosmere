@@ -1,4 +1,4 @@
-using Cosmere.Core;
+﻿using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Settings;
 using Cosmere.System.Scadrial.Util;
@@ -44,30 +44,31 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         if (!mistsActive) return;
         if (currentTick < mistsStartTick) return;
 
-        // Every hour: scan for exposed pawns
-        if (currentTick % GenDate.TicksPerHour == 0) {
-            IReadOnlyList<Pawn> allPawns = map.mapPawns.AllPawnsSpawned;
-            for (int i = 0; i < allPawns.Count; i++) {
-                Pawn pawn = allPawns[i];
-                if (!pawn.RaceProps.Humanlike || pawn.Dead || pawn.Position.Roofed(map)) continue;
-                if (pawn.IsSnapped()) continue;
-                if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection) ||
-                    !dormantConnection.HasDormantConnections) {
-                    continue;
-                }
-
-                if (!Rand.Chance(1f / MistPressure.OneIn)) continue;
-
-                SnapUtility.Snap(pawn, "the mists");
-                pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_MistComa).Severity = 1.0f;
-            }
-        }
+        if (currentTick % GenDate.TicksPerHour == 0) SnapExposedPawns();
 
         if (currentTick < mistsEndTick) return;
         mistsActive = false;
         map.weatherDecider.StartNextWeather();
         ScheduleNextMists();
         Messages.Message("CS_MistsRetreat".Translate(), MessageTypeDefOf.PositiveEvent);
+    }
+
+    private void SnapExposedPawns() {
+        IReadOnlyList<Pawn> allPawns = map.mapPawns.AllPawnsSpawned;
+        for (int i = 0; i < allPawns.Count; i++) {
+            Pawn pawn = allPawns[i];
+            if (!pawn.RaceProps.Humanlike || pawn.Dead || pawn.Position.Roofed(map)) continue;
+            if (pawn.IsSnapped()) continue;
+            if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection) ||
+                !dormantConnection.HasDormantConnections) {
+                continue;
+            }
+
+            if (!Rand.Chance(1f / MistPressure.OneIn)) continue;
+
+            SnapUtility.Snap(pawn, "the mists");
+            pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_MistComa).Severity = 1.0f;
+        }
     }
 
     private void StartMists(Verse.Map map) {

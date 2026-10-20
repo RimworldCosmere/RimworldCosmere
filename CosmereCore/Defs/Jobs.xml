@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_BondToThing</defName>
+        <driverClass>Cosmere.Core.JobDriver.BondToThing</driverClass>
+        <reportString>bonding to target</reportString>
+        <casualInterruptible>true</casualInterruptible>
+        <playerInterruptible>true</playerInterruptible>
+        <suspendable>true</suspendable>
+    </JobDef>
+    <JobDef>
+        <defName>Cosmere_HaulToInnerStorage</defName>
+        <driverClass>Cosmere.Core.JobDriver.HaulToInnerStorage</driverClass>
+        <reportString>hauling TargetA.</reportString>
+        <suspendable>false</suspendable>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <JobDef>
+        <defName>Cosmere_StoreInApparelInnerStorage</defName>
+        <driverClass>Cosmere.Core.JobDriver.StoreInApparelInnerStorage</driverClass>
+        <reportString>storing TargetA.</reportString>
+        <suspendable>false</suspendable>
+    </JobDef>
+</Defs>

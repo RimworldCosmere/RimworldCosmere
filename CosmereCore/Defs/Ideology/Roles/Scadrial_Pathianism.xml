@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Priest of the Path: single leader, moralist -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_PathianPriest</defName>
+        <label>priest of the path</label>
+        <description>A priest of Harmony's balance. Pathian priests offer counsel rather than doctrine, teaching that the two sides of the One God must be held in measure within each soul.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Missionary: multi social role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_PathianMissionary</defName>
+        <label>missionary</label>
+        <description>A travelling teacher of the Path. Missionaries carry Harmony's gospel to the outer dominances, meeting unbelievers with patience rather than the sword.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>5</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>4</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>NegotiationAbility</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>ConversionRitual</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+    <!-- Harmony's Hand: multi defender role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_HarmonysHand</defName>
+        <label>harmony's hand</label>
+        <description>A lawkeeper who defends the faithful of the Path. Harmony's Hands carry the god's balance into conflict, striking only when every quieter counsel has failed.</description>
+        <iconPath>UI/Roles/SpecialistMelee</iconPath>
+        <nameMaker>NamerRoleBrawler</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>700</displayOrderInImpact>
+        <defaultSelectionWeight>0.75</defaultSelectionWeight>
+        <maxCount>3</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Melee>5</Melee>
+                    <Shooting>5</Shooting>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeHitChance</statDef>
+                <modifier>3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ShootingAccuracyPawn</statDef>
+                <modifier>3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>CombatCommand</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Violent</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

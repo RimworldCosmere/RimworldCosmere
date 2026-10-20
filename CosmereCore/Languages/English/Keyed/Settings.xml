@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CC_Settings_Category_Investiture>Investiture</CC_Settings_Category_Investiture>
+    <CC_Settings_UpkeepCadence_Label>Ability Upkeep Cadence</CC_Settings_UpkeepCadence_Label>
+    <CC_Settings_UpkeepCadence_Description>How often a sustained ability charges its upkeep against the reserve it burns. Faster cadences drain reserves proportionally faster, so this changes how long a metal reserve or a gemheart lasts. Applies to every invested system.</CC_Settings_UpkeepCadence_Description>
+    <CC_Settings_UpkeepCadence_PerTick>Every tick (fastest drain)</CC_Settings_UpkeepCadence_PerTick>
+    <CC_Settings_UpkeepCadence_PerSecond>Every second (default)</CC_Settings_UpkeepCadence_PerSecond>
+    <CC_Settings_UpkeepCadence_PerRareTick>Every rare tick (slowest drain)</CC_Settings_UpkeepCadence_PerRareTick>
+
+    <CC_Settings_Category_Connection>Connection</CC_Settings_Category_Connection>
+    <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
+    <CC_Settings_Connection_ShowDormantConnection_Description>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Description>
+    
+    <CC_Settings_Category_FactionFiltering>Faction Filtering</CC_Settings_Category_FactionFiltering>
+    <CC_Settings_DisableEmpire_Label>Disable Empire in Cosmere Scenarios</CC_Settings_DisableEmpire_Label>
+    <CC_Settings_DisableEmpire_Description>When enabled, the Empire faction (Royalty DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableEmpire_Description>
+    <CC_Settings_DisableOdyssey_Label>Disable Odyssey Factions in Cosmere Scenarios</CC_Settings_DisableOdyssey_Label>
+    <CC_Settings_DisableOdyssey_Description>When enabled, Mechanoid Hive and Insect Geneline factions (Odyssey DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableOdyssey_Description>
+
+    <CC_Settings_Category_Radial>Ability radial</CC_Settings_Category_Radial>
+    <CC_Settings_RadialAnchorMouse_Label>Open at mouse cursor</CC_Settings_RadialAnchorMouse_Label>
+    <CC_Settings_RadialAnchorMouse_Description>When enabled the ability radial opens centered on the mouse cursor. When disabled it opens centered on the selected pawn.</CC_Settings_RadialAnchorMouse_Description>
+
+    <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
+    
+    <CC_Settings_DebugMode_Label>Debug mode</CC_Settings_DebugMode_Label>
+    <CC_Settings_DebugMode_Description>Provides extra debugging features</CC_Settings_DebugMode_Description>
+    
+
+
+
+    <CC_Quickstart_Shards>Shards: </CC_Quickstart_Shards>
+  <CC_Settings_RadialPause_Label>Pause on wheel</CC_Settings_RadialPause_Label>
+  <CC_Settings_RadialPause_Description>Halt time while the ability wheel is open, and resume at the same speed when it closes. A game already paused stays paused.</CC_Settings_RadialPause_Description>
+  <CC_Settings_Category_Interface>Interface</CC_Settings_Category_Interface>
+  <CC_Settings_ResetDockPosition_Label>Investiture dock position</CC_Settings_ResetDockPosition_Label>
+  <CC_Settings_ResetDockPosition_Description>The dock can be dragged anywhere on screen. Reset it to return it to the left edge.</CC_Settings_ResetDockPosition_Description>
+  <CC_Settings_ResetDockPosition_Button>Reset to default</CC_Settings_ResetDockPosition_Button>
+  <CC_Settings_ResetDockPosition_Default>At its default position</CC_Settings_ResetDockPosition_Default>
+  <CC_Settings_DockSectionMaxHeight_Label>Dock section height</CC_Settings_DockSectionMaxHeight_Label>
+  <CC_Settings_DockSectionMaxHeight_Description>How tall an open section of the investiture dock may grow before it scrolls instead. A Mistborn burns sixteen metals, and the whole table will not fit on a short screen.</CC_Settings_DockSectionMaxHeight_Description>
+    <CC_Settings_ShowFeedbackButtons_Label>Show feedback buttons</CC_Settings_ShowFeedbackButtons_Label>
+    <CC_Settings_ShowFeedbackButtons_Description>Show the Report a Bug and Suggest Something buttons in the top right corner while playing. Beta builds only.</CC_Settings_ShowFeedbackButtons_Description>
+    <CC_Settings_Category_Accessibility>Accessibility</CC_Settings_Category_Accessibility>
+    <CC_Settings_ReduceMotion_Label>Reduce motion</CC_Settings_ReduceMotion_Label>
+    <CC_Settings_ReduceMotion_Description>Stops pulsing and breathing animations on lit panels.</CC_Settings_ReduceMotion_Description>
+    <CC_Settings_HighContrast_Label>High contrast</CC_Settings_HighContrast_Label>
+    <CC_Settings_HighContrast_Description>Brightens system accents and strengthens panel borders.</CC_Settings_HighContrast_Description>
+
+
+    <CC_Settings_Search_Placeholder>Search settings</CC_Settings_Search_Placeholder>
+    <CC_Settings_Search_NoResults>No settings match "{QUERY}".</CC_Settings_Search_NoResults>
+    <CC_Settings_System_Empty>This system has no visible settings.</CC_Settings_System_Empty>
+    <CC_Settings_System_Core>Cosmere Core</CC_Settings_System_Core>
+    <CC_Settings_Unavailable>Setting unavailable</CC_Settings_Unavailable>
+    <CC_Settings_Reset_System>Reset {SYSTEM} to defaults</CC_Settings_Reset_System>
+    <CC_Settings_Reset_Confirm>Reset all {SYSTEM} settings?</CC_Settings_Reset_Confirm>
+    <CC_Settings_Confirm>Confirm</CC_Settings_Confirm>
+    <CC_Settings_Cancel>Cancel</CC_Settings_Cancel>
+    <CC_Settings_Title>Cosmere</CC_Settings_Title>
+<CC_Settings_Close>Close</CC_Settings_Close>
+    <CC_Settings_Choice_None>None</CC_Settings_Choice_None>
+    <CC_Settings_Choice_No>No</CC_Settings_Choice_No>
+    <CC_Settings_Choice_Yes>Yes</CC_Settings_Choice_Yes>
+    <CC_Settings_Range_Maximum>Maximum value</CC_Settings_Range_Maximum>
+    <CC_Settings_Range_Minimum>Minimum value</CC_Settings_Range_Minimum>
+    <CC_Settings_Range_To>to</CC_Settings_Range_To>
+
+</LanguageData>

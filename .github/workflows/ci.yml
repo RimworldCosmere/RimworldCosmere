@@ -1,0 +1,213 @@
+name: CI
+
+# The release workflow only runs on pushes to main/beta/alpha, so nothing built a pull request
+# before it landed. This is the gate that gives contributors a red X instead of a surprise.
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'alpha'
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  prose:
+    name: Prose
+    uses: RimWorks/mod-ci/.github/workflows/prose.yml@v5
+    permissions:
+      contents: read
+
+  links:
+    name: Links
+    uses: RimWorks/mod-ci/.github/workflows/links.yml@v5
+    permissions:
+      contents: read
+    with:
+      args: --config lychee.toml --no-progress README.md CONTRIBUTING.md SECURITY.md chipping-in.md
+
+  build:
+    name: Build and test
+    needs: [ game-image ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Stage game assemblies
+        id: refs
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v5
+        with:
+          image: ${{ needs.game-image.outputs.image-ref }}
+
+      - name: Point msbuild at the refs
+        run: echo "GameManagedDir=${{ steps.refs.outputs.managed-dir }}" >> "$GITHUB_ENV"
+
+      # Generated defs and BetaHubToken.generated.cs are gitignored, so a fresh checkout cannot
+      # compile without this. It tolerates the missing token that a fork PR will have.
+      - name: Run code generation
+        run: make generate
+
+      - name: Restore solution dependencies
+        run: dotnet restore Cosmere.slnx
+
+      - name: Build solution
+        run: dotnet build Cosmere.slnx --configuration Debug --no-restore
+
+      - name: Run tests
+        run: dotnet test Cosmere.slnx --configuration Debug --no-build
+
+  # Same arrangement as RimWorks/Pickle: bake the game once, skip when the buildid has not moved.
+  # A fork PR has no Steam secrets and no packages:write, so it skips instead of failing on creds.
+  game-image:
+    name: RimWorld image
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image-ref: ${{ steps.image.outputs.image-ref }}
+    steps:
+      - name: Build the RimWorld game image
+        id: image
+        uses: RimWorks/steam-game-image-action@v4
+        with:
+          steam-username: ${{ secrets.STEAM_USERNAME }}
+          steam-config-vdf: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+          branch: 'unstable'
+          variant: linux
+          image: ghcr.io/${{ github.repository_owner }}/rimworld-game-runnable
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          skip-if-unchanged: 'true'
+
+  pickle:
+    name: Pickle suite
+    needs: [ game-image ]
+    runs-on: ubuntu-latest
+    # (retries + 1) * run-timeout + 15 < this, so pickle's watchdog always trips first
+    timeout-minutes: 50
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+
+      - name: Stage game assemblies
+        id: refs
+        uses: RimWorks/mod-ci/.github/actions/stage-game-refs@v5
+        with:
+          image: ${{ needs.game-image.outputs.image-ref }}
+
+      - name: Point msbuild at the refs
+        run: echo "GameManagedDir=${{ steps.refs.outputs.managed-dir }}" >> "$GITHUB_ENV"
+
+      # Codegen is gitignored, same as the build job. `quick` is what `make pickle` depends on.
+      - name: Build the mods
+        run: make quick
+
+      - name: Log in to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      # the pickle-run action, not pickle-suite.yml: one leg, no matrix, so the reusable's
+      # prep and merge jobs would run for nothing
+      - uses: RimWorks/mod-ci/.github/actions/pickle-run@v5
+        with:
+          game-image: ${{ needs.game-image.outputs.image-ref }}
+          mod-name: Cosmere - Core
+          mod-dirs: |
+            CosmereCore:Cosmere.Core
+            CosmereRoshar:Cosmere.Roshar
+            CosmereScadrial:Cosmere.Scadrial
+          mod-package-id: |
+            cosmere.core
+            cosmere.scadrial
+            cosmere.roshar
+          backend: concord
+          staged-mods: RimWorks/Rimworld-Quickstarts:Quickstarts:rimworks.quickstarts
+          run-timeout: 15
+          retries: 1
+          timeout-minutes: 50
+          report-dir: ${{ github.workspace }}/pickle-reports
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: pickle-report
+          path: pickle-reports/
+          if-no-files-found: warn
+
+      - name: Upload a flaked attempt
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: pickle-x-server-death
+          path: pickle-reports-x-server-death-*
+          if-no-files-found: ignore
+
+  sonar:
+    name: Sonar
+    needs: [ game-image ]
+    uses: RimWorks/mod-ci/.github/workflows/sonar.yml@v5
+    permissions:
+      contents: read
+      packages: read
+    with:
+      solution: Cosmere.slnx
+      project-key: RimworldCosmere_RimworldCosmere
+      organization: rimworldcosmere
+      dotnet-version: 10.0.x
+      game-image: ${{ needs.game-image.outputs.image-ref }}
+      pre-scan-command: make generate
+      exclusions: Styles/**,Cosmere*/Textures/**,Cosmere*/Assemblies/**,**/bin/**,**/obj/**,**/*.generated.cs
+      coverage-exclusions: CosmereCore/CosmereCore/**/UI/**,CosmereCore/CosmereCore/**/Patch/**,CosmereCore/CosmereQuickstarts/**,Cosmere.Pickle/**,tools/**
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  gate:
+    name: ci gate
+    if: always()
+    needs: [prose, links, game-image, build, pickle, sonar]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RimWorks/mod-ci/.github/actions/gate@v5
+        with:
+          results: ${{ join(needs.*.result, ' ') }}

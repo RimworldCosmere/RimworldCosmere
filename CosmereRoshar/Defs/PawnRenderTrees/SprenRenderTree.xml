@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PawnRenderTreeDef>
+        <defName>Cosmere_Roshar_RenderTree_BondedSpren</defName>
+        <root Class="PawnRenderNodeProperties_Parent">
+            <debugLabel>Root</debugLabel>
+            <tagDef>Root</tagDef>
+            <children>
+                <li>
+                    <debugLabel>Body</debugLabel>
+                    <tagDef>Body</tagDef>
+                    <nodeClass>Cosmere.System.Roshar.Render.PawnRenderNode_SprenBody</nodeClass>
+                    <workerClass>PawnRenderNodeWorker_AnimalBody</workerClass>
+                    <useRottenColor>false</useRottenColor>
+                </li>
+            </children>
+        </root>
+    </PawnRenderTreeDef>
+</Defs>

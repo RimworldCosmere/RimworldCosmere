@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Disintegrate</defName>
+        <label>Disintegrate</label>
+        <description>Focus the Surge of Division on a structure and watch it come apart. The material does not shatter or collapse. It simply ceases to hold together, crumbling to dust that scatters in the wind. Nothing is left to salvage. The matter is gone, broken down past the point of recovery. Higher Ideals allow you to unmake even the toughest materials.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Division.Disintegrate</abilityClass>
+        <beuPerTick>15</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>1</minIdeal>
+        <orderMinIdeal>
+            <li><order>Skybreaker</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+        <hostile>true</hostile>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>10</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>true</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetLocations>true</canTargetLocations>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

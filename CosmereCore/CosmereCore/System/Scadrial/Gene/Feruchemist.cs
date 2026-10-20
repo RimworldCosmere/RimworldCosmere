@@ -1,0 +1,1030 @@
+using System.Diagnostics.CodeAnalysis;
+using Cosmere.Core.Def;
+using Cosmere.Core.Need;
+using Cosmere.Core.Savant;
+using Cosmere.Core.Util;
+using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Feruchemy;
+using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
+using Cosmere.System.Scadrial.Feruchemy.Hediff;
+using Cosmere.System.Scadrial.Feruchemy.Ledger;
+using Cosmere.System.Scadrial.Savant;
+using Cosmere.System.Scadrial.Util;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Scadrial.Gene;
+
+// Which stored pool the tap controls act on.
+public enum FeruchemyChannel {
+    Ordinary,
+    Compounded,
+}
+
+public class Feruchemist : Metalborn {
+    // The dial's neutral point. Below it the pawn taps, above it they store.
+    public const float IdleTarget = 50f;
+    public const float MaxSeverity = FeruchemyRate.MaxSeverity;
+
+    private List<IMetalmindSource>? cachedMetalminds;
+    private HediffDef? cachedPermanentHediffDef;
+    private HediffDef? cachedSavantHediffDef;
+    private int cachedSavantStage;
+    private HediffDef? cachedStoreHediffDef;
+
+    private HediffDef? cachedTapHediffDef;
+    private int metalmindsLastCachedTick = -1;
+    private HediffDef? cachedTapCompoundedHediffDef;
+    private float savantDecayOffset;
+    private readonly ChargeLedger chargeLedger = new ChargeLedger();
+
+    /// <summary>
+    ///     The compounded pool has its own dial: below idle it taps, above idle it compounds,
+    ///     burning allomantic reserve to fill itself.
+    /// </summary>
+    public float compoundedTargetValue = IdleTarget;
+
+    /// <summary>
+    ///     The target vocabulary lives with the matcher that reads it. These keep the gene's own
+    ///     callers spelling it the way they always have.
+    /// </summary>
+    public const string TargetAll = MetalmindDistribution.TargetAll;
+
+    public const string TargetExternal = MetalmindDistribution.TargetExternal;
+
+    public const string TargetInternal = MetalmindDistribution.TargetInternal;
+
+    /// <summary>
+    ///     Which metalmind the dials act on: one of the group tokens above, or a single
+    ///     metalmind's SourceId.
+    /// </summary>
+    public string targetMetalmindId = TargetAll;
+
+    // Which tie duralumin's dial spends. A ledger with no capacity parks the dial.
+    public DuraluminLedger targetLedger = DuraluminLedger.Residence;
+
+    // Which Shard the Shard ledger acts on. Seeded once, then the player's to change.
+    public string targetShardDefName = string.Empty;
+
+    /// <summary>
+    ///     Duralumin moves whole points and each dial pays out a fraction of one a second, so an ask banks
+    ///     here until it is worth a point. A bank holds intent, never charge.
+    /// </summary>
+    private float ordinaryCarry;
+
+    private float compoundedCarry;
+
+    // What the banks were filled for. A dial pointed somewhere new banks nothing from the old tie.
+    private string? bankedKey;
+
+    /// <summary>
+    ///     Whether the dial is pointed at the compounded pool. Held here, not the panel, so a metal
+    ///     that stops paying out can end the mode instead of just parking it.
+    /// </summary>
+    public bool compounding;
+
+    // How hard the dial is calling for compounding, nought to one.
+    public float CompoundFraction =>
+        Mathf.Clamp01((compoundedTargetValue - IdleTarget) / (100f - IdleTarget));
+
+    public bool CanTapAny => CanTap || CanTapCompounded;
+
+    public List<IMetalmindSource> Metalminds {
+        get {
+            int now = Find.TickManager.TicksGame;
+            if (cachedMetalminds != null && metalmindsLastCachedTick == now) return cachedMetalminds;
+
+            cachedMetalminds = [];
+            List<Verse.Thing> items = pawn.inventory.innerContainer.InnerListForReading;
+            for (int i = 0; i < items.Count; i++) {
+                Metalmind? comp = items[i].TryGetComp<Metalmind>();
+                if (comp != null && SameMetal(comp.Metal)) cachedMetalminds.Add(comp);
+            }
+
+            ImplantedMetalminds? implantHediff =
+                pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as
+                    ImplantedMetalminds;
+            if (implantHediff != null) {
+                for (int i = 0; i < implantHediff.metalminds.Count; i++) {
+                    ImplantedMetalmindData data = implantHediff.metalminds[i];
+                    if (SameMetal(data.Metal)) cachedMetalminds.Add(data);
+                }
+            }
+
+            metalmindsLastCachedTick = now;
+            return cachedMetalminds;
+        }
+    }
+
+    // The single metalmind the dials act on, or none while pointed at a group.
+    public IMetalmindSource? SelectedSource {
+        get {
+            if (IsGroupTarget(targetMetalmindId)) return null;
+
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].SourceId == targetMetalmindId) return mms[i];
+            }
+
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     Gets a value indicating whether everything the dials can currently reach is implanted, which is the condition
+    ///     for compounding. True for a single implant or the internal group.
+    /// </summary>
+    public bool TargetIsInternalOnly {
+        get {
+            if (SelectedSource is { IsImplanted: true }) return true;
+            if (targetMetalmindId != TargetInternal) return false;
+
+            // burning can empty the group entirely; an empty group is not something to compound into.
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].IsImplanted) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public static bool IsGroupTarget(string target) {
+        return MetalmindDistribution.IsGroupTarget(target);
+    }
+
+    /// <summary>
+    ///     Whether a candidate names this gene's metal. A metal is declared twice, as MetalDef and as the
+    ///     richer MetallicArtsMetalDef, so the two are never the same object: compare by defName.
+    /// </summary>
+    /// <returns>True when the candidate's defName matches this gene's metal. False when the candidate is null.</returns>
+    private bool SameMetal(Core.Def.MetalDef? candidate) {
+        return candidate != null && candidate.defName == Metal.defName;
+    }
+
+    private float ActualMax {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                total += mms[i].MaxAmount;
+            }
+
+            return total;
+        }
+    }
+
+    private float ActualValue {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                total += mms[i].StoredAmount;
+            }
+
+            return total;
+        }
+    }
+
+    public float CompoundedAmount => ActualCompounded;
+
+    private float ActualCompounded {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                total += mms[i].CompoundedAmount;
+            }
+
+            return total;
+        }
+    }
+
+    /// <summary>
+    ///     Gets the room left in the one metalmind compounding is filling right now. Deposits go in
+    ///     order, so this is the first one that will accept charge.
+    /// </summary>
+    public float CurrentCompoundedFreeSpace {
+        get {
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanStoreCompounded) return mms[i].FreeSpace;
+            }
+
+            return 0f;
+        }
+    }
+
+    // Room left across every metalmind this pawn can actually compound into.
+    public float CompoundedFreeSpace {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = Metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanStoreCompounded) total += mms[i].FreeSpace;
+            }
+
+            return total;
+        }
+    }
+
+    public override float InitialResourceMax => 100f;
+
+    [SuppressMessage("Major Code Smell", "S4275", Justification = "Gene_Resource.max is vanilla's fixed cap; this override reports a fixed percentage scale instead")]
+    public override float Max => 100f;
+
+    public override float Value {
+        get => ActualMax <= 0f ? 0f : (ActualValue + ActualCompounded) / ActualMax * Max;
+        set {
+            if (ActualMax <= 0f) return;
+            ApplyPooledValue(value);
+        }
+    }
+
+    /// <summary>Moves the pool to what was asked for, spread over every metalmind that will take it.</summary>
+    private void ApplyPooledValue(float value) {
+        float targetTotal = value / Max * ActualMax;
+        float delta = targetTotal - (ActualValue + ActualCompounded);
+        List<IMetalmindSource> mms = Metalminds;
+
+        if (delta > 0f) {
+            FillMetalminds(mms, delta);
+            return;
+        }
+
+        if (delta < 0f) DrainMetalminds(mms, -delta);
+    }
+
+    private static void FillMetalminds(List<IMetalmindSource> mms, float delta) {
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanStore) continue;
+            float add = Mathf.Min(mms[i].FreeSpace, delta);
+            if (add > 0f) {
+                mms[i].AddStored(add);
+                delta -= add;
+            }
+        }
+    }
+
+    private void DrainMetalminds(List<IMetalmindSource> mms, float delta) {
+        delta = DrainStored(mms, delta);
+
+        // setting Value directly must reach zero, so it falls through to compounded; the tap path does not.
+        if (DrainCompounded(mms, delta)) SweepBurnedOut();
+    }
+
+    private static float DrainStored(List<IMetalmindSource> mms, float delta) {
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanTap) continue;
+            float remove = Mathf.Min(mms[i].StoredAmount, delta);
+            if (remove > 0f) {
+                mms[i].ConsumeStored(remove);
+                delta -= remove;
+            }
+        }
+
+        return delta;
+    }
+
+    private static bool DrainCompounded(List<IMetalmindSource> mms, float delta) {
+        bool drew = false;
+        for (int i = 0; i < mms.Count && delta > 0f; i++) {
+            if (!mms[i].CanTapCompounded) continue;
+            float remove = Mathf.Min(mms[i].CompoundedAmount, delta);
+            if (remove > 0f) {
+                mms[i].ConsumeCompounded(remove);
+                delta -= remove;
+                drew = true;
+            }
+        }
+
+        return drew;
+    }
+
+    private HediffDef? TapHediffDef =>
+        cachedTapHediffDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + Metal.defName);
+
+    private HediffDef? StoreHediffDef =>
+        cachedStoreHediffDef ??=
+            DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + Metal.defName);
+
+    private HediffDef? TapCompoundedHediffDef =>
+        cachedTapCompoundedHediffDef ??=
+            DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_TapCompounded" + Metal.defName);
+
+    private HediffDef? SavantHediffDef =>
+        cachedSavantHediffDef ??= ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(Metal);
+
+    private HediffDef? PermanentHediffDef =>
+        cachedPermanentHediffDef ??= ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(Metal);
+
+    /// <summary>
+    ///     Gets a value indicating whether this gene stores real Investiture. Nicrosil's charge is the pawn's own Investiture
+    ///     rather than a notional attribute, so the pawn sits at the far end of every transfer it makes.
+    /// </summary>
+    private bool StoresInvestiture => Metal == MetallicArtsMetalDefOf.Nicrosil;
+
+    private Investiture? InvestitureNeed => StoresInvestiture ? pawn.needs?.TryGetNeed<Investiture>() : null;
+
+    /// <summary>
+    ///     Gets a value indicating whether this gene stores real Connection. Duralumin's charge is the pawn's own Connection,
+    ///     counted in points, so it puts the pawn at the far end of every transfer the way nicrosil does.
+    /// </summary>
+    public bool StoresConnection => Metal == MetallicArtsMetalDefOf.Duralumin;
+
+    private IConnectionLedger? cachedLedger;
+    private ConnectionKey? cachedLedgerKey;
+    private bool ledgerResolved;
+    private DuraluminLedger resolvedFor;
+    private string resolvedForShard = string.Empty;
+
+    /// <summary>
+    ///     Gets the ledger the dial names, or none for a ledger with no capacity and for a Shard this save
+    ///     does not have. Cached, because the dock reads it every frame through the capacity readout.
+    /// </summary>
+    public IConnectionLedger? SelectedLedger {
+        get {
+            if (!StoresConnection) return null;
+            ResolveLedger();
+
+            return cachedLedger;
+        }
+    }
+
+    // The name a transfer is filed under on the metalmind, or none when the dial reaches nothing.
+    private ConnectionKey? TransferKey {
+        get {
+            if (!StoresConnection) return null;
+            ResolveLedger();
+
+            return cachedLedgerKey;
+        }
+    }
+
+    private void ResolveLedger() {
+        if (targetLedger != DuraluminLedger.Residence && targetLedger != DuraluminLedger.Shard) {
+            targetLedger = DuraluminLedger.Residence;
+        }
+
+        if (ledgerResolved && resolvedFor == targetLedger && resolvedForShard == targetShardDefName) return;
+
+        ledgerResolved = true;
+        resolvedFor = targetLedger;
+        resolvedForShard = targetShardDefName;
+        cachedLedger = null;
+        cachedLedgerKey = null;
+        if (ConnectionBudget.Capacity(targetLedger) <= 0) return;
+
+        switch (targetLedger) {
+            case DuraluminLedger.Residence:
+                cachedLedger = new ResidenceLedger();
+                break;
+            case DuraluminLedger.Shard:
+                // a disabled Shard reads 0 earned but full headroom, which would spin the tap dial forever.
+                ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(targetShardDefName);
+                if (shard == null || !ShardUtility.IsEnabled(shard)) return;
+
+                cachedLedger = new ShardLedger(shard);
+                break;
+            default:
+                return;
+        }
+
+        cachedLedgerKey = ConnectionKey.For(targetLedger, targetShardDefName);
+    }
+
+    /// <summary>
+    ///     Picks the Shard this gene banks against, once, and scribes it, so charge banked against one Shard
+    ///     is only ever given back to it. The player retargets from the selector; this is the opening guess.
+    /// </summary>
+    private void EnsureShardTarget() {
+        if (!StoresConnection || !string.IsNullOrEmpty(targetShardDefName)) return;
+
+        CosmereWorldDef? world = WorldUtility.Primary;
+        if (world == null) return;
+
+        for (int i = 0; i < world.nativeShards.Count; i++) {
+            if (!ShardUtility.IsEnabled(world.nativeShards[i])) continue;
+
+            targetShardDefName = world.nativeShards[i].defName;
+
+            return;
+        }
+    }
+
+    /// <summary>
+    ///     Gets why duralumin's dial is parked, for the selector to show, or none when it can move. Covers
+    ///     invalid choices and a valid tie with nothing left in either direction.
+    /// </summary>
+    public string? LedgerBlockedReason {
+        get {
+            if (!StoresConnection) return null;
+            if (SelectedLedger != null) {
+                RefreshConnectionBudget();
+                if (connectionStorable > 0f || connectionTappable > 0f) return null;
+
+                string tie = targetLedger switch {
+                    DuraluminLedger.Residence => "CS_Duralumin_Ledger_Residence".Translate().Resolve(),
+                    DuraluminLedger.Shard => DefDatabase<ShardDef>
+                        .GetNamedSilentFail(targetShardDefName)?.LabelCap ?? targetShardDefName,
+                    _ => string.Empty,
+                };
+
+                return "CS_Duralumin_LedgerEmpty".Translate(tie.Named("TIE")).Resolve();
+            }
+
+            if (ConnectionBudget.Capacity(targetLedger) <= 0) {
+                return "CS_Duralumin_LedgerHasNoCapacity".Translate().Resolve();
+            }
+
+            if (string.IsNullOrEmpty(targetShardDefName)) return "CS_Duralumin_NoShardSelected".Translate().Resolve();
+
+            ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(targetShardDefName);
+            string label = shard != null ? shard.LabelCap : targetShardDefName;
+
+            return "CS_Duralumin_ShardUnreachable".Translate(label.Named("SHARD")).Resolve();
+        }
+    }
+
+    // Charge the metalminds this dial reaches already hold under the key it names.
+    public float StoredForLedger {
+        get {
+            ConnectionKey? key = TransferKey;
+            if (key == null) return 0f;
+
+            float total = 0f;
+            List<IMetalmindSource> mms = Metalminds;
+            string target = targetMetalmindId;
+            for (int i = 0; i < mms.Count; i++) {
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
+                total += mms[i].StoredFor(key.Value);
+            }
+
+            return total;
+        }
+    }
+
+    private int connectionBudgetTick = -1;
+    private DuraluminLedger connectionBudgetLedger;
+    private string connectionBudgetShard = string.Empty;
+    private string connectionBudgetTarget = string.Empty;
+    private float connectionStorable;
+    private float connectionTappable;
+
+    /// <summary>
+    ///     Rereads how much Connection the dial may move in each direction. Both bounds come off one read of
+    ///     the ledger, memoized per tick because the dock's capacity readout asks four times a frame.
+    /// </summary>
+    private void RefreshConnectionBudget() {
+        int now = Find.TickManager.TicksGame;
+        if (connectionBudgetTick == now &&
+            connectionBudgetLedger == targetLedger &&
+            connectionBudgetShard == targetShardDefName &&
+            connectionBudgetTarget == targetMetalmindId) {
+            return;
+        }
+
+        connectionBudgetTick = now;
+        connectionBudgetLedger = targetLedger;
+        connectionBudgetShard = targetShardDefName;
+        connectionBudgetTarget = targetMetalmindId;
+
+        IConnectionLedger? ledger = SelectedLedger;
+        if (ledger == null) {
+            connectionStorable = 0f;
+            connectionTappable = 0f;
+
+            return;
+        }
+
+        float stored = StoredForLedger;
+        connectionStorable = ConnectionBudget.Storable(ledger.CurrentPoints(pawn), stored, targetLedger);
+        connectionTappable = ConnectionBudget.Tappable(ledger.HeadroomPoints(pawn), stored, targetLedger);
+    }
+
+    /// <summary>
+    ///     Paces a compounded burn. Neither nicrosil nor duralumin gets a stage ladder for one to amplify
+    ///     through, so the burn pays out faster instead of larger: the same charge, a tenth of the time.
+    /// </summary>
+    /// <returns>The rate sped up by the compounded multiplier for nicrosil and duralumin, and the rate unchanged for every other metal.</returns>
+    private float CompoundedBurnRate(float perSecond) {
+        return StoresInvestiture || StoresConnection
+            ? perSecond * CompoundedTap.EffectMultiplier
+            : perSecond;
+    }
+
+    /// <summary>
+    ///     Gets the charge the pawn still has to give. Every other metal stores something notional, so only
+    ///     nicrosil's owner and duralumin's ledger bound it.
+    /// </summary>
+    private float StorableFromPawn {
+        get {
+            if (StoresConnection) {
+                RefreshConnectionBudget();
+
+                return connectionStorable;
+            }
+
+            Investiture? need = InvestitureNeed;
+
+            return need == null
+                ? float.PositiveInfinity
+                : InvestitureBudget.Storable(need.CurLevel, ScadrialMetallurgyConstants.NicrosilBeuPerCharge);
+        }
+    }
+
+    // The mirror of that floor: charge the pawn has room to take back.
+    private float TappableToPawn {
+        get {
+            if (StoresConnection) {
+                RefreshConnectionBudget();
+
+                return connectionTappable;
+            }
+
+            Investiture? need = InvestitureNeed;
+
+            return need == null
+                ? float.PositiveInfinity
+                : InvestitureBudget.Tappable(
+                    need.CurLevel,
+                    need.MaxLevel,
+                    ScadrialMetallurgyConstants.NicrosilBeuPerCharge
+                );
+        }
+    }
+
+    public bool CanTap {
+        get {
+            if (TappableToPawn <= 0f) return false;
+
+            List<IMetalmindSource> mms = Metalminds;
+            string target = targetMetalmindId;
+            for (int i = 0; i < mms.Count; i++) {
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
+                if (mms[i].CanTap) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool CanTapCompounded {
+        get {
+            if (TappableToPawn <= 0f) return false;
+
+            List<IMetalmindSource> mms = Metalminds;
+            string target = targetMetalmindId;
+            for (int i = 0; i < mms.Count; i++) {
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
+                if (mms[i].CanTapCompounded) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool CanStoreCompounded {
+        get {
+            if (StorableFromPawn <= 0f) return false;
+
+            List<IMetalmindSource> mms = Metalminds;
+            string target = targetMetalmindId;
+            for (int i = 0; i < mms.Count; i++) {
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
+                if (mms[i].CanStoreCompounded) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool IsTapping =>
+        (TapHediffDef != null && pawn.health.hediffSet.HasHediff(TapHediffDef)) ||
+        (TapCompoundedHediffDef != null && pawn.health.hediffSet.HasHediff(TapCompoundedHediffDef));
+
+    public bool CanStore {
+        get {
+            if (StorableFromPawn <= 0f) return false;
+
+            List<IMetalmindSource> mms = Metalminds;
+            string target = targetMetalmindId;
+            for (int i = 0; i < mms.Count; i++) {
+                if (!MetalmindDistribution.MatchesTarget(mms[i], target)) continue;
+                if (mms[i].CanStore) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool IsStoring => StoreHediffDef != null && pawn.health.hediffSet.HasHediff(StoreHediffDef);
+
+    /// <summary>
+    ///     Gets a value indicating whether the compounded dial is clear of its rest point. Inside the dead band SeverityForTarget
+    ///     is 0, so the dial moves nothing and this must read false.
+    /// </summary>
+    public bool IsCompounding => Mathf.Abs(compoundedTargetValue - IdleTarget) >= DeadBand;
+
+    /// <summary>
+    ///     Gets a value indicating whether either channel is storing. Compounding pours charge into a metalmind exactly as storing
+    ///     does, so it counts as storing too, mirroring isTapping, which already covers both channels.
+    /// </summary>
+    public bool IsStoringAny => IsStoring || (compoundedTargetValue > IdleTarget && CanStoreCompounded);
+
+    /// <summary>
+    ///     Gets the per-metal pacing, applied to every path that moves charge so the dial readout and the
+    ///     actual drain cannot drift apart. One figure for both directions.
+    /// </summary>
+    public float RateMultiplier => Metal.feruchemy?.rateMultiplier ?? 1f;
+
+    /// <summary>
+    ///     Gets how far skill and strength stretch a metalmind. They buy duration, not magnitude: the ladder
+    ///     pays the same for everyone, but a master draws on it slower and runs longer on one metalmind.
+    /// </summary>
+    public float Efficiency {
+        get {
+            SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
+
+            return FeruchemyRate.Efficiency(
+                pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower),
+                skill?.Level ?? 0,
+                SavantUtility.GetFeruchemicalPowerMultiplier(cachedSavantStage)
+            );
+        }
+    }
+
+    /// <summary>
+    ///     Gets what the compounded dial is moving: negative while tapping it, positive while compounding
+    ///     into it. Zero inside the dead band.
+    /// </summary>
+    public float CompoundedRatePerSecond {
+        get {
+            float severity = SeverityForTarget(compoundedTargetValue);
+            if (severity <= 0f) return 0f;
+
+            float perSecond = FeruchemyRate.PerSecond(severity, RateMultiplier, Efficiency);
+
+            if (compoundedTargetValue > IdleTarget) {
+                return CanStoreCompounded ? perSecond : 0f;
+            }
+
+            return CanTapCompounded ? -CompoundedBurnRate(perSecond) : 0f;
+        }
+    }
+
+    /// <summary>
+    ///     Gets the charge both dials move together. Both run at once, so the readout carries the pair or it
+    ///     understates what is happening.
+    /// </summary>
+    public float TransferRatePerSecond => DialRatePerSecond + CompoundedRatePerSecond;
+
+    private float DialRatePerSecond {
+        get {
+            float severity = EffectiveSeverity;
+            if (severity <= 0f) return 0f;
+
+            float perSecond = FeruchemyRate.PerSecond(severity, RateMultiplier, Efficiency);
+
+            if (targetValue < IdleTarget) return CanTap ? -perSecond : 0f;
+            return CanStore ? perSecond : 0f;
+        }
+    }
+
+    private const float DeadBand = 2f;
+    private const float CurveExponent = 2.5f;
+
+    /// <summary>
+    ///     One step per severity point, which is also one step per rung of the hediff ladder. The dial cannot
+    ///     land between two stages and pay for one it does not get.
+    /// </summary>
+    public const float RateQuantum = FeruchemyRate.AmountPerSecond;
+
+    private static float SeverityQuantum => RateQuantum / FeruchemyRate.AmountPerSecond;
+
+    private float EffectiveSeverity => SeverityForTarget(targetValue);
+
+    private static float SeverityForTarget(float target) {
+        float delta = target - IdleTarget;
+        if (Mathf.Abs(delta) < DeadBand) return 0f;
+
+        float normalized = Mathf.Abs(delta) / 50f;
+
+        return 1f + Mathf.Pow(normalized, CurveExponent) * (MaxSeverity - 1f);
+    }
+
+    // Inverse of the curve above.
+    private static float TargetForSeverity(float severity, bool storing) {
+        float normalized = Mathf.Clamp01((severity - 1f) / (MaxSeverity - 1f));
+        float delta = 50f * Mathf.Pow(normalized, 1f / CurveExponent);
+
+        return IdleTarget + (storing ? delta : -delta);
+    }
+
+    // Nudges a raw dial position onto the nearest rate step.
+    public static float SnapTarget(float rawTarget) {
+        if (Mathf.Abs(rawTarget - IdleTarget) < DeadBand) return IdleTarget;
+
+        bool storing = rawTarget > IdleTarget;
+        float snapped = Mathf.Round(SeverityForTarget(rawTarget) / SeverityQuantum) * SeverityQuantum;
+
+        float floor = SeverityForTarget(IdleTarget + (storing ? DeadBand : -DeadBand));
+        float ceiling = SeverityForTarget(storing ? 100f : 0f);
+
+        // clamp to the dead band's severity: rounding up left every ladder's first rung unreachable.
+        snapped = Mathf.Clamp(snapped, floor, ceiling);
+
+        return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
+    }
+
+    private void TryRemoveHediffByDef(HediffDef? def) {
+        if (def == null) return;
+        Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(def);
+        if (hediff != null) pawn.health.RemoveHediff(hediff);
+    }
+
+    public override void Reset() {
+        TryRemoveHediffByDef(TapCompoundedHediffDef);
+        compoundedTargetValue = IdleTarget;
+        targetValue = IdleTarget;
+        TryRemoveHediffByDef(StoreHediffDef);
+        TryRemoveHediffByDef(TapHediffDef);
+        ordinaryCarry = 0f;
+        compoundedCarry = 0f;
+    }
+
+    protected override void PostAddOrRemove() {
+        MetalbornUtility.SyncFullFeruchemistTrait(pawn);
+        MetalbornUtility.SyncFeruchemistTrait(pawn);
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+
+        Scribe_Values.Look(ref targetValue, "targetValue", IdleTarget);
+        Scribe_Values.Look(ref compoundedTargetValue, "compoundedTargetValue", IdleTarget);
+        Scribe_Values.Look(ref targetMetalmindId, "targetMetalmindId", string.Empty);
+        Scribe_Values.Look(ref targetLedger, "targetLedger", DuraluminLedger.Residence);
+        Scribe_Values.Look(ref targetShardDefName, "targetShardDefName", string.Empty);
+        Scribe_Values.Look(ref compounding, "compounding");
+        Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
+    }
+
+    public override void TickInterval(int delta) {
+        base.TickInterval(delta);
+
+        if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
+
+        TickCopper();
+        EnsureShardTarget();
+        SyncConnectionBank();
+
+        // compounding needs an implant; ended here so it holds when the panel is closed.
+        if (compounding && !TargetIsInternalOnly) {
+            compounding = false;
+            compoundedTargetValue = IdleTarget;
+        }
+
+        if (!CanTapAny && IsTapping && !IsCompounding) Reset();
+        if (!CanStore && IsStoring && !IsCompounding) Reset();
+        TickSeverityHediffs();
+        TickStoreOrTap();
+        TickXPGain(delta);
+        UpdateFeruchemicalSavantProgression(delta);
+    }
+
+    private void TickCopper() {
+        if (Metal != MetallicArtsMetalDefOf.Copper) return;
+        List<IMetalmindSource> mms = Metalminds;
+        for (int i = 0; i < mms.Count; i++) {
+            if (mms[i] is Metalmind mm) mm.SyncInjectedThoughts(pawn);
+        }
+    }
+
+    private void TickSeverityHediffs() {
+        // no early out on the stored dial: it let compounded charge drain with no hediff to show.
+        float ordinary = SeverityForTarget(targetValue);
+        if (targetValue < IdleTarget && CanTap && ordinary > 0f) {
+            TryRemoveHediffByDef(StoreHediffDef);
+            if (TapHediffDef != null) pawn.health.GetOrAddHediff(TapHediffDef).Severity = ordinary;
+        } else if (targetValue > IdleTarget && CanStore && ordinary > 0f) {
+            TryRemoveHediffByDef(TapHediffDef);
+            pawn.health.GetOrAddHediff(StoreHediffDef).Severity = ordinary;
+        } else {
+            TryRemoveHediffByDef(TapHediffDef);
+            TryRemoveHediffByDef(StoreHediffDef);
+        }
+
+        // the compounded pool runs alongside rather than instead, so both ladders can be lit at once.
+        float compounded = SeverityForTarget(compoundedTargetValue);
+        if (compoundedTargetValue < IdleTarget && CanTapCompounded && compounded > 0f) {
+            if (TapCompoundedHediffDef != null) {
+                pawn.health.GetOrAddHediff(TapCompoundedHediffDef).Severity = compounded;
+            }
+        } else {
+            TryRemoveHediffByDef(TapCompoundedHediffDef);
+        }
+    }
+
+    private void TickStoreOrTap() {
+        // reads the curve, not hediff severity: reading it back would apply the 10x twice.
+        float efficiency = Efficiency;
+        float rateMultiplier = RateMultiplier;
+
+        // what the pawn can still trade this tick, so it cannot overshoot the budget TickInterval parks the dial on.
+        float storable = StorableFromPawn;
+        float tappable = TappableToPawn;
+
+        float ordinary = SeverityForTarget(targetValue);
+        if (ordinary > 0f) {
+            float perSecond = FeruchemyRate.PerSecond(ordinary, rateMultiplier, efficiency);
+            if (targetValue > IdleTarget && CanStore) {
+                float moved = AddToStore(TransferAsk(ref ordinaryCarry, perSecond, storable, true));
+                storable -= moved;
+                chargeLedger.Stored(moved);
+                SettleConnection(moved, true);
+            } else if (targetValue < IdleTarget && CanTap) {
+                float moved = RemoveFromStore(TransferAsk(ref ordinaryCarry, perSecond, tappable, false));
+                tappable -= moved;
+                chargeLedger.Tapped(moved);
+                SettleConnection(moved, false);
+            }
+        }
+
+        // fills at the ordinary rate; the burn out is what compounds, and it eats the metalmind.mind.
+        float compounded = SeverityForTarget(compoundedTargetValue);
+        if (compounded > 0f) {
+            float compoundedPerSecond = FeruchemyRate.PerSecond(compounded, rateMultiplier, efficiency);
+
+            if (compoundedTargetValue > IdleTarget) {
+                if (CanStore) {
+                    float moved = AddToStore(TransferAsk(ref compoundedCarry, compoundedPerSecond, storable, true));
+                    chargeLedger.Stored(moved);
+                    SettleConnection(moved, true);
+                }
+            } else if (CanTapCompounded) {
+                float moved = RemoveCompoundedFromStore(
+                    TransferAsk(ref compoundedCarry, CompoundedBurnRate(compoundedPerSecond), tappable, false)
+                );
+                chargeLedger.Tapped(moved);
+                SettleConnection(moved, false);
+            }
+        }
+
+        // drained from the ledger, not a hediff: compound-fill leaves the pawn without one.
+        MirrorToInvestiture(chargeLedger.Drain());
+    }
+
+    // A dial pointed somewhere new banks nothing from where it used to point.
+    private void SyncConnectionBank() {
+        string? key = TransferKey?.Name;
+        if (bankedKey == key) return;
+
+        bankedKey = key;
+        ordinaryCarry = 0f;
+        compoundedCarry = 0f;
+    }
+
+    // Every metal but duralumin passes its ask straight through; duralumin banks it to a whole point.
+    private float TransferAsk(ref float carry, float perSecond, float budget, bool storing) {
+        return StoresConnection
+            ? ConnectionCarry.Bank(ref carry, perSecond, budget, storing)
+            : Mathf.Min(perSecond, budget);
+    }
+
+    /// <summary>
+    ///     Moves the pawn's Connection to match what the metalmind just moved, then settles on whichever side
+    ///     moved more. Settled per move: a netted tick hides two half-failed moves that cancel out.
+    /// </summary>
+    private void SettleConnection(float chargeMoved, bool storing) {
+        if (!StoresConnection || chargeMoved <= 0f) return;
+
+        IConnectionLedger? ledger = SelectedLedger;
+        if (ledger == null) return;
+
+        float signed = ledger.Move(pawn, ConnectionSettlement.Ask(chargeMoved, storing));
+        ConnectionSettlement due = ConnectionSettlement.Resolve(chargeMoved, storing, signed);
+
+        float unsettled = 0f;
+        if (due.MetalmindCharge > 0f) {
+            unsettled = due.MetalmindCharge - AddToStore(due.MetalmindCharge);
+        } else if (due.MetalmindCharge < 0f) {
+            unsettled = -due.MetalmindCharge - RemoveFromStore(-due.MetalmindCharge);
+        } else if (due.PawnPoints != 0f) {
+            float back = ledger.Move(pawn, due.PawnPoints);
+            unsettled = ConnectionBudget.ChargeForPoints(Mathf.Abs(due.PawnPoints - back));
+        }
+
+        if (unsettled <= 0f) return;
+
+        Log.Warn(
+            $"Duralumin: {unsettled:F1} of a {chargeMoved:F1} charge transfer went unsettled for {pawn.LabelShort}"
+        );
+    }
+
+    /// <summary>
+    ///     Takes the same charge out of the pawn's Investiture. Nicrosil's charge is the pawn's own Investiture,
+    ///     so what the metalmind gains is exactly what the pawn gives up.
+    /// </summary>
+    private void MirrorToInvestiture(float chargeMoved) {
+        if (chargeMoved == 0f) return;
+
+        Investiture? need = InvestitureNeed;
+        if (need == null) return;
+
+        need.CurLevel = Mathf.Clamp(
+            need.CurLevel - chargeMoved * ScadrialMetallurgyConstants.NicrosilBeuPerCharge,
+            0f,
+            need.MaxLevel
+        );
+    }
+
+    private void TickXPGain(int delta) {
+        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
+
+        // burning is the allomantic half, so only the compounded tap teaches allomancy.
+        if (compoundedTargetValue < IdleTarget && CanTapCompounded) {
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
+                .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
+        } else if (IsTapping || IsStoringAny) {
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                .Learn(
+                    Mathf.Lerp(1, 2, EffectiveSeverity) * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval
+                );
+        }
+    }
+
+    public float AddToStore(float amount) {
+        return MoveCharge(MetalmindOperation.Store, amount);
+    }
+
+    public float AddCompoundedToStore(float amount) {
+        return MoveCharge(MetalmindOperation.StoreCompounded, amount);
+    }
+
+    public float RemoveCompoundedFromStore(float amount) {
+        float moved = MoveCharge(MetalmindOperation.TapCompounded, amount);
+
+        if (moved > 0f) SweepBurnedOut();
+
+        return moved;
+    }
+
+    /// <summary>
+    ///     Clears out burned-out metalminds. One emptied of compounded charge has no capacity left, so it is
+    ///     gone, and the cache is dropped because the sweep can remove entries it holds.
+    /// </summary>
+    private void SweepBurnedOut() {
+        MetalmindBurnout.Sweep(pawn);
+        cachedMetalminds = null;
+    }
+
+    /// <summary>
+    ///     Hands an amount to the matching metalminds. The operation picks the bound as well as the work, so a
+    ///     tap cannot be walked unbounded, and metalminds are read fresh in case one burned out mid-tick.
+    /// </summary>
+    /// <returns>How much charge actually moved, which is 0 when no metalmind matches the dial's target or none of them will take any.</returns>
+    private float MoveCharge(MetalmindOperation operation, float amount) {
+        return MetalmindDistribution.Transfer(Metalminds, operation, targetMetalmindId, TransferKey, amount);
+    }
+
+    public float RemoveFromStore(float amount) {
+        return MoveCharge(MetalmindOperation.Tap, amount);
+    }
+
+    public override IEnumerable<Verse.Gizmo> GetGizmos() {
+        return [];
+    }
+
+    private void UpdateFeruchemicalSavantProgression(int delta) {
+        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
+        if (!SavantUtility.CanBeSavant(Metal)) return;
+
+        int previousStage = cachedSavantStage;
+        RecordDef storingRecord = RecordDefOf.GetTimeSpentStoringForMetal(Metal);
+        RecordDef tappingRecord = RecordDefOf.GetTimeSpentTappingForMetal(Metal);
+        float ticks = pawn.records.GetValue(storingRecord) + pawn.records.GetValue(tappingRecord) - savantDecayOffset;
+        int newStage = SavantUtility.GetFeruchemicalStage(ticks);
+
+        if (newStage == 1 && !IsTapping && !IsStoringAny) {
+            float decayAmount = ticks *
+                                SavantUtility.Stage1DecayPerDayFraction /
+                                GenDate.TicksPerDay *
+                                GenTicks.TickLongInterval;
+            savantDecayOffset += decayAmount;
+            ticks -= decayAmount;
+            newStage = SavantUtility.GetFeruchemicalStage(ticks);
+        }
+
+        cachedSavantStage = newStage;
+
+        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, SavantHediffDef, PermanentHediffDef);
+
+        if (newStage > previousStage && newStage > 0) {
+            SavantUtility.SendSavantLetter(pawn, newStage, "Feruchemy", Metal.LabelCap);
+        }
+    }
+}

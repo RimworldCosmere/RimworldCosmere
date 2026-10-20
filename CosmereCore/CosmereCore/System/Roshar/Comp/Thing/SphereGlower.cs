@@ -1,0 +1,169 @@
+using Cosmere.Core;
+using Cosmere.Core.Comp.Thing;
+using Cosmere.Core.Def;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Roshar.Comp.Thing;
+
+public class SphereGlowerProperties : CompProperties_Glower {
+    public float maxRadius = 9f;
+    public float minRadius = 3f;
+
+    public SphereGlowerProperties() {
+        compClass = typeof(SphereGlower);
+    }
+
+    public override void PostLoadSpecial(ThingDef parent) {
+        glowRadius = maxRadius;
+        overlightRadius = 0f;
+        colorPickerEnabled = false;
+        darklightToggle = false;
+        overrideIsCavePlant = false;
+    }
+}
+
+public class SphereGlower : CompGlower {
+    private readonly List<Verse.Thing> cachedSpheres = [];
+    private bool FlickedOn = true;
+    private bool spheresCacheDirty = true;
+
+    private List<Verse.Thing> Spheres {
+        get {
+            if (!spheresCacheDirty) return cachedSpheres;
+            cachedSpheres.Clear();
+            RebuildSphereCache();
+            spheresCacheDirty = false;
+            return cachedSpheres;
+        }
+    }
+
+    private new SphereGlowerProperties Props => (SphereGlowerProperties)props;
+
+    public override float GlowRadius {
+        get {
+            float total = 0f;
+            float max = 0f;
+            List<Verse.Thing> currentSpheres = Spheres;
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                if (!currentSpheres[i].TryGetComp(out InvestitureHolder investiture) ||
+                    investiture.CurrentInvestiture <= 0.0) {
+                    continue;
+                }
+
+                total += investiture.CurrentInvestiture;
+                max += investiture.MaxInvestiture;
+            }
+
+            if (max <= 0.0) return 0f;
+            float percent = Mathf.Clamp01(total / max);
+            return Mathf.Lerp(Props.minRadius, Props.maxRadius, percent);
+        }
+    }
+
+    public override ColorInt GlowColor {
+        get {
+            Color blended = Color.black;
+            float totalWeight = 0f;
+            List<Verse.Thing> currentSpheres = Spheres;
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                InvestitureHolder? investiture = currentSpheres[i].GetInvestiture();
+                if (investiture == null || investiture.CurrentInvestiture <= 0f) continue;
+
+                float weight = investiture.CurrentInvestiture;
+                Color sphereColor = GetSphereColor(currentSpheres[i]);
+
+                blended += sphereColor * weight;
+                totalWeight += weight;
+            }
+
+            return totalWeight <= 0f ? new ColorInt(Color.black) : new ColorInt(blended / totalWeight);
+        }
+    }
+
+    protected override bool ShouldBeLitNow {
+        get {
+            if (!parent.Spawned || !FlickedOn) return false;
+            List<Verse.Thing> currentSpheres = Spheres;
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                InvestitureHolder? inv = currentSpheres[i].GetInvestiture();
+                if (inv != null && inv.CurrentInvestiture > 0) return true;
+            }
+
+            return false;
+        }
+    }
+
+    private void RebuildSphereCache() {
+        if (parent is ISlotGroupParent slotGroupParent) {
+            AddSpheresFromSlotGroup(slotGroupParent);
+            return;
+        }
+
+        if (parent is IThingHolder thingHolder) {
+            AddSpheres(thingHolder.GetDirectlyHeldThings());
+            return;
+        }
+
+        if (parent.TryGetComp(out InnerStorage innerStorage)) {
+            AddSpheres(innerStorage.GetDirectlyHeldThings());
+            return;
+        }
+
+        if (IsSphere(parent)) cachedSpheres.Add(parent);
+    }
+
+    private void AddSpheresFromSlotGroup(ISlotGroupParent slotGroupParent) {
+        SlotGroup? slotGroup = slotGroupParent.GetSlotGroup();
+        if (slotGroup == null) return;
+
+        foreach (Verse.Thing thing in slotGroup.HeldThings) {
+            if (IsSphere(thing)) cachedSpheres.Add(thing);
+        }
+    }
+
+    private void AddSpheres(ThingOwner things) {
+        for (int i = 0; i < things.Count; i++) {
+            if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
+        }
+    }
+
+    private static bool IsSphere(Verse.Thing thing) {
+        return thing.def.IsOneOf(
+            ThingDefOf.Cosmere_Roshar_Thing_Broam,
+            ThingDefOf.Cosmere_Roshar_Thing_Mark,
+            ThingDefOf.Cosmere_Roshar_Thing_Chip
+        );
+    }
+
+    public override void ReceiveCompSignal(string signal) {
+        if (parent?.Map == null) return;
+        if (signal is not ("FlickedOn"
+            or "FlickedOff"
+            or "PowerTurnedOn"
+            or "PowerTurnedOff"
+            or "Cosmere_Investiture_Changed"
+            or "Cosmere_InnerStorage_Changed"
+            or "ScheduledOn"
+            or "ScheduledOff")) {
+            return;
+        }
+
+        FlickedOn = signal switch {
+            "FlickedOff" => false,
+            "FlickedOn" => true,
+            _ => FlickedOn,
+        };
+
+        spheresCacheDirty = true;
+        UpdateLit(parent.Map);
+    }
+
+    private static Color GetSphereColor(Verse.Thing sphere) {
+        string stuffName = sphere.Stuff?.defName.Replace("Raw", string.Empty) ?? "Diamond";
+        GemDef? gem = DefDatabase<GemDef>.GetNamedSilentFail(stuffName) ?? GemDefOf.Diamond;
+
+        return gem.glowColor ?? gem.color;
+    }
+}

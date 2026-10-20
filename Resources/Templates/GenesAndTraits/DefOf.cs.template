@@ -1,0 +1,13 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using RimWorld;{{#if (eq kind "Gene")}}
+using Verse;{{/if}}
+
+namespace Cosmere.System.Scadrial;
+
+public static partial class {{kind}}DefOf {
+    {{#each metals as | metal |}}
+    [MayRequire("Cosmere.Scadrial")]
+    public static {{../kind}}Def Cosmere_Scadrial_{{../kind}}_{{../type}}{{defName metal.name}};
+    {{/each}}
+}

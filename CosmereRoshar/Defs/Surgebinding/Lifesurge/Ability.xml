@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Lifesurge</defName>
+        <label>Lifesurge</label>
+        <description>Pour a concentrated burst of Progression into someone and watch their body remember what it means to be whole. Wounds seal in moments. Infections falter. The target feels a rush of warmth through every limb, their body fighting back against injury with a ferocity that is not entirely natural. The surge is brief but overwhelming.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Progression.Lifesurge</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Lifesurging</hediff>
+        <beuPerTick>25</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>0</minIdeal>
+        <hostile>false</hostile>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>18</range>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetAnimals>true</canTargetAnimals>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

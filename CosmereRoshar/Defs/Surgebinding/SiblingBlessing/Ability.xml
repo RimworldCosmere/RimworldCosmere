@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_SiblingBlessing</defName>
+        <label>Grant Sibling's Blessing</label>
+        <description>Extend the Sibling's presence outward. Those nearby feel it settle over them like a warm breath, something vast and aware turning its attention their way. Hands move faster. Thoughts come clearer. The work feels easier, as if the tower itself is guiding their fingers and sharpening their minds. Maintaining the connection costs Stormlight.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.SiblingBlessing</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_SiblingBlessing</hediff>
+        <beuPerTick>4</beuPerTick>
+        <maxPower>1</maxPower>
+        <radiantOrder>Bondsmith</radiantOrder>
+        <minIdeal>2</minIdeal>
+        <orderMinIdeal>
+            <li><order>Bondsmith</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

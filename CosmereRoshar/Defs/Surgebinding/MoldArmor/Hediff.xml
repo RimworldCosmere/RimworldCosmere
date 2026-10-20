@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_MoldedArmor</defName>
+        <label>molded armor</label>
+        <description>The clothing on this person has been changed. Not visibly, not in any way the eye can detect, but a fist against their chest would tell the story. The fabric has been reshaped at a level deeper than the surface, hardened into something that absorbs impact like proper armor. It will not last forever, but for now, it holds.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>1800~1800</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+                    <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

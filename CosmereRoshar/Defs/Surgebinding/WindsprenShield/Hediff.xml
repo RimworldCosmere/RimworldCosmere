@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_WindsprenShielded</defName>
+        <label>windspren shielded</label>
+        <description>A wall of bound air whips around this person in a tight, howling spiral. Projectiles slow and veer. Strikes lose their force before they connect, as if something invisible is shoving them aside. The wind smells faintly of ozone, and windspren dance at the edges of the barrier.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Adhesion.WindsprenShielded</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <IncomingDamageFactor>0.80</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

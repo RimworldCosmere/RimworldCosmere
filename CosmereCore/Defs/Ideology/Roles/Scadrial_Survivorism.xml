@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Crewleader: single leader, head of a skaa crew -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Crewleader</defName>
+        <label>crewleader</label>
+        <description>The head of a skaa crew, plotting heists and rebellions out of sight of the Steel Ministry. A crewleader's word holds the crew together against the Final Empire's weight.</description>
+        <iconPath>UI/Roles/Leader</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>NegotiationAbility</statDef>
+                <modifier>0.3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>WorkDrive</li>
+            <li>CombatCommand</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Preacher: multi moralist role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_SurvivorismPreacher</defName>
+        <label>preacher</label>
+        <description>A voice stirring the skaa to defiance. Where the obligators demand obedience, the preacher promises that the Final Empire will fall and that those who stand will be remembered.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>5</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>4</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.15</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>Reassure</li>
+            <li>ConversionRitual</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

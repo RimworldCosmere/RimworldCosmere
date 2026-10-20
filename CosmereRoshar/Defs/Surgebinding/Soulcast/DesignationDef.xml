@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <DesignationDef>
+        <defName>Cosmere_Roshar_Designation_Soulcast</defName>
+        <label>soulcast</label>
+        <texturePath>UI/Designators/Mine</texturePath>
+        <targetType>Cell</targetType>
+        <designateCancelable>true</designateCancelable>
+    </DesignationDef>
+
+    <DesignationDef>
+        <defName>Cosmere_Roshar_Designation_ShapeStone</defName>
+        <label>shape stone</label>
+        <texturePath>UI/Designators/Mine</texturePath>
+        <targetType>Cell</targetType>
+        <designateCancelable>true</designateCancelable>
+    </DesignationDef>
+</Defs>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <SitePartDef>
+    <defName>Cosmere_Scadrial_SitePart_ConvoyAtium</defName>
+    <label>atium wagon</label>
+    <description>One wagon of the transfer carries atium. The escort keeps it on their persons, not in the strongbox.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Outpost</expandingIconTexture>
+    <arrivedLetter>The atium is not in the wagon. The escort are carrying it between them, a bead apiece. Nothing here is yours until they are down.</arrivedLetter>
+    <arrivedLetterDef>NeutralEvent</arrivedLetterDef>
+    <tags>
+      <li>Cosmere_ConvoyAtium</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>Cosmere_Scadrial_GenStep_ConvoyAtium</defName>
+    <linkWithSite>Cosmere_Scadrial_SitePart_ConvoyAtium</linkWithSite>
+    <!-- After Outpost's 400 and OutpostPower's 401: those are what spawn the escort. -->
+    <order>500</order>
+    <genStep Class="Cosmere.Core.Quest.GenStep_SeedPawnLoot">
+      <thingDef>Atium</thingDef>
+      <minCarriers>2</minCarriers>
+      <maxCarriers>4</maxCarriers>
+      <countPerCarrier>1</countPerCarrier>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

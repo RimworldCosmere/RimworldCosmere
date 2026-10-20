@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_EntropicAura</defName>
+        <label>Entropic Aura</label>
+        <description>Release the Surge of Division as a field that radiates outward from your body. Everything it touches begins to decay. Armor rusts. Leather cracks. Skin blisters. The energy does not discriminate, wearing down enemy flesh and equipment alike in a slow, relentless unmaking.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Division.EntropicAura</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_EntropicDecay</hediff>
+        <beuPerTick>3</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>0</minIdeal>
+        <orderMinIdeal>
+            <li><order>Skybreaker</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

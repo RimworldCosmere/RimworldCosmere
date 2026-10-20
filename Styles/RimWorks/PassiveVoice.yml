@@ -1,0 +1,9 @@
+extends: existence
+message: "'%s' is passive. Name who does the action (ASD-STE100 rule 3.2)."
+link: https://www.asd-ste100.org/
+level: error
+ignorecase: true
+raw:
+  - \b(?:am|is|are|was|were|be|been|being)\b\s*
+  - (?:[\w]+ly\s+)?
+  - \b(?:accepted|added|applied|built|called|carried|changed|composed|copied|created|declared|dropped|emitted|expressed|generated|given|held|inserted|kept|known|made|matched|moved|patched|placed|read|rejected|removed|replaced|reported|resolved|returned|run|seen|selected|shifted|shown|split|stored|taken|thrown|used|written)\b

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraderKindDef>
+        <defName>Cosmere_Scadrial_Trader_MetalTrader</defName>
+        <label>metal trader</label>
+        <commonality>1</commonality>
+        <stockGenerators>
+            <li Class="StockGenerator_SingleDef">
+                <thingDef>Silver</thingDef>
+                <countRange>300~1000</countRange>
+            </li>
+            <li Class="StockGenerator_SingleDef">
+                <thingDef>Cosmere_Scadrial_Thing_Clip</thingDef>
+                <countRange>200~3000</countRange>
+            </li>
+            <li Class="StockGenerator_SingleDef">
+                <thingDef>Cosmere_Scadrial_Thing_Boxing</thingDef>
+                <countRange>50~200</countRange>
+            </li>
+            <li Class="StockGenerator_Category">
+                <categoryDef>Cosmere_Core_ThingCategory_BasicMetal</categoryDef>
+                <thingDefCountRange>8~18</thingDefCountRange>
+                <countRange>20~75</countRange>
+            </li>
+        </stockGenerators>
+    </TraderKindDef>
+</Defs>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs> 
-    <ThingDef Abstract="True" Name="CosmereScadrialTimeBubble" ParentName="MoteGlowDistorted">
+    <ThingDef Abstract="True" Name="Cosmere_Scadrial_Thing_TimeBubble" ParentName="MoteGlowDistorted">
         <defName>Cosmere_Scadrial_TimeBubble</defName>
         <label>Time Bubble</label>
         <thingClass>MoteAttached</thingClass>
@@ -17,7 +17,7 @@
         </graphicData>
     </ThingDef>
     
-    <ThingDef ParentName="CosmereScadrialTimeBubble">
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_TimeBubble">
         <defName>Cosmere_Scadrial_Thing_TimeBubbleCadmium</defName>
         <label>Cadmium Time Bubble</label>
         <graphicData>
@@ -25,7 +25,7 @@
         </graphicData>
     </ThingDef>
     
-    <ThingDef ParentName="CosmereScadrialTimeBubble">
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_TimeBubble">
         <defName>Cosmere_Scadrial_Thing_TimeBubbleBendalloy</defName>
         <label>Bendalloy Time Bubble</label>
         <graphicData>
@@ -33,7 +33,7 @@
         </graphicData>
     </ThingDef>
     
-    <ThingDef ParentName="CosmereScadrialTimeBubble">
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_TimeBubble">
         <defName>Cosmere_Scadrial_Thing_TimeBubbleWarp</defName>
         <label>Time Bubble Distortion</label>
         <graphicData>

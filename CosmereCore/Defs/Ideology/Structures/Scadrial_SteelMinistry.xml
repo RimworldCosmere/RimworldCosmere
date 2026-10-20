@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_SteelMinistry</defName>
+        <label>Steel Ministry</label>
+        <description>The Lord Ruler's theocratic apparatus. Worship through obedience. The Steel Ministry maintained order across the Final Empire for a thousand years through its network of Obligators and Inquisitors.</description>
+        <iconPath>UI/Ideology/Cosmere/SteelMinistry</iconPath>
+        <deityCount>2</deityCount>
+        <worshipRoomLabel>ministry hall</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=999)->Steel Ministry</li>
+                <li>r_leaderTitle(p=999)->The Lord Ruler</li>
+                <li>memeLeaderNoun->lord prelan</li>
+                <li>memeLeaderNoun->high prelan</li>
+                <li>memeLeaderNoun->canton head</li>
+                <li>memeLeaderAdjective->steel</li>
+                <li>memeLeaderAdjective->imperial</li>
+                <li>memeLeaderAdjective->cantonal</li>
+                <li>memeLeaderAdjective->obliging</li>
+                <li>memeMoralist->obligator</li>
+                <li>memeMoralist->prelan</li>
+                <li>memeMoralist->minister</li>
+                <li>memeMoralist->inquisitor</li>
+                <li>cantonName->Canton of Orthodoxy</li>
+                <li>cantonName->Canton of Finance</li>
+                <li>cantonName->Canton of Inquisition</li>
+                <li>cantonName->Canton of Resource</li>
+                <li>cantonShort->Orthodoxy</li>
+                <li>cantonShort->Finance</li>
+                <li>cantonShort->Inquisition</li>
+                <li>cantonShort->Resource</li>
+                <li>ministryTitle->Lord Prelan</li>
+                <li>ministryTitle->High Prelan</li>
+                <li>ministryTitle->Prelan</li>
+                <li>ministryTitle->Obligator</li>
+                <li>ministryTitle->Steel Inquisitor</li>
+                <li>ministryTitle->Minister</li>
+                <li>ministryEpithet->of Steel</li>
+                <li>ministryEpithet->of the Final Empire</li>
+                <li>ministryEpithet->of the Lord Ruler</li>
+                <li>ministryEpithet->of the Sliver of Infinity</li>
+                <li>memeConcept->obedience</li>
+                <li>memeConcept->dominion</li>
+                <li>memeConcept->orthodoxy</li>
+                <li>memeHyphenPrefix->steel</li>
+                <li>memeHyphenPrefix->iron</li>
+                <li>memeHyphenPrefix->cantoral</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_steelministry</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <!-- deityCount is 2, so this needs more than two entries to draw from. With exactly
+             two, the unique-pair picker retries and gives up with "Could not get a unique fixed
+             deity name and type after a reasonable number of tries." -->
+        <fixedDeityNameTypes>
+            <li>
+                <name>Ruin</name>
+                <type>Shard of Adonalsium</type>
+            </li>
+            <li>
+                <name>Preservation</name>
+                <type>Shard of Adonalsium</type>
+            </li>
+            <li>
+                <name>the Lord Ruler</name>
+                <type>Sliver of Infinity</type>
+            </li>
+            <li>
+                <name>Rashek</name>
+                <type>Hero of Ages</type>
+            </li>
+            <li>
+                <name>the Father</name>
+                <type>God of the Final Empire</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Steel Ministry</ideoName>
+                <adjective>Ministry</adjective>
+                <member>minister</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Canton</ideoName>
+                <adjective>cantonal</adjective>
+                <member>obligator</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Final Empire Faith</ideoName>
+                <adjective>imperial</adjective>
+                <member>faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Obligators</ideoName>
+                <adjective>steel</adjective>
+                <member>obligator</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

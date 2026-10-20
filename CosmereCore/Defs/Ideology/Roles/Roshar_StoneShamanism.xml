@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- High Shaman: single leader, keeper of the Stone's truths -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_HighShaman</defName>
+        <label>high shaman</label>
+        <description>Eldest keeper of the Shin faith. The High Shaman mediates between the people and the Stone, presiding over planting rites and the burial of the bloodless.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>PlantWorkSpeed</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Stone Tender: multi role, farmers and caretakers of sacred soil -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_StoneTender</defName>
+        <label>stone tender</label>
+        <description>A farmer of Shinovar, bound to tend the soil that conceals the sacred stone. To coax life from the earth is worship; to shed blood upon it, sacrilege.</description>
+        <iconPath>UI/Roles/SpecialistPlants</iconPath>
+        <nameMaker>NamerRoleSower</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>6</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Plants>5</Plants>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>PlantWorkSpeed</statDef>
+                <modifier>0.4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>PlantHarvestYield</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>FarmingCommand</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>PlantWork</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+    <!-- Truthless: Shin warriors cast out, wielding shardless violence -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Truthless</defName>
+        <label>truthless</label>
+        <description>A Shin stripped of their voice for crimes against the Stone. The Truthless wander or kill at their master's word, bearing the exile's stone-token as a reminder of what was lost.</description>
+        <iconPath>UI/Roles/SpecialistMelee</iconPath>
+        <nameMaker>NamerRoleBrawler</nameMaker>
+        <impact>High</impact>
+        <displayOrderInImpact>700</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <maxCount>2</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Melee>8</Melee>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeHitChance</statDef>
+                <modifier>6</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeDodgeChance</statDef>
+                <modifier>6</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MoveSpeed</statDef>
+                <modifier>0.5</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>BerserkTrance</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Violent</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

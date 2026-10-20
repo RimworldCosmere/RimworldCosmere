@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="ResourceBase">
+		<defName>Cosmere_Roshar_ShardMaterial</defName>
+		<label>shard material</label>
+		<stuffProps>
+			<categories>
+				<li>Cosmere_Roshar_ShardStuff</li>
+			</categories>
+			<statOffsets>
+				<SharpDamageMultiplier>1.5</SharpDamageMultiplier>
+			</statOffsets>
+		</stuffProps>
+
+		<statBases>
+			<MarketValue>5</MarketValue>
+			<Mass>0.0001</Mass>
+			<Flammability>0.0</Flammability>
+			<DeteriorationRate>0</DeteriorationRate>
+		</statBases>
+	</ThingDef>
+
+	<StuffCategoryDef>
+		<defName>Cosmere_Roshar_ShardStuff</defName>
+		<label>shard stuff</label>
+		<noun>shard stuff</noun>
+		<destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+		<destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+		<destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+	</StuffCategoryDef>
+</Defs>

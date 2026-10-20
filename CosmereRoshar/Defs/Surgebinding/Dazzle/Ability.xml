@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Dazzle</defName>
+        <label>Dazzle</label>
+        <description>Release Stormlight in a single blinding flash. The light is not natural. It sears into the eyes of everyone nearby, leaving them stumbling in a world of white afterimages and blazing spots. For a time they cannot aim, cannot judge distance, cannot see a blade coming until it is already there.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Illumination.Dazzle</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Dazzled</hediff>
+        <beuPerTick>15</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

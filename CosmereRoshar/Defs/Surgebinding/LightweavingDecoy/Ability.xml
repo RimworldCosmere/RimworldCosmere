@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_LightweavingDecoy</defName>
+        <label>Lightweaving Decoy</label>
+        <description>Weave light into copies of yourself. They look real. They move like you, breathe like you, even seem to bleed when struck. Enemies attack them without hesitation, never realizing the figure they are fighting is nothing but shaped Stormlight. Higher Ideals allow you to sustain more illusions at once. Toggle off to dismiss them all.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Illumination.LightweavingDecoy</abilityClass>
+        <beuPerTick>3</beuPerTick>
+        <maxPower>1</maxPower>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

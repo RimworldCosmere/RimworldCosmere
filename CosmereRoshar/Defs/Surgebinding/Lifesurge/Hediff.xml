@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseHediff">
+        <defName>Cosmere_Roshar_Hediff_Lifesurging</defName>
+        <label>lifesurging</label>
+        <description>Progression energy floods through this person in a torrent. It is almost too much. Wounds close so fast the skin itches. The body's defenses surge, fighting infection and toxin with a vigor that borders on alarming. The sensation is overwhelming, a rush of life that makes the heart pound and the limbs tremble with borrowed vitality.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <maxSeverity>5</maxSeverity>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>600~600</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <label>first ideal</label>
+                <statFactors>
+                    <InjuryHealingFactor>5</InjuryHealingFactor>
+                    <ImmunityGainSpeed>3</ImmunityGainSpeed>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>0.30</PainShockThreshold>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>1.5</minSeverity>
+                <label>second ideal</label>
+                <statFactors>
+                    <InjuryHealingFactor>8</InjuryHealingFactor>
+                    <ImmunityGainSpeed>4</ImmunityGainSpeed>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>0.40</PainShockThreshold>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>2.5</minSeverity>
+                <label>third ideal</label>
+                <statFactors>
+                    <InjuryHealingFactor>12</InjuryHealingFactor>
+                    <ImmunityGainSpeed>5</ImmunityGainSpeed>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>0.50</PainShockThreshold>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>3.5</minSeverity>
+                <label>fourth ideal</label>
+                <statFactors>
+                    <InjuryHealingFactor>18</InjuryHealingFactor>
+                    <ImmunityGainSpeed>6</ImmunityGainSpeed>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>0.70</PainShockThreshold>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>4.5</minSeverity>
+                <label>fifth ideal</label>
+                <statFactors>
+                    <InjuryHealingFactor>25</InjuryHealingFactor>
+                    <ImmunityGainSpeed>8</ImmunityGainSpeed>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>1.00</PainShockThreshold>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

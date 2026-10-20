@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_NewSky</defName>
+    <label>the sky is blue</label>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <durationDays>90</durationDays>
+    <stages>
+      <li>
+        <label>the sky is blue</label>
+        <description>Nothing is falling. I keep looking up to check, and it keeps being true.</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Cosmere_Scadrial_HarmonyAsked</defName>
+    <label>a god asked</label>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <durationDays>60</durationDays>
+    <stages>
+      <li>
+        <label>a god asked</label>
+        <description>He did not tell us. He asked, and waited, and took the answer. A thousand years of being ordered, and the thing that replaced it says please.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

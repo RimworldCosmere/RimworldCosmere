@@ -1,0 +1,116 @@
+using System;
+using Concord;
+using Cosmere.Core.Ability;
+using RimWorld;
+using Verse;
+using Verse.Profile;
+
+namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
+
+public class Harden : SurgebindingAbility {
+    private static readonly Dictionary<Building, float> hardenedBuildings = [];
+
+    /// <summary>
+    ///     The hit point multiplier a building is currently hardened by, if any. The map itself
+    ///     stays private so only this class can write to it.
+    /// </summary>
+    /// <returns>True when the building is hardened, which also sets <paramref name="multiplier" /> to its hit point multiplier.</returns>
+    public static bool TryGetHardenMultiplier(Building building, out float multiplier) {
+        return hardenedBuildings.TryGetValue(building, out multiplier);
+    }
+
+    private List<Building> hardenedStructures = [];
+
+    public Harden(Pawn pawn) : base(pawn) { }
+
+    public Harden(Pawn pawn, AbilityDef def) : base(pawn, def) { }
+
+    private int MaxStructures => Gene.CurrentIdeal switch {
+        >= 4 => 5,
+        3 => 3,
+        2 => 2,
+        _ => 1,
+    };
+
+    private float HpMultiplier => 1f + Gene.CurrentIdeal * 0.5f;
+
+    public override float GetStrength(Status? desiredStatus = null) {
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
+    }
+
+    public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
+        if (target.Thing is not Building building) return false;
+
+        if (hardenedStructures.Contains(building)) {
+            RemoveHardening(building);
+            if (hardenedStructures.Count == 0) {
+                UpdateStatus(Active.Off);
+            }
+
+            return base.Activate(target, dest);
+        }
+
+        if (hardenedStructures.Count >= MaxStructures) return false;
+
+        ApplyHardening(building);
+
+        FleckMaker.Static(building.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
+
+        return base.Activate(target, dest);
+    }
+
+    protected override void OnDisable() {
+        base.OnDisable();
+
+        for (int i = hardenedStructures.Count - 1; i >= 0; i--) {
+            RemoveHardening(hardenedStructures[i]);
+        }
+    }
+
+    public override void AbilityTick() {
+        base.AbilityTick();
+        if (!status.IsActive) return;
+
+        for (int i = hardenedStructures.Count - 1; i >= 0; i--) {
+            Building? building = hardenedStructures[i];
+            if (building == null || building.Destroyed) {
+                if (building != null) hardenedBuildings.Remove(building);
+                hardenedStructures.RemoveAt(i);
+            }
+        }
+
+        if (hardenedStructures.Count == 0) {
+            UpdateStatus(Active.Off);
+        }
+    }
+
+    private void ApplyHardening(Building building) {
+        int oldMax = building.MaxHitPoints;
+        hardenedBuildings[building] = HpMultiplier;
+        hardenedStructures.Add(building);
+        int newMax = building.MaxHitPoints;
+        int hpBonus = newMax - oldMax;
+        building.HitPoints += hpBonus;
+    }
+
+    private void RemoveHardening(Building building) {
+        hardenedBuildings.Remove(building);
+        hardenedStructures.Remove(building);
+        int newMax = building.MaxHitPoints;
+        building.HitPoints = Math.Min(building.HitPoints, newMax);
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_Collections.Look(ref hardenedStructures, "hardenedStructures", LookMode.Reference);
+        hardenedStructures ??= [];
+    }
+
+    [Patch(typeof(MemoryUtility))]
+    public static class HardenStateClearer {
+        [Inject(At.Return, nameof(MemoryUtility.ClearAllMapsAndWorld))]
+        private static void AfterClearAllMapsAndWorld() {
+            hardenedBuildings.Clear();
+        }
+    }
+}

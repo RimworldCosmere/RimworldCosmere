@@ -201,3 +201,13 @@ jobs:
       coverage-exclusions: CosmereCore/CosmereCore/**/UI/**,CosmereCore/CosmereCore/**/Patch/**,CosmereCore/CosmereQuickstarts/**,Cosmere.Pickle/**,tools/**
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  gate:
+    name: ci gate
+    if: always()
+    needs: [prose, links, game-image, build, pickle, sonar]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RimWorks/mod-ci/.github/actions/gate@v5
+        with:
+          results: ${{ join(needs.*.result, ' ') }}

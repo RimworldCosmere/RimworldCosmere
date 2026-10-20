@@ -26,7 +26,7 @@
   <ItemGroup>
     <!-- ExcludeAssets and PrivateAssets keep a second copy of each reference out of
          Pickle/Assemblies, where the loader would pick the stub over the real one. -->
-    <PackageReference Include="RimWorks.Pickle.Ref" Version="4.*" ExcludeAssets="runtime" PrivateAssets="all"/>
+    <PackageReference Include="RimWorks.Pickle.Ref" Version="6.*" ExcludeAssets="runtime" PrivateAssets="all"/>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
